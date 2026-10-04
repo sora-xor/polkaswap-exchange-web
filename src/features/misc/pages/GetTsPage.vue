@@ -1,5 +1,9 @@
 <template>
-  <main class="get-ts" :data-test-name="buyingXor ? 'buyXorPage' : 'getTsPage'">
+  <main
+    class="get-ts"
+    :class="{ 'get-ts--quick': buyingXor && activeStep === 'source' }"
+    :data-test-name="buyingXor ? 'buyXorPage' : 'getTsPage'"
+  >
     <header class="get-ts__header">
       <div>
         <p class="get-ts__brand">{{ buyingXor ? 'POLKASWAP · XOR' : 'TONSWAP · TS' }}</p>
@@ -48,9 +52,29 @@
       @refresh="refreshJourney"
       @review="reviewJourneyStage"
     />
-    <div class="get-ts__layout" :class="{ 'get-ts__layout--plan': activeStep === 'source' }">
+    <div
+      class="get-ts__layout"
+      :class="{
+        'get-ts__layout--plan': activeStep === 'source',
+        'get-ts__layout--quick': buyingXor && activeStep === 'source',
+      }"
+    >
       <section class="get-ts__workspace" :data-step="activeStep">
-        <template v-if="activeStep === 'source'">
+        <buy-xor-quick-start
+          v-if="activeStep === 'source' && buyingXor"
+          ref="stepHeading"
+          :source="view.source"
+          :amount="paymentAmount"
+          :payment-asset="paymentSymbol"
+          :can-continue="canContinuePlan"
+          :locked="!!planProtection"
+          @select-source="chooseSource"
+          @update:amount="setPaymentAmount"
+          @update:payment-asset="setPaymentSymbol"
+          @preview="onPreview"
+          @continue="goToStep(planProtection ? planProtection.step : 'wallets')"
+        />
+        <template v-else-if="activeStep === 'source'">
           <h2 ref="stepHeading" tabindex="-1">{{ t('getTs.sourceTitle') }}</h2>
           <div class="get-ts__sources" role="group" :aria-label="t('getTs.sourceTitle')">
             <button
@@ -143,7 +167,7 @@
             }}
           </h2>
           <template v-if="view.source === 'card' && !cardConversion && !conversionStarted">
-            <p>{{ t('getTs.cardDescription') }}</p>
+            <p>{{ t(buyingXor ? 'buyXor.card.description' : 'getTs.cardDescription') }}</p>
             <get-ts-card-readiness
               ref="cardReadiness"
               :purpose="purpose"
@@ -151,14 +175,25 @@
               :paused="moonpayStore.dialogVisibility"
               @checked="onCardReadinessChecked"
             />
-            <div class="get-ts__destination">
+            <ol v-if="buyingXor" class="get-ts__card-steps" data-test-name="buyXorCardSteps">
+              <li>
+                <span>{{ t('buyXor.card.copy') }}</span
+                ><code>{{ evmAddress }}</code
+                ><button type="button" class="get-ts__text-action" @click="copyCardAddress($event)">
+                  {{ t(cardAddressCopied ? 'assets.copied' : 'getTs.copyAddress') }}
+                </button>
+              </li>
+              <li>{{ t('buyXor.card.paste') }}</li>
+              <li>{{ t('buyXor.card.return') }}</li>
+            </ol>
+            <div v-else class="get-ts__destination">
               <span>{{ t('getTs.cardDestination') }}</span
               ><code>{{ evmAddress }}</code
               ><button type="button" @click="handleCopyAddress(evmAddress, $event)">
                 {{ t('getTs.copyAddress') }}
               </button>
             </div>
-            <p class="get-ts__muted">{{ purchaseText('cardDestinationNote') }}</p>
+            <p v-if="!buyingXor" class="get-ts__muted">{{ purchaseText('cardDestinationNote') }}</p>
             <p class="get-ts__muted">{{ t('getTs.cardEligibility') }}</p>
             <p v-if="!moonpayEnabled" role="status">{{ t('getTs.cardUnavailable') }}</p>
             <div class="get-ts__action-bar">
@@ -169,7 +204,7 @@
                 native-type="button"
                 :disabled="!moonpayEnabled || !cardQuoteAllowed || !walletsReady || !isMainnet"
                 @click="openCardPurchase"
-                >{{ t('getTs.cardBuy') }}</s-button
+                >{{ t(buyingXor ? 'buyXor.card.open' : 'getTs.cardBuy') }}</s-button
               >
             </div>
             <button class="get-ts__text-action" type="button" @click="cardConversion = true">
@@ -496,6 +531,7 @@ import GetTsCardReadiness from '@/features/misc/components/burn/GetTsCardReadine
 import type { GetTsCardReadiness as CardReadiness } from '@/features/misc/lib/getTsCardReadiness';
 import GetTsWalletSetup from '@/features/misc/components/burn/GetTsWalletSetup.vue';
 import GetTsPlanPreview from '@/features/misc/components/burn/GetTsPlanPreview.vue';
+import BuyXorQuickStart from '@/features/misc/components/buy-xor/BuyXorQuickStart.vue';
 import GetTsRouteRequirements from '@/features/misc/components/burn/GetTsRouteRequirements.vue';
 import GetTsPurchaseProgress from '@/features/misc/components/burn/GetTsPurchaseProgress.vue';
 import { getTsJourney, type GetTsJourneyStage } from '@/features/misc/lib/getTsJourney';
@@ -571,7 +607,7 @@ const planProtection = computed(() =>
 const view = ref<GetTsViewState>(resolvePurchaseView(readGetTsView(undefined, props.purpose)));
 const funnel = useBuyXorFunnel({ enabled: buyingXor, route: () => view.value.source });
 const bridgeRoute = computed(() => buildGetTsBridgeRoute(props.purpose));
-const stepHeading = ref<HTMLElement | null>(null);
+const stepHeading = ref<Pick<HTMLElement, 'focus'> | null>(null);
 const paymentAmount = ref(plan.value.paymentAmount);
 const planningRequired = ref(!normalizeGetTsAmount(plan.value.paymentAmount));
 const preview = ref<GetTsPlanPreviewResult | null>(null);
@@ -605,6 +641,8 @@ const conversionTransactionUrl = computed(() =>
   plan.value.references.conversion ? `https://etherscan.io/tx/${plan.value.references.conversion}` : ''
 );
 const cardCheck = ref<CardReadiness | null>(null);
+/** Visible confirmation that the Ethereum address for MoonPay is on the clipboard. */
+const cardAddressCopied = ref(false);
 const cardReadiness = ref<InstanceType<typeof GetTsCardReadiness> | null>(null);
 const cardFundingEth = ref(plan.value.cardDraft?.deliveredEth ?? '');
 const swapSubmitted = ref(false);
@@ -985,8 +1023,16 @@ function openCardPurchase(): void {
   supplementalConversionAsset.value = 'eth';
   supplementalConversionAmount.value = check.conversionEth ?? '';
   cardConversion.value = true;
+  // Buy XOR's button says it copies: MoonPay cannot be given the address without a signed URL.
+  if (buyingXor.value) copyCardAddress();
   moonpayStore.setDialogVisibility(true);
   void funnel.record('provider_handoff');
+}
+/** Copies the connected Ethereum address that MoonPay asks for; the SORA address is never offered here. */
+function copyCardAddress(event?: MouseEvent): void {
+  if (!evmAddress.value) return;
+  cardAddressCopied.value = true;
+  void handleCopyAddress(evmAddress.value, event);
 }
 /** A fresh payment is an explicit choice; the cost component must obtain a new wallet-bound review. */
 function reviewNewCardPurchase(): void {
@@ -1220,6 +1266,7 @@ watch(
 );
 watch([soraAddress, evmAddress], () => {
   cardCheck.value = null;
+  cardAddressCopied.value = false;
   cardPurchaseCompleted.value = false;
   receivedAsset.value = null;
   conversionRetry.value = false;
@@ -1387,6 +1434,13 @@ onBeforeUnmount(() => {
     max-width: 720px;
     margin-inline: auto;
   }
+  // The Buy XOR start screen narrows the whole page, header and steps included.
+  &--quick {
+    max-width: 656px;
+  }
+  &__layout--quick {
+    max-width: none;
+  }
   &__workspace {
     min-width: 0;
     padding: 28px;
@@ -1516,6 +1570,29 @@ onBeforeUnmount(() => {
     transition:
       background-color 0.16s ease,
       box-shadow 0.16s ease;
+  }
+  &__card-steps {
+    margin: 20px 0;
+    padding: 16px;
+    padding-inline-start: 36px;
+    border-radius: var(--s-border-radius-small);
+    background: var(--s-color-utility-body);
+    box-shadow: var(--s-shadow-element);
+    font-size: 13px;
+    line-height: 1.55;
+    li + li {
+      margin-top: 10px;
+    }
+    code {
+      margin-block: 6px 0;
+      font-size: 13px;
+      direction: ltr;
+      unicode-bidi: isolate;
+    }
+    .get-ts__text-action {
+      padding-inline: 0;
+      font-weight: 600;
+    }
   }
   &__destination {
     border-radius: var(--s-border-radius-small);

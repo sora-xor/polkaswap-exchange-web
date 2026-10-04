@@ -722,7 +722,9 @@
             "storage": "raonem brausa luksavve luksavve stakaon wakaot raonem stakaon. falom gohed raonem gohed.",
             "strategy": "falom gohed luksavve hamas, wakaot, wakaot, wakaot luksavve wakaot.",
             "transaction": "gohed transaksen wakaot. raonem raonem netwok fi raonem stakaon gohed gohed gohed.",
-            "wallet": "konekem gohed luksavve walet wakaot raonem gohed luksavve akaon luksavve falom."
+            "wallet": "konekem gohed luksavve walet wakaot raonem gohed luksavve akaon luksavve falom.",
+            "elsewhere": "Bot ia hem wak long nara tab blong Polkaswap. Iusim tab ya o klosim fastaem.",
+            "runEnded": "Ran ia hem finis. Statem niu ran nomoa."
         },
         "events": {
             "aiRequired": "wakaot luksavve gohed stakaon stakaon",
@@ -745,7 +747,8 @@
             "status": "stakaon",
             "threshold": "praes wakaot falom",
             "trade": "Senis",
-            "warmup": "falom falom raonem raonem"
+            "warmup": "falom falom raonem raonem",
+            "continued": "Ran hem gohed moa"
         },
         "export": "aotem",
         "externalSigning": "luksavve gohed walet stakaon luksavve wakaot raonem luksavve gohed falom.",
@@ -1288,7 +1291,9 @@
             },
             "session": {
                 "label": "Bot wak fo",
-                "option": "{count}raonem"
+                "option": "{count}raonem",
+                "note": "Bot hem tred nomoa taem tab ia stap open. Sapos iu klosim tab, hem stop lelebet go kasem taem iu kambak.",
+                "rare": "Long test hem baem samting olsem wanfala taem evri {days} de, so wanfala ran blong {count} de maet no tred nomoa."
             },
             "signal": {
                 "entry": "raonem falom",
@@ -1323,7 +1328,25 @@
             "thinNote": "Pul hem garem samting olsem {depth} XOR nomoa, hem smol tumas fo wanfala tred blong 2 XOR.",
             "title": "Olketa bot wea redi finis",
             "trades": "luksavve",
-            "watchNote": "Nogat eni rul hem mekem mani long test, dastawe nogat bot fo maket ia yet."
+            "watchNote": "Nogat eni rul hem mekem mani long test, dastawe nogat bot fo maket ia yet.",
+            "test": {
+                "title": "Test bifoa, {start} – {end} ({days} de)",
+                "bot": "Bot ia",
+                "growth": "{start} XOR hem kamap {end} XOR",
+                "hold": "Holem {symbol} nomoa",
+                "unit": "Evri risalt hem long XOR, no long {symbol} o US dola.",
+                "holdBetter": "Holem {symbol} nomoa hem moa gud long test ia.",
+                "botBetter": "Bot hem moa gud winim fo holem {symbol} nomoa."
+            },
+            "now": {
+                "title": "Distaem",
+                "entry": "Praes hem {value} sapos iu lukim avarej blong {window}h, hem pas long {threshold} fo baem. Wanfala bot wea wak bae baem distaem.",
+                "exit": "Praes hem {value} sapos iu lukim avarej blong {window}h, hem stap long eria fo salem. Wanfala bot wea wak bae salem eni {symbol} wea hem holem.",
+                "neutralBelow": "Praes hem {value} sapos iu lukim avarej blong {window}h. Bot hem baem long {threshold} o daon moa.",
+                "neutralAbove": "Praes hem {value} sapos iu lukim avarej blong {window}h. Bot hem baem long {threshold} o antap moa.",
+                "warmup": "No inaf niu praes yet fo sekem rul.",
+                "unavailable": "Olketa niu praes no stap distaem."
+            }
         },
         "studio": {
             "botName": "{idea} · {symbol}",
@@ -2093,7 +2116,38 @@
         },
         "walletPassword": "luksavve walet luksavve",
         "workspace": "gohed luksavve",
-        "yourBots": "Olketa bot blong mi"
+        "yourBots": "Olketa bot blong mi",
+        "runs": {
+            "title": "Olketa bot blong iu",
+            "manage": "Openem Olketa bot blong mi",
+            "none": "No eni bot hem wak o weit.",
+            "keepOpen": "Olketa bot wak nomoa taem Polkaswap hem open long tab ia. Tab ia save stap long baek. Sapos iu klosim, olketa bot stop lelebet go kasem taem iu kambak.",
+            "controls": "Pause hem kipim ran ia mekem iu save gohed moa. Stop hem finisim. Tufala no salem olketa token blong iu.",
+            "running": "Bot wea wak: {count}",
+            "waiting": "Bot wea weitim iu: {count}",
+            "paused": "Bot wea stop lelebet: {count}",
+            "result": "Kasem nao, long {symbol}:",
+            "continue": "Gohed",
+            "open": "Openem bot",
+            "runsUntil": "Hem ran go kasem",
+            "consentExternal": "Bot hem wak nomoa taem tab ia hem open. Sapos iu klosim tab, bot hem stop lelebet. Taem iu openem moa Polkaswap wetem akaon ia, hem gohed go kasem en blong ran ia, an walet blong iu bae askem iu yet fo oraetem evri swap.",
+            "consentInternal": "Bot hem wak nomoa taem tab ia hem open. Sapos iu klosim tab, bot hem stop lelebet go kasem taem iu openem moa Polkaswap an putim pasword blong walet blong iu. Hem no save ran pas long en blong ran ia.",
+            "state": {
+                "elsewhere": "Hem wak long nara tab",
+                "continuing": "Hem gohed moa",
+                "pausedByYou": "Iu nao stopem lelebet"
+            },
+            "detail": {
+                "until": "go kasem {time}",
+                "continuing": "Hem statem moa long tab ia an ran go kasem {time}.",
+                "password": "Putim pasword blong walet blong iu fo gohed go kasem {time}. Polkaswap no save kipim.",
+                "wallet": "Konekem akaon {account} fo gohed go kasem {time}.",
+                "open": "Openem bot fo gohed.",
+                "paused": "Gohed moa mekem hem ran go kasem {time}.",
+                "attention": "Openem bot fo lukim wanem nao rong.",
+                "ended": "Ran ia hem finis. Statem niu ran taem iu redi."
+            }
+        }
     },
     "bridge": {
         "connectNetworkWallet": "konekem {network} walet",
@@ -2273,6 +2327,7 @@
             "included": "gohed stakaon gohed wakaot gohed. wakaot luksavve stakaon luksavve.",
             "indexingDelayed": "luksavve luksavve stakaon raonem stakaon gohed gohed stakaon. luksavve transaksen raonem stakaon wakaot falom. luksavve luksavve gohed raonem luksavve salem raonem gohed falom.",
             "invalidAmount": "stakaon wakaot luksavve luksavve hamas falom gohed gohed 18 gohed stakaon.",
+            "live": "Laiv",
             "loading": "weit raonem raonem raonem…",
             "mainnetOnly": "raonem raonem raonem gohed gohed wakaot falom.",
             "notStarted": "gohed raonem luksavve gohed gohed 27,720,478.",
@@ -2963,6 +3018,7 @@
         "Bots": "raonem",
         "Bridge": "luksavve",
         "Burn": "gohed",
+        "burnLive": "@:burnPage.tonswap.live",
         "Explore/Container": "wakaot",
         "Farming": "stakaon",
         "OrderBook": "falom",
@@ -4976,6 +5032,51 @@
             "consent": "searem gohed falom raonem luksavve wakaot stakaon raonem luksavve. luksavve walet falom, wakaot luksavve transaksen raonem falom falom.",
             "privacy": "luksavve brausa stakaon wakaot raonem gohed raonem luksavve.",
             "unavailable": "raonem raonem wakaot gohed gohed falom. luksavve wakaot raonem gohed."
+        },
+        "start": {
+            "cardBlocked": "raonem luksavve falom gohed {minimum}, gohed gohed wakaot maket falom gohed raonem gohed {maximum} falom falom. raonem falom luksavve, luksavve wakaot falom stakaon.",
+            "cardFees": "wakaot netwok wakaot falom falom luksavve gohed gohed luksavve raonem. falom gohed gohed hamas stakaon wakaot gohed luksavve raonem.",
+            "cardHint": "falom luksavve gohed raonem",
+            "cardMinimum": "gohed raonem raonem raonem {amount}.",
+            "connecting": "stakaon luksavve wakaot…",
+            "conversionTooBig": "luksavve raonem gohed luksavve stakaon wakaot gohed stakaon gohed gohed. wakaot wakaot raonem hamas.",
+            "crypto": "luksavve",
+            "cryptoFees": "wakaot wakaot raonem gohed gohed luksavve walet luksavve wakaot netwok wakaot.",
+            "cryptoHint": "gohed, falom luksavve stakaon gohed wakaot",
+            "inProgress": "luksavve falom wakaot wakaot gohed wakaot: {amount}.",
+            "max": "maks luksavve wakaot falom falom: gohed {amount}.",
+            "maxNote": "gohed luksavve maket gohed wakaot raonem luksavve. gohed falom wakaot gohed gohed praes stakaon gohed, stakaon raonem falom raonem.",
+            "nativeTon": "falom gohed raonem gohed raonem falom. senis gohed luksavve falom gohed gohed falom.",
+            "next": "falom gohed gohed",
+            "noCardPrice": "wakaot wakaot gohed raonem wakaot praes. luksavve falom stakaon luksavve: wakaot raonem gohed stakaon praes gohed luksavve raonem.",
+            "noPrice": "falom wakaot gohed falom wakaot praes falom falom. wakaot falom gohed wakaot raonem.",
+            "otherWays": "stakaon raonem luksavve raonem:",
+            "steps": {
+                "card": "raonem wakaot raonem gohed wakaot. wakaot wakaot gohed luksavve luksavve wakaot walet.",
+                "convert": "gohed luksavve wakaot walet, gohed gohed senis luksavve stakaon wakaot gohed gohed luksavve wakaot.",
+                "swap": "gohed luksavve wakaot walet, gohed gohed senis luksavve luksavve. luksavve luksavve raonem gohed gohed walet.",
+                "ton": "gohed luksavve falom raonem gohed luksavve wakaot gohed gohed luksavve’wakaot wakaot.",
+                "transfer": "gohed luksavve wakaot walet, gohed gohed gohed luksavve luksavve stakaon luksavve wakaot.",
+                "walletsEthereum": "konekem gohed wakaot walet, gohed gohed, wakaot wakaot wakaot walet. luksavve falom wakem wakaot wakaot walet gohed gohed gohed raonem.",
+                "walletSora": "konekem luksavve wakaot walet.",
+                "walletsTon": "konekem luksavve gohed, wakaot wakaot wakaot raonem."
+            },
+            "stepsNote": "luksavve raonem falom stakaon luksavve gohed gohed. falom falom wakaot falom gohed raonem wakaot.",
+            "ton": "falom gohed gohed (3 raonem)",
+            "tooBig": "stakaon gohed luksavve gohed wakaot maket falom falom. gohed gohed luksavve falom raonem gohed gohed raonem gohed {amount}.",
+            "tooBigUnknown": "stakaon gohed luksavve gohed wakaot maket falom falom. wakaot wakaot raonem hamas.",
+            "tooSmall": "stakaon luksavve: gohed netwok fi wakaot gohed gohed evri. wakaot wakaot gohed hamas.",
+            "useCrypto": "raonem falom luksavve",
+            "useMax": "gohed maks",
+            "useUsdt": "raonem falom falom falom",
+            "youGet": "luksavve falom"
+        },
+        "card": {
+            "copy": "kopi luksavve wakaot adres:",
+            "description": "raonem wakaot raonem gohed wakaot. wakaot wakaot gohed luksavve luksavve wakaot walet, wakaot gohed gohed wakaot gohed gohed stakaon luksavve.",
+            "open": "kopi adres wakaot falom wakaot",
+            "paste": "falom wakaot. falom gohed raonem luksavve wakaot walet adres, gohed raonem falom. luksavve gohed gohed luksavve wakaot adres.",
+            "return": "gohed stakaon gohed wakaot, gohed falom gohed luksavve raonem gohed."
         }
     }
 }

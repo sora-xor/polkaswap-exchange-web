@@ -19,6 +19,8 @@ export const VISUAL_TEST_MASK_SELECTORS = [
   '.app-menu',
   // Rewards price card: its content comes from the indexer, so it differs between loading, empty and loaded.
   '.rw-market',
+  // The Burn page logos draw a WebGL flame that never stops moving, so two captures can never match.
+  '.burn-logo-fire',
 ] as const;
 
 export const createVisualMaskLocators = (page: Page): Locator[] => {

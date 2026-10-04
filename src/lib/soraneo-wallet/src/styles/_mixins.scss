@@ -283,8 +283,15 @@
     }
   } @else {
     @if $focusWithin == true {
+      // The ring goes around the whole rounded field, inside its edge so a scrolling parent cannot clip it. The bare
+      // inputs inside must not draw the app-wide ring as well: a square outline that ignores the field's corners.
       &:focus-within {
-        outline: $outline;
+        outline: 2px solid var(--s-color-focus-ring, var(--s-color-outline));
+        outline-offset: -2px;
+      }
+
+      :where(input, textarea):focus-visible {
+        outline: none !important;
       }
     } @else {
       @if $withOffset == true {

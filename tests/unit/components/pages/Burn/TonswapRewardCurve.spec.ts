@@ -3,6 +3,7 @@ import { mount } from '@vue/test-utils';
 import { describe, expect, it, vi } from 'vitest';
 
 import TonswapRewardCurve from '@/features/misc/components/burn/TonswapRewardCurve.vue';
+import curveSource from '@/features/misc/components/burn/TonswapRewardCurve.vue?raw';
 
 vi.mock('@/composables/useTranslation', () => ({
   useTranslation: () => ({
@@ -101,6 +102,29 @@ describe('Tonswap marginal reward curve', () => {
     await wrapper.setProps({ burned: new FPNumber('876678.5') });
     expect(wrapper.get('.tonswap-curve__point').attributes('cx')).toBe('180');
     expect(wrapper.get('.tonswap-curve__current strong').text()).toBe('27.5 TS / XOR');
+  });
+
+  it('can leave the rate and totals to the page while still drawing, locating and describing the position', () => {
+    const wrapper = mount(TonswapRewardCurve, { props: { burned: new FPNumber('876678.5'), showSummary: false } });
+
+    expect(wrapper.find('.tonswap-curve__current').exists()).toBe(false);
+    expect(wrapper.find('.tonswap-curve__totals').exists()).toBe(false);
+    expect(wrapper.get('.tonswap-curve__point').attributes('cx')).toBe('180');
+    // Screen readers still get the progress and the rate from the chart description.
+    expect(wrapper.get('desc').text()).toContain('876,678.5 / 1,753,357');
+    expect(wrapper.get('desc').text()).toContain('27.5 TS / XOR');
+    expect(wrapper.get('h3').text()).toBe('burnPage.tonswap.curve.title');
+  });
+
+  it('keeps the summary by default so other pages are unchanged', () => {
+    const wrapper = mount(TonswapRewardCurve, { props: { burned: new FPNumber('876678.5') } });
+
+    expect(wrapper.find('.tonswap-curve__current').exists()).toBe(true);
+    expect(wrapper.find('.tonswap-curve__totals').exists()).toBe(true);
+  });
+
+  it('draws the chart left to right in every language', () => {
+    expect(curveSource).toMatch(/&__chart\s*\{[\s\S]*?direction: ltr;/);
   });
 
   it('provides an accessible schedule, progress and exact formatted current rate without duplicate IDs', () => {

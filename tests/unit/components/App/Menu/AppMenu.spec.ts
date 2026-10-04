@@ -8,6 +8,7 @@ const {
   routeMock,
   settingsStore,
   routerLoading,
+  burnCampaign,
   setMenuCollapsedMock,
   resizeObserverObserveMock,
   resizeObserverDisconnectMock,
@@ -27,6 +28,7 @@ const {
     setMenuCollapsed: vi.fn(),
   },
   routerLoading: { value: false },
+  burnCampaign: { isLive: { value: false }, rateLabel: { value: '' } },
   setMenuCollapsedMock: vi.fn(),
   resizeObserverObserveMock: vi.fn(),
   resizeObserverDisconnectMock: vi.fn(),
@@ -50,6 +52,10 @@ vi.mock('@/app/navigation/loading', () => ({
   appRouterLoading: routerLoading,
 }));
 
+vi.mock('@/features/misc/composables/useTonswapCampaignStatus', () => ({
+  useTonswapCampaignStatus: () => burnCampaign,
+}));
+
 import AppMenu from '@/components/App/Menu/AppMenu.vue';
 
 const SidebarItemContentStub = defineComponent({
@@ -71,6 +77,14 @@ const SidebarItemContentStub = defineComponent({
       type: String,
       default: '',
     },
+    badge: {
+      type: String,
+      default: '',
+    },
+    caption: {
+      type: String,
+      default: '',
+    },
     tag: {
       type: String,
       default: 'div',
@@ -84,6 +98,8 @@ const SidebarItemContentStub = defineComponent({
         'data-icon-src': props.iconSrc || undefined,
         'data-title': props.title || undefined,
         'data-href': props.href || undefined,
+        'data-badge': props.badge || undefined,
+        'data-caption': props.caption || undefined,
         'data-tag': props.tag || undefined,
       });
   },
@@ -107,6 +123,8 @@ class ResizeObserverMock {
 describe('AppMenu', () => {
   beforeEach(() => {
     routerLoading.value = false;
+    burnCampaign.isLive.value = false;
+    burnCampaign.rateLabel.value = '';
     settingsStore.menuCollapsed = false;
     settingsStore.faucetUrl = '';
     settingsStore.language = 'en';
@@ -245,6 +263,38 @@ describe('AppMenu', () => {
       .filter((item) => item.href?.startsWith('#/'));
 
     expect(renderedRouteItems).toContainEqual({ href: '#/burn', icon: 'basic-flame-24' });
+  });
+
+  it('marks only the Burn item as live, with the current rate, while the TONSWAP burn is open', () => {
+    burnCampaign.isLive.value = true;
+    burnCampaign.rateLabel.value = '49.70';
+    const wrapper = mountComponent();
+
+    const burn = wrapper.get('[data-href="#/burn"]');
+    expect(burn.attributes('data-badge')).toBe('mainMenu.burnLive');
+    expect(burn.attributes('data-caption')).toBe('49.70 TS / XOR');
+    const marked = wrapper
+      .findAll('.sidebar-item-content-stub')
+      .filter((item) => item.attributes('data-badge') || item.attributes('data-caption'));
+    expect(marked).toHaveLength(1);
+  });
+
+  it('shows no live mark unless the campaign is verified open', () => {
+    burnCampaign.rateLabel.value = '49.70';
+    const wrapper = mountComponent();
+
+    const burn = wrapper.get('[data-href="#/burn"]');
+    expect(burn.attributes('data-badge')).toBeUndefined();
+    expect(burn.attributes('data-caption')).toBeUndefined();
+  });
+
+  it('shows the live mark without a caption while the rate is unknown', () => {
+    burnCampaign.isLive.value = true;
+    const wrapper = mountComponent();
+
+    const burn = wrapper.get('[data-href="#/burn"]');
+    expect(burn.attributes('data-badge')).toBe('mainMenu.burnLive');
+    expect(burn.attributes('data-caption')).toBeUndefined();
   });
 
   it('keeps SCCP hidden from the sidebar even when debug flag is enabled', () => {

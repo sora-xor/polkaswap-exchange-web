@@ -86,7 +86,11 @@ describe('RewardsTabs.vue', () => {
     const tabs = wrapper.findAll('.tab-stub');
 
     expect(tabs).toHaveLength(3);
-    expect(tabs.map((tab) => tab.attributes('data-name'))).toEqual(['PointSystemWrapper', 'Rewards', 'ReferralProgram']);
+    expect(tabs.map((tab) => tab.attributes('data-name'))).toEqual([
+      'PointSystemWrapper',
+      'Rewards',
+      'ReferralProgram',
+    ]);
     expect(tabs.map((tab) => tab.text())).toEqual([
       'rewards.PointSystemWrapper',
       'rewards.Rewards',
@@ -113,6 +117,22 @@ describe('RewardsTabs.vue', () => {
   it('keeps the rewards tab strip at the live-site height', () => {
     expect(rewardsTabsSource).toContain('$rewards-tabs-height: 56px;');
     expect(rewardsTabsSource).toContain('height: $rewards-tabs-height;');
+  });
+
+  it('draws the dashboard tab pill itself instead of inheriting the strip styles of the design system', () => {
+    const pill = rewardsTabsSource.slice(rewardsTabsSource.indexOf('&.container--rewards'));
+
+    // The track follows the outline of the pill on all four corners, and no tab keeps its own soft shadow.
+    expect(pill).toMatch(/\.el-tabs__nav-wrap,\s+\.el-tabs__nav \{\s+border-radius: 999px;/);
+    expect(pill).toMatch(/&:focus-visible,\s+&\.is-active \{\s+box-shadow: none;/);
+    // The highlight is inset from the outline, so it is never cut by the rounded ends.
+    expect(pill).toMatch(/&::before \{[^}]*inset: 4px;[^}]*border-radius: 999px;/);
+    // The app-wide focus ring sits outside the tab and would be clipped, so it moves onto the highlight.
+    expect(pill).toMatch(
+      /&:focus-visible \{\s+outline: none !important;\s+&::before \{\s+outline: 2px solid var\(--s-color-focus-ring\);/
+    );
+    // Inside the 1px border the pill is 50px tall, so the rounded ends are not cropped.
+    expect(pill).toContain('$pill-inner: 50px;');
   });
 
   it('keeps rewards tab labels from crowding at constrained widths', () => {

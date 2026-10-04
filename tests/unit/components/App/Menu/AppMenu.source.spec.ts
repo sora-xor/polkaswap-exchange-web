@@ -46,6 +46,16 @@ describe('AppMenu source', () => {
     );
   });
 
+  it('swaps the live pill for a dot on the icon whenever the sidebar label is hidden', () => {
+    expect(appMenuSource).toContain(
+      "import { useTonswapCampaignStatus } from '@/features/misc/composables/useTonswapCampaignStatus';"
+    );
+    expect(appMenuSource).toMatch(
+      /\.app-menu\.collapsed\s*\{[\s\S]*?\.sidebar-item-content__live-dot\s*\{\s*display:\s*block;/
+    );
+    expect(appMenuSource).toMatch(/&:hover\s*\{[\s\S]*?\.sidebar-item-content__live-dot\s*\{\s*display:\s*none;/);
+  });
+
   it('mirrors sidebar placement and slide-in direction for RTL documents', () => {
     expect(appMenuSource).toContain("html[dir='rtl'] &");
     expect(appMenuSource).toContain("html[dir='rtl'] & .app-sidebar");

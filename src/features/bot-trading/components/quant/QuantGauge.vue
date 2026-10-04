@@ -113,6 +113,9 @@ function arc(from: number, to: number): string {
     pointer-events: none;
   }
   strong {
+    /* Keeps "+17.6%" in order inside right-to-left languages. */
+    direction: ltr;
+    unicode-bidi: isolate;
     font-size: 22px;
     font-weight: 800;
     letter-spacing: -0.02em;

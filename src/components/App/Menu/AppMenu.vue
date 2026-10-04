@@ -46,6 +46,8 @@
                   :icon="item.icon"
                   :icon-src="item.iconSrc"
                   :title="getMenuTitle(item)"
+                  :badge="getMenuBadge(item)"
+                  :caption="getMenuCaption(item)"
                   @click.prevent="preventAnchorNavigation"
                 ></app-sidebar-item-content>
               </s-menu-item>
@@ -116,6 +118,7 @@ import {
   SidebarMenuItemLink,
   FaucetLink,
 } from '@/consts';
+import { useTonswapCampaignStatus } from '@/features/misc/composables/useTonswapCampaignStatus';
 import { getLocaleDirection } from '@/lang/direction';
 import { DashboardPageNames } from '@/modules/dashboard/consts';
 import { isDashboardPage } from '@/modules/dashboard/router';
@@ -151,6 +154,8 @@ const orderBookEnabled = computed(() => (settingsStore.orderBookEnabled as Nulla
 const kensetsuEnabled = computed(() => (settingsStore.kensetsuEnabled as Nullable<boolean>) ?? true);
 const assetOwnerEnabled = computed(() => Boolean(settingsStore.assetOwnerEnabled));
 const isRtl = computed(() => getLocaleDirection(settingsStore.language as string) === 'rtl');
+/** Drives the "Live" mark on the Burn item while the TONSWAP burn can still earn TS. */
+const { isLive: tonswapBurnLive, rateLabel: tonswapBurnRate } = useTonswapCampaignStatus();
 
 const menuElement = ref<HTMLElement | null>(null);
 const resizeObserver = ref<ResizeObserver | null>(null);
@@ -240,6 +245,16 @@ function getMenuTitle(item: SidebarMenuItemLink): string {
   return t(`mainMenu.${item.title}`);
 }
 
+/** Only the Burn item carries a live mark, and only while the campaign is verified open. */
+function getMenuBadge(item: SidebarMenuItemLink): string {
+  return item.title === PageNames.Burn && tonswapBurnLive.value ? t('mainMenu.burnLive') : '';
+}
+
+/** The current reward rate, in the same "TS / XOR" form the Burn page uses. */
+function getMenuCaption(item: SidebarMenuItemLink): string {
+  return getMenuBadge(item) && tonswapBurnRate.value ? `${tonswapBurnRate.value} TS / XOR` : '';
+}
+
 function resetSidebarScroll(): void {
   const scrollbar = menuElement.value?.closest<HTMLElement>('.app-sidebar-scrollbar');
 
@@ -315,6 +330,11 @@ onBeforeUnmount(() => {
       }
     }
 
+    // The label is hidden here, so the live mark moves from the pill to a dot on the icon.
+    .sidebar-item-content__live-dot {
+      display: block;
+    }
+
     &:hover {
       background: var(--s-color-utility-body);
       box-shadow: 20px 20px 60px 0px #0000001a;
@@ -323,6 +343,10 @@ onBeforeUnmount(() => {
         & > .icon-container + span {
           display: initial;
         }
+      }
+
+      .sidebar-item-content__live-dot {
+        display: none;
       }
 
       .collapse-button {

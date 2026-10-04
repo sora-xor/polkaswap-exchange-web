@@ -29,6 +29,12 @@ const mocks = vi.hoisted(() => ({
   loadHistory: vi.fn(),
   clearHistory: vi.fn(),
   createAi: vi.fn(),
+  runs: null as unknown as {
+    items: { value: Array<{ id: string; state: string }> };
+    pause: ReturnType<typeof vi.fn>;
+    resume: ReturnType<typeof vi.fn>;
+    stop: ReturnType<typeof vi.fn>;
+  },
 }));
 vi.mock('@polkadot/util-crypto', async (original) => ({
   ...(await original<typeof import('@polkadot/util-crypto')>()),
@@ -41,6 +47,59 @@ vi.mock('@/features/bot-trading/ai', async (original) => ({
   createBotAiClient: mocks.createAi,
 }));
 vi.mock('@/features/bot-trading/controller', () => ({ useBotTrading: () => mocks.controller }));
+/** The shared run host, rebuilt from the mocked controller with the real run-state rules. */
+vi.mock('@/features/bot-trading/runs', async () => {
+  const { computed, ref } = await import('vue');
+  const { botRunState, LISTED_RUN_STATES } = await import('@/features/bot-trading/run-continuity');
+  return {
+    useBotRuns: () => {
+      const trading = mocks.controller as {
+        bots: { value: BotDefinition[] };
+        busy: { value: boolean };
+        sessionActiveIds: { value: string[] };
+        walletConnected: { value: boolean };
+        externalWallet: { value: boolean };
+      };
+      const stateOf = (item: BotDefinition) =>
+        botRunState(item, {
+          now: Date.now(),
+          active: new Set(trading.sessionActiveIds.value),
+          elsewhere: new Set<string>(),
+          wallet: {
+            connected: trading.walletConnected.value,
+            address: 'account',
+            external: trading.externalWallet.value,
+          },
+        });
+      const items = computed(() =>
+        trading.bots.value
+          .filter((item) => LISTED_RUN_STATES.has(stateOf(item)))
+          .map((item) => ({
+            id: item.id,
+            name: item.name,
+            mode: item.mode,
+            assetIn: item.assetIn.symbol,
+            assetOut: item.assetOut.symbol,
+            state: stateOf(item),
+            endsAt: item.sessionExpiresAt || null,
+            returnPercent: null,
+            account: item.account,
+            needsPassword: item.mode === 'live' && !trading.externalWallet.value,
+          }))
+      );
+      mocks.runs = {
+        items,
+        busy: trading.busy,
+        failure: ref(null),
+        pause: vi.fn(),
+        resume: vi.fn(),
+        stop: vi.fn(),
+        stateOf,
+      };
+      return mocks.runs;
+    },
+  };
+});
 vi.mock('@/features/bot-trading/research-fees', () => ({
   createResearchFeeLoader: () => ({ load: mocks.loadFees, clear: mocks.clearFees }),
 }));
@@ -846,7 +905,7 @@ describe('BotsPage', () => {
     await flushPromises();
     expect(state.createPaperBot).toHaveBeenCalledWith(template, { thresholdPercent: 10 });
     expect(wrapper.get('[data-testid="your-bots-tab"]').attributes('aria-current')).toBe('page');
-    expect(wrapper.get('[data-testid="browser-runtime-notice"]').text()).toBe('bots.uxWorkspace.browserNote');
+    expect(wrapper.get('[data-testid="browser-runtime-notice"]').text()).toBe('bots.runs.keepOpen');
     expect(state.startBot).not.toHaveBeenCalled();
     wrapper.unmount();
   });
@@ -1021,7 +1080,7 @@ describe('BotsPage', () => {
     await wrapper.get('[data-testid="start"]').trigger('click');
     expect(state.startBot).not.toHaveBeenCalled();
     expect(wrapper.get('[role="dialog"]').text()).toContain('bots.allowedPair');
-    expect(wrapper.get('[data-testid="consent-browser-notice"]').text()).toBe('bots.uxWorkspace.browserNote');
+    expect(wrapper.get('[data-testid="consent-browser-notice"]').text()).toBe('bots.runs.consentInternal');
     await wrapper.get('[data-testid="consent-form"]').trigger('submit');
     expect(state.startBot).not.toHaveBeenCalled();
     await wrapper.get('[data-testid="wallet-password"]').setValue('session-secret');
@@ -1035,13 +1094,14 @@ describe('BotsPage', () => {
   });
 
   it('shows a running session only when this tab holds active authority', async () => {
-    const running = { ...bot(), status: 'running' as const };
+    const running = { ...bot(), status: 'running' as const, sessionExpiresAt: Date.now() + 3_600_000 };
     state.bots.value = [running];
     state.selectedId.value = running.id;
     const wrapper = render();
     const status = wrapper.get('[data-testid="bot-runtime-status"]');
     expect(status.classes()).toContain('paused');
-    expect(status.text()).toContain('bots.uxWorkspace.sessionInactive');
+    // An interrupted paper run continues on its own until its saved end.
+    expect(status.text()).toContain('bots.runs.detail.continuing');
     state.sessionActiveIds.value = [running.id];
     await flushPromises();
     expect(status.classes()).toContain('running');
@@ -1091,8 +1151,12 @@ describe('BotsPage', () => {
     expect(status.text()).toContain('bots.uxWorkspace.liveReady');
     state.bots.value[0].status = 'paused';
     state.bots.value[0].activity = [{ id: 'pause', kind: 'status', timestamp: 1, message: 'bots.events.paused' }];
+    state.bots.value[0].sessionExpiresAt = Date.now() + 3_600_000;
     await flushPromises();
-    expect(status.text()).toContain('bots.uxWorkspace.manualPause');
+    expect(status.text()).toContain('bots.runs.detail.paused');
+    state.bots.value[0].sessionExpiresAt = Date.now() - 1;
+    await flushPromises();
+    expect(status.text()).toContain('bots.runs.detail.ended');
     for (const next of ['attention', 'stopped'] as const) {
       state.bots.value[0].status = next;
       await flushPromises();
@@ -1134,17 +1198,108 @@ describe('BotsPage', () => {
     wrapper.unmount();
   });
 
-  it('offers consent-based resume for a persisted running bot with no session in this tab', async () => {
+  it('lists running and waiting bots first on the main view, with their controls and the tab note', async () => {
+    await router.push('/bots');
+    const running = { ...bot(), id: 'running', status: 'running' as const, sessionExpiresAt: Date.now() + 3_600_000 };
+    const ended = { ...bot(), id: 'ended', status: 'paused' as const };
+    state.bots.value = [running, ended];
+    state.sessionActiveIds.value = ['running'];
+    const wrapper = render();
+    const panel = wrapper.get('[data-testid="bots-runs"]');
+    // It leads the page, before the ready-made bots.
+    expect(wrapper.html().indexOf('data-testid="bots-runs"')).toBeLessThan(
+      wrapper.html().indexOf('quant-command-center-stub')
+    );
+    expect(panel.text()).toContain('bots.runs.keepOpen');
+    expect(panel.find('[data-testid="bot-run-running"]').exists()).toBe(true);
+    expect(panel.find('[data-testid="bot-run-ended"]').exists()).toBe(false);
+    expect(panel.get('[data-testid="bots-runs-manage"]').attributes('href')).toBe('/bots/my-bots');
+    await panel.get('[data-testid="bot-run-pause-running"]').trigger('click');
+    expect(mocks.runs.pause).toHaveBeenCalledWith('running');
+    state.bots.value = [ended];
+    state.sessionActiveIds.value = [];
+    await flushPromises();
+    expect(wrapper.find('[data-testid="bots-runs"]').exists()).toBe(false);
+    wrapper.unmount();
+  });
+
+  it('continues an interrupted built-in wallet run until its saved end after the password and consent', async () => {
     const persisted = bot('live');
     persisted.status = 'running';
+    persisted.sessionExpiresAt = Date.now() + 3 * 3_600_000;
     state.bots.value = [persisted];
     state.selectedId.value = 'bot-1';
     const wrapper = render();
     expect(wrapper.get('[data-testid="start"]').text()).toBe('bots.resume');
     await wrapper.get('[data-testid="start"]').trigger('click');
     expect(wrapper.find('[data-testid="consent-form"]').exists()).toBe(true);
+    // The dialog shows when the continued run ends instead of a new run length.
+    expect(wrapper.find('[data-testid="consent-runs-until"]').exists()).toBe(true);
     expect(state.startBot).not.toHaveBeenCalled();
     expect(wrapper.get('fieldset').attributes('disabled')).toBeDefined();
+    await wrapper.get('[data-testid="wallet-password"]').setValue('secret');
+    await wrapper.get('[data-testid="consent-checkbox"]').setValue(true);
+    await wrapper.get('[data-testid="consent-form"]').trigger('submit');
+    await flushPromises();
+    expect(state.startBot).toHaveBeenCalledWith('bot-1', { password: 'secret', continueRun: true });
+    wrapper.unmount();
+  });
+
+  it('asks a disconnected user to connect from the consent dialog before continuing a live run', async () => {
+    const persisted = bot('live');
+    persisted.status = 'running';
+    persisted.sessionExpiresAt = Date.now() + 3_600_000;
+    state.walletConnected.value = false;
+    state.bots.value = [persisted];
+    state.selectedId.value = 'bot-1';
+    const wrapper = render();
+    expect(wrapper.get('[data-testid="start"]').text()).toBe('bots.resume');
+    await wrapper.get('[data-testid="start"]').trigger('click');
+    expect(wrapper.find('[data-testid="consent-form"]').exists()).toBe(true);
+    expect(wrapper.find('[data-testid="consent-runs-until"]').exists()).toBe(true);
+    expect(mocks.connect).not.toHaveBeenCalled();
+    expect(state.startBot).not.toHaveBeenCalled();
+    wrapper.unmount();
+  });
+
+  it('starts a new reviewed run when the saved run has ended', async () => {
+    const persisted = bot('live');
+    persisted.status = 'running';
+    state.bots.value = [persisted];
+    state.selectedId.value = 'bot-1';
+    const wrapper = render();
+    expect(wrapper.get('[data-testid="start"]').text()).toBe('bots.start');
+    await wrapper.get('[data-testid="start"]').trigger('click');
+    expect(wrapper.find('[data-testid="consent-form"]').exists()).toBe(true);
+    expect(wrapper.find('[data-testid="consent-runs-until"]').exists()).toBe(false);
+    await wrapper.get('[data-testid="wallet-password"]').setValue('secret');
+    await wrapper.get('[data-testid="consent-checkbox"]').setValue(true);
+    await wrapper.get('[data-testid="consent-form"]').trigger('submit');
+    await flushPromises();
+    expect(state.startBot).toHaveBeenCalledWith('bot-1', { password: 'secret' });
+    wrapper.unmount();
+  });
+
+  it('resumes paper and external-wallet runs at once, keeping their saved end', async () => {
+    const paused = bot('live');
+    paused.status = 'paused';
+    paused.activity = [{ id: 'pause', kind: 'status', timestamp: 1, message: 'bots.events.paused' }];
+    paused.sessionExpiresAt = Date.now() + 3_600_000;
+    state.externalWallet.value = true;
+    state.bots.value = [paused];
+    state.selectedId.value = 'bot-1';
+    const wrapper = render();
+    await wrapper.get('[data-testid="start"]').trigger('click');
+    await flushPromises();
+    expect(wrapper.find('[data-testid="consent-form"]').exists()).toBe(false);
+    expect(state.startBot).toHaveBeenCalledWith('bot-1', { continueRun: true });
+    state.startBot.mockClear();
+    state.externalWallet.value = false;
+    state.bots.value = [{ ...paused, mode: 'paper' }];
+    await flushPromises();
+    await wrapper.get('[data-testid="start"]').trigger('click');
+    await flushPromises();
+    expect(state.startBot).toHaveBeenCalledWith('bot-1', { continueRun: true });
     wrapper.unmount();
   });
 
@@ -1829,9 +1984,10 @@ describe('BotsPage', () => {
       const payload = quantPayload();
       wrapper.getComponent({ name: 'QuantCommandCenter' }).vm.$emit('paper', payload);
       await flushPromises();
+      // Paper trading keeps the run length chosen on the card.
       expect(state.createPaperBot).toHaveBeenCalledWith(
         payload.bot,
-        expect.objectContaining({ research: payload.research })
+        expect.objectContaining({ research: payload.research, sessionDurationMs: payload.sessionDurationMs })
       );
       expect(state.prepareLiveBot).not.toHaveBeenCalled();
       // Saving a paper bot orients the user at My bots, like any researched bot.

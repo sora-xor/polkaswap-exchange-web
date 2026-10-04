@@ -4,7 +4,7 @@
     <p class="tonswap-curve__description">
       {{ exhausted ? t('burnPage.tonswap.capReached') : t('burnPage.tonswap.curve.description') }}
     </p>
-    <div v-if="position && !exhausted" class="tonswap-curve__current">
+    <div v-if="showSummary && position && !exhausted" class="tonswap-curve__current">
       <span>{{ t('burnPage.tonswap.curve.current') }}</span>
       <strong>{{ rateLabel }} <small>TS / XOR</small></strong>
     </div>
@@ -42,7 +42,7 @@
         <circle class="tonswap-curve__point" :cx="position.x" :cy="position.y" r="5" />
       </g>
     </svg>
-    <dl class="tonswap-curve__totals">
+    <dl v-if="showSummary" class="tonswap-curve__totals">
       <div v-if="position" class="tonswap-curve__burned-total">
         <dt>{{ t('burnPage.tonswap.curve.burned') }}</dt>
         <dd>
@@ -74,9 +74,10 @@ import { getTonswapCurrentRate, getTonswapRemaining, TONSWAP_XOR_CAP } from '@/f
  * bounded display ratio; reward amounts and the exhaustion check stay exact.
  * Finalized progress is grouped separately from the schedule's axis endpoints.
  * The exact cap percentage makes small burns visible without distorting the scale.
+ * Set `showSummary` to false when the page already shows the rate and totals next to the chart.
  */
 defineOptions({ name: 'TonswapRewardCurve' });
-const props = defineProps<{ burned: FPNumber | null }>();
+const props = withDefaults(defineProps<{ burned: FPNumber | null; showSummary?: boolean }>(), { showSummary: true });
 const { t } = useTranslation();
 const id = useId();
 const headingId = `tonswap-curve-heading-${id}`;
@@ -135,6 +136,7 @@ const chartDescription = computed(() => {
     font-size: 15px;
     font-weight: 600;
     line-height: 1.4;
+    text-transform: none;
   }
   &__description {
     margin: 0;
@@ -173,10 +175,13 @@ const chartDescription = computed(() => {
     }
   }
   &__chart {
+    // A chart reads left to right in every language, so RTL pages must not mirror its labels.
+    direction: ltr;
     display: block;
     width: 100%;
+    max-width: 440px;
     height: auto;
-    margin-top: 16px;
+    margin: 16px auto 0;
     overflow: visible;
   }
   &__grid {

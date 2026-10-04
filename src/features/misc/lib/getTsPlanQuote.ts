@@ -140,7 +140,7 @@ function isMainnet(): boolean {
   return !!chain?.isConnected && chain.genesisHash?.toString().toLowerCase() === SORA_FUNDING_MAINNET_GENESIS;
 }
 /** Requests a read-only SMART DAI/XOR quote from the verified SORA connection. */
-async function quoteDai(amount: string): Promise<{ amount: string; amountWithoutImpact: string }> {
+export async function quoteDai(amount: string): Promise<{ amount: string; amountWithoutImpact: string }> {
   const chain = api.connection?.api;
   if (!isMainnet() || !chain) throw new Error('Mainnet unavailable');
   const quote = await chain.rpc.liquidityProxy.quote(

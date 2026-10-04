@@ -2982,3 +2982,142 @@ describe('long-running session memory bounds', () => {
     expect(h.saved()[0].status).toBe('running');
   });
 });
+
+describe('run continuity after the tab closes', () => {
+  const HOUR = 3_600_000;
+  /** A saved record whose tab closed mid-run: the pagehide write may or may not have landed. */
+  function interrupted(overrides: Partial<BotDefinition> = {}): BotDefinition {
+    return {
+      ...botFixture(),
+      status: 'paused',
+      sessionExpiresAt: 1_000_000 + 2 * HOUR,
+      activity: [{ id: 'closed', kind: 'status', timestamp: 1, message: 'bots.events.sessionPaused' }],
+      ...overrides,
+    };
+  }
+
+  it('continues a paper run until its saved end and refuses a run with no time left', async () => {
+    const h = make(interrupted());
+    await h.controller.initialize();
+    await h.controller.startBot('bot-1', { continueRun: true });
+    expect(h.saved()[0]).toMatchObject({ status: 'running', sessionExpiresAt: 1_000_000 + 2 * HOUR });
+    expect(h.saved()[0].activity[0].message).toBe('bots.events.continued');
+    await h.controller.pauseBot('bot-1');
+    h.advance(2 * HOUR);
+    // The app ticks every second; without it a two-hour gap reads as browser sleep.
+    await h.controller.tick();
+    await expect(h.controller.startBot('bot-1', { continueRun: true })).rejects.toThrow('bots.errors.runEnded');
+    // A new start still begins a fresh run of the chosen length.
+    await h.controller.startBot('bot-1');
+    expect(h.saved()[0].sessionExpiresAt).toBe(1_000_000 + 2 * HOUR + HOUR);
+  });
+
+  it('continues interrupted paper runs on its own, but not manual pauses, ended runs or a hidden tab', async () => {
+    const h = make(interrupted({ id: 'closed', status: 'running' }));
+    await h.storage.saveBot(
+      interrupted({
+        id: 'manual',
+        activity: [{ id: 'pause', kind: 'status', timestamp: 2, message: 'bots.events.paused' }],
+      })
+    );
+    await h.storage.saveBot(interrupted({ id: 'ended', sessionExpiresAt: 1_000_000 + 30_000 }));
+    await h.controller.initialize();
+    Object.defineProperty(document, 'hidden', { configurable: true, value: true });
+    expect(await h.controller.continueRuns()).toEqual([]);
+    Object.defineProperty(document, 'hidden', { configurable: true, value: false });
+    expect(await h.controller.continueRuns()).toEqual(['closed']);
+    expect(h.controller.sessionActiveIds.value).toEqual(['closed']);
+    const byId = Object.fromEntries(h.saved().map((bot) => [bot.id, bot]));
+    expect(byId.closed).toMatchObject({ status: 'running', sessionExpiresAt: 1_000_000 + 2 * HOUR });
+    expect(byId.manual.status).toBe('paused');
+    expect(byId.ended.status).toBe('paused');
+    // Nothing is left to continue, and a second call starts nothing twice.
+    expect(await h.controller.continueRuns()).toEqual([]);
+  });
+
+  it('continues an external-wallet live run with its saved end, but waits for the built-in wallet password', async () => {
+    const h = make(interrupted({ mode: 'live' }));
+    await h.controller.initialize();
+    expect(await h.controller.continueRuns()).toEqual([]);
+    expect(h.live.authorize).not.toHaveBeenCalled();
+    h.deps.isExternal = () => true;
+    expect(await h.controller.continueRuns()).toEqual(['bot-1']);
+    expect(h.live.authorize).toHaveBeenCalledWith(expect.objectContaining({ id: 'bot-1' }), undefined, {
+      endsAt: 1_000_000 + 2 * HOUR,
+    });
+  });
+
+  it('lets one tab run a bot at a time and releases the lock when the run pauses', async () => {
+    const h = make(interrupted());
+    const release = vi.fn();
+    const lockRun = vi.fn(async (): Promise<(() => void) | null> => null);
+    Object.assign(h.deps, { lockRun });
+    await h.controller.initialize();
+    await expect(h.controller.startBot('bot-1', { continueRun: true })).rejects.toThrow('bots.errors.elsewhere');
+    expect(h.saved()[0].status).toBe('paused');
+    lockRun.mockResolvedValue(release);
+    await h.controller.startBot('bot-1', { continueRun: true });
+    expect(release).not.toHaveBeenCalled();
+    await h.controller.pauseBot('bot-1');
+    expect(release).toHaveBeenCalledOnce();
+  });
+
+  it('keeps a stop or pause made in another tab instead of overwriting it', async () => {
+    const h = make(interrupted());
+    await h.controller.initialize();
+    await h.controller.startBot('bot-1', { continueRun: true });
+    // Another tab stops the bot; this tab's next tick must only let go of it.
+    await h.storage.saveBot({ ...h.saved()[0], status: 'stopped', sessionExpiresAt: 0 });
+    await h.controller.tick();
+    expect(h.saved()[0].status).toBe('stopped');
+    expect(h.controller.sessionActiveIds.value).toEqual([]);
+  });
+
+  it('keeps the paper run length the user chose and drops extended runs when the mode changes', async () => {
+    const h = make();
+    h.deps.market.mockResolvedValue({ timestamp: 1_000_000, close: '0.02' });
+    const candidate = generateQuantCandidates().find((item) => item.id === 'reversion:48/15/10:3')!;
+    const market = {
+      asset: { address: VAL.address, symbol: VAL.symbol, decimals: VAL.decimals },
+      status: 'deploy',
+      medianXorDepth: 29,
+      folds: [],
+      walkForward: {
+        startAt: 0,
+        endAt: 1,
+        returnPercent: '43.49',
+        drawdownPercent: '33.72',
+        trades: 37,
+        priceChangePercent: '60.04',
+        equity: [{ timestamp: 1, value: '10', price: '0.02' }],
+        fills: [],
+        cadence: { episodes: 1, daysPerEpisode: 20, holdHours: { min: 26, max: 164 }, lastEntryAt: 0 },
+      },
+      final: {
+        candidate,
+        robust: 1,
+        train: { returnPercent: '1', drawdownPercent: '1', trades: 1, maxImpactPercent: '14.06' },
+      },
+    } as QuantMarketResult;
+    const template = createQuantBot(market, [XOR, VAL], 'VAL bot', 1);
+    await h.controller.createPaperBot(template, { sessionDurationMs: 7 * 24 * HOUR });
+    const paper = h.saved().at(-1)!;
+    expect(paper).toMatchObject({ mode: 'paper', extendedSession: true });
+    expect(paper.policy.sessionDurationMs).toBe(7 * 24 * HOUR);
+    await h.controller.updateBot({ ...paper, mode: 'live' });
+    const live = h.saved().find((bot) => bot.id === paper.id)!;
+    expect(live.extendedSession).toBeUndefined();
+    expect(live.policy.sessionDurationMs).toBe(24 * HOUR);
+    // A short paper run is not an extended run, and only rules strategies may run for days.
+    await h.controller.createPaperBot(template, { sessionDurationMs: 3 * HOUR });
+    expect(h.saved().at(-1)!.extendedSession).toBeUndefined();
+    const dca = botFixture();
+    expect(() =>
+      validateBotDefinition({
+        ...dca,
+        extendedSession: true,
+        policy: { ...dca.policy, sessionDurationMs: 7 * 24 * HOUR },
+      })
+    ).toThrow('bots.errors.policy');
+  });
+});

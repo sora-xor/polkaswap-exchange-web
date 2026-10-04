@@ -11,6 +11,7 @@ import {
 import type { QuantDeployPayload } from '@/features/bot-trading/quant-deploy';
 import type { ResearchFeeSnapshot } from '@/features/bot-trading/research-fees';
 import type { BotAsset } from '@/features/bot-trading/types';
+import { FPNumber } from '@/lib/substrate/math';
 
 const mocks = vi.hoisted(() => ({
   translate: vi.fn((key: string, params?: Record<string, unknown>) =>
@@ -460,5 +461,88 @@ describe('QuantCommandCenter long sessions', () => {
     } finally {
       vi.useRealTimers();
     }
+  });
+});
+
+describe('QuantCommandCenter result clarity', () => {
+  afterEach(() => {
+    FPNumber.DELIMITERS_CONFIG = { thousand: ',', decimal: '.' };
+  });
+  /** RESULT with PSWAP's price change replaced, to compare the bot with holding the token. */
+  function withHolding(priceChangePercent: string): QuantLoopResult {
+    const changed = JSON.parse(JSON.stringify(RESULT)) as QuantLoopResult;
+    changed.markets.find((item) => item.asset.symbol === 'PSWAP')!.walkForward!.priceChangePercent = priceChangePercent;
+    return changed;
+  }
+
+  it('states the test period, what 10 XOR became and that results are in XOR', () => {
+    const card = render().get('[data-testid="quant-market-PSWAP"]');
+    expect(card.get('[data-testid="quant-test-PSWAP"]').text()).toContain('"days":100');
+    expect(card.get('[data-testid="quant-return-PSWAP"]').text()).toBe('+43.5%');
+    expect(card.get('[data-testid="quant-growth-PSWAP"]').text()).toBe(
+      'bots.quant.test.growth {"start":"10","end":"14.35"}'
+    );
+    expect(card.get('[data-testid="quant-hold-PSWAP"]').text()).toBe('+60.0%');
+    expect(card.get('[data-testid="quant-unit-PSWAP"]').text()).toBe(
+      'bots.quant.test.unit {"symbol":"PSWAP"} bots.quant.test.holdBetter {"symbol":"PSWAP"}'
+    );
+  });
+
+  it('says plainly when the bot did better than holding the token', () => {
+    setLoop({ result: shallowRef(withHolding('-8.54')) });
+    expect(render().get('[data-testid="quant-unit-PSWAP"]').text()).toBe(
+      'bots.quant.test.unit {"symbol":"PSWAP"} bots.quant.test.botBetter {"symbol":"PSWAP"}'
+    );
+    setLoop({ result: shallowRef(withHolding('43.49')) });
+    expect(render().get('[data-testid="quant-unit-PSWAP"]').text()).toBe('bots.quant.test.unit {"symbol":"PSWAP"}');
+  });
+
+  it('keeps the live check apart from the past test and explains it in one sentence', () => {
+    const card = render().get('[data-testid="quant-market-PSWAP"]');
+    expect(card.find('.quant-test .gauge').exists()).toBe(false);
+    expect(card.find('.quant-now .gauge').exists()).toBe(true);
+    expect(card.get('.quant-now').text()).toContain('bots.quant.now.title');
+    expect(card.get('[data-testid="quant-signal-PSWAP"]').text()).toContain(
+      'bots.quant.now.entry {"value":"-18.4%","window":48,"threshold":"-15%"}'
+    );
+  });
+
+  it('explains a waiting rule with its buy trigger and a missing price with no numbers', () => {
+    const observedAt = Date.UTC(2026, 9, 2, 10);
+    setLoop({
+      signals: ref({
+        PSWAP: {
+          state: 'neutral',
+          observedAt,
+          deviation: { value: '3.2', threshold: '-15', window: 48 },
+          source: 'live',
+        },
+        DAI: { state: 'warmup', observedAt, deviation: null, source: 'live' },
+      }),
+    });
+    const wrapper = render();
+    expect(wrapper.get('[data-testid="quant-signal-PSWAP"]').text()).toContain(
+      'bots.quant.now.neutralBelow {"value":"+3.2%","window":48,"threshold":"-15%"}'
+    );
+    expect(wrapper.get('[data-testid="quant-signal-DAI"]').text()).toContain('bots.quant.now.warmup');
+  });
+
+  it('warns when the chosen run is shorter than the tested time between buys', async () => {
+    const wrapper = render();
+    expect(wrapper.get('[data-testid="quant-session-note-PSWAP"]').text()).toBe(
+      'bots.quant.session.note bots.quant.session.rare {"days":20,"count":7}'
+    );
+    const quick = JSON.parse(JSON.stringify(RESULT)) as QuantLoopResult;
+    quick.markets.find((item) => item.asset.symbol === 'PSWAP')!.walkForward!.cadence.daysPerEpisode = 5;
+    setLoop({ result: shallowRef(quick) });
+    expect(render().get('[data-testid="quant-session-note-PSWAP"]').text()).toBe('bots.quant.session.note');
+  });
+
+  it('uses the app language decimal mark in every result', () => {
+    FPNumber.DELIMITERS_CONFIG = { thousand: '.', decimal: ',' };
+    const card = render().get('[data-testid="quant-market-PSWAP"]');
+    expect(card.get('[data-testid="quant-return-PSWAP"]').text()).toBe('+43,5%');
+    expect(card.get('[data-testid="quant-growth-PSWAP"]').text()).toContain('"end":"14,35"');
+    expect(card.get('.gauge').text()).toContain('-18,4%');
   });
 });

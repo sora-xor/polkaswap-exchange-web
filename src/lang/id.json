@@ -722,7 +722,9 @@
             "storage": "Penyimpanan browser andal atau kunci eksekusi tidak tersedia. Perdagangan nyata dihentikan.",
             "strategy": "Periksa jumlah, interval, ambang, dan jendela indikator strategi.",
             "transaction": "Transaksi gagal. Biaya jaringan yang dikenakan tercatat dalam buku transaksi.",
-            "wallet": "Hubungkan dompet yang sesuai dan buka akun yang ada untuk memulai."
+            "wallet": "Hubungkan dompet yang sesuai dan buka akun yang ada untuk memulai.",
+            "elsewhere": "Bot ini sedang berjalan di tab Polkaswap lain. Gunakan tab itu atau tutup dulu.",
+            "runEnded": "Sesi ini sudah berakhir. Mulai sesi baru sebagai gantinya."
         },
         "events": {
             "aiRequired": "Menunggu usulan AI",
@@ -745,7 +747,8 @@
             "status": "Keadaan",
             "threshold": "Ambang harga tercapai",
             "trade": "Pertukaran",
-            "warmup": "Mengumpulkan cukup lilin tertutup"
+            "warmup": "Mengumpulkan cukup lilin tertutup",
+            "continued": "Sesi dilanjutkan"
         },
         "export": "Ekspor",
         "externalSigning": "Dompet eksternal Anda akan meminta tanda tangan untuk setiap transaksi.",
@@ -1288,7 +1291,9 @@
             },
             "session": {
                 "label": "Jalankan selama",
-                "option": "{count} hari"
+                "option": "{count} hari",
+                "note": "Bot hanya bertransaksi selama tab ini tetap terbuka. Menutup tab akan menjedanya sampai Anda kembali.",
+                "rare": "Dalam uji, bot membeli sekitar sekali tiap {days} hari, jadi sesi {count} hari mungkin tidak bertransaksi sama sekali."
             },
             "signal": {
                 "entry": "Zona beli",
@@ -1323,7 +1328,25 @@
             "thinNote": "Pool ini berisi sekitar {depth} XOR, terlalu sedikit untuk transaksi 2 XOR.",
             "title": "Bot siap pakai",
             "trades": "Transaksi",
-            "watchNote": "Tidak ada aturan yang menghasilkan untung dalam pengujian, jadi belum ada bot untuk pasar ini."
+            "watchNote": "Tidak ada aturan yang menghasilkan untung dalam pengujian, jadi belum ada bot untuk pasar ini.",
+            "test": {
+                "title": "Uji sebelumnya, {start} – {end} ({days} hari)",
+                "bot": "Bot ini",
+                "growth": "{start} XOR menjadi {end} XOR",
+                "hold": "Jika hanya menyimpan {symbol}",
+                "unit": "Semua hasil dalam XOR, bukan dalam {symbol} atau dolar AS.",
+                "holdBetter": "Sekadar menyimpan {symbol} hasilnya lebih baik dalam uji ini.",
+                "botBetter": "Bot lebih baik daripada sekadar menyimpan {symbol}."
+            },
+            "now": {
+                "title": "Saat ini",
+                "entry": "Harga {value} dibanding rata-rata {window} jam, melewati pemicu beli {threshold}. Bot yang berjalan akan membeli sekarang.",
+                "exit": "Harga {value} dibanding rata-rata {window} jam, di zona jual. Bot yang berjalan akan menjual {symbol} yang dimilikinya.",
+                "neutralBelow": "Harga {value} dibanding rata-rata {window} jam. Bot membeli pada {threshold} atau lebih rendah.",
+                "neutralAbove": "Harga {value} dibanding rata-rata {window} jam. Bot membeli pada {threshold} atau lebih tinggi.",
+                "warmup": "Belum cukup harga terbaru untuk memeriksa aturannya.",
+                "unavailable": "Harga terbaru belum tersedia saat ini."
+            }
         },
         "studio": {
             "botName": "{idea} · {symbol}",
@@ -2093,7 +2116,38 @@
         },
         "walletPassword": "Kata sandi dompet yang ada",
         "workspace": "Ruang kerja perdagangan",
-        "yourBots": "Bot Saya"
+        "yourBots": "Bot Saya",
+        "runs": {
+            "title": "Bot Anda",
+            "manage": "Buka Bot Saya",
+            "none": "Tidak ada bot yang berjalan atau menunggu.",
+            "keepOpen": "Bot hanya berjalan selama Polkaswap terbuka di tab ini. Tab boleh berada di latar belakang. Jika Anda menutupnya, bot dijeda sampai Anda kembali.",
+            "controls": "Jeda menyimpan sesi agar bisa Anda lanjutkan. Hentikan mengakhirinya. Keduanya tidak menjual token Anda.",
+            "running": "Bot berjalan: {count}",
+            "waiting": "Bot menunggu Anda: {count}",
+            "paused": "Bot dijeda: {count}",
+            "result": "Sejauh ini, dalam {symbol}:",
+            "continue": "Lanjutkan",
+            "open": "Buka bot",
+            "runsUntil": "Berjalan sampai",
+            "consentExternal": "Bot hanya berjalan selama tab ini terbuka. Jika Anda menutup tab, bot dijeda. Saat Anda membuka Polkaswap lagi dengan akun ini, bot berlanjut sampai sesi ini berakhir, dan dompet Anda tetap meminta persetujuan untuk setiap swap.",
+            "consentInternal": "Bot hanya berjalan selama tab ini terbuka. Jika Anda menutup tab, bot tetap dijeda sampai Anda membuka Polkaswap lagi dan memasukkan kata sandi dompet. Bot tidak pernah berjalan melewati akhir sesi ini.",
+            "state": {
+                "elsewhere": "Berjalan di tab lain",
+                "continuing": "Melanjutkan",
+                "pausedByYou": "Dijeda oleh Anda"
+            },
+            "detail": {
+                "until": "sampai {time}",
+                "continuing": "Mulai lagi di tab ini dan berjalan sampai {time}.",
+                "password": "Masukkan kata sandi dompet untuk melanjutkan sampai {time}. Polkaswap tidak pernah menyimpannya.",
+                "wallet": "Hubungkan akun {account} untuk melanjutkan sampai {time}.",
+                "open": "Buka bot untuk melanjutkan.",
+                "paused": "Lanjutkan agar bot berjalan sampai {time}.",
+                "attention": "Buka bot untuk melihat apa yang salah.",
+                "ended": "Sesi ini sudah berakhir. Mulai sesi baru saat Anda siap."
+            }
+        }
     },
     "bridge": {
         "connectNetworkWallet": "Hubungkan dompet {network}",
@@ -2273,6 +2327,7 @@
             "included": "Pembakaran telah dimasukkan ke dalam blok. Menunggu konfirmasi akhir.",
             "indexingDelayed": "Konfirmasi atau pengindeksan memerlukan waktu lebih lama dari perkiraan. Transaksi Anda masih dilacak. Anda tidak perlu mengirim ulang pembakaran ini.",
             "invalidAmount": "Masukkan jumlah positif XOR dengan maksimal 18 tempat desimal.",
+            "live": "Aktif",
             "loading": "Memuat pembakaran token yang telah diselesaikan untuk kampanye ini…",
             "mainnetOnly": "Kampanye ini tersedia di SORA mainnet.",
             "notStarted": "Kampanye dimulai di blok blockchain 27,720,478.",
@@ -2963,6 +3018,7 @@
         "Bots": "Bot perdagangan",
         "Bridge": "@:bridgeText",
         "Burn": "@:pageTitle.Burn",
+        "burnLive": "@:burnPage.tonswap.live",
         "Explore/Container": "Menjelajahi",
         "Farming": "Bertani?",
         "OrderBook": "Berdagang",
@@ -4976,6 +5032,51 @@
             "unavailable": "Jumlah langkah tidak dapat dikirim. Pembelian Anda tidak terpengaruh.",
             "consent": "Bagikan jumlah langkah pembelian agregat untuk membantu meningkatkan Beli XOR. Tidak ada alamat dompet, jumlah, atau hash transaksi yang dikirim.",
             "privacy": "Preferensi privasi browser Anda membuat hal ini tidak diperhitungkan."
+        },
+        "start": {
+            "cardHint": "Kartu debit atau kredit",
+            "crypto": "Kripto",
+            "cryptoHint": "ETH, USDT, atau DAI di Ethereum",
+            "ton": "USDT di TON (3 dompet)",
+            "youGet": "Anda menerima",
+            "cardFees": "Biaya jaringan Ethereum dipotong dari ETH yang Anda beli. Kami menampilkan jumlah setelah biaya sebelum Anda membayar.",
+            "cryptoFees": "Sisakan sedikit ETH di dompet Anda untuk biaya jaringan Ethereum.",
+            "max": "Maksimum per pembelian saat ini: sekitar {amount}.",
+            "useMax": "Gunakan maksimum",
+            "maxNote": "Pasar XOR di SORA masih kecil. Pembelian yang lebih besar akan menggerakkan harga terlalu jauh, jadi diblokir.",
+            "tooBig": "Terlalu besar untuk pasar SORA saat ini. Paling banyak Anda bisa membeli sekitar {amount} sekaligus.",
+            "tooBigUnknown": "Terlalu besar untuk pasar SORA saat ini. Coba jumlah yang lebih kecil.",
+            "conversionTooBig": "Mengonversi sebanyak ini ke DAI akan kehilangan terlalu banyak nilai. Coba jumlah yang lebih kecil.",
+            "cardMinimum": "Minimum pembayaran kartu adalah {amount}.",
+            "cardBlocked": "Pembayaran kartu dimulai dari {minimum}, tetapi pasar SORA saat ini hanya bisa menampung sekitar {maximum}. Bayar dengan kripto atau coba lagi nanti.",
+            "useCrypto": "Bayar dengan kripto",
+            "tooSmall": "Terlalu kecil: biaya jaringan akan menghabiskan semuanya. Coba jumlah yang lebih besar.",
+            "noCardPrice": "MoonPay tidak memberikan harga. Anda tetap bisa melanjutkan: MoonPay menampilkan harga akhir sebelum Anda membayar.",
+            "noPrice": "Kami tidak bisa mendapatkan harga saat ini. Coba lagi dalam satu menit.",
+            "connecting": "Menghubungkan ke SORA…",
+            "nativeTon": "TON biasa tidak didukung di sini. Tukar dulu ke USDT di TON.",
+            "useUsdt": "Bayar dengan USDT sebagai gantinya",
+            "next": "Apa yang terjadi selanjutnya",
+            "steps": {
+                "walletsEthereum": "Hubungkan dompet Ethereum, seperti MetaMask, dan dompet SORA. Anda bisa membuat dompet SORA di layar berikutnya.",
+                "walletSora": "Hubungkan dompet SORA Anda.",
+                "walletsTon": "Hubungkan dompet TON, Ethereum, dan SORA Anda.",
+                "card": "Bayar dengan kartu di MoonPay. MoonPay mengirim ETH ke dompet Ethereum Anda.",
+                "ton": "Pindahkan USDT Anda dari TON ke Ethereum di aplikasi penyedia.",
+                "convert": "Di dompet Ethereum Anda, setujui penukaran ke DAI dan transfer ke SORA.",
+                "transfer": "Di dompet Ethereum Anda, setujui transfer DAI Anda ke SORA.",
+                "swap": "Di dompet SORA Anda, setujui penukaran ke XOR. XOR Anda masuk ke dompet itu."
+            },
+            "stepsNote": "Tidak ada yang dikirim sampai Anda menyetujuinya. Transfer antarjaringan bisa memakan waktu beberapa menit.",
+            "otherWays": "Cara bayar lainnya:",
+            "inProgress": "Anda memiliki pembelian yang sedang berjalan: {amount}."
+        },
+        "card": {
+            "description": "Bayar dengan kartu di MoonPay. MoonPay mengirim ETH ke dompet Ethereum Anda, lalu langkah berikutnya mengubahnya menjadi XOR.",
+            "copy": "Salin alamat Ethereum Anda:",
+            "paste": "Buka MoonPay. Saat diminta alamat dompet, tempel alamat ini. Jangan gunakan alamat SORA Anda.",
+            "return": "Selesaikan pembayaran di MoonPay, lalu kembali ke halaman ini.",
+            "open": "Salin alamat dan buka MoonPay"
         }
     }
 }

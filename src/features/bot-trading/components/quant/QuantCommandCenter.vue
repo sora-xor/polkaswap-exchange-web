@@ -119,7 +119,51 @@
               <h4>{{ market.asset.symbol }}</h4>
               <span class="quant-badge deploy">{{ t('bots.quant.marketStatus.deploy') }}</span>
             </header>
-            <div class="quant-market-body">
+            <section
+              v-if="market.walkForward"
+              class="quant-test"
+              :aria-labelledby="`${titleId}-test-${market.asset.symbol}`"
+              :data-testid="`quant-test-${market.asset.symbol}`"
+            >
+              <h5 :id="`${titleId}-test-${market.asset.symbol}`" class="quant-block-title">
+                {{ testPeriod(market) }}
+              </h5>
+              <div class="quant-test-main">
+                <span class="quant-test-label">{{ t('bots.quant.test.bot') }}</span>
+                <strong
+                  class="quant-number"
+                  :class="tone(market.walkForward.returnPercent)"
+                  :data-testid="`quant-return-${market.asset.symbol}`"
+                  >{{ signed(market.walkForward.returnPercent) }}</strong
+                >
+                <span class="quant-test-growth" :data-testid="`quant-growth-${market.asset.symbol}`">{{
+                  growthText(market)
+                }}</span>
+              </div>
+              <dl class="quant-stats">
+                <div class="quant-stat">
+                  <dt>{{ t('bots.quant.test.hold', { symbol: market.asset.symbol }) }}</dt>
+                  <dd class="quant-number" :data-testid="`quant-hold-${market.asset.symbol}`">
+                    {{ signed(market.walkForward.priceChangePercent) }}
+                  </dd>
+                </div>
+                <div class="quant-stat">
+                  <dt>{{ t('bots.quant.drawdown') }}</dt>
+                  <dd class="quant-number">{{ unsigned(market.walkForward.drawdownPercent) }}</dd>
+                </div>
+                <div class="quant-stat">
+                  <dt>{{ t('bots.quant.trades') }}</dt>
+                  <dd>{{ market.walkForward.trades }}</dd>
+                </div>
+              </dl>
+              <p class="quant-test-note" :data-testid="`quant-unit-${market.asset.symbol}`">{{ unitNote(market) }}</p>
+            </section>
+            <section
+              v-if="signalFor(market)"
+              class="quant-now"
+              :class="{ 'quant-now--gauge': gaugeFor(market) }"
+              :aria-labelledby="`${titleId}-now-${market.asset.symbol}`"
+            >
               <QuantGauge
                 v-if="gaugeFor(market)"
                 class="quant-gauge"
@@ -131,39 +175,21 @@
                 :label="t('bots.quant.fromMean', { window: gaugeFor(market)!.window })"
                 :aria-label="gaugeFor(market)!.aria"
               />
-              <dl class="quant-stats">
-                <div class="quant-stat quant-stat--main">
-                  <dt>{{ t('bots.quant.result') }}</dt>
-                  <dd
-                    :class="tone(market.walkForward?.returnPercent)"
-                    :data-testid="`quant-return-${market.asset.symbol}`"
-                  >
-                    {{ signed(market.walkForward?.returnPercent) }}
-                  </dd>
-                </div>
-                <div class="quant-stat">
-                  <dt>{{ t('bots.quant.priceChange', { symbol: market.asset.symbol }) }}</dt>
-                  <dd>{{ signed(market.walkForward?.priceChangePercent) }}</dd>
-                </div>
-                <div class="quant-stat">
-                  <dt>{{ t('bots.quant.drawdown') }}</dt>
-                  <dd>{{ market.walkForward?.drawdownPercent ?? '0.00' }}%</dd>
-                </div>
-                <div class="quant-stat">
-                  <dt>{{ t('bots.quant.trades') }}</dt>
-                  <dd>{{ market.walkForward?.trades ?? 0 }}</dd>
-                </div>
-              </dl>
-            </div>
-            <p
-              v-if="signalFor(market)"
-              class="quant-signal"
-              :class="signalFor(market)!.state"
-              :data-testid="`quant-signal-${market.asset.symbol}`"
-            >
-              <strong>{{ t(`bots.quant.signal.${signalFor(market)!.state}`) }}</strong>
-              <span>{{ signalSource(market) }}</span>
-            </p>
+              <div class="quant-now-copy">
+                <h5 :id="`${titleId}-now-${market.asset.symbol}`" class="quant-block-title">
+                  {{ t('bots.quant.now.title') }}
+                </h5>
+                <p
+                  class="quant-signal"
+                  :class="signalFor(market)!.state"
+                  :data-testid="`quant-signal-${market.asset.symbol}`"
+                >
+                  <strong>{{ t(`bots.quant.signal.${signalFor(market)!.state}`) }}</strong>
+                  <span>{{ nowText(market) }}</span>
+                </p>
+                <p class="quant-now-source">{{ signalSource(market) }}</p>
+              </div>
+            </section>
             <dl v-if="market.final" class="quant-rule" :aria-label="t('bots.quant.rule.label')">
               <div>
                 <dt>{{ t('bots.quant.rule.buy', { amount: market.final.candidate.amount }) }}</dt>
@@ -210,6 +236,9 @@
                 {{ t('bots.quant.session.option', { count: days }) }}
               </button>
             </div>
+            <p class="quant-session-note" :data-testid="`quant-session-note-${market.asset.symbol}`">
+              {{ sessionNote(market) }}
+            </p>
             <p v-if="prepareError && prepareError.symbol === market.asset.symbol" class="quant-error" role="alert">
               {{ t(prepareError.message) }}
             </p>
@@ -371,6 +400,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, toRef, useId } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
+import { FPNumber } from '@/lib/substrate/math';
 import {
   QUANT_AMOUNTS,
   QUANT_CAPITAL_XOR,
@@ -472,11 +502,17 @@ const number = (value: number, digits = 0) =>
 const formatNumber = (value: number) => number(value, value < 10 ? 2 : 0);
 const formatDate = (timestamp: number) =>
   new Date(timestamp).toLocaleDateString(locale.value, { month: 'short', day: 'numeric', timeZone: 'UTC' });
+/** BigNumber ROUND_HALF_UP: 43.49 shows as 43.5, as the exact replay result rounds. */
+const HALF_UP = 4;
+/** Exact percent with an explicit sign, one decimal, in the app language's decimal mark. */
 const signed = (value?: string) => {
   if (value === undefined) return '—';
-  const numeric = Number(value);
-  return `${numeric > 0 ? '+' : ''}${numeric.toFixed(1)}%`;
+  const rounded = new FPNumber(value).dp(1, HALF_UP);
+  const sign = rounded.isGtZero() ? '+' : rounded.isLtZero() ? '-' : '';
+  return `${sign}${rounded.abs().toLocaleString(1, true)}%`;
 };
+const unsigned = (value?: string) =>
+  value === undefined ? '—' : `${new FPNumber(value).dp(1, HALF_UP).toLocaleString(1, true)}%`;
 const tone = (value?: string) => (!value || Number(value) === 0 ? 'flat' : Number(value) > 0 ? 'up' : 'down');
 
 const progressFraction = computed(() => {
@@ -579,7 +615,7 @@ function gaugeFor(market: QuantMarketResult) {
     (leaf) => leaf.kind === 'deviation' && leaf.window === deviation.window
   );
   const value = Number(deviation.value);
-  const text = `${value > 0 ? '+' : ''}${value.toFixed(1)}%`;
+  const text = signed(deviation.value);
   return {
     value,
     threshold: Number(deviation.threshold),
@@ -593,6 +629,63 @@ function gaugeFor(market: QuantMarketResult) {
     }),
   };
 }
+/** "Past test, Jun 10 – Sep 19 (101 days)": the blind half of the archive that every result comes from. */
+function testPeriod(market: QuantMarketResult): string {
+  const run = market.walkForward!;
+  return t('bots.quant.test.title', {
+    start: formatDate(run.startAt),
+    end: formatDate(run.endAt),
+    days: Math.round((run.endAt - run.startAt) / 86_400_000),
+  });
+}
+/** "10 XOR became 14.35 XOR": the exact final value of the tested budget, in XOR. */
+function growthText(market: QuantMarketResult): string {
+  const last = market.walkForward?.equity.at(-1);
+  if (!last) return '';
+  return t('bots.quant.test.growth', {
+    start: new FPNumber(capital).toLocaleString(0),
+    end: new FPNumber(last.value).dp(2, HALF_UP).toLocaleString(2, true),
+  });
+}
+/** Says what the percentages are measured in, then which choice did better in the same test. */
+function unitNote(market: QuantMarketResult): string {
+  const run = market.walkForward!;
+  const symbol = market.asset.symbol;
+  const unit = t('bots.quant.test.unit', { symbol });
+  const bot = new FPNumber(run.returnPercent);
+  const hold = new FPNumber(run.priceChangePercent);
+  const verdict = FPNumber.gt(hold, bot) ? 'holdBetter' : FPNumber.gt(bot, hold) ? 'botBetter' : '';
+  return verdict ? `${unit} ${t(`bots.quant.test.${verdict}`, { symbol })}` : unit;
+}
+/** A rule trigger as the rule chips show it, for example "-15%" or "+10%". */
+const trigger = (value: number) => `${value > 0 ? '+' : ''}${value}%`;
+/** What the rule means for a running bot right now, in one sentence. */
+function nowText(market: QuantMarketResult): string {
+  const signal = signalFor(market);
+  if (!signal) return '';
+  if (signal.state === 'warmup' || signal.state === 'unavailable') return t(`bots.quant.now.${signal.state}`);
+  const gauge = gaugeFor(market);
+  if (!gauge) return '';
+  const params = { value: gauge.text, window: gauge.window, threshold: trigger(gauge.threshold) };
+  if (signal.state === 'entry') return t('bots.quant.now.entry', params);
+  if (signal.state === 'exit') return t('bots.quant.now.exit', { ...params, symbol: market.asset.symbol });
+  const entry = market.final?.candidate.rules.entry.conditions.find((leaf) => leaf.kind === 'deviation');
+  return t(
+    entry && 'direction' in entry && entry.direction === 'above'
+      ? 'bots.quant.now.neutralAbove'
+      : 'bots.quant.now.neutralBelow',
+    params
+  );
+}
+/** Runs need the tab open; warn when the chosen length is shorter than the tested time between buys. */
+function sessionNote(market: QuantMarketResult): string {
+  const note = t('bots.quant.session.note');
+  const days = market.walkForward?.cadence?.daysPerEpisode;
+  return days && sessionDays.value < days
+    ? `${note} ${t('bots.quant.session.rare', { days: Math.round(days), count: sessionDays.value })}`
+    : note;
+}
+
 type Leaf = StrategyRules['entry']['conditions'][number];
 function leafText(leaf: Leaf): string {
   if (leaf.kind === 'breakout')
@@ -970,30 +1063,78 @@ async function prepare(market: QuantMarketResult, mode: 'live' | 'paper'): Promi
     box-shadow: 0 4px 14px color-mix(in srgb, var(--q-pink) 35%, transparent);
   }
 }
-.quant-market-body {
+.quant-block-title {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--q-muted);
+}
+/* Past test: one recessed panel, so its numbers read as one result with one unit and period. */
+.quant-test {
   display: grid;
-  grid-template-columns: #{'minmax(120px, 170px) minmax(0, 1fr)'};
-  gap: 12px;
-  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: var(--q-recess);
+  box-shadow: var(--q-inset);
+}
+.quant-test-main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 12px;
+  min-width: 0;
+  strong {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+}
+.quant-test-label {
+  flex: 1 0 100%;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--q-muted);
+}
+.quant-test-growth {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--q-ink);
+}
+.quant-number {
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-variant-numeric: tabular-nums;
+}
+.quant-test-note {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--q-muted);
+}
+.quant-test .up {
+  color: var(--s-color-action-text, #ab0555);
+}
+.quant-test .down {
+  color: color-mix(in srgb, var(--s-color-status-info, #479aef) 60%, var(--q-ink));
 }
 .quant-stats {
   display: grid;
-  grid-template-columns: repeat(2, #{'minmax(0, 1fr)'});
+  grid-template-columns: repeat(3, #{'minmax(0, 1fr)'});
   gap: 8px;
   margin: 0;
-  /* Until the live signal arrives there is no gauge; the stats then use the full width. */
-  &:first-child {
-    grid-column: 1 / -1;
-  }
 }
 .quant-stat {
   min-width: 0;
   padding: 8px 10px;
   border-radius: 14px;
-  background: var(--q-recess);
-  box-shadow: var(--q-inset);
+  background: var(--q-surface);
   dt {
     font-size: 11px;
+    line-height: 1.35;
     color: var(--q-muted);
   }
   dd {
@@ -1001,19 +1142,32 @@ async function prepare(market: QuantMarketResult, mode: 'live' | 'paper'): Promi
     font-size: 15px;
     font-weight: 800;
   }
-  &--main {
-    grid-column: 1 / -1;
-    dd {
-      font-size: 26px;
-      letter-spacing: -0.02em;
-    }
-  }
-  .up {
-    color: var(--s-color-action-text, #ab0555);
-  }
-  .down {
-    color: color-mix(in srgb, var(--s-color-status-info, #479aef) 60%, var(--q-ink));
-  }
+}
+/* Right now: the live rule check, kept apart from the past test so the two percentages never mix. */
+.quant-now {
+  display: grid;
+  gap: 12px;
+  align-items: center;
+  min-width: 0;
+}
+.quant-now--gauge {
+  grid-template-columns: #{'minmax(110px, 150px) minmax(0, 1fr)'};
+}
+.quant-now-copy {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+.quant-now-source {
+  margin: 0;
+  font-size: 11px;
+  color: var(--q-muted);
+}
+.quant-session-note {
+  margin: -4px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--q-muted);
 }
 .quant-signal {
   display: flex;
@@ -1023,6 +1177,12 @@ async function prepare(market: QuantMarketResult, mode: 'live' | 'paper'): Promi
   margin: 0;
   font-size: 12px;
   color: var(--q-muted);
+  span {
+    flex: 1 1 220px;
+    min-width: 0;
+    line-height: 1.5;
+    color: var(--q-ink);
+  }
   strong {
     padding: 4px 10px;
     border-radius: 999px;
@@ -1481,12 +1641,18 @@ async function prepare(market: QuantMarketResult, mode: 'live' | 'paper'): Promi
     max-width: 230px;
     margin-bottom: -6px;
   }
-  .quant-market-body {
+  .quant-now--gauge {
     grid-template-columns: #{'minmax(0, 1fr)'};
     justify-items: center;
+    .quant-gauge {
+      max-width: 170px;
+    }
+    .quant-now-copy {
+      justify-self: stretch;
+    }
   }
   .quant-stats {
-    width: 100%;
+    grid-template-columns: repeat(2, #{'minmax(0, 1fr)'});
   }
   .quant-session {
     gap: 4px;

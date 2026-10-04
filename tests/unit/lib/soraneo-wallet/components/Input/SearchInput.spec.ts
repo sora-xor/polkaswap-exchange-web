@@ -321,6 +321,10 @@ describe('Wallet SearchInput', () => {
     expect(wrapper.get<HTMLInputElement>('input.el-input__inner').element.value).toBe('<img src=x onerror=alert(1)>');
   });
 
+  it('draws its focus ring through the shared field mixin, so one ring follows the rounded field', () => {
+    expect(searchInputSource).toContain('@include focus-outline($focusWithin: true, $withOffset: true);');
+  });
+
   it('keeps the search input on the shared design-system surface size', () => {
     expect(searchInputSource).toContain('min-height: var(--s-size-big);');
     expect(searchInputSource).toContain('padding: 8px 16px;');

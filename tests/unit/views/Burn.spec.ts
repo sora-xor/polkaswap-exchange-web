@@ -195,6 +195,27 @@ describe('Burn.vue', () => {
     expect(vm.selectedRequiresNexusRecipient).toBe(true);
   });
 
+  it('leads with the TONSWAP campaign in a wide layout and keeps SOLSWAP as a second full card', async () => {
+    const wrapper = mount(BurnPage, { global: { stubs: baseStubs } });
+    await flushPromises();
+
+    const columns = wrapper.findAll('.burn-column');
+    expect(columns).toHaveLength(2);
+    expect(columns[0]!.classes()).toContain('burn-column--featured');
+    expect(columns[0]!.get('.tonswap-campaign-stub').classes()).toContain('container--featured');
+    expect(columns[1]!.classes()).not.toContain('burn-column--featured');
+    expect(columns[1]!.get('form').classes()).toEqual(expect.arrayContaining(['container--campaign', 'campaign']));
+    expect(wrapper.find('.burn-info').exists()).toBe(true);
+  });
+
+  it('marks an ended campaign card as disabled', async () => {
+    settingsStoreMock.blockNumber = 61_000_000;
+    const wrapper = mount(BurnPage, { global: { stubs: baseStubs } });
+    await flushPromises();
+
+    expect(wrapper.get('form.campaign').classes()).toContain('disabled');
+  });
+
   it('uses a verified generator address only for the selected SOLSWAP burn', async () => {
     const wrapper = mount(BurnPage, { global: { stubs: baseStubs } });
     await flushPromises();

@@ -121,7 +121,7 @@ watch(() => props.amount, rememberChoice);
 
   &__choices {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: #{'repeat(2, minmax(0, 1fr))'};
     gap: 8px;
     margin: 16px 0;
     padding: 0;
@@ -178,7 +178,7 @@ watch(() => props.amount, rememberChoice);
 
   @media (max-width: 440px) {
     &__choices {
-      grid-template-columns: minmax(0, 1fr);
+      grid-template-columns: #{'minmax(0, 1fr)'};
     }
   }
 }

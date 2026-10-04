@@ -1,97 +1,107 @@
 <template>
   <div class="burn-container s-flex-column">
-    <s-row class="burn-row" :gutter="16" justify="center">
-      <s-col class="burn-column s-flex" :xs="12" :sm="12" :md="12" :lg="6" :xl="6">
-        <tonswap-burn-campaign />
-      </s-col>
-      <s-col
+    <div class="burn-grid">
+      <div class="burn-column burn-column--featured">
+        <tonswap-burn-campaign class="container--featured" />
+      </div>
+      <div
         v-for="{ id, title, description, rewardTiers, link, receivedAsset, rate, disabledText } in campaigns"
         :key="id"
-        class="burn-column s-flex"
-        :xs="12"
-        :sm="12"
-        :md="12"
-        :lg="6"
-        :xl="6"
+        class="burn-column"
       >
         <s-form
           v-loading="isBurnFormLoading"
-          class="container container--burn el-form--actions"
+          class="container container--campaign campaign el-form--actions"
           :class="{ disabled: ended[id] }"
           :show-message="false"
         >
-          <burn-logo-fire v-if="id === 'solswap'" class="campaign-fire" variant="sora" />
-          <generic-page-header class="page-header--burn" :title="title"></generic-page-header>
-          <p class="description centered p4">
-            {{ description }}
-          </p>
-          <div v-if="rewardTiers?.length" class="reward-tiers s-flex-column">
-            <div v-for="{ blockRange, reward } in rewardTiers" :key="blockRange" class="reward-tier s-flex-column">
-              <span class="reward-tier__range">{{ blockRange }}</span>
-              <span class="reward-tier__reward">{{ reward }}</span>
+          <header class="campaign__hero">
+            <burn-logo-fire v-if="id === 'solswap'" class="campaign-fire" variant="sora" />
+            <div class="campaign__intro">
+              <generic-page-header class="page-header--burn" :title="title"></generic-page-header>
+              <p class="description">
+                {{ description }}
+              </p>
+              <external-link class="p4 link" title="Read more" :href="link"></external-link>
             </div>
-          </div>
-          <external-link class="p4 link" title="Read more" :href="link"></external-link>
-          <info-line
-            :label="`1\u00A0${receivedAsset.symbol}`"
-            :value="getFormattedXor(rate)"
-            :asset-symbol="xor.symbol"
-            :fiat-value="getFormattedXorFiat(rate)"
-          ></info-line>
-          <info-line v-if="id === 'solswap'" label="1 XOR burned" value="1" asset-symbol="SORA Nexus XOR"></info-line>
-          <info-line
-            :label="`Your reserved ${receivedAsset.symbol} tokens`"
-            :value="getFormattedAccountReserved(id)"
-            :asset-symbol="receivedAsset.symbol"
-            value-can-be-hidden
-          ></info-line>
-          <info-line
-            label="Your burned XOR tokens"
-            :value="getFormattedAccountXorBurned(id)"
-            :asset-symbol="xor.symbol"
-            value-can-be-hidden
-          ></info-line>
-          <div v-if="isLoggedIn && accountClaimRows[id]?.length" class="claim-details s-flex-column">
-            <div class="claim-details__header s-flex-column">
-              <span class="claim-details__title">{{ t('burnPage.minamotoClaimTitle') }}</span>
-              <span class="claim-details__description">
-                {{ t('burnPage.minamotoClaimDescription') }}
-              </span>
-            </div>
-            <div v-for="claim in accountClaimRows[id]" :key="claim.id" class="claim-row s-flex-column">
-              <div class="claim-row__summary s-flex">
-                <span class="claim-row__block">
-                  <template v-if="claim.blockHeight">Block {{ claim.blockHeight }}</template>
-                  <template v-else>{{ t('transactionSubmittedText') }}</template>
-                </span>
-                <span class="claim-row__burned">{{ claim.burned }} XOR burned</span>
-              </div>
-              <div class="claim-row__amounts">
-                <div class="claim-row__amount s-flex-column">
-                  <span>{{ t('burnPage.ssTokensLabel') }}</span>
-                  <strong>{{ claim.ssReserved }}</strong>
-                </div>
-                <div class="claim-row__amount s-flex-column">
-                  <span>{{ t('burnPage.soraNexusXorLabel') }}</span>
-                  <strong>{{ claim.nexusReserved }}</strong>
+          </header>
+          <div class="campaign__body">
+            <section class="campaign__terms">
+              <div v-if="rewardTiers?.length" class="reward-tiers">
+                <div v-for="{ blockRange, reward } in rewardTiers" :key="blockRange" class="reward-tier s-flex-column">
+                  <span class="reward-tier__range">{{ blockRange }}</span>
+                  <span class="reward-tier__reward">{{ reward }}</span>
                 </div>
               </div>
-              <div class="claim-row__hash s-flex">
-                <div class="claim-row__hash-text s-flex-column">
-                  <span>{{ t('burnPage.soraNetworkTxHashLabel') }}</span>
-                  <code>{{ claim.txHash }}</code>
+              <info-line
+                :label="`1\u00A0${receivedAsset.symbol}`"
+                :value="getFormattedXor(rate)"
+                :asset-symbol="xor.symbol"
+                :fiat-value="getFormattedXorFiat(rate)"
+              ></info-line>
+              <info-line
+                v-if="id === 'solswap'"
+                label="1 XOR burned"
+                value="1"
+                asset-symbol="SORA Nexus XOR"
+              ></info-line>
+            </section>
+            <section class="campaign__account">
+              <info-line
+                :label="`Your reserved ${receivedAsset.symbol} tokens`"
+                :value="getFormattedAccountReserved(id)"
+                :asset-symbol="receivedAsset.symbol"
+                value-can-be-hidden
+              ></info-line>
+              <info-line
+                label="Your burned XOR tokens"
+                :value="getFormattedAccountXorBurned(id)"
+                :asset-symbol="xor.symbol"
+                value-can-be-hidden
+              ></info-line>
+              <div v-if="isLoggedIn && accountClaimRows[id]?.length" class="claim-details s-flex-column">
+                <div class="claim-details__header s-flex-column">
+                  <span class="claim-details__title">{{ t('burnPage.minamotoClaimTitle') }}</span>
+                  <span class="claim-details__description">
+                    {{ t('burnPage.minamotoClaimDescription') }}
+                  </span>
                 </div>
-                <s-button
-                  class="claim-row__copy"
-                  type="action"
-                  alternative
-                  icon="basic-copy-24"
-                  :tooltip="copyTxHashTooltip"
-                  :aria-label="t('burnPage.copySoraNetworkTxHash')"
-                  @click="handleCopyTxHash(claim.txHash, $event)"
-                ></s-button>
+                <div v-for="claim in accountClaimRows[id]" :key="claim.id" class="claim-row s-flex-column">
+                  <div class="claim-row__summary s-flex">
+                    <span class="claim-row__block">
+                      <template v-if="claim.blockHeight">Block {{ claim.blockHeight }}</template>
+                      <template v-else>{{ t('transactionSubmittedText') }}</template>
+                    </span>
+                    <span class="claim-row__burned">{{ claim.burned }} XOR burned</span>
+                  </div>
+                  <div class="claim-row__amounts">
+                    <div class="claim-row__amount s-flex-column">
+                      <span>{{ t('burnPage.ssTokensLabel') }}</span>
+                      <strong>{{ claim.ssReserved }}</strong>
+                    </div>
+                    <div class="claim-row__amount s-flex-column">
+                      <span>{{ t('burnPage.soraNexusXorLabel') }}</span>
+                      <strong>{{ claim.nexusReserved }}</strong>
+                    </div>
+                  </div>
+                  <div class="claim-row__hash s-flex">
+                    <div class="claim-row__hash-text s-flex-column">
+                      <span>{{ t('burnPage.soraNetworkTxHashLabel') }}</span>
+                      <code>{{ claim.txHash }}</code>
+                    </div>
+                    <s-button
+                      class="claim-row__copy"
+                      type="action"
+                      alternative
+                      icon="basic-copy-24"
+                      :tooltip="copyTxHashTooltip"
+                      :aria-label="t('burnPage.copySoraNetworkTxHash')"
+                      @click="handleCopyTxHash(claim.txHash, $event)"
+                    ></s-button>
+                  </div>
+                </div>
               </div>
-            </div>
+            </section>
           </div>
           <div class="info-card-container s-flex">
             <div class="info-card-item s-flex-column">
@@ -118,17 +128,12 @@
             :burn-available="!ended.solswap"
             @use-address="handleUseGeneratedNexusAddress"
           />
-          <s-button
-            v-if="!isLoggedIn"
-            type="primary"
-            class="action-button s-typography-button--large"
-            @click="connectSoraWallet"
-          >
+          <s-button v-if="!isLoggedIn" type="primary" class="action-button" @click="connectSoraWallet">
             {{ t('connectWalletText') }}
           </s-button>
           <s-button
             v-else
-            class="action-button s-typography-button--large"
+            class="action-button"
             type="primary"
             :disabled="ended[id]"
             :loading="parentLoading || (!ended[id] && loading)"
@@ -138,19 +143,19 @@
             <template v-else>BURN MY XOR</template>
           </s-button>
         </s-form>
-      </s-col>
-    </s-row>
+      </div>
+    </div>
     <s-card class="burn-info" border-radius="small" shadow="always" size="medium" pressed>
       <div class="burn-info__content s-flex-column">
         <div class="burn-info__desc s-flex">
+          <div class="burn-info__badge">
+            <s-icon class="burn-info__icon" name="notifications-alert-triangle-24" size="24"></s-icon>
+          </div>
           <p class="description p4">
             The 'Burn XOR' is a community-proposed initiative. It’s not officially endorsed by any centralized authority
             or organization. Participation and interaction with the 'Burn XOR' should be considered with understanding
             of its community-driven nature.
           </p>
-          <div class="burn-info__badge">
-            <s-icon class="burn-info__icon" name="notifications-alert-triangle-24" size="24"></s-icon>
-          </div>
         </div>
       </div>
     </s-card>
@@ -574,67 +579,169 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss" scoped>
+$burn-page-width: 1120px;
+
 .el-form--actions {
   @include buttons;
   @include full-width-button('action-button');
 }
-.container {
-  margin: 0;
-  &--burn {
-    margin-bottom: $basic-spacing;
-    box-shadow: var(--s-shadow-element-pressed);
-    :deep(.info-line) {
-      padding: 8px 4px;
-    }
-    &.disabled {
-      box-shadow: var(--s-shadow-element);
-    }
+
+.burn-container {
+  align-items: center;
+  width: 100%;
+}
+
+.burn-grid {
+  display: grid;
+  grid-template-columns: #{'minmax(0, 1fr)'};
+  gap: 24px;
+  width: 100%;
+  max-width: $burn-page-width;
+  margin: 0 auto 24px;
+}
+
+.burn-column {
+  display: flex;
+  min-width: 0;
+  container-name: burn-card;
+  container-type: inline-size;
+
+  > * {
+    flex: 1 1 auto;
+    min-width: 0;
   }
 }
 
-.burn-row {
+.campaign {
+  box-sizing: border-box;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
+  flex-direction: column;
+  align-items: stretch;
+  gap: 20px;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  margin: 0;
+  padding: 24px;
+  box-shadow: var(--s-shadow-element-pressed);
 
-.page-header--burn {
-  justify-content: center;
+  &.disabled {
+    box-shadow: var(--s-shadow-element);
+  }
+
+  :deep(.action-button.el-button) {
+    height: 46px;
+    min-height: 46px;
+    margin-top: 0;
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 600;
+    text-transform: none;
+  }
+
+  :deep(.info-line) {
+    min-width: 0;
+    padding: 8px 4px;
+  }
+  :deep(.info-line-label) {
+    font-size: 12px;
+    line-height: 1.4;
+    text-transform: none;
+    font-weight: 400;
+  }
+  :deep(.info-line-value) {
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  &__hero {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    min-width: 0;
+  }
+
+  &__intro {
+    flex: 1;
+    min-width: 0;
+    text-align: start;
+
+    :deep(.page-header) {
+      width: auto;
+      margin: 0 0 8px;
+    }
+    // The shared header mixin sets font-weight with !important, so the heading weight needs it too.
+    :deep(.page-header-title) {
+      font-size: 24px;
+      line-height: 1.25;
+      font-weight: 600 !important;
+      letter-spacing: -0.01em;
+      text-transform: none;
+    }
+  }
+
+  &__body {
+    display: grid;
+    grid-template-columns: #{'minmax(0, 1fr)'};
+    gap: 16px;
+    min-width: 0;
+  }
+
+  &__terms,
+  &__account {
+    min-width: 0;
+    padding: 20px;
+    border-radius: var(--s-border-radius-mini);
+    background: var(--s-color-utility-surface);
+    box-shadow: var(--s-shadow-element-pressed);
+  }
 }
 
 .campaign-fire {
   display: block;
+  flex: 0 0 112px;
   width: 112px;
   height: 112px;
-  margin: 0 auto $inner-spacing-mini;
 }
 
 .description {
-  margin-bottom: $inner-spacing-mini;
-  font-size: var(--s-font-size-extra-small);
-  &.centered {
-    text-align: center;
-  }
+  max-width: 760px;
+  margin: 0 0 8px;
+  font-size: 14px;
+  line-height: 1.55;
 }
+
+.link {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--s-color-status-info);
+  @include focus-outline;
+}
+
 .reward-tiers {
-  gap: $inner-spacing-tiny;
-  margin-bottom: $inner-spacing-mini;
-  width: 100%;
+  display: grid;
+  grid-template-columns: #{'minmax(0, 1fr)'};
+  gap: 8px;
+  margin-bottom: 12px;
 }
 .reward-tier {
-  border-top: 1px solid var(--s-color-base-border-secondary);
-  padding-top: $inner-spacing-tiny;
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--s-color-base-border-primary);
+  box-shadow: var(--s-shadow-element);
 
   &__range {
     color: var(--s-color-base-content-secondary);
-    font-size: var(--s-font-size-extra-small);
+    font-size: 11px;
     font-weight: 700;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
   }
 
   &__reward {
-    font-size: var(--s-font-size-extra-small);
-    font-weight: 700;
+    font-size: 13px;
+    font-weight: 600;
     line-height: 1.4;
   }
 }
@@ -728,34 +835,36 @@ onBeforeUnmount(() => {
 }
 .info-card {
   &-container {
-    align-items: center;
-    justify-content: space-between;
     flex-wrap: wrap;
-    gap: $inner-spacing-mini;
+    gap: 12px;
     width: 100%;
-    margin-top: $inner-spacing-mini;
+    margin: 0;
   }
   &-item {
-    flex: 1;
-    min-width: 160px;
-    box-shadow: var(--s-shadow-dialog);
+    flex: 1 1 160px;
+    min-width: 0;
+    padding: 14px 16px;
+    border-radius: 12px;
     background-color: var(--s-color-base-border-primary);
-    padding: $inner-spacing-medium;
-    margin-top: var(--s-basic-spacing);
-    border-radius: calc(var(--s-border-radius-mini) / 2);
-    & + & {
-      margin-left: 0;
-    }
+    box-shadow: var(--s-shadow-element);
+    text-align: start;
   }
   &-title {
+    margin-bottom: 6px;
     color: var(--s-color-base-content-secondary);
-    font-weight: 800;
-    font-size: var(--s-font-size-extra-small);
-    margin-bottom: $inner-spacing-mini;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: 0.04em;
   }
   &-value {
-    font-weight: 800;
-    font-size: 16px;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+    direction: ltr;
+    unicode-bidi: isolate;
   }
 }
 @media (max-width: 480px) {
@@ -771,46 +880,63 @@ onBeforeUnmount(() => {
     }
   }
 }
-.burn {
-  &-column {
+
+@container burn-card (min-width: 760px) {
+  .campaign__body {
+    grid-template-columns: #{'repeat(2, minmax(0, 1fr))'};
+    align-items: start;
+  }
+}
+@container burn-card (max-width: 479px) {
+  .campaign {
+    padding: 16px;
+  }
+  .campaign__hero {
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .campaign-fire {
+    flex-basis: 72px;
+    width: 72px;
+    height: 72px;
+  }
+  .campaign__intro :deep(.page-header-title) {
+    font-size: 20px;
+  }
+  .campaign__terms,
+  .campaign__account {
+    padding: 16px;
+  }
+}
+
+.burn-info {
+  width: 100%;
+  max-width: $burn-page-width;
+
+  &__desc {
+    align-items: center;
+    gap: 16px;
+
+    .description {
+      flex: 1;
+      margin: 0;
+      font-size: 13px;
+      color: var(--s-color-base-content-secondary);
+    }
+  }
+  &__badge {
+    display: flex;
+    flex: 0 0 auto;
     align-items: center;
     justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--s-color-status-info);
+    box-shadow: var(--s-shadow-element-pressed);
   }
-  &-container {
-    align-items: center;
-
-    .link {
-      font-size: var(--s-heading6-font-size);
-      margin-bottom: 12px;
-      color: var(--s-color-status-info);
-      @include focus-outline;
-    }
-  }
-  &-info {
-    max-width: $inner-window-width;
-    width: 100%;
-    flex: 1;
-    &__content {
-      .link {
-        margin-bottom: 0;
-      }
-    }
-    &__desc {
-      align-items: flex-start;
-      .description {
-        flex: 1;
-      }
-    }
-    &__badge {
-      border-radius: 50%;
-      background-color: var(--s-color-status-info);
-      padding: $inner-spacing-mini;
-      box-shadow: var(--s-shadow-element-pressed);
-      margin-left: $inner-spacing-mini;
-    }
-    &__icon {
-      color: white;
-    }
+  &__icon {
+    color: white;
   }
 }
 </style>

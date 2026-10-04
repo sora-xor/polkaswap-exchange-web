@@ -946,3 +946,35 @@ describe('explicit protocol boundary before legacy execution', () => {
     expect(h.release).toHaveBeenCalledOnce();
   });
 });
+
+describe('continued live runs', () => {
+  it('keeps the saved end of a continued run and never extends it past a fresh grant', async () => {
+    const now = Date.now();
+    vi.spyOn(Date, 'now').mockReturnValue(now);
+    try {
+      const h = liveHarness();
+      const fresh = now + h.bot.policy.sessionDurationMs;
+      await h.executor.authorize(h.bot, 'password', { endsAt: now + 600_000 });
+      expect(h.ledger.bots[0].sessionExpiresAt).toBe(now + 600_000);
+      h.executor.stop(h.bot.id);
+      await h.executor.authorize(h.bot, 'password', { endsAt: fresh + 86_400_000 });
+      expect(h.ledger.bots[0].sessionExpiresAt).toBe(fresh);
+      h.executor.stop(h.bot.id);
+      // Without an end, a start is a new run of the reviewed length.
+      await h.executor.authorize(h.bot, 'password');
+      expect(h.ledger.bots[0].sessionExpiresAt).toBe(fresh);
+    } finally {
+      vi.restoreAllMocks();
+    }
+  });
+
+  it('refuses a run whose saved end has passed before any wallet access', async () => {
+    const h = liveHarness();
+    for (const endsAt of [Date.now() - 1, Number.NaN]) {
+      await expect(h.executor.authorize(h.bot, 'password', { endsAt })).rejects.toThrow('bots.errors.session');
+    }
+    expect(h.overrides.signer).not.toHaveBeenCalled();
+    expect(h.storage.allocate).not.toHaveBeenCalled();
+    expect(h.release).toHaveBeenCalled();
+  });
+});

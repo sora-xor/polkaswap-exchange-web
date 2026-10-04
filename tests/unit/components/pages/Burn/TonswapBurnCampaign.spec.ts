@@ -24,12 +24,16 @@ const mocks = vi.hoisted(() => ({
   connect: vi.fn(),
   selectAmount: vi.fn(),
   saveAs: vi.fn(),
+  publish: vi.fn(),
   genesis: '0x7e4e32d0feafd4f9c9414b0be86373f9a1efa904809b683453a9af6856d38ad5',
   chain: { isConnected: true, genesisHash: { toString: vi.fn() } },
   account: { pair: { address: 'alice' } },
   history: [] as HistoryItem[],
 }));
 vi.mock('file-saver', () => ({ saveAs: mocks.saveAs }));
+vi.mock('@/features/misc/composables/useTonswapCampaignStatus', () => ({
+  publishTonswapCampaignSummary: mocks.publish,
+}));
 vi.mock('@/features/misc/lib/tonswapTelemetry', () => ({ trackTonswapStep: vi.fn() }));
 const settings = reactive({
   soraNetwork: 'Prod',
@@ -316,6 +320,8 @@ describe('Tonswap burn campaign', () => {
     expect(wrapper.findComponent({ name: 'TonswapRewardCurve' }).props('burned')).toBeNull();
     expect(wrapper.vm.allocation).toBeNull();
     expect(wrapper.find('.tonswap-burn__progress').exists()).toBe(false);
+    expect(wrapper.findAll('.tonswap-stat__value').map((value) => value.text())).toEqual(['—', '—', '—', '—']);
+    expect(wrapper.find('.tonswap-burn__live').exists()).toBe(false);
     expect(wrapper.text()).not.toContain('burnPage.tonswap.yourReserved');
     wrapper.vm.openDialog();
     expect(wrapper.vm.dialogVisible).toBe(true);
@@ -325,6 +331,8 @@ describe('Tonswap burn campaign', () => {
     expect(wrapper.get('.tonswap-burn__data').attributes('data-state')).toBe('ready');
     expect(wrapper.get('.tonswap-burn__data-refresh').element).toBe(control);
     expect(wrapper.vm.allocation.totalEligible.toString()).toBe('6');
+    expect(wrapper.find('.tonswap-burn__progress').exists()).toBe(true);
+    expect(wrapper.find('.tonswap-burn__live').exists()).toBe(true);
     expect(wrapper.vm.canBurn).toBe(true);
   });
 
@@ -427,9 +435,10 @@ describe('Tonswap burn campaign', () => {
     await flushPromises();
     expect(mocks.fetch).toHaveBeenCalledTimes(before + 1);
     expect(curve.props('burned').toString()).toBe('9420.4');
-    expect(curve.get('.tonswap-curve__current strong').text()).toBe('49.758224 TS / XOR');
+    const rate = wrapper.get('.tonswap-stat--rate');
+    expect(rate.get('.tonswap-stat__value').text()).toBe('49.7582');
+    expect(rate.get('dd').attributes('title')).toBe('49.758224 TS / XOR');
     expect(Number(curve.get('.tonswap-curve__point').attributes('cx'))).toBeGreaterThan(previousX);
-    expect(wrapper.text()).toContain('burnPage.tonswap.currentRate: 49.758224 TS / XOR');
   });
 
   it('catches indexer changes within five seconds without requiring another block or wallet event', async () => {
@@ -438,7 +447,7 @@ describe('Tonswap burn campaign', () => {
     mocks.fetch.mockResolvedValue(snapshot([burn('9420.4')]));
     await vi.advanceTimersByTimeAsync(5_000);
     expect(wrapper.vm.allocation.totalEligible.toString()).toBe('9420.4');
-    expect(wrapper.get('.tonswap-curve__current strong').text()).toBe('49.758224 TS / XOR');
+    expect(wrapper.get('.tonswap-stat--rate .tonswap-stat__value').text()).toBe('49.7582');
   });
 
   it('refreshes when returning to the tab and removes its listeners when unmounted', async () => {
@@ -1291,5 +1300,95 @@ describe('Tonswap burn campaign', () => {
     await receipt.get('button[aria-label="burnPage.copySoraNetworkTxHash"]').trigger('click');
     expect(mocks.copy).toHaveBeenCalledWith(pendingHash, expect.anything());
     expect(wrapper.vm.canBurn).toBe(true);
+  });
+});
+
+describe('Tonswap campaign headline numbers and live state', () => {
+  it('shows the headline numbers, the live pill and the cap meter from verified campaign data', async () => {
+    mocks.fetch.mockResolvedValue(snapshot([burn('11592.4')]));
+    const wrapper = await setup();
+
+    expect(wrapper.get('.tonswap-burn__live').text()).toBe('burnPage.tonswap.live');
+    expect(
+      wrapper.findAll('.tonswap-stat').map((tile) => [tile.get('dt').text(), tile.get('.tonswap-stat__value').text()])
+    ).toEqual([
+      ['burnPage.tonswap.currentRate', '49.7024'],
+      ['burnPage.tonswap.rewardedBurns', '11,592.4'],
+      ['burnPage.tonswap.remaining', '1,741,764.6'],
+      ['burnPage.tonswap.totalReserved', '577,895.5171'],
+    ]);
+    expect(wrapper.get('.tonswap-stat--rate dd').attributes('title')).toBe('49.70248 TS / XOR');
+    const meter = wrapper.get('progress.tonswap-burn__progress');
+    expect(meter.attributes('value')).toBe('11592.4');
+    expect(meter.attributes('max')).toBe('1753357');
+    expect(wrapper.get('.tonswap-burn__meter-labels').text()).toContain('burnPage.tonswap.cap: 1,753,357 XOR');
+    expect(wrapper.find('.tonswap-burn__track').exists()).toBe(false);
+    expect(wrapper.get('.tonswap-burn__stats').attributes('aria-busy')).toBe('false');
+  });
+
+  it('keeps the meter track and placeholder values while no campaign data has loaded', async () => {
+    mocks.fetch.mockRejectedValue(new Error('Indexer unavailable'));
+    const wrapper = await setup();
+
+    expect(wrapper.find('progress').exists()).toBe(false);
+    expect(wrapper.find('.tonswap-burn__track').exists()).toBe(true);
+    expect(wrapper.get('.tonswap-burn__stats').attributes('aria-busy')).toBe('true');
+    expect(wrapper.get('.tonswap-burn__meter-labels').text()).toContain('burnPage.tonswap.cap: 1,753,357 XOR');
+  });
+
+  it('does not call burning live on stale data, once the cap is reached, or away from mainnet', async () => {
+    mocks.fetch.mockResolvedValue({ ...snapshot([burn('100')]), fresh: false });
+    const stale = await setup();
+    expect(stale.find('.tonswap-burn__live').exists()).toBe(false);
+    expect(stale.get('.tonswap-burn__data').attributes('data-state')).toBe('stale');
+
+    mocks.fetch.mockResolvedValue(snapshot([burn('1753357')]));
+    const capped = await setup();
+    expect(capped.vm.allocation.remaining.toString()).toBe('0');
+    expect(capped.find('.tonswap-burn__live').exists()).toBe(false);
+    expect(capped.get('.tonswap-stat:nth-child(3) .tonswap-stat__value').text()).toBe('0');
+
+    settings.soraNetwork = 'Test';
+    const testnet = await setup();
+    expect(testnet.find('.tonswap-burn__live').exists()).toBe(false);
+    expect(testnet.find('.tonswap-burn__stats').exists()).toBe(false);
+    expect(testnet.find('.tonswap-burn__meter').exists()).toBe(false);
+  });
+
+  it('shares only fresh, verified readings with the sidebar', async () => {
+    mocks.fetch.mockResolvedValue(snapshot([burn('11592.4')]));
+    await setup();
+    expect(mocks.publish).toHaveBeenCalledTimes(1);
+    const summary = mocks.publish.mock.calls[0][0];
+    expect(summary.live).toBe(true);
+    expect(summary.burned.toString()).toBe('11592.4');
+    expect(summary.indexedThroughBlock).toBe(TONSWAP_START_BLOCK + 10);
+
+    mocks.publish.mockClear();
+    mocks.fetch.mockResolvedValue({ ...snapshot([burn('11592.4')]), fresh: false });
+    await setup();
+    expect(mocks.publish).not.toHaveBeenCalled();
+  });
+
+  it('leaves the numbers to the tiles and tells the chart not to repeat them', async () => {
+    mocks.fetch.mockResolvedValue(snapshot([burn('6')]));
+    const wrapper = await setup();
+    const curve = wrapper.findComponent({ name: 'TonswapRewardCurve' });
+
+    expect(curve.props('showSummary')).toBe(false);
+    expect(curve.find('.tonswap-curve__current').exists()).toBe(false);
+    expect(curve.find('.tonswap-curve__totals').exists()).toBe(false);
+    expect(curve.find('.tonswap-curve__point').exists()).toBe(true);
+  });
+
+  it('shows account totals only for a signed-in account once campaign data exists', async () => {
+    mocks.fetch.mockResolvedValue(snapshot([{ ...burn('17533.57'), address: 'alice' }]));
+    const wrapper = await setup();
+    expect(wrapper.get('.tonswap-burn__account').text()).toContain('burnPage.tonswap.yourBurns: 17,533.57 XOR');
+
+    loggedIn.value = false;
+    await nextTick();
+    expect(wrapper.find('.tonswap-burn__account').exists()).toBe(false);
+    loggedIn.value = true;
   });
 });

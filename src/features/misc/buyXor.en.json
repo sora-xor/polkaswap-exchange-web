@@ -58,6 +58,51 @@
     },
     "resumeTitle": "Continue buying XOR",
     "resumeDescription": "Return to your purchase plan to review the next step. Each transaction needs your approval.",
-    "return": "Return to Buy XOR"
+    "return": "Return to Buy XOR",
+    "start": {
+      "cardHint": "Debit or credit card",
+      "crypto": "Crypto",
+      "cryptoHint": "ETH, USDT or DAI on Ethereum",
+      "ton": "USDT on TON (3 wallets)",
+      "youGet": "You get",
+      "cardFees": "Ethereum network fees come out of the ETH you buy. We show the amount after fees before you pay.",
+      "cryptoFees": "Keep a little ETH in your wallet for Ethereum network fees.",
+      "max": "Max per purchase right now: about {amount}.",
+      "useMax": "Use max",
+      "maxNote": "The XOR market on SORA is small. Larger purchases would move the price too much, so they are blocked.",
+      "tooBig": "Too large for the SORA market right now. The most you can buy at once is about {amount}.",
+      "tooBigUnknown": "Too large for the SORA market right now. Try a smaller amount.",
+      "conversionTooBig": "Converting this much to DAI would lose too much value. Try a smaller amount.",
+      "cardMinimum": "The card minimum is {amount}.",
+      "cardBlocked": "Card payments start at {minimum}, but the SORA market can take only about {maximum} right now. Pay with crypto, or try again later.",
+      "useCrypto": "Pay with crypto",
+      "tooSmall": "Too small: the network fee would use it all. Try a larger amount.",
+      "noCardPrice": "MoonPay did not return a price. You can still continue: MoonPay shows the final price before you pay.",
+      "noPrice": "We could not get a price right now. Try again in a minute.",
+      "connecting": "Connecting to SORA…",
+      "nativeTon": "Plain TON is not supported here. Swap it to USDT on TON first.",
+      "useUsdt": "Pay with USDT instead",
+      "next": "What happens next",
+      "steps": {
+        "walletsEthereum": "Connect an Ethereum wallet, like MetaMask, and a SORA wallet. You can create a SORA wallet on the next screen.",
+        "walletSora": "Connect your SORA wallet.",
+        "walletsTon": "Connect your TON, Ethereum and SORA wallets.",
+        "card": "Pay by card in MoonPay. MoonPay sends ETH to your Ethereum wallet.",
+        "ton": "Move your USDT from TON to Ethereum in the provider’s app.",
+        "convert": "In your Ethereum wallet, approve the swap to DAI and the transfer to SORA.",
+        "transfer": "In your Ethereum wallet, approve the transfer of your DAI to SORA.",
+        "swap": "In your SORA wallet, approve the swap to XOR. Your XOR arrives in that wallet."
+      },
+      "stepsNote": "Nothing is sent until you approve it. Transfers between networks can take several minutes.",
+      "otherWays": "Other ways to pay:",
+      "inProgress": "You have a purchase in progress: {amount}."
+    },
+    "card": {
+      "description": "Pay by card in MoonPay. MoonPay sends ETH to your Ethereum wallet, and the next steps turn it into XOR.",
+      "copy": "Copy your Ethereum address:",
+      "paste": "Open MoonPay. When it asks for a wallet address, paste this one. Do not use your SORA address.",
+      "return": "Finish paying in MoonPay, then come back to this page.",
+      "open": "Copy address and open MoonPay"
+    }
   }
 }

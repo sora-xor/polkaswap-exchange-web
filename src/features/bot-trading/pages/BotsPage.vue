@@ -41,6 +41,30 @@
         </button>
       </div>
     </header>
+    <section
+      v-if="workspaceView === 'simple' && runs.items.value.length"
+      class="bots-runs"
+      data-testid="bots-runs"
+      :aria-labelledby="runsTitleId"
+    >
+      <div class="bots-runs-head">
+        <h2 :id="runsTitleId">{{ t('bots.runs.title') }}</h2>
+        <RouterLink class="bots-runs-manage" data-testid="bots-runs-manage" :to="botWorkspaceLocation('bots')">
+          {{ t('bots.runs.manage') }} <span aria-hidden="true">→</span>
+        </RouterLink>
+      </div>
+      <p class="bots-runs-note">{{ t('bots.runs.keepOpen') }} {{ t('bots.runs.controls') }}</p>
+      <BotRunList
+        :items="runs.items.value"
+        :busy="runs.busy.value"
+        :failure="runs.failure.value"
+        @pause="runs.pause"
+        @resume="runs.resume"
+        @stop="runs.stop"
+        @open="navigateBot"
+        @connect="connectSoraWallet"
+      />
+    </section>
     <QuantCommandCenter
       v-if="workspaceView === 'simple'"
       :assets="assets"
@@ -158,15 +182,13 @@
         {{ t('bots.uxWorkspace.inspectStrategy') }}
       </RouterLink>
     </nav>
-    <details
+    <p
       v-if="workspaceView !== 'simple' && (workspaceView === 'bots' || activeBots.length)"
       class="browser-notice"
+      data-testid="browser-runtime-notice"
     >
-      <summary>{{ t('bots.uxWorkspace.browserTitle') }}</summary>
-      <p data-testid="browser-runtime-notice">
-        {{ t(workspaceView === 'bots' ? 'bots.uxWorkspace.browserNote' : 'bots.uxWorkspace.researchBrowserNote') }}
-      </p>
-    </details>
+      {{ t('bots.runs.keepOpen') }}
+    </p>
     <div v-if="workspaceView !== 'simple' && workspaceView !== 'bots' && activeBots.length" class="playground-sessions">
       <div v-for="bot in activeBots" :key="bot.id">
         <strong>{{ bot.name }}</strong
@@ -270,11 +292,22 @@
             </div>
             <div class="toolbar-actions">
               <button
-                v-if="selectedBot.status === 'running' && sessionActiveIds.includes(selectedBot.id)"
+                v-if="
+                  (selectedBot.status === 'running' && sessionActiveIds.includes(selectedBot.id)) ||
+                  selectedRun === 'elsewhere'
+                "
                 data-testid="pause"
                 @click="run(() => pauseBot(selectedBot.id))"
               >
                 {{ t('bots.pause') }}</button
+              ><button
+                v-else-if="canContinueSelected"
+                class="primary"
+                data-testid="start"
+                :disabled="busy"
+                @click="requestResume"
+              >
+                {{ t('bots.resume') }}</button
               ><button
                 v-else
                 class="primary"
@@ -282,9 +315,7 @@
                 :disabled="busy || (!!selectedBot.goalState && selectedBot.goalState.outcome !== 'active')"
                 @click="requestStart"
               >
-                {{
-                  t(selectedBot.status === 'running' || selectedBot.status === 'paused' ? 'bots.resume' : 'bots.start')
-                }}</button
+                {{ t(selectedRun === 'open' ? 'bots.resume' : 'bots.start') }}</button
               ><button
                 data-testid="stop"
                 :disabled="selectedBot.status === 'stopped'"
@@ -306,10 +337,7 @@
               <p>{{ runtimePresentation(selectedBot).detail }}</p>
             </details>
           </div>
-          <div
-            v-if="selectedBot.mode === 'live' || (selectedBot.goal && selectedBot.sessionExpiresAt)"
-            class="session-strip"
-          >
+          <div v-if="selectedBot.mode === 'live' || selectedBot.sessionExpiresAt" class="session-strip">
             <span v-if="selectedBot.goal"
               >{{ t('bots.durationMinutes') }}: {{ selectedBot.policy.sessionDurationMs / 60000 }}</span
             >
@@ -702,7 +730,12 @@
               </div>
               <label
                 >{{ t('bots.durationMinutes')
-                }}<input v-model.number="sessionMinutes" type="number" min="1" max="1440" required
+                }}<input
+                  v-model.number="sessionMinutes"
+                  type="number"
+                  min="1"
+                  :max="selectedBot.extendedSession ? 20160 : 1440"
+                  required
               /></label>
               <button class="save-button" data-testid="save-settings" type="submit">
                 {{ t('bots.saveSettings') }}
@@ -955,7 +988,11 @@
                   {{ reviewBot.policy.feeAsset.symbol }}
                 </dd>
               </div>
-              <div>
+              <div v-if="continueMode && !startIntent" data-testid="consent-runs-until">
+                <dt>{{ t('bots.runs.runsUntil') }}</dt>
+                <dd>{{ time(reviewBot.sessionExpiresAt) }}</dd>
+              </div>
+              <div v-else>
                 <dt>{{ t('bots.startFlow.duration') }}</dt>
                 <dd>
                   {{
@@ -1027,7 +1064,7 @@
               <p class="modal-note">{{ t('bots.appLimitsNotice') }}</p>
             </section>
             <p class="consent-browser-note" data-testid="consent-browser-notice">
-              {{ t('bots.uxWorkspace.browserNote') }}
+              {{ t(externalWallet ? 'bots.runs.consentExternal' : 'bots.runs.consentInternal') }}
             </p>
             <p class="modal-note" data-testid="signing-behavior">
               {{ t(externalWallet ? 'bots.externalSigning' : 'bots.startFlow.internalSigning') }}
@@ -1221,7 +1258,9 @@ import BotGoalSetup from '../components/BotGoalSetup.vue';
 import BotGoalProgress from '../components/BotGoalProgress.vue';
 import BotAutopilot from '../components/BotAutopilot.vue';
 import BotDiscovery from '../components/BotDiscovery.vue';
+import BotRunList from '../components/BotRunList.vue';
 import QuantCommandCenter from '../components/quant/QuantCommandCenter.vue';
+import { useBotRuns } from '../runs';
 import type { QuantDeployPayload } from '../quant-deploy';
 import { useSwapStore } from '@/features/swap/stores/useSwapStore';
 import { buildRouteTokens } from '@/shared/navigation/useSelectedTokensRoute';
@@ -1292,6 +1331,16 @@ const {
   suggestStrategy,
   sessionActiveIds,
 } = trading;
+/** Shared with the top bar: run states, automatic continuation and the leave-page prompt. */
+const runs = useBotRuns();
+const runsTitleId = `bots-runs-${useId().replace(/:/g, '')}`;
+const selectedRun = computed(() => (selectedBot.value ? runs.stateOf(selectedBot.value) : null));
+/** Resume continues a paused or interrupted run until its saved end; an ended run starts again. */
+const canContinueSelected = computed(() =>
+  ['paused', 'continuing', 'password', 'wallet'].includes(selectedRun.value ?? '')
+);
+/** The consent dialog was opened to continue the selected run, not to start a new one. */
+const continueMode = ref(false);
 const goalOrderSnapshots = ref<Record<string, BotOrder[] | null | undefined>>({});
 let goalOrderRead = 0;
 const selectedGoalResearch = computed(
@@ -1445,8 +1494,34 @@ function runtimePresentation(bot: BotDefinition): { state: BotDefinition['status
   if (pauseReasons[bot.id]) {
     return { state: 'paused', detail: t(`bots.uxWorkspace.${pauseReasons[bot.id]}Resume`) };
   }
-  const manualPause = bot.activity.find((event) => event.kind === 'status')?.message === 'bots.events.paused';
-  return { state: 'paused', detail: t(`bots.uxWorkspace.${manualPause ? 'manualPause' : 'sessionInactive'}`) };
+  return runPresentation(bot);
+}
+
+/** Paused, interrupted and finished runs, in the same words as the top bar. */
+function runPresentation(bot: BotDefinition): { state: BotDefinition['status']; detail: string } {
+  const until = bot.sessionExpiresAt ? time(bot.sessionExpiresAt) : '';
+  switch (runs.stateOf(bot)) {
+    case 'elsewhere':
+      return { state: 'running', detail: t('bots.runs.state.elsewhere') };
+    case 'continuing':
+      return { state: 'paused', detail: t('bots.runs.detail.continuing', { time: until }) };
+    case 'password':
+      return { state: 'paused', detail: t('bots.runs.detail.password', { time: until }) };
+    case 'wallet':
+      return {
+        state: 'paused',
+        detail: t('bots.runs.detail.wallet', {
+          account: `${bot.account.slice(0, 6)}…${bot.account.slice(-4)}`,
+          time: until,
+        }),
+      };
+    case 'paused':
+      return { state: 'paused', detail: t('bots.runs.detail.paused', { time: until }) };
+    case 'ended':
+      return { state: 'paused', detail: t('bots.runs.detail.ended') };
+    default:
+      return { state: 'paused', detail: t('bots.runs.detail.open') };
+  }
 }
 
 /** Remember the observed cause for currently running bots; execution and revocation remain controller-owned. */
@@ -1602,9 +1677,9 @@ async function startQuant(payload: QuantDeployPayload): Promise<void> {
     startIntent.value.quant = { symbol: payload.bot.assetOut.symbol, cadence: payload.cadence };
   await pending;
 }
-/** Paper trading keeps the selected rules and research provenance without any signing authority. */
+/** Paper trading keeps the selected rules, run length and research provenance without any signing authority. */
 async function paperQuant(payload: QuantDeployPayload): Promise<void> {
-  await savePlayground(payload.bot, payload.settings, payload.research);
+  await savePlayground(payload.bot, payload.settings, payload.research, payload.sessionDurationMs);
 }
 /** Open Swap prefilled with XOR → token; the cached swap pair is set first so it cannot override the link. */
 async function openSwap(assetAddress: string): Promise<void> {
@@ -1838,6 +1913,7 @@ function openModal(kind: Exclude<typeof modal.value, ''>): void {
   apiKey.value = '';
   resetProviderDiscovery();
   consented.value = false;
+  continueMode.value = false;
   modal.value = kind;
   void nextTick(() => dialog.value?.focus());
 }
@@ -1850,6 +1926,7 @@ function closeModal(): void {
   password.value = '';
   apiKey.value = '';
   consented.value = false;
+  continueMode.value = false;
   previousFocus?.focus();
 }
 /** Cancel session authority while an asynchronous dialog action is still pending. */
@@ -1929,9 +2006,15 @@ async function submitGoal(value: Omit<BotDraft, 'strategyKind' | 'goal'> & BotGo
 async function savePlayground(
   bot: BotDefinition,
   settings: PlaygroundSettings,
-  research?: import('../types').BotResearchSnapshot
+  research?: import('../types').BotResearchSnapshot,
+  sessionDurationMs?: number
 ): Promise<void> {
-  if (await run(() => createPaperBot(bot, { thresholdPercent: settings.thresholdPercent, research }))) {
+  const options = {
+    thresholdPercent: settings.thresholdPercent,
+    research,
+    ...(sessionDurationMs !== undefined ? { sessionDurationMs } : {}),
+  };
+  if (await run(() => createPaperBot(bot, options))) {
     await router.push(botWorkspaceLocation('bots', { botId: selectedId.value }));
     loadEditor();
     await nextTick();
@@ -1975,6 +2058,21 @@ async function requestStart(): Promise<void> {
   if (selectedBot.value.mode === 'live') openModal('consent');
   else await run(() => startBot(selectedBot.value!.id, {}));
 }
+/**
+ * Continue the selected run until its saved end. Paper bots and connected external-wallet bots
+ * continue at once (the wallet still approves each swap). Other live bots confirm in the consent
+ * dialog, which also offers Connect account when no wallet is connected.
+ */
+async function requestResume(): Promise<void> {
+  const bot = selectedBot.value;
+  if (!bot) return;
+  if (bot.mode === 'paper' || (walletConnected.value && externalWallet.value)) {
+    await run(() => startBot(bot.id, { continueRun: true }));
+    return;
+  }
+  openModal('consent');
+  continueMode.value = true;
+}
 /** Explicit consent saves this exact draft once, then starts the existing bounded live executor. */
 async function submitConsent(): Promise<void> {
   if (
@@ -2005,6 +2103,7 @@ async function submitConsent(): Promise<void> {
     await startBot(id, {
       ...(externalWallet.value ? {} : { password: secret }),
       ...(intent ? { expectedConnection: intent.identity } : {}),
+      ...(!intent && continueMode.value ? { continueRun: true } : {}),
     });
     if (intent && version === startIntentVersion) {
       await router.push(botWorkspaceLocation('bots', { botId: id }));
@@ -2307,6 +2406,44 @@ onUnmounted(() => {
       font-weight: 650;
     }
   }
+}
+/* Your bots: the same run list as the top bar, first on the page when bots run or wait. */
+.bots-runs {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 24px;
+  padding: 18px 20px;
+  border-radius: 24px;
+  background: var(--bot-surface);
+  box-shadow: var(--bot-shadow-raised);
+}
+.bots-runs-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px 16px;
+  h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 800;
+  }
+}
+.bots-runs-manage {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--bot-accent);
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+.bots-runs-note {
+  margin: 0;
+  max-width: 90ch;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--bot-muted);
 }
 .bots-page .browser-notice {
   margin: 0 0 8px;

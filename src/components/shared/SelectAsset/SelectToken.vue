@@ -512,7 +512,8 @@ const handleAfterOpen = () => {
   border: 0 solid var(--s-color-base-border-primary);
   @include focus-outline($focusWithin: true, $withOffset: true);
 
-  &.s-focused {
+  // The field always carries a thin outline as part of its look; focus replaces it with the shared focus ring.
+  &.s-focused:not(:focus-within) {
     outline: 1px solid var(--s-color-outline);
     outline-offset: -1px;
   }

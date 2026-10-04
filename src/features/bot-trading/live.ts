@@ -79,7 +79,11 @@ export interface BotFundingPreview {
 }
 export interface BotLiveExecutor {
   previewAllocation(bot: BotDefinition): Promise<BotFundingPreview>;
-  authorize(bot: BotDefinition, password?: string): Promise<void>;
+  /**
+   * Grant a live session. `endsAt` continues an earlier run until its saved end; the session is
+   * then never longer than a fresh grant, and an end already passed is refused.
+   */
+  authorize(bot: BotDefinition, password?: string, options?: { endsAt?: number }): Promise<void>;
   /** One built-in-wallet unlock for a fixed reviewed campaign of at most three bots. */
   authorizeCampaign(campaignId: string, password: string): Promise<void>;
   stopCampaign(campaignId: string): Promise<void>;
@@ -598,7 +602,8 @@ export function createBotLiveExecutor(
     bot: BotDefinition,
     password?: string,
     campaignGrant?: NonNullable<DiscoveryCampaign['grant']>,
-    campaignSigner?: SessionSigner
+    campaignSigner?: SessionSigner,
+    endsAt?: number
   ): Promise<void> =>
     exclusive(keyFor(bot), async () => {
       // New-protocol records require their own qualification and exact-ledger executor before wallet access.
@@ -620,7 +625,11 @@ export function createBotLiveExecutor(
         const source = deps.agent.status().wallet.source;
         const next = JSON.parse(JSON.stringify(bot)) as BotDefinition;
         next.status = 'running';
-        next.sessionExpiresAt = campaignGrant?.expiresAt ?? deps.now() + bot.policy.sessionDurationMs;
+        const fresh = deps.now() + bot.policy.sessionDurationMs;
+        if (endsAt !== undefined && (!Number.isSafeInteger(endsAt) || endsAt <= deps.now()))
+          throw new Error('bots.errors.session');
+        // A continued run keeps its saved end, never later than a fresh grant would allow.
+        next.sessionExpiresAt = campaignGrant?.expiresAt ?? (endsAt === undefined ? fresh : Math.min(endsAt, fresh));
         const sessionBase: BotSession = {
           botId: bot.id,
           account: bot.account,
@@ -980,10 +989,10 @@ export function createBotLiveExecutor(
       hasGoalExecutionMarker(bot)
         ? dispatchGoal(bot, (executor, valid) => executor.previewAllocation(valid))
         : previewAllocation(bot),
-    authorize: (bot, password) =>
+    authorize: (bot, password, options) =>
       hasGoalExecutionMarker(bot)
         ? dispatchGoal(bot, (executor, valid) => executor.authorize(valid, password), true)
-        : authorize(bot, password),
+        : authorize(bot, password, undefined, undefined, options?.endsAt),
     authorizeCampaign,
     stopCampaign,
     execute: async (bot, proposal) => {

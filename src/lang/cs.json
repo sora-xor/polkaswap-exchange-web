@@ -722,7 +722,9 @@
             "storage": "Spolehlivé úložiště prohlížeče nebo zámek vykonávání není dostupný. Skutečné obchodování bylo zastaveno.",
             "strategy": "Zkontrolujte částku, interval, práh a období indikátorů strategie.",
             "transaction": "Transakce selhala. Případný účtovaný síťový poplatek je v evidenci.",
-            "wallet": "Připojte odpovídající peněženku a odemkněte stávající účet."
+            "wallet": "Připojte odpovídající peněženku a odemkněte stávající účet.",
+            "elsewhere": "Tento bot běží v jiné kartě Polkaswap. Použijte tu kartu, nebo ji nejdřív zavřete.",
+            "runEnded": "Tato relace skončila. Spusťte místo toho novou relaci."
         },
         "events": {
             "aiRequired": "Čekání na návrh AI",
@@ -745,7 +747,8 @@
             "status": "Stav",
             "threshold": "Cenový práh dosažen",
             "trade": "Směna",
-            "warmup": "Shromažďování uzavřených svíček"
+            "warmup": "Shromažďování uzavřených svíček",
+            "continued": "Relace obnovena"
         },
         "export": "Exportovat",
         "externalSigning": "Externí peněženka požádá o podpis každého obchodu.",
@@ -1288,7 +1291,9 @@
             },
             "session": {
                 "label": "Doba běhu",
-                "option": "{count} d"
+                "option": "{count} d",
+                "note": "Bot obchoduje, jen dokud tato karta zůstane otevřená. Zavření karty ho pozastaví, dokud se nevrátíte.",
+                "rare": "V testu nakupoval zhruba jednou za {days} dní, takže relace na {count} dní nemusí obchodovat vůbec."
             },
             "signal": {
                 "entry": "Nákupní zóna",
@@ -1323,7 +1328,25 @@
             "thinNote": "V poolu je asi {depth} XOR, na obchod za 2 XOR je to příliš málo.",
             "title": "Hotoví boti",
             "trades": "Obchody",
-            "watchNote": "V testech žádné pravidlo nevydělalo, proto pro tento trh zatím bot není."
+            "watchNote": "V testech žádné pravidlo nevydělalo, proto pro tento trh zatím bot není.",
+            "test": {
+                "title": "Minulý test, {start} – {end} ({days} dní)",
+                "bot": "Tento bot",
+                "growth": "Z {start} XOR se stalo {end} XOR",
+                "hold": "Místo toho držet {symbol}",
+                "unit": "Všechny výsledky jsou v XOR, ne v {symbol} ani v amerických dolarech.",
+                "holdBetter": "Prosté držení {symbol} si v tomto testu vedlo lépe.",
+                "botBetter": "Bot si vedl lépe než prosté držení {symbol}."
+            },
+            "now": {
+                "title": "Právě teď",
+                "entry": "Cena je {value} oproti průměru za {window} h, za nákupní hranicí {threshold}. Běžící bot by teď nakoupil.",
+                "exit": "Cena je {value} oproti průměru za {window} h, v prodejní zóně. Běžící bot by prodal držené {symbol}.",
+                "neutralBelow": "Cena je {value} oproti průměru za {window} h. Bot nakupuje při {threshold} nebo níž.",
+                "neutralAbove": "Cena je {value} oproti průměru za {window} h. Bot nakupuje při {threshold} nebo výš.",
+                "warmup": "Zatím není dost aktuálních cen na ověření pravidla.",
+                "unavailable": "Aktuální ceny teď nejsou k dispozici."
+            }
         },
         "studio": {
             "botName": "{idea} · {symbol}",
@@ -2093,7 +2116,38 @@
         },
         "walletPassword": "Heslo stávající peněženky",
         "workspace": "Obchodní pracovní plocha",
-        "yourBots": "Moji boti"
+        "yourBots": "Moji boti",
+        "runs": {
+            "title": "Vaši boti",
+            "manage": "Otevřít Moji boti",
+            "none": "Žádný bot neběží ani nečeká.",
+            "keepOpen": "Boti běží, jen dokud je Polkaswap otevřený v této kartě. Karta může zůstat na pozadí. Když ji zavřete, boti se pozastaví, dokud se nevrátíte.",
+            "controls": "Pozastavení zachová relaci, takže ji můžete obnovit. Zastavení ji ukončí. Ani jedno neprodává vaše tokeny.",
+            "running": "Běžící boti: {count}",
+            "waiting": "Boti čekající na vás: {count}",
+            "paused": "Pozastavení boti: {count}",
+            "result": "Zatím, v {symbol}:",
+            "continue": "Pokračovat",
+            "open": "Otevřít bota",
+            "runsUntil": "Běží do",
+            "consentExternal": "Bot běží, jen dokud je tato karta otevřená. Když kartu zavřete, bot se pozastaví. Až znovu otevřete Polkaswap s tímto účtem, bude pokračovat do konce této relace a peněženka vás dál požádá o schválení každého swapu.",
+            "consentInternal": "Bot běží, jen dokud je tato karta otevřená. Když kartu zavřete, bot zůstane pozastavený, dokud znovu neotevřete Polkaswap a nezadáte heslo k peněžence. Nikdy neběží déle než do konce této relace.",
+            "state": {
+                "elsewhere": "Běží v jiné kartě",
+                "continuing": "Pokračuje",
+                "pausedByYou": "Pozastaveno vámi"
+            },
+            "detail": {
+                "until": "do {time}",
+                "continuing": "Znovu se spustí v této kartě a poběží do {time}.",
+                "password": "Zadejte heslo k peněžence, abyste pokračovali do {time}. Polkaswap ho nikdy neukládá.",
+                "wallet": "Připojte účet {account}, abyste pokračovali do {time}.",
+                "open": "Otevřete bota, abyste pokračovali.",
+                "paused": "Obnovte ho, aby běžel do {time}.",
+                "attention": "Otevřete bota a podívejte se, co se pokazilo.",
+                "ended": "Tato relace skončila. Až budete připraveni, spusťte novou."
+            }
+        }
     },
     "bridge": {
         "connectNetworkWallet": "Připojit peněženku {network}",
@@ -2273,6 +2327,7 @@
             "included": "Spálení bylo zahrnuto do bloku. Čekání na konečné potvrzení.",
             "indexingDelayed": "Potvrzení nebo indexování trvá déle, než se očekávalo. Vaše transakce se stále sleduje. Toto spálení nemusíte znovu odesílat.",
             "invalidAmount": "Zadejte kladnou částku XOR s nejvýše 18 desetinnými místy.",
+            "live": "Živě",
             "loading": "Načítání dokončených spálených tokenů pro tuto kampaň…",
             "mainnetOnly": "Tato kampaň je dostupná na SORA mainnetu.",
             "notStarted": "Kampaň začíná na blockchainovém bloku 27,720,478.",
@@ -2963,6 +3018,7 @@
         "Bots": "Obchodní boti",
         "Bridge": "@:bridgeText",
         "Burn": "@:pageTitle.Burn",
+        "burnLive": "@:burnPage.tonswap.live",
         "Explore/Container": "Prozkoumat",
         "Farming": "Zemědělství",
         "OrderBook": "Obchod",
@@ -4976,6 +5032,51 @@
             "privacy": "Vaše preference ochrany osobních údajů prohlížeče tyto počty ponechá mimo.",
             "consent": "Sdílejte souhrnný počet kroků nákupu a pomozte tak zlepšit službu Koupit XOR. Nejsou odesílány žádné adresy peněženky, částky ani transakční hash.",
             "unavailable": "Počty kroků se nepodařilo odeslat. Váš nákup není ovlivněn."
+        },
+        "start": {
+            "cardHint": "Debetní nebo kreditní karta",
+            "crypto": "Krypto",
+            "cryptoHint": "ETH, USDT nebo DAI na Ethereu",
+            "ton": "USDT na TON (3 peněženky)",
+            "youGet": "Získáte",
+            "cardFees": "Poplatky sítě Ethereum se strhnou z ETH, které koupíte. Částku po poplatcích uvidíte před zaplacením.",
+            "cryptoFees": "Nechte si v peněžence trochu ETH na poplatky sítě Ethereum.",
+            "max": "Maximum na jeden nákup právě teď: asi {amount}.",
+            "useMax": "Použít maximum",
+            "maxNote": "Trh s XOR na SORA je malý. Větší nákupy by příliš pohnuly cenou, proto jsou blokované.",
+            "tooBig": "Příliš mnoho pro trh SORA v tuto chvíli. Najednou můžete koupit nejvýše asi {amount}.",
+            "tooBigUnknown": "Příliš mnoho pro trh SORA v tuto chvíli. Zkuste menší částku.",
+            "conversionTooBig": "Převod takové částky na DAI by stál příliš mnoho hodnoty. Zkuste menší částku.",
+            "cardMinimum": "Minimum pro platbu kartou je {amount}.",
+            "cardBlocked": "Platby kartou začínají na {minimum}, ale trh SORA teď zvládne jen asi {maximum}. Zaplaťte kryptem, nebo to zkuste později.",
+            "useCrypto": "Zaplatit kryptem",
+            "tooSmall": "Příliš málo: síťový poplatek by spotřeboval vše. Zkuste vyšší částku.",
+            "noCardPrice": "MoonPay nevrátil cenu. Přesto můžete pokračovat: MoonPay ukáže konečnou cenu před zaplacením.",
+            "noPrice": "Cenu se teď nepodařilo získat. Zkuste to znovu za minutu.",
+            "connecting": "Připojování k SORA…",
+            "nativeTon": "Běžný TON zde není podporován. Nejprve ho vyměňte za USDT na TON.",
+            "useUsdt": "Zaplatit raději v USDT",
+            "next": "Co bude dál",
+            "steps": {
+                "walletsEthereum": "Připojte peněženku Ethereum, například MetaMask, a peněženku SORA. Peněženku SORA můžete vytvořit na další obrazovce.",
+                "walletSora": "Připojte svou peněženku SORA.",
+                "walletsTon": "Připojte své peněženky TON, Ethereum a SORA.",
+                "card": "Zaplaťte kartou v MoonPay. MoonPay pošle ETH do vaší peněženky Ethereum.",
+                "ton": "Přesuňte své USDT z TON na Ethereum v aplikaci poskytovatele.",
+                "convert": "V peněžence Ethereum schvalte směnu na DAI a převod na SORA.",
+                "transfer": "V peněžence Ethereum schvalte převod svých DAI na SORA.",
+                "swap": "V peněžence SORA schvalte směnu na XOR. Vaše XOR dorazí do této peněženky."
+            },
+            "stepsNote": "Nic se neodešle, dokud to neschválíte. Převody mezi sítěmi mohou trvat několik minut.",
+            "otherWays": "Další způsoby platby:",
+            "inProgress": "Máte rozpracovaný nákup: {amount}."
+        },
+        "card": {
+            "description": "Zaplaťte kartou v MoonPay. MoonPay pošle ETH do vaší peněženky Ethereum a další kroky z něj udělají XOR.",
+            "copy": "Zkopírujte svou adresu Ethereum:",
+            "paste": "Otevřete MoonPay. Až se zeptá na adresu peněženky, vložte tuto. Nepoužívejte svou adresu SORA.",
+            "return": "Dokončete platbu v MoonPay a pak se vraťte na tuto stránku.",
+            "open": "Zkopírovat adresu a otevřít MoonPay"
         }
     }
 }

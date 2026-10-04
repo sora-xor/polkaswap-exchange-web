@@ -48,6 +48,9 @@ vi.mock('@/components/App/Footer/Indexer/SelectIndexer.vue', () => ({ default: {
 vi.mock('@/features/bridge/components/TransferNotification.vue', () => ({
   default: { name: 'BridgeTransferNotificationComponent' },
 }));
+vi.mock('@/features/bot-trading/components/BotRunsButton.vue', () => ({
+  default: { name: 'BotRunsButtonComponent' },
+}));
 vi.mock('@/lib/soraneo-wallet/src/components/ConfirmDialog.vue', () => ({
   default: { name: 'ConfirmDialogComponent' },
 }));
@@ -106,6 +109,7 @@ describe('app shell async components', () => {
       ['SelectNodeDialog', shellComponents.SelectNodeDialog, 'SelectNodeDialogComponent'],
       ['SelectIndexer', shellComponents.SelectIndexer, 'SelectIndexerComponent'],
       ['BridgeTransferNotification', shellComponents.BridgeTransferNotification, 'BridgeTransferNotificationComponent'],
+      ['BotRunsButton', shellComponents.BotRunsButton, 'BotRunsButtonComponent'],
       ['ConfirmDialog', shellComponents.ConfirmDialog, 'ConfirmDialogComponent'],
       ['NotificationEnablingPage', shellComponents.NotificationEnablingPage, 'NotificationEnablingPageComponent'],
       ['ReferralsConfirmInviteUser', shellComponents.ReferralsConfirmInviteUser, 'ReferralsConfirmInviteUserComponent'],

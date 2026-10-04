@@ -698,6 +698,7 @@
             "busy": "This wallet or workspace is already processing an action.",
             "config": "Check the strategy settings and trading allocation.",
             "denomination": "This historical range cannot be verified across token redenominations. Choose a supported range or use paper trading.",
+            "elsewhere": "This bot is running in another Polkaswap tab. Use that tab or close it first.",
             "endpoint": "Use an HTTPS bot endpoint without embedded credentials, query parameters, or fragments.",
             "feeBudget": "The network fee allowance cannot cover this trade.",
             "goal": "Check the goal target, loss threshold, and time horizon.",
@@ -716,6 +717,7 @@
             "provider": "The AI connection failed or returned an invalid response. Check the connection before restarting.",
             "quote": "A fresh executable route and network fee estimate are required.",
             "receipt": "The finalized transaction could not be reconciled. Its allocation remains reserved.",
+            "runEnded": "This run has ended. Start a new run instead.",
             "session": "The trading session is inactive, expired, or no longer matches this wallet.",
             "stale": "Market data is missing or too old. Trading is paused until fresh data is available.",
             "stopToEdit": "Stop the bot before changing its strategy or limits.",
@@ -727,6 +729,7 @@
         "events": {
             "aiRequired": "Waiting for an AI proposal",
             "confirmed": "Swap finalized",
+            "continued": "Run continued",
             "crossover": "Moving averages crossed",
             "error": "Error",
             "hold": "Skipped",
@@ -1264,6 +1267,15 @@
                 "summary": "{robust} passed · {killed} rejected",
                 "title": "Strategies tested"
             },
+            "now": {
+                "entry": "Price is {value} vs its {window}h average, past the {threshold} buy trigger. A running bot would buy now.",
+                "exit": "Price is {value} vs its {window}h average, in the sell zone. A running bot would sell any {symbol} it holds.",
+                "neutralAbove": "Price is {value} vs its {window}h average. The bot buys at {threshold} or higher.",
+                "neutralBelow": "Price is {value} vs its {window}h average. The bot buys at {threshold} or lower.",
+                "title": "Right now",
+                "unavailable": "Recent prices are not available right now.",
+                "warmup": "Not enough recent prices to check the rule yet."
+            },
             "otherMarkets": "Other markets",
             "paper": "Paper trade",
             "pipeline": "Research pipeline",
@@ -1288,7 +1300,9 @@
             },
             "session": {
                 "label": "Run for",
-                "option": "{count}d"
+                "note": "The bot trades only while this tab stays open. Closing the tab pauses it until you come back.",
+                "option": "{count}d",
+                "rare": "In the test it bought about once every {days} days, so a {count}-day run may not trade at all."
             },
             "signal": {
                 "entry": "Buy zone",
@@ -1320,6 +1334,15 @@
                 }
             },
             "swap": "Swap XOR → {symbol}",
+            "test": {
+                "bot": "This bot",
+                "botBetter": "The bot did better than just holding {symbol}.",
+                "growth": "{start} XOR became {end} XOR",
+                "hold": "Holding {symbol} instead",
+                "holdBetter": "Just holding {symbol} did better in this test.",
+                "title": "Past test, {start} – {end} ({days} days)",
+                "unit": "All results are in XOR, not in {symbol} or US dollars."
+            },
             "thinNote": "The pool holds about {depth} XOR, too little for a 2 XOR trade.",
             "title": "Ready-made bots",
             "trades": "Trades",
@@ -1612,6 +1635,37 @@
             "why": "Idea, limitations & sources"
         },
         "runBacktest": "Run backtest",
+        "runs": {
+            "consentExternal": "The bot runs only while this tab is open. If you close the tab, the bot pauses. When you open Polkaswap again with this account, it continues until this run ends, and your wallet still asks you to approve each swap.",
+            "consentInternal": "The bot runs only while this tab is open. If you close the tab, the bot pauses until you open Polkaswap again and enter your wallet password. It never runs past the end of this run.",
+            "continue": "Continue",
+            "controls": "Pause keeps the run so you can resume it. Stop ends it. Neither sells your tokens.",
+            "detail": {
+                "attention": "Open the bot to see what went wrong.",
+                "continuing": "Starts again in this tab and runs until {time}.",
+                "ended": "This run has ended. Start a new run when you are ready.",
+                "open": "Open the bot to continue.",
+                "password": "Enter your wallet password to continue until {time}. Polkaswap never saves it.",
+                "paused": "Resume to run it until {time}.",
+                "until": "until {time}",
+                "wallet": "Connect account {account} to continue until {time}."
+            },
+            "keepOpen": "Bots run only while Polkaswap is open in this tab. The tab can stay in the background. If you close it, bots pause until you come back.",
+            "manage": "Open My Bots",
+            "none": "No bots are running or waiting.",
+            "open": "Open bot",
+            "paused": "Bots paused: {count}",
+            "result": "So far, in {symbol}:",
+            "running": "Bots running: {count}",
+            "runsUntil": "Runs until",
+            "state": {
+                "continuing": "Continuing",
+                "elsewhere": "Running in another tab",
+                "pausedByYou": "Paused by you"
+            },
+            "title": "Your bots",
+            "waiting": "Bots need you: {count}"
+        },
         "sameWallet": "Your wallet. Your keys.",
         "sameWalletNote": "Trade from your existing account. No new wallet or recovery key.",
         "saveSettings": "Save settings",
@@ -2290,6 +2344,7 @@
                 "terms": "Campaign details and claim terms",
                 "total": "XOR needed, including burn fee"
             },
+            "live": "Live",
             "loading": "Loading finalized campaign burns…",
             "mainnetOnly": "This campaign is available on SORA mainnet.",
             "notStarted": "The campaign starts at block 27,720,478.",
@@ -2351,6 +2406,13 @@
     },
     "buyXor": {
         "bridgePreparationError": "This funding route could not be prepared. Check your network and wallet connection, then return to Buy XOR to try again.",
+        "card": {
+            "copy": "Copy your Ethereum address:",
+            "description": "Pay by card in MoonPay. MoonPay sends ETH to your Ethereum wallet, and the next steps turn it into XOR.",
+            "open": "Copy address and open MoonPay",
+            "paste": "Open MoonPay. When it asks for a wallet address, paste this one. Do not use your SORA address.",
+            "return": "Finish paying in MoonPay, then come back to this page."
+        },
         "cardDestinationNote": "Use this Ethereum address at checkout. Your SORA receiving wallet is a different address.",
         "cardRouteNotice": "Your card buys ETH through MoonPay. You then convert and transfer funds to SORA, and swap to XOR.",
         "claimWallet": "SORA receiving wallet",
@@ -2399,6 +2461,44 @@
             "ethereum": "ETH or USDT on Ethereum mainnet → DAI → transfer to SORA → XOR in your wallet. Existing Ethereum DAI skips conversion. Keep ETH for network fees.",
             "sora": "DAI in your SORA wallet → swap to XOR. The estimate accounts for the SORA swap fee.",
             "ton": "Native TON first needs an external TON-to-USDT swap. USDT on TON → ETH on Ethereum through Symbiosis → DAI → transfer to SORA → XOR in your wallet. The provider handles the TON transfer and its recovery. Keep TON and ETH for network fees."
+        },
+        "start": {
+            "cardBlocked": "Card payments start at {minimum}, but the SORA market can take only about {maximum} right now. Pay with crypto, or try again later.",
+            "cardFees": "Ethereum network fees come out of the ETH you buy. We show the amount after fees before you pay.",
+            "cardHint": "Debit or credit card",
+            "cardMinimum": "The card minimum is {amount}.",
+            "connecting": "Connecting to SORA…",
+            "conversionTooBig": "Converting this much to DAI would lose too much value. Try a smaller amount.",
+            "crypto": "Crypto",
+            "cryptoFees": "Keep a little ETH in your wallet for Ethereum network fees.",
+            "cryptoHint": "ETH, USDT or DAI on Ethereum",
+            "inProgress": "You have a purchase in progress: {amount}.",
+            "max": "Max per purchase right now: about {amount}.",
+            "maxNote": "The XOR market on SORA is small. Larger purchases would move the price too much, so they are blocked.",
+            "nativeTon": "Plain TON is not supported here. Swap it to USDT on TON first.",
+            "next": "What happens next",
+            "noCardPrice": "MoonPay did not return a price. You can still continue: MoonPay shows the final price before you pay.",
+            "noPrice": "We could not get a price right now. Try again in a minute.",
+            "otherWays": "Other ways to pay:",
+            "steps": {
+                "card": "Pay by card in MoonPay. MoonPay sends ETH to your Ethereum wallet.",
+                "convert": "In your Ethereum wallet, approve the swap to DAI and the transfer to SORA.",
+                "swap": "In your SORA wallet, approve the swap to XOR. Your XOR arrives in that wallet.",
+                "ton": "Move your USDT from TON to Ethereum in the provider’s app.",
+                "transfer": "In your Ethereum wallet, approve the transfer of your DAI to SORA.",
+                "walletsEthereum": "Connect an Ethereum wallet, like MetaMask, and a SORA wallet. You can create a SORA wallet on the next screen.",
+                "walletSora": "Connect your SORA wallet.",
+                "walletsTon": "Connect your TON, Ethereum and SORA wallets."
+            },
+            "stepsNote": "Nothing is sent until you approve it. Transfers between networks can take several minutes.",
+            "ton": "USDT on TON (3 wallets)",
+            "tooBig": "Too large for the SORA market right now. The most you can buy at once is about {amount}.",
+            "tooBigUnknown": "Too large for the SORA market right now. Try a smaller amount.",
+            "tooSmall": "Too small: the network fee would use it all. Try a larger amount.",
+            "useCrypto": "Pay with crypto",
+            "useMax": "Use max",
+            "useUsdt": "Pay with USDT instead",
+            "youGet": "You get"
         },
         "stepsLabel": "Buy XOR steps",
         "subtitle": "Get XOR into your SORA wallet using card or crypto.",
@@ -3596,6 +3696,7 @@
         "Bots": "Bots",
         "Bridge": "@:bridgeText",
         "Burn": "@:pageTitle.Burn",
+        "burnLive": "@:burnPage.tonswap.live",
         "BuyXor": "@:pageTitle.BuyXor",
         "Explore/Container": "Explore",
         "Farming": "Farming",

@@ -156,6 +156,15 @@ vi.mock('@/features/misc/components/burn/GetTsPlanPreview.vue', () => ({
     template: '<div />',
   },
 }));
+vi.mock('@/features/misc/components/buy-xor/BuyXorQuickStart.vue', () => ({
+  default: {
+    name: 'BuyXorQuickStart',
+    props: ['source', 'amount', 'paymentAsset', 'canContinue', 'locked'],
+    emits: ['selectSource', 'update:amount', 'update:paymentAsset', 'preview', 'continue'],
+    setup: () => ({ focus: vi.fn() }),
+    template: '<div />',
+  },
+}));
 vi.mock('@/features/misc/components/burn/GetTsConversionRecovery.vue', () => ({
   default: {
     name: 'GetTsConversionRecovery',
@@ -316,8 +325,17 @@ describe('Get TS checkout', () => {
       const before = JSON.stringify(shared.ctx!.plan.value);
       const w = mountPage({ purpose });
       expect(w.findComponent({ name: 'GetTsPlanPreview' }).exists()).toBe(false);
-      expect(w.get('[data-source="card"]').attributes('disabled')).toBeDefined();
-      await w.get('[data-source="card"]').trigger('click');
+      if (purpose === 'xor') {
+        const start = w.getComponent({ name: 'BuyXorQuickStart' });
+        expect(start.props()).toMatchObject({ locked: true, source: 'ethereum', amount: '0.01' });
+        start.vm.$emit('selectSource', 'card');
+        start.vm.$emit('update:amount', '0.5');
+        start.vm.$emit('update:paymentAsset', 'USDT');
+        await flushPromises();
+      } else {
+        expect(w.get('[data-source="card"]').attributes('disabled')).toBeDefined();
+        await w.get('[data-source="card"]').trigger('click');
+      }
       expect(JSON.stringify(shared.ctx!.plan.value)).toBe(before);
       shared.ctx!.route.query = { source: 'card', step: 'fund' };
       await flushPromises();
@@ -1028,17 +1046,19 @@ describe('Get TS checkout', () => {
     await button(w, 'getTs.continuePlan').trigger('click');
     expect(w.get('.get-ts__estimate').text()).toContain('getTs.preview.beforeGasTs');
   });
-  it('offers a general XOR purchase without campaign branding or an existing-XOR payment route', async () => {
+  it('offers a general XOR purchase on the start screen without campaign branding or an existing-XOR route', async () => {
     setup('card', 'source');
     const w = mountPage({ purpose: 'xor' });
     expect(w.get('h1').text()).toBe('buyXor.title');
     expect(w.get('.get-ts__brand').text()).toBe('POLKASWAP · XOR');
     expect(w.find('a[href="https://tonswap.org/ts"]').exists()).toBe(false);
     expect(w.find('[data-source="xor"]').exists()).toBe(false);
-    expect(w.text()).toContain('getTs.onboarding.cardRoute');
-    expect(w.text()).toContain('getTs.onboarding.twoWallets');
-    expect(w.findComponent({ name: 'GetTsPlanPreview' }).props('purpose')).toBe('xor');
-    w.findComponent({ name: 'GetTsPlanPreview' }).vm.$emit('preview', {
+    expect(w.findComponent({ name: 'GetTsPlanPreview' }).exists()).toBe(false);
+    expect(w.findComponent({ name: 'GetTsRouteRequirements' }).exists()).toBe(false);
+    expect(w.get('.get-ts__layout').classes()).toContain('get-ts__layout--quick');
+    const start = w.getComponent({ name: 'BuyXorQuickStart' });
+    expect(start.props()).toMatchObject({ source: 'card', amount: '100', paymentAsset: 'USD', locked: false });
+    start.vm.$emit('preview', {
       purpose: 'xor',
       state: 'ready',
       feasible: true,
@@ -1052,7 +1072,9 @@ describe('Get TS checkout', () => {
     });
     await flushPromises();
     expect(shared.ctx!.plan.value.xorAmount).toBe('10');
-    await button(w, 'getTs.continuePlan').trigger('click');
+    expect(start.props('canContinue')).toBe(true);
+    start.vm.$emit('continue');
+    await flushPromises();
     expect(shared.ctx!.router.replace).toHaveBeenLastCalledWith({
       path: '/buy-xor',
       query: { source: 'card', step: 'wallets' },
@@ -1087,7 +1109,8 @@ describe('Get TS checkout', () => {
     setup('card', 'source');
     const w = mountPage({ purpose: 'xor' });
     const previousAmount = shared.ctx!.plan.value.xorAmount;
-    w.findComponent({ name: 'GetTsPlanPreview' }).vm.$emit('preview', {
+    const start = w.getComponent({ name: 'BuyXorQuickStart' });
+    start.vm.$emit('preview', {
       purpose: 'ts',
       state: 'ready',
       feasible: true,
@@ -1101,8 +1124,96 @@ describe('Get TS checkout', () => {
     });
     await flushPromises();
     expect(shared.ctx!.plan.value.xorAmount).toBe(previousAmount);
-    await button(w, 'getTs.continuePlan').trigger('click');
+    start.vm.$emit('continue');
+    await flushPromises();
     expect(w.find('.get-ts__estimate').exists()).toBe(false);
+  });
+  it('routes Buy XOR start-screen intents through the existing plan handlers and gate', async () => {
+    setup('card', 'source');
+    const w = mountPage({ purpose: 'xor' });
+    const start = () => w.getComponent({ name: 'BuyXorQuickStart' });
+    start().vm.$emit('selectSource', 'ethereum');
+    await flushPromises();
+    expect(shared.ctx!.route.query).toEqual({ source: 'ethereum', step: 'source' });
+    expect(shared.ctx!.plan.value).toMatchObject({ paymentAsset: 'eth', paymentAmount: '' });
+    start().vm.$emit('update:paymentAsset', 'USDT');
+    start().vm.$emit('update:amount', '25');
+    await flushPromises();
+    expect(shared.ctx!.plan.value).toMatchObject({ paymentAsset: 'usdt-ethereum', paymentAmount: '25' });
+    expect(start().props()).toMatchObject({ source: 'ethereum', amount: '25', paymentAsset: 'USDT' });
+    start().vm.$emit('preview', {
+      purpose: 'xor',
+      state: 'blocked',
+      feasible: false,
+      reason: 'price-impact',
+      source: 'ethereum',
+      paymentAsset: 'USDT',
+      amount: '25',
+    });
+    await flushPromises();
+    expect(start().props('canContinue')).toBe(false);
+    start().vm.$emit('continue');
+    await flushPromises();
+    expect(w.get('.get-ts__workspace').attributes('data-step')).toBe('source');
+    expect(shared.ctx!.moonpay.setDialogVisibility).not.toHaveBeenCalled();
+  });
+  it('resumes an unresolved Buy XOR purchase from the locked start screen', async () => {
+    setup('card', 'source');
+    const hash = '0x' + 'a'.repeat(64);
+    shared.ctx!.plan.value.references.conversion = hash;
+    shared.ctx!.conversionProgress.value = { state: 'pending', reference: hash };
+    const w = mountPage({ purpose: 'xor' });
+    const start = w.getComponent({ name: 'BuyXorQuickStart' });
+    expect(start.props('locked')).toBe(true);
+    start.vm.$emit('continue');
+    await flushPromises();
+    expect(w.get('.get-ts__workspace').attributes('data-step')).toBe('fund');
+    expect(shared.ctx!.moonpay.setDialogVisibility).not.toHaveBeenCalled();
+    expect(shared.ctx!.track).not.toHaveBeenCalled();
+  });
+  it('moves focus to the Buy XOR start screen when returning to the plan', async () => {
+    setup('card', 'wallets');
+    const w = mountPage({ purpose: 'xor' });
+    await w.findAll('.get-ts__phases button')[0].trigger('click');
+    await flushPromises();
+    const start = w.getComponent({ name: 'BuyXorQuickStart' });
+    expect((start.vm as unknown as { focus: ReturnType<typeof vi.fn> }).focus).toHaveBeenCalledWith({
+      preventScroll: true,
+    });
+  });
+  it('walks Buy XOR card buyers through copying the Ethereum address for MoonPay', async () => {
+    setup('card', 'fund');
+    const w = mountPage({ purpose: 'xor' });
+    const steps = w.get('[data-test-name="buyXorCardSteps"]');
+    expect(steps.findAll('li')).toHaveLength(3);
+    expect(steps.get('code').text()).toBe('0x1111111111111111111111111111111111111111');
+    expect(steps.text()).not.toContain('cnSoraAccount');
+    expect(w.find('.get-ts__destination').exists()).toBe(false);
+    await button(w, 'getTs.copyAddress').trigger('click');
+    expect(shared.ctx!.copy).toHaveBeenCalledWith('0x1111111111111111111111111111111111111111', expect.anything());
+    expect(steps.text()).toContain('assets.copied');
+    shared.ctx!.external.evmAddress.value = '0x2222222222222222222222222222222222222222';
+    await flushPromises();
+    expect(w.get('[data-test-name="buyXorCardSteps"]').text()).toContain('getTs.copyAddress');
+    shared.ctx!.copy.mockClear();
+    quote(w);
+    await flushPromises();
+    const open = w.get('[data-test-name="getTsBuyCard"]');
+    expect(open.text()).toBe('buyXor.card.open');
+    await open.trigger('click');
+    expect(shared.ctx!.copy).toHaveBeenCalledWith('0x2222222222222222222222222222222222222222', undefined);
+    expect(shared.ctx!.moonpay.setDialogVisibility).toHaveBeenCalledExactlyOnceWith(true);
+  });
+  it('keeps the Get TS card step and its copy-free MoonPay button unchanged', async () => {
+    setup('card', 'fund');
+    const w = mountPage();
+    expect(w.find('[data-test-name="buyXorCardSteps"]').exists()).toBe(false);
+    expect(w.get('.get-ts__destination code').text()).toBe('0x1111111111111111111111111111111111111111');
+    quote(w);
+    await flushPromises();
+    await w.get('[data-test-name="getTsBuyCard"]').trigger('click');
+    expect(shared.ctx!.copy).not.toHaveBeenCalled();
+    expect(shared.ctx!.moonpay.setDialogVisibility).toHaveBeenCalledExactlyOnceWith(true);
   });
   it('keeps a generic bridge route separate from the TONSWAP campaign', async () => {
     setup('ethereum', 'bridge');

@@ -722,7 +722,9 @@
             "storage": "Không có bộ nhớ trình duyệt đáng tin cậy hoặc khóa thực thi. Giao dịch thật đã dừng.",
             "strategy": "Kiểm tra số lượng, khoảng thời gian, ngưỡng và cửa sổ chỉ báo.",
             "transaction": "Giao dịch thất bại. Phí mạng đã tính được ghi trong sổ giao dịch.",
-            "wallet": "Kết nối ví phù hợp và mở khóa tài khoản hiện tại để bắt đầu."
+            "wallet": "Kết nối ví phù hợp và mở khóa tài khoản hiện tại để bắt đầu.",
+            "elsewhere": "Bot này đang chạy ở một thẻ Polkaswap khác. Hãy dùng thẻ đó hoặc đóng nó trước.",
+            "runEnded": "Phiên này đã kết thúc. Hãy bắt đầu một phiên mới."
         },
         "events": {
             "aiRequired": "Đang chờ đề xuất AI",
@@ -745,7 +747,8 @@
             "status": "Trạng thái",
             "threshold": "Đã đạt ngưỡng giá",
             "trade": "Hoán đổi",
-            "warmup": "Đang thu thập đủ nến đã đóng"
+            "warmup": "Đang thu thập đủ nến đã đóng",
+            "continued": "Đã tiếp tục phiên"
         },
         "export": "Xuất",
         "externalSigning": "Ví bên ngoài sẽ yêu cầu chữ ký cho mỗi giao dịch.",
@@ -1288,7 +1291,9 @@
             },
             "session": {
                 "label": "Chạy trong",
-                "option": "{count} ngày"
+                "option": "{count} ngày",
+                "note": "Bot chỉ giao dịch khi thẻ này còn mở. Đóng thẻ sẽ tạm dừng bot cho đến khi bạn quay lại.",
+                "rare": "Trong thử nghiệm, bot mua khoảng {days} ngày một lần, nên một phiên {count} ngày có thể không giao dịch gì."
             },
             "signal": {
                 "entry": "Vùng mua",
@@ -1323,7 +1328,25 @@
             "thinNote": "Pool có khoảng {depth} XOR, quá ít cho một giao dịch 2 XOR.",
             "title": "Bot dựng sẵn",
             "trades": "Số giao dịch",
-            "watchNote": "Không quy tắc nào có lãi khi thử nghiệm, nên thị trường này chưa có bot."
+            "watchNote": "Không quy tắc nào có lãi khi thử nghiệm, nên thị trường này chưa có bot.",
+            "test": {
+                "title": "Thử nghiệm trước đây, {start} – {end} ({days} ngày)",
+                "bot": "Bot này",
+                "growth": "{start} XOR đã thành {end} XOR",
+                "hold": "Nếu chỉ giữ {symbol}",
+                "unit": "Mọi kết quả đều tính bằng XOR, không phải {symbol} hay đô la Mỹ.",
+                "holdBetter": "Chỉ giữ {symbol} cho kết quả tốt hơn trong thử nghiệm này.",
+                "botBetter": "Bot cho kết quả tốt hơn so với chỉ giữ {symbol}."
+            },
+            "now": {
+                "title": "Ngay lúc này",
+                "entry": "Giá đang ở {value} so với mức trung bình {window} giờ, vượt ngưỡng mua {threshold}. Một bot đang chạy sẽ mua ngay.",
+                "exit": "Giá đang ở {value} so với mức trung bình {window} giờ, trong vùng bán. Một bot đang chạy sẽ bán số {symbol} đang giữ.",
+                "neutralBelow": "Giá đang ở {value} so với mức trung bình {window} giờ. Bot mua ở mức {threshold} hoặc thấp hơn.",
+                "neutralAbove": "Giá đang ở {value} so với mức trung bình {window} giờ. Bot mua ở mức {threshold} hoặc cao hơn.",
+                "warmup": "Chưa đủ giá gần đây để kiểm tra quy tắc.",
+                "unavailable": "Hiện chưa có giá gần đây."
+            }
         },
         "studio": {
             "botName": "{idea} · {symbol}",
@@ -2093,7 +2116,38 @@
         },
         "walletPassword": "Mật khẩu ví hiện tại",
         "workspace": "Không gian giao dịch",
-        "yourBots": "Bot của tôi"
+        "yourBots": "Bot của tôi",
+        "runs": {
+            "title": "Bot của bạn",
+            "manage": "Mở Bot của tôi",
+            "none": "Không có bot nào đang chạy hoặc đang chờ.",
+            "keepOpen": "Bot chỉ chạy khi Polkaswap đang mở trong thẻ này. Thẻ có thể ở chế độ nền. Nếu bạn đóng thẻ, bot sẽ tạm dừng cho đến khi bạn quay lại.",
+            "controls": "Tạm dừng giữ lại phiên để bạn có thể tiếp tục. Dừng sẽ kết thúc phiên. Cả hai đều không bán token của bạn.",
+            "running": "Bot đang chạy: {count}",
+            "waiting": "Bot cần bạn: {count}",
+            "paused": "Bot tạm dừng: {count}",
+            "result": "Đến nay, tính bằng {symbol}:",
+            "continue": "Tiếp tục",
+            "open": "Mở bot",
+            "runsUntil": "Chạy đến",
+            "consentExternal": "Bot chỉ chạy khi thẻ này đang mở. Nếu bạn đóng thẻ, bot sẽ tạm dừng. Khi bạn mở lại Polkaswap bằng tài khoản này, bot sẽ chạy tiếp đến hết phiên này, và ví của bạn vẫn yêu cầu bạn duyệt từng giao dịch hoán đổi.",
+            "consentInternal": "Bot chỉ chạy khi thẻ này đang mở. Nếu bạn đóng thẻ, bot sẽ tạm dừng cho đến khi bạn mở lại Polkaswap và nhập mật khẩu ví. Bot không bao giờ chạy quá thời điểm kết thúc của phiên này.",
+            "state": {
+                "elsewhere": "Đang chạy ở thẻ khác",
+                "continuing": "Đang tiếp tục",
+                "pausedByYou": "Bạn đã tạm dừng"
+            },
+            "detail": {
+                "until": "đến {time}",
+                "continuing": "Khởi động lại trong thẻ này và chạy đến {time}.",
+                "password": "Nhập mật khẩu ví để tiếp tục đến {time}. Polkaswap không bao giờ lưu mật khẩu.",
+                "wallet": "Kết nối tài khoản {account} để tiếp tục đến {time}.",
+                "open": "Mở bot để tiếp tục.",
+                "paused": "Tiếp tục để bot chạy đến {time}.",
+                "attention": "Mở bot để xem lỗi gì đã xảy ra.",
+                "ended": "Phiên này đã kết thúc. Hãy bắt đầu phiên mới khi bạn sẵn sàng."
+            }
+        }
     },
     "bridge": {
         "connectNetworkWallet": "Kết nối ví {network}",
@@ -2273,6 +2327,7 @@
             "included": "Giao dịch đốt đã được đưa vào khối. Đang chờ xác nhận cuối cùng.",
             "indexingDelayed": "Việc xác nhận hoặc lập chỉ mục đang mất nhiều thời gian hơn dự kiến. Giao dịch của bạn vẫn đang được theo dõi. Bạn không cần gửi lại lần đốt này.",
             "invalidAmount": "Nhập số tiền dương XOR với tối đa 18 chữ số thập phân.",
+            "live": "Trực tiếp",
             "loading": "Đang tải quá trình đốt mã thông báo cuối cùng cho chiến dịch này…",
             "mainnetOnly": "Chiến dịch này có sẵn trên mạng chính SORA.",
             "notStarted": "Chiến dịch bắt đầu tại khối blockchain 27,720,478.",
@@ -2963,6 +3018,7 @@
         "Bots": "Bot giao dịch",
         "Bridge": "@:bridgeText",
         "Burn": "@:pageTitle.Burn",
+        "burnLive": "@:burnPage.tonswap.live",
         "Explore/Container": "Khám phá",
         "Farming": "Nông nghiệp ",
         "OrderBook": "Buôn bán",
@@ -4976,6 +5032,51 @@
             "consent": "Chia sẻ tổng số bước mua hàng để giúp cải thiện Mua XOR. Không có địa chỉ ví, số tiền hoặc băm giao dịch nào được gửi.",
             "privacy": "Tùy chọn quyền riêng tư của trình duyệt của bạn sẽ loại bỏ các số liệu này.",
             "unavailable": "Không thể gửi số bước. Việc mua hàng của bạn không bị ảnh hưởng."
+        },
+        "start": {
+            "cardHint": "Thẻ ghi nợ hoặc thẻ tín dụng",
+            "crypto": "Tiền mã hóa",
+            "cryptoHint": "ETH, USDT hoặc DAI trên Ethereum",
+            "ton": "USDT trên TON (3 ví)",
+            "youGet": "Bạn nhận",
+            "cardFees": "Phí mạng Ethereum được trừ vào ETH bạn mua. Chúng tôi hiển thị số tiền sau phí trước khi bạn thanh toán.",
+            "cryptoFees": "Hãy giữ một ít ETH trong ví để trả phí mạng Ethereum.",
+            "max": "Tối đa mỗi lần mua hiện tại: khoảng {amount}.",
+            "useMax": "Dùng mức tối đa",
+            "maxNote": "Thị trường XOR trên SORA còn nhỏ. Các giao dịch mua lớn hơn sẽ làm giá biến động quá nhiều, nên bị chặn.",
+            "tooBig": "Quá lớn đối với thị trường SORA lúc này. Bạn có thể mua tối đa khoảng {amount} một lần.",
+            "tooBigUnknown": "Quá lớn đối với thị trường SORA lúc này. Hãy thử số tiền nhỏ hơn.",
+            "conversionTooBig": "Chuyển đổi nhiều như vậy sang DAI sẽ mất quá nhiều giá trị. Hãy thử số tiền nhỏ hơn.",
+            "cardMinimum": "Mức tối thiểu khi trả bằng thẻ là {amount}.",
+            "cardBlocked": "Thanh toán bằng thẻ bắt đầu từ {minimum}, nhưng thị trường SORA hiện chỉ nhận được khoảng {maximum}. Hãy trả bằng tiền mã hóa hoặc thử lại sau.",
+            "useCrypto": "Trả bằng tiền mã hóa",
+            "tooSmall": "Quá nhỏ: phí mạng sẽ dùng hết. Hãy thử số tiền lớn hơn.",
+            "noCardPrice": "MoonPay không trả về giá. Bạn vẫn có thể tiếp tục: MoonPay hiển thị giá cuối cùng trước khi bạn thanh toán.",
+            "noPrice": "Hiện không lấy được giá. Hãy thử lại sau một phút.",
+            "connecting": "Đang kết nối với SORA…",
+            "nativeTon": "TON thông thường không được hỗ trợ ở đây. Hãy đổi sang USDT trên TON trước.",
+            "useUsdt": "Trả bằng USDT thay thế",
+            "next": "Điều gì xảy ra tiếp theo",
+            "steps": {
+                "walletsEthereum": "Kết nối một ví Ethereum, như MetaMask, và một ví SORA. Bạn có thể tạo ví SORA ở màn hình tiếp theo.",
+                "walletSora": "Kết nối ví SORA của bạn.",
+                "walletsTon": "Kết nối các ví TON, Ethereum và SORA của bạn.",
+                "card": "Thanh toán bằng thẻ trong MoonPay. MoonPay gửi ETH đến ví Ethereum của bạn.",
+                "ton": "Chuyển USDT của bạn từ TON sang Ethereum trong ứng dụng của nhà cung cấp.",
+                "convert": "Trong ví Ethereum, phê duyệt việc đổi sang DAI và chuyển sang SORA.",
+                "transfer": "Trong ví Ethereum, phê duyệt việc chuyển DAI của bạn sang SORA.",
+                "swap": "Trong ví SORA, phê duyệt việc đổi sang XOR. XOR của bạn sẽ về ví đó."
+            },
+            "stepsNote": "Không có gì được gửi cho đến khi bạn phê duyệt. Chuyển tiền giữa các mạng có thể mất vài phút.",
+            "otherWays": "Cách thanh toán khác:",
+            "inProgress": "Bạn có một giao dịch mua đang thực hiện: {amount}."
+        },
+        "card": {
+            "description": "Thanh toán bằng thẻ trong MoonPay. MoonPay gửi ETH đến ví Ethereum của bạn, và các bước tiếp theo sẽ chuyển nó thành XOR.",
+            "copy": "Sao chép địa chỉ Ethereum của bạn:",
+            "paste": "Mở MoonPay. Khi được hỏi địa chỉ ví, hãy dán địa chỉ này. Không dùng địa chỉ SORA của bạn.",
+            "return": "Hoàn tất thanh toán trong MoonPay, rồi quay lại trang này.",
+            "open": "Sao chép địa chỉ và mở MoonPay"
         }
     }
 }

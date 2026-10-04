@@ -722,7 +722,9 @@
             "storage": "無法使用可靠的瀏覽器存儲或執行鎖。實盤交易已停止。",
             "strategy": "請檢查策略數量、間隔、閾值和指標窗口。",
             "transaction": "交易失敗。已收取的網路手續費會計入帳本。",
-            "wallet": "請連接匹配的錢包並解鎖現有帳戶後啓動。"
+            "wallet": "請連接匹配的錢包並解鎖現有帳戶後啓動。",
+            "elsewhere": "此機器人正在另一個 Polkaswap 分頁中執行。請使用那個分頁，或先將其關閉。",
+            "runEnded": "本次工作階段已結束。請改為開始新的工作階段。"
         },
         "events": {
             "aiRequired": "等待 AI 建議",
@@ -745,7 +747,8 @@
             "status": "狀態",
             "threshold": "已達到價格閾值",
             "trade": "兌換",
-            "warmup": "正在收集足夠的已完成 K 線"
+            "warmup": "正在收集足夠的已完成 K 線",
+            "continued": "工作階段已繼續"
         },
         "export": "導出",
         "externalSigning": "您的外部錢包會要求為每筆交易簽名。",
@@ -1288,7 +1291,9 @@
             },
             "session": {
                 "label": "執行期間",
-                "option": "{count}天"
+                "option": "{count}天",
+                "note": "只有此分頁保持開啟時機器人才會交易。關閉分頁會暫停它，直到你回來。",
+                "rare": "測試中它大約每 {days} 天買入一次，因此 {count} 天的工作階段可能完全不交易。"
             },
             "signal": {
                 "entry": "買入區間",
@@ -1323,7 +1328,25 @@
             "thinNote": "此資金池約有 {depth} XOR，不足以進行 2 XOR 的交易。",
             "title": "現成機器人",
             "trades": "交易次數",
-            "watchNote": "測試中沒有任何規則獲利，因此這個市場暫時沒有機器人。"
+            "watchNote": "測試中沒有任何規則獲利，因此這個市場暫時沒有機器人。",
+            "test": {
+                "title": "過往測試，{start} – {end}（{days} 天）",
+                "bot": "此機器人",
+                "growth": "{start} XOR 變成了 {end} XOR",
+                "hold": "改為持有 {symbol}",
+                "unit": "所有結果均以 XOR 計，而不是 {symbol} 或美元。",
+                "holdBetter": "在此測試中，單純持有 {symbol} 的表現更好。",
+                "botBetter": "機器人的表現優於單純持有 {symbol}。"
+            },
+            "now": {
+                "title": "此刻",
+                "entry": "價格相對其 {window} 小時均價為 {value}，已越過 {threshold} 的買入觸發線。執行中的機器人現在會買入。",
+                "exit": "價格相對其 {window} 小時均價為 {value}，處於賣出區。執行中的機器人會賣出持有的 {symbol}。",
+                "neutralBelow": "價格相對其 {window} 小時均價為 {value}。機器人在 {threshold} 或更低時買入。",
+                "neutralAbove": "價格相對其 {window} 小時均價為 {value}。機器人在 {threshold} 或更高時買入。",
+                "warmup": "近期價格還不夠，暫時無法檢查規則。",
+                "unavailable": "目前無法取得近期價格。"
+            }
         },
         "studio": {
             "botName": "{idea} · {symbol}",
@@ -2093,7 +2116,38 @@
         },
         "walletPassword": "現有錢包密碼",
         "workspace": "交易工作區",
-        "yourBots": "我的機器人"
+        "yourBots": "我的機器人",
+        "runs": {
+            "title": "你的機器人",
+            "manage": "開啟我的機器人",
+            "none": "沒有正在執行或等待的機器人。",
+            "keepOpen": "機器人只在此分頁開啟 Polkaswap 時執行。分頁可以留在背景。如果關閉它，機器人會暫停，直到你回來。",
+            "controls": "暫停會保留工作階段，之後可以恢復。停止會結束工作階段。兩者都不會賣出你的代幣。",
+            "running": "執行中的機器人：{count}",
+            "waiting": "需要你處理的機器人：{count}",
+            "paused": "已暫停的機器人：{count}",
+            "result": "目前，以 {symbol} 計：",
+            "continue": "繼續",
+            "open": "開啟機器人",
+            "runsUntil": "執行至",
+            "consentExternal": "機器人只在此分頁開啟時執行。關閉分頁後機器人會暫停。用此帳戶再次開啟 Polkaswap 時，它會繼續執行到本次工作階段結束，你的錢包仍會要求你核准每筆兌換。",
+            "consentInternal": "機器人只在此分頁開啟時執行。關閉分頁後，機器人會一直暫停，直到你再次開啟 Polkaswap 並輸入錢包密碼。它絕不會執行超過本次工作階段的結束時間。",
+            "state": {
+                "elsewhere": "正在其他分頁執行",
+                "continuing": "正在繼續",
+                "pausedByYou": "已由你暫停"
+            },
+            "detail": {
+                "until": "至 {time}",
+                "continuing": "在此分頁重新開始，執行至 {time}。",
+                "password": "輸入錢包密碼即可繼續執行至 {time}。Polkaswap 從不儲存密碼。",
+                "wallet": "連接帳戶 {account} 即可繼續執行至 {time}。",
+                "open": "開啟機器人以繼續。",
+                "paused": "恢復後將執行至 {time}。",
+                "attention": "開啟機器人查看出了什麼問題。",
+                "ended": "本次工作階段已結束。準備好後可開始新的工作階段。"
+            }
+        }
     },
     "bridge": {
         "connectNetworkWallet": "連接 {network} 錢包",
@@ -2273,6 +2327,7 @@
             "included": "銷毀交易已被納入區塊，正在等待最終確認。",
             "indexingDelayed": "確認或索引所需時間比預期更長。系統仍在追蹤您的交易。您無需再次提交這筆銷毀交易。",
             "invalidAmount": "請輸入大於零且最多有 18 位小數的 XOR 數量。",
+            "live": "進行中",
             "loading": "正在載入已最終確認的活動銷毀紀錄…",
             "mainnetOnly": "此活動適用於 SORA 主網。",
             "notStarted": "活動從區塊 27,720,478 開始。",
@@ -2963,6 +3018,7 @@
         "Bots": "機器人",
         "Bridge": "@:bridgeText",
         "Burn": "@:pageTitle.Burn",
+        "burnLive": "@:burnPage.tonswap.live",
         "Explore/Container": "探索",
         "Farming": "挖礦",
         "OrderBook": "交易",
@@ -4976,6 +5032,51 @@
             "consent": "共享總購買步驟計數以幫助改善購買 XOR。不會發送錢包地址、金額或交易哈希值。",
             "privacy": "您的瀏覽器隱私偏好不會影響這些計數。",
             "unavailable": "無法發送步數。您的購買不受影響。"
+        },
+        "start": {
+            "cardHint": "金融卡或信用卡",
+            "crypto": "加密貨幣",
+            "cryptoHint": "Ethereum 上的 ETH、USDT 或 DAI",
+            "ton": "TON 上的 USDT（3 個錢包）",
+            "youGet": "你將獲得",
+            "cardFees": "Ethereum 網路費用會從你購買的 ETH 中扣除。付款前我們會顯示扣除費用後的數量。",
+            "cryptoFees": "請在錢包中保留少量 ETH，用於支付 Ethereum 網路費用。",
+            "max": "目前每次購買上限：約 {amount}。",
+            "useMax": "使用上限",
+            "maxNote": "SORA 上的 XOR 市場規模較小。較大的購買會使價格波動過大，因此被阻擋。",
+            "tooBig": "金額超出 SORA 市場目前的承受能力。單次最多可購買約 {amount}。",
+            "tooBigUnknown": "金額超出 SORA 市場目前的承受能力。請嘗試較小的金額。",
+            "conversionTooBig": "將這麼多資金兌換為 DAI 會損失過多價值。請嘗試較小的金額。",
+            "cardMinimum": "卡片最低金額為 {amount}。",
+            "cardBlocked": "卡片付款最低 {minimum}，但 SORA 市場目前只能承接約 {maximum}。請改用加密貨幣付款，或稍後再試。",
+            "useCrypto": "使用加密貨幣付款",
+            "tooSmall": "金額太小：網路費用會將其全部耗盡。請嘗試較大的金額。",
+            "noCardPrice": "MoonPay 未回傳價格。你仍可繼續：MoonPay 會在付款前顯示最終價格。",
+            "noPrice": "暫時無法取得價格。請一分鐘後再試。",
+            "connecting": "正在連線至 SORA…",
+            "nativeTon": "此處不支援一般 TON。請先將其兌換為 TON 上的 USDT。",
+            "useUsdt": "改用 USDT 付款",
+            "next": "接下來會發生什麼",
+            "steps": {
+                "walletsEthereum": "連結一個 Ethereum 錢包（例如 MetaMask）和一個 SORA 錢包。你可以在下一個畫面建立 SORA 錢包。",
+                "walletSora": "連結你的 SORA 錢包。",
+                "walletsTon": "連結你的 TON、Ethereum 和 SORA 錢包。",
+                "card": "在 MoonPay 中用卡片付款。MoonPay 會將 ETH 傳送到你的 Ethereum 錢包。",
+                "ton": "在服務商的應用程式中將你的 USDT 從 TON 轉到 Ethereum。",
+                "convert": "在你的 Ethereum 錢包中，核准兌換為 DAI 以及轉帳到 SORA。",
+                "transfer": "在你的 Ethereum 錢包中，核准將你的 DAI 轉帳到 SORA。",
+                "swap": "在你的 SORA 錢包中，核准兌換為 XOR。XOR 將進入該錢包。"
+            },
+            "stepsNote": "未經你核准，不會傳送任何資金。跨網路轉帳可能需要幾分鐘。",
+            "otherWays": "其他付款方式：",
+            "inProgress": "你有一筆進行中的購買：{amount}。"
+        },
+        "card": {
+            "description": "在 MoonPay 中用卡片付款。MoonPay 會將 ETH 傳送到你的 Ethereum 錢包，後續步驟會將其換成 XOR。",
+            "copy": "複製你的 Ethereum 地址：",
+            "paste": "開啟 MoonPay。當它要求填寫錢包地址時，貼上此地址。不要使用你的 SORA 地址。",
+            "return": "在 MoonPay 中完成付款，然後回到此頁面。",
+            "open": "複製地址並開啟 MoonPay"
         }
     }
 }

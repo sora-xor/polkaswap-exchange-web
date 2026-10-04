@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { nextTick } from 'vue';
 
 import { PageNames } from '@/consts';
 import { BreakpointClass } from '@/consts/layout';
@@ -29,6 +30,7 @@ vi.mock('@/app/shell/components', () => {
     AccelerationAccessDialog: stub,
     AppLogoButton: stub,
     AppMarketing: stub,
+    BotRunsButton: { template: '<button data-testid="bot-runs-button" />' },
     PairTokenLogo: { template: '<span data-test-name="paymentTokenPair" />' },
     RotatePhoneDialog: stub,
     SelectCurrencyDialog: stub,
@@ -40,6 +42,7 @@ vi.mock('@/components/App/Header/AppHeaderMenu.vue', () => ({ default: { templat
 vi.mock('@/components/shared/Logo/Polkaswap.vue', () => ({ default: { template: '<span />' } }));
 
 import AppHeader from '@/components/App/Header/AppHeader.vue';
+import { botRunsHint } from '@/features/bot-trading/run-hint';
 
 /** Mounts the header without wallet providers or asynchronous shell components. */
 function mountHeader(checkout = false) {
@@ -57,6 +60,7 @@ beforeEach(() => {
   routeMock.name = PageNames.Swap;
   routeMock.query = {};
   settingsStoreMock.screenBreakpointClass = BreakpointClass.Desktop;
+  botRunsHint.value = false;
 });
 
 describe('AppHeader Buy XOR entry', () => {
@@ -90,5 +94,25 @@ describe('AppHeader Buy XOR entry', () => {
     expect(wrapper.get('.checkout-brand').attributes('href')).toBe(path);
     expect(wrapper.get('.checkout-exit').attributes('href')).toBe('/swap');
     expect(goToMock).not.toHaveBeenCalled();
+  });
+});
+
+describe('AppHeader bot runs', () => {
+  it('shows the bots button only when this browser has bots to show', async () => {
+    const wrapper = mountHeader();
+    expect(wrapper.find('[data-testid="bot-runs-button"]').exists()).toBe(false);
+
+    botRunsHint.value = true;
+    await nextTick();
+    const button = wrapper.get('[data-testid="bot-runs-button"]');
+    // It sits with the account controls, before the account button.
+    expect(button.element.parentElement?.classList.contains('app-controls')).toBe(true);
+    expect(button.element.parentElement?.classList.contains('app-controls--middle')).toBe(false);
+  });
+
+  it('keeps checkout focused on the purchase', () => {
+    botRunsHint.value = true;
+    routeMock.path = '/buy-xor';
+    expect(mountHeader(true).find('[data-testid="bot-runs-button"]').exists()).toBe(false);
   });
 });

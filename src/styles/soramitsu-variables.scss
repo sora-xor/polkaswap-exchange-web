@@ -25,6 +25,102 @@ $accent-hover-background: mix(#ffffff, $accent, 15%);
 $accent-pressed-background: mix(#ffffff, $accent, 20%);
 $accent-focused-background: mix(#ffffff, $accent, 25%);
 
+// Light-theme lighting rig. A single key light sits above and to the left of the page, so every
+// highlight is offset up and left and every shadow down and right. Shadows are tinted with a warm
+// plum ink instead of black, so they read as light bouncing between warm surfaces. The recipes
+// below feed the legacy `--s-shadow-*` tokens, which components already use for raised and sunken
+// surfaces, and the dark theme redefines every one of those tokens, so Noir is not affected.
+// See docs/light-theme-lighting.md.
+
+// Raised: resting buttons, pills and small cards. Each comment describes the layer under it.
+$lm-raised: (
+  // the key light catching the upper left edge
+  '-4px -4px 10px rgb(var(--lm-key) / 0.95)',
+  // cast shadow
+  '5px 5px 12px rgb(var(--lm-ink) / 0.22)',
+  // contact shadow where the surface meets the ground
+  '1px 1px 3px rgb(var(--lm-ink) / 0.14)',
+  // ambient occlusion that keeps the unlit edges readable
+  '0 0 2px rgb(var(--lm-ink) / 0.1)',
+  // rim light
+  'inset 1px 1px 1px rgb(var(--lm-key) / 0.95)',
+  // belly shade
+  'inset -2px -2px 4px rgb(var(--lm-ink) / 0.05)'
+);
+
+// Sunken: input wells, sockets and pressed controls.
+$lm-sunken: (
+  // the upper left rim shades the floor
+  'inset 6px 6px 14px rgb(var(--lm-ink) / 0.22)',
+  // the lower right rim catches the light
+  'inset -5px -5px 12px rgb(var(--lm-key) / 1)',
+  // inner contact edge
+  'inset 0 0 2px rgb(var(--lm-ink) / 0.1)',
+  // lip highlight below the well
+  '1px 1px 1px rgb(var(--lm-key) / 0.8)'
+);
+
+// Raised, large: page cards, dialogs and chart tooltips.
+$lm-raised-large: (
+  // the key light catching the upper left edge
+  '-10px -10px 24px rgb(var(--lm-key) / 0.98)',
+  // cast shadow
+  '14px 14px 34px rgb(var(--lm-ink) / 0.24)',
+  // contact shadow
+  '3px 3px 7px rgb(var(--lm-ink) / 0.13)',
+  // ambient occlusion
+  '0 0 3px rgb(var(--lm-ink) / 0.1)',
+  // rim light
+  'inset 1px 1px 1px rgb(var(--lm-key) / 0.95)',
+  // broad glow from the key light
+  'inset 14px 14px 28px rgb(var(--lm-key) / 0.45)',
+  // the far corner turns away from the light
+  'inset -14px -14px 28px rgb(var(--lm-ink) / 0.055)'
+);
+
+// Raised, light: panels that sit quietly beside a form, such as the chart and route panels.
+$lm-raised-light: ('4px 4px 10px rgb(var(--lm-ink) / 0.1)', '-3px -3px 8px rgb(var(--lm-key) / 0.85)');
+
+// Raised, tight: the selected tab inside a track.
+$lm-raised-tab: (
+  '3px 3px 8px rgb(var(--lm-ink) / 0.16)',
+  '-2px -2px 6px rgb(var(--lm-key) / 0.9)',
+  'inset 1px 1px 1px rgb(var(--lm-key) / 0.9)'
+);
+
+// Sunken track that holds the tabs of a neumorphic tab bar.
+$lm-tabs-track: ('inset 3px 3px 7px rgb(var(--lm-ink) / 0.14)', 'inset -3px -3px 7px rgb(var(--lm-key) / 0.95)');
+
+// Primary actions: the brand colour bounces off the button onto the surface under it.
+$lm-glow-accent: (
+  // the bounce light, wide and soft
+  '0 12px 24px -8px rgb(var(--lm-bounce) / 0.55)',
+  // the bounce light, close to the button
+  '0 4px 10px -2px rgb(var(--lm-bounce) / 0.35)',
+  // contact shadow
+  '1px 1px 2px rgb(var(--lm-ink) / 0.2)',
+  // rim light
+  'inset 0 1px 1px rgb(var(--lm-key) / 0.45)',
+  // belly shade
+  'inset 0 -3px 6px rgb(0 0 0 / 0.18)'
+);
+$lm-glow-accent-hover: (
+  '0 16px 30px -8px rgb(var(--lm-bounce) / 0.62)',
+  '0 5px 12px -2px rgb(var(--lm-bounce) / 0.4)',
+  '1px 1px 2px rgb(var(--lm-ink) / 0.2)',
+  'inset 0 1px 1px rgb(var(--lm-key) / 0.5)',
+  'inset 0 -3px 6px rgb(0 0 0 / 0.18)'
+);
+$lm-glow-accent-pressed: ('inset 0 4px 10px rgb(0 0 0 / 0.32)', '0 1px 0 rgb(var(--lm-key) / 0.8)');
+// Small buttons sit in dense rows and tables, so their bounce light stays close to the button.
+$lm-glow-accent-compact: (
+  '0 6px 12px -4px rgb(var(--lm-bounce) / 0.5)',
+  '0 2px 5px -1px rgb(var(--lm-bounce) / 0.3)',
+  '1px 1px 2px rgb(var(--lm-ink) / 0.2)',
+  'inset 0 1px 1px rgb(var(--lm-key) / 0.45)',
+  'inset 0 -2px 4px rgb(0 0 0 / 0.16)'
+);
+
 $legacy-token-bridges: (
   '--s-color-theme-accent': var(--sora_sys_color_primary),
   '--s-color-theme-accent-hover': var(--sora_sys_color_primary-hover),
@@ -52,7 +148,7 @@ $legacy-token-bridges: (
   '--s-color-status-warning-background': var(--sora_sys_color_status_warning-background),
   '--s-color-status-error-background': var(--sora_sys_color_status_error-background),
   '--s-color-status-info-background': var(--sora_sys_color_status_info-background),
-  '--s-shadow-surface': '1px 1px 5px rgba(0, 0, 0, 0.1), inset 1px 1px 1px rgba(0, 0, 0, 0.1)',
+  '--s-shadow-surface': $lm-raised-tab,
   '--s-shadow-tooltip': var(--sora_sys_shadow_dropdown),
   '--s-shadow-element': var(--sora_sys_shadow_dropdown),
   '--s-shadow-element-pressed': var(--sora_sys_shadow_active-tab),
@@ -73,7 +169,7 @@ $legacy-static-vars: (
   '--s-color-status-error-text': #ab0555,
   '--s-color-on-status-fill': #2f0a49,
   '--s-color-control-border': #796971,
-  '--s-shadow-secondary': '0 2px 6px rgba(42, 23, 31, 0.06)',
+  '--s-shadow-secondary': $lm-raised-light,
   '--s-color-theme-secondary': #44e5b2,
   '--s-color-theme-secondary-hover': #24daa0,
   '--s-color-theme-secondary-pressed': #24daa0,
@@ -103,12 +199,10 @@ $legacy-static-vars: (
   '--s-color-button-tertiary-background-pressed--dark': #492067,
   '--s-color-button-tertiary-color--dark': #f0d7dc,
   '--s-color-button-tertiary-color-active--dark': #f24197,
-  '--s-shadow-element':
-    '1px 1px 5px #fff, inset -5px -5px 5px rgba(255, 255, 255, 0.5), inset 1px 1px 10px rgba(0, 0, 0, 0.1)',
-  '--s-shadow-element-pressed':
-    '-5px -5px 10px #fff, 1px 1px 10px rgba(0, 0, 0, 0.1), inset 1px 1px 2px rgba(255, 255, 255, 0.8)',
-  '--s-shadow-dialog':
-    '-5px -5px 10px #fff, 1px 1px 10px rgba(0, 0, 0, 0.1), inset 1px 1px 2px rgba(255, 255, 255, 0.8)',
+  // Naming is historical: `element` is the sunken look and `element-pressed` is the resting raised look.
+  '--s-shadow-element': $lm-sunken,
+  '--s-shadow-element-pressed': $lm-raised,
+  '--s-shadow-dialog': $lm-raised-large,
   '--s-shadow-tab': '1px 1px 2px #fff, inset 1px 1px 2px rgba(0, 0, 0, 0.1)',
   '--s-shadow-dropdown': 0px 4px 8px hsla(0, 0%, 7%, 0.15),
   '--s-shadow-mobile-tap-bar': 0px -4px 8px hsla(0, 0%, 7%, 0.15),
@@ -217,14 +311,29 @@ $legacy-metrics: (
   '--s-icon-font-size-small': 18px,
   '--s-icon-font-size-medium': 20px,
   '--s-icon-font-size-big': 24px,
-  // Shadow palette used by neumorphic UI elements (e.g., sidebar icon buttons).
-  // Keep in sync with production `polkaswap.io` values for visual parity.
-  '--s-shadow-color-dark-light': rgba(0, 0, 0, 0.02),
-  '--s-shadow-color-dark': rgba(0, 0, 0, 0.1),
-  '--s-shadow-color-light-dark': hsla(0, 0%, 100%, 0.8),
+  // Shadow palette used by neumorphic UI elements (e.g., sidebar icon buttons). Light uses the lighting
+  // rig's plum ink and key light, which deliberately departs from the flat black and white of production
+  // `polkaswap.io`; Noir keeps its own purple palette below.
+  '--s-shadow-color-dark-light': 'rgb(var(--lm-ink) / 0.06)',
+  '--s-shadow-color-dark': 'rgb(var(--lm-ink) / 0.16)',
+  '--s-shadow-color-light-dark': 'rgb(var(--lm-key) / 0.95)',
   '--s-shadow-color-light': #fff,
   '--s-color-outline': rgba(0, 0, 0, 0.5),
   '--s-color-outline--dark': hsla(0, 0%, 100%, 0.5),
+);
+
+// Lighting rig custom properties for the light theme. `--lm-*` colours are bare RGB triplets so a recipe can
+// choose its own alpha: `rgb(var(--lm-ink) / 0.2)`. Light-only styles in `light-lighting.scss` read them.
+$lighting-rig-light: (
+  '--lm-ink': '84 40 62',
+  '--lm-key': '255 255 255',
+  '--lm-bounce': '191 6 95',
+  '--lm-fill': '104 92 255',
+  '--lm-glow-accent': $lm-glow-accent,
+  '--lm-glow-accent-hover': $lm-glow-accent-hover,
+  '--lm-glow-accent-pressed': $lm-glow-accent-pressed,
+  '--lm-glow-accent-compact': $lm-glow-accent-compact,
+  '--neu-tabs-shadow': $lm-tabs-track,
 );
 
 $legacy-dark-overrides: (
@@ -278,6 +387,8 @@ $legacy-dark-overrides: (
   '--s-shadow-dialog':
     '-5px -5px 10px rgba(155, 111, 165, 0.25), 2px 2px 15px #492067, inset 1px 1px 2px rgba(155, 111, 165, 0.25)',
   '--s-shadow-surface': '1px 1px 5px rgba(41, 0, 71, 0.33), inset 1px 1px 1px rgba(41, 0, 71, 0.33)',
+  // Only Light draws a sunken track behind neumorphic tabs; this keeps Noir from inheriting it.
+  '--neu-tabs-shadow': none,
   '--s-color-outline': hsla(0, 0%, 100%, 0.5),
   '--s-shadow-dropdown': 0px 4px 8px hsla(0, 0%, 7%, 0.15),
   '--s-shadow-mobile-tap-bar': 0px -4px 8px hsla(0, 0%, 7%, 0.15),
@@ -300,7 +411,9 @@ $polkaswap-light-token-overrides: (
       primary-focused-background: $accent-focused-background,
       content-primary: #2a171f,
       content-secondary: #6e6168,
-      content-tertiary: #796971,
+      // A little deeper than before: the lit ground darkens toward the far corner,
+      // and tertiary text must stay at 4.5:1 there.
+      content-tertiary: #716269,
       content-quaternary: #75787b,
       border-primary: #f7f3f4,
       border-secondary: #ede4e7,
@@ -407,6 +520,7 @@ $wallet-dark-token-overrides: (
   @include apply-custom-properties($legacy-token-bridges);
   @include apply-custom-properties($legacy-static-vars);
   @include apply-custom-properties($legacy-metrics);
+  @include apply-custom-properties($lighting-rig-light);
 }
 
 :root[data-theme='dark'],

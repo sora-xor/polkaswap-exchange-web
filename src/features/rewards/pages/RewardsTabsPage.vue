@@ -170,7 +170,12 @@ $tab-margin: 22px;
     box-shadow: none;
     transition: max-width 0.35s ease;
 
+    // The pill. The design system draws card tabs as a flat strip: a track with square lower corners, a soft shadow
+    // around every tab and a focus ring that the strip cuts off. Inside a pill those show up as dark patches and
+    // clipped arcs, so the pill draws its own track, highlight and focus ring.
     .rewards-tabs__tabs {
+      $pill-inner: 50px; // 52px minus the 1px border on both sides
+
       width: min(100%, 464px);
       height: 52px;
       margin: 0 auto;
@@ -180,34 +185,74 @@ $tab-margin: 22px;
       box-shadow: 0 10px 28px -14px rgba(42, 23, 31, 0.28);
       overflow: hidden;
 
+      .el-tabs__header,
+      .el-tabs__nav-wrap,
+      .el-tabs__nav {
+        border-radius: 999px;
+      }
+
+      .el-tabs__active-bar {
+        display: none;
+      }
+
       .el-tabs__header .el-tabs {
         &__nav,
         &__nav-wrap,
         &__item {
-          height: 52px;
-          line-height: 52px;
+          height: $pill-inner;
+          line-height: $pill-inner;
         }
 
         &__nav-wrap .el-tabs__item {
           position: relative;
+          isolation: isolate;
           border-radius: 999px;
-          transition:
-            background-color 0.25s ease,
-            color 0.25s ease;
+          background-color: transparent;
+          transition: color 0.25s ease;
 
-          &:first-child,
-          &:first-child.is-active,
-          &:last-child {
+          &,
+          &:hover,
+          &:focus,
+          &:focus-visible,
+          &.is-active {
+            box-shadow: none;
+          }
+
+          // The highlight sits inside the outline, like the thumb of a segmented control.
+          &::before {
+            content: '';
+            position: absolute;
+            inset: 4px;
+            z-index: -1;
             border-radius: 999px;
+            transition: background-color 0.25s ease;
           }
 
           &:hover {
             opacity: 1;
+
+            &::before {
+              background-color: color-mix(in srgb, var(--s-color-base-content-primary) 8%, transparent);
+            }
           }
 
           &.is-active {
-            background-color: color-mix(in srgb, var(--s-color-theme-accent) 12%, transparent);
+            background-color: transparent;
             color: var(--s-color-base-content-primary);
+
+            &::before {
+              background-color: color-mix(in srgb, var(--s-color-theme-accent) 14%, transparent);
+            }
+          }
+
+          // The app-wide focus ring sits outside the tab, where the pill cuts it off at the ends. It is drawn around the
+          // highlight instead, so keyboard focus stays fully visible.
+          &:focus-visible {
+            outline: none !important;
+
+            &::before {
+              outline: 2px solid var(--s-color-focus-ring);
+            }
           }
         }
       }
@@ -242,6 +287,11 @@ $tab-margin: 22px;
 @media (prefers-reduced-motion: reduce) {
   .rewards-tabs.container.container--rewards {
     transition: none;
+
+    .rewards-tabs__tabs .el-tabs__item,
+    .rewards-tabs__tabs .el-tabs__item::before {
+      transition: none;
+    }
   }
 }
 </style>

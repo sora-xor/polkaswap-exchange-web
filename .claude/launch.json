@@ -4,13 +4,21 @@
     {
       "name": "polkaswap-dev",
       "runtimeExecutable": "node",
-      "runtimeArgs": ["node_modules/vite/bin/vite.js"],
+      "runtimeArgs": [
+        "node_modules/vite/bin/vite.js"
+      ],
       "port": 8080
     },
     {
       "name": "polkaswap-preview",
       "runtimeExecutable": "node",
-      "runtimeArgs": ["node_modules/vite/bin/vite.js", "preview", "--port", "8888", "--strictPort"],
+      "runtimeArgs": [
+        "node_modules/vite/bin/vite.js",
+        "preview",
+        "--port",
+        "8888",
+        "--strictPort"
+      ],
       "port": 8888
     }
   ]

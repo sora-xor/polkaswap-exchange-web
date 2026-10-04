@@ -722,7 +722,9 @@
             "storage": "Betrouwbare browseropslag of uitvoeringsvergrendeling ontbreekt. Echte handel is gestopt.",
             "strategy": "Controleer bedrag, interval, drempel en indicatorvensters.",
             "transaction": "De transactie mislukte. Eventueel berekende netwerkkosten zijn geboekt.",
-            "wallet": "Verbind de bijbehorende wallet en ontgrendel het bestaande account."
+            "wallet": "Verbind de bijbehorende wallet en ontgrendel het bestaande account.",
+            "elsewhere": "Deze bot draait in een ander Polkaswap-tabblad. Gebruik dat tabblad of sluit het eerst.",
+            "runEnded": "Deze sessie is afgelopen. Start in plaats daarvan een nieuwe sessie."
         },
         "events": {
             "aiRequired": "Wachten op AI-voorstel",
@@ -745,7 +747,8 @@
             "status": "Toestand",
             "threshold": "Prijsdrempel bereikt",
             "trade": "Wissel",
-            "warmup": "Voldoende gesloten kaarsen verzamelen"
+            "warmup": "Voldoende gesloten kaarsen verzamelen",
+            "continued": "Sessie hervat"
         },
         "export": "Exporteren",
         "externalSigning": "Je externe wallet vraagt voor elke transactie om een handtekening.",
@@ -1288,7 +1291,9 @@
             },
             "session": {
                 "label": "Looptijd",
-                "option": "{count} d"
+                "option": "{count} d",
+                "note": "De bot handelt alleen zolang dit tabblad open blijft. Het tabblad sluiten pauzeert hem tot je terugkomt.",
+                "rare": "In de test kocht hij ongeveer eens in de {days} dagen, dus een sessie van {count} dagen handelt misschien helemaal niet."
             },
             "signal": {
                 "entry": "Koopzone",
@@ -1323,7 +1328,25 @@
             "thinNote": "De pool bevat ongeveer {depth} XOR, te weinig voor een transactie van 2 XOR.",
             "title": "Kant-en-klare bots",
             "trades": "Transacties",
-            "watchNote": "Geen enkele regel was winstgevend in de tests, dus er is nog geen bot voor deze markt."
+            "watchNote": "Geen enkele regel was winstgevend in de tests, dus er is nog geen bot voor deze markt.",
+            "test": {
+                "title": "Eerdere test, {start} – {end} ({days} dagen)",
+                "bot": "Deze bot",
+                "growth": "{start} XOR werd {end} XOR",
+                "hold": "In plaats daarvan {symbol} aanhouden",
+                "unit": "Alle resultaten zijn in XOR, niet in {symbol} of Amerikaanse dollars.",
+                "holdBetter": "Gewoon {symbol} aanhouden deed het beter in deze test.",
+                "botBetter": "De bot deed het beter dan gewoon {symbol} aanhouden."
+            },
+            "now": {
+                "title": "Op dit moment",
+                "entry": "De prijs staat op {value} ten opzichte van het {window}-uursgemiddelde, voorbij de koopdrempel van {threshold}. Een actieve bot zou nu kopen.",
+                "exit": "De prijs staat op {value} ten opzichte van het {window}-uursgemiddelde, in de verkoopzone. Een actieve bot zou de {symbol} verkopen die hij heeft.",
+                "neutralBelow": "De prijs staat op {value} ten opzichte van het {window}-uursgemiddelde. De bot koopt bij {threshold} of lager.",
+                "neutralAbove": "De prijs staat op {value} ten opzichte van het {window}-uursgemiddelde. De bot koopt bij {threshold} of hoger.",
+                "warmup": "Nog niet genoeg recente prijzen om de regel te controleren.",
+                "unavailable": "Recente prijzen zijn op dit moment niet beschikbaar."
+            }
         },
         "studio": {
             "botName": "{idea} · {symbol}",
@@ -2093,7 +2116,38 @@
         },
         "walletPassword": "Wachtwoord van bestaande wallet",
         "workspace": "Handelswerkruimte",
-        "yourBots": "Mijn bots"
+        "yourBots": "Mijn bots",
+        "runs": {
+            "title": "Jouw bots",
+            "manage": "Mijn bots openen",
+            "none": "Er zijn geen actieve of wachtende bots.",
+            "keepOpen": "Bots draaien alleen zolang Polkaswap in dit tabblad open is. Het tabblad mag op de achtergrond blijven. Sluit je het, dan pauzeren de bots tot je terugkomt.",
+            "controls": "Pauzeren bewaart de sessie, zodat je die kunt hervatten. Stoppen beëindigt hem. Geen van beide verkoopt je tokens.",
+            "running": "Actieve bots: {count}",
+            "waiting": "Bots die op je wachten: {count}",
+            "paused": "Gepauzeerde bots: {count}",
+            "result": "Tot nu toe, in {symbol}:",
+            "continue": "Doorgaan",
+            "open": "Bot openen",
+            "runsUntil": "Draait tot",
+            "consentExternal": "De bot draait alleen zolang dit tabblad open is. Sluit je het tabblad, dan pauzeert de bot. Open je Polkaswap weer met dit account, dan gaat hij door tot het einde van deze sessie, en je wallet vraagt nog steeds om elke swap goed te keuren.",
+            "consentInternal": "De bot draait alleen zolang dit tabblad open is. Sluit je het tabblad, dan pauzeert de bot tot je Polkaswap weer opent en je walletwachtwoord invoert. Hij draait nooit langer dan het einde van deze sessie.",
+            "state": {
+                "elsewhere": "Actief in een ander tabblad",
+                "continuing": "Wordt hervat",
+                "pausedByYou": "Door jou gepauzeerd"
+            },
+            "detail": {
+                "until": "tot {time}",
+                "continuing": "Start opnieuw in dit tabblad en draait tot {time}.",
+                "password": "Voer je walletwachtwoord in om door te gaan tot {time}. Polkaswap slaat het nooit op.",
+                "wallet": "Verbind account {account} om door te gaan tot {time}.",
+                "open": "Open de bot om door te gaan.",
+                "paused": "Hervat om hem tot {time} te laten draaien.",
+                "attention": "Open de bot om te zien wat er misging.",
+                "ended": "Deze sessie is afgelopen. Start een nieuwe wanneer je er klaar voor bent."
+            }
+        }
     },
     "bridge": {
         "connectNetworkWallet": "{network}-wallet verbinden",
@@ -2273,6 +2327,7 @@
             "included": "De verbranding is in een blok opgenomen. Wachten op definitieve bevestiging.",
             "indexingDelayed": "De bevestiging of indexering duurt langer dan verwacht. Je transactie wordt nog gevolgd. Je hoeft deze verbranding niet opnieuw in te dienen.",
             "invalidAmount": "Voer een positief bedrag XOR in met maximaal 18 decimalen.",
+            "live": "Live",
             "loading": "Voltooide tokenburns voor deze campagne laden...",
             "mainnetOnly": "Deze campagne is beschikbaar op het SORA mainnet.",
             "notStarted": "De campagne begint bij blockchain-blok 27,720,478.",
@@ -2963,6 +3018,7 @@
         "Bots": "Handelsbots",
         "Bridge": "@:bridgeText",
         "Burn": "@:pageTitle.Burn",
+        "burnLive": "@:burnPage.tonswap.live",
         "Explore/Container": "Ontdekken",
         "Farming": "Landbouw",
         "OrderBook": "Handel",
@@ -4976,6 +5032,51 @@
             "consent": "Deel het totale aantal aankoopstappen om Koop XOR te helpen verbeteren. Er worden geen portemonneeadressen, bedragen of transactiehashes verzonden.",
             "privacy": "Uw browserprivacyvoorkeur houdt deze tellingen buiten.",
             "unavailable": "Staptellingen konden niet worden verzonden. Uw aankoop wordt niet beïnvloed."
+        },
+        "start": {
+            "cardHint": "Debet- of creditcard",
+            "crypto": "Crypto",
+            "cryptoHint": "ETH, USDT of DAI op Ethereum",
+            "ton": "USDT op TON (3 wallets)",
+            "youGet": "Je ontvangt",
+            "cardFees": "Ethereum-netwerkkosten gaan af van de ETH die je koopt. Je ziet het bedrag na kosten voordat je betaalt.",
+            "cryptoFees": "Houd wat ETH in je wallet voor Ethereum-netwerkkosten.",
+            "max": "Maximum per aankoop op dit moment: ongeveer {amount}.",
+            "useMax": "Maximum gebruiken",
+            "maxNote": "De XOR-markt op SORA is klein. Grotere aankopen zouden de prijs te veel verschuiven en zijn daarom geblokkeerd.",
+            "tooBig": "Te groot voor de SORA-markt op dit moment. Je kunt maximaal ongeveer {amount} in één keer kopen.",
+            "tooBigUnknown": "Te groot voor de SORA-markt op dit moment. Probeer een kleiner bedrag.",
+            "conversionTooBig": "Zoveel omzetten naar DAI kost te veel waarde. Probeer een kleiner bedrag.",
+            "cardMinimum": "Het minimum voor een kaart is {amount}.",
+            "cardBlocked": "Kaartbetalingen beginnen bij {minimum}, maar de SORA-markt kan nu maar ongeveer {maximum} aan. Betaal met crypto of probeer het later opnieuw.",
+            "useCrypto": "Betalen met crypto",
+            "tooSmall": "Te klein: de netwerkkosten zouden alles opmaken. Probeer een groter bedrag.",
+            "noCardPrice": "MoonPay gaf geen prijs. Je kunt toch doorgaan: MoonPay toont de definitieve prijs voordat je betaalt.",
+            "noPrice": "We konden nu geen prijs ophalen. Probeer het over een minuut opnieuw.",
+            "connecting": "Verbinden met SORA…",
+            "nativeTon": "Gewone TON wordt hier niet ondersteund. Wissel het eerst om naar USDT op TON.",
+            "useUsdt": "In plaats daarvan met USDT betalen",
+            "next": "Wat er nu gebeurt",
+            "steps": {
+                "walletsEthereum": "Koppel een Ethereum-wallet, zoals MetaMask, en een SORA-wallet. Op het volgende scherm kun je een SORA-wallet aanmaken.",
+                "walletSora": "Koppel je SORA-wallet.",
+                "walletsTon": "Koppel je TON-, Ethereum- en SORA-wallets.",
+                "card": "Betaal met je kaart bij MoonPay. MoonPay stuurt ETH naar je Ethereum-wallet.",
+                "ton": "Verplaats je USDT van TON naar Ethereum in de app van de aanbieder.",
+                "convert": "Keur in je Ethereum-wallet de wissel naar DAI en de overdracht naar SORA goed.",
+                "transfer": "Keur in je Ethereum-wallet de overdracht van je DAI naar SORA goed.",
+                "swap": "Keur in je SORA-wallet de wissel naar XOR goed. Je XOR komt in die wallet aan."
+            },
+            "stepsNote": "Er wordt niets verzonden totdat je het goedkeurt. Overdrachten tussen netwerken kunnen enkele minuten duren.",
+            "otherWays": "Andere manieren om te betalen:",
+            "inProgress": "Je hebt een lopende aankoop: {amount}."
+        },
+        "card": {
+            "description": "Betaal met je kaart bij MoonPay. MoonPay stuurt ETH naar je Ethereum-wallet en de volgende stappen maken er XOR van.",
+            "copy": "Kopieer je Ethereum-adres:",
+            "paste": "Open MoonPay. Als om een walletadres wordt gevraagd, plak dan dit adres. Gebruik niet je SORA-adres.",
+            "return": "Rond de betaling af bij MoonPay en kom daarna terug naar deze pagina.",
+            "open": "Adres kopiëren en MoonPay openen"
         }
     }
 }

@@ -1,10 +1,10 @@
 # Polkaswap UI and UX refinements
 
-Light and Noir retain their canvas colors, pink accent and rounded surfaces. Swap stays first in navigation. The next links remain Trade, Bots, Polkamarkt and Bridge, followed by visible Account & tools, Earn & borrow and Explore sections. Feature flags and routes are unchanged. Announcements retain their existing destinations and use manual previous/next buttons instead of a rotation timer.
+Light and Noir retain their canvas colors, pink accent and rounded surfaces. Light adds depth with a single key light, plum-tinted shadows and a brand-pink bounce on primary actions; see [Light theme lighting](light-theme-lighting.md). Swap stays first in navigation. The next links remain Trade, Bots, Polkamarkt and Bridge, followed by visible Account & tools, Earn & borrow and Explore sections. Feature flags and routes are unchanged. Announcements retain their existing destinations and use manual previous/next buttons instead of a rotation timer.
 
 ## Readable controls
 
-Secondary/tertiary text uses `#6e6168` / `#796971` in Light and `#dcc2d4` / `#ccb0cc` in Noir. Separate semantic text, action-fill and status-text variables provide readable small controls without changing the brand palette or canvas. Token inputs and token selectors use the original neumorphic bevel shadows without painted outlines. Disabled controls use muted fills. Keyboard focus outlines are 2px with a 2px offset. Controls use 125ms transitions; reduced-motion preferences suppress animations and smooth scrolling.
+Secondary/tertiary text uses `#6e6168` / `#716269` in Light and `#dcc2d4` / `#ccb0cc` in Noir. Separate semantic text, action-fill and status-text variables provide readable small controls without changing the brand palette or canvas. Token inputs and token selectors use the original neumorphic bevel shadows without painted outlines. Disabled controls use muted fills. Keyboard focus outlines are 2px with a 2px offset. Controls use 125ms transitions; reduced-motion preferences suppress animations and smooth scrolling.
 
 The form and dialogs retain soft depth; chart and route panels use a lighter shadow. The narrow-screen chart disclosure uses the original neumorphic bevel without a painted outline. The phone header exposes the page customization and trading settings actions without wrapping into multiple control rows. The selected market remains available in trading settings.
 

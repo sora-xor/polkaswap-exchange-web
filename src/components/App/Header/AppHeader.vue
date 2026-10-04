@@ -46,6 +46,7 @@
       </s-button>
     </div>
     <div class="app-controls s-flex">
+      <bot-runs-button v-if="botRunsHint && !checkout"></bot-runs-button>
       <router-link v-if="checkout" class="checkout-exit" to="/swap">{{ t('getTs.exitCheckout') }}</router-link>
       <app-account-button v-else @click="navigateToWallet"></app-account-button>
       <app-header-menu></app-header-menu>
@@ -66,6 +67,7 @@ import {
   AccelerationAccessDialog,
   AppLogoButton,
   AppMarketing,
+  BotRunsButton,
   PairTokenLogo,
   RotatePhoneDialog,
   SelectCurrencyDialog,
@@ -75,6 +77,7 @@ import { useInternalConnect } from '@/composables/useInternalConnect';
 import { useTranslation } from '@/composables/useTranslation';
 import { PageNames } from '@/consts';
 import { BreakpointClass } from '@/consts/layout';
+import { botRunsHint } from '@/features/bot-trading';
 import { Theme } from '@/consts/theme';
 import { useSettingsStore } from '@/stores/settings';
 import { ETH, XOR } from '@sora-substrate/sdk/build/assets/consts';

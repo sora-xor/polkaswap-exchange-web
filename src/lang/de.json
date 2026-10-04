@@ -722,7 +722,9 @@
             "storage": "Zuverlässiger Browserspeicher oder Ausführungssperre nicht verfügbar. Echter Handel wurde gestoppt.",
             "strategy": "Betrag, Intervall, Schwelle und Indikatorfenster prüfen.",
             "transaction": "Transaktion fehlgeschlagen. Berechnete Netzwerkgebühren sind im Journal erfasst.",
-            "wallet": "Passende Wallet verbinden und bestehendes Konto zum Start entsperren."
+            "wallet": "Passende Wallet verbinden und bestehendes Konto zum Start entsperren.",
+            "elsewhere": "Dieser Bot läuft in einem anderen Polkaswap-Tab. Nutze diesen Tab oder schließe ihn zuerst.",
+            "runEnded": "Diese Sitzung ist beendet. Starte stattdessen eine neue."
         },
         "events": {
             "aiRequired": "Warten auf KI-Vorschlag",
@@ -745,7 +747,8 @@
             "status": "Zustand",
             "threshold": "Preisschwelle erreicht",
             "trade": "Tausch",
-            "warmup": "Ausreichend abgeschlossene Kerzen sammeln"
+            "warmup": "Ausreichend abgeschlossene Kerzen sammeln",
+            "continued": "Sitzung fortgesetzt"
         },
         "export": "Exportieren",
         "externalSigning": "Deine externe Wallet fordert für jeden Handel eine Signatur an.",
@@ -1288,7 +1291,9 @@
             },
             "session": {
                 "label": "Laufzeit",
-                "option": "{count} T."
+                "option": "{count} T.",
+                "note": "Der Bot handelt nur, solange dieser Tab geöffnet bleibt. Schließt du den Tab, pausiert er, bis du zurückkommst.",
+                "rare": "Im Test kaufte er etwa alle {days} Tage, daher handelt eine Sitzung von {count} Tagen möglicherweise gar nicht."
             },
             "signal": {
                 "entry": "Kaufzone",
@@ -1323,7 +1328,25 @@
             "thinNote": "Der Pool enthält etwa {depth} XOR, zu wenig für einen Trade von 2 XOR.",
             "title": "Fertige Bots",
             "trades": "Anzahl Trades",
-            "watchNote": "In den Tests war keine Regel profitabel, daher gibt es für diesen Markt noch keinen Bot."
+            "watchNote": "In den Tests war keine Regel profitabel, daher gibt es für diesen Markt noch keinen Bot.",
+            "test": {
+                "title": "Vergangener Test, {start} – {end} ({days} Tage)",
+                "bot": "Dieser Bot",
+                "growth": "Aus {start} XOR wurden {end} XOR",
+                "hold": "Stattdessen {symbol} halten",
+                "unit": "Alle Ergebnisse sind in XOR, nicht in {symbol} oder US-Dollar.",
+                "holdBetter": "Einfach {symbol} zu halten, war in diesem Test besser.",
+                "botBetter": "Der Bot war besser, als einfach {symbol} zu halten."
+            },
+            "now": {
+                "title": "Jetzt",
+                "entry": "Der Preis liegt bei {value} gegenüber seinem {window}-h-Durchschnitt, jenseits des Kaufauslösers von {threshold}. Ein laufender Bot würde jetzt kaufen.",
+                "exit": "Der Preis liegt bei {value} gegenüber seinem {window}-h-Durchschnitt, in der Verkaufszone. Ein laufender Bot würde gehaltene {symbol} verkaufen.",
+                "neutralBelow": "Der Preis liegt bei {value} gegenüber seinem {window}-h-Durchschnitt. Der Bot kauft bei {threshold} oder darunter.",
+                "neutralAbove": "Der Preis liegt bei {value} gegenüber seinem {window}-h-Durchschnitt. Der Bot kauft bei {threshold} oder darüber.",
+                "warmup": "Noch nicht genug aktuelle Preise, um die Regel zu prüfen.",
+                "unavailable": "Aktuelle Preise sind gerade nicht verfügbar."
+            }
         },
         "studio": {
             "botName": "{idea} · {symbol}",
@@ -2093,7 +2116,38 @@
         },
         "walletPassword": "Passwort der bestehenden Wallet",
         "workspace": "Handelsarbeitsbereich",
-        "yourBots": "Meine Bots"
+        "yourBots": "Meine Bots",
+        "runs": {
+            "title": "Deine Bots",
+            "manage": "Meine Bots öffnen",
+            "none": "Kein Bot läuft oder wartet.",
+            "keepOpen": "Bots laufen nur, solange Polkaswap in diesem Tab geöffnet ist. Der Tab darf im Hintergrund bleiben. Schließt du ihn, pausieren die Bots, bis du zurückkommst.",
+            "controls": "„Pausieren“ behält die Sitzung bei, sodass du sie fortsetzen kannst. „Stoppen“ beendet sie. Beides verkauft keine Token.",
+            "running": "Bots aktiv: {count}",
+            "waiting": "Bots warten auf dich: {count}",
+            "paused": "Bots pausiert: {count}",
+            "result": "Bisher, in {symbol}:",
+            "continue": "Weiter",
+            "open": "Bot öffnen",
+            "runsUntil": "Läuft bis",
+            "consentExternal": "Der Bot läuft nur, solange dieser Tab geöffnet ist. Schließt du den Tab, pausiert der Bot. Öffnest du Polkaswap wieder mit diesem Konto, läuft er bis zum Ende dieser Sitzung weiter, und deine Wallet fragt weiterhin bei jedem Swap nach deiner Bestätigung.",
+            "consentInternal": "Der Bot läuft nur, solange dieser Tab geöffnet ist. Schließt du den Tab, pausiert der Bot, bis du Polkaswap wieder öffnest und dein Wallet-Passwort eingibst. Er läuft nie über das Ende dieser Sitzung hinaus.",
+            "state": {
+                "elsewhere": "Läuft in einem anderen Tab",
+                "continuing": "Wird fortgesetzt",
+                "pausedByYou": "Von dir pausiert"
+            },
+            "detail": {
+                "until": "bis {time}",
+                "continuing": "Startet in diesem Tab neu und läuft bis {time}.",
+                "password": "Gib dein Wallet-Passwort ein, um bis {time} weiterzumachen. Polkaswap speichert es nie.",
+                "wallet": "Verbinde das Konto {account}, um bis {time} weiterzumachen.",
+                "open": "Öffne den Bot, um weiterzumachen.",
+                "paused": "Fortsetzen lässt ihn bis {time} laufen.",
+                "attention": "Öffne den Bot, um zu sehen, was schiefgelaufen ist.",
+                "ended": "Diese Sitzung ist beendet. Starte eine neue, wenn du bereit bist."
+            }
+        }
     },
     "bridge": {
         "connectNetworkWallet": "{network}-Wallet verbinden",
@@ -2273,6 +2327,7 @@
             "included": "Die Verbrennung wurde in einen Block aufgenommen. Warten auf die endgültige Bestätigung.",
             "indexingDelayed": "Die Bestätigung oder Indexierung dauert länger als erwartet. Ihre Transaktion wird weiterhin verfolgt. Sie müssen diese Verbrennung nicht erneut einreichen.",
             "invalidAmount": "Geben Sie einen positiven XOR-Betrag mit höchstens 18 Nachkommastellen ein.",
+            "live": "Live",
             "loading": "Finalisierte Verbrennungen der Kampagne werden geladen…",
             "mainnetOnly": "Diese Kampagne ist im SORA-Mainnet verfügbar.",
             "notStarted": "Die Kampagne beginnt mit Block 27,720,478.",
@@ -2963,6 +3018,7 @@
         "Bots": "Handelsbots",
         "Bridge": "@:bridgeText",
         "Burn": "@:pageTitle.Burn",
+        "burnLive": "@:burnPage.tonswap.live",
         "Explore/Container": "Entdecken",
         "Farming": "Landwirtschaft",
         "OrderBook": "Handel",
@@ -4976,6 +5032,51 @@
             "consent": "Teilen Sie die Gesamtzahl der Kaufschritte mit, um Buy XOR zu verbessern. Es werden keine Wallet-Adressen, Beträge oder Transaktions-Hashes gesendet.",
             "privacy": "Ihre Datenschutzeinstellungen in Ihrem Browser verhindern, dass diese Zählungen auftreten.",
             "unavailable": "Schrittzahlen konnten nicht gesendet werden. Ihr Kauf bleibt davon unberührt."
+        },
+        "start": {
+            "cardHint": "Debit- oder Kreditkarte",
+            "crypto": "Krypto",
+            "cryptoHint": "ETH, USDT oder DAI auf Ethereum",
+            "ton": "USDT auf TON (3 Wallets)",
+            "youGet": "Sie erhalten",
+            "cardFees": "Ethereum-Netzwerkgebühren werden vom gekauften ETH abgezogen. Den Betrag nach Gebühren sehen Sie, bevor Sie bezahlen.",
+            "cryptoFees": "Behalten Sie etwas ETH in Ihrem Wallet für Ethereum-Netzwerkgebühren.",
+            "max": "Höchstbetrag pro Kauf derzeit: etwa {amount}.",
+            "useMax": "Höchstbetrag verwenden",
+            "maxNote": "Der XOR-Markt auf SORA ist klein. Größere Käufe würden den Preis zu stark bewegen und sind deshalb gesperrt.",
+            "tooBig": "Zu groß für den SORA-Markt im Moment. Sie können höchstens etwa {amount} auf einmal kaufen.",
+            "tooBigUnknown": "Zu groß für den SORA-Markt im Moment. Versuchen Sie einen kleineren Betrag.",
+            "conversionTooBig": "Die Umwandlung eines so hohen Betrags in DAI würde zu viel Wert kosten. Versuchen Sie einen kleineren Betrag.",
+            "cardMinimum": "Der Mindestbetrag für Karten ist {amount}.",
+            "cardBlocked": "Kartenzahlungen beginnen bei {minimum}, aber der SORA-Markt kann derzeit nur etwa {maximum} aufnehmen. Zahlen Sie mit Krypto oder versuchen Sie es später erneut.",
+            "useCrypto": "Mit Krypto bezahlen",
+            "tooSmall": "Zu klein: Die Netzwerkgebühr würde alles aufbrauchen. Versuchen Sie einen größeren Betrag.",
+            "noCardPrice": "MoonPay hat keinen Preis geliefert. Sie können trotzdem fortfahren: MoonPay zeigt den endgültigen Preis, bevor Sie bezahlen.",
+            "noPrice": "Wir konnten gerade keinen Preis abrufen. Versuchen Sie es in einer Minute erneut.",
+            "connecting": "Verbindung zu SORA wird hergestellt…",
+            "nativeTon": "Normales TON wird hier nicht unterstützt. Tauschen Sie es zuerst in USDT auf TON.",
+            "useUsdt": "Stattdessen mit USDT bezahlen",
+            "next": "So geht es weiter",
+            "steps": {
+                "walletsEthereum": "Verbinden Sie ein Ethereum-Wallet wie MetaMask und ein SORA-Wallet. Ein SORA-Wallet können Sie im nächsten Schritt erstellen.",
+                "walletSora": "Verbinden Sie Ihr SORA-Wallet.",
+                "walletsTon": "Verbinden Sie Ihre TON-, Ethereum- und SORA-Wallets.",
+                "card": "Bezahlen Sie per Karte bei MoonPay. MoonPay sendet ETH an Ihr Ethereum-Wallet.",
+                "ton": "Übertragen Sie Ihr USDT in der App des Anbieters von TON zu Ethereum.",
+                "convert": "Bestätigen Sie in Ihrem Ethereum-Wallet den Tausch in DAI und die Übertragung zu SORA.",
+                "transfer": "Bestätigen Sie in Ihrem Ethereum-Wallet die Übertragung Ihres DAI zu SORA.",
+                "swap": "Bestätigen Sie in Ihrem SORA-Wallet den Tausch in XOR. Ihr XOR kommt in diesem Wallet an."
+            },
+            "stepsNote": "Nichts wird gesendet, bevor Sie es bestätigen. Übertragungen zwischen Netzwerken können einige Minuten dauern.",
+            "otherWays": "Andere Zahlungswege:",
+            "inProgress": "Sie haben einen laufenden Kauf: {amount}."
+        },
+        "card": {
+            "description": "Bezahlen Sie per Karte bei MoonPay. MoonPay sendet ETH an Ihr Ethereum-Wallet, und die nächsten Schritte machen daraus XOR.",
+            "copy": "Kopieren Sie Ihre Ethereum-Adresse:",
+            "paste": "Öffnen Sie MoonPay. Wenn nach einer Wallet-Adresse gefragt wird, fügen Sie diese ein. Verwenden Sie nicht Ihre SORA-Adresse.",
+            "return": "Schließen Sie die Zahlung bei MoonPay ab und kehren Sie dann zu dieser Seite zurück.",
+            "open": "Adresse kopieren und MoonPay öffnen"
         }
     }
 }

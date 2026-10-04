@@ -42,6 +42,21 @@ const openPool = async (page: Page): Promise<void> => {
   await expect.poll(async () => page.evaluate(() => window.location.hash)).toBe('#/pool');
 };
 
+/**
+ * Resolves a shadow token to the string `getComputedStyle().boxShadow` reports for it in the current theme, so
+ * light-theme assertions follow the shared recipes (see docs/light-theme-lighting.md) instead of pinning their
+ * literal values.
+ */
+const tokenShadow = async (page: Page, token: string): Promise<string> =>
+  page.evaluate((name) => {
+    const probe = document.createElement('div');
+    probe.style.boxShadow = `var(${name})`;
+    (document.querySelector('.sora-theme-provider') ?? document.body).append(probe);
+    const resolved = getComputedStyle(probe).boxShadow;
+    probe.remove();
+    return resolved;
+  }, token);
+
 const accountSelectWalletBaseSelector = '.s-modal__modal.account-select-dialog .dialog-card__content > .el-card.base';
 const accountSelectWalletHeaderSelector = `${accountSelectWalletBaseSelector} > .el-card__header`;
 
@@ -813,9 +828,7 @@ test('keeps market algorithm settings popup visuals aligned with production cont
   expect(styles?.dialog.width ?? 0).toBeLessThanOrEqual(496);
   expect(styles?.dialog.borderRadius).toBe('24px');
   expect(styles?.dialog.backgroundColor).toBe('rgb(253, 247, 251)');
-  expect(styles?.dialog.boxShadow).toBe(
-    'rgb(255, 255, 255) -5px -5px 10px 0px, rgba(0, 0, 0, 0.1) 1px 1px 10px 0px, rgba(255, 255, 255, 0.8) 1px 1px 2px 0px inset'
-  );
+  expect(styles?.dialog.boxShadow).toBe(await tokenShadow(page, '--s-shadow-element-pressed'));
 
   expect(styles?.header.padding).toBe('24px 24px 8px');
 
@@ -830,17 +843,13 @@ test('keeps market algorithm settings popup visuals aligned with production cont
   expect(styles?.close.borderRadius).toBe('24px');
   expect(styles?.close.backgroundColor).toBe('rgb(247, 243, 244)');
   expectContrast(styles?.close.color ?? '', styles?.close.backgroundColor ?? '');
-  expect(styles?.close.boxShadow).toBe(
-    'rgb(255, 255, 255) -5px -5px 10px 0px, rgba(0, 0, 0, 0.1) 1px 1px 10px 0px, rgba(255, 255, 255, 0.8) 1px 1px 2px 0px inset'
-  );
+  expect(styles?.close.boxShadow).toBe(await tokenShadow(page, '--s-shadow-element-pressed'));
 
   expect(styles?.content.padding).toBe('8px 24px 24px');
 
   expectContrast(styles?.hint.color ?? '', styles?.dialog.backgroundColor ?? '');
 
-  expect(styles?.activeTab.boxShadow).toBe(
-    'rgb(255, 255, 255) -5px -5px 10px 0px, rgba(0, 0, 0, 0.1) 1px 1px 10px 0px, rgba(255, 255, 255, 0.8) 1px 1px 2px 0px inset'
-  );
+  expect(styles?.activeTab.boxShadow).toBe(await tokenShadow(page, '--s-shadow-element-pressed'));
 });
 
 test('keeps swap reverse button depth behavior aligned with production in light and noir modes', async ({ page }) => {
@@ -1116,9 +1125,7 @@ test('keeps pool empty state aligned with production in light and noir modes', a
   expectContrast(light?.card.color ?? '', light?.card.backgroundColor ?? '');
   expect(light?.card.borderColor).toBe('rgb(229, 231, 235)');
   expect(light?.card.borderRadius).toBe('24px');
-  expect(light?.card.boxShadow).toBe(
-    'rgb(255, 255, 255) -5px -5px 10px 0px, rgba(0, 0, 0, 0.1) 1px 1px 10px 0px, rgba(255, 255, 255, 0.8) 1px 1px 2px 0px inset'
-  );
+  expect(light?.card.boxShadow).toBe(await tokenShadow(page, '--s-shadow-dialog'));
   expect(light?.card.padding).toBe('20px 24px');
   expect(light?.card.fontSize).toBe('14px');
   expect(light?.card.lineHeight).toBe('21px');
@@ -1130,7 +1137,7 @@ test('keeps pool empty state aligned with production in light and noir modes', a
   expect(light?.button.color).toBe('rgb(255, 255, 255)');
   expect(light?.button.borderColor).toBe('rgb(229, 231, 235)');
   expect(light?.button.borderRadius).toBe('24px');
-  expect(light?.button.boxShadow).toBe('none');
+  expect(light?.button.boxShadow).toBe(await tokenShadow(page, '--lm-glow-accent'));
   expect(light?.button.padding).toBe('5px 13px');
   expect(light?.button.fontSize).toBe('24px');
   expect(light?.button.lineHeight).toBe('24px');
@@ -1193,17 +1200,14 @@ test('keeps swap hover highlights aligned with production in light and noir mode
   const lightSettingsHover = await readHoverStyles('.swap-widget .el-button--settings');
 
   expect(lightPrimaryHover).not.toBeNull();
-  expect(lightPrimaryHover?.boxShadow).toBe(
-    'rgba(255, 255, 255, 0.9) 1px 1px 5px 0px, rgb(255, 255, 255) -1px -1px 5px 0px, rgba(247, 84, 163, 0.16) 0px 0px 6.42111px 0px'
-  );
+  // Light primary actions glow with the brand colour bounced onto the surface beneath them.
+  expect(lightPrimaryHover?.boxShadow).toBe(await tokenShadow(page, '--lm-glow-accent-hover'));
   expectContrast(lightPrimaryHover?.color ?? '', lightPrimaryHover?.backgroundColor ?? '');
   expect(lightPrimaryHover?.borderColor).toBe('rgb(242, 234, 237)');
   expect(lightPrimaryHover?.color).toBe('rgb(255, 255, 255)');
 
   expect(lightTokenHover).not.toBeNull();
-  expect(lightTokenHover?.boxShadow).toBe(
-    'rgb(255, 255, 255) -5px -5px 10px 0px, rgba(0, 0, 0, 0.1) 1px 1px 10px 0px, rgba(255, 255, 255, 0.8) 1px 1px 2px 0px inset'
-  );
+  expect(lightTokenHover?.boxShadow).toBe(await tokenShadow(page, '--s-shadow-element-pressed'));
 
   expect(lightSettingsHover).not.toBeNull();
   expect(lightSettingsHover?.borderColor).toBe('rgba(0, 0, 0, 0)');

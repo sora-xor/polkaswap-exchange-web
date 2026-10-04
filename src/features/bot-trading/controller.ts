@@ -24,6 +24,8 @@ import { fetchLiquidBotAssets } from './eligible-assets';
 import { fetchBotMarketSnapshot } from './market';
 import { readHistoryIdentity } from './playground-history';
 import { createBotLiveExecutor } from './live';
+import { continuesOnItsOwn, runHasTimeLeft, type BotRunContext } from './run-continuity';
+import { acquireRunLock } from './run-lock';
 import {
   createDiscoveryCampaign,
   DISCOVERY_GRANT_MAX_MS,
@@ -119,6 +121,14 @@ export interface BacktestOptions {
 export interface PaperBotOptions {
   thresholdPercent?: number;
   research?: BotResearchSnapshot;
+  /** Run length the user chose; above one day it needs a rules strategy, like an extended live run. */
+  sessionDurationMs?: number;
+}
+/** Start options. `continueRun` keeps the saved end time of an interrupted or paused run. */
+export interface BotStartOptions {
+  password?: string;
+  expectedConnection?: string;
+  continueRun?: boolean;
 }
 /** One transient review of fixed candidates and aggregate funding, with no wallet secret. */
 export interface DiscoveryCampaignReview {
@@ -204,6 +214,11 @@ interface ControllerDependencies {
   /** Read a transferable balance from the connected chain, without opening a trading session. */
   readAssetBalance?: (assetAddress: string, accountAddress: string, decimals: number) => Promise<string>;
   identity?: typeof readHistoryIdentity;
+  /**
+   * Take the bot's cross-tab run lock (`run-lock.ts`). Resolves a release function, or `null` when
+   * another tab runs the bot. Omitted in tests and offline callers, which have one tab.
+   */
+  lockRun?: (id: string) => Promise<(() => void) | null>;
   /** Explicit qualified goal corridor. Omission never enables or restores goal execution. */
   goalRuntime?: Pick<ReturnType<typeof createGoalRuntime>, 'start' | 'stop' | 'active' | 'dispose'>;
   /** Trusted compiled release composition; public inputs cannot supply a verification. */
@@ -647,6 +662,9 @@ export function createBotTradingController(deps: ControllerDependencies) {
   const goalIds = new Set<string>();
   const goalSessions = new Set<string>();
   const pendingStarts = new Set<string>();
+  /** Cross-tab run locks held for this tab's sessions and pending starts. */
+  const runLocks = new Map<string, () => void>();
+  let continuingRuns = false;
   const sessionVersions = new Map<string, number>();
   const providers = new Map<string, BotAiClient>();
   const histories = new Map<string, { loadedAt: number; history: BotHistory }>();
@@ -700,6 +718,7 @@ export function createBotTradingController(deps: ControllerDependencies) {
     void status.value;
     return deps.isExternal();
   });
+  const walletAddress = computed(() => (status.value.wallet.connected ? status.value.wallet.address : ''));
   const sessionActiveIds = ref<string[]>([]);
   const syncActiveIds = () => {
     for (const id of goalSessions) if (!deps.goalRuntime?.active(id)) goalSessions.delete(id);
@@ -772,6 +791,8 @@ export function createBotTradingController(deps: ControllerDependencies) {
   const revoke = (id: string): Promise<void> => {
     sessions.delete(id);
     goalSessions.delete(id);
+    runLocks.get(id)?.();
+    runLocks.delete(id);
     cadence.delete(id);
     valuedAt.delete(id);
     sessionVersions.set(id, (sessionVersions.get(id) ?? 0) + 1);
@@ -1013,6 +1034,8 @@ export function createBotTradingController(deps: ControllerDependencies) {
                 !status.value.node.connected))
           ) {
             revoke(id);
+            // Another tab paused, stopped or flagged it: keep that record and its reason.
+            if (bot.status !== 'running') continue;
             bot.status = 'paused';
             event(bot, 'bots.events.sessionPaused');
             await deps.storage.saveBot(bot);
@@ -1520,6 +1543,126 @@ export function createBotTradingController(deps: ControllerDependencies) {
       balances,
     };
   };
+  /** Start or continue one bot in this tab. `startBot` runs it as a user action; `continueRuns` runs it quietly. */
+  const start = async (id: string, options: BotStartOptions): Promise<void> => {
+    pendingStarts.add(id);
+    try {
+      const version = sessionVersions.get(id);
+      const assertStarting = () => {
+        if (deps.now() - lastTick > 60_000) pauseAll();
+        if (disposed || sessionVersions.get(id) !== version || document.hidden) throw new Error('bots.errors.session');
+      };
+      if (document.hidden) throw new Error('bots.errors.hidden');
+      if (options.expectedConnection && options.expectedConnection !== readConnectionIdentity())
+        throw new Error('bots.errors.session');
+      const bot = await find(id);
+      if (bot.discoveryCampaignId) throw new Error('bots.errors.policy');
+      if (options.continueRun) {
+        // Exact goals resume through their own runtime; a run with no time left needs a new start.
+        if (isGoalId(id) || hasGoalExecutionMarker(bot)) throw new Error('bots.errors.policy');
+        if (!runHasTimeLeft(bot, deps.now())) throw new Error('bots.errors.runEnded');
+      }
+      if (isGoalId(id) || hasGoalExecutionMarker(bot)) {
+        assertStarting();
+        if (!deps.goalRuntime) throw new Error('bots.errors.policy');
+        const goal = readGoalExecutionBot(bot);
+        const ready = await deps.agent.ready({ requireNode: true, requireWallet: true });
+        assertStarting();
+        const context = syncContext(id);
+        assertStarting();
+        if (options.expectedConnection && options.expectedConnection !== readConnectionIdentity())
+          throw new Error('bots.errors.session');
+        if (goal.network !== ready.node.genesisHash || goal.account !== ready.wallet.address)
+          throw new Error('bots.errors.session');
+        await deps.goalRuntime.start(goal, options.password);
+        assertStarting();
+        assertContext(context);
+        if (!deps.goalRuntime.active(id)) throw new Error('bots.errors.session');
+        sessionVersions.set(id, (sessionVersions.get(id) ?? 0) + 1);
+        goalSessions.add(id);
+        syncActiveIds();
+        lastTick = deps.now();
+        await refresh();
+        return;
+      }
+      validateBotDefinition(bot);
+      if (await checkGoal(bot)) throw new Error('bots.errors.goalComplete');
+      if (bot.strategy.kind === 'ai' && !providers.has(id)) throw new Error('bots.errors.provider');
+      if (deps.lockRun && !runLocks.has(id)) {
+        const release = await deps.lockRun(id);
+        if (!release) throw new Error('bots.errors.elsewhere');
+        // Stored first, so a pause during the wait releases it through revoke.
+        runLocks.set(id, release);
+        assertStarting();
+      }
+      const ready = await deps.agent.ready({ requireNode: true, requireWallet: bot.mode === 'live' });
+      assertStarting();
+      const context = syncContext(id);
+      assertStarting();
+      if (options.expectedConnection && options.expectedConnection !== readConnectionIdentity())
+        throw new Error('bots.errors.session');
+      if (bot.network !== 'paper' && bot.network !== ready.node.genesisHash) throw new Error('bots.errors.network');
+      bot.network = ready.node.genesisHash;
+      if (bot.mode === 'live') {
+        // A paper record can become live without the simple-flow review.
+        // Bind its retained study after resolving the real network, before any wallet authority.
+        const goalEvidence = bot.research && validateGoalResearchSnapshot(bot.research);
+        if (goalEvidence?.protocol === 'goal-episodes-v3') {
+          assertGoalResearchBinding(bot, goalEvidence);
+          await assertReviewDenomination(goalEvidence.history.identity);
+          assertStarting();
+          assertContext(context);
+        }
+        if (bot.account !== 'paper' && !sameBotAccount(bot.account, ready.wallet.address))
+          throw new Error('bots.errors.wallet');
+        bot.account = ready.wallet.address;
+        await deps.live.reconcile(bot);
+        if (bot.goal) bot.portfolio = (await find(id)).portfolio;
+        assertStarting();
+        assertContext(context);
+        if (options.expectedConnection) {
+          const review = liveReviews.get(id);
+          if (!review || review.expiresAt <= deps.now() || review.identity !== options.expectedConnection)
+            throw new Error('bots.errors.session');
+          await assertReviewDenomination(review.denomination);
+          if (options.expectedConnection !== readConnectionIdentity()) throw new Error('bots.errors.session');
+          assertStarting();
+        }
+        if (bot.goal) {
+          const observation = await market(bot);
+          assertStarting();
+          if (await checkGoal(bot, observation.candle, false)) throw new Error('bots.errors.goalComplete');
+        }
+        if (options.continueRun) await deps.live.authorize(bot, options.password, { endsAt: bot.sessionExpiresAt });
+        else await deps.live.authorize(bot, options.password);
+      } else {
+        if (bot.goal) {
+          const observation = await market(bot);
+          assertStarting();
+          if (await checkGoal(bot, observation.candle, false)) throw new Error('bots.errors.goalComplete');
+        }
+        bot.status = 'running';
+        if (options.continueRun) event(bot, 'bots.events.continued');
+        else {
+          bot.sessionExpiresAt = deps.now() + bot.policy.sessionDurationMs;
+          event(bot, 'bots.events.started');
+        }
+        await deps.storage.saveBot(bot);
+      }
+      assertStarting();
+      assertContext(context);
+      sessionVersions.set(id, (sessionVersions.get(id) ?? 0) + 1);
+      sessions.add(id);
+      syncActiveIds();
+      lastTick = deps.now();
+      await refresh();
+    } catch (failure) {
+      await revoke(id).catch(() => undefined);
+      throw failure;
+    } finally {
+      pendingStarts.delete(id);
+    }
+  };
   const api = {
     bots,
     selectedId,
@@ -1534,6 +1677,7 @@ export function createBotTradingController(deps: ControllerDependencies) {
     chartCandles,
     backtestResult,
     walletConnected,
+    walletAddress,
     externalWallet,
     providerConnectedIds,
     sessionActiveIds,
@@ -1923,6 +2067,12 @@ export function createBotTradingController(deps: ControllerDependencies) {
     createPaperBot: (template: BotDefinition, settings?: PaperBotOptions) =>
       guard(async () => {
         const bot = createPaperBotFromTemplate(template, assets.value, deps.now());
+        if (settings?.sessionDurationMs !== undefined) {
+          // Longer than a day is an extended run; validatePolicy keeps those to reviewed rules strategies.
+          if (settings.sessionDurationMs > SESSION_MAX_MS) bot.extendedSession = true;
+          bot.policy.sessionDurationMs = settings.sessionDurationMs;
+          validateBotDefinition(bot);
+        }
         const research = settings?.research ? copyResearchSnapshot(settings.research, bot.createdAt) : undefined;
         const preserveTestedTrigger = research?.source === 'historical' || research?.source === 'imported';
         const dip = settings?.thresholdPercent;
@@ -2112,6 +2262,9 @@ export function createBotTradingController(deps: ControllerDependencies) {
           next.activity = [];
           next.status = 'idle';
           delete next.goalState;
+          // Runs longer than a day come only from a reviewed start in that mode.
+          delete next.extendedSession;
+          next.policy.sessionDurationMs = Math.min(next.policy.sessionDurationMs, SESSION_MAX_MS);
         }
         validateBotDefinition(next);
         if (next.provider !== current.provider || next.model !== current.model || next.endpoint !== current.endpoint) {
@@ -2137,111 +2290,54 @@ export function createBotTradingController(deps: ControllerDependencies) {
         await deps.storage.saveBot(bot, { resetGoal: true });
         await refresh();
       }),
-    startBot: (id: string, options: { password?: string; expectedConnection?: string } = {}) =>
-      guard(async () => {
-        pendingStarts.add(id);
-        try {
-          const version = sessionVersions.get(id);
-          const assertStarting = () => {
-            if (deps.now() - lastTick > 60_000) pauseAll();
-            if (disposed || sessionVersions.get(id) !== version || document.hidden)
-              throw new Error('bots.errors.session');
-          };
-          if (document.hidden) throw new Error('bots.errors.hidden');
-          if (options.expectedConnection && options.expectedConnection !== readConnectionIdentity())
-            throw new Error('bots.errors.session');
-          const bot = await find(id);
-          if (bot.discoveryCampaignId) throw new Error('bots.errors.policy');
-          if (isGoalId(id) || hasGoalExecutionMarker(bot)) {
-            assertStarting();
-            if (!deps.goalRuntime) throw new Error('bots.errors.policy');
-            const goal = readGoalExecutionBot(bot);
-            const ready = await deps.agent.ready({ requireNode: true, requireWallet: true });
-            assertStarting();
-            const context = syncContext(id);
-            assertStarting();
-            if (options.expectedConnection && options.expectedConnection !== readConnectionIdentity())
-              throw new Error('bots.errors.session');
-            if (goal.network !== ready.node.genesisHash || goal.account !== ready.wallet.address)
-              throw new Error('bots.errors.session');
-            await deps.goalRuntime.start(goal, options.password);
-            assertStarting();
-            assertContext(context);
-            if (!deps.goalRuntime.active(id)) throw new Error('bots.errors.session');
-            sessionVersions.set(id, (sessionVersions.get(id) ?? 0) + 1);
-            goalSessions.add(id);
-            syncActiveIds();
-            lastTick = deps.now();
-            await refresh();
-            return;
+    startBot: (id: string, options: BotStartOptions = {}) => guard(() => start(id, options)),
+    /** Re-read saved bots, for example after another tab paused or stopped one. Grants nothing. */
+    async reload(): Promise<void> {
+      if (initialized && !disposed) await refresh();
+    },
+    /**
+     * Continue interrupted runs that need no secret (see `run-continuity.ts`): paper bots, and live
+     * bots whose external wallet approves every swap. Each keeps its saved end time. A failure leaves
+     * the bot as it was and is not shown as a page error; the caller tries again on the next trigger.
+     * Resolves the IDs that are running again.
+     */
+    async continueRuns(elsewhere: ReadonlySet<string> = new Set()): Promise<string[]> {
+      if (continuingRuns || disposed || !initialized || busy.value || document.hidden) return [];
+      const current = deps.agent.status();
+      if (!current.node.connected) return [];
+      continuingRuns = true;
+      const continued: string[] = [];
+      try {
+        const context: BotRunContext = {
+          now: deps.now(),
+          active: new Set([...sessions, ...goalSessions, ...pendingStarts]),
+          elsewhere,
+          wallet: {
+            connected: current.wallet.connected,
+            address: current.wallet.address,
+            external: deps.isExternal(),
+          },
+        };
+        const waiting = (await deps.storage.listBots()).filter((bot) => continuesOnItsOwn(bot, context));
+        for (const bot of waiting) {
+          if (disposed || busy.value || document.hidden) break;
+          // The same one-operation-at-a-time rule as guard, without replacing the page's error.
+          activeOperations++;
+          busy.value = true;
+          try {
+            await start(bot.id, { continueRun: true });
+            continued.push(bot.id);
+          } catch {
+            /* The bot keeps its saved state; the next focus, reconnect or timer tries again. */
+          } finally {
+            busy.value = --activeOperations > 0;
           }
-          validateBotDefinition(bot);
-          if (await checkGoal(bot)) throw new Error('bots.errors.goalComplete');
-          if (bot.strategy.kind === 'ai' && !providers.has(id)) throw new Error('bots.errors.provider');
-          const ready = await deps.agent.ready({ requireNode: true, requireWallet: bot.mode === 'live' });
-          assertStarting();
-          const context = syncContext(id);
-          assertStarting();
-          if (options.expectedConnection && options.expectedConnection !== readConnectionIdentity())
-            throw new Error('bots.errors.session');
-          if (bot.network !== 'paper' && bot.network !== ready.node.genesisHash) throw new Error('bots.errors.network');
-          bot.network = ready.node.genesisHash;
-          if (bot.mode === 'live') {
-            // A paper record can become live without the simple-flow review.
-            // Bind its retained study after resolving the real network, before any wallet authority.
-            const goalEvidence = bot.research && validateGoalResearchSnapshot(bot.research);
-            if (goalEvidence?.protocol === 'goal-episodes-v3') {
-              assertGoalResearchBinding(bot, goalEvidence);
-              await assertReviewDenomination(goalEvidence.history.identity);
-              assertStarting();
-              assertContext(context);
-            }
-            if (bot.account !== 'paper' && !sameBotAccount(bot.account, ready.wallet.address))
-              throw new Error('bots.errors.wallet');
-            bot.account = ready.wallet.address;
-            await deps.live.reconcile(bot);
-            if (bot.goal) bot.portfolio = (await find(id)).portfolio;
-            assertStarting();
-            assertContext(context);
-            if (options.expectedConnection) {
-              const review = liveReviews.get(id);
-              if (!review || review.expiresAt <= deps.now() || review.identity !== options.expectedConnection)
-                throw new Error('bots.errors.session');
-              await assertReviewDenomination(review.denomination);
-              if (options.expectedConnection !== readConnectionIdentity()) throw new Error('bots.errors.session');
-              assertStarting();
-            }
-            if (bot.goal) {
-              const observation = await market(bot);
-              assertStarting();
-              if (await checkGoal(bot, observation.candle, false)) throw new Error('bots.errors.goalComplete');
-            }
-            await deps.live.authorize(bot, options.password);
-          } else {
-            if (bot.goal) {
-              const observation = await market(bot);
-              assertStarting();
-              if (await checkGoal(bot, observation.candle, false)) throw new Error('bots.errors.goalComplete');
-            }
-            bot.status = 'running';
-            bot.sessionExpiresAt = deps.now() + bot.policy.sessionDurationMs;
-            event(bot, 'bots.events.started');
-            await deps.storage.saveBot(bot);
-          }
-          assertStarting();
-          assertContext(context);
-          sessionVersions.set(id, (sessionVersions.get(id) ?? 0) + 1);
-          sessions.add(id);
-          syncActiveIds();
-          lastTick = deps.now();
-          await refresh();
-        } catch (failure) {
-          await revoke(id).catch(() => undefined);
-          throw failure;
-        } finally {
-          pendingStarts.delete(id);
         }
-      }),
+      } finally {
+        continuingRuns = false;
+      }
+      return continued;
+    },
     pauseBot: (id: string) => {
       const goal = isGoalId(id);
       const stopped = revoke(id);
@@ -2435,6 +2531,7 @@ export function useBotTrading() {
       ai: createBotAiClient,
       now: Date.now,
       isExternal: () => Boolean(walletApi.signer),
+      lockRun: acquireRunLock,
       eligibleAssets: fetchLiquidBotAssets,
       readAssetBalance: (assetAddress, accountAddress, decimals) => {
         const chain = walletApi.connection?.api;

@@ -136,21 +136,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, useId, watch } from 'vue';
-import { FPNumber } from '@sora-substrate/sdk';
-import { Operation } from '@sora-substrate/sdk/build/types';
+import { computed, useId } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
-import { useSettingsStore } from '@/stores/settings';
 import type { GetTsPurpose, GetTsSource } from '@/features/misc/lib/getTsFlow';
-import { findGetTsAmountSuggestion, type GetTsAmountSuggestion } from '@/features/misc/lib/getTsAmountSuggestion';
-import {
-  emptyGetTsPlan,
-  getTsPlanAssets,
-  isGetTsPlanAmount,
-  requestGetTsPlanPreview,
-  type GetTsPaymentAsset,
-  type GetTsPlanPreviewResult,
-} from '@/features/misc/lib/getTsPlanQuote';
+import { displayGetTsAmount as display, useGetTsPlanPreview } from '@/features/misc/composables/useGetTsPlanPreview';
+import type { GetTsPaymentAsset, GetTsPlanPreviewResult } from '@/features/misc/lib/getTsPlanQuote';
 
 /** Amount-first public estimates. Wallet connections and all execution remain outside this component. */
 const props = withDefaults(
@@ -163,146 +153,24 @@ const emit = defineEmits<{
   preview: [result: GetTsPlanPreviewResult];
 }>();
 const { t } = useTranslation();
-const settings = useSettingsStore();
 const id = useId();
 const titleId = `get-ts-plan-title-${id}`;
 const amountId = `get-ts-plan-amount-${id}`;
 const assetId = `get-ts-plan-asset-${id}`;
-const assets = computed(() => getTsPlanAssets(props.source));
-const asset = computed(() =>
-  props.paymentAsset && assets.value.includes(props.paymentAsset) ? props.paymentAsset : assets.value[0]
-);
-const request = computed(() => ({
-  source: props.source,
-  amount: props.amount,
-  paymentAsset: asset.value,
-  purpose: props.purpose,
-}));
-const result = ref<GetTsPlanPreviewResult>(emptyGetTsPlan(request.value));
-const suggestion = ref<GetTsAmountSuggestion | null>(null);
-const findingAmount = ref(false);
-const canSuggest = computed(() =>
-  ['price-impact', 'conversion-impact', 'cap-exceeded'].includes(result.value.reason ?? '')
-);
-const canUseMinimum = computed(
-  () => result.value.reason === 'card-minimum' && isGetTsPlanAmount(result.value.providerMinimumUsd ?? '', 'USD')
-);
+const { assets, asset, result, suggestion, findingAmount, canSuggest, canUseMinimum, findAmount, restart } =
+  useGetTsPlanPreview({
+    source: () => props.source,
+    amount: () => props.amount,
+    paymentAsset: () => props.paymentAsset,
+    purpose: () => props.purpose,
+    onPreview: (value) => emit('preview', value),
+    onPaymentAsset: (value) => emit('update:paymentAsset', value),
+  });
 const reasonKey = computed(() =>
   props.purpose === 'xor' && ['fees-unavailable', 'fees-insufficient'].includes(result.value.reason ?? '')
     ? `buyXor.preview.reason.${result.value.reason}`
     : `getTs.preview.reason.${result.value.reason}`
 );
-let timer: ReturnType<typeof setTimeout> | undefined;
-let expiry: ReturnType<typeof setTimeout> | undefined;
-let controller: AbortController | undefined;
-let generation = 0;
-let disposed = false;
-
-/** Each estimate uses the current network fees and purpose, including while finding a smaller amount. */
-function quoteDependencies(signal: AbortSignal) {
-  return {
-    fees: {
-      swapFeeCodec: settings.networkFees?.[Operation.Swap],
-      burnFeeCodec: props.purpose === 'ts' ? settings.networkFees?.[Operation.BurnWithRemark] : undefined,
-      slippageTolerance: settings.slippageTolerance,
-    },
-    moonpayPublicKey: settings.moonpayApiKey,
-    signal,
-  };
-}
-/** Offer an explicitly chosen smaller amount; the normal preview checks it again after selection. */
-async function findAmount(): Promise<void> {
-  if (!canSuggest.value || findingAmount.value) return;
-  const current = generation;
-  controller?.abort();
-  controller = new AbortController();
-  const signal = controller.signal;
-  const dependencies = quoteDependencies(signal);
-  findingAmount.value = true;
-  suggestion.value = null;
-  const value = await findGetTsAmountSuggestion(
-    { ...request.value },
-    (candidate) => requestGetTsPlanPreview(candidate, dependencies),
-    signal
-  );
-  if (disposed || current !== generation) return;
-  findingAmount.value = false;
-  suggestion.value = value;
-}
-
-/** Rounding is display-only; emitted calculations keep their original fixed-point strings. */
-function display(value: string, decimals = 6): string {
-  const exact = new FPNumber(value);
-  const rounded = exact.dp(decimals, 3);
-  return exact.gt(FPNumber.ZERO) && rounded.isZero()
-    ? `<${FPNumber.ONE.div(new FPNumber('10').pow(decimals)).toString()}`
-    : rounded.toString();
-}
-/** Publish revocation synchronously so changing input can never retain old affordability evidence. */
-function publish(value: GetTsPlanPreviewResult): void {
-  result.value = value;
-  emit('preview', value);
-}
-/** Debounced reads replace old results, abort provider fetches, and refresh short-lived successful estimates. */
-function restart(delay = 650): void {
-  generation += 1;
-  const current = generation;
-  clearTimeout(timer);
-  clearTimeout(expiry);
-  controller?.abort();
-  findingAmount.value = false;
-  suggestion.value = null;
-  if (disposed) return;
-  if (!props.amount) {
-    publish(emptyGetTsPlan(request.value));
-    return;
-  }
-  if (!isGetTsPlanAmount(props.amount, asset.value)) {
-    publish({ ...emptyGetTsPlan(request.value, 'blocked'), feasible: false, reason: 'invalid-amount' });
-    return;
-  }
-  publish(emptyGetTsPlan(request.value, 'loading'));
-  timer = setTimeout(async () => {
-    controller = new AbortController();
-    const value = await requestGetTsPlanPreview({ ...request.value }, quoteDependencies(controller.signal)).catch(
-      () => ({ ...emptyGetTsPlan(request.value, 'unavailable'), reason: 'liquidity-unavailable' as const })
-    );
-    if (disposed || current !== generation) return;
-    publish(value);
-    if (value.state === 'ready' && value.expiresAt)
-      expiry = setTimeout(() => restart(0), Math.max(0, value.expiresAt - Date.now()));
-  }, delay);
-}
-watch(
-  asset,
-  (value) => {
-    if (value !== props.paymentAsset) emit('update:paymentAsset', value);
-  },
-  { immediate: true }
-);
-watch(
-  () => [
-    props.source,
-    props.purpose,
-    props.amount,
-    asset.value,
-    settings.nodeIsConnected,
-    settings.soraNetwork,
-    settings.networkFees?.[Operation.Swap],
-    props.purpose === 'ts' ? settings.networkFees?.[Operation.BurnWithRemark] : undefined,
-    settings.slippageTolerance,
-    settings.moonpayApiKey,
-  ],
-  () => restart(),
-  { immediate: true, flush: 'sync' }
-);
-onBeforeUnmount(() => {
-  disposed = true;
-  generation += 1;
-  controller?.abort();
-  clearTimeout(timer);
-  clearTimeout(expiry);
-});
 </script>
 
 <style scoped lang="scss">
