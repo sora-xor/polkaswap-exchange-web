@@ -30,6 +30,8 @@ vi.mock('@/composables/useTranslation', async () => {
         if (key === 'bots.autopilot.diagnostics.netLoss') return messages.bots.autopilot.diagnostics.netLoss;
         if (key === 'bots.autopilot.diagnostics.lastCheckThrough')
           return messages.bots.autopilot.diagnostics.lastCheckThrough.replace('{time}', String(values?.time));
+        if (key === 'bots.autopilot.diagnostics.previousCheckThrough')
+          return messages.bots.autopilot.diagnostics.previousCheckThrough.replace('{time}', String(values?.time));
         if (key === 'bots.autopilot.diagnostics.screeningCount')
           return messages.bots.autopilot.diagnostics.screeningCount
             .replace('{drafted}', String(values?.drafted))
@@ -1104,6 +1106,72 @@ describe('BotAutopilot', () => {
       'bots.autopilot.diagnostics.lastCheck'
     );
     await wrapper.setProps({ diagnostics: null, diagnosticsCompletedThrough: completedThrough });
+    expect(wrapper.find('[data-testid="autopilot-diagnostics"]').exists()).toBe(false);
+  });
+
+  it('shows a retained training failure as a previous check beside the current failed draft, without authority', async () => {
+    const completedThrough = Date.UTC(2026, 8, 22, 6);
+    const input = {
+      assetInAddress: KUSD.address,
+      assetOutAddress: XOR.address,
+      capital: '10',
+      feeBudgetXor: '1',
+      targetReturnPercent: '5',
+      maxLossPercent: '10',
+      title: 'Maximize XOR',
+      valuationAsset: 'output' as const,
+    };
+    const recovery: AutopilotWatchRecovery = {
+      walletAddress: defaults.walletAddress,
+      input,
+      trainingDiagnostics: {
+        stage: 'training',
+        intentKey: 'fixture-only',
+        completedThrough,
+        failures: [{ candidate: 1, reasons: ['netLoss', 'goalTradeCost'] }],
+      },
+      lastFailure: {
+        intentKey: 'fixture-only',
+        completedThrough: completedThrough + 3_600_000,
+        errorKey: 'bots.errors.quote',
+      },
+    };
+    const wrapper = render({
+      assets: [KUSD, XOR],
+      stage: 'watching',
+      error: 'Fresh quote unavailable',
+      diagnostics: null,
+      diagnosticsCompletedThrough: completedThrough + 3_600_000,
+      recoveryInput: input,
+      watchRecovery: recovery,
+    });
+    const details = wrapper.get('[data-testid="autopilot-diagnostics"]');
+    expect(details.get('summary').text()).toContain('Previous check · data through');
+    expect(details.get('summary').text()).toContain('06:00');
+    expect(details.get('summary').text()).toContain('UTC');
+    expect(details.get('summary').text()).not.toContain('07:00');
+    expect(details.text()).toContain(messages.bots.autopilot.diagnostics.netLoss);
+    expect(details.text()).toContain('bots.errors.goalTradeCost');
+    expect(details.attributes('open')).toBeUndefined();
+    const current = wrapper.get('[data-testid="autopilot-watch-error"]');
+    expect(current.text()).toContain('Last check');
+    expect(current.text()).toContain('07:00');
+    expect(current.text()).toContain('Fresh quote unavailable');
+    expect(wrapper.find('[data-testid="autopilot-watch-fee-pressure"]').exists()).toBe(false);
+    expect(wrapper.find('[data-testid="autopilot-start"]').exists()).toBe(false);
+    await wrapper.get('form').trigger('submit');
+    expect(wrapper.emitted('go')).toBeUndefined();
+    expect(wrapper.emitted('start')).toBeUndefined();
+
+    await wrapper.setProps({
+      diagnostics: { stage: 'training', failures: [{ candidate: 2, reasons: ['drawdown'] }] },
+    });
+    expect(wrapper.get('[data-testid="autopilot-diagnostics"] summary').text()).toContain('Last check');
+    expect(wrapper.get('[data-testid="autopilot-diagnostics"] summary').text()).toContain('07:00');
+    expect(wrapper.get('[data-testid="autopilot-diagnostics"]').text()).not.toContain(
+      messages.bots.autopilot.diagnostics.netLoss
+    );
+    await wrapper.setProps({ diagnostics: null, recoveryInput: null });
     expect(wrapper.find('[data-testid="autopilot-diagnostics"]').exists()).toBe(false);
   });
 

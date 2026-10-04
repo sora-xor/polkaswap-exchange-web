@@ -54,6 +54,27 @@ Ranking thousands of candidates needs speed, so **Tier 1** screens with Float64 
 
 `tests/unit/features/bot-trading/quant-loop.spec.ts` checks that `quantSignalAt` matches `evaluateStrategyRules` bar by bar on real PSWAP history.
 
+Both tiers support every live condition except `mad`:
+
+- deviation, trend, momentum, breakout, up-move share (`rsi`), efficiency, fall from the high (`drawdown`), return quantile and restoring force;
+- `all` and `any` groups.
+
+Exact signals are computed once per rule and market with rolling bigint algorithms, so they never drift. They are kept in a bounded memo that lives as long as the market object. Tier 1 pool depths are converted from the exact reserves once per market, with the same values as before.
+
+Together these took the reference run from about 2.2 s to about 0.4 s, including the strategy map data, with unchanged results.
+
+### Strategy map data
+
+For the strategy map, each simulated market also records every candidate's fixed-parameter Tier 1 results:
+
+- the first half (before the blind start) and the second half;
+- the larger biggest drop of the two;
+- the share of hours holding the token;
+- trades;
+- whether it passed every training check and whether it is the final selection.
+
+These values only position lines (`QuantLoopResult.atlas`).
+
 ## Reference result
 
 This was run on the bundled archive with the frozen finalized fee observation in `tests/fixtures/bot-trading/mainnetFees20260914.json`. Live runs use the current fee observation, so their numbers can differ slightly.
@@ -105,7 +126,7 @@ When a live-ready market's exact rule is in its buy zone, a banner above the bot
 
 The page is built to stay open for a multi-day session:
 
-- **Calm mode.** Ambient motion (the iridescent rim, light sweep and drift, water bubbles, pulses) runs on arrival. After 60 seconds without pointer, keyboard, wheel, touch or scroll input, the page sets `--quant-motion: paused`. Every infinite animation reads that variable through `animation-play-state`, and the mesh stops scheduling animation frames. Any interaction wakes it.
+- **Calm mode.** Ambient motion (the iridescent rim, light sweep and drift, water bubbles, pulses) runs on arrival. After 60 seconds without pointer, keyboard, wheel, touch or scroll input, the page sets `--quant-motion: paused`. Every infinite animation reads that variable through `animation-play-state`, and the canvases (including the strategy map) stop scheduling animation frames. Any interaction wakes it.
 - **Live signals.** They refresh a few minutes after each completed hour and never overlap. A tab that was throttled in the background catches up when it becomes visible again.
 - **Cleanup.** Timers, observers and listeners are released on unmount.
 - **Bounded live engine.** The engine keeps per-bot, size-capped state: activity is capped at 200 entries, equity at 1,000 points and observations at 120. One history entry per bot refreshes hourly, and the research history cache holds at most 3 entries. `controller.spec.ts` (_long-running session memory bounds_) checks every cap.
@@ -132,7 +153,11 @@ A larger budget would let the bot keep buying into a pool of a few dozen XOR, wh
 - The hero: the **Ready-made bots** heading, one plain paragraph and the three how-to steps. While the research runs, a one-line status and a progress bar replace the earlier six-stage pipeline and counters.
 - **Available bots**: one card per live-ready market with `QuantGauge`, the test result against holding the token, the biggest drop and the number of trades. It also shows the buy and sell rules in plain words, the trading cadence, the budget, the **Run for** session choice, and the actions **Paper trade**, **Go live** and **Swap**. Markets without a bot follow under **Other markets**, each with its reason.
 - **Results over time** (`QuantEquity`): chained walk-forward equity against the token's own price, with fold bands and fills. Each test period is listed with its result and trades.
-- **Strategies tested** (`QuantMesh`): a canvas map of the tested strategies, clustered by plain family names (dip buying, filtered dip buying, crash buying, trend following, breakout). Robust candidates glow, and the selected one pulses.
+- **Strategies tested** (`QuantAtlasMap`): every candidate tested in the market shown under **Results over time**, as parallel coordinates (`QuantParallel`).
+  - The axes are idea, order size, trades, time holding, biggest drop, first half and second half.
+  - Each line is one strategy, coloured by its second-half result: pink for a gain, blue for a loss. Strategies that passed every training check are drawn stronger, and the bot's own strategy is highlighted.
+  - Dragging along an axis keeps only the lines in that range. Hovering a line shows its rules in words and whether it passed. Clicking pins it, and **Edit this strategy** opens it in the [Strategy Studio](bots-strategy-studio.md).
+  - The map prints no result numbers; positions come from the Tier 1 estimate (see _Strategy map data_).
 - **Trade results** (`QuantLattice`): a Galton board in which each out-of-sample sell drops into its realized after-fee result bin.
 
 All colours derive from native theme tokens through `color-mix`, so light and dark (Noir) themes need no separate palette. Glass uses `backdrop-filter` with the `-webkit-` prefix. Canvases read colours through hidden probe elements and pause when off-screen or hidden. With `prefers-reduced-motion`, they draw static frames.
@@ -150,6 +175,32 @@ All colours derive from native theme tokens through `color-mix`, so light and da
 - **Compositing.** The canvas is composited relative to the card behind it: open backdrop stays transparent, shadows scale the card, and highlights and caustics brighten it. Bubbles therefore take on the card's real tint and gradients. A host whose backdrop differs from the theme surface can set `--glass-art-backdrop`.
 - **Budget.** The canvas uses at most two device pixels per CSS pixel and about 0.6 megapixels, and draws at most 30 frames a second. The frame loop stops while the art is off-screen or the tab is hidden, after 60 s without input, and while the optional `paused` prop is set (pass `calm`). Reduced motion, Save-Data and devices with two or fewer cores or 2 GB or less of memory get one still frame.
 - **Fallback.** Without WebGL, high-precision shaders or a surviving context, the art shows static CSS drops with the same logos.
+
+## Extended families (negative)
+
+The six ideas added for the [Strategy Studio](bots-strategy-studio.md) were tested as extra families in the automatic selection, with the same protocol, costs and gates:
+
+- oversold bounce (`rsi`);
+- far below the high (`drawdown`);
+- rare drop (return quantile with a dislocation);
+- choppy-market dip (`efficiency` filter);
+- bounce-back market (`restoring` filter);
+- quick rebound (an `any` exit on recovery or a sharp jump).
+
+All six together passed many more training checks (355 instead of 103 on PSWAP), but did worse blind:
+
+| Selection                          | PSWAP walk-forward | DAI walk-forward |
+| ---------------------------------- | ------------------ | ---------------- |
+| Five ready-made families (shipped) | +43.5%             | +11.2%           |
+| Plus all six new families          | +31.0%             | +2.3%            |
+| Six new families only              | +13.2%             | +2.3%            |
+| Five families, plateau selection   | +30.2%             | +11.2%           |
+
+Added one at a time, the choppy-market and bounce-back filters cost the most. Rare drop changed DAI by +0.2 points, which is noise after eight variants. The others did not change the folds.
+
+Plateau selection averages each candidate's score with its grid neighbours, to prefer settings whose neighbours also work.
+
+More candidates gave the training selection more ways to fit noise, so the ready-made bots keep their five families and these numbers stay as published. The new ideas are offered in the studio, where users see both halves for every setting.
 
 ## Structure-break research (negative)
 
@@ -177,9 +228,11 @@ The research covers the bundled archive. To extend it, rerun the read-only extra
   - determinism and progress reporting;
   - no-lookahead walk-forward selection;
   - bar-by-bar parity with the rule engine on real PSWAP history;
-  - a real-archive regression.
+  - bar-by-bar parity of every extended condition and of `any` groups on real VAL, PSWAP and DAI history, plus bounded, market-bound memos;
+  - a real-archive regression, including the strategy map data.
 - `quant-deploy.spec.ts`: templates, impact ceilings, research snapshot contract, signals.
 - `useQuantLoop.spec.ts`: state machine, fee retry, cache, archive fallback, cancellation.
-- `QuantCommandCenter.spec.ts`: the three how-to steps and the matching card action order, plain rule and budget text, research progress, signals, emitted payloads, and the error and retry paths.
+- `QuantCommandCenter.spec.ts`: the three how-to steps and the matching card action order, plain rule and budget text, research progress, signals, the strategy map's market, emitted payloads, and the error and retry paths.
+- `QuantAtlasMap.spec.ts` and `QuantParallel.spec.ts`: map data, rules in words, pinning and the studio link; brushing, picking and axis ranges.
 - `BotsPage.spec.ts`, _Quant Loop command center_: page wiring, the consent summary, the funding-short link, paper save and Swap navigation. The _My Bots_ and _Advanced_ header links are covered there too.
 - `controller.spec.ts`, _long-running session memory bounds_: activity, equity and chart observations stay capped over a 17.5-hour paper session.

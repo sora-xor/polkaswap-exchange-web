@@ -271,6 +271,7 @@
                 "noSmallerExactSample": "No smaller size with a fresh eligible quote",
                 "opening": "Při prvním možném obchodu klesne hodnota počátečního vkladu v {symbol} nejméně o {loss} %, což překračuje váš limit {limit} % — i bez poplatků.",
                 "openingDates": "{opened} → {firstTrade} {zone}",
+                "previousCheckThrough": "Předchozí kontrola · data do {time}",
                 "quoteUnavailable": "Fresh quote unavailable",
                 "screenedDraft": "Draft #{number} skipped before testing",
                 "screeningCount": "{drafted} drafted · {tested} tested",
@@ -1192,6 +1193,15 @@
             "openai": "OpenAI"
         },
         "quant": {
+            "atlas": {
+                "caption": "Každá čára je jedna otestovaná strategie, od jejího nápadu po výsledky v každé polovině. Růžové čáry v druhé polovině vydělaly, modré prodělaly. Tažením podél osy výběr zúžíte.",
+                "edit": "Upravit tuto strategii",
+                "help": "Tažením podél osy filtrujete. Kliknutím na čáru zobrazíte její pravidla. Klávesou Esc filtry vymažete.",
+                "passed": "Prošla všemi kontrolami",
+                "pick": "Kliknutím na čáru zobrazíte její pravidla a můžete ji upravit.",
+                "rejected": "Neprošla všemi kontrolami",
+                "used": "Používá ji bot"
+            },
             "banner": {
                 "detail": "Cena se od {window}hodinového průměru odchyluje o {value} a překročila nákupní práh {threshold}, takže spuštěný bot by teď nakoupil.",
                 "title": "{symbol} je v nákupní zóně"
@@ -1251,7 +1261,6 @@
                 "watch": "Bez bota"
             },
             "mesh": {
-                "caption": "Každá tečka je jedna otestovaná strategie. Jasné tečky prošly všemi kontrolami; pulzující jsou ty, které boti používají.",
                 "summary": "Prošlo: {robust} · vyřazeno: {killed}",
                 "title": "Otestované strategie"
             },
@@ -1315,6 +1324,161 @@
             "title": "Hotoví boti",
             "trades": "Obchody",
             "watchNote": "V testech žádné pravidlo nevydělalo, proto pro tento trh zatím bot není."
+        },
+        "studio": {
+            "botName": "{idea} · {symbol}",
+            "calculating": "Výpočet…",
+            "chart": {
+                "buys": "Nákupy",
+                "caption": "Posunutím růžové čáry změníte, kdy bot nakupuje, a posunutím fialové, kdy prodává. Stiskněte Přehrát a uvidíte, jak bot obchoduje.",
+                "captionNoLines": "Tento nápad nemá čáry k posouvání; jeho nastavení změňte vedle 3D grafu. Stiskněte Přehrát a uvidíte, jak bot obchoduje.",
+                "equity": "Hodnota bota vůči držení",
+                "first": "První polovina: zde laďte",
+                "indicators": {
+                    "deviation": "Cena vůči {window}hodinovému průměru",
+                    "drawdown": "Cena vůči {window}hodinovému maximu",
+                    "momentum": "{window}hodinová změna ceny",
+                    "rsi": "Podíl pohybů nahoru za {window} h"
+                },
+                "price": "Cena {symbol} v XOR",
+                "replay": "Přehrát",
+                "second": "Druhá polovina: zde ověřte",
+                "sells": "Prodeje",
+                "stop": "Zastavit",
+                "summary": "Nákupy: {buys}, prodeje: {sells} v obou polovinách.",
+                "title": "Cena a obchody"
+            },
+            "fairness": "První polovina slouží k ladění a druhá ke kontrole. Když budete nastavení měnit, dokud druhá polovina nebude vypadat dobře, kontrola už není poctivá. Minulé výsledky nezaručují budoucí výnosy.",
+            "idea": "Nápad",
+            "intro": "Vyberte trh a nápad a pak vylaďte jeho pravidla na historických datech poolů SORA. Všechny pohledy ukazují stejnou volbu: klikněte na sloupec ve 3D grafu, posuňte čáry v cenovém grafu nebo zužte výběr čar v posledním grafu.",
+            "landscape": {
+                "caption": "Každý sloupec je jedna kombinace dvou hlavních nastavení. Výška ukazuje první polovinu, barva druhou. Vysoké sloupce, které zmodrají, fungovaly jen v hodinách, na kterých byly vyladěny.",
+                "color": "Barva: druhá polovina",
+                "describe": "{x}, {y}. Stisknutím klávesy Enter použijete toto nastavení.",
+                "height": "Výška: první polovina",
+                "help": "Tažením otočíte pohled. Kliknutím na sloupec nebo šipkami a klávesou Enter použijete jeho nastavení.",
+                "pick": "Kliknutím použijete toto nastavení",
+                "title": "Výsledky podle nastavení"
+            },
+            "loading": "Načítání historických dat poolů…",
+            "market": "Trh",
+            "newIdea": "Nový",
+            "openLab": "Otevřít v Laboratoři strategií",
+            "outcomes": {
+                "first": "První polovina",
+                "holding": "Čas v pozici",
+                "idea": "Nápad",
+                "maxDrop": "Největší propad",
+                "second": "Druhá polovina",
+                "trades": "Obchody"
+            },
+            "parallel": {
+                "caption": "Každá čára je jedna kombinace nastavení, od nastavení vlevo po výsledky vpravo. Tažením podél libovolné osy ponecháte jen čáry v daném rozsahu.",
+                "clear": "Vymazat filtry",
+                "count": "Zobrazeno {shown} z {total}",
+                "help": "Tažením podél osy filtrujete. Kliknutím na čáru použijete její nastavení. Klávesou Esc filtry vymažete.",
+                "pick": "Kliknutím použijete toto nastavení",
+                "title": "Všechny varianty tohoto nápadu"
+            },
+            "params": {
+                "amount": "Velikost objednávky",
+                "average": "Průměr pro prodej",
+                "buy": "Nákup pod průměrem",
+                "choppy": "Podíl jedním směrem",
+                "choppyWindow": "Rozkolísanost za",
+                "drop": "Velikost propadu",
+                "exit": "Prodej pod průměrem",
+                "fall": "Pod maximem",
+                "guard": "Max. týdenní pokles",
+                "highWindow": "Nové maximum za",
+                "hours": "Propad během",
+                "jump": "Velikost skoku",
+                "jumpHours": "Skok během",
+                "lead": "Nákup nad průměrem",
+                "level": "Podíl pohybů nahoru",
+                "lookback": "Srovnání za",
+                "lowWindow": "Nové minimum za",
+                "peakWindow": "Maximum za",
+                "percentile": "Nejvzácnější hodiny",
+                "pull": "Síla návratu",
+                "pullWindow": "Návrat měřený za",
+                "rsiWindow": "Pohyby za",
+                "sell": "Prodej nad průměrem",
+                "window": "Průměr za"
+            },
+            "recipes": {
+                "breakout": {
+                    "idea": "Nakupuje, když cena dosáhne nového maxima, a prodává, když klesne na nové minimum.",
+                    "name": "Nové maximum"
+                },
+                "dip": {
+                    "idea": "Nakupuje, když cena klesne výrazně pod svůj nedávný průměr, a prodává, když se zotaví. Tento nápad používají hotoví boti.",
+                    "name": "Nakupovat při poklesu"
+                },
+                "drop": {
+                    "idea": "Nakupuje hned po prudkém propadu během několika hodin a prodává, když je cena zpět blízko průměru.",
+                    "name": "Náhlý propad"
+                },
+                "elastic": {
+                    "idea": "Nakupuje při poklesech jen tehdy, když se cena v poslední době po každém pohybu vracela k průměru.",
+                    "name": "Pružný trh"
+                },
+                "oversold": {
+                    "idea": "Nakupuje, když téměř každý nedávný pohyb ceny šel dolů, a prodává, když je cena zpět nad průměrem.",
+                    "name": "Odraz po přeprodanosti"
+                },
+                "peak": {
+                    "idea": "Nakupuje, když je cena hluboko pod svým nedávným maximem, a prodává, když se vrátí k průměru.",
+                    "name": "Hluboko pod maximem"
+                },
+                "range": {
+                    "idea": "Nakupuje při poklesech jen tehdy, když se cena pohybuje sem a tam, a ne jedním směrem.",
+                    "name": "Pokles v rozkolísaném trhu"
+                },
+                "rare-drop": {
+                    "idea": "Nakupuje jen tehdy, když pokles v této hodině patří k největším za poslední hodiny a cena je výrazně pod průměrem.",
+                    "name": "Vzácný propad"
+                },
+                "rebound": {
+                    "idea": "Nakupuje při poklesu a prodává, když se cena zotaví, nebo jakmile rychle vyskočí.",
+                    "name": "Rychlý odraz"
+                },
+                "steady-dip": {
+                    "idea": "Jako „Nakupovat při poklesu“, ale vynechá poklesy, když cena za poslední týden hodně klesla.",
+                    "name": "Pokles v klidném týdnu"
+                },
+                "trend": {
+                    "idea": "Nakupuje, když cena vystoupá nad svůj průměr, a prodává, když pod něj znovu klesne.",
+                    "name": "Sledovat trend"
+                }
+            },
+            "result": {
+                "first": "První polovina",
+                "second": "Druhá polovina",
+                "title": "Vaše strategie"
+            },
+            "rule": {
+                "drawdownBelow": "Cena vůči {window}hodinovému maximu pod {value}%",
+                "efficiencyBelow": "Méně než {value}% pohybů za {window} h šlo jedním směrem",
+                "quantileBelow": "Změna v této hodině patří k nejnižším {percentile}% za posledních {window} h",
+                "restoringAbove": "Návrat k {window}hodinovému průměru je silnější než {value}",
+                "rsiBelow": "Pohyby nahoru tvoří méně než {value}% všech pohybů za {window} h",
+                "sellAny": "Prodat, když platí některá z těchto podmínek"
+            },
+            "steps": {
+                "check": "Ověřte ho na druhé polovině",
+                "paper": "Vyzkoušejte ho v simulaci",
+                "pick": "Vyberte trh a nápad",
+                "tune": "Vylaďte ho na první polovině"
+            },
+            "title": "Postavte si vlastního bota",
+            "units": {
+                "hours": "{value} h",
+                "level": "{value}",
+                "percent": "{value}%",
+                "percentile": "{value}%",
+                "xor": "{value} XOR"
+            }
         },
         "receiveToken": "Obchodovaný token",
         "research": {
@@ -3697,11 +3861,46 @@
             "pendingInternal": "{Sora} transakce čeká na vyřízení...",
             "signAndClaim": "Podepsat a uplatnit nárok"
         },
+        "analytics": {
+            "connectToSee": "Připojte svůj účet, abyste to viděli.",
+            "feeShare": "Poplatek tvoří {percent} tohoto nároku.",
+            "market": {
+                "day": "24 h",
+                "period": "Posledních 30 dní",
+                "title": "Cena",
+                "unavailable": "Údaje o ceně nejsou právě k dispozici.",
+                "week": "7 d"
+            },
+            "showTable": "Tabulka",
+            "skipped": "Není v tomto nároku",
+            "sources": {
+                "crowdloan": "Crowdloan",
+                "empty": "Zatím nejsou žádné odměny k zobrazení.",
+                "external": "Účet {Ethereum}",
+                "liquidity": "Poplatky z likvidity",
+                "strategic": "Strategické",
+                "title": "Podle zdroje",
+                "unpriced": "Tokeny bez ceny jsou uvedeny v seznamu, ale v pruhu se nezobrazují."
+            },
+            "table": {
+                "share": "Podíl",
+                "source": "Zdroj",
+                "value": "Hodnota"
+            },
+            "vesting": {
+                "empty": "Žádné odměny ve vestingu.",
+                "fullyUnlocked": "Vše je odemčeno",
+                "title": "Vesting"
+            }
+        },
         "andText": "a",
         "claimableAmountDoneVesting": "Nárokovatelné odměny",
         "claiming": {
             "pending": "Nárokování...",
             "success": "Úspěšně nárokováno"
+        },
+        "claimSection": {
+            "title": "Co můžete nárokovat"
         },
         "events": {
             "BuyOnBondingCurve": "nákup z TBC",
@@ -3718,11 +3917,19 @@
             "external": "Odměny za připojený účet {Ethereum}",
             "strategic": "Strategické odměny"
         },
+        "hero": {
+            "connectTitle": "Zobrazte si své odměny a nárokujte je"
+        },
         "hint": {
             "connectAccounts": "Pro získání svých PSWAP a VAL odměn musíte připojit oba své účty {Sora} a {Ethereum}.",
             "connectAnotherAccount": "Připojte další účet {Ethereum} a zkontrolujte dostupné odměny PSWAP a VAL.",
             "connectExternalAccount": "Připojte účet {Ethereum} a zkontrolujte dostupné odměny PSWAP a VAL.",
             "howToClaimRewards": "Chcete-li si vyzvednout {symbols} odměny, musíte podepsat {count} {transactions} v {destination}. Odměny budou připsány na váš účet {Sora}."
+        },
+        "howTo": {
+            "choose": "Vyberte, co chcete nárokovat",
+            "connect": "Připojte svůj účet {Sora}",
+            "title": "Jak nárokovat"
         },
         "notification": {
             "empty": "Žádné dostupné nároky pro tento účet"
@@ -3733,6 +3940,16 @@
         "signing": {
             "accounts": "vaše účty {Sora} a {Ethereum} v tomto pořadí",
             "extension": "{PolkadotJs} rozšíření prohlížeče"
+        },
+        "stats": {
+            "locked": "Stále zamčeno",
+            "unlocked": "Odemčeno"
+        },
+        "status": {
+            "connect": "Účet není připojen",
+            "empty": "Zatím není co nárokovat",
+            "failed": "Nárokování se nezdařilo",
+            "ready": "Připraveno k nárokování"
         },
         "totalVested": "Celkové odměny",
         "transactions": {

@@ -221,3 +221,81 @@ describe('RewardsAmountTable.vue', () => {
 type RewardsAmountTableItem = {
   limit?: Array<{ asset: { symbol: string }; amount: string; total?: string }>;
 };
+
+describe('RewardsAmountTable.vue selection', () => {
+  const asset = { symbol: 'PSWAP', decimals: 18, address: '0xpswap' } as never;
+  const stubs = {
+    's-divider': true,
+    'formatted-amount-with-fiat-value': FormattedAmountWithFiatValueStub,
+    'rewards-item-tooltip': RewardsItemTooltipStub,
+  };
+  const mountTable = (props: Record<string, unknown>) => shallowMount(AmountTable, { props, global: { stubs } });
+  const group = (tag: string, amount = '5') => ({ type: ['Crowdloan', tag], limit: [{ asset, amount }] }) as never;
+
+  it('ticks a single source with a boolean model and emits the new flag', async () => {
+    const wrapper = mountTable({
+      items: [{ type: ['Provision', 'LiquidityProvision'], asset, amount: '5' } as never],
+      modelValue: true,
+      source: 'liquidity',
+    });
+    const input = wrapper.get('input[type="checkbox"]');
+
+    expect(wrapper.classes()).toContain('amount-table--liquidity');
+    expect((input.element as HTMLInputElement).checked).toBe(true);
+    expect(wrapper.get('label').classes()).toContain('is-checked');
+
+    await input.setValue(false);
+
+    expect(wrapper.emitted('update:modelValue')).toEqual([[false]]);
+  });
+
+  it('adds and removes tags for a list model', async () => {
+    const wrapper = mountTable({ items: [group('tagA'), group('tagB')], modelValue: ['tagA'] });
+    const inputs = wrapper.findAll('input[type="checkbox"]');
+
+    expect(inputs.map((input) => (input.element as HTMLInputElement).checked)).toEqual([true, false]);
+
+    await inputs[1].setValue(true);
+    await inputs[0].setValue(false);
+
+    expect(wrapper.emitted('update:modelValue')).toEqual([[['tagA', 'tagB']], [[]]]);
+  });
+
+  it('does not tick the same tag twice', () => {
+    const wrapper = mountTable({ items: [group('tagA')], modelValue: ['tagA'] });
+    const vm = wrapper.vm as unknown as {
+      formattedItems: unknown[];
+      handleToggle: (item: unknown, event: Event) => void;
+    };
+
+    vm.handleToggle(vm.formattedItems[0], { target: { checked: true } } as unknown as Event);
+
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([['tagA']]);
+  });
+
+  it('disables a group with nothing to claim and never shows it as ticked', () => {
+    const wrapper = mountTable({ items: [group('tagA', '0')], modelValue: ['tagA'] });
+    const input = wrapper.get('input[type="checkbox"]');
+
+    expect((input.element as HTMLInputElement).disabled).toBe(true);
+    expect((input.element as HTMLInputElement).checked).toBe(false);
+    expect(wrapper.get('label').classes()).toContain('is-disabled');
+  });
+
+  it('has no accent class without a source', () => {
+    const wrapper = mountTable({ items: [group('tagA')], modelValue: [] });
+
+    expect(wrapper.classes().some((name) => name.startsWith('amount-table--'))).toBe(false);
+  });
+
+  it('renders no list when the table is hidden but still renders its slot', () => {
+    const wrapper = shallowMount(AmountTable, {
+      props: { items: [group('tagA')], modelValue: [], showTable: false },
+      slots: { default: '<p class="footer">footer</p>' },
+      global: { stubs },
+    });
+
+    expect(wrapper.find('input').exists()).toBe(false);
+    expect(wrapper.find('.footer').exists()).toBe(true);
+  });
+});

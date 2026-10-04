@@ -179,6 +179,53 @@ describe('rewards store', () => {
     expect(store.fee).toBe('10');
   });
 
+  it('replaces the crowdloan selection so an unticked tag is dropped', async () => {
+    const store = useRewardsStore();
+    const first = [{ amount: '1' }];
+    const second = [{ amount: '2' }];
+
+    await store.setSelectedRewards({ selectedCrowdloan: { first, second } } as any);
+    expect(Object.keys(store.selectedCrowdloan)).toEqual(['first', 'second']);
+
+    await store.setSelectedRewards({ selectedCrowdloan: { first } } as any);
+    expect(Object.keys(store.selectedCrowdloan)).toEqual(['first']);
+
+    await store.setSelectedRewards({ selectedCrowdloan: {} });
+    expect(store.selectedCrowdloan).toEqual({});
+  });
+
+  it('resets nested selections completely, not just the keys it knows about', () => {
+    const store = useRewardsStore();
+
+    Object.assign(store, {
+      crowdloanRewards: { stale: [{ amount: '3' }] },
+      selectedCrowdloan: { stale: [{ amount: '3' }] },
+      selectedExternal: [{ amount: '5' }],
+      fee: '10',
+      transactionError: true,
+    });
+
+    store.reset();
+
+    expect(store.crowdloanRewards).toEqual({});
+    expect(store.selectedCrowdloan).toEqual({});
+    expect(store.selectedExternal).toEqual([]);
+    expect(store.fee).toBe('');
+    expect(store.transactionError).toBe(false);
+  });
+
+  it('clears single selections with null and keeps the ones it was not given', async () => {
+    const store = useRewardsStore();
+    const internal = { amount: '4' };
+    const vested = { limit: '1', total: '2', rewards: [] };
+
+    await store.setSelectedRewards({ selectedInternal: internal, selectedVested: vested } as any);
+    await store.setSelectedRewards({ selectedInternal: null });
+
+    expect(store.selectedInternal).toBeNull();
+    expect(store.selectedVested).toEqual(vested);
+  });
+
   it('loads external rewards into local state', async () => {
     const store = useRewardsStore();
     shared.checkForExternalAccount.mockResolvedValue([{ amount: '7' }]);

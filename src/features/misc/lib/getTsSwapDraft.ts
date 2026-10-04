@@ -1,8 +1,8 @@
-import { keccak256, toUtf8Bytes } from 'ethers';
 import { decodeAddress } from '@polkadot/util-crypto';
 import { u8aToHex } from '@polkadot/util';
 import { Operation, type HistoryItem } from '@sora-substrate/sdk';
 import { DAI, XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { getTsContextHash } from './getTsContextHash';
 import type { GetTsPurpose } from './getTsFlow';
 import { normalizeGetTsAmount, parseGetTsSwapDraft, type GetTsSwapDraft } from './getTsPlan';
 import { SORA_FUNDING_MAINNET_GENESIS } from './tonswapLiquidity';
@@ -23,8 +23,8 @@ export function createGetTsSwapDraft(row: HistoryItem, genesis: string, purpose:
   try {
     const account = decodeAddress(row.from);
     if (account.length !== 32) return null;
-    const contextHash = keccak256(
-      toUtf8Bytes(JSON.stringify([purpose, row.id, genesis, u8aToHex(account), DAI.address, XOR.address, amount]))
+    const contextHash = getTsContextHash(
+      JSON.stringify([purpose, row.id, genesis, u8aToHex(account), DAI.address, XOR.address, amount])
     );
     return parseGetTsSwapDraft({ id: row.id, amount, contextHash }, purpose);
   } catch {

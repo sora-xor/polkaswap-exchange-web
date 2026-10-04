@@ -5,18 +5,31 @@ import { describe, expect, it } from 'vitest';
 import {
   QUANT_AMOUNTS,
   QUANT_FOLDS,
+  QUANT_LEAF_KINDS,
+  createQuantScreenCache,
   generateQuantCandidates,
   parseQuantArchive,
   prefixSums,
   quantCadence,
+  quantScreenCosts,
   quantSignalAt,
   replayQuantCandidate,
   runQuantLoop,
+  screenQuantReplay,
+  screenQuantSeries,
+  screenQuantSignals,
   type QuantCandidate,
   type QuantCosts,
+  type QuantMarket,
   type QuantProgress,
 } from '@/features/bot-trading/quant-loop';
-import { evaluateStrategyRules, parseStrategyRules, requiredRuleCandles } from '@/features/bot-trading/strategy-rules';
+import {
+  evaluateStrategyRules,
+  parseStrategyRules,
+  requiredRuleCandles,
+  type RuleCondition,
+  type StrategyRules,
+} from '@/features/bot-trading/strategy-rules';
 import observedFees from '../../../fixtures/bot-trading/mainnetFees20260914.json';
 
 const XOR = '0x0200000000000000000000000000000000000000000000000000000000000000';
@@ -227,6 +240,169 @@ describe('exact signals', () => {
   });
 });
 
+describe('extended rule kinds', () => {
+  /** Real archive markets, parsed once for the bar-by-bar parity checks below. */
+  let realMarkets: QuantMarket[] | null = null;
+  async function real(symbol: string): Promise<QuantMarket> {
+    if (!realMarkets) {
+      const raw = JSON.parse(
+        await readFile(
+          path.resolve(__dirname, '../../../../public/bot-history/sora-mainnet-hourly-2026-03-01.json'),
+          'utf8'
+        )
+      );
+      realMarkets = parseQuantArchive(raw).markets;
+    }
+    return realMarkets.find((item) => item.asset.symbol === symbol)!;
+  }
+  const exactCandles = (market: QuantMarket) =>
+    market.closeUnits.map((close, index) => {
+      const digits = close.toString().padStart(37, '0');
+      return { timestamp: market.timestamps[index], close: `${digits.slice(0, -36)}.${digits.slice(-36)}` };
+    });
+  const custom = (id: string, rules: StrategyRules): QuantCandidate => ({
+    id,
+    family: 'reversion',
+    amount: '2',
+    rules: parseStrategyRules(rules),
+  });
+  const group = (operator: 'all' | 'any', conditions: RuleCondition[]) => ({ operator, conditions });
+  const t = (kind: string, window: number, direction: 'above' | 'below', threshold: string) =>
+    ({ kind, window, direction, threshold }) as RuleCondition;
+  const samples: QuantCandidate[] = [
+    custom('rsi', {
+      version: 1,
+      entry: group('all', [t('rsi', 12, 'below', '20')]),
+      exit: group('all', [t('deviation', 48, 'above', '5')]),
+    }),
+    custom('efficiency', {
+      version: 1,
+      entry: group('all', [t('deviation', 48, 'below', '-15'), t('efficiency', 24, 'below', '40')]),
+      exit: group('all', [t('efficiency', 6, 'above', '80')]),
+    }),
+    custom('drawdown', {
+      version: 1,
+      entry: group('all', [t('drawdown', 96, 'below', '-25')]),
+      exit: group('all', [t('rsi', 6, 'above', '70')]),
+    }),
+    custom('quantile', {
+      version: 1,
+      entry: group('all', [{ kind: 'return-quantile', window: 48, direction: 'below', percentile: 5 }]),
+      exit: group('all', [{ kind: 'return-quantile', window: 168, direction: 'above', percentile: 90 }]),
+    }),
+    custom('restoring', {
+      version: 1,
+      entry: group('all', [t('restoring', 48, 'above', '2'), t('deviation', 24, 'below', '-10')]),
+      exit: group('all', [t('restoring', 96, 'below', '1')]),
+    }),
+    custom('trend-any', {
+      version: 1,
+      entry: group('any', [{ kind: 'trend', window: 24, direction: 'above' }, t('momentum', 6, 'below', '-12')]),
+      exit: group('any', [{ kind: 'trend', window: 96, direction: 'below' }, t('deviation', 48, 'above', '10')]),
+    }),
+    custom('no-exit', { version: 1, entry: group('all', [t('drawdown', 24, 'below', '-5')]), exit: null }),
+  ];
+
+  it('match the live rule engine bar by bar on real VAL, PSWAP and DAI history', async () => {
+    for (const symbol of ['VAL', 'PSWAP', 'DAI']) {
+      const market = await real(symbol);
+      const prefix = prefixSums(market);
+      const candles = exactCandles(market);
+      for (const item of samples) {
+        const needed = requiredRuleCandles(item.rules);
+        // Warm-up boundary plus a stretch of ordinary hours.
+        const indices = [
+          ...Array.from({ length: needed + 4 }, (_value, index) => index),
+          ...Array.from({ length: 160 }, (_value, index) => 2400 + index * 3),
+        ];
+        for (const index of indices) {
+          const evaluation = evaluateStrategyRules(
+            item.rules,
+            candles.slice(Math.max(0, index - needed + 1), index + 1)
+          );
+          const expected = !evaluation.ready ? null : evaluation.exit ? 'sell' : evaluation.entry ? 'buy' : null;
+          expect(quantSignalAt(market, prefix, item, index), `${symbol} ${item.id} @ ${index}`).toBe(expected);
+        }
+      }
+    }
+  }, 60_000);
+
+  it('screen in Float64 to the same decision on nearly every bar', async () => {
+    const market = await real('PSWAP');
+    const prefix = prefixSums(market);
+    const cache = createQuantScreenCache();
+    for (const item of samples) {
+      const screened = screenQuantSignals(market, item, cache);
+      let agree = 0;
+      for (let index = 0; index < screened.length; index++) {
+        const exact = quantSignalAt(market, prefix, item, index);
+        const fast = screened[index] === 2 ? 'sell' : screened[index] === 1 ? 'buy' : null;
+        if (exact === fast) agree++;
+      }
+      expect(agree / screened.length, item.id).toBeGreaterThan(0.995);
+    }
+  });
+
+  it('lists every supported kind and rejects median-deviation leaves', async () => {
+    expect(QUANT_LEAF_KINDS).not.toContain('mad');
+    const market = await real('PSWAP');
+    const mad = custom('mad', {
+      version: 1,
+      entry: group('all', [t('mad', 24, 'above', '1')]),
+      exit: null,
+    });
+    expect(() => quantSignalAt(market, prefixSums(market), mad, 100)).toThrow('bots.errors.strategy');
+    expect(() => screenQuantSignals(market, mad, createQuantScreenCache())).toThrow('bots.errors.strategy');
+  });
+
+  it('keeps every Tier 1 memo bounded while thresholds are explored', async () => {
+    const market = await real('DAI');
+    const cache = createQuantScreenCache();
+    for (let window = 2; window <= 200; window++) screenQuantSeries(market, t('rsi', window, 'below', '30'), cache);
+    for (let window = 2; window <= 200; window++)
+      screenQuantSeries(market, t('drawdown', window, 'below', '-10'), cache);
+    expect(cache.series.size).toBeLessThanOrEqual(256);
+    for (let step = 0; step < 2100; step++) {
+      const rules = custom(`d${step}`, {
+        version: 1,
+        entry: group('all', [t('deviation', 48, 'below', `-${(step / 100).toFixed(2)}`)]),
+        exit: null,
+      });
+      screenQuantSignals(market, rules, cache);
+    }
+    expect(cache.leaves.size).toBeLessThanOrEqual(2048);
+    expect(cache.signals.size).toBeLessThanOrEqual(2048);
+  });
+
+  it("never reuses one market's memo for another market", async () => {
+    const pswap = await real('PSWAP');
+    const dai = await real('DAI');
+    const cache = createQuantScreenCache();
+    const item = candidate('reversion:48/15/10:3');
+    const first = screenQuantSignals(pswap, item, cache);
+    const shared = screenQuantSignals(dai, item, cache);
+    expect(cache.market).toBe(dai);
+    expect(shared).toEqual(screenQuantSignals(dai, item, createQuantScreenCache()));
+    expect(shared).not.toEqual(first);
+  });
+
+  it('traces fills and holding time without changing the screened result', async () => {
+    const market = await real('PSWAP');
+    const cache = createQuantScreenCache();
+    const item = candidate('reversion:48/15/10:3');
+    const signals = screenQuantSignals(market, item, cache);
+    const costs = quantScreenCosts(COSTS);
+    const plain = screenQuantReplay(market, signals, 3, 0, market.closes.length, costs);
+    const trace = { buys: [] as number[], sells: [] as number[], value: new Float64Array(market.closes.length) };
+    const traced = screenQuantReplay(market, signals, 3, 0, market.closes.length, costs, trace);
+    expect(traced).toEqual(plain);
+    expect(trace.buys.length + trace.sells.length).toBe(plain.trades);
+    expect(plain.holding).toBeGreaterThan(0);
+    expect(plain.holding).toBeLessThanOrEqual(1);
+    expect(trace.value[0]).toBe(10);
+  });
+});
+
 describe('real archive regression', () => {
   it('finds walk-forward survivors only in deep pools, after real fees', async () => {
     const raw = JSON.parse(
@@ -248,6 +424,24 @@ describe('real archive regression', () => {
       expect(market.walkForward!.startAt).toBeGreaterThan(result.archive.startAt);
     }
     expect(result.counts.killed + result.counts.robust).toBe(result.counts.candidates * result.counts.markets);
+    // The strategy map holds every candidate of every simulated market, split at the blind start.
+    const simulated = result.markets.filter((market) => market.status !== 'thin');
+    expect(result.atlas?.map((entry) => entry.market).sort()).toEqual(
+      simulated.map((market) => market.asset.symbol).sort()
+    );
+    for (const atlas of result.atlas ?? []) {
+      const market = result.markets.find((item) => item.asset.symbol === atlas.market)!;
+      expect(atlas.entries).toHaveLength(result.counts.candidates);
+      expect(atlas.splitAt).toBe(market.walkForward!.startAt);
+      expect(atlas.entries.filter((entry) => entry.selected).map((entry) => entry.id)).toEqual(
+        market.final ? [market.final.candidate.id] : []
+      );
+      for (const entry of atlas.entries) {
+        expect([entry.first, entry.second, entry.drop, entry.holding].every(Number.isFinite)).toBe(true);
+        expect(entry.drop).toBeGreaterThanOrEqual(0);
+        expect(entry.holding).toBeLessThanOrEqual(100);
+      }
+    }
   });
 });
 

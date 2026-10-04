@@ -16,10 +16,15 @@ export function installStartupPlugins(): void {
 }
 
 /**
- * Loads heavier component and wallet plugins outside the HTML entry bundle.
+ * Loads heavier component and wallet plugins outside the HTML entry bundle, then
+ * resolves the lazily registered UI components so the first render is complete.
  */
 export async function installRuntimePlugins(app: App, context: PluginInstallContext = {}): Promise<void> {
-  const [{ install: installSoramitsuUI }, { install: installWallet }, { installDayjsDuration }] = await Promise.all([
+  const [
+    { install: installSoramitsuUI, preloadLazySoramitsuComponents },
+    { install: installWallet },
+    { installDayjsDuration },
+  ] = await Promise.all([
     loadAsyncImportWithRetry(() => import('./soramitsuUI')),
     loadAsyncImportWithRetry(() => import('./wallet')),
     loadAsyncImportWithRetry(() => import('./days-js-duration')),
@@ -28,6 +33,7 @@ export async function installRuntimePlugins(app: App, context: PluginInstallCont
   installDayjsDuration();
   installSoramitsuUI(app);
   installWallet(app, context);
+  await preloadLazySoramitsuComponents(app);
 }
 
 export default async function installPlugins(app: App, context: PluginInstallContext = {}): Promise<void> {

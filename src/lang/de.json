@@ -271,6 +271,7 @@
                 "noSmallerExactSample": "No smaller size with a fresh eligible quote",
                 "opening": "Bis zum ersten möglichen Handel verliert die Anfangszuteilung mindestens {loss}% ihres Werts in {symbol}. Das überschreitet Ihr Limit von {limit}% — selbst ohne Gebühren.",
                 "openingDates": "{opened} → {firstTrade} {zone}",
+                "previousCheckThrough": "Vorherige Prüfung · Daten bis {time}",
                 "quoteUnavailable": "Fresh quote unavailable",
                 "screenedDraft": "Draft #{number} skipped before testing",
                 "screeningCount": "{drafted} drafted · {tested} tested",
@@ -1192,6 +1193,15 @@
             "openai": "OpenAI"
         },
         "quant": {
+            "atlas": {
+                "caption": "Jede Linie ist eine getestete Strategie, von ihrer Idee bis zu ihren Ergebnissen in jeder Hälfte. Rosa Linien haben in der zweiten Hälfte Gewinn gemacht, blaue Verlust. Entlang einer Achse ziehen, um sie einzugrenzen.",
+                "edit": "Diese Strategie bearbeiten",
+                "help": "Entlang einer Achse ziehen, um zu filtern. Eine Linie anklicken, um ihre Regeln zu sehen. Mit Esc zurücksetzen.",
+                "passed": "Alle Prüfungen bestanden",
+                "pick": "Eine Linie anklicken, um ihre Regeln zu sehen und sie zu bearbeiten.",
+                "rejected": "Nicht alle Prüfungen bestanden",
+                "used": "Vom Bot genutzt"
+            },
             "banner": {
                 "detail": "Der Kurs liegt bei {value} gegenüber dem {window}-Stunden-Durchschnitt und damit jenseits der Kaufschwelle von {threshold}. Ein laufender Bot würde jetzt kaufen.",
                 "title": "{symbol} ist in der Kaufzone"
@@ -1251,7 +1261,6 @@
                 "watch": "Kein Bot"
             },
             "mesh": {
-                "caption": "Jeder Punkt ist eine getestete Strategie. Helle Punkte haben alle Prüfungen bestanden; die pulsierenden werden von den Bots genutzt.",
                 "summary": "{robust} bestanden · {killed} verworfen",
                 "title": "Getestete Strategien"
             },
@@ -1315,6 +1324,161 @@
             "title": "Fertige Bots",
             "trades": "Anzahl Trades",
             "watchNote": "In den Tests war keine Regel profitabel, daher gibt es für diesen Markt noch keinen Bot."
+        },
+        "studio": {
+            "botName": "{idea} · {symbol}",
+            "calculating": "Wird berechnet…",
+            "chart": {
+                "buys": "Käufe",
+                "caption": "Die rosa Linie ziehen, um den Kaufzeitpunkt zu ändern, und die lila Linie für den Verkaufszeitpunkt. Mit „Abspielen“ den Bot beim Handeln ansehen.",
+                "captionNoLines": "Diese Idee hat keine Linien zum Ziehen; die Einstellungen neben dem 3D-Diagramm ändern. Mit „Abspielen“ den Bot beim Handeln ansehen.",
+                "equity": "Bot-Wert ggü. Halten",
+                "first": "Erste Hälfte: hier abstimmen",
+                "indicators": {
+                    "deviation": "Kurs ggü. {window}-h-Durchschnitt",
+                    "drawdown": "Kurs ggü. {window}-h-Hoch",
+                    "momentum": "{window}-h-Kursänderung",
+                    "rsi": "Anteil Aufwärtsbewegungen in {window} Std."
+                },
+                "price": "{symbol}-Kurs in XOR",
+                "replay": "Abspielen",
+                "second": "Zweite Hälfte: hier prüfen",
+                "sells": "Verkäufe",
+                "stop": "Stoppen",
+                "summary": "Käufe: {buys}, Verkäufe: {sells} in beiden Hälften.",
+                "title": "Kurs und Trades"
+            },
+            "fairness": "Die erste Hälfte dient zum Abstimmen, die zweite zur Prüfung. Werden die Einstellungen so lange geändert, bis die zweite Hälfte gut aussieht, ist die Prüfung nicht mehr fair. Vergangene Ergebnisse garantieren keine künftigen Renditen.",
+            "idea": "Idee",
+            "intro": "Markt und Idee wählen, dann ihre Regeln mit historischen SORA-Pooldaten abstimmen. Alle Ansichten zeigen dieselbe Auswahl: eine Säule im 3D-Diagramm anklicken, die Linien im Kursdiagramm ziehen oder die Linien im letzten Diagramm eingrenzen.",
+            "landscape": {
+                "caption": "Jede Säule ist eine Kombination der zwei Haupteinstellungen. Die Höhe zeigt die erste Hälfte, die Farbe die zweite. Hohe Säulen, die blau werden, haben nur in den Stunden funktioniert, auf die sie abgestimmt wurden.",
+                "color": "Farbe: zweite Hälfte",
+                "describe": "{x}, {y} – Eingabetaste drücken, um diese Einstellungen zu übernehmen.",
+                "height": "Höhe: erste Hälfte",
+                "help": "Ziehen, um die Ansicht zu drehen. Eine Säule anklicken oder Pfeiltasten und Eingabetaste nutzen, um ihre Einstellungen zu übernehmen.",
+                "pick": "Klicken, um diese Einstellungen zu übernehmen",
+                "title": "Ergebnisse nach Einstellung"
+            },
+            "loading": "Historische Pooldaten werden geladen…",
+            "market": "Markt",
+            "newIdea": "Neu",
+            "openLab": "Im Strategielabor öffnen",
+            "outcomes": {
+                "first": "Erste Hälfte",
+                "holding": "Haltezeit",
+                "idea": "Idee",
+                "maxDrop": "Größter Rückgang",
+                "second": "Zweite Hälfte",
+                "trades": "Anzahl Trades"
+            },
+            "parallel": {
+                "caption": "Jede Linie ist eine Kombination von Einstellungen, von den Einstellungen links bis zu den Ergebnissen rechts. Entlang einer beliebigen Achse ziehen, um nur die Linien in diesem Bereich zu behalten.",
+                "clear": "Filter zurücksetzen",
+                "count": "{shown} von {total} angezeigt",
+                "help": "Entlang einer Achse ziehen, um zu filtern. Eine Linie anklicken, um ihre Einstellungen zu übernehmen. Mit Esc zurücksetzen.",
+                "pick": "Klicken, um diese Einstellungen zu übernehmen",
+                "title": "Alle Varianten dieser Idee"
+            },
+            "params": {
+                "amount": "Ordergröße",
+                "average": "Verkaufsdurchschnitt",
+                "buy": "Kauf unter Durchschnitt",
+                "choppy": "Anteil in eine Richtung",
+                "choppyWindow": "Schwankung über",
+                "drop": "Stärke des Einbruchs",
+                "exit": "Verkauf unter Durchschnitt",
+                "fall": "Unter dem Hoch",
+                "guard": "Max. Wochenrückgang",
+                "highWindow": "Neues Hoch über",
+                "hours": "Einbruch innerhalb",
+                "jump": "Stärke des Sprungs",
+                "jumpHours": "Sprung innerhalb",
+                "lead": "Kauf über Durchschnitt",
+                "level": "Anteil Aufwärtsbewegungen",
+                "lookback": "Verglichen mit",
+                "lowWindow": "Neues Tief über",
+                "peakWindow": "Hoch über",
+                "percentile": "Seltenste Stunden",
+                "pull": "Stärke der Rückkehr",
+                "pullWindow": "Rückkehr gemessen über",
+                "rsiWindow": "Bewegungen über",
+                "sell": "Verkauf über Durchschnitt",
+                "window": "Durchschnitt über"
+            },
+            "recipes": {
+                "breakout": {
+                    "idea": "Kauft, wenn der Kurs ein neues Hoch erreicht, und verkauft bei einem neuen Tief.",
+                    "name": "Neues Hoch"
+                },
+                "dip": {
+                    "idea": "Kauft, wenn der Kurs deutlich unter seinen jüngsten Durchschnitt fällt, und verkauft, wenn er sich erholt. Die fertigen Bots nutzen diese Idee.",
+                    "name": "Bei Kursrückgang kaufen"
+                },
+                "drop": {
+                    "idea": "Kauft direkt nach einem starken Einbruch innerhalb weniger Stunden und verkauft, wenn der Kurs wieder nahe am Durchschnitt liegt.",
+                    "name": "Plötzlicher Einbruch"
+                },
+                "elastic": {
+                    "idea": "Kauft bei Rückgängen nur, wenn der Kurs zuletzt nach jeder Bewegung zum Durchschnitt zurückgekehrt ist.",
+                    "name": "Rückfedernder Markt"
+                },
+                "oversold": {
+                    "idea": "Kauft, wenn fast jede jüngste Kursbewegung nach unten ging, und verkauft, wenn der Kurs wieder über dem Durchschnitt liegt.",
+                    "name": "Erholung nach Überverkauf"
+                },
+                "peak": {
+                    "idea": "Kauft, wenn der Kurs weit unter seinem jüngsten Hoch liegt, und verkauft, wenn er sich bis zum Durchschnitt erholt.",
+                    "name": "Weit unter dem Hoch"
+                },
+                "range": {
+                    "idea": "Kauft bei Rückgängen nur, solange der Kurs hin und her schwankt, statt in eine Richtung zu laufen.",
+                    "name": "Rückgang im Seitwärtsmarkt"
+                },
+                "rare-drop": {
+                    "idea": "Kauft nur, wenn der Rückgang dieser Stunde zu den größten der letzten Stunden gehört und der Kurs deutlich unter dem Durchschnitt liegt.",
+                    "name": "Seltener Einbruch"
+                },
+                "rebound": {
+                    "idea": "Kauft beim Rückgang und verkauft, wenn sich der Kurs erholt oder sobald er schnell steigt.",
+                    "name": "Schnelle Erholung"
+                },
+                "steady-dip": {
+                    "idea": "Wie „Bei Kursrückgang kaufen“, lässt aber Rückgänge aus, wenn der Kurs in der letzten Woche stark gefallen ist.",
+                    "name": "Rückgang in ruhiger Woche"
+                },
+                "trend": {
+                    "idea": "Kauft, wenn der Kurs über seinen Durchschnitt steigt, und verkauft, wenn er wieder darunter fällt.",
+                    "name": "Dem Trend folgen"
+                }
+            },
+            "result": {
+                "first": "Erste Hälfte",
+                "second": "Zweite Hälfte",
+                "title": "Ihre Strategie"
+            },
+            "rule": {
+                "drawdownBelow": "Kurs ggü. {window}-h-Hoch unter {value}%",
+                "efficiencyBelow": "Unter {value}% der Bewegungen in {window} Std. gingen in eine Richtung",
+                "quantileBelow": "Änderung dieser Stunde unter den niedrigsten {percentile}% der letzten {window} Std.",
+                "restoringAbove": "Rückkehr zum {window}-h-Durchschnitt stärker als {value}",
+                "rsiBelow": "Aufwärtsbewegungen unter {value}% aller Bewegungen in {window} Std.",
+                "sellAny": "Verkaufen, wenn eine dieser Bedingungen zutrifft"
+            },
+            "steps": {
+                "check": "Mit der zweiten Hälfte prüfen",
+                "paper": "In der Simulation ausprobieren",
+                "pick": "Markt und Idee wählen",
+                "tune": "Mit der ersten Hälfte abstimmen"
+            },
+            "title": "Eigenen Bot bauen",
+            "units": {
+                "hours": "{value} Std.",
+                "level": "{value}",
+                "percent": "{value}%",
+                "percentile": "{value}%",
+                "xor": "{value} XOR"
+            }
         },
         "receiveToken": "Handelstoken",
         "research": {
@@ -3697,11 +3861,46 @@
             "pendingInternal": "{Sora} Transaktion ausstehend...",
             "signAndClaim": "Signieren und beanspruchen"
         },
+        "analytics": {
+            "connectToSee": "Verbinde dein Konto, um das zu sehen.",
+            "feeShare": "Die Gebühr beträgt {percent} der beanspruchten Belohnungen.",
+            "market": {
+                "day": "24 Std.",
+                "period": "Letzte 30 Tage",
+                "title": "Preis",
+                "unavailable": "Preisdaten sind gerade nicht verfügbar.",
+                "week": "7 T."
+            },
+            "showTable": "Tabelle",
+            "skipped": "Wird nicht beansprucht",
+            "sources": {
+                "crowdloan": "Crowdloan",
+                "empty": "Noch keine Belohnungen vorhanden.",
+                "external": "{Ethereum}-Konto",
+                "liquidity": "Liquiditätsgebühren",
+                "strategic": "Strategisch",
+                "title": "Nach Quelle",
+                "unpriced": "Token ohne Preis stehen in der Liste, werden aber nicht im Balken angezeigt."
+            },
+            "table": {
+                "share": "Anteil",
+                "source": "Quelle",
+                "value": "Wert"
+            },
+            "vesting": {
+                "empty": "Keine Vesting-Belohnungen.",
+                "fullyUnlocked": "Alles ist freigeschaltet",
+                "title": "Vesting"
+            }
+        },
         "andText": "und",
         "claimableAmountDoneVesting": "Beanspruchbare Belohnungen",
         "claiming": {
             "pending": "Beanspruche...",
             "success": "Erfolgreich beansprucht"
+        },
+        "claimSection": {
+            "title": "Das kannst du beanspruchen"
         },
         "events": {
             "BuyOnBondingCurve": "Von der TBC kaufen",
@@ -3718,11 +3917,19 @@
             "external": "Belohnungen für das verbundene {Ethereum}-Konto",
             "strategic": "Strategische Belohnungen"
         },
+        "hero": {
+            "connectTitle": "Sieh dir deine Belohnungen an und beanspruche sie"
+        },
         "hint": {
             "connectAccounts": "Um PSWAP und VAL Belohnungen zu beanspruchen, musst du sowohl dein {Sora} Konto als auch dein {Ethereum} Konto verbinden.",
             "connectAnotherAccount": "Anderes {Ethereum} Konto verbinden um es auf PSWAP und VAL Belohnungen zu prüfen.",
             "connectExternalAccount": "Verbinde ein {Ethereum} Konto, um nach verfügbaren PSWAP und VAL Belohnungen zu prüfen.",
             "howToClaimRewards": "Um deine {symbols} Belohnungen zu beanspruchen, musst du {count} {transactions} zu {destination} signieren. Die Belohnungen werden auf dein {Sora} Konto eingezahlt."
+        },
+        "howTo": {
+            "choose": "Wähle aus, was du beanspruchen willst",
+            "connect": "Verbinde dein {Sora} Konto",
+            "title": "So beanspruchst du"
         },
         "notification": {
             "empty": "Keine verfügbaren Belohnungen für diesen Account"
@@ -3733,6 +3940,16 @@
         "signing": {
             "accounts": "deine {Sora} und beziehungsweise {Ethereum} Konten",
             "extension": "{PolkadotJs} Browser-Erweiterung"
+        },
+        "stats": {
+            "locked": "Noch gesperrt",
+            "unlocked": "Freigeschaltet"
+        },
+        "status": {
+            "connect": "Konto nicht verbunden",
+            "empty": "Noch nichts zu beanspruchen",
+            "failed": "Beanspruchen fehlgeschlagen",
+            "ready": "Bereit zum Beanspruchen"
         },
         "totalVested": "Belohnungen Gesamt",
         "transactions": {

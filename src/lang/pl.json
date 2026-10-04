@@ -271,6 +271,7 @@
                 "noSmallerExactSample": "No smaller size with a fresh eligible quote",
                 "opening": "W chwili pierwszej możliwej transakcji początkowy kapitał traci co najmniej {loss}% wartości wyrażonej w {symbol}, przekraczając limit {limit}%, nawet bez opłat.",
                 "openingDates": "{opened} → {firstTrade} {zone}",
+                "previousCheckThrough": "Poprzednia kontrola · dane do {time}",
                 "quoteUnavailable": "Fresh quote unavailable",
                 "screenedDraft": "Draft #{number} skipped before testing",
                 "screeningCount": "{drafted} drafted · {tested} tested",
@@ -1192,6 +1193,15 @@
             "openai": "OpenAI"
         },
         "quant": {
+            "atlas": {
+                "caption": "Każda linia to jedna przetestowana strategia: od pomysłu do wyników w każdej połowie. Różowe linie zarobiły w drugiej połowie, a niebieskie straciły. Przeciągnij wzdłuż osi, aby je zawęzić.",
+                "edit": "Edytuj tę strategię",
+                "help": "Przeciągnij wzdłuż osi, aby filtrować. Kliknij linię, aby zobaczyć jej reguły. Naciśnij Esc, aby wyczyścić.",
+                "passed": "Spełniła wszystkie warunki",
+                "pick": "Kliknij linię, aby zobaczyć jej reguły i edytować strategię.",
+                "rejected": "Nie spełniła wszystkich warunków",
+                "used": "Używana przez bota"
+            },
             "banner": {
                 "detail": "Cena odbiega o {value} od średniej {window}-godzinnej i przekroczyła próg kupna {threshold}, więc uruchomiony bot kupiłby teraz.",
                 "title": "{symbol} jest w strefie kupna"
@@ -1251,7 +1261,6 @@
                 "watch": "Brak bota"
             },
             "mesh": {
-                "caption": "Każda kropka to jedna przetestowana strategia. Jasne kropki spełniły wszystkie warunki; pulsujące to te, których używają boty.",
                 "summary": "Przyjęte: {robust} · odrzucone: {killed}",
                 "title": "Przetestowane strategie"
             },
@@ -1315,6 +1324,161 @@
             "title": "Gotowe boty",
             "trades": "Transakcje",
             "watchNote": "W testach żadna reguła nie przyniosła zysku, więc dla tego rynku nie ma jeszcze bota."
+        },
+        "studio": {
+            "botName": "{idea} · {symbol}",
+            "calculating": "Obliczanie…",
+            "chart": {
+                "buys": "Zakupy",
+                "caption": "Przeciągnij różową linię, aby zmienić moment kupna, a fioletową, aby zmienić moment sprzedaży. Naciśnij „Odtwórz ponownie”, aby zobaczyć, jak bot handluje.",
+                "captionNoLines": "Ten pomysł nie ma linii do przeciągania; zmień jego ustawienia obok wykresu 3D. Naciśnij „Odtwórz ponownie”, aby zobaczyć, jak bot handluje.",
+                "equity": "Wartość bota wobec trzymania",
+                "first": "Pierwsza połowa: strojenie",
+                "indicators": {
+                    "deviation": "Cena wobec średniej {window}-godzinnej",
+                    "drawdown": "Cena wobec {window}-godzinnego maksimum",
+                    "momentum": "{window}-godzinna zmiana ceny",
+                    "rsi": "Udział ruchów w górę w ciągu {window} godz."
+                },
+                "price": "Cena {symbol} w XOR",
+                "replay": "Odtwórz ponownie",
+                "second": "Druga połowa: sprawdzenie",
+                "sells": "Sprzedaże",
+                "stop": "Zatrzymaj",
+                "summary": "Zakupy: {buys}, sprzedaże: {sells} w obu połowach.",
+                "title": "Cena i transakcje"
+            },
+            "fairness": "Pierwsza połowa służy do strojenia, a druga do sprawdzenia. Jeśli zmieniasz ustawienia tak długo, aż druga połowa wygląda dobrze, sprawdzenie przestaje być uczciwe. Przeszłe wyniki nie gwarantują przyszłych zysków.",
+            "idea": "Pomysł",
+            "intro": "Wybierz rynek i pomysł, a potem dostrój jego reguły na historycznych danych pul SORA. Wszystkie widoki pokazują ten sam wybór: kliknij słupek na wykresie 3D, przeciągnij linie na wykresie ceny albo zawęź linie na ostatnim wykresie.",
+            "landscape": {
+                "caption": "Każdy słupek to jedno połączenie dwóch głównych ustawień. Wysokość pokazuje pierwszą połowę, a kolor drugą. Wysokie słupki, które robią się niebieskie, działały tylko w godzinach, na których je dostrojono.",
+                "color": "Kolor: druga połowa",
+                "describe": "{x}, {y} — naciśnij Enter, aby użyć tych ustawień.",
+                "height": "Wysokość: pierwsza połowa",
+                "help": "Przeciągnij, aby obrócić widok. Kliknij słupek albo użyj klawiszy strzałek i Enter, aby użyć jego ustawień.",
+                "pick": "Kliknij, aby użyć tych ustawień",
+                "title": "Wyniki według ustawień"
+            },
+            "loading": "Wczytywanie historycznych danych pul…",
+            "market": "Rynek",
+            "newIdea": "Nowy",
+            "openLab": "Otwórz w Laboratorium strategii",
+            "outcomes": {
+                "first": "Pierwsza połowa",
+                "holding": "Czas w pozycji",
+                "idea": "Pomysł",
+                "maxDrop": "Największy spadek",
+                "second": "Druga połowa",
+                "trades": "Transakcje"
+            },
+            "parallel": {
+                "caption": "Każda linia to jedno połączenie ustawień: od ustawień po lewej do wyników po prawej. Przeciągnij wzdłuż dowolnej osi, aby zostawić tylko linie z tego zakresu.",
+                "clear": "Wyczyść filtry",
+                "count": "Widoczne: {shown} z {total}",
+                "help": "Przeciągnij wzdłuż osi, aby filtrować. Kliknij linię, aby użyć jej ustawień. Naciśnij Esc, aby wyczyścić.",
+                "pick": "Kliknij, aby użyć tych ustawień",
+                "title": "Wszystkie warianty tego pomysłu"
+            },
+            "params": {
+                "amount": "Wielkość zlecenia",
+                "average": "Sprzedaż przy średniej z",
+                "buy": "Kupno poniżej średniej",
+                "choppy": "Udział ruchów w jedną stronę",
+                "choppyWindow": "Wahania z",
+                "drop": "Wielkość spadku",
+                "exit": "Sprzedaż poniżej średniej",
+                "fall": "Poniżej maksimum",
+                "guard": "Maks. spadek tygodniowy",
+                "highWindow": "Nowe maksimum z",
+                "hours": "Spadek w ciągu",
+                "jump": "Wielkość skoku",
+                "jumpHours": "Skok w ciągu",
+                "lead": "Kupno powyżej średniej",
+                "level": "Udział ruchów w górę",
+                "lookback": "Porównanie z",
+                "lowWindow": "Nowe minimum z",
+                "peakWindow": "Maksimum z",
+                "percentile": "Najrzadsze godziny",
+                "pull": "Siła powrotu",
+                "pullWindow": "Powrót mierzony z",
+                "rsiWindow": "Ruchy liczone z",
+                "sell": "Sprzedaż powyżej średniej",
+                "window": "Średnia z"
+            },
+            "recipes": {
+                "breakout": {
+                    "idea": "Kupuje, gdy cena osiąga nowe maksimum, i sprzedaje, gdy spada do nowego minimum.",
+                    "name": "Nowe maksimum"
+                },
+                "dip": {
+                    "idea": "Kupuje, gdy cena spada wyraźnie poniżej średniej z ostatnich godzin, i sprzedaje, gdy się odbije. Tego pomysłu używają gotowe boty.",
+                    "name": "Zakup po spadku"
+                },
+                "drop": {
+                    "idea": "Kupuje tuż po gwałtownym spadku w ciągu kilku godzin i sprzedaje, gdy cena wraca w pobliże średniej.",
+                    "name": "Nagły spadek"
+                },
+                "elastic": {
+                    "idea": "Kupuje po spadkach tylko wtedy, gdy ostatnio cena po każdym ruchu wracała w stronę średniej.",
+                    "name": "Sprężysty rynek"
+                },
+                "oversold": {
+                    "idea": "Kupuje, gdy prawie każdy ostatni ruch ceny był w dół, a sprzedaje, gdy cena znów jest powyżej średniej.",
+                    "name": "Odbicie po wyprzedaniu"
+                },
+                "peak": {
+                    "idea": "Kupuje, gdy cena jest daleko poniżej ostatniego maksimum, i sprzedaje, gdy wraca do średniej.",
+                    "name": "Daleko poniżej maksimum"
+                },
+                "range": {
+                    "idea": "Kupuje po spadkach tylko wtedy, gdy cena waha się w górę i w dół, a nie idzie w jednym kierunku.",
+                    "name": "Spadek w trendzie bocznym"
+                },
+                "rare-drop": {
+                    "idea": "Kupuje tylko wtedy, gdy spadek w tej godzinie należy do największych z ostatnich godzin, a cena jest wyraźnie poniżej średniej.",
+                    "name": "Rzadki spadek"
+                },
+                "rebound": {
+                    "idea": "Kupuje po spadku, a sprzedaje, gdy cena się odbije albo gdy tylko szybko podskoczy.",
+                    "name": "Szybkie odbicie"
+                },
+                "steady-dip": {
+                    "idea": "Jak „Zakup po spadku”, ale pomija spadki, gdy cena mocno spadła w ostatnim tygodniu.",
+                    "name": "Spadek w spokojnym tygodniu"
+                },
+                "trend": {
+                    "idea": "Kupuje, gdy cena wzrośnie powyżej średniej, i sprzedaje, gdy spadnie z powrotem poniżej niej.",
+                    "name": "Podążanie za trendem"
+                }
+            },
+            "result": {
+                "first": "Pierwsza połowa",
+                "second": "Druga połowa",
+                "title": "Twoja strategia"
+            },
+            "rule": {
+                "drawdownBelow": "Cena wobec {window}-godzinnego maksimum poniżej {value}%",
+                "efficiencyBelow": "Mniej niż {value}% ruchów w ciągu {window} godz. szło w jedną stronę",
+                "quantileBelow": "Zmiana w tej godzinie jest w najniższych {percentile}% z ostatnich {window} godz.",
+                "restoringAbove": "Siła powrotu do średniej {window}-godzinnej powyżej {value}",
+                "rsiBelow": "Ruchy w górę to mniej niż {value}% wszystkich ruchów w ciągu {window} godz.",
+                "sellAny": "Sprzedaj, gdy spełniony jest dowolny warunek"
+            },
+            "steps": {
+                "check": "Sprawdź na drugiej połowie",
+                "paper": "Rozpocznij symulację",
+                "pick": "Wybierz rynek i pomysł",
+                "tune": "Dostrój na pierwszej połowie"
+            },
+            "title": "Zbuduj własnego bota",
+            "units": {
+                "hours": "{value} godz.",
+                "level": "{value}",
+                "percent": "{value}%",
+                "percentile": "{value}%",
+                "xor": "{value} XOR"
+            }
         },
         "receiveToken": "Token handlowy",
         "research": {
@@ -3697,11 +3861,46 @@
             "pendingInternal": "Transakcja sieci {Sora} w toku...",
             "signAndClaim": "Podpisz i odbierz"
         },
+        "analytics": {
+            "connectToSee": "Połącz konto, aby to zobaczyć.",
+            "feeShare": "Opłata wynosi {percent} tego odbioru.",
+            "market": {
+                "day": "24 godz.",
+                "period": "Ostatnie 30 dni",
+                "title": "Cena",
+                "unavailable": "Dane o cenie są teraz niedostępne.",
+                "week": "7 dni"
+            },
+            "showTable": "Tabela",
+            "skipped": "Nie zostanie odebrane",
+            "sources": {
+                "crowdloan": "Crowdloan",
+                "empty": "Na razie brak nagród do pokazania.",
+                "external": "Konto sieci {Ethereum}",
+                "liquidity": "Opłaty z płynności",
+                "strategic": "Strategiczne",
+                "title": "Według źródła",
+                "unpriced": "Tokeny bez ceny są na liście, ale nie widać ich na pasku."
+            },
+            "table": {
+                "share": "Udział",
+                "source": "Źródło",
+                "value": "Wartość"
+            },
+            "vesting": {
+                "empty": "Brak nagród w vestingu.",
+                "fullyUnlocked": "Wszystko jest odblokowane",
+                "title": "Vesting"
+            }
+        },
         "andText": "i",
         "claimableAmountDoneVesting": "Przysługujące wynagrodzenie dostępne do wypłaty",
         "claiming": {
             "pending": "Odbieranie...",
             "success": "Wynagrodzenie odebrano z powodzeniem."
+        },
+        "claimSection": {
+            "title": "Co możesz odebrać"
         },
         "events": {
             "BuyOnBondingCurve": "Zakup z TBC",
@@ -3718,11 +3917,19 @@
             "external": "Wynagrodzenie dla podłączonego konta sieci {Ethereum}",
             "strategic": "Wynagrodzenie strategiczne"
         },
+        "hero": {
+            "connectTitle": "Sprawdź i odbierz swoje nagrody"
+        },
         "hint": {
             "connectAccounts": "Aby odebrać swoje wynagrodzenie w walutach PSWAP i VAL, musisz połączyć zarówno konto sieci {Sora}, jak i {Ethereum}.",
             "connectAnotherAccount": "Połącz z innym kontem sieci {Ethereum}, aby sprawdzić dostępne wynagrodzenie w walutach PSWAP i VAL.",
             "connectExternalAccount": "Połącz z kontem sieci {Ethereum}, aby sprawdzić dostępne wynagrodzenie w walutach PSWAP i VAL.",
             "howToClaimRewards": "Aby odebrać swoje wynagrodzenie w walucie {symbols}, musisz podpisać {count} {transactions} dotyczące {destination}. Wynagrodzenie zostanie wypłacone na Twoje konto sieci {Sora}."
+        },
+        "howTo": {
+            "choose": "Wybierz, co odebrać",
+            "connect": "Połącz swoje konto sieci {Sora}",
+            "title": "Jak odebrać"
         },
         "notification": {
             "empty": "Brak przysługującego wynagrodzenia dostępnego do wypłaty dla tego konta."
@@ -3733,6 +3940,16 @@
         "signing": {
             "accounts": "Twoich kont, to odpowiednio {Sora} i {Ethereum}",
             "extension": "Rozszerzenie przeglądarki {PolkadotJs}"
+        },
+        "stats": {
+            "locked": "Nadal zablokowane",
+            "unlocked": "Odblokowane"
+        },
+        "status": {
+            "connect": "Konto nie jest połączone",
+            "empty": "Na razie nic do odebrania",
+            "failed": "Odbieranie nie powiodło się",
+            "ready": "Gotowe do odebrania"
         },
         "totalVested": "Wynagrodzenia łącznie",
         "transactions": {

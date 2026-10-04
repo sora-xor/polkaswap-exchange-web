@@ -124,6 +124,53 @@ const scheduleRetry = (callback: () => void, attempts: number): void => {
   setTimeout(callback, delay);
 };
 
+type PreloadableAsyncComponent = { __asyncLoader?: () => Promise<unknown> };
+
+export type PreloadAsyncComponentsOptions = {
+  /** Upper bound for the wait; loading continues in the background after it. */
+  timeoutMs?: number;
+};
+
+export const ASYNC_COMPONENT_PRELOAD_TIMEOUT_MS = 10_000;
+
+/**
+ * Resolves async component wrappers before they first render.
+ *
+ * Vue renders an already-resolved wrapper's component in the same pass. An
+ * unresolved wrapper renders nothing until its loader settles, which takes at
+ * least one task even when the chunk is cached, so its content pops in after
+ * the first paint and shifts the layout. Failures are ignored here: a wrapper
+ * that is still unresolved loads (and retries) on render exactly as before.
+ *
+ * Components that are not `defineAsyncComponent` wrappers are skipped.
+ */
+export const preloadAsyncComponents = async (
+  components: Iterable<unknown>,
+  { timeoutMs = ASYNC_COMPONENT_PRELOAD_TIMEOUT_MS }: PreloadAsyncComponentsOptions = {}
+): Promise<void> => {
+  const pending: Promise<unknown>[] = [];
+
+  for (const component of components) {
+    const loader = (component as PreloadableAsyncComponent | null | undefined)?.__asyncLoader;
+    if (typeof loader === 'function') {
+      pending.push(Promise.resolve().then(() => loader()));
+    }
+  }
+
+  if (!pending.length) return;
+
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<void>((resolve) => {
+    timer = setTimeout(resolve, Math.max(0, timeoutMs));
+  });
+
+  try {
+    await Promise.race([Promise.allSettled(pending), timeout]);
+  } finally {
+    clearTimeout(timer);
+  }
+};
+
 /**
  * Shared async-component helper for new app/feature boundaries.
  */

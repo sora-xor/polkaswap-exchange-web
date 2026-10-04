@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import appHeaderSource from '@/components/App/Header/AppHeader.vue?raw';
+import appShellChromeSource from '@/app/shell/chrome.ts?raw';
 import appShellLayoutSource from '@/app/shell/AppShellLayout.vue?raw';
 import appShellSource from '@/app/shell/AppShell.vue?raw';
 import useAppShellSource from '@/app/shell/useAppShell.ts?raw';
@@ -77,16 +78,23 @@ describe('App shell source', () => {
     expect(appShellLayoutSource).toContain('border-style: none;');
   });
 
-  it('loads the footer through an async boundary', () => {
+  // The chrome wrappers live in `app/shell/chrome.ts` so bootstrap can resolve them before mount.
+  it('renders the shell chrome through the preloadable async boundaries', () => {
     expect(appShellLayoutSource).toContain(
-      "const AppFooter = createAsyncComponent(() => import('@/components/App/Footer/AppFooter.vue'));"
+      "import { AppDisclaimer, AppFooter, AppHeader, AppLogoButton, AppMenu, TonswapJourneyNotice } from './chrome';"
+    );
+  });
+
+  it('loads the footer through an async boundary', () => {
+    expect(appShellChromeSource).toContain(
+      "export const AppFooter = createAsyncComponent(() => import('@/components/App/Footer/AppFooter.vue'));"
     );
     expect(appShellLayoutSource).not.toContain("import AppFooter from '@/components/App/Footer/AppFooter.vue';");
   });
 
   it('loads the disclaimer through an async boundary', () => {
-    expect(appShellLayoutSource).toContain(
-      "const AppDisclaimer = createAsyncComponent(() => import('@/components/App/Header/AppDisclaimer.vue'));"
+    expect(appShellChromeSource).toContain(
+      "export const AppDisclaimer = createAsyncComponent(() => import('@/components/App/Header/AppDisclaimer.vue'));"
     );
     expect(appShellLayoutSource).not.toContain(
       "import AppDisclaimer from '@/components/App/Header/AppDisclaimer.vue';"
@@ -94,22 +102,22 @@ describe('App shell source', () => {
   });
 
   it('loads the header through an async boundary', () => {
-    expect(appShellLayoutSource).toContain(
-      "const AppHeader = createAsyncComponent(() => import('@/components/App/Header/AppHeader.vue'));"
+    expect(appShellChromeSource).toContain(
+      "export const AppHeader = createAsyncComponent(() => import('@/components/App/Header/AppHeader.vue'));"
     );
     expect(appShellLayoutSource).not.toContain("import AppHeader from '@/components/App/Header/AppHeader.vue';");
   });
 
   it('loads the menu logo through a direct async boundary', () => {
-    expect(appShellLayoutSource).toContain(
-      "const AppLogoButton = createAsyncComponent(() => import('@/components/App/Header/AppLogoButton.vue'));"
+    expect(appShellChromeSource).toContain(
+      "export const AppLogoButton = createAsyncComponent(() => import('@/components/App/Header/AppLogoButton.vue'));"
     );
     expect(appShellLayoutSource).not.toContain("import { AppLogoButton } from '@/app/shell/components';");
   });
 
   it('loads the sidebar menu through an async boundary', () => {
-    expect(appShellLayoutSource).toContain(
-      "const AppMenu = createAsyncComponent(() => import('@/components/App/Menu/AppMenu.vue'));"
+    expect(appShellChromeSource).toContain(
+      "export const AppMenu = createAsyncComponent(() => import('@/components/App/Menu/AppMenu.vue'));"
     );
     expect(appShellLayoutSource).not.toContain("import AppMenu from '@/components/App/Menu/AppMenu.vue';");
   });

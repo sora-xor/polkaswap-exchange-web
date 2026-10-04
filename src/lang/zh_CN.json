@@ -271,6 +271,7 @@
                 "noSmallerExactSample": "No smaller size with a fresh eligible quote",
                 "opening": "到首次可以交易时，初始资金以 {symbol} 计价的价值至少下跌 {loss}%，超过你的 {limit}% 限额，即使手续费为零也如此。",
                 "openingDates": "{opened} → {firstTrade} {zone}",
+                "previousCheckThrough": "先前检查 · 数据截至 {time}",
                 "quoteUnavailable": "Fresh quote unavailable",
                 "screenedDraft": "Draft #{number} skipped before testing",
                 "screeningCount": "{drafted} drafted · {tested} tested",
@@ -1192,6 +1193,15 @@
             "openai": "OpenAI"
         },
         "quant": {
+            "atlas": {
+                "caption": "每条线代表一个已测试的策略，从想法连到前后两段的结果。粉色线在后半段赚了钱，蓝色线亏了钱。沿坐标轴拖动可缩小范围。",
+                "edit": "编辑此策略",
+                "help": "沿坐标轴拖动可筛选。点击一条线查看其规则。按 Esc 清除。",
+                "passed": "通过所有检查",
+                "pick": "点击一条线，查看它的规则并进行编辑。",
+                "rejected": "未全部通过检查",
+                "used": "机器人正在使用"
+            },
             "banner": {
                 "detail": "价格相对 {window} 小时均价为 {value}，已越过 {threshold} 的买入线，因此运行中的机器人现在会买入。",
                 "title": "{symbol} 已进入买入区间"
@@ -1251,7 +1261,6 @@
                 "watch": "暂无机器人"
             },
             "mesh": {
-                "caption": "每个点代表一个已测试的策略。较亮的点通过了所有检查；闪烁的点是机器人正在使用的策略。",
                 "summary": "通过 {robust} 个 · 淘汰 {killed} 个",
                 "title": "已测试的策略"
             },
@@ -1315,6 +1324,161 @@
             "title": "现成机器人",
             "trades": "交易次数",
             "watchNote": "测试中没有规则实现盈利，因此该市场暂时没有机器人。"
+        },
+        "studio": {
+            "botName": "{idea} · {symbol}",
+            "calculating": "正在计算…",
+            "chart": {
+                "buys": "买入",
+                "caption": "拖动粉色线可调整买入时机，拖动紫色线可调整卖出时机。点击“重播”观看机器人交易。",
+                "captionNoLines": "这个想法没有可拖动的线，请在 3D 图旁修改设置。点击“重播”观看机器人交易。",
+                "equity": "机器人价值与持有对比",
+                "first": "前半段：在这里调整",
+                "indicators": {
+                    "deviation": "价格相对 {window} 小时均价",
+                    "drawdown": "价格相对 {window} 小时高点",
+                    "momentum": "{window} 小时涨跌幅",
+                    "rsi": "{window} 小时上涨占比"
+                },
+                "price": "{symbol} 价格（以 XOR 计）",
+                "replay": "重播",
+                "second": "后半段：在这里检验",
+                "sells": "卖出",
+                "stop": "停止",
+                "summary": "前后两段共买入 {buys} 次、卖出 {sells} 次。",
+                "title": "价格与交易"
+            },
+            "fairness": "前半段用于调整，后半段用于检验。如果您不断修改设置，直到后半段看起来不错，这就不再是公平的检验了。过往结果不保证未来收益。",
+            "idea": "想法",
+            "intro": "选择一个市场和一个想法，然后用 SORA 资金池的历史数据调整它的规则。所有图表显示的都是同一个选择：点击 3D 图中的柱子、拖动价格图上的线，或在最后一张图中筛选线条。",
+            "landscape": {
+                "caption": "每根柱子代表两个主要设置的一种组合。高度表示前半段结果，颜色表示后半段结果。高柱子如果变成蓝色，说明它只在调整所用的时段有效。",
+                "color": "颜色：后半段",
+                "describe": "{x}，{y}。按 Enter 使用这些设置。",
+                "height": "高度：前半段",
+                "help": "拖动可旋转视角。点击柱子，或使用方向键和 Enter，即可使用其设置。",
+                "pick": "点击使用这些设置",
+                "title": "不同设置的结果"
+            },
+            "loading": "正在加载历史资金池数据…",
+            "market": "市场",
+            "newIdea": "新",
+            "openLab": "在策略实验室中打开",
+            "outcomes": {
+                "first": "前半段",
+                "holding": "持仓时间",
+                "idea": "想法",
+                "maxDrop": "最大跌幅",
+                "second": "后半段",
+                "trades": "交易次数"
+            },
+            "parallel": {
+                "caption": "每条线代表一种设置组合，从左侧的设置连到右侧的结果。沿任一坐标轴拖动，只保留该范围内的线。",
+                "clear": "清除筛选",
+                "count": "显示 {total} 条中的 {shown} 条",
+                "help": "沿坐标轴拖动可筛选。点击一条线即可使用其设置。按 Esc 清除。",
+                "pick": "点击使用这些设置",
+                "title": "这个想法的所有设置组合"
+            },
+            "params": {
+                "amount": "每次买入金额",
+                "average": "卖出均价周期",
+                "buy": "低于均价买入",
+                "choppy": "单向占比",
+                "choppyWindow": "震荡周期",
+                "drop": "急跌幅度",
+                "exit": "低于均价卖出",
+                "fall": "低于高点",
+                "guard": "周跌幅上限",
+                "highWindow": "新高周期",
+                "hours": "急跌时长",
+                "jump": "急涨幅度",
+                "jumpHours": "急涨时长",
+                "lead": "高于均价买入",
+                "level": "上涨占比",
+                "lookback": "对比过去",
+                "lowWindow": "新低周期",
+                "peakWindow": "高点周期",
+                "percentile": "最罕见小时",
+                "pull": "回拉力度",
+                "pullWindow": "回拉周期",
+                "rsiWindow": "统计时长",
+                "sell": "高于均价卖出",
+                "window": "均价周期"
+            },
+            "recipes": {
+                "breakout": {
+                    "idea": "价格创新高时买入，创新低时卖出。",
+                    "name": "创新高"
+                },
+                "dip": {
+                    "idea": "价格明显低于近期均价时买入，回升后卖出。现成机器人用的就是这个想法。",
+                    "name": "逢低买入"
+                },
+                "drop": {
+                    "idea": "几小时内急跌后立即买入，价格回到均价附近时卖出。",
+                    "name": "急跌"
+                },
+                "elastic": {
+                    "idea": "只在价格近期每次变动后都被拉回均价附近时逢低买入。",
+                    "name": "回弹市场"
+                },
+                "oversold": {
+                    "idea": "近期几乎每次价格变动都是下跌时买入，价格回到均价之上后卖出。",
+                    "name": "超跌反弹"
+                },
+                "peak": {
+                    "idea": "价格远低于近期高点时买入，回升到均价时卖出。",
+                    "name": "远低于高点"
+                },
+                "range": {
+                    "idea": "只在价格来回波动、而不是单向运行时逢低买入。",
+                    "name": "震荡市逢低买入"
+                },
+                "rare-drop": {
+                    "idea": "只在本小时跌幅位居近几小时最大之列，且价格明显低于均价时买入。",
+                    "name": "罕见下跌"
+                },
+                "rebound": {
+                    "idea": "逢低买入，然后在价格回升时卖出，或在价格快速上涨时立即卖出。",
+                    "name": "快速反弹"
+                },
+                "steady-dip": {
+                    "idea": "与“逢低买入”类似，但过去一周价格大跌时不买。",
+                    "name": "平稳周逢低买入"
+                },
+                "trend": {
+                    "idea": "价格升到均价之上时买入，跌回均价之下时卖出。",
+                    "name": "跟随趋势"
+                }
+            },
+            "result": {
+                "first": "前半段",
+                "second": "后半段",
+                "title": "您的策略"
+            },
+            "rule": {
+                "drawdownBelow": "价格相对 {window} 小时高点低于 {value}%",
+                "efficiencyBelow": "{window} 小时内朝同一方向的变动少于 {value}%",
+                "quantileBelow": "本小时涨跌幅处于过去 {window} 小时中最低的 {percentile}%",
+                "restoringAbove": "向 {window} 小时均价回拉的力度大于 {value}",
+                "rsiBelow": "{window} 小时内上涨次数少于全部变动的 {value}%",
+                "sellAny": "满足以下任一条件时卖出"
+            },
+            "steps": {
+                "check": "用后半段检验",
+                "paper": "进行模拟交易",
+                "pick": "选择市场和想法",
+                "tune": "用前半段调整"
+            },
+            "title": "创建自己的机器人",
+            "units": {
+                "hours": "{value} 小时",
+                "level": "{value}",
+                "percent": "{value}%",
+                "percentile": "{value}%",
+                "xor": "{value} XOR"
+            }
         },
         "receiveToken": "交易代币",
         "research": {
@@ -3697,11 +3861,46 @@
             "pendingInternal": "{Sora} 交易等待确认...",
             "signAndClaim": "签名并申领"
         },
+        "analytics": {
+            "connectToSee": "连接您的账户以查看此内容。",
+            "feeShare": "费用占本次申领的 {percent}。",
+            "market": {
+                "day": "24小时",
+                "period": "过去30天",
+                "title": "价格",
+                "unavailable": "暂时无法获取价格数据。",
+                "week": "7天"
+            },
+            "showTable": "表格",
+            "skipped": "不在本次申领中",
+            "sources": {
+                "crowdloan": "众贷",
+                "empty": "暂无可显示的奖励。",
+                "external": "{Ethereum} 账户",
+                "liquidity": "流动性费用",
+                "strategic": "战略",
+                "title": "按来源",
+                "unpriced": "没有价格的代币会列在清单中，但不会画在条形里。"
+            },
+            "table": {
+                "share": "占比",
+                "source": "来源",
+                "value": "价值"
+            },
+            "vesting": {
+                "empty": "没有归属中的奖励。",
+                "fullyUnlocked": "全部已解锁",
+                "title": "归属"
+            }
+        },
         "andText": "和",
         "claimableAmountDoneVesting": "可申领金额(完成归属)",
         "claiming": {
             "pending": "声称...",
             "success": "申领成功"
+        },
+        "claimSection": {
+            "title": "您可以申领的内容"
         },
         "events": {
             "BuyOnBondingCurve": "从 TBC 购买",
@@ -3718,11 +3917,19 @@
             "external": "连接的{Ethereum}帐户的奖励",
             "strategic": "战略奖励"
         },
+        "hero": {
+            "connectTitle": "查看并申领您的奖励"
+        },
         "hint": {
             "connectAccounts": "要申领您的 PSWAP 和 VAL 奖励，您需要连接您的 {Sora} 和 {Ethereum} 账户。",
             "connectAnotherAccount": "连接另一个{Ethereum} 账户以检查可申领的PSWAP和VAL奖励。",
             "connectExternalAccount": "连接{Ethereum} 账户以检查可申领的 PSWAP 和 VAL 奖励。",
             "howToClaimRewards": "要申领您的{symbols}奖励，您需要在{destination}中签署{count}{transactions}奖励将存入您的{Sora} 账户。"
+        },
+        "howTo": {
+            "choose": "选择要申领的内容",
+            "connect": "连接您的 {Sora} 账户",
+            "title": "如何申领"
         },
         "notification": {
             "empty": "此账户没有可申领的奖励"
@@ -3733,6 +3940,16 @@
         "signing": {
             "accounts": "您的{Sora} 和{Ethereum} 账户分别为",
             "extension": "{PolkadotJs}浏览器扩展"
+        },
+        "stats": {
+            "locked": "仍锁定",
+            "unlocked": "已解锁"
+        },
+        "status": {
+            "connect": "账户未连接",
+            "empty": "暂无可申领内容",
+            "failed": "申领失败",
+            "ready": "可以申领"
         },
         "totalVested": "总奖励",
         "transactions": {

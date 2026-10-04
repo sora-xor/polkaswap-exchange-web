@@ -123,6 +123,7 @@ Always keep `yarn test:unit` and `yarn test:translation` green locally before op
 - `yarn build:vue3` is an alias for the same native Vue 3 build and remains available for existing CI jobs and release checklists.
 - `yarn preview` serves the generated bundle so you can smoke-test the IPFS artifacts locally.
 - `yarn ipfs:publish` runs the publish workflow described in `docs/ipfs.md` (publishes to the configured gateway/IPFS node and logs the CID in `ipfs_publish.log`). `yarn ipfs:check` and `yarn ipfs:check:electron` verify the browser/electron bundles after a publish.
+- [Startup performance](docs/startup-performance.md) explains what the first page load downloads and the rules that keep heavy libraries off it.
 
 Vite currently emits a few warnings from Soramitsu UI Tailwind shorthand classes during `yarn build`; they are cosmetic but still reviewed during release readiness.
 
@@ -182,6 +183,8 @@ Locale catalogs live under `src/lang/*.json` (SPA) and `src/lang/card/*.json` (e
 All translation changes must land with regenerated locale files and passing `yarn test:translation`.
 
 UI/UX behavior and validation: [UI refinements](docs/ui-ux-improvements.md) and [Swap quote, review and layout behavior](docs/swap-interaction.md).
+
+The [Rewards dashboard](docs/rewards-dashboard.md) at `/#/rewards` shows what an account can claim, where it comes from, how much is still vesting and what the reward tokens are worth. The claim flow itself is unchanged.
 
 The static Buy XOR flow uses an isolated MOF service for read-only conversion quotes. See [quote relay operations](docs/buy-xor-quote-relay.md) for its fixed request schema, production-origin policy, limits, deployment and verification; wallet signing stays in the frontend.
 

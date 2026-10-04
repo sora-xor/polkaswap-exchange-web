@@ -23,8 +23,12 @@ import { useTranslation } from '@/composables/useTranslation';
 import { useWalletStore } from '@/stores/wallet';
 import { copyToClipboard } from '@/utils';
 import DialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
-import QrCode from '@/lib/soraneo-wallet/src/components/QrCode/QrCode.vue';
 import WalletAccount from '@/lib/soraneo-wallet/src/components/Account/WalletAccount.vue';
+import { createAsyncComponent } from '@/shared/ui/async';
+
+// The swap form always mounts this dialog, but the modal renders its content only while open.
+// Loading the QR encoder (zxing) lazily keeps it out of the swap page's startup bundle.
+const QrCode = createAsyncComponent(() => import('@/lib/soraneo-wallet/src/components/QrCode/QrCode.vue'));
 
 /** Receives native XOR without navigating away from or resetting the user's swap draft. */
 defineOptions({ name: 'ReceiveXorDialog' });

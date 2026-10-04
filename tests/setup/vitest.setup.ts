@@ -533,10 +533,16 @@ vi.mock('@polkadot/api', () => ({
   ApiPromise: class {},
   WsProvider: class {},
 }));
-vi.mock('@polkadot/util-crypto', () => ({
-  decodeAddress: () => new Uint8Array(),
-  cryptoWaitReady: async () => true,
-}));
+vi.mock('@polkadot/util-crypto', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@polkadot/util-crypto')>();
+
+  return {
+    decodeAddress: () => new Uint8Array(),
+    cryptoWaitReady: async () => true,
+    // Real hashing keeps Get TS draft context hashes deterministic in tests.
+    keccakAsHex: actual.keccakAsHex,
+  };
+});
 vi.mock('@sora-substrate/sdk', () => import('@stubs/sora-sdk'));
 vi.mock('@sora-substrate/sdk/build/assets/consts', () => import('@stubs/sdk-assets-consts'));
 vi.mock('@/stores/assets', () => ({

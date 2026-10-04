@@ -66,11 +66,13 @@
             <summary>
               {{
                 t(
-                  stage === 'watching' || canResumeWatch
-                    ? diagnosticsDataThrough
-                      ? 'bots.autopilot.diagnostics.lastCheckThrough'
-                      : 'bots.autopilot.diagnostics.lastCheck'
-                    : 'bots.autopilot.diagnostics.details',
+                  retainedWatchDiagnostics
+                    ? 'bots.autopilot.diagnostics.previousCheckThrough'
+                    : stage === 'watching' || canResumeWatch
+                      ? diagnosticsDataThrough
+                        ? 'bots.autopilot.diagnostics.lastCheckThrough'
+                        : 'bots.autopilot.diagnostics.lastCheck'
+                      : 'bots.autopilot.diagnostics.details',
                   diagnosticsDataThrough ? { time: diagnosticsDataThrough } : undefined
                 )
               }}
@@ -1023,9 +1025,22 @@ const savedWatchFailure = computed(() => {
     ? watch.lastFailure
     : null;
 });
+/** A failed re-draft can display its same-goal historical training check without reviving a result. */
+const retainedWatchDiagnostics = computed(() => {
+  const retained = props.watchRecovery?.trainingDiagnostics;
+  return props.stage === 'watching' &&
+    !props.diagnostics &&
+    props.walletConnected &&
+    props.recoveryInput &&
+    retained &&
+    completedThroughText(retained.completedThrough)
+    ? retained
+    : null;
+});
 const shownDiagnostics = computed<AutopilotQualificationDiagnostics | null>(
   () =>
     props.diagnostics ??
+    retainedWatchDiagnostics.value ??
     (props.canResumeWatch && !savedWatchFailure.value ? (props.watchRecovery?.trainingDiagnostics ?? null) : null)
 );
 /** Display a real scheduled boundary, including its date for unused validation windows. */

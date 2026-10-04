@@ -196,14 +196,35 @@ export interface QuantMarketResult {
   } | null;
 }
 
-export interface QuantMeshNode {
+/**
+ * One tested strategy for the strategy map, from fixed-parameter simulations of each half of
+ * the archive. Values are Tier 1 estimates in percent, rounded to 0.01, used only to position
+ * marks; every number shown as text comes from an exact replay.
+ */
+export interface QuantAtlasEntry {
+  /** Candidate id within its market. */
   id: string;
-  market: string;
   family: QuantFamily;
-  /** 0..1 rank within its market; visual weight only. */
-  weight: number;
+  amount: string;
+  /** Result with the same rules over the first and second half. */
+  first: number;
+  second: number;
+  /** Largest fall from a peak in either half. */
+  drop: number;
+  /** Share of hours spent holding the token, over both halves. */
+  holding: number;
+  trades: number;
+  /** Passed every training check at the final selection. */
   robust: boolean;
+  /** The final selection, used by a ready-made bot when the market is live-ready. */
   selected: boolean;
+}
+
+export interface QuantAtlasMarket {
+  market: string;
+  /** First hour of the second half; the first half ends one hour earlier. */
+  splitAt: number;
+  entries: QuantAtlasEntry[];
 }
 
 export interface QuantLoopResult {
@@ -220,9 +241,10 @@ export interface QuantLoopResult {
     deployable: number;
   };
   markets: QuantMarketResult[];
-  mesh: QuantMeshNode[];
   /** Exact per-family totals across every simulated market at the final selection. */
   families: { family: QuantFamily; tested: number; robust: number }[];
+  /** Every candidate per simulated market, for the strategy map; absent in older results. */
+  atlas?: QuantAtlasMarket[];
 }
 
 export type QuantPhase = 'data' | 'generate' | 'backtest' | 'robustness' | 'walkforward' | 'verify' | 'done';
@@ -492,85 +514,256 @@ export function generateQuantCandidates(): QuantCandidate[] {
   return list;
 }
 
-/** Largest number of closes a candidate's leaves need, matching `requiredRuleCandles`. */
-function leafCandles(leaf: Leaf): number {
-  if (leaf.kind === 'momentum' || leaf.kind === 'breakout') return leaf.window + 1;
-  return leaf.window;
+/**
+ * Leaf kinds the loop can screen and replay exactly. `mad` needs nested rolling medians and
+ * is left to the rule engine; every other live condition is supported.
+ */
+export const QUANT_LEAF_KINDS: readonly Leaf['kind'][] = [
+  'deviation',
+  'trend',
+  'momentum',
+  'breakout',
+  'rsi',
+  'efficiency',
+  'drawdown',
+  'return-quantile',
+  'restoring',
+];
+
+/* ------------------------------------------------------------------------------------------------
+ * Shared helpers
+ * ---------------------------------------------------------------------------------------------- */
+
+/** Insert into an insertion-ordered map, evicting the oldest entry once `limit` is reached. */
+function remember<V>(map: Map<string, V>, key: string, value: V, limit: number): V {
+  if (map.size >= limit && !map.has(key)) map.delete(map.keys().next().value as string);
+  map.set(key, value);
+  return value;
+}
+
+function leafKey(leaf: Leaf): string {
+  return JSON.stringify(leaf);
+}
+
+/** Combine leaf pass arrays like the rule engine: exit wins, any unready leaf blocks both sides. */
+function combineSignals(rules: StrategyRules, entry: Int8Array[], exit: Int8Array[], length: number): Int8Array {
+  const entryAny = rules.entry.operator === 'any';
+  const exitAny = rules.exit?.operator === 'any';
+  const out = new Int8Array(length);
+  for (let i = 0; i < length; i++) {
+    let ready = true;
+    let entryPass = !entryAny;
+    let exitPass = exit.length > 0 && !exitAny;
+    for (const leaf of entry) {
+      if (leaf[i] < 0) ready = false;
+      else if (entryAny) entryPass ||= leaf[i] === 1;
+      else if (leaf[i] === 0) entryPass = false;
+    }
+    for (const leaf of exit) {
+      if (leaf[i] < 0) ready = false;
+      else if (exitAny) exitPass ||= leaf[i] === 1;
+      else if (leaf[i] === 0) exitPass = false;
+    }
+    out[i] = !ready ? -1 : exitPass ? 2 : entryPass ? 1 : 0;
+  }
+  return out;
 }
 
 /* ------------------------------------------------------------------------------------------------
  * Tier 1: ranking-only screening
  * ---------------------------------------------------------------------------------------------- */
 
-/** Per-market cache of leaf pass arrays: -1 not ready, 0 failed, 1 passed. */
-type LeafCache = Map<string, Int8Array>;
-
-function leafKey(leaf: Leaf): string {
-  return JSON.stringify(leaf);
+/**
+ * Ranking-only values of one indicator for every bar (NaN while it is not ready). Leaves that
+ * compare against the data rather than a fixed threshold (trend, breakout, return quantile)
+ * carry that per-bar bound too. One series serves every threshold of the same indicator.
+ */
+export interface QuantScreenSeries {
+  value: Float64Array;
+  bound?: Float64Array;
 }
 
-/** Compute one leaf for every bar with the rule engine's definitions, in Float64. */
-function screenLeaf(market: QuantMarket, leaf: Leaf, cache: LeafCache): Int8Array {
-  const key = leafKey(leaf);
-  const cached = cache.get(key);
+/**
+ * Per-market Tier 1 memo: indicator series, leaf pass arrays (-1 not ready, 0 failed,
+ * 1 passed) and combined signals. Interactive callers explore many thresholds, so each map
+ * is bounded; eviction only costs recomputation and never changes a result.
+ */
+export interface QuantScreenCache {
+  /** The market the memo belongs to; handing it another market clears it first. */
+  market: QuantMarket | null;
+  series: Map<string, QuantScreenSeries>;
+  leaves: Map<string, Int8Array>;
+  signals: Map<string, Int8Array>;
+}
+
+const SCREEN_SERIES_LIMIT = 256;
+const SCREEN_LEAF_LIMIT = 2_048;
+
+/** Create an empty Tier 1 memo for one market. */
+export function createQuantScreenCache(): QuantScreenCache {
+  return { market: null, series: new Map(), leaves: new Map(), signals: new Map() };
+}
+
+/** Bind a memo to one market so values computed for another market can never leak into it. */
+function bindScreenCache(cache: QuantScreenCache, market: QuantMarket): void {
+  if (cache.market === market) return;
+  cache.series.clear();
+  cache.leaves.clear();
+  cache.signals.clear();
+  cache.market = market;
+}
+
+/** Type-7 quantile of ascending values with the rule engine's integer rank and weight. */
+function screenQuantile(sorted: Float64Array, percentile: number): number {
+  const scaled = (sorted.length - 1) * percentile;
+  const lower = Math.floor(scaled / 100);
+  const weight = scaled % 100;
+  return weight === 0 ? sorted[lower] : (sorted[lower] * (100 - weight) + sorted[lower + 1] * weight) / 100;
+}
+
+/**
+ * Compute one indicator for every bar with the rule engine's definitions, in Float64. The
+ * deviation, momentum and breakout expressions are unchanged from the original screen, so
+ * the ready-made selection ranks candidates exactly as before.
+ */
+export function screenQuantSeries(market: QuantMarket, leaf: Leaf, cache: QuantScreenCache): QuantScreenSeries {
+  bindScreenCache(cache, market);
+  const window = leaf.window;
+  const key =
+    leaf.kind === 'return-quantile'
+      ? `${leaf.kind}:${window}:${leaf.percentile}`
+      : leaf.kind === 'breakout'
+        ? `${leaf.kind}:${window}:${leaf.direction}`
+        : `${leaf.kind}:${window}`;
+  const cached = cache.series.get(key);
   if (cached) return cached;
   const p = market.closes;
-  const out = new Int8Array(p.length).fill(-1);
-  const below = leaf.direction === 'below';
-  if (leaf.kind === 'deviation') {
-    const threshold = Number(leaf.threshold);
+  const n = p.length;
+  const value = new Float64Array(n).fill(NaN);
+  let bound: Float64Array | undefined;
+  if (leaf.kind === 'deviation' || leaf.kind === 'trend') {
+    // Trend compares close × window with the window sum, exactly like the engine's mean test.
+    if (leaf.kind === 'trend') bound = new Float64Array(n).fill(NaN);
     let sum = 0;
-    for (let i = 0; i < p.length; i++) {
+    for (let i = 0; i < n; i++) {
       sum += p[i];
-      if (i >= leaf.window) sum -= p[i - leaf.window];
-      if (i < leaf.window - 1) continue;
-      const value = ((p[i] * leaf.window - sum) * 100) / sum;
-      out[i] = (below ? value < threshold : value > threshold) ? 1 : 0;
+      if (i >= window) sum -= p[i - window];
+      if (i < window - 1) continue;
+      if (bound) {
+        value[i] = p[i] * window;
+        bound[i] = sum;
+      } else value[i] = ((p[i] * window - sum) * 100) / sum;
     }
   } else if (leaf.kind === 'momentum') {
-    const threshold = Number(leaf.threshold);
-    for (let i = leaf.window; i < p.length; i++) {
-      const value = ((p[i] - p[i - leaf.window]) * 100) / p[i - leaf.window];
-      out[i] = (below ? value < threshold : value > threshold) ? 1 : 0;
-    }
+    for (let i = window; i < n; i++) value[i] = ((p[i] - p[i - window]) * 100) / p[i - window];
   } else if (leaf.kind === 'breakout') {
-    for (let i = leaf.window; i < p.length; i++) {
-      let extreme = p[i - leaf.window];
-      for (let j = i - leaf.window + 1; j < i; j++) extreme = below ? Math.min(extreme, p[j]) : Math.max(extreme, p[j]);
-      out[i] = (below ? p[i] < extreme : p[i] > extreme) ? 1 : 0;
+    bound = new Float64Array(n).fill(NaN);
+    const below = leaf.direction === 'below';
+    for (let i = window; i < n; i++) {
+      let extreme = p[i - window];
+      for (let j = i - window + 1; j < i; j++) extreme = below ? Math.min(extreme, p[j]) : Math.max(extreme, p[j]);
+      value[i] = p[i];
+      bound[i] = extreme;
+    }
+  } else if (leaf.kind === 'rsi' || leaf.kind === 'efficiency') {
+    // Recomputed per bar rather than rolled, so flat stretches stay exactly flat.
+    for (let i = window; i < n; i++) {
+      let gains = 0;
+      let losses = 0;
+      for (let j = i - window + 1; j <= i; j++) {
+        const change = p[j] - p[j - 1];
+        if (change > 0) gains += change;
+        else losses -= change;
+      }
+      const distance = gains + losses;
+      if (distance === 0) value[i] = leaf.kind === 'rsi' ? 50 : 0;
+      else value[i] = ((leaf.kind === 'rsi' ? gains : Math.abs(p[i] - p[i - window])) * 100) / distance;
+    }
+  } else if (leaf.kind === 'drawdown') {
+    for (let i = window - 1; i < n; i++) {
+      let peak = p[i - window + 1];
+      for (let j = i - window + 2; j <= i; j++) if (p[j] > peak) peak = p[j];
+      value[i] = ((p[i] - peak) * 100) / peak;
+    }
+  } else if (leaf.kind === 'return-quantile') {
+    bound = new Float64Array(n).fill(NaN);
+    const returns = new Float64Array(window);
+    for (let i = window + 1; i < n; i++) {
+      // The previous `window` hourly returns; the current return is compared, never included.
+      for (let k = 0; k < window; k++) {
+        const j = i - window + k;
+        returns[k] = ((p[j] - p[j - 1]) * 100) / p[j - 1];
+      }
+      returns.sort();
+      value[i] = ((p[i] - p[i - 1]) * 100) / p[i - 1];
+      bound[i] = screenQuantile(returns, leaf.percentile);
+    }
+  } else if (leaf.kind === 'restoring') {
+    for (let i = window + 1; i < n; i++) {
+      // Regress each prior close's next change on that close: x = p[k], y = p[k + 1] - p[k].
+      let low = Infinity;
+      let high = -Infinity;
+      let meanX = 0;
+      let meanY = 0;
+      for (let k = i - window - 1; k <= i - 2; k++) {
+        low = Math.min(low, p[k]);
+        high = Math.max(high, p[k]);
+        meanX += p[k];
+        meanY += p[k + 1] - p[k];
+      }
+      // A flat window has no variance; the engine reports it as not ready.
+      if (low === high) continue;
+      meanX /= window;
+      meanY /= window;
+      let covariance = 0;
+      let variance = 0;
+      for (let k = i - window - 1; k <= i - 2; k++) {
+        const dx = p[k] - meanX;
+        covariance += dx * (p[k + 1] - p[k] - meanY);
+        variance += dx * dx;
+      }
+      value[i] = (-100 * covariance) / variance;
     }
   } else throw new Error('bots.errors.strategy');
-  cache.set(key, out);
-  return out;
+  return remember(cache.series, key, bound ? { value, bound } : { value }, SCREEN_SERIES_LIMIT);
 }
 
-/** Combine `all` groups into one signal array: 1 buy, 2 sell, 0 hold, -1 warm-up. */
-function screenSignals(market: QuantMarket, candidate: QuantCandidate, cache: LeafCache): Int8Array {
-  const key = `signal:${JSON.stringify(candidate.rules)}`;
-  const cached = cache.get(key);
+/** Leaf pass array for every bar in Float64: -1 not ready, 0 failed, 1 passed. */
+function screenLeaf(market: QuantMarket, leaf: Leaf, cache: QuantScreenCache): Int8Array {
+  const key = leafKey(leaf);
+  const cached = cache.leaves.get(key);
+  if (cached) return cached;
+  const series = screenQuantSeries(market, leaf, cache);
+  const below = leaf.direction === 'below';
+  const threshold = 'threshold' in leaf ? Number(leaf.threshold) : 0;
+  const out = new Int8Array(series.value.length).fill(-1);
+  for (let i = 0; i < out.length; i++) {
+    const value = series.value[i];
+    const bound = series.bound ? series.bound[i] : threshold;
+    if (Number.isNaN(value) || Number.isNaN(bound)) continue;
+    out[i] = (below ? value < bound : value > bound) ? 1 : 0;
+  }
+  return remember(cache.leaves, key, out, SCREEN_LEAF_LIMIT);
+}
+
+/** Ranking-only signal per bar: 1 buy, 2 sell, 0 hold, -1 warm-up. */
+export function screenQuantSignals(market: QuantMarket, candidate: QuantCandidate, cache: QuantScreenCache): Int8Array {
+  bindScreenCache(cache, market);
+  const key = JSON.stringify(candidate.rules);
+  const cached = cache.signals.get(key);
   if (cached) return cached;
   const entry = candidate.rules.entry.conditions.map((leaf) => screenLeaf(market, leaf, cache));
   const exit = (candidate.rules.exit?.conditions ?? []).map((leaf) => screenLeaf(market, leaf, cache));
-  const out = new Int8Array(market.closes.length);
-  for (let i = 0; i < out.length; i++) {
-    let ready = true;
-    let entryPass = true;
-    let exitPass = exit.length > 0;
-    for (const leaf of entry) {
-      if (leaf[i] < 0) ready = false;
-      else if (leaf[i] === 0) entryPass = false;
-    }
-    for (const leaf of exit) {
-      if (leaf[i] < 0) ready = false;
-      else if (leaf[i] === 0) exitPass = false;
-    }
-    out[i] = !ready ? -1 : exitPass ? 2 : entryPass ? 1 : 0;
-  }
-  cache.set(key, out);
-  return out;
+  return remember(
+    cache.signals,
+    key,
+    combineSignals(candidate.rules, entry, exit, market.closes.length),
+    SCREEN_LEAF_LIMIT
+  );
 }
 
-interface ScreenCosts {
+/** Ranking-only costs as plain numbers; they never produce a displayed amount. */
+export interface QuantScreenCosts {
   fee: number;
   swap: number;
   slippage: number;
@@ -578,16 +771,73 @@ interface ScreenCosts {
   budget: number;
 }
 
+/** Ranking-only screen result: fractional return and drawdown, fills, and share of hours holding. */
+export interface QuantScreenResult {
+  ret: number;
+  trades: number;
+  mdd: number;
+  holding: number;
+}
+
+/**
+ * Optional drawing trace of a screen: the bars where buys and sells filled and the marked
+ * value per bar from `from`. It positions chart marks while an exact replay is pending.
+ */
+export interface QuantScreenTrace {
+  buys: number[];
+  sells: number[];
+  value: Float64Array;
+}
+
+/**
+ * Optional running state for chaining consecutive screens that each restart from the research
+ * capital: the compounded multiplier so far (1 at the start) and the chained peak and fall.
+ */
+export interface QuantScreenChain {
+  multiplier: number;
+  peak: number;
+  mdd: number;
+}
+
+/** Plain-number view of chain costs for Tier 1 ranking. */
+export function quantScreenCosts(costs: QuantCosts): QuantScreenCosts {
+  return {
+    fee: Number(costs.networkFeeXor),
+    swap: Number(costs.swapFeePercent) / 100,
+    slippage: Number(costs.slippagePercent) / 100,
+    capital: Number(QUANT_CAPITAL_XOR),
+    budget: Number(QUANT_FEE_BUDGET_XOR),
+  };
+}
+
+/** Ranking-only pool depths per bar, converted from exact reserves once per market. */
+const screenDepths = new WeakMap<QuantMarket, { xor: Float64Array; token: Float64Array }>();
+function depthsOf(market: QuantMarket): { xor: Float64Array; token: Float64Array } {
+  let depths = screenDepths.get(market);
+  if (!depths) {
+    const scale = 10 ** market.asset.decimals;
+    depths = {
+      xor: Float64Array.from(market.xorReserves, (value) => Number(value) / 1e18),
+      token: Float64Array.from(market.tokenReserves, (value) => Number(value) / scale),
+    };
+    screenDepths.set(market, depths);
+  }
+  return depths;
+}
+
 /** Ranking-only replay with the engine's fill semantics; returns approximate metrics. */
-function screen(
+export function screenQuantReplay(
   market: QuantMarket,
   signals: Int8Array,
   amount: number,
   from: number,
   to: number,
-  costs: ScreenCosts
-): { ret: number; trades: number; mdd: number } {
+  costs: QuantScreenCosts,
+  trace?: QuantScreenTrace,
+  chained?: QuantScreenChain
+): QuantScreenResult {
   const p = market.closes;
+  const depths = depthsOf(market);
   const keep = (1 - costs.swap) * (1 - costs.slippage);
   let xor = costs.capital;
   let tokens = 0;
@@ -597,32 +847,38 @@ function screen(
   let mdd = 0;
   let pending = 0;
   let decision = 0;
+  let held = 0;
   for (let i = from; i < to; i++) {
     if (pending && fees + costs.fee <= costs.budget + 1e-12) {
-      const x = Number(market.xorReserves[i]) / 1e18;
-      const t = Number(market.tokenReserves[i]) / 10 ** market.asset.decimals;
+      const x = depths.xor[i];
+      const t = depths.token[i];
       if (pending === 1 && xor - (costs.budget - fees) >= amount - 1e-12) {
         const net = amount * (1 - costs.swap);
         tokens += ((net * t) / (x + net)) * (1 - costs.slippage);
         xor -= amount + costs.fee;
         fees += costs.fee;
         trades++;
+        trace?.buys.push(i);
       } else if (pending === 2 && tokens > 0) {
         const lot = Math.min(amount / decision, tokens);
         xor += ((lot * x) / (t + lot)) * keep - costs.fee;
         tokens -= lot;
         fees += costs.fee;
         trades++;
+        trace?.sells.push(i);
       }
     }
     pending = 0;
     // Liquidation mark: thin pools cannot absorb an inventory at its spot value.
     let value = xor;
     if (tokens > 0) {
-      const x = Number(market.xorReserves[i]) / 1e18;
-      const t = Number(market.tokenReserves[i]) / 10 ** market.asset.decimals;
+      held++;
+      const x = depths.xor[i];
+      const t = depths.token[i];
       value += Math.max(0, ((tokens * x) / (t + tokens)) * keep - costs.fee);
     }
+    if (trace) trace.value[i - from] = value;
+    if (chained) track(chained, (chained.multiplier * value) / costs.capital);
     if (value > peak) peak = value;
     else if (peak > 0 && 1 - value / peak > mdd) mdd = 1 - value / peak;
     if (i < to - 1 && signals[i] > 0) {
@@ -631,11 +887,22 @@ function screen(
     }
   }
   if (tokens > 0 && to > 0) {
-    const x = Number(market.xorReserves[to - 1]) / 1e18;
-    const t = Number(market.tokenReserves[to - 1]) / 10 ** market.asset.decimals;
+    const x = depths.xor[to - 1];
+    const t = depths.token[to - 1];
     xor += ((tokens * x) / (t + tokens)) * keep - costs.fee;
   }
-  return { ret: xor / costs.capital - 1, trades, mdd };
+  if (chained) {
+    // The liquidated close of a period is part of the chained curve, as in the exact chain.
+    chained.multiplier *= xor / costs.capital;
+    track(chained, chained.multiplier);
+  }
+  return { ret: xor / costs.capital - 1, trades, mdd, holding: to > from ? held / (to - from) : 0 };
+}
+
+/** Update a chained peak and largest fall with one relative value. */
+function track(chained: QuantScreenChain, value: number): void {
+  if (value > chained.peak) chained.peak = value;
+  else if (chained.peak > 0 && 1 - value / chained.peak > chained.mdd) chained.mdd = 1 - value / chained.peak;
 }
 
 interface Selection {
@@ -653,8 +920,8 @@ function select(
   market: QuantMarket,
   candidates: QuantCandidate[],
   cutoff: number,
-  costs: ScreenCosts,
-  cache: LeafCache
+  costs: QuantScreenCosts,
+  cache: QuantScreenCache
 ): Selection {
   const quarter = Math.floor(cutoff / 4);
   let best: { candidate: QuantCandidate; score: number } | null = null;
@@ -662,16 +929,16 @@ function select(
   const robustIds = new Set<string>();
   const scores = new Map<string, number>();
   for (const candidate of candidates) {
-    const signals = screenSignals(market, candidate, cache);
+    const signals = screenQuantSignals(market, candidate, cache);
     const amount = Number(candidate.amount);
-    const full = screen(market, signals, amount, 0, cutoff, costs);
+    const full = screenQuantReplay(market, signals, amount, 0, cutoff, costs);
     backtests++;
     scores.set(candidate.id, full.ret);
     if (full.trades < QUANT_MIN_TRAIN_TRADES || full.ret <= 0) continue;
     let positive = 0;
     let worst = Infinity;
     for (let part = 0; part < 4; part++) {
-      const result = screen(market, signals, amount, part * quarter, (part + 1) * quarter, costs);
+      const result = screenQuantReplay(market, signals, amount, part * quarter, (part + 1) * quarter, costs);
       backtests++;
       if (result.ret > 0) positive++;
       worst = Math.min(worst, result.ret);
@@ -709,35 +976,208 @@ function exactCosts(costs: QuantCosts): ExactCosts {
   };
 }
 
-/** Exact leaf with the rule engine's integer comparisons; prefix sums keep windows cheap. */
-function exactLeaf(market: QuantMarket, prefix: bigint[], leaf: Leaf, i: number): boolean | null {
+/**
+ * Exact per-market memo: prefix sums, leaf pass arrays and combined signals. It lives as long
+ * as the market object and is bounded, so long interactive sessions cannot grow it without limit.
+ */
+interface ExactState {
+  prefix: bigint[];
+  leaves: Map<string, Int8Array>;
+  signals: Map<string, Int8Array>;
+}
+const EXACT_CACHE_LIMIT = 512;
+const exactMemo = new WeakMap<QuantMarket, ExactState>();
+
+function exactState(market: QuantMarket, prefix?: bigint[]): ExactState {
+  let state = exactMemo.get(market);
+  if (!state) {
+    state = { prefix: prefix ?? prefixSums(market), leaves: new Map(), signals: new Map() };
+    exactMemo.set(market, state);
+  }
+  return state;
+}
+
+/** Signed 36-decimal units of a canonical rule threshold. */
+function thresholdUnits(threshold: string): bigint {
+  const negative = threshold.startsWith('-');
+  const magnitude = units(negative ? threshold.slice(1) : threshold, 36);
+  return negative ? -magnitude : magnitude;
+}
+
+/** Index of the first sorted fraction not below `numerator / denominator`; denominators are positive. */
+function lowerBound(numerators: bigint[], denominators: bigint[], numerator: bigint, denominator: bigint): number {
+  let low = 0;
+  let high = numerators.length;
+  while (low < high) {
+    const middle = (low + high) >> 1;
+    if (numerators[middle] * denominator < numerator * denominators[middle]) low = middle + 1;
+    else high = middle;
+  }
+  return low;
+}
+
+/**
+ * Exact pass array for one leaf with the rule engine's integer comparisons: -1 not ready,
+ * 0 failed, 1 passed. Rolling windows keep exact bigint sums, so they never drift, and every
+ * comparison cross-multiplies positive denominators exactly as `evaluateStrategyRules` does.
+ */
+function exactLeafPasses(market: QuantMarket, leaf: Leaf, state: ExactState): Int8Array {
+  const key = leafKey(leaf);
+  const cached = state.leaves.get(key);
+  if (cached) return cached;
   const p = market.closeUnits;
+  const n = p.length;
+  const out = new Int8Array(n).fill(-1);
   const below = leaf.direction === 'below';
+  const window = leaf.window;
+  const size = BigInt(window);
+  const pass = (left: bigint, right: bigint) => ((below ? left < right : left > right) ? 1 : 0);
   if (leaf.kind === 'deviation') {
-    if (i < leaf.window - 1) return null;
-    const sum = prefix[i + 1] - prefix[i + 1 - leaf.window];
-    const threshold = units(leaf.threshold.replace('-', ''), 36) * (leaf.threshold.startsWith('-') ? -1n : 1n);
     // value = (current * window - sum) * 100 / sum, compared with threshold / SCALE.
-    const left = (p[i] * BigInt(leaf.window) - sum) * HUNDRED * SCALE;
-    const right = threshold * sum;
-    return below ? left < right : left > right;
-  }
-  if (leaf.kind === 'momentum') {
-    if (i < leaf.window) return null;
-    const previous = p[i - leaf.window];
-    const threshold = units(leaf.threshold.replace('-', ''), 36) * (leaf.threshold.startsWith('-') ? -1n : 1n);
-    const left = (p[i] - previous) * HUNDRED * SCALE;
-    const right = threshold * previous;
-    return below ? left < right : left > right;
-  }
-  if (leaf.kind === 'breakout') {
-    if (i < leaf.window) return null;
-    let extreme = p[i - leaf.window];
-    for (let j = i - leaf.window + 1; j < i; j++)
-      extreme = below ? (p[j] < extreme ? p[j] : extreme) : p[j] > extreme ? p[j] : extreme;
-    return below ? p[i] < extreme : p[i] > extreme;
-  }
-  throw new Error('bots.errors.strategy');
+    const threshold = thresholdUnits(leaf.threshold);
+    for (let i = window - 1; i < n; i++) {
+      const sum = state.prefix[i + 1] - state.prefix[i + 1 - window];
+      out[i] = pass((p[i] * size - sum) * HUNDRED * SCALE, threshold * sum);
+    }
+  } else if (leaf.kind === 'trend') {
+    // current versus the window mean: current * window against the window sum.
+    for (let i = window - 1; i < n; i++) out[i] = pass(p[i] * size, state.prefix[i + 1] - state.prefix[i + 1 - window]);
+  } else if (leaf.kind === 'momentum') {
+    const threshold = thresholdUnits(leaf.threshold);
+    for (let i = window; i < n; i++) {
+      const previous = p[i - window];
+      out[i] = pass((p[i] - previous) * HUNDRED * SCALE, threshold * previous);
+    }
+  } else if (leaf.kind === 'breakout') {
+    for (let i = window; i < n; i++) {
+      let extreme = p[i - window];
+      for (let j = i - window + 1; j < i; j++)
+        extreme = below ? (p[j] < extreme ? p[j] : extreme) : p[j] > extreme ? p[j] : extreme;
+      out[i] = pass(p[i], extreme);
+    }
+  } else if (leaf.kind === 'rsi' || leaf.kind === 'efficiency') {
+    // Gains and losses over the `window` changes ending at bar i; a flat path is 50 RSI or 0 efficiency.
+    const threshold = thresholdUnits(leaf.threshold);
+    let gains = 0n;
+    let losses = 0n;
+    for (let i = 1; i < n; i++) {
+      const change = p[i] - p[i - 1];
+      if (change > 0n) gains += change;
+      else losses -= change;
+      if (i > window) {
+        const old = p[i - window] - p[i - window - 1];
+        if (old > 0n) gains -= old;
+        else losses += old;
+      }
+      if (i < window) continue;
+      const distance = gains + losses;
+      if (distance === 0n) out[i] = pass((leaf.kind === 'rsi' ? 50n : 0n) * SCALE, threshold);
+      else {
+        const displacement = p[i] - p[i - window];
+        const numerator = leaf.kind === 'rsi' ? gains : displacement < 0n ? -displacement : displacement;
+        out[i] = pass(numerator * HUNDRED * SCALE, threshold * distance);
+      }
+    }
+  } else if (leaf.kind === 'drawdown') {
+    // A monotonic deque keeps the window peak at its head.
+    const threshold = thresholdUnits(leaf.threshold);
+    const deque = new Int32Array(n);
+    let head = 0;
+    let tail = 0;
+    for (let i = 0; i < n; i++) {
+      while (tail > head && p[deque[tail - 1]] <= p[i]) tail--;
+      deque[tail++] = i;
+      if (deque[head] <= i - window) head++;
+      if (i < window - 1) continue;
+      const peak = p[deque[head]];
+      out[i] = pass((p[i] - peak) * HUNDRED * SCALE, threshold * peak);
+    }
+  } else if (leaf.kind === 'return-quantile') {
+    // The previous `window` hourly returns stay sorted as exact fractions (return * 100 over the prior close).
+    const scaled = (window - 1) * leaf.percentile;
+    const lower = Math.floor(scaled / 100);
+    const weight = BigInt(scaled % 100);
+    const numerators: bigint[] = [];
+    const denominators: bigint[] = [];
+    const insert = (numerator: bigint, denominator: bigint) => {
+      const at = lowerBound(numerators, denominators, numerator, denominator);
+      numerators.splice(at, 0, numerator);
+      denominators.splice(at, 0, denominator);
+    };
+    const remove = (numerator: bigint, denominator: bigint) => {
+      const at = lowerBound(numerators, denominators, numerator, denominator);
+      numerators.splice(at, 1);
+      denominators.splice(at, 1);
+    };
+    for (let i = 2; i < n; i++) {
+      insert((p[i - 1] - p[i - 2]) * HUNDRED, p[i - 2]);
+      const old = i - 1 - window;
+      if (old >= 1) remove((p[old] - p[old - 1]) * HUNDRED, p[old - 1]);
+      if (i < window + 1) continue;
+      const numerator = (p[i] - p[i - 1]) * HUNDRED;
+      const denominator = p[i - 1];
+      let left: bigint;
+      let right: bigint;
+      if (weight === 0n) {
+        left = numerator * denominators[lower];
+        right = numerators[lower] * denominator;
+      } else {
+        // value * 100 against (100 - weight) * lower + weight * upper, scaled by every denominator.
+        left = numerator * HUNDRED * denominators[lower] * denominators[lower + 1];
+        right =
+          (HUNDRED - weight) * numerators[lower] * denominator * denominators[lower + 1] +
+          weight * numerators[lower + 1] * denominator * denominators[lower];
+      }
+      out[i] = pass(left, right);
+    }
+  } else if (leaf.kind === 'restoring') {
+    // OLS slope of y = p[k + 1] - p[k] on x = p[k] for k in [i - window - 1, i - 2]; value = -100 * slope.
+    const threshold = thresholdUnits(leaf.threshold);
+    let sumX = 0n;
+    let sumY = 0n;
+    let sumXX = 0n;
+    let sumXY = 0n;
+    for (let i = 2; i < n; i++) {
+      const x = p[i - 2];
+      const y = p[i - 1] - x;
+      sumX += x;
+      sumY += y;
+      sumXX += x * x;
+      sumXY += x * y;
+      const old = i - 2 - window;
+      if (old >= 0) {
+        const ox = p[old];
+        const oy = p[old + 1] - ox;
+        sumX -= ox;
+        sumY -= oy;
+        sumXX -= ox * ox;
+        sumXY -= ox * oy;
+      }
+      if (i < window + 1) continue;
+      const variance = size * sumXX - sumX * sumX;
+      // A flat window has no variance; the engine reports it as not ready.
+      if (variance === 0n) continue;
+      const covariance = size * sumXY - sumX * sumY;
+      out[i] = pass(-HUNDRED * covariance * SCALE, threshold * variance);
+    }
+  } else throw new Error('bots.errors.strategy');
+  return remember(state.leaves, key, out, EXACT_CACHE_LIMIT);
+}
+
+/** Exact engine signal for every bar: 1 buy, 2 sell (exit wins), 0 hold, -1 not ready. */
+function exactSignals(market: QuantMarket, candidate: QuantCandidate, prefix?: bigint[]): Int8Array {
+  const state = exactState(market, prefix);
+  const key = JSON.stringify(candidate.rules);
+  const cached = state.signals.get(key);
+  if (cached) return cached;
+  const entry = candidate.rules.entry.conditions.map((leaf) => exactLeafPasses(market, leaf, state));
+  const exit = (candidate.rules.exit?.conditions ?? []).map((leaf) => exactLeafPasses(market, leaf, state));
+  return remember(
+    state.signals,
+    key,
+    combineSignals(candidate.rules, entry, exit, market.closeUnits.length),
+    EXACT_CACHE_LIMIT
+  );
 }
 
 /**
@@ -750,13 +1190,8 @@ export function quantSignalAt(
   candidate: QuantCandidate,
   i: number
 ): 'buy' | 'sell' | null {
-  const exitLeaves = candidate.rules.exit?.conditions ?? [];
-  const entry = candidate.rules.entry.conditions.map((leaf) => exactLeaf(market, prefix, leaf, i));
-  const exit = exitLeaves.map((leaf) => exactLeaf(market, prefix, leaf, i));
-  if ([...entry, ...exit].some((value) => value === null)) return null;
-  if (exit.length && exit.every(Boolean)) return 'sell';
-  if (entry.every(Boolean)) return 'buy';
-  return null;
+  const signal = exactSignals(market, candidate, prefix)[i];
+  return signal === 2 ? 'sell' : signal === 1 ? 'buy' : null;
 }
 
 /** Floor `value * (1 - rate)` for an exact percentage rate. */
@@ -791,6 +1226,7 @@ export function replayQuantCandidate(
   )
     throw new Error('bots.errors.history');
   const exact = exactCosts(costs);
+  const signals = exactSignals(market, candidate, prefix);
   const xorDecimals = 18;
   const capital = units(QUANT_CAPITAL_XOR, xorDecimals);
   const budget = units(QUANT_FEE_BUDGET_XOR, xorDecimals);
@@ -869,10 +1305,8 @@ export function replayQuantCandidate(
     else if ((peak - value) * worst.denominator > worst.numerator * peak)
       worst = { numerator: peak - value, denominator: peak };
     if ((i - from) % stride === 0) equity.push({ timestamp: market.timestamps[i], value: natural(value, xorDecimals) });
-    if (i < to - 1) {
-      const side = quantSignalAt(market, prefix, candidate, i);
-      if (side) pending = { side, price: market.closeUnits[i] };
-    }
+    if (i < to - 1 && signals[i] > 0)
+      pending = { side: signals[i] === 2 ? 'sell' : 'buy', price: market.closeUnits[i] };
   }
   // Value remaining inventory at what the final pool state would actually pay.
   const final = xor + liquidation(tokens, market.xorReserves[to - 1], market.tokenReserves[to - 1], exact);
@@ -901,7 +1335,7 @@ export function prefixSums(market: QuantMarket): bigint[] {
  * ---------------------------------------------------------------------------------------------- */
 
 /** Exact price change between two bars as a percentage string. */
-function priceChange(market: QuantMarket, from: number, to: number): string {
+export function quantPriceChange(market: QuantMarket, from: number, to: number): string {
   const start = market.closeUnits[from];
   return percentOf(market.closeUnits[to - 1] - start, start);
 }
@@ -945,6 +1379,45 @@ function chain(folds: { equity: QuantEquityPoint[]; returnPercent: string }[], c
   };
 }
 
+/**
+ * Chain exact replays of consecutive periods, each restarting from the research capital, into
+ * one compounded return, drawdown and equity curve, exactly as the walk-forward folds are chained.
+ */
+export function chainQuantReplays(replays: Pick<QuantReplay, 'equity' | 'returnPercent'>[]) {
+  return chain(replays, units(QUANT_CAPITAL_XOR, 18));
+}
+
+const round2 = (value: number) => Math.round(value * 10_000) / 100;
+
+/** Fixed-parameter Tier 1 screens of both halves for the strategy map; drawing positions only. */
+function atlasEntry(
+  market: QuantMarket,
+  candidate: QuantCandidate,
+  split: number,
+  costs: QuantScreenCosts,
+  cache: QuantScreenCache,
+  robustIds: Set<string>,
+  selectedId?: string
+): QuantAtlasEntry {
+  const signals = screenQuantSignals(market, candidate, cache);
+  const amount = Number(candidate.amount);
+  const first = screenQuantReplay(market, signals, amount, 0, split, costs);
+  const second = screenQuantReplay(market, signals, amount, split, market.closes.length, costs);
+  const hours = market.closes.length;
+  return {
+    id: candidate.id,
+    family: candidate.family,
+    amount: candidate.amount,
+    first: round2(first.ret),
+    second: round2(second.ret),
+    drop: round2(Math.max(first.mdd, second.mdd)),
+    holding: round2((first.holding * split + second.holding * (hours - split)) / hours),
+    trades: first.trades + second.trades,
+    robust: robustIds.has(candidate.id),
+    selected: candidate.id === selectedId,
+  };
+}
+
 const cancelled = (signal?: AbortSignal) => {
   if (signal?.aborted) throw new Error('bots.errors.stale');
 };
@@ -961,13 +1434,7 @@ export async function runQuantLoop(
 ): Promise<QuantLoopResult> {
   exactCosts(costs);
   const candidates = generateQuantCandidates();
-  const screenCosts: ScreenCosts = {
-    fee: Number(costs.networkFeeXor),
-    swap: Number(costs.swapFeePercent) / 100,
-    slippage: Number(costs.slippagePercent) / 100,
-    capital: Number(QUANT_CAPITAL_XOR),
-    budget: Number(QUANT_FEE_BUDGET_XOR),
-  };
+  const screenCosts = quantScreenCosts(costs);
   const capital = units(QUANT_CAPITAL_XOR, 18);
   const hours = archive.hours;
   const initial = Math.floor((hours * QUANT_TRAIN_PERCENT) / 100);
@@ -981,7 +1448,7 @@ export async function runQuantLoop(
     deployable: 0,
   };
   const markets: QuantMarketResult[] = [];
-  const mesh: QuantMeshNode[] = [];
+  const atlas: QuantAtlasMarket[] = [];
   const familyTotals = new Map(QUANT_FAMILIES.map((family) => [family, { tested: 0, robust: 0 }]));
   const total = archive.markets.reduce(
     (sum, market) => sum + (market.medianXorDepth < QUANT_MIN_MEDIAN_XOR_DEPTH ? 1 : QUANT_FOLDS + 1),
@@ -1019,7 +1486,7 @@ export async function runQuantLoop(
       await options.yieldControl?.();
       continue;
     }
-    const cache: LeafCache = new Map();
+    const cache = createQuantScreenCache();
     const prefix = prefixSums(market);
     const folds: QuantFold[] = [];
     const foldReplays: QuantReplay[] = [];
@@ -1055,7 +1522,7 @@ export async function runQuantLoop(
         robust: chosen.robust,
         returnPercent: replay.returnPercent,
         trades: replay.trades,
-        priceChangePercent: priceChange(market, start, end),
+        priceChangePercent: quantPriceChange(market, start, end),
       });
       await options.yieldControl?.();
     }
@@ -1076,7 +1543,7 @@ export async function runQuantLoop(
       returnPercent: chained.returnPercent,
       drawdownPercent: chained.drawdownPercent,
       trades: oosTrades,
-      priceChangePercent: priceChange(market, initial, hours),
+      priceChangePercent: quantPriceChange(market, initial, hours),
       // Archive hours are contiguous, so a timestamp maps directly to its close.
       equity: chained.equity.map((point) => ({
         ...point,
@@ -1104,29 +1571,18 @@ export async function runQuantLoop(
       final && profitable && oosTrades >= QUANT_MIN_OOS_TRADES ? 'deploy' : 'watch';
     if (status === 'deploy') counts.deployable++;
     markets.push({ asset: market.asset, status, medianXorDepth: market.medianXorDepth, folds, walkForward, final });
-    // Visual sample per family: its strongest candidates plus evenly spaced rejections.
-    for (const family of QUANT_FAMILIES) {
-      const members = candidates
-        .filter((candidate) => candidate.family === family)
-        .map((candidate) => ({ candidate, score: latest.scores.get(candidate.id) ?? -Infinity }))
-        .sort((a, b) => b.score - a.score);
-      const step = Math.max(1, Math.floor(members.length / 5));
-      const sample = members.filter((_item, index) => index < 4 || index % step === 0).slice(0, 9);
-      for (const candidate of members) {
-        const tally = familyTotals.get(family)!;
-        tally.tested++;
-        if (latest.robustIds.has(candidate.candidate.id)) tally.robust++;
-      }
-      sample.forEach((item, index) =>
-        mesh.push({
-          id: `${market.asset.symbol}:${item.candidate.id}`,
-          market: market.asset.symbol,
-          family,
-          weight: 1 - index / Math.max(1, sample.length - 1),
-          robust: latest.robustIds.has(item.candidate.id),
-          selected: item.candidate.id === latest.candidate?.id,
-        })
-      );
+    atlas.push({
+      market: market.asset.symbol,
+      splitAt: market.timestamps[initial],
+      entries: candidates.map((candidate) =>
+        atlasEntry(market, candidate, initial, screenCosts, cache, latest.robustIds, latest.candidate?.id)
+      ),
+    });
+    // Exact per-family totals at the final selection.
+    for (const candidate of candidates) {
+      const tally = familyTotals.get(candidate.family)!;
+      tally.tested++;
+      if (latest.robustIds.has(candidate.id)) tally.robust++;
     }
     await options.yieldControl?.();
   }
@@ -1145,7 +1601,7 @@ export async function runQuantLoop(
     costs: { ...costs },
     counts,
     markets,
-    mesh,
     families: QUANT_FAMILIES.map((family) => ({ family, ...familyTotals.get(family)! })),
+    atlas,
   };
 }

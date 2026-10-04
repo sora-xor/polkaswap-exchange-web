@@ -64,7 +64,10 @@ export function quantStrategy(candidate: QuantCandidate): StrategyConfig {
 }
 
 /** Research settings matching the loop: XOR capital including its protected fee reserve. */
-export function quantResearchSettings(market: QuantMarketResult, fees?: ResearchFeeSnapshot): ResearchSettings {
+export function quantResearchSettings(
+  market: Pick<QuantMarketResult, 'asset'>,
+  fees?: ResearchFeeSnapshot
+): ResearchSettings {
   return {
     ...PLAYGROUND_DEFAULT_SETTINGS,
     preset: 'dca',
@@ -95,10 +98,15 @@ export function quantResearchSettings(market: QuantMarketResult, fees?: Research
  * researched trade in these pools; a looser one would admit trades the study never made.
  */
 export function quantImpactCeiling(market: QuantMarketResult): string {
-  const observed = [
+  return quantImpactCeilingFrom([
     market.final?.train.maxImpactPercent ?? '0',
     ...(market.walkForward?.fills ?? []).map((fill) => fill.impactPercent),
-  ].reduce((largest, value) => Math.max(largest, Math.ceil(Number(value))), 0);
+  ]);
+}
+
+/** The impact ceiling for a set of researched impacts: largest, rounded up, plus one point, within 2–20%. */
+export function quantImpactCeilingFrom(impacts: readonly string[]): string {
+  const observed = impacts.reduce((largest, value) => Math.max(largest, Math.ceil(Number(value))), 0);
   return String(Math.min(MAX_IMPACT_CEILING, Math.max(2, observed + 1)));
 }
 

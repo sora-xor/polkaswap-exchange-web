@@ -55,6 +55,14 @@ const documentTitleMocks = vi.hoisted(() => ({
   updateDocumentTitle: vi.fn(() => Promise.resolve()),
 }));
 
+const chromeMocks = vi.hoisted(() => ({
+  preloadAppShellChrome: vi.fn(() => Promise.resolve()),
+}));
+
+const fontMocks = vi.hoisted(() => ({
+  warmFirstPaintFonts: vi.fn(),
+}));
+
 const routerMocks = vi.hoisted(() => {
   const currentRoute = { value: { name: 'Swap' as string | undefined } };
 
@@ -133,6 +141,14 @@ vi.mock('@/utils/documentTitle', () => ({
   updateDocumentTitle: documentTitleMocks.updateDocumentTitle,
 }));
 
+vi.mock('@/app/shell/chrome', () => ({
+  preloadAppShellChrome: chromeMocks.preloadAppShellChrome,
+}));
+
+vi.mock('@/utils/fonts', () => ({
+  warmFirstPaintFonts: fontMocks.warmFirstPaintFonts,
+}));
+
 vi.mock('@/shared/ui/async', () => ({
   createAsyncComponent: shellMocks.createAsyncComponent,
   installViteCssPreloadErrorHandler: shellMocks.installViteCssPreloadErrorHandler,
@@ -194,8 +210,62 @@ describe('app bootstrap', () => {
     expect(appMocks.app.use).toHaveBeenCalledWith(pluginMocks.i18n);
     expect(pluginMocks.installRuntimePlugins).toHaveBeenCalledWith(appMocks.app, { pinia: pluginMocks.pinia });
     expect(pluginMocks.setI18nLocale).toHaveBeenCalledWith('en');
+    expect(chromeMocks.preloadAppShellChrome).toHaveBeenCalledTimes(1);
     expect(agentTradingMocks.installPolkaswapAgentApi).toHaveBeenCalledWith({ pinia: pluginMocks.pinia });
     expect(agentTradingMocks.registerPolkaswapWebMcpTools).toHaveBeenCalledWith(agentTradingMocks.agent);
+  });
+
+  it('waits for the shell chrome before mounting so the first paint has the final layout', async () => {
+    let resolveChrome!: () => void;
+    chromeMocks.preloadAppShellChrome.mockReturnValueOnce(
+      new Promise<void>((resolve) => {
+        resolveChrome = resolve;
+      })
+    );
+
+    const mounted = mountApp();
+    await vi.waitFor(() => expect(chromeMocks.preloadAppShellChrome).toHaveBeenCalledTimes(1));
+    await Promise.resolve();
+
+    expect(appMocks.app.mount).not.toHaveBeenCalled();
+
+    resolveChrome();
+    await mounted;
+
+    expect(appMocks.app.mount).toHaveBeenCalledWith('#app');
+  });
+
+  it('requests the optional agent API while the runtime loads but installs it only after', async () => {
+    // Fresh module state: bootstrap memoizes its lazy imports.
+    vi.resetModules();
+    const { prepareAppRuntime: prepareFreshAppRuntime } = await import('@/app/bootstrap');
+    let resolvePlugins!: () => void;
+    pluginMocks.installRuntimePlugins.mockReturnValueOnce(
+      new Promise<void>((resolve) => {
+        resolvePlugins = resolve;
+      })
+    );
+
+    const prepared = prepareFreshAppRuntime(appMocks.app as any);
+    await vi.waitFor(() => expect(pluginMocks.installRuntimePlugins).toHaveBeenCalledTimes(1));
+
+    const requestedModules = shellMocks.loadAsyncImportWithRetry.mock.calls.map(([loader]) => String(loader));
+    expect(requestedModules.some((source) => source.includes('agent-trading'))).toBe(true);
+    expect(agentTradingMocks.installPolkaswapAgentApi).not.toHaveBeenCalled();
+
+    resolvePlugins();
+    await prepared;
+
+    expect(agentTradingMocks.installPolkaswapAgentApi).toHaveBeenCalledWith({ pinia: pluginMocks.pinia });
+  });
+
+  it('warms the first-paint fonts when the app mounts', async () => {
+    await mountApp();
+
+    expect(fontMocks.warmFirstPaintFonts).toHaveBeenCalledTimes(1);
+    expect(fontMocks.warmFirstPaintFonts.mock.invocationCallOrder[0]).toBeLessThan(
+      appMocks.app.mount.mock.invocationCallOrder[0]
+    );
   });
 
   it('does not block the application runtime on an optional pending WebMCP registrar', async () => {
@@ -292,6 +362,7 @@ describe('app bootstrap', () => {
     expect(window.__PS_BUILD_VARIANT__).toBe(telemetryMocks.APP_BUILD_VARIANT);
     expect(window.__PS_IPFS_CHECK__).toBe(true);
     expect(appMocks.createApp).not.toHaveBeenCalled();
+    expect(fontMocks.warmFirstPaintFonts).not.toHaveBeenCalled();
     expect(warnSpy).toHaveBeenCalledWith('[OfflineShell] active');
   });
 

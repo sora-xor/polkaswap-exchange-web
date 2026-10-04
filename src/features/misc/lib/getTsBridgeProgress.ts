@@ -5,7 +5,7 @@ import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types
 import { areBridgeExternalAccountsEqual } from '@/utils/bridge/common/account';
 import type { GetTsPurpose } from './getTsFlow';
 import { getTonswapBridgeFundingPurpose } from './tonswapBridgeLiquidity';
-import { keccak256, toUtf8Bytes } from 'ethers';
+import { getTsContextHash } from './getTsContextHash';
 import {
   isGetTsBridgeDraftId,
   isGetTsTransactionReference,
@@ -59,19 +59,17 @@ export function createGetTsBridgeDraft(row: EthHistory, purpose: GetTsPurpose): 
   return {
     id: row.id,
     amount,
-    contextHash: keccak256(
-      toUtf8Bytes(
-        JSON.stringify([
-          purpose,
-          row.id,
-          row.type,
-          row.externalNetwork,
-          row.assetAddress,
-          row.from,
-          row.to.toLowerCase(),
-          amount,
-        ])
-      )
+    contextHash: getTsContextHash(
+      JSON.stringify([
+        purpose,
+        row.id,
+        row.type,
+        row.externalNetwork,
+        row.assetAddress,
+        row.from,
+        row.to.toLowerCase(),
+        amount,
+      ])
     ),
   };
 }

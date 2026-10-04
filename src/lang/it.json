@@ -271,6 +271,7 @@
                 "noSmallerExactSample": "No smaller size with a fresh eligible quote",
                 "opening": "Alla prima operazione possibile, l’allocazione iniziale perde almeno il {loss}% del valore in {symbol}, superando il tuo limite del {limit}%, anche senza commissioni.",
                 "openingDates": "{opened} → {firstTrade} {zone}",
+                "previousCheckThrough": "Controllo precedente · dati fino a {time}",
                 "quoteUnavailable": "Fresh quote unavailable",
                 "screenedDraft": "Draft #{number} skipped before testing",
                 "screeningCount": "{drafted} drafted · {tested} tested",
@@ -1192,6 +1193,15 @@
             "openai": "OpenAI"
         },
         "quant": {
+            "atlas": {
+                "caption": "Ogni linea è una strategia testata, dalla sua idea ai risultati in ciascuna metà. Le linee rosa hanno guadagnato nella seconda metà e quelle blu hanno perso. Trascina lungo un asse per restringere la scelta.",
+                "edit": "Modifica questa strategia",
+                "help": "Trascina lungo un asse per filtrare. Fai clic su una linea per vederne le regole. Premi Esc per cancellare.",
+                "passed": "Ha superato tutti i controlli",
+                "pick": "Fai clic su una linea per vederne le regole e modificarla.",
+                "rejected": "Non ha superato tutti i controlli",
+                "used": "Usata dal bot"
+            },
             "banner": {
                 "detail": "Il prezzo è a {value} rispetto alla media a {window} ore, oltre la soglia di acquisto di {threshold}: un bot attivo comprerebbe ora.",
                 "title": "{symbol} è nella zona di acquisto"
@@ -1251,7 +1261,6 @@
                 "watch": "Nessun bot"
             },
             "mesh": {
-                "caption": "Ogni punto è una strategia testata. I punti luminosi hanno superato tutti i controlli; quelli pulsanti sono le strategie usate dai bot.",
                 "summary": "Promosse: {robust} · scartate: {killed}",
                 "title": "Strategie testate"
             },
@@ -1315,6 +1324,161 @@
             "title": "Bot pronti all’uso",
             "trades": "Operazioni",
             "watchNote": "Nessuna regola è stata redditizia nei test, quindi per questo mercato non c’è ancora un bot."
+        },
+        "studio": {
+            "botName": "{idea} · {symbol}",
+            "calculating": "Calcolo in corso…",
+            "chart": {
+                "buys": "Acquisti",
+                "caption": "Trascina la linea rosa per cambiare quando il bot compra e quella viola per cambiare quando vende. Premi Riproduci per vederlo operare.",
+                "captionNoLines": "Questa idea non ha linee da trascinare; cambia le sue impostazioni accanto al grafico 3D. Premi Riproduci per vedere il bot operare.",
+                "equity": "Valore del bot rispetto a tenere",
+                "first": "Prima metà: metti a punto qui",
+                "indicators": {
+                    "deviation": "Prezzo vs media {window} h",
+                    "drawdown": "Prezzo vs massimo {window} h",
+                    "momentum": "Variazione del prezzo su {window} h",
+                    "rsi": "Quota di rialzi su {window} h"
+                },
+                "price": "Prezzo di {symbol} in XOR",
+                "replay": "Riproduci",
+                "second": "Seconda metà: verifica qui",
+                "sells": "Vendite",
+                "stop": "Ferma",
+                "summary": "Acquisti: {buys}, vendite: {sells} nelle due metà.",
+                "title": "Prezzo e operazioni"
+            },
+            "fairness": "La prima metà serve a mettere a punto, la seconda a verificare. Se continui a cambiare le impostazioni finché la seconda metà non sembra buona, la verifica non è più equa. I risultati passati non garantiscono rendimenti futuri.",
+            "idea": "Idea strategica",
+            "intro": "Scegli un mercato e un’idea, poi metti a punto le sue regole sui dati storici dei pool SORA. Tutte le viste mostrano la stessa scelta: fai clic su una colonna del grafico 3D, trascina le linee sul grafico dei prezzi o filtra le linee nell’ultimo grafico.",
+            "landscape": {
+                "caption": "Ogni colonna è una combinazione delle due impostazioni principali. L’altezza mostra la prima metà, il colore la seconda. Le colonne alte che diventano blu hanno funzionato solo sulle ore usate per metterle a punto.",
+                "color": "Colore: seconda metà",
+                "describe": "{x}, {y}. Premi Invio per usare queste impostazioni.",
+                "height": "Altezza: prima metà",
+                "help": "Trascina per ruotare la vista. Fai clic su una colonna, o usa i tasti freccia e Invio, per usarne le impostazioni.",
+                "pick": "Fai clic per usare queste impostazioni",
+                "title": "Risultati per impostazione"
+            },
+            "loading": "Caricamento dei dati storici dei pool…",
+            "market": "Mercato",
+            "newIdea": "Nuova",
+            "openLab": "Apri nel Laboratorio di strategie",
+            "outcomes": {
+                "first": "Prima metà",
+                "holding": "Tempo in posizione",
+                "idea": "Idea strategica",
+                "maxDrop": "Calo massimo",
+                "second": "Seconda metà",
+                "trades": "Operazioni"
+            },
+            "parallel": {
+                "caption": "Ogni linea è una combinazione di impostazioni, dalle impostazioni a sinistra ai risultati a destra. Trascina lungo un asse qualsiasi per tenere solo le linee in quell’intervallo.",
+                "clear": "Cancella filtri",
+                "count": "{shown} di {total} visibili",
+                "help": "Trascina lungo un asse per filtrare. Fai clic su una linea per usarne le impostazioni. Premi Esc per cancellare.",
+                "pick": "Fai clic per usare queste impostazioni",
+                "title": "Tutte le varianti di questa idea"
+            },
+            "params": {
+                "amount": "Importo ordine",
+                "average": "Media per vendere",
+                "buy": "Acquisto sotto la media",
+                "choppy": "Quota in una direzione",
+                "choppyWindow": "Oscillazione su",
+                "drop": "Entità del calo",
+                "exit": "Vendita sotto la media",
+                "fall": "Sotto il massimo",
+                "guard": "Calo settimanale massimo",
+                "highWindow": "Nuovo massimo su",
+                "hours": "Calo in",
+                "jump": "Entità del balzo",
+                "jumpHours": "Balzo in",
+                "lead": "Acquisto sopra la media",
+                "level": "Quota di rialzi",
+                "lookback": "Confronto su",
+                "lowWindow": "Nuovo minimo su",
+                "peakWindow": "Massimo su",
+                "percentile": "Ore più rare",
+                "pull": "Forza del ritorno",
+                "pullWindow": "Ritorno misurato su",
+                "rsiWindow": "Movimenti su",
+                "sell": "Vendita sopra la media",
+                "window": "Media su"
+            },
+            "recipes": {
+                "breakout": {
+                    "idea": "Compra quando il prezzo segna un nuovo massimo e vende quando segna un nuovo minimo.",
+                    "name": "Nuovo massimo"
+                },
+                "dip": {
+                    "idea": "Compra quando il prezzo scende ben sotto la sua media recente e vende quando risale. I bot pronti all’uso seguono questa idea.",
+                    "name": "Acquista al ribasso"
+                },
+                "drop": {
+                    "idea": "Compra subito dopo un forte calo in poche ore e vende quando il prezzo torna vicino alla sua media.",
+                    "name": "Calo improvviso"
+                },
+                "elastic": {
+                    "idea": "Compra i ribassi solo quando il prezzo, di recente, è tornato verso la sua media dopo ogni movimento.",
+                    "name": "Mercato che rimbalza"
+                },
+                "oversold": {
+                    "idea": "Compra quando quasi ogni movimento recente del prezzo è stato al ribasso, poi vende quando il prezzo torna sopra la sua media.",
+                    "name": "Rimbalzo da ipervenduto"
+                },
+                "peak": {
+                    "idea": "Compra quando il prezzo è molto sotto il suo massimo recente e vende quando risale fino alla media.",
+                    "name": "Molto sotto il massimo"
+                },
+                "range": {
+                    "idea": "Compra i ribassi solo mentre il prezzo va avanti e indietro invece che in una sola direzione.",
+                    "name": "Ribasso in mercato laterale"
+                },
+                "rare-drop": {
+                    "idea": "Compra solo quando il calo di quest’ora è tra i più forti delle ultime ore e il prezzo è ben sotto la sua media.",
+                    "name": "Calo raro"
+                },
+                "rebound": {
+                    "idea": "Compra al ribasso, poi vende quando il prezzo risale o appena fa un balzo veloce.",
+                    "name": "Rimbalzo rapido"
+                },
+                "steady-dip": {
+                    "idea": "Come «Acquista al ribasso», ma salta i ribassi se il prezzo è sceso molto nell’ultima settimana.",
+                    "name": "Ribasso in una settimana calma"
+                },
+                "trend": {
+                    "idea": "Compra quando il prezzo sale sopra la sua media e vende quando torna sotto.",
+                    "name": "Segui la tendenza"
+                }
+            },
+            "result": {
+                "first": "Prima metà",
+                "second": "Seconda metà",
+                "title": "La tua strategia"
+            },
+            "rule": {
+                "drawdownBelow": "Prezzo vs massimo {window} h inferiore a {value}%",
+                "efficiencyBelow": "Meno del {value}% dei movimenti su {window} h è andato in una direzione",
+                "quantileBelow": "La variazione di quest’ora è nel {percentile}% più basso delle ultime {window} h",
+                "restoringAbove": "Il ritorno verso la media {window} h è più forte di {value}",
+                "rsiBelow": "I rialzi sono meno del {value}% dei movimenti su {window} h",
+                "sellAny": "Vendi quando vale una di queste condizioni"
+            },
+            "steps": {
+                "check": "Verifica la seconda metà",
+                "paper": "Provala in simulazione",
+                "pick": "Scegli un mercato e un’idea",
+                "tune": "Mettila a punto sulla prima metà"
+            },
+            "title": "Crea il tuo bot",
+            "units": {
+                "hours": "{value} h",
+                "level": "{value}",
+                "percent": "{value}%",
+                "percentile": "{value}%",
+                "xor": "{value} XOR"
+            }
         },
         "receiveToken": "Token negoziato",
         "research": {
@@ -3697,11 +3861,46 @@
             "pendingInternal": "{Sora} transazione in attesa...",
             "signAndClaim": "Firma e reclama"
         },
+        "analytics": {
+            "connectToSee": "Connetti il tuo account per vederlo.",
+            "feeShare": "La fee è pari a {percent} di questa richiesta.",
+            "market": {
+                "day": "24 h",
+                "period": "Ultimi 30 giorni",
+                "title": "Prezzo",
+                "unavailable": "I dati sul prezzo non sono disponibili al momento.",
+                "week": "7 gg"
+            },
+            "showTable": "Tabella",
+            "skipped": "Non incluso in questa richiesta",
+            "sources": {
+                "crowdloan": "Crowdloan",
+                "empty": "Ancora nessuna ricompensa da mostrare.",
+                "external": "Account {Ethereum}",
+                "liquidity": "Fee di liquidità",
+                "strategic": "Strategiche",
+                "title": "Per fonte",
+                "unpriced": "I token senza prezzo compaiono nell'elenco ma non nella barra."
+            },
+            "table": {
+                "share": "Quota",
+                "source": "Fonte",
+                "value": "Valore"
+            },
+            "vesting": {
+                "empty": "Nessuna ricompensa in vesting.",
+                "fullyUnlocked": "Tutto è sbloccato",
+                "title": "Vesting"
+            }
+        },
         "andText": "e",
         "claimableAmountDoneVesting": "Importo che puoi ottenere (maturazione effettuata)",
         "claiming": {
             "pending": "Reclamante.",
             "success": "Rivendicato con successo"
+        },
+        "claimSection": {
+            "title": "Cosa puoi richiedere"
         },
         "events": {
             "BuyOnBondingCurve": "acquisto dalla TBC",
@@ -3718,11 +3917,19 @@
             "external": "Ricompense per l'account {Ethereum} connesso",
             "strategic": "Ricompense strategiche"
         },
+        "hero": {
+            "connectTitle": "Guarda e richiedi le tue ricompense"
+        },
         "hint": {
             "connectAccounts": "Per richiedere le tue ricompense in PSWAP e VAL devi collegare entrambi i tuoi account {Sora} e {Ethereum}.",
             "connectAnotherAccount": "Collega un altro account {Ethereum} per verificare le ricompense in PSWAP e VAL disponibili.",
             "connectExternalAccount": "Collega un account {Ethereum} per verificare le tue ricompense in PSWAP e VAL disponibili.",
             "howToClaimRewards": "Per richiedere i tuoi {symbols} devi firmare la {count} {transactions} nell' {destination}. I premi verranno depositati sul tuo account {Sora}."
+        },
+        "howTo": {
+            "choose": "Scegli cosa richiedere",
+            "connect": "Connetti il tuo account {Sora}",
+            "title": "Come richiedere"
         },
         "notification": {
             "empty": "Nessuna ricompensa disponibile per questo account"
@@ -3733,6 +3940,16 @@
         "signing": {
             "accounts": "i tuoi account {Sora} e {Ethereum} rispettivamente",
             "extension": "l'estensione del browser {PolkadotJs}"
+        },
+        "stats": {
+            "locked": "Ancora bloccato",
+            "unlocked": "Sbloccato"
+        },
+        "status": {
+            "connect": "Account non connesso",
+            "empty": "Ancora niente da richiedere",
+            "failed": "Richiesta non riuscita",
+            "ready": "Pronto da richiedere"
         },
         "totalVested": "Ricompense totali",
         "transactions": {

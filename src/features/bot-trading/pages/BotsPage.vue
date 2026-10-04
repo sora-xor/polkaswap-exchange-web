@@ -191,7 +191,9 @@
       :pause-campaign="trading.pauseDiscoveryCampaign"
       :close-campaign="trading.closeDiscoveryCampaign"
       :read-campaign-orders="trading.readDiscoveryCampaignOrders"
+      :saving="busy || !!startIntent"
       @wallet="connectSoraWallet"
+      @paper="paperQuant"
     />
     <StrategyLab
       v-if="workspaceView !== 'simple'"

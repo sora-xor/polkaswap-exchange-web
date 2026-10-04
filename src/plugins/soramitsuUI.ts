@@ -5,7 +5,7 @@ import SDesignSystemProvider from '@/lib/soramitsu-ui/components/DesignSystemPro
 import SScrollbar from '@/lib/soramitsu-ui/components/Scrollbar/SScrollbar.vue';
 import SDivider from '@/components/shared/compat/SDivider.vue';
 import SSlider from '@/components/shared/compat/SSlider.vue';
-import { createAsyncComponent } from '@/shared/ui/async';
+import { createAsyncComponent, preloadAsyncComponents } from '@/shared/ui/async';
 
 import type { App, Component, Directive } from 'vue';
 
@@ -72,20 +72,40 @@ const registerDirective = (app: App, name: string, directive: Directive): void =
   app.directive(name, directive);
 };
 
-const registerIfAbsent = (app: App, name: string, component: Component): void => {
+/** Lazy wrappers each app registered, with their names, so they can be resolved before mount. */
+const registeredLazyComponents = new WeakMap<App, Map<Component, Set<string>>>();
+
+const trackLazyComponent = (app: App, component: Component, names: string[]): void => {
+  let components = registeredLazyComponents.get(app);
+  if (!components) {
+    components = new Map();
+    registeredLazyComponents.set(app, components);
+  }
+  const registeredNames = components.get(component) ?? new Set<string>();
+  names.forEach((name) => registeredNames.add(name));
+  components.set(component, registeredNames);
+};
+
+const registerIfAbsent = (app: App, name: string, component: Component): boolean => {
   if (!app.component(name)) {
     app.component(name, component);
+    return true;
   }
+  return false;
 };
 
 const registerAsyncComponent = (app: App, name: string, loader: ComponentLoader): void => {
   const component = createAsyncComponent(loader);
-  registerIfAbsent(app, name, component);
-  registerIfAbsent(app, toKebabCase(name), component);
+  const names = [name, toKebabCase(name)].filter((registeredName) => registerIfAbsent(app, registeredName, component));
+  if (names.length) {
+    trackLazyComponent(app, component, names);
+  }
 };
 
 const registerAsyncCompat = (app: App, name: string, loader: ComponentLoader): void => {
-  registerCompat(app, name, createAsyncComponent(loader));
+  const component = createAsyncComponent(loader);
+  registerCompat(app, name, component);
+  trackLazyComponent(app, component, [name]);
 };
 
 const registerLazySoramitsuComponents = (app: App): void => {
@@ -114,4 +134,22 @@ export function install(app: App): void {
   registerDirective(app, 'button', buttonDirective);
   registerAsyncCompat(app, 'STabs', () => import('@/lib/soramitsu-ui/components/Tabs/STabsPanel.vue'));
   registerAsyncCompat(app, 's-tabs', () => import('@/lib/soramitsu-ui/components/Tabs/STabsPanel.vue'));
+}
+
+/**
+ * Resolves the lazily registered UI components before the app mounts.
+ *
+ * The app shell already imports the whole component library statically (through
+ * the wallet notification provider), so this downloads nothing extra. It only
+ * lets buttons, inputs and menus render in the first paint instead of popping
+ * in one task later and shifting the layout. Registration itself stays lazy.
+ * Wrappers that were later replaced by a compat registration are skipped.
+ */
+export function preloadLazySoramitsuComponents(app: App): Promise<void> {
+  const tracked = registeredLazyComponents.get(app) ?? new Map<Component, Set<string>>();
+  const registered = [...tracked]
+    .filter(([component, names]) => [...names].some((name) => app.component(name) === component))
+    .map(([component]) => component);
+
+  return preloadAsyncComponents(registered);
 }

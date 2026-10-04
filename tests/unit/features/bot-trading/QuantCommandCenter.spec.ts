@@ -114,7 +114,56 @@ const RESULT: QuantLoopResult = {
     market(DAI, 'deploy', '11.20'),
     market(PSWAP, 'deploy', '43.49'),
   ],
-  mesh: [],
+  atlas: [
+    {
+      market: 'DAI',
+      splitAt: Date.UTC(2026, 5, 10, 2),
+      entries: [
+        {
+          id: 'reversion:48/30/5:2',
+          family: 'reversion',
+          amount: '2',
+          first: 4,
+          second: 9,
+          drop: 8,
+          holding: 20,
+          trades: 12,
+          robust: true,
+          selected: true,
+        },
+      ],
+    },
+    {
+      market: 'PSWAP',
+      splitAt: Date.UTC(2026, 5, 10, 2),
+      entries: [
+        {
+          id: 'reversion:48/15/10:3',
+          family: 'reversion',
+          amount: '3',
+          first: 46,
+          second: 21,
+          drop: 49,
+          holding: 87,
+          trades: 38,
+          robust: true,
+          selected: true,
+        },
+        {
+          id: 'trend:24/2:2',
+          family: 'trend',
+          amount: '2',
+          first: -60,
+          second: -50,
+          drop: 70,
+          holding: 90,
+          trades: 76,
+          robust: false,
+          selected: false,
+        },
+      ],
+    },
+  ],
   families: [
     { family: 'reversion', tested: 240, robust: 60 },
     { family: 'guarded', tested: 480, robust: 50 },
@@ -171,7 +220,7 @@ function render(props: Partial<InstanceType<typeof QuantCommandCenter>['$props']
       busy: false,
       ...props,
     },
-    global: { stubs: { QuantMesh: true, QuantLattice: true, QuantGlassArt: true } },
+    global: { stubs: { QuantAtlasMap: true, QuantLattice: true, QuantGlassArt: true } },
   });
 }
 
@@ -325,18 +374,15 @@ describe('QuantCommandCenter', () => {
     expect(idleStart).toHaveBeenCalledTimes(1);
   });
 
-  it('labels the strategies-tested map with plain family names and exact totals', () => {
+  it('maps every tested strategy of the market shown in the results chart', async () => {
     const wrapper = render();
-    const mesh = wrapper.getComponent({ name: 'QuantMesh' });
-    const families = mesh.props('families') as { key: string; label: string; robust: number; tested: number }[];
-    expect(families.find((family) => family.key === 'guarded')).toMatchObject({
-      label: 'bots.quant.families.guarded',
-      robust: 50,
-      tested: 480,
-    });
-    expect(families.find((family) => family.key === 'trend')).toMatchObject({ robust: 0, tested: 96 });
-    expect(mesh.props('caption')).toBe('bots.quant.mesh.caption');
-    expect(wrapper.text()).toContain('bots.quant.mesh.summary {"robust":"125","killed":"3,907"}');
+    const map = wrapper.getComponent({ name: 'QuantAtlasMap' });
+    // Ready markets lead with the strongest test result, so PSWAP is shown first.
+    expect((map.props('atlas') as { market: string }).market).toBe('PSWAP');
+    expect(wrapper.text()).toContain('bots.quant.atlas.caption');
+    expect(wrapper.text()).toContain('PSWAP · bots.quant.mesh.summary {"robust":"125","killed":"3,907"}');
+    await wrapper.get('[data-testid="quant-tab-DAI"]').trigger('click');
+    expect((wrapper.getComponent({ name: 'QuantAtlasMap' }).props('atlas') as { market: string }).market).toBe('DAI');
   });
 
   it('switches the results chart between markets and labels each test period', async () => {
@@ -404,7 +450,7 @@ describe('QuantCommandCenter long sessions', () => {
       await wrapper.vm.$nextTick();
       expect(root.classes()).toContain('quant--calm');
       expect(root.attributes('style')).toContain('--quant-motion: paused');
-      expect(wrapper.getComponent({ name: 'QuantMesh' }).props('paused')).toBe(true);
+      expect(wrapper.getComponent({ name: 'QuantAtlasMap' }).props('paused')).toBe(true);
       expect(wrapper.getComponent({ name: 'QuantGlassArt' }).props('paused')).toBe(true);
       document.dispatchEvent(new Event('pointerdown'));
       await wrapper.vm.$nextTick();

@@ -94,6 +94,22 @@ describe('RewardsTabs.vue', () => {
     ]);
   });
 
+  it('widens the container into a dashboard on the Rewards tab only', () => {
+    routeMock.name = 'Rewards';
+    expect(mountView().get('.rewards-tabs').classes()).toContain('container--rewards');
+
+    routeMock.name = 'PointSystemWrapper';
+    expect(mountView().get('.rewards-tabs').classes()).not.toContain('container--rewards');
+
+    routeMock.name = 'ReferralProgram';
+    expect(mountView().get('.rewards-tabs').classes()).not.toContain('container--rewards');
+  });
+
+  it('keeps the dashboard clear of the sidebar and respects reduced motion', () => {
+    expect(rewardsTabsSource).toContain('max-width: min(1120px, calc(100vw - 2 * var(--sidebar-width) - 48px));');
+    expect(rewardsTabsSource).toMatch(/prefers-reduced-motion: reduce[\s\S]*container--rewards[\s\S]*transition: none/);
+  });
+
   it('keeps the rewards tab strip at the live-site height', () => {
     expect(rewardsTabsSource).toContain('$rewards-tabs-height: 56px;');
     expect(rewardsTabsSource).toContain('height: $rewards-tabs-height;');

@@ -271,6 +271,7 @@
                 "noSmallerExactSample": "No smaller size with a fresh eligible quote",
                 "opening": "En la primera operación posible, la asignación inicial pierde al menos un {loss}% de su valor en {symbol}, por encima de tu límite del {limit}%, incluso sin comisiones.",
                 "openingDates": "{opened} → {firstTrade} {zone}",
+                "previousCheckThrough": "Revisión anterior · datos hasta {time}",
                 "quoteUnavailable": "Fresh quote unavailable",
                 "screenedDraft": "Draft #{number} skipped before testing",
                 "screeningCount": "{drafted} drafted · {tested} tested",
@@ -1192,6 +1193,15 @@
             "openai": "OpenAI"
         },
         "quant": {
+            "atlas": {
+                "caption": "Cada línea es una estrategia probada, desde su idea hasta sus resultados en cada mitad. Las líneas rosas ganaron dinero en la segunda mitad y las azules perdieron. Arrastra a lo largo de un eje para filtrarlas.",
+                "edit": "Editar esta estrategia",
+                "help": "Arrastra a lo largo de un eje para filtrar. Haz clic en una línea para ver sus reglas. Pulsa Esc para borrar.",
+                "passed": "Superó todas las comprobaciones",
+                "pick": "Haz clic en una línea para ver sus reglas y editarla.",
+                "rejected": "No superó todas las comprobaciones",
+                "used": "Usada por el bot"
+            },
             "banner": {
                 "detail": "El precio está a {value} de su media de {window} horas, más allá del umbral de compra de {threshold}, así que un bot activo compraría ahora.",
                 "title": "{symbol} está en la zona de compra"
@@ -1251,7 +1261,6 @@
                 "watch": "Sin bot"
             },
             "mesh": {
-                "caption": "Cada punto es una estrategia probada. Los puntos brillantes superaron todas las comprobaciones; los que laten son los que usan los bots.",
                 "summary": "Aprobadas: {robust} · descartadas: {killed}",
                 "title": "Estrategias probadas"
             },
@@ -1315,6 +1324,161 @@
             "title": "Bots listos para usar",
             "trades": "Operaciones",
             "watchNote": "Ninguna regla dio beneficios en las pruebas, así que aún no hay un bot para este mercado."
+        },
+        "studio": {
+            "botName": "{idea} · {symbol}",
+            "calculating": "Calculando…",
+            "chart": {
+                "buys": "Compras",
+                "caption": "Arrastra la línea rosa para cambiar cuándo compra el bot y la morada para cambiar cuándo vende. Pulsa Reproducir para verlo operar.",
+                "captionNoLines": "Esta idea no tiene líneas que arrastrar; cambia sus ajustes junto al gráfico 3D. Pulsa Reproducir para ver operar al bot.",
+                "equity": "Valor del bot frente a mantener",
+                "first": "Primera mitad: ajusta aquí",
+                "indicators": {
+                    "deviation": "Precio vs. media de {window} h",
+                    "drawdown": "Precio vs. máximo de {window} h",
+                    "momentum": "Variación del precio en {window} h",
+                    "rsi": "Proporción de subidas en {window} h"
+                },
+                "price": "Precio de {symbol} en XOR",
+                "replay": "Reproducir",
+                "second": "Segunda mitad: comprueba aquí",
+                "sells": "Ventas",
+                "stop": "Detener",
+                "summary": "Compras: {buys}, ventas: {sells} en ambas mitades.",
+                "title": "Precio y operaciones"
+            },
+            "fairness": "La primera mitad sirve para ajustar y la segunda para comprobar. Si cambias los ajustes hasta que la segunda mitad salga bien, ya no es una comprobación justa. Los resultados pasados no garantizan rentabilidades futuras.",
+            "idea": "Idea de estrategia",
+            "intro": "Elige un mercado y una idea, y ajusta sus reglas con datos históricos de los pools de SORA. Todas las vistas muestran la misma elección: haz clic en una columna del gráfico 3D, arrastra las líneas del gráfico de precios o filtra las líneas del último gráfico.",
+            "landscape": {
+                "caption": "Cada columna es una combinación de los dos ajustes principales. La altura muestra la primera mitad; el color, la segunda. Las columnas altas que se vuelven azules solo funcionaron en las horas con las que se ajustaron.",
+                "color": "Color: segunda mitad",
+                "describe": "{x}, {y}. Pulsa Intro para usar estos ajustes.",
+                "height": "Altura: primera mitad",
+                "help": "Arrastra para girar la vista. Haz clic en una columna, o usa las flechas e Intro, para usar sus ajustes.",
+                "pick": "Haz clic para usar estos ajustes",
+                "title": "Resultados por ajuste"
+            },
+            "loading": "Cargando datos históricos de los pools…",
+            "market": "Mercado",
+            "newIdea": "Nueva",
+            "openLab": "Abrir en el Laboratorio de estrategias",
+            "outcomes": {
+                "first": "Primera mitad",
+                "holding": "Tiempo en posición",
+                "idea": "Idea de estrategia",
+                "maxDrop": "Mayor caída",
+                "second": "Segunda mitad",
+                "trades": "Operaciones"
+            },
+            "parallel": {
+                "caption": "Cada línea es una combinación de ajustes, desde los ajustes a la izquierda hasta los resultados a la derecha. Arrastra a lo largo de cualquier eje para quedarte solo con las líneas de ese rango.",
+                "clear": "Borrar filtros",
+                "count": "{shown} de {total} visibles",
+                "help": "Arrastra a lo largo de un eje para filtrar. Haz clic en una línea para usar sus ajustes. Pulsa Esc para borrar.",
+                "pick": "Haz clic para usar estos ajustes",
+                "title": "Todas las variantes de esta idea"
+            },
+            "params": {
+                "amount": "Tamaño de la orden",
+                "average": "Media para vender",
+                "buy": "Compra bajo la media",
+                "choppy": "Proporción en una dirección",
+                "choppyWindow": "Oscilación en",
+                "drop": "Tamaño de la caída",
+                "exit": "Venta bajo la media",
+                "fall": "Bajo el máximo",
+                "guard": "Caída semanal máx.",
+                "highWindow": "Nuevo máximo de",
+                "hours": "Caída en",
+                "jump": "Tamaño del salto",
+                "jumpHours": "Salto en",
+                "lead": "Compra sobre la media",
+                "level": "Proporción de subidas",
+                "lookback": "Comparado con",
+                "lowWindow": "Nuevo mínimo de",
+                "peakWindow": "Máximo de",
+                "percentile": "Horas más inusuales",
+                "pull": "Fuerza de atracción",
+                "pullWindow": "Atracción medida en",
+                "rsiWindow": "Movimientos en",
+                "sell": "Venta sobre la media",
+                "window": "Media de"
+            },
+            "recipes": {
+                "breakout": {
+                    "idea": "Compra cuando el precio marca un nuevo máximo y vende cuando marca un nuevo mínimo.",
+                    "name": "Nuevo máximo"
+                },
+                "dip": {
+                    "idea": "Compra cuando el precio cae bastante por debajo de su media reciente y vende cuando se recupera. Los bots listos para usar siguen esta idea.",
+                    "name": "Comprar la caída"
+                },
+                "drop": {
+                    "idea": "Compra justo después de una caída fuerte en pocas horas y vende cuando el precio vuelve cerca de su media.",
+                    "name": "Caída brusca"
+                },
+                "elastic": {
+                    "idea": "Compra caídas solo cuando el precio ha vuelto hace poco hacia su media después de cada movimiento.",
+                    "name": "Mercado que rebota"
+                },
+                "oversold": {
+                    "idea": "Compra cuando casi todos los movimientos recientes del precio fueron a la baja y vende cuando el precio vuelve a estar por encima de su media.",
+                    "name": "Rebote por sobreventa"
+                },
+                "peak": {
+                    "idea": "Compra cuando el precio está muy por debajo de su máximo reciente y vende cuando se recupera hasta su media.",
+                    "name": "Muy por debajo del máximo"
+                },
+                "range": {
+                    "idea": "Compra caídas solo mientras el precio va de un lado a otro en lugar de moverse en una dirección.",
+                    "name": "Caída en mercado lateral"
+                },
+                "rare-drop": {
+                    "idea": "Compra solo cuando la caída de esta hora está entre las mayores de las últimas horas y el precio está bastante por debajo de su media.",
+                    "name": "Caída inusual"
+                },
+                "rebound": {
+                    "idea": "Compra en la caída y vende cuando el precio se recupera o en cuanto sube de golpe.",
+                    "name": "Rebote rápido"
+                },
+                "steady-dip": {
+                    "idea": "Como «Comprar la caída», pero ignora las caídas si el precio ha bajado mucho en la última semana.",
+                    "name": "Caída en semana tranquila"
+                },
+                "trend": {
+                    "idea": "Compra cuando el precio sube por encima de su media y vende cuando vuelve a caer por debajo.",
+                    "name": "Seguir la tendencia"
+                }
+            },
+            "result": {
+                "first": "Primera mitad",
+                "second": "Segunda mitad",
+                "title": "Tu estrategia"
+            },
+            "rule": {
+                "drawdownBelow": "Precio vs. máximo de {window} h por debajo de {value}%",
+                "efficiencyBelow": "Menos del {value}% de los movimientos en {window} h fue en una dirección",
+                "quantileBelow": "El cambio de esta hora está en el {percentile}% más bajo de las últimas {window} h",
+                "restoringAbove": "La atracción hacia la media de {window} h es mayor que {value}",
+                "rsiBelow": "Las subidas son menos del {value}% de los movimientos en {window} h",
+                "sellAny": "Vender cuando se cumpla alguna de estas condiciones"
+            },
+            "steps": {
+                "check": "Comprueba la segunda mitad",
+                "paper": "Pruébala en simulación",
+                "pick": "Elige un mercado y una idea",
+                "tune": "Ajústala con la primera mitad"
+            },
+            "title": "Crea tu propio bot",
+            "units": {
+                "hours": "{value} h",
+                "level": "{value}",
+                "percent": "{value}%",
+                "percentile": "{value}%",
+                "xor": "{value} XOR"
+            }
         },
         "receiveToken": "Token de negociación",
         "research": {
@@ -3697,11 +3861,46 @@
             "pendingInternal": "{Sora} transacción pendiente...",
             "signAndClaim": "Firmar y reclamar"
         },
+        "analytics": {
+            "connectToSee": "Conecta tu cuenta para ver esto.",
+            "feeShare": "La tarifa equivale a {percent} de lo que reclamas.",
+            "market": {
+                "day": "24 h",
+                "period": "Últimos 30 días",
+                "title": "Precio",
+                "unavailable": "Los datos de precio no están disponibles ahora.",
+                "week": "7 d"
+            },
+            "showTable": "Tabla",
+            "skipped": "No se reclamará",
+            "sources": {
+                "crowdloan": "Préstamo colectivo",
+                "empty": "Todavía no hay recompensas para mostrar.",
+                "external": "Cuenta de {Ethereum}",
+                "liquidity": "Comisiones de liquidez",
+                "strategic": "Estratégicas",
+                "title": "Por fuente",
+                "unpriced": "Los tokens sin precio aparecen en la lista, pero no se dibujan en la barra."
+            },
+            "table": {
+                "share": "Porcentaje",
+                "source": "Fuente",
+                "value": "Valor"
+            },
+            "vesting": {
+                "empty": "No hay recompensas de adquisición gradual.",
+                "fullyUnlocked": "Todo está desbloqueado",
+                "title": "Adquisición gradual"
+            }
+        },
         "andText": "y",
         "claimableAmountDoneVesting": "Recompensas reclamables",
         "claiming": {
             "pending": "Reclamando...",
             "success": "Reclamado con éxito"
+        },
+        "claimSection": {
+            "title": "Lo que puedes reclamar"
         },
         "events": {
             "BuyOnBondingCurve": "haber comprado en la TBC",
@@ -3718,11 +3917,19 @@
             "external": "Recompensas para la cuenta de {Ethereum} conectada",
             "strategic": "Recompensas estratégicas"
         },
+        "hero": {
+            "connectTitle": "Mira y reclama tus recompensas"
+        },
         "hint": {
             "connectAccounts": "Para reclamar tus Recompensas de PSWAP y VAL debes conectar tus cuentas de {Sora} y {Ethereum}.",
             "connectAnotherAccount": "Conecta otra cuenta {Ethereum} para comprobar las Recompensas PSWAP y VAL disponibles.",
             "connectExternalAccount": "Conecta una cuenta {Ethereum} para comprobar las Recompensas PSWAP y VAL disponibles.",
             "howToClaimRewards": "Para reclamar tus Recompensas de {symbols} necesitas firmar {count} {transactions} en {destination}. Las Recompensas se depositarán en tu cuenta {Sora}."
+        },
+        "howTo": {
+            "choose": "Elige qué reclamar",
+            "connect": "Conecta tu cuenta de {Sora}",
+            "title": "Cómo reclamar"
         },
         "notification": {
             "empty": "No hay reclamaciones disponibles para esta cuenta"
@@ -3733,6 +3940,16 @@
         "signing": {
             "accounts": "sus cuentas {Sora} y {Ethereum} respectivamente",
             "extension": "extensión de navegador {PolkadotJs}"
+        },
+        "stats": {
+            "locked": "Aún bloqueado",
+            "unlocked": "Desbloqueado"
+        },
+        "status": {
+            "connect": "Cuenta no conectada",
+            "empty": "Aún no hay nada que reclamar",
+            "failed": "Error al reclamar",
+            "ready": "Listo para reclamar"
         },
         "totalVested": "Recompensas totales",
         "transactions": {

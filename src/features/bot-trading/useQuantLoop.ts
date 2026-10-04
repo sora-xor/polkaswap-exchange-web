@@ -50,7 +50,7 @@ const SLIPPAGE_PERCENT = '0.5';
 const cache = new Map<string, QuantLoopResult>();
 
 /** Read the static archive with the same limits as the history loader. */
-async function fetchArchiveText(): Promise<string> {
+export async function fetchQuantArchiveText(): Promise<string> {
   const response = await fetch(QUANT_ARCHIVE_URL, { signal: AbortSignal.timeout(30_000) });
   if (!response.ok || Number(response.headers.get('content-length') || 0) > MAX_ARCHIVE_BYTES)
     throw new Error('bots.errors.history');
@@ -60,7 +60,7 @@ async function fetchArchiveText(): Promise<string> {
 }
 
 /** A plain XOR→token template; only its pair and order size are used for quotes and history. */
-function probeBot(asset: BotAsset, assets: BotAsset[], now: number): BotDefinition {
+export function quantProbeBot(asset: BotAsset, assets: BotAsset[], now: number): BotDefinition {
   return createResearchBot(
     {
       ...PLAYGROUND_DEFAULT_SETTINGS,
@@ -126,7 +126,7 @@ export function useQuantLoop(assets: Ref<BotAsset[]>, deps: QuantLoopDependencie
     for (let attempt = 0; attempt < FEE_ATTEMPTS; attempt++) {
       if (stale(version)) throw new Error('bots.errors.stale');
       try {
-        return await deps.loadFees(probeBot(asset, assets.value, now()), { slippagePercent: SLIPPAGE_PERCENT });
+        return await deps.loadFees(quantProbeBot(asset, assets.value, now()), { slippagePercent: SLIPPAGE_PERCENT });
       } catch (reason) {
         failure = reason;
         await wait(FEE_RETRY_MS);
@@ -224,7 +224,7 @@ export function useQuantLoop(assets: Ref<BotAsset[]>, deps: QuantLoopDependencie
         if (asset) {
           try {
             const window = quantSignalWindow(candidate, now());
-            const history = await deps.loadHistory(probeBot(asset, assets.value, now()), {
+            const history = await deps.loadHistory(quantProbeBot(asset, assets.value, now()), {
               ...PLAYGROUND_DEFAULT_SETTINGS,
               assetInAddress: XOR.address,
               assetOutAddress: asset.address,
@@ -254,7 +254,7 @@ export function useQuantLoop(assets: Ref<BotAsset[]>, deps: QuantLoopDependencie
     error.value = '';
     try {
       status.value = 'loading';
-      const text = await (deps.fetchArchive ?? fetchArchiveText)();
+      const text = await (deps.fetchArchive ?? fetchQuantArchiveText)();
       if (stale(version)) return;
       const parsed = parseQuantArchive(JSON.parse(text) as unknown);
       archive = parsed;

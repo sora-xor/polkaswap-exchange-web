@@ -1,5 +1,6 @@
 import { createApp, type App as VueApp } from 'vue';
 
+import { preloadAppShellChrome } from '@/app/shell/chrome';
 import { installRuntimePlugins, installStartupPlugins } from '@/plugins';
 import { createAsyncComponent, installViteCssPreloadErrorHandler, loadAsyncImportWithRetry } from '@/shared/ui/async';
 import { shouldRenderOfflineShell } from '@/utils/env';
@@ -9,6 +10,7 @@ import { APP_BUILD_VARIANT, registerPilotFeedbackBridge, registerTelemetryStub, 
 import { installConsoleWarningFilter } from '@/utils/consoleWarnings';
 import { installVueErrorHandler } from '@/utils/vueErrorHandler';
 import { updateDocumentTitle } from '@/utils/documentTitle';
+import { warmFirstPaintFonts } from '@/utils/fonts';
 
 type AppShellModule = typeof import('@/app/shell/AppShell.vue');
 type AgentTradingModule = typeof import('@/features/agent-trading');
@@ -88,6 +90,8 @@ export function bootstrapApp(): VueApp {
 /**
  * Loads runtime-only plugins and the app shell chunk after the tiny bootstrap
  * entry is already executing, keeping global UI and wallet code out of entry.
+ * The shell chrome (header, menu, footer) is resolved in the same step so the
+ * first paint already has its final layout.
  */
 export async function prepareAppRuntime(app: VueApp): Promise<PreparedRuntime> {
   const [{ default: pinia }, { default: router }, { default: i18n, getLocale, setI18nLocale }] = await Promise.all([
@@ -100,13 +104,20 @@ export async function prepareAppRuntime(app: VueApp): Promise<PreparedRuntime> {
   app.use(router);
   app.use(i18n);
 
+  // The optional agent API is fetched alongside the shell instead of after it, so its
+  // chunks do not add a second request round trip before mount. It is still installed
+  // before mount; a failure is reported below once the shell is ready.
+  const agentTradingModule = loadAgentTrading();
+  agentTradingModule.catch(() => undefined);
+
   await Promise.all([
     installRuntimePlugins(app, { pinia }),
     loadAppShell(),
+    preloadAppShellChrome(),
     setI18nLocale(getLocale() as SupportedLocale),
   ]);
   try {
-    const { installPolkaswapAgentApi, registerPolkaswapWebMcpTools } = await loadAgentTrading();
+    const { installPolkaswapAgentApi, registerPolkaswapWebMcpTools } = await agentTradingModule;
     const agent = installPolkaswapAgentApi({ pinia });
     void registerPolkaswapWebMcpTools(agent).catch((error) => {
       emitAgentInstallFailure('webmcp');
@@ -157,6 +168,8 @@ export async function mountApp(): Promise<void> {
     }
     return;
   }
+
+  warmFirstPaintFonts();
 
   try {
     const app = bootstrapApp();

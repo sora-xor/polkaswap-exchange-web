@@ -386,8 +386,19 @@ function canonical(v: unknown): string {
           .join(',')}}`
       : JSON.stringify(v);
 }
+/**
+ * Apply the same own-data and aggregate bounds as qualification digests without computing an unused hash.
+ * This validates structure only and returns no source authority or owned capability.
+ */
+export function assertGoalQualificationOwnData(value: unknown): void {
+  copy(value);
+}
+/** Return fully checked, detached, recursively frozen own-data; this conveys no verification authority. */
+export function copyGoalQualificationOwnData<T>(value: T): T {
+  return copy(value);
+}
 export function goalQualificationDigest(value: unknown): string {
-  return u8aToHex(sha256AsU8a(new TextEncoder().encode(canonical(copy(value))))).slice(2);
+  return u8aToHex(sha256AsU8a(new TextEncoder().encode(canonical(copy(value))), true)).slice(2);
 }
 const same = (a: unknown, b: unknown) => canonical(a) === canonical(b);
 function sha(v: unknown) {

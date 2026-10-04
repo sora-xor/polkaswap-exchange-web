@@ -41,6 +41,18 @@ vi.mock('@/features/bot-trading/discovery', () => ({
   discoveryNextRequestAt: () => null,
   rankDiscoveryCandidates: (candidates: unknown[]) => [...candidates],
 }));
+// The Strategy Studio loads the bundled archive and a worker; it has its own suite.
+vi.mock('@/features/bot-trading/components/quant/studio/QuantStudio.vue', async () => {
+  const { defineComponent, h } = await import('vue');
+  return {
+    default: defineComponent({
+      name: 'QuantStudio',
+      props: { assets: Array, loadFees: Function, busy: Boolean },
+      emits: ['paper'],
+      setup: () => () => h('section', { 'data-testid': 'quant-studio' }),
+    }),
+  };
+});
 vi.mock('@/features/bot-trading/discovery-live-feedback', () => ({
   summarizeDiscoveryLiveFeedback: (...args: unknown[]) => mocks.summarize(...args),
 }));
@@ -212,6 +224,25 @@ afterEach(() => {
 });
 
 describe('BotDiscovery UI', () => {
+  it('offers the Strategy Studio in the workspace and forwards its paper payloads', async () => {
+    const loadFees = vi.fn().mockResolvedValue({ networkFeeXor: '0.1' });
+    const { wrapper } = await render({ loadFees });
+    expect(wrapper.find('.discovery-workspace [data-testid="quant-studio"]').exists()).toBe(true);
+    const studio = wrapper.getComponent({ name: 'QuantStudio' });
+    expect(studio.props('assets')).toEqual(assets);
+    expect(studio.props('busy')).toBe(false);
+    await wrapper.setProps({ saving: true });
+    expect(wrapper.getComponent({ name: 'QuantStudio' }).props('busy')).toBe(true);
+    const bot = { id: 'probe' };
+    await (studio.props('loadFees') as (bot: unknown, settings: unknown) => Promise<unknown>)(bot, {
+      slippagePercent: '0.5',
+    });
+    expect(loadFees).toHaveBeenCalledWith(bot, { slippagePercent: '0.5' });
+    const payload = { bot: { id: 'paper' } };
+    studio.vm.$emit('paper', payload);
+    expect(wrapper.emitted('paper')?.[0]).toEqual([payload]);
+  });
+
   it('keeps pre-run data views hidden and offers settings only when opened', async () => {
     const { wrapper } = await render();
     expect(wrapper.find('[data-testid="discovery-progress"]').exists()).toBe(false);

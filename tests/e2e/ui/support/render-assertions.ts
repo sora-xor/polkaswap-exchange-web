@@ -17,6 +17,8 @@ export const VISUAL_TEST_MASK_SELECTORS = [
   '.echarts',
   '.skeleton',
   '.app-menu',
+  // Rewards price card: its content comes from the indexer, so it differs between loading, empty and loaded.
+  '.rw-market',
 ] as const;
 
 export const createVisualMaskLocators = (page: Page): Locator[] => {

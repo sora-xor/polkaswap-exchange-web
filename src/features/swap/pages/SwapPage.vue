@@ -80,7 +80,10 @@ import { useTranslation } from '@/composables/useTranslation';
 import { Breakpoint } from '@/consts/layout';
 import { resolveGlobalPinia } from '@/plugins/pinia';
 import { createAsyncComponent } from '@/shared/ui/async';
-import { CustomiseWidget, WidgetsGrid } from '@/shared/ui/widgets';
+// Direct imports: the `@/shared/ui/widgets` barrel also re-exports the chart widgets,
+// which would make ECharts a static dependency of the swap page.
+import CustomiseWidget from '@/components/shared/Widget/Customise.vue';
+import WidgetsGrid from '@/components/shared/Widget/Grid.vue';
 import { useSettingsStore } from '@/stores/settings';
 import type { WidgetsVisibilityModel } from '@/types/layout';
 

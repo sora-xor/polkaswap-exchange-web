@@ -1,3 +1,5 @@
+import { FPNumber } from '@sora-substrate/sdk';
+import { KnownAssets, KnownSymbols } from '@sora-substrate/sdk/build/assets/consts';
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils';
 import { reactive, ref } from 'vue';
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -189,6 +191,7 @@ vi.mock('@/utils/ethers-util', () => ({
 
 let RewardsView: (typeof import('@/features/rewards/pages/RewardsPage.vue'))['default'];
 const mountedWrappers: VueWrapper[] = [];
+const ORIGINAL_DELIMITERS = { ...FPNumber.DELIMITERS_CONFIG };
 
 beforeAll(async () => {
   RewardsView = (await import('@/features/rewards/pages/RewardsPage.vue')).default;
@@ -202,7 +205,6 @@ const mountComponent = () => {
         RewardsAmountHeader: { template: '<div><slot /></div>' },
         RewardsAmountTable: { template: '<div><slot /></div>' },
         GenericPageHeader: { template: '<div><slot /></div>' },
-        TokensRow: { template: '<div><slot /></div>' },
         SelectProviderDialog: { template: '<div><slot /></div>' },
         's-button': { template: '<button><slot /></button>' },
         's-card': { template: '<div><slot /></div>' },
@@ -222,6 +224,7 @@ const mountComponent = () => {
 describe('Rewards.vue', () => {
   afterEach(() => {
     mountedWrappers.splice(0).forEach((wrapper) => wrapper.unmount());
+    Object.assign(FPNumber.DELIMITERS_CONFIG, ORIGINAL_DELIMITERS);
   });
 
   beforeEach(() => {
@@ -286,13 +289,191 @@ describe('Rewards.vue', () => {
     await flushPromises();
 
     expect(wrapper.find('.rewards-empty-state').exists()).toBe(false);
-    expect(wrapper.find('.rewards-hint').exists()).toBe(true);
+    expect(wrapper.find('.rewards-hero__hint').text()).toBe('rewards.hint.connectAccounts');
     expect(wrapper.find('[data-test-name="LoginAndGet"]').exists()).toBe(true);
 
     await (wrapper.vm as any).handleAction();
 
     expect(connectSoraWalletMock).toHaveBeenCalledTimes(1);
     expect(claimRewardsMock).not.toHaveBeenCalled();
+  });
+
+  it('puts the connect action in the hero and explains the steps below it', async () => {
+    const wrapper = mountComponent();
+    await flushPromises();
+
+    expect(wrapper.find('.rewards-hero [data-test-name="LoginAndGet"]').exists()).toBe(true);
+    expect(wrapper.find('.rewards-claim [data-test-name="LoginAndGet"]').exists()).toBe(false);
+    expect(wrapper.find('.rewards-hero__title').text()).toBe('rewards.hero.connectTitle');
+    expect(wrapper.findAll('.rewards-howto li').map((step) => step.text())).toEqual([
+      'rewards.howTo.connect',
+      'rewards.howTo.choose',
+      'rewards.action.signAndClaim',
+    ]);
+    expect(wrapper.find('rewards-amount-table-stub').exists()).toBe(false);
+    expect(wrapper.find('rewards-amount-header-stub').exists()).toBe(false);
+  });
+
+  it('moves the claim action under the claim list once the user is connected', async () => {
+    isLoggedInRef.value = true;
+    rewardsStoreMock.rewardsAvailable = true;
+
+    const wrapper = mountComponent();
+    await flushPromises();
+
+    expect(wrapper.find('.rewards-claim [data-test-name="LoginAndGet"]').exists()).toBe(true);
+    expect(wrapper.find('.rewards-hero [data-test-name="LoginAndGet"]').exists()).toBe(false);
+    expect(wrapper.find('.rewards-claim .rewards-hint').exists()).toBe(true);
+    expect(wrapper.find('.rewards-howto').exists()).toBe(false);
+    expect(wrapper.find('.rewards-grid').classes()).not.toContain('rewards-grid--solo');
+  });
+
+  it('reports what the page is doing in the status pill', async () => {
+    const status = async () => {
+      const wrapper = mountComponent();
+      await flushPromises();
+
+      return [wrapper.find('.rewards-status').classes(), wrapper.find('.rewards-status').text()] as const;
+    };
+
+    expect(await status()).toEqual([expect.arrayContaining(['rewards-status--connect']), 'rewards.status.connect']);
+
+    isLoggedInRef.value = true;
+    expect(await status()).toEqual([expect.arrayContaining(['rewards-status--empty']), 'rewards.status.empty']);
+
+    rewardsStoreMock.rewardsAvailable = true;
+    expect(await status()).toEqual([expect.arrayContaining(['rewards-status--ready']), 'rewards.status.ready']);
+
+    rewardsStoreMock.rewardsClaiming = true;
+    expect(await status()).toEqual([expect.arrayContaining(['rewards-status--claiming']), 'rewards.claiming.pending']);
+
+    rewardsStoreMock.rewardsClaiming = false;
+    rewardsStoreMock.transactionError = true;
+    expect(await status()).toEqual([expect.arrayContaining(['rewards-status--error']), 'rewards.status.failed']);
+
+    rewardsStoreMock.transactionError = false;
+    rewardsStoreMock.receivedRewards = [{ asset: { symbol: 'PSWAP', decimals: 18 }, amount: '1' }];
+    expect(await status()).toEqual([expect.arrayContaining(['rewards-status--success']), 'rewards.claiming.success']);
+  });
+
+  it('shows claim progress instead of the claim list while a claim is running', async () => {
+    isLoggedInRef.value = true;
+    rewardsStoreMock.rewardsAvailable = true;
+    rewardsStoreMock.rewardsClaiming = true;
+    rewardsStoreMock.externalRewardsSelected = true;
+    rewardsStoreMock.transactionStep = 2;
+
+    const wrapper = mountComponent();
+    await flushPromises();
+
+    const steps = wrapper.find('rewards-claim-steps-stub');
+
+    expect(steps.exists()).toBe(true);
+    expect(steps.attributes('total')).toBe('2');
+    expect(steps.attributes('current')).toBe('2');
+    expect(steps.attributes('status')).toBe('pending');
+    expect(wrapper.find('.rewards-claiming-text').text()).toBe('rewards.claiming.pending');
+    expect(wrapper.find('.rewards-claim').exists()).toBe(false);
+    expect(wrapper.find('[data-test-name="LoginAndGet"]').exists()).toBe(false);
+    // Without the claim card the analytics take the full width instead of leaving the second column empty.
+    expect(wrapper.find('.rewards-grid').classes()).toContain('rewards-grid--solo');
+  });
+
+  it('offers a retry after a failed claim and hides the stale "Claiming" headline', async () => {
+    isLoggedInRef.value = true;
+    rewardsStoreMock.rewardsAvailable = true;
+    rewardsStoreMock.transactionError = true;
+    rewardsStoreMock.transactionStep = 2;
+
+    const wrapper = mountComponent();
+    await flushPromises();
+
+    expect(wrapper.find('rewards-claim-steps-stub').attributes('status')).toBe('error');
+    expect(wrapper.find('.rewards-claiming-text').exists()).toBe(false);
+    expect(wrapper.find('.rewards-claiming-text--transaction').text()).toBe(
+      'rewards.transactions.failed:{"order":"2","total":1}'
+    );
+
+    const retry = wrapper.find('[data-test-name="LoginAndGet"]');
+
+    expect(retry.exists()).toBe(true);
+    expect(retry.text()).toBe('retryText');
+    expect(wrapper.find('.rewards-grid').classes()).not.toContain('rewards-grid--solo');
+
+    await (wrapper.vm as any).handleAction();
+
+    expect(claimRewardsMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('has no claim action once the rewards were received', async () => {
+    isLoggedInRef.value = true;
+    rewardsStoreMock.rewardsAvailable = true;
+    rewardsStoreMock.receivedRewards = [{ asset: { symbol: 'PSWAP', decimals: 18 }, amount: '1' }];
+
+    const wrapper = mountComponent();
+    await flushPromises();
+
+    expect(wrapper.find('rewards-claim-steps-stub').attributes('status')).toBe('done');
+    expect(wrapper.find('.rewards-claiming-text').text()).toBe('rewards.claiming.success');
+    expect(wrapper.find('[data-test-name="LoginAndGet"]').exists()).toBe(false);
+    expect(wrapper.find('rewards-burst-stub').attributes('active')).toBe('true');
+    expect(wrapper.find('.rewards-grid').classes()).toContain('rewards-grid--solo');
+  });
+
+  it('feeds the analytics cards and keeps the price card useful without rewards', async () => {
+    isLoggedInRef.value = true;
+
+    const wrapper = mountComponent();
+    await flushPromises();
+
+    expect(wrapper.find('rewards-breakdown-stub').attributes('connected')).toBe('true');
+    expect(wrapper.find('rewards-vesting-stub').attributes('connected')).toBe('true');
+    expect(wrapper.find('rewards-market-stub').exists()).toBe(true);
+    expect(wrapper.find('rewards-reactor-stub').exists()).toBe(true);
+  });
+
+  it('hands the analytics cards the numbers it derives from the store', async () => {
+    const pswap = KnownAssets.get(KnownSymbols.PSWAP);
+    const codec = (value: number) => new FPNumber(value).toCodecString();
+
+    isLoggedInRef.value = true;
+    rewardsStoreMock.vestedRewardsAvailable = true;
+    rewardsStoreMock.vestedRewards = { limit: codec(1000), total: codec(11000), rewards: [] };
+    walletStoreMock.fiatPriceObject = { [pswap.address]: codec(2) };
+
+    const wrapper = mountComponent();
+    await flushPromises();
+
+    const breakdown = wrapper.findComponent({ name: 'RewardsBreakdown' }).props('breakdown');
+    const vesting = wrapper.findComponent({ name: 'RewardsVesting' }).props('vesting');
+
+    expect(breakdown.segments.map(({ id, fiat }: any) => [id, fiat?.toString()])).toEqual([['strategic', '2000']]);
+    expect(vesting.rows).toHaveLength(1);
+    expect(vesting.rows[0].id).toBe('strategic');
+    expect(vesting.rows[0].unlocked).toBeCloseTo(1000 / 11000, 3);
+  });
+
+  it('shows what is still locked with the delimiters of the app language', async () => {
+    // The wallet amount component reads its value with these delimiters: `10000` would be read as 10, not 10,000.
+    Object.assign(FPNumber.DELIMITERS_CONFIG, { thousand: '.', decimal: ',' });
+
+    const pswap = KnownAssets.get(KnownSymbols.PSWAP);
+
+    isLoggedInRef.value = true;
+    rewardsStoreMock.vestedRewardsAvailable = true;
+    rewardsStoreMock.vestedRewards = {
+      limit: new FPNumber(1000).toCodecString(),
+      total: new FPNumber(11000).toCodecString(),
+      rewards: [],
+    };
+    walletStoreMock.fiatPriceObject = { [pswap.address]: new FPNumber(1).toCodecString() };
+
+    const wrapper = mountComponent();
+    await flushPromises();
+
+    const locked = wrapper.findAll('.rewards-stat').find((stat) => stat.text().includes('rewards.stats.locked'));
+
+    expect(locked?.find('formatted-amount-stub').attributes('value')).toBe('10.000');
   });
 
   it('claims rewards when user is logged in and rewards are available', async () => {

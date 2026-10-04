@@ -58,6 +58,30 @@ The companion checks Host and Origin, bounds requests to 64 KiB, rate-limits fai
 
 The page keeps the companion goal object in its original five-field wire shape so an already-running companion can handle a new GO request. The GO-only requirement to beat the unchanged opening holdings after costs stays in the site's research and live-goal checks. Updated companion downloads also accept a true-only `targetRequiresIdleOutperformance` extension for forward compatibility.
 
+For the native XOR output flow with a separate fee reserve, updated companions derive
+`optimisticOneBuyTraining` from the validated public context before drafting. Its
+four fixed, independently funded 24-hour training episodes use only the first 97
+of the 117 supplied marks; the remaining 20 marks are not another funded episode.
+For each fresh exact-size buy sample that fits the partial-order, fee-reserve and
+first-buy impact caps, `positiveEpisodes` counts days on which one hindsight buy
+at the best post-funding close could beat idle after that observed network fee.
+The comparison uses exact integer arithmetic, respects the site's 36-place price
+precision and XOR's 18-place base units, and retains the sample's amount, fee,
+finalized timestamp and public block hash. It never copies the page's prose or
+accepts a page-supplied advisory. Missing, stale, unsupported or over-limit evidence
+does not produce a count. Current fee observations are scenarios, not historical
+execution costs or quotes for other sizes.
+
+This advisory cannot qualify or reject a strategy. Pool fees, impact costs,
+slippage, signals, loss stopping, multiple fills, holdout and future prices remain
+unassessed. A zero count applies only to one buy at that quoted size on those
+training closes; a positive count is not proof of absolute growth or profitability.
+Skipping a day contributes zero excess. The fixed drafting instructions also
+state the funded-episode aggregation, phase-level fill requirement, exact quote
+scope and combined-portfolio drawdown rule. The original budget, target, loss,
+price-impact and reserve limits remain unchanged; the site's separate quote,
+training, validation and execution gates retain all authority.
+
 The process invokes the saved-login CLI in a fresh temporary directory with fixed arguments, `--ignore-user-config`, `--sandbox read-only`, `--ephemeral`, a fixed output schema, no shell, a scrubbed environment, and a four-minute timeout. It does not connect to the browser's wallet extension. For a fixed model-draft failure, the page retries the same pending request up to two times with short delays, stopping if the request is canceled or too close to expiry. Authentication, transport, busy, and timeout failures are not retried automatically. If Codex remains unavailable or the draft fails, the site can keep its existing manual assistant path. If a draft qualifies, the user still reviews and separately authorizes any live trading.
 
 On the simple Bots form, the connected wallet's selected input-token balance and XOR fee reserve are read directly from SORA and compared with the entered budget. Any shortfall appears beside **GO**, with the deposit address and a refresh action. This is a setup hint, not trading approval: the final review rechecks balances and other bot allocations before enabling Start. Codex may leave a 24-hour episode idle when fees or signals do not justify a trade; the training and validation phases each still need a fill before a strategy can qualify.

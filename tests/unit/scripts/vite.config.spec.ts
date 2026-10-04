@@ -35,6 +35,29 @@ describe('vite.config', () => {
     expect(viteConfig.build?.cssCodeSplit).toBe(false);
   });
 
+  it('preloads dynamic import dependencies in parallel without the modulepreload polyfill', () => {
+    expect(viteConfig.build?.modulePreload).toEqual({ polyfill: false });
+  });
+
+  it('pairs the browser crypto fallback with the Node polyfills', () => {
+    const script = `
+      process.argv.push('--project=unit');
+      const { default: config } = await import('./vite.config.mjs');
+      console.log(JSON.stringify(config.plugins.map(plugin => plugin.name)));
+    `;
+    const pluginNames: string[] = JSON.parse(
+      execFileSync(process.execPath, ['--input-type=module', '--eval', script], {
+        cwd: process.cwd(),
+        encoding: 'utf8',
+        env: { ...process.env, DISABLE_VITE_NODE_POLYFILLS: '0' },
+      })
+    );
+
+    const fallbackIndex = pluginNames.indexOf('polkaswap:browser-crypto-fallback');
+    expect(fallbackIndex).toBeGreaterThanOrEqual(0);
+    expect(pluginNames.indexOf('vite-plugin-node-polyfills')).toBe(fallbackIndex + 1);
+  });
+
   it('keeps Electron pointed at the dedicated main and preload entrypoints', () => {
     expect(electronViteConfig.main?.build?.lib?.entry).toBe('electron/main/index.ts');
     expect(electronViteConfig.preload?.build?.lib?.entry).toBe('electron/preload/index.ts');

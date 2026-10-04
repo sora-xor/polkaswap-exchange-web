@@ -271,6 +271,7 @@
                 "noSmallerExactSample": "No smaller size with a fresh eligible quote",
                 "opening": "Bij de eerste mogelijke transactie verliest de beginallocatie minstens {loss}% van haar waarde in {symbol}. Dat overschrijdt uw limiet van {limit}%, zelfs zonder kosten.",
                 "openingDates": "{opened} → {firstTrade} {zone}",
+                "previousCheckThrough": "Vorige controle · gegevens tot {time}",
                 "quoteUnavailable": "Fresh quote unavailable",
                 "screenedDraft": "Draft #{number} skipped before testing",
                 "screeningCount": "{drafted} drafted · {tested} tested",
@@ -1192,6 +1193,15 @@
             "openai": "OpenAI"
         },
         "quant": {
+            "atlas": {
+                "caption": "Elke lijn is één geteste strategie, van het idee tot de resultaten in elke helft. Roze lijnen maakten winst in de tweede helft, blauwe lijnen verlies. Sleep langs een as om ze te beperken.",
+                "edit": "Deze strategie bewerken",
+                "help": "Sleep langs een as om te filteren. Klik op een lijn om de regels te zien. Druk op Esc om te wissen.",
+                "passed": "Geslaagd voor alle controles",
+                "pick": "Klik op een lijn om de regels te zien en de strategie te bewerken.",
+                "rejected": "Niet geslaagd voor alle controles",
+                "used": "Gebruikt door de bot"
+            },
             "banner": {
                 "detail": "De koers staat op {value} ten opzichte van het {window}-uursgemiddelde, voorbij de koopdrempel van {threshold}, dus een actieve bot zou nu kopen.",
                 "title": "{symbol} bevindt zich in de koopzone"
@@ -1251,7 +1261,6 @@
                 "watch": "Geen bot"
             },
             "mesh": {
-                "caption": "Elke stip is één geteste strategie. Heldere stippen slaagden voor alle controles; pulserende stippen zijn de strategieën die de bots gebruiken.",
                 "summary": "{robust} geslaagd · {killed} afgewezen",
                 "title": "Geteste strategieën"
             },
@@ -1315,6 +1324,161 @@
             "title": "Kant-en-klare bots",
             "trades": "Transacties",
             "watchNote": "Geen enkele regel was winstgevend in de tests, dus er is nog geen bot voor deze markt."
+        },
+        "studio": {
+            "botName": "{idea} · {symbol}",
+            "calculating": "Berekenen…",
+            "chart": {
+                "buys": "Aankopen",
+                "caption": "Sleep de roze lijn om te bepalen wanneer de bot koopt en de paarse lijn om te bepalen wanneer hij verkoopt. Druk op Afspelen om de bot te zien handelen.",
+                "captionNoLines": "Dit idee heeft geen lijnen om te slepen; wijzig de instellingen naast de 3D-grafiek. Druk op Afspelen om de bot te zien handelen.",
+                "equity": "Botwaarde vs. aanhouden",
+                "first": "Eerste helft: hier afstemmen",
+                "indicators": {
+                    "deviation": "Koers vs. {window}-uursgemiddelde",
+                    "drawdown": "Koers vs. hoogste punt in {window} uur",
+                    "momentum": "Koersverandering in {window} uur",
+                    "rsi": "Aandeel stijgingen in {window} uur"
+                },
+                "price": "{symbol}-koers in XOR",
+                "replay": "Afspelen",
+                "second": "Tweede helft: hier controleren",
+                "sells": "Verkopen",
+                "stop": "Stoppen",
+                "summary": "Aankopen: {buys}, verkopen: {sells} in beide helften.",
+                "title": "Koers en transacties"
+            },
+            "fairness": "De eerste helft is om af te stemmen, de tweede helft is de controle. Als je de instellingen blijft wijzigen tot de tweede helft er goed uitziet, is het geen eerlijke controle meer. Resultaten uit het verleden bieden geen garantie voor de toekomst.",
+            "idea": "Idee",
+            "intro": "Kies een markt en een idee en stem de regels af op historische SORA-pooldata. Alle weergaven tonen dezelfde keuze: klik op een staaf in de 3D-grafiek, sleep de lijnen in de koersgrafiek of filter de lijnen in de laatste grafiek.",
+            "landscape": {
+                "caption": "Elke staaf is één combinatie van de twee hoofdinstellingen. De hoogte toont de eerste helft, de kleur de tweede. Hoge staven die blauw worden, werkten alleen op de uren waarop ze zijn afgestemd.",
+                "color": "Kleur: tweede helft",
+                "describe": "{x}, {y}. Druk op Enter om deze instellingen te gebruiken.",
+                "height": "Hoogte: eerste helft",
+                "help": "Sleep om de weergave te draaien. Klik op een staaf, of gebruik de pijltjestoetsen en Enter, om de instellingen ervan te gebruiken.",
+                "pick": "Klik om deze instellingen te gebruiken",
+                "title": "Resultaten per instelling"
+            },
+            "loading": "Historische pooldata laden…",
+            "market": "Markt",
+            "newIdea": "Nieuw",
+            "openLab": "Openen in Strategielab",
+            "outcomes": {
+                "first": "Eerste helft",
+                "holding": "Tijd in positie",
+                "idea": "Idee",
+                "maxDrop": "Grootste daling",
+                "second": "Tweede helft",
+                "trades": "Transacties"
+            },
+            "parallel": {
+                "caption": "Elke lijn is één combinatie van instellingen, van de instellingen links tot de resultaten rechts. Sleep langs een as om alleen de lijnen in dat bereik te houden.",
+                "clear": "Filters wissen",
+                "count": "{shown} van {total} zichtbaar",
+                "help": "Sleep langs een as om te filteren. Klik op een lijn om de instellingen ervan te gebruiken. Druk op Esc om te wissen.",
+                "pick": "Klik om deze instellingen te gebruiken",
+                "title": "Alle varianten van dit idee"
+            },
+            "params": {
+                "amount": "Ordergrootte",
+                "average": "Verkoopgemiddelde",
+                "buy": "Koop onder gemiddelde",
+                "choppy": "Aandeel één richting",
+                "choppyWindow": "Schommeling over",
+                "drop": "Omvang daling",
+                "exit": "Verkoop onder gemiddelde",
+                "fall": "Onder hoogste punt",
+                "guard": "Max. weekdaling",
+                "highWindow": "Nieuw hoogste punt over",
+                "hours": "Daling binnen",
+                "jump": "Omvang sprong",
+                "jumpHours": "Sprong binnen",
+                "lead": "Koop boven gemiddelde",
+                "level": "Aandeel stijgingen",
+                "lookback": "Vergeleken met",
+                "lowWindow": "Nieuw laagste punt over",
+                "peakWindow": "Hoogste punt over",
+                "percentile": "Zeldzaamste uren",
+                "pull": "Sterkte terugkeer",
+                "pullWindow": "Terugkeer gemeten over",
+                "rsiWindow": "Bewegingen over",
+                "sell": "Verkoop boven gemiddelde",
+                "window": "Gemiddelde over"
+            },
+            "recipes": {
+                "breakout": {
+                    "idea": "Koopt als de koers een nieuw hoogste punt bereikt en verkoopt bij een nieuw laagste punt.",
+                    "name": "Nieuw hoogste punt"
+                },
+                "dip": {
+                    "idea": "Koopt als de koers ruim onder het recente gemiddelde zakt en verkoopt als die herstelt. De kant-en-klare bots gebruiken dit idee.",
+                    "name": "Koop de dip"
+                },
+                "drop": {
+                    "idea": "Koopt direct na een scherpe daling binnen een paar uur en verkoopt als de koers weer dicht bij het gemiddelde is.",
+                    "name": "Plotselinge daling"
+                },
+                "elastic": {
+                    "idea": "Koopt dips alleen als de koers onlangs na elke beweging terugkeerde naar het gemiddelde.",
+                    "name": "Terugverende markt"
+                },
+                "oversold": {
+                    "idea": "Koopt als bijna elke recente koersbeweging omlaag was en verkoopt als de koers weer boven het gemiddelde staat.",
+                    "name": "Herstel na oververkoop"
+                },
+                "peak": {
+                    "idea": "Koopt als de koers ver onder het recente hoogste punt staat en verkoopt als die herstelt tot het gemiddelde.",
+                    "name": "Ver onder het hoogste punt"
+                },
+                "range": {
+                    "idea": "Koopt dips alleen zolang de koers heen en weer beweegt in plaats van in één richting.",
+                    "name": "Dip in een zijwaartse markt"
+                },
+                "rare-drop": {
+                    "idea": "Koopt alleen als de daling van dit uur bij de grootste van de afgelopen uren hoort en de koers ruim onder het gemiddelde staat.",
+                    "name": "Zeldzame daling"
+                },
+                "rebound": {
+                    "idea": "Koopt de dip en verkoopt als de koers herstelt of zodra die snel omhoogschiet.",
+                    "name": "Snel herstel"
+                },
+                "steady-dip": {
+                    "idea": "Zoals “Koop de dip”, maar slaat dips over als de koers de afgelopen week flink is gedaald.",
+                    "name": "Dip in een rustige week"
+                },
+                "trend": {
+                    "idea": "Koopt als de koers boven het gemiddelde stijgt en verkoopt als die er weer onder zakt.",
+                    "name": "Volg de trend"
+                }
+            },
+            "result": {
+                "first": "Eerste helft",
+                "second": "Tweede helft",
+                "title": "Jouw strategie"
+            },
+            "rule": {
+                "drawdownBelow": "Koers vs. hoogste punt in {window} uur onder {value}%",
+                "efficiencyBelow": "Minder dan {value}% van de bewegingen in {window} uur ging één kant op",
+                "quantileBelow": "De verandering van dit uur valt in de laagste {percentile}% van de laatste {window} uur",
+                "restoringAbove": "Terugkeer naar het {window}-uursgemiddelde is sterker dan {value}",
+                "rsiBelow": "Stijgingen zijn minder dan {value}% van alle bewegingen in {window} uur",
+                "sellAny": "Verkoop wanneer een van deze voorwaarden geldt"
+            },
+            "steps": {
+                "check": "Controleer de tweede helft",
+                "paper": "Probeer het uit in simulatie",
+                "pick": "Kies een markt en een idee",
+                "tune": "Stem het af op de eerste helft"
+            },
+            "title": "Bouw je eigen bot",
+            "units": {
+                "hours": "{value} u",
+                "level": "{value}",
+                "percent": "{value}%",
+                "percentile": "{value}%",
+                "xor": "{value} XOR"
+            }
         },
         "receiveToken": "Handelstoken",
         "research": {
@@ -3697,11 +3861,46 @@
             "pendingInternal": "{Sora} transactie in behandeling...",
             "signAndClaim": "Onderteken en claim"
         },
+        "analytics": {
+            "connectToSee": "Verbind je account om dit te zien.",
+            "feeShare": "De vergoeding is {percent} van deze claim.",
+            "market": {
+                "day": "24 u",
+                "period": "Afgelopen 30 dagen",
+                "title": "Prijs",
+                "unavailable": "Prijsgegevens zijn nu niet beschikbaar.",
+                "week": "7 d"
+            },
+            "showTable": "Tabel",
+            "skipped": "Niet in deze claim",
+            "sources": {
+                "crowdloan": "Crowdloan",
+                "empty": "Nog geen beloningen om te tonen.",
+                "external": "{Ethereum}-account",
+                "liquidity": "Liquiditeitsvergoedingen",
+                "strategic": "Strategisch",
+                "title": "Per bron",
+                "unpriced": "Tokens zonder prijs staan in de lijst, maar worden niet in de balk getoond."
+            },
+            "table": {
+                "share": "Aandeel",
+                "source": "Bron",
+                "value": "Waarde"
+            },
+            "vesting": {
+                "empty": "Geen vestingbeloningen.",
+                "fullyUnlocked": "Alles is ontgrendeld",
+                "title": "Vesting"
+            }
+        },
         "andText": "en",
         "claimableAmountDoneVesting": "Opeisbare beloningen",
         "claiming": {
             "pending": "Aan het claimen...",
             "success": "Succesvol geclaimd"
+        },
+        "claimSection": {
+            "title": "Wat je kunt claimen"
         },
         "events": {
             "BuyOnBondingCurve": "kopen van de TBC",
@@ -3718,11 +3917,19 @@
             "external": "Beloningen voor het verbonden {Ethereum}-account",
             "strategic": "Strategische beloningen"
         },
+        "hero": {
+            "connectTitle": "Bekijk en claim je beloningen"
+        },
         "hint": {
             "connectAccounts": "Om je PSWAP- en VAL-beloningen te claimen, moet je zowel je {Sora}-als {Ethereum}-accounts verbinden.",
             "connectAnotherAccount": "Verbind een ander {Ethereum}-account om te controleren op beschikbare PSWAP- en VAL-beloningen.",
             "connectExternalAccount": "Verbind een {Ethereum}-account om te controleren op beschikbare PSWAP- en VAL-beloningen.",
             "howToClaimRewards": "Om uw {symbols} -beloningen te claimen, moet u {count} {transactions} in {destination} ondertekenen. Beloningen worden gestort op je {Sora} -account."
+        },
+        "howTo": {
+            "choose": "Kies wat je wilt claimen",
+            "connect": "Verbind je {Sora}-account",
+            "title": "Zo claim je"
         },
         "notification": {
             "empty": "Geen beschikbare claims voor dit account"
@@ -3733,6 +3940,16 @@
         "signing": {
             "accounts": "uw respectievelijke {Sora}-en {Ethereum}-accounts",
             "extension": "{PolkadotJs} browser extensie"
+        },
+        "stats": {
+            "locked": "Nog vergrendeld",
+            "unlocked": "Ontgrendeld"
+        },
+        "status": {
+            "connect": "Account niet verbonden",
+            "empty": "Nog niets te claimen",
+            "failed": "Claimen mislukt",
+            "ready": "Klaar om te claimen"
         },
         "totalVested": "Totale beloningen",
         "transactions": {

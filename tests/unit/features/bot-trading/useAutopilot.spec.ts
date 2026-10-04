@@ -3428,6 +3428,62 @@ describe('unsigned opportunity watching', () => {
     }
   );
 
+  it.each(['bots.errors.stale', 'bots.codex.expired', 'bots.autopilot.errors.historyUnavailable'])(
+    'retains the original training check separately from an automatic %s failure',
+    async (errorKey) => {
+      const f = await startWatching();
+      const previous = f.state.watchRecovery.value!.trainingDiagnostics;
+      f.readResearchReadiness.mockResolvedValue({
+        completedThrough: completedThrough + HOUR,
+        validationFrom: validationFrom + HOUR,
+      });
+      f.researcher.run.mockImplementationOnce(async () => {
+        if (errorKey === 'bots.codex.expired') f.reportHistory(completedThrough + HOUR);
+        throw new Error(errorKey);
+      });
+      await vi.advanceTimersByTimeAsync(55 * 60_000);
+
+      expect(f.state.stage.value).toBe('watching');
+      expect(f.state.error.value).toBe(errorKey);
+      expect(f.state.diagnostics.value).toBeNull();
+      expect(f.state.diagnosticsCompletedThrough.value).toBeNull();
+      expect(f.state.watchRecovery.value?.trainingDiagnostics).toEqual(previous);
+      expect(f.state.watchRecovery.value?.trainingDiagnostics).toMatchObject({
+        completedThrough,
+        failures: [{ candidate: 1, reasons: ['netLoss'] }],
+      });
+      expect(f.state.recoverableWatchInput.value).toMatchObject({
+        capital: '10',
+        feeBudgetXor: '1',
+        assetInAddress: GOAL_EXACT_KUSD,
+        assetOutAddress: GOAL_EXACT_XOR,
+      });
+      expect(f.state.canResumeWatch.value).toBe(false);
+      expect(f.trading.prepareLiveBot).not.toHaveBeenCalled();
+      expect(f.trading.saveLiveBot).not.toHaveBeenCalled();
+      expect(f.trading.startBot).not.toHaveBeenCalled();
+      f.state.cancel();
+      expect(f.state.watchRecovery.value).toBeNull();
+    }
+  );
+
+  it('does not publish active-watch historical diagnostics after the live identity stops matching', async () => {
+    const f = await startWatching();
+    expect(f.state.watchRecovery.value?.trainingDiagnostics?.completedThrough).toBe(completedThrough);
+    f.trading.readConnectionIdentity.mockReturnValue('different-wallet');
+    // Trigger an active presentation read before the asynchronous identity watcher can pause recovery.
+    f.trading.connectionIdentity.value = 'different-wallet';
+    expect(f.state.watchRecovery.value).toBeNull();
+    expect(f.state.recoverableWatchInput.value).toBeNull();
+    expect(f.trading.prepareLiveBot).not.toHaveBeenCalled();
+    expect(f.trading.startBot).not.toHaveBeenCalled();
+    await flushPromises();
+    expect(f.state.stage.value).toBe('fund');
+    // The paused original public plan can remain visible, but the replacement wallet cannot resume it.
+    expect(f.state.watchRecovery.value?.trainingDiagnostics?.completedThrough).toBe(completedThrough);
+    expect(f.state.recoverableWatchInput.value).toBeNull();
+  });
+
   it('retains the full holdout quarantine when automatic research becomes stale after validation starts', async () => {
     const f = await startWatching();
     f.readResearchReadiness.mockResolvedValue({

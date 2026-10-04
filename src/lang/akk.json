@@ -271,6 +271,7 @@
                 "noSmallerExactSample": "𒅆𒀀 𒉌𒁺 𒊹𒌷 𒁕𒀭",
                 "opening": "𒆠𒁲 1: {symbol} ↓ ≥ {loss}%. 𒊹𒌷 {limit}%. 𒈠𒄦: 0.",
                 "openingDates": "{opened} → {firstTrade} {zone}",
+                "previousCheckThrough": "𒉺𒈾 𒋫𒂊𒊓𒋫: 𒌓 {time}",
                 "quoteUnavailable": "𒁕𒀭 𒉌𒁺",
                 "screenedDraft": "𒊹𒌷 #{number} 𒅆𒀀 𒋫𒂊𒊓𒋫",
                 "screeningCount": "{drafted} 𒊹𒌷 · {tested} 𒋫𒂊𒊓𒋫",
@@ -1192,6 +1193,15 @@
             "openai": "𒌋𒉺𒂊𒈾𒀀𒄿"
         },
         "quant": {
+            "atlas": {
+                "caption": "𒄖 𒅖𒋼𒂗 𒈪𒅋𒆪 𒅖𒋼𒂗 𒊭 𒅆𒁇, 𒅖𒌅 𒌑𒍪𒌨𒋾𒋗 𒀀𒁲 𒋼𒈬𒌑𒋗 𒄿𒈾 𒈪𒅖𒇷 𒆠𒇲𒇷𒂗. 𒄖𒈨𒌍 𒊓𒀀𒈬𒌅 𒄿𒈾 𒈪𒅖𒇷 𒊭𒉌𒄿 𒉈𒈨𒆷 𒄿𒁍𒋗, 𒄖𒈨𒌍 𒊌𒉡𒌑𒌅 𒁉𒋾𒅅𒋫 𒄿𒁍𒋗. 𒀀𒈾 𒈾𒊓𒆠 𒄿𒈾 𒄩𒀜𒁲 𒋗𒁺𒌓.",
+                "edit": "𒈪𒅋𒅗 𒀭𒈾𒀀 𒋗𒌦𒉌",
+                "help": "𒀀𒈾 𒈾𒊓𒆠 𒄿𒈾 𒄩𒀜𒁲 𒋗𒁺𒌓. 𒀀𒈾 𒊑𒅅𒊓𒋾𒋗 𒀀𒈠𒊑 𒄖 𒇻𒁍𒌓. 𒀀𒈾 𒉺𒊭𒊑 ⎋ 𒇻𒁍𒌓.",
+                "passed": "𒅗𒆷 𒅆𒁇 𒄿𒋾𒅅",
+                "pick": "𒀀𒈾 𒊑𒅅𒊓𒋾𒋗 𒀀𒈠𒊑 𒌋 𒋗𒌦𒉌𒄿 𒄖 𒇻𒁍𒌓.",
+                "rejected": "𒅗𒆷 𒅆𒁇 𒌌 𒄿𒋾𒅅",
+                "used": "𒊭 𒁀𒌋𒋫 𒄿𒇷𒅅𒆪𒌑"
+            },
             "banner": {
                 "detail": "𒅆𒈬 {value} 𒀀𒈾 𒋡𒀊𒇷 𒊭 {window} 𒈪𒅆𒅋 𒁁𒊑; 𒈪𒍣𒅕 𒊭𒀀𒈪 {threshold} 𒄿𒋾𒅅, 𒀸𒋳 𒀭𒉌𒅎 𒁀𒌋𒋫 𒊭 𒅋𒆷𒆪 𒄿𒈾𒀭𒈾 𒄿𒊭𒄠.",
                 "title": "{symbol} 𒌷𒊭 𒉌𒁺 𒉌𒁺 𒌷𒊭 𒅆𒀀"
@@ -1251,7 +1261,6 @@
                 "watch": "𒁀𒌋𒋫 𒌌 𒄿𒁀𒀸𒅆"
             },
             "mesh": {
-                "caption": "𒉿𒅔𒁺𒌑 𒅖𒋼𒂗 𒈪𒅋𒆪 𒅖𒋼𒂗 𒊭 𒅆𒁇. 𒉿𒅔𒁺𒌑 𒈾𒄠𒊒𒌅 𒅗𒆷 𒅆𒁇 𒄿𒋾𒆪; 𒊭 𒄿𒍝𒅈𒊒𒊒 𒁀𒌋𒋫𒊓 𒄿𒇷𒅅𒆪𒌑.",
                 "summary": "{robust} 𒄿𒋾𒆪 · {killed} 𒈾𒊍𒄷",
                 "title": "𒈪𒅋𒆪𒌑 𒊭 𒅆𒁇"
             },
@@ -1315,6 +1324,161 @@
             "title": "𒁀𒌋𒋫𒊓 𒋗𒌑𒋗𒊒𒌅",
             "trades": "𒁕𒀭",
             "watchNote": "𒄿𒈾 𒅆𒁇 𒊑𒅅𒊓𒌅 𒉈𒈨𒆷 𒌌 𒄿𒁍𒊭; 𒀸𒋳 𒀭𒉌𒅎 𒀀𒈾 𒈠𒄭𒊑 𒀭𒉌𒅎 𒁀𒌋𒋫 𒀀𒁲 𒄿𒈾𒀭𒈾 𒌌 𒄿𒁀𒀸𒅆."
+        },
+        "studio": {
+            "botName": "{idea} · {symbol}",
+            "calculating": "𒈠𒉡𒌑…",
+            "chart": {
+                "buys": "𒊭𒀀𒈬",
+                "caption": "𒀀𒈾 𒊭𒀀𒈪 𒋗𒌦𒉌𒄿 𒄖 𒊓𒀀𒈠 𒋗𒁺𒌓, 𒀀𒈾 𒈾𒁕𒉌 𒋗𒌦𒉌𒄿 𒄖 𒅈𒂵𒈠𒀭𒈾 𒋗𒁺𒌓. 𒀀𒈾 𒁮𒃲 𒊭 𒁀𒌋𒋫 𒀀𒈠𒊑 “𒊭𒉌𒅖 𒆪𒌌𒇷𒅎” 𒇻𒁍𒌓.",
+                "captionNoLines": "𒄿𒈾 𒌑𒍪𒌨𒋾 𒀭𒉌𒋾 𒄖 𒊭 𒊭𒁕𒁲 𒌌 𒄿𒁀𒀸𒅆; 𒅆𒅅𒈾𒋾𒊭 𒄿𒋫 𒍝𒇴 𒋾𒅎𒈪 𒋗𒌦𒉌. 𒀀𒈾 𒁮𒃲 𒊭 𒁀𒌋𒋫 𒀀𒈠𒊑 “𒊭𒉌𒅖 𒆪𒌌𒇷𒅎” 𒇻𒁍𒌓.",
+                "equity": "𒅆𒅎 𒁀𒌋𒋫 𒀀𒈾 𒆪𒌌𒇷",
+                "first": "𒈪𒅖𒇻 𒈠𒄴𒊒𒌑: 𒀭𒈾𒅗𒄠 𒋗𒋼𒅆𒅕",
+                "indicators": {
+                    "deviation": "𒅆𒈬 𒀀𒈾 𒋡𒀊𒇷 𒊭 {window} 𒈪𒅆𒅋 𒁁𒊑",
+                    "drawdown": "𒅆𒈬 𒀀𒈾 𒊑𒅖 𒅆𒈪 𒊭 {window} 𒈪𒅆𒅋 𒁁𒊑",
+                    "momentum": "𒅆𒉌𒀉 𒅆𒈪 𒊭 {window} 𒈪𒅆𒅋 𒁁𒊑",
+                    "rsi": "𒍣𒀉𒋾 𒅆𒉌𒀀𒋾 𒂊𒇷𒀀𒋾 𒊭 {window} 𒈪𒅆𒅋 𒁁𒊑"
+                },
+                "price": "𒅆𒅎 {symbol} 𒄿𒈾 𒁕𒀭",
+                "replay": "𒊭𒉌𒅖 𒆪𒌌𒇷𒅎",
+                "second": "𒈪𒅖𒇻 𒊭𒉡𒌑: 𒀭𒈾𒅗𒄠 𒁀𒊑",
+                "sells": "𒈾𒁕𒉡",
+                "stop": "𒄿𒍣𒄑",
+                "summary": "𒄿𒈾 𒈪𒅖𒇷 𒆠𒇲𒇷𒂗 {buys} 𒊭𒀀𒈬 𒌋 {sells} 𒈾𒁕𒉡.",
+                "title": "𒅆𒈬 𒌋 𒁮𒃲"
+            },
+            "fairness": "𒈪𒅖𒇻 𒈠𒄴𒊒𒌑 𒀀𒈾 𒋗𒋼𒋗𒊑, 𒈪𒅖𒇻 𒊭𒉡𒌑 𒀀𒈾 𒅆𒁇. 𒋗𒌝𒈠 𒅆𒅅𒈾𒋾 𒀀𒁲 𒈪𒅖𒇻 𒊭𒉡𒌑 𒄿𒁮𒈪𒆪 𒌅𒊭𒀭𒈾, 𒅆𒁇 𒋗𒌑 𒌌 𒆠𒅔. 𒋼𒈬𒌑 𒆷𒁉𒊒𒌅 𒉈𒈨𒆷 𒊭 𒅈𒅗𒋾 𒌌 𒌋𒅗𒀭𒉡.",
+            "idea": "𒌑𒍪𒌨𒌅",
+            "intro": "𒈠𒄭𒊏 𒌋 𒌑𒍪𒌨𒋫 𒉌𒋛𒅅, 𒅈𒅗𒉡 𒊑𒅅𒊓𒋾𒊭 𒄿𒈾 𒅆𒀉𒊑 𒆷𒁉𒊒𒋾 𒊭 𒀀 𒊭 𒋢𒊏 𒋗𒋼𒅆𒅕. 𒅗𒆷 𒍝𒀠𒈬 𒉌𒄑𒋡 𒅖𒋼𒂗 𒌑𒆗𒆷𒈬: 𒄿𒈾 𒍝𒇴 𒋾𒅎𒈪 𒋾𒅎𒈠 𒇻𒁍𒌓, 𒄿𒈾 𒍝𒇴 𒅆𒈪 𒄖𒈨𒌍 𒋗𒁺𒌓, 𒇻𒌑 𒄿𒈾 𒍝𒀠𒈪 𒅈𒆠𒄿 𒄖𒈨𒌍 𒉌𒋛𒅅.",
+            "landscape": {
+                "caption": "𒋾𒅎𒈬 𒅖𒋼𒂗 𒉌𒄑𒆪 𒅖𒋼𒂗 𒊭 𒅆𒅅𒈾𒋾 𒊏𒁍𒋾 𒆠𒇲𒆷𒀭. 𒅆𒄿𒄷 𒈪𒅖𒆷 𒈠𒄴𒊏𒀀 𒌑𒆗𒇴, 𒅆𒅎𒌅 𒈪𒅖𒆷 𒊭𒈾𒀀 𒌑𒆗𒇴. 𒋾𒅎𒈬 𒅆𒄷𒌅 𒊭 𒀀𒈾 𒊌𒉌𒄿 𒄿𒌅𒊒 𒅋𒆷 𒄿𒈾 𒈪𒅆𒅋 𒁁𒊑 𒊭 𒋗𒋼𒋗𒊑 𒌌 𒅋𒇷𒆪.",
+                "color": "𒅆𒅎𒌅: 𒈪𒅖𒇻 𒊭𒉡𒌑",
+                "describe": "{x}, {y}. 𒀀𒈾 𒅆𒅅𒈾𒋾 𒀭𒈾𒀀𒋾 𒇷𒆠𒂊 ↵ 𒇻𒁍𒌓.",
+                "height": "𒅆𒄿𒄷: 𒈪𒅖𒇻 𒈠𒄴𒊒𒌑",
+                "help": "𒀀𒈾 𒍝𒀠𒈪 𒋢𒄴𒄷𒊑 𒋗𒁺𒌓. 𒀀𒈾 𒅆𒅅𒈾𒋾𒋗 𒇷𒆠𒂊 𒋾𒅎𒈠 𒇻𒁍𒌓, 𒇻𒌑 ← → ↑ ↓ 𒌋 ↵ 𒇻𒁍𒌓.",
+                "pick": "𒀀𒈾 𒅆𒅅𒈾𒋾 𒀭𒈾𒀀𒋾 𒇷𒆠𒂊 𒇻𒁍𒌓",
+                "title": "𒋼𒈬𒌑 𒆠𒈠 𒅆𒅅𒈾𒋾"
+            },
+            "loading": "𒇷𒆪𒌑 𒅆𒀉𒊑 𒆷𒁉𒊒𒋾 𒊭 𒀀…",
+            "market": "𒈠𒄭𒊒",
+            "newIdea": "𒂊𒅖𒊺𒌅",
+            "openLab": "𒄿𒈾 𒂍 𒈪𒅋𒆠 𒉿𒋼𒂊",
+            "outcomes": {
+                "first": "𒈪𒅖𒇻 𒈠𒄴𒊒𒌑",
+                "holding": "𒀀𒆗𒉌 𒆪𒌌𒇷",
+                "idea": "𒌑𒍪𒌨𒌅",
+                "maxDrop": "𒈪𒆠𒀉𒌅 𒊏𒁉𒌅",
+                "second": "𒈪𒅖𒇻 𒊭𒉡𒌑",
+                "trades": "𒁮𒃲"
+            },
+            "parallel": {
+                "caption": "𒄖 𒅖𒋼𒂗 𒉌𒄑𒆪 𒅖𒋼𒂗 𒊭 𒅆𒅅𒈾𒋾, 𒅖𒌅 𒅆𒅅𒈾𒋾 𒊭 𒋗𒈨𒇷 𒀀𒁲 𒋼𒈬𒌑 𒊭 𒅎𒉌. 𒀀𒈾 𒄖𒈨𒌍 𒊭 𒄿𒈾 𒈪𒄑𒊑 𒋗𒀀𒋾 𒂊𒁲𒅖𒅆𒋗𒉡 𒆪𒌌𒇷, 𒄿𒈾 𒄩𒀜𒁲 𒀀𒀀𒅎𒈠 𒋗𒁺𒌓.",
+                "clear": "𒉌𒄑𒆠 𒁍𒋗𒌨",
+                "count": "{shown} 𒄿𒈾 {total} 𒆪𒌌𒇻𒈬",
+                "help": "𒀀𒈾 𒈾𒊓𒆠 𒄿𒈾 𒄩𒀜𒁲 𒋗𒁺𒌓. 𒀀𒈾 𒅆𒅅𒈾𒋾𒋗 𒇷𒆠𒂊 𒄖 𒇻𒁍𒌓. 𒀀𒈾 𒉺𒊭𒊑 ⎋ 𒇻𒁍𒌓.",
+                "pick": "𒀀𒈾 𒅆𒅅𒈾𒋾 𒀭𒈾𒀀𒋾 𒇷𒆠𒂊 𒇻𒁍𒌓",
+                "title": "𒅗𒆷 𒅆𒉌𒀀𒀜 𒌑𒍪𒌨𒋾 𒀭𒉌𒋾"
+            },
+            "params": {
+                "amount": "𒁕𒀭 𒀀𒈾 𒊭𒀀𒈪 𒅖𒋼𒂗",
+                "average": "𒋡𒀊𒇻 𒊭 𒈾𒁕𒉌",
+                "buy": "𒊭𒀀𒈬 𒊭𒁄 𒋡𒀊𒇷",
+                "choppy": "𒍣𒀉𒋾 𒄿𒁲 𒅖𒋼𒂗",
+                "choppyWindow": "𒁕𒆷𒄷 𒄿𒈾",
+                "drop": "𒊏𒁍𒌓 𒈪𒆠𒀉𒋾",
+                "exit": "𒈾𒁕𒉡 𒊭𒁄 𒋡𒀊𒇷",
+                "fall": "𒊭𒁄 𒊑𒅖 𒅆𒈪",
+                "guard": "𒈪𒆠𒀉𒌅 𒊏𒁉𒌅 𒊭 7 𒌓𒈨𒌍",
+                "highWindow": "𒊑𒅖 𒅆𒈪 𒅖𒋗 𒄿𒈾",
+                "hours": "𒈪𒆠𒀉𒌅 𒄿𒈾",
+                "jump": "𒊏𒁍𒌓 𒅆𒄴𒁲",
+                "jumpHours": "𒅆𒄴𒁺 𒄿𒈾",
+                "lead": "𒊭𒀀𒈬 𒂊𒇷 𒋡𒀊𒇷",
+                "level": "𒍣𒀉𒋾 𒅆𒉌𒀀𒋾 𒂊𒇷𒀀𒋾",
+                "lookback": "𒈠𒄩𒅈",
+                "lowWindow": "𒄿𒅆𒀉 𒅆𒈪 𒅖𒋗 𒄿𒈾",
+                "peakWindow": "𒊑𒅖 𒅆𒈪 𒊭",
+                "percentile": "𒈪𒅆𒅋 𒁁𒊑 𒉿𒀝𒊒𒌅",
+                "pull": "𒁕𒈾𒀭 𒊭𒁕𒁲",
+                "pullWindow": "𒊭𒁕𒁺 𒄿𒈾",
+                "rsiWindow": "𒅆𒉌𒀀𒌅 𒈠𒈾𒀀 𒄿𒈾",
+                "sell": "𒈾𒁕𒉡 𒂊𒇷 𒋡𒀊𒇷",
+                "window": "𒋡𒀊𒇻 𒊭"
+            },
+            "recipes": {
+                "breakout": {
+                    "idea": "𒄿𒉡𒈠 𒅆𒈬 𒊑𒊭 𒅖𒊭 𒅅𒋗𒁺 𒄿𒊭𒄠, 𒄿𒉡𒈠 𒅖𒁕 𒅖𒊭 𒅅𒋗𒁺 𒄿𒈾𒀜𒁲𒅔.",
+                    "name": "𒊑𒅖 𒅆𒈪 𒅖𒋗"
+                },
+                "dip": {
+                    "idea": "𒄿𒉡𒈠 𒅆𒈬 𒊭𒁄 𒋡𒀊𒇷 𒊭 𒌓𒈨𒌍 𒀭𒉡𒋾 𒈠𒀀𒁲𒅖 𒄿𒈠𒀝𒆪𒌓 𒄿𒊭𒄠, 𒄿𒉡𒈠 𒄿𒋫𒅈 𒄿𒈾𒀜𒁲𒅔. 𒁀𒌋𒋫𒊓 𒋗𒌑𒋗𒊒𒌅 𒌑𒍪𒌨𒋫 𒀭𒉌𒋫 𒄿𒇷𒅅𒆪𒌑.",
+                    "name": "𒄿𒈾 𒈪𒆠𒀉𒋾 𒊭𒄠"
+                },
+                "drop": {
+                    "idea": "𒅈𒆠 𒈪𒆠𒀉𒋾 𒄩𒀭𒁲𒋾 𒊭 𒄿𒈾 𒈪𒅆𒅋 𒁁𒊑 𒈠𒁺𒋾 𒄩𒀭𒁲𒅖 𒄿𒊭𒄠; 𒄿𒉡𒈠 𒅆𒈬 𒀀𒈾 𒁲𒄭 𒋡𒀊𒇷 𒄿𒋫𒅈 𒄿𒈾𒀜𒁲𒅔.",
+                    "name": "𒈪𒆠𒀉𒌅 𒄩𒀭𒁲𒌅"
+                },
+                "elastic": {
+                    "idea": "𒅋𒆷 𒄿𒉡𒈠 𒄿𒈾 𒌓𒈨𒌍 𒀭𒉡𒋾 𒅈𒆠 𒅆𒉌𒋾 𒅗𒆷𒈠 𒅆𒈬 𒀀𒈾 𒋡𒀊𒇷 𒄿𒌅𒊒, 𒄿𒈾 𒈪𒆠𒀉𒋾 𒌌 𒄿𒊭𒄠.",
+                    "name": "𒈠𒄭𒊒 𒋫𒀀𒀀𒊒"
+                },
+                "oversold": {
+                    "idea": "𒄿𒉡𒈠 𒅆𒉌𒀀𒀜 𒅆𒈪 𒊭 𒌓𒈨𒌍 𒀭𒉡𒋾 𒆠𒈠 𒅗𒆷𒅆𒈾 𒊭𒀊𒆷 𒄿𒊭𒄠; 𒅈𒅗𒉡 𒄿𒉡𒈠 𒅆𒈬 𒂊𒇷 𒋡𒀊𒇷 𒄿𒌅𒊒 𒄿𒈾𒀜𒁲𒅔.",
+                    "name": "𒋫𒀀𒊒 𒅈𒆠 𒈾𒁕𒉌 𒈠𒀀𒁲"
+                },
+                "peak": {
+                    "idea": "𒄿𒉡𒈠 𒅆𒈬 𒊒𒆠𒅖 𒊭𒁄 𒊑𒅖 𒅆𒈪 𒊭 𒌓𒈨𒌍 𒀭𒉡𒋾 𒄿𒊭𒄠, 𒄿𒉡𒈠 𒀀𒈾 𒋡𒀊𒇷 𒄿𒌅𒊒 𒄿𒈾𒀜𒁲𒅔.",
+                    "name": "𒊒𒆠𒅖 𒊭𒁄 𒊑𒅖 𒅆𒈪"
+                },
+                "range": {
+                    "idea": "𒅋𒆷 𒄿𒉡𒈠 𒅆𒈬 𒂊𒆷𒄠 𒌋 𒊭𒉺𒆷𒄠 𒅋𒆷𒆪𒈠 𒀀𒈾 𒄿𒁲 𒅖𒋼𒂗 𒆷 𒅋𒆷𒆪, 𒄿𒈾 𒈪𒆠𒀉𒋾 𒌌 𒄿𒊭𒄠.",
+                    "name": "𒈪𒆠𒀉𒋾 𒈠𒄭𒊑 𒁕𒀠𒄭"
+                },
+                "rare-drop": {
+                    "idea": "𒅋𒆷 𒄿𒉡𒈠 𒈪𒆠𒀉𒋾 𒈪𒅆𒅋 𒁁𒊑 𒀭𒉌𒄿 𒄿𒈾 𒈪𒅆𒅋 𒁁𒊑 𒈠𒄴𒊒𒋾 𒊏𒁉𒀀𒀜, 𒌋 𒅆𒈬 𒊒𒆠𒅖 𒊭𒁄 𒋡𒀊𒇷, 𒌌 𒄿𒊭𒄠.",
+                    "name": "𒈪𒆠𒀉𒌅 𒉿𒀝𒊏𒌅"
+                },
+                "rebound": {
+                    "idea": "𒄿𒈾 𒈪𒆠𒀉𒋾 𒄿𒊭𒄠, 𒅈𒅗𒉡 𒇻𒌑 𒄿𒉡𒈠 𒅆𒈬 𒄿𒌅𒊒, 𒇻𒌑 𒄿𒉡𒈠 𒄩𒀭𒁲𒅖 𒄿𒇷𒌑, 𒄿𒈾𒀜𒁲𒅔.",
+                    "name": "𒋫𒀀𒊒 𒄩𒀭𒁺"
+                },
+                "steady-dip": {
+                    "idea": "𒆠𒈠 “𒄿𒈾 𒈪𒆠𒀉𒋾 𒊭𒄠”; 𒋗𒌝𒈠 𒄿𒈾 7 𒌓𒈨𒌍 𒈠𒄴𒊒𒋾 𒅆𒈬 𒈠𒀀𒁲𒅖 𒅎𒆪𒌓, 𒈪𒆠𒀉𒋫 𒌌 𒄿𒊭𒄠.",
+                    "name": "𒈪𒆠𒀉𒌅 𒄿𒈾 7 𒌓𒈨𒌍 𒉈𒄷𒋾"
+                },
+                "trend": {
+                    "idea": "𒄿𒉡𒈠 𒅆𒈬 𒂊𒇷 𒋡𒀊𒇷 𒄿𒇷𒌑 𒄿𒊭𒄠, 𒄿𒉡𒈠 𒊭𒁄 𒋡𒀊𒇷 𒄿𒌅𒊒 𒄿𒈾𒀜𒁲𒅔.",
+                    "name": "𒀀𒆷𒀝𒋾 𒅆𒈪 𒊑𒁲"
+                }
+            },
+            "result": {
+                "first": "𒈪𒅖𒇻 𒈠𒄴𒊒𒌑",
+                "second": "𒈪𒅖𒇻 𒊭𒉡𒌑",
+                "title": "𒈪𒅋𒆪𒅗"
+            },
+            "rule": {
+                "drawdownBelow": "𒅆𒈬 𒀀𒈾 𒊑𒅖 𒅆𒈪 𒊭 {window} 𒈪𒅆𒅋 𒁁𒊑 𒊭𒁄 {value}%",
+                "efficiencyBelow": "𒊭𒁄 {value}% 𒊭 𒅆𒉌𒀀𒋾 𒊭 {window} 𒈪𒅆𒅋 𒁁𒊑 𒀀𒈾 𒄿𒁲 𒅖𒋼𒂗 𒅋𒇷𒅗",
+                "quantileBelow": "𒅆𒉌𒀉 𒈪𒅆𒅋 𒁁𒊑 𒀭𒉌𒄿 𒄿𒈾 {percentile}% 𒊭𒀊𒇻𒋾 𒊭 {window} 𒈪𒅆𒅋 𒁁𒊑 𒈠𒄴𒊒𒋾",
+                "restoringAbove": "𒊭𒁕𒀜 𒅆𒈪 𒀀𒈾 𒋡𒀊𒇷 𒊭 {window} 𒈪𒅆𒅋 𒁁𒊑 𒂊𒇷 {value} 𒁕𒀭",
+                "rsiBelow": "𒅆𒉌𒀀𒌅 𒂊𒇷𒀀𒌅 𒊭𒁄 {value}% 𒊭 𒅗𒆷 𒅆𒉌𒀀𒋾 𒊭 {window} 𒈪𒅆𒅋 𒁁𒊑",
+                "sellAny": "𒄿𒈾𒀜𒁲𒅔 𒄿𒉡𒈠 𒅖𒋾𒀀𒀜 𒄿𒈾 𒀭𒈾𒀀𒋾 𒆠𒈾𒀜"
+            },
+            "steps": {
+                "check": "𒈪𒅖𒆷 𒊭𒈾𒀀 𒁀𒊑",
+                "paper": "𒄿𒈾 𒁾 𒁮𒃲 𒂊𒁍𒍑",
+                "pick": "𒈠𒄭𒊏 𒌋 𒌑𒍪𒌨𒋫 𒉌𒋛𒅅",
+                "tune": "𒄿𒈾 𒈪𒅖𒇷 𒈠𒄴𒊑𒄿 𒋗𒋼𒅆𒅕"
+            },
+            "title": "𒁀𒌋𒋫 𒊭 𒊏𒈠𒉌𒅗 𒂊𒁍𒍑",
+            "units": {
+                "hours": "{value} 𒈪𒅆𒅋 𒁁𒊑",
+                "level": "{value}",
+                "percent": "{value}%",
+                "percentile": "{value}%",
+                "xor": "{value} 𒁕𒀭"
+            }
         },
         "receiveToken": "𒋫𒊏𒀀𒁕𒄿𒈾𒂵 𒋫𒌋𒅗𒂊𒈾",
         "research": {
@@ -3697,11 +3861,46 @@
             "pendingInternal": "{Sora} 𒆠𒁲 𒁕𒀭...",
             "signAndClaim": "𒁹 𒊹𒌷 𒂗𒆠"
         },
+        "analytics": {
+            "connectToSee": "𒉌𒅅𒅗𒀸𒊓 𒊏𒅗𒋢 𒀀𒈾 𒀀𒈠𒊑 𒀭𒈾𒀀.",
+            "feeShare": "𒈪𒅅𒋢 {percent} 𒊭 𒇷𒆠𒂊 𒀭𒉌𒄿.",
+            "market": {
+                "day": "24 𒈪𒅆𒅋 𒁁𒊑",
+                "period": "30 𒌓𒈨𒌍 𒊭 𒄿𒋾𒆪𒌑",
+                "title": "𒈠𒄭𒊒",
+                "unavailable": "𒋼𒈬𒌑 𒊭 𒈠𒄭𒊑 𒄿𒈾𒀭𒈾 𒌌 𒄿𒁀𒀸𒅆.",
+                "week": "7 𒌓𒈨𒌍"
+            },
+            "showTable": "𒁾𒁍",
+            "skipped": "𒄿𒈾 𒇷𒆠𒂊 𒀭𒉌𒄿 𒌌 𒄿𒁀𒀸𒅆",
+            "sources": {
+                "crowdloan": "𒄩𒁍𒌌𒇻 𒊭 𒁍𒄴𒊑",
+                "empty": "𒀀𒁲 𒄿𒈾𒀭𒈾 𒄀𒈪𒅋𒇻 𒀀𒈾 𒆪𒌌𒇻𒈪 𒌌 𒄿𒁀𒀸𒅆.",
+                "external": "𒉌𒅅𒅗𒀸𒋢 {Ethereum}",
+                "liquidity": "𒈪𒅅𒋢 𒊭 𒀀",
+                "strategic": "𒈪𒅋𒆪",
+                "title": "𒆠𒄿 𒉿𒄿 𒈾𒀝𒁉",
+                "unpriced": "𒅗𒀸𒁍 𒊭 𒈠𒄭𒊏 𒆷𒀀 𒄿𒋗𒌑 𒄿𒈾 𒁾𒉿 𒊭𒋾𒅕, 𒄿𒈾 𒄿𒍣 𒌌 𒄿𒁀𒀸𒅆."
+            },
+            "table": {
+                "share": "𒍣𒀉𒌅",
+                "source": "𒈾𒀝𒁍",
+                "value": "𒅆𒈬"
+            },
+            "vesting": {
+                "empty": "𒄀𒈪𒅋𒇻 𒊭 𒉺𒊭𒊑 𒄿𒈾 𒌓𒈨𒌍 𒌌 𒄿𒁀𒀸𒅆.",
+                "fullyUnlocked": "𒅗𒆷𒀀𒈠 𒌌 𒅗𒀭𒆪",
+                "title": "𒉺𒊭𒊒 𒄿𒈾 𒌓𒈨𒌍"
+            }
+        },
         "andText": "𒊹𒌷",
         "claimableAmountDoneVesting": "𒅆𒀀 𒉆𒀳",
         "claiming": {
             "pending": "𒀭𒆠...",
             "success": "𒊹𒌷 𒉌𒁺"
+        },
+        "claimSection": {
+            "title": "𒈪𒅎𒈠 𒊭 𒀀𒈾 𒇷𒆠𒂊 𒄿𒁀𒀸𒋗𒌑"
         },
         "events": {
             "BuyOnBondingCurve": "𒌷𒊭 𒌷𒊭 𒉌𒁺 𒁕𒀭",
@@ -3718,11 +3917,19 @@
             "external": "𒉆𒀳 𒁕𒀭 𒉌𒁺 𒄑𒀭 {Ethereum} 𒃻𒋃",
             "strategic": "𒌷𒊭 𒉆𒀳"
         },
+        "hero": {
+            "connectTitle": "𒄀𒈪𒅋𒆷 𒀀𒈠𒊒 𒌋 𒇷𒆪𒌑"
+        },
         "hint": {
             "connectAccounts": "𒁕𒀭 𒂗𒆠 𒁕𒀭 𒊹𒌷 𒊹𒌷 𒁕𒀭 𒉆𒀳 𒁕𒀭 𒌷𒊭 𒁕𒀭 𒄑𒀭 𒉌𒁺 𒁕𒀭 {Sora} 𒊹𒌷 {Ethereum} 𒌷𒊭.",
             "connectAnotherAccount": "𒄑𒀭 𒁕𒀭 {Ethereum} 𒃻𒋃 𒁕𒀭 𒅆𒀀 𒁕𒀭 𒉌𒁺 𒊹𒌷 𒊹𒌷 𒁕𒀭 𒉆𒀳.",
             "connectExternalAccount": "𒄑𒀭 𒉌𒁺 {Ethereum} 𒃻𒋃 𒁕𒀭 𒅆𒀀 𒁕𒀭 𒉌𒁺 𒊹𒌷 𒊹𒌷 𒁕𒀭 𒉆𒀳.",
             "howToClaimRewards": "𒁕𒀭 𒂗𒆠 𒁕𒀭 {symbols} 𒉆𒀳 𒁕𒀭 𒌷𒊭 𒁕𒀭 𒁹 {count} {transactions} 𒉌𒁺 {destination}. 𒉆𒀳 𒀭𒆠 𒉌𒁺 𒉌𒁺 𒁕𒀭 𒁕𒀭 {Sora} 𒃻𒋃."
+        },
+        "howTo": {
+            "choose": "𒈪𒅎𒈠 𒊭 𒀀𒈾 𒇷𒆠𒂊 𒈾𒊓𒆪",
+            "connect": "𒉌𒅅𒅗𒀸𒊓 {Sora} 𒊏𒅗𒋢",
+            "title": "𒋼𒈬𒌑 𒊭 𒇷𒆠𒂊"
         },
         "notification": {
             "empty": "𒁕𒀭 𒉌𒁺 𒊹𒌷 𒁕𒀭 𒌷𒊭 𒃻𒋃"
@@ -3733,6 +3940,16 @@
         "signing": {
             "accounts": "𒁕𒀭 {Sora} 𒊹𒌷 {Ethereum} 𒌷𒊭 𒉌𒁺",
             "extension": "{PolkadotJs} 𒁾 𒉌𒁺"
+        },
+        "stats": {
+            "locked": "𒅗𒀭𒆪 𒀀𒁲 𒄿𒈾𒀭𒈾",
+            "unlocked": "𒌌 𒅗𒀭𒆪"
+        },
+        "status": {
+            "connect": "𒉌𒅅𒅗𒀸𒋢 𒌌 𒊏𒆠𒅖",
+            "empty": "𒀀𒁲 𒄿𒈾𒀭𒈾 𒈪𒅎𒈠 𒀀𒈾 𒇷𒆠𒂊 𒌌 𒄿𒁀𒀸𒅆",
+            "failed": "𒇷𒆪𒌑 𒌌 𒄿𒊭𒀠𒅎",
+            "ready": "𒆪𒌦𒉡 𒀀𒈾 𒇷𒆠𒂊"
         },
         "totalVested": "𒀀𒇉 𒉆𒀳",
         "transactions": {

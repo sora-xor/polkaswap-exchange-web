@@ -376,10 +376,21 @@ export function useAutopilot(deps: AutopilotDependencies) {
     return checkpoint.input;
   });
 
-  /** Show the original unsigned plan even while another wallet is connected; resume remains identity-gated. */
+  /** Keep paused ownership visible; active-watch presentation requires the same live plan and authority. */
   const watchRecovery = computed<AutopilotWatchRecovery | null>(() => {
+    void trading.connectionIdentity.value;
     const checkpoint = recoverableWatch.value;
     if (!checkpoint) return null;
+    if (
+      stage.value === 'watching' &&
+      (!opportunityWatch ||
+        !watchIdentityMatches(opportunityWatch) ||
+        checkpoint.identity !== opportunityWatch.identity ||
+        checkpoint.network !== opportunityWatch.network ||
+        checkpoint.assistantKind !== assistantKind ||
+        JSON.stringify(checkpoint.input) !== JSON.stringify(opportunityWatch.input))
+    )
+      return null;
     let walletAddress = '';
     try {
       const identity: unknown = JSON.parse(checkpoint.identity);

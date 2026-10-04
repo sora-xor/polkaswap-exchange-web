@@ -8,6 +8,7 @@ import vue from '@vitejs/plugin-vue';
 import dynamicImport from 'vite-plugin-dynamic-import';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import svgLoader from 'vite-svg-loader';
+import { browserCryptoFallbackPlugin } from './scripts/build/browserCryptoFallbackPlugin.mjs';
 import { compatAutoImportPlugin } from './scripts/build/compatAutoImportPlugin.mjs';
 import { storeRehearsalPlugin } from './scripts/build/storeRehearsalPlugin.mjs';
 
@@ -236,7 +237,7 @@ export default defineConfig({
     dynamicImport(),
     svgLoader(),
     compatAutoImportPlugin({ soramitsuUiRootPath, soraneoWalletSrcPath }),
-    ...(disableNodePolyfills ? [] : [nodePolyfills()]),
+    ...(disableNodePolyfills ? [] : [browserCryptoFallbackPlugin(), nodePolyfills()]),
   ],
   resolve: {
     alias,
@@ -270,7 +271,12 @@ export default defineConfig({
     chunkSizeWarningLimit: 6000,
     // Keep CSS in one static asset so IPFS/CDN cold starts do not fail on many lazy style chunk pulls.
     cssCodeSplit: false,
-    modulePreload: false,
+    // Fetch each dynamic import's static dependencies in parallel. Without this the
+    // browser discovers them one module level at a time, costing a round trip per
+    // level (six levels before the SORA SDK chunk is even requested). The helper
+    // does not wait on JS preloads, so evaluation order and errors are unchanged.
+    // No polyfill: the helper already falls back to rel=preload where needed.
+    modulePreload: { polyfill: false },
     rollupOptions: {
       onwarn(warning, defaultHandler) {
         const message = warning.message ?? '';

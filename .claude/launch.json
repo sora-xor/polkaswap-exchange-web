@@ -4,36 +4,14 @@
     {
       "name": "polkaswap-dev",
       "runtimeExecutable": "node",
-      "runtimeArgs": [
-        "node_modules/vite/bin/vite.js"
-      ],
+      "runtimeArgs": ["node_modules/vite/bin/vite.js"],
       "port": 8080
     },
     {
       "name": "polkaswap-preview",
       "runtimeExecutable": "node",
-      "runtimeArgs": [
-        "node_modules/vite/bin/vite.js",
-        "preview",
-        "--port",
-        "8888",
-        "--strictPort"
-      ],
+      "runtimeArgs": ["node_modules/vite/bin/vite.js", "preview", "--port", "8888", "--strictPort"],
       "port": 8888
-    },
-    {
-      "name": "studio-preview",
-      "runtimeExecutable": "node",
-      "runtimeArgs": [
-        "node_modules/vite/bin/vite.js",
-        "preview",
-        "--outDir",
-        "/private/tmp/claude-501/-Users-takemiyamakoto-dev-polkaswap-exchange-web/78879d4f-e082-4aae-9b7f-59a0f773f306/scratchpad/dist-baseline",
-        "--port",
-        "8891",
-        "--strictPort"
-      ],
-      "port": 8891
     }
   ]
 }

@@ -1028,6 +1028,7 @@
             </template>
           </div>
         </section>
+        <QuantStudio :assets="assets" :load-fees="studioFees" :busy="!!saving" @paper="emit('paper', $event)" />
       </div>
     </div>
   </section>
@@ -1046,6 +1047,7 @@ import DiscoveryNoQualified from './DiscoveryNoQualified.vue';
 import DiscoveryReviewExpiry from './DiscoveryReviewExpiry.vue';
 import DiscoveryVisuals from './DiscoveryVisuals.vue';
 import QuantGlassArt from './quant/QuantGlassArt.vue';
+import QuantStudio from './quant/studio/QuantStudio.vue';
 import { codec, fromCodec } from '../amounts';
 import { validateBotEndpoint } from '../ai';
 import { defaultAiModel, detectApiKeyProvider } from '../ai-provider-http';
@@ -1071,7 +1073,8 @@ import type { DiscoveryApproval } from '../discovery-approval';
 import type { DiscoveryCampaignReview } from '../controller';
 import type { BotAiModel } from '../ai-models';
 import type { ResearchSettings } from '../research';
-import type { ResearchFeeSnapshot } from '../research-fees';
+import type { QuantDeployPayload } from '../quant-deploy';
+import type { ResearchFeeSettings, ResearchFeeSnapshot } from '../research-fees';
 import type { StrategyRules } from '../strategy-rules';
 import type { BotAsset, BotDefinition, BotHistory, BotOrder, StrategyConfig } from '../types';
 
@@ -1092,9 +1095,14 @@ const props = defineProps<{
   pauseCampaign: (campaignId: string) => Promise<void>;
   closeCampaign: (campaignId: string) => Promise<void>;
   readCampaignOrders: (campaignId: string) => Promise<BotOrder[]>;
+  /** The page is saving or starting a bot; the Strategy Studio waits before another paper save. */
+  saving?: boolean;
 }>();
-const emit = defineEmits<{ wallet: [] }>();
+const emit = defineEmits<{ wallet: []; paper: [payload: QuantDeployPayload] }>();
 const { t } = useTranslation();
+/** The Strategy Studio observes fees with the page's loader, which reads only the slippage. */
+const studioFees = (bot: BotDefinition, settings: ResearchFeeSettings) =>
+  props.loadFees(bot, settings as ResearchSettings);
 
 const providerKinds: DiscoveryProviderKind[] = ['claude', 'openai', 'codex', 'claude-code', 'jev', 'custom'];
 /** Paired local companions, Jev and custom HTTPS stay one step away from the two API-key providers. */

@@ -271,6 +271,7 @@
                 "noSmallerExactSample": "No smaller size with a fresh eligible quote",
                 "opening": "到首次可以交易時，初始資金以 {symbol} 計價的價值至少下跌 {loss}%，超過你的 {limit}% 限額，即使手續費為零也如此。",
                 "openingDates": "{opened} → {firstTrade} {zone}",
+                "previousCheckThrough": "先前檢查 · 資料截至 {time}",
                 "quoteUnavailable": "Fresh quote unavailable",
                 "screenedDraft": "Draft #{number} skipped before testing",
                 "screeningCount": "{drafted} drafted · {tested} tested",
@@ -1192,6 +1193,15 @@
             "openai": "OpenAI"
         },
         "quant": {
+            "atlas": {
+                "caption": "每條線代表一個已測試的策略，從想法連到前後兩段的結果。粉紅色線在後半段賺錢，藍色線虧錢。沿座標軸拖曳可縮小範圍。",
+                "edit": "編輯此策略",
+                "help": "沿座標軸拖曳可篩選。點選一條線查看其規則。按 Esc 清除。",
+                "passed": "通過所有檢查",
+                "pick": "點選一條線，查看它的規則並進行編輯。",
+                "rejected": "未全部通過檢查",
+                "used": "機器人正在使用"
+            },
             "banner": {
                 "detail": "價格相對 {window} 小時均價為 {value}，已越過 {threshold} 的買入線，因此執行中的機器人現在會買入。",
                 "title": "{symbol} 已進入買入區間"
@@ -1251,7 +1261,6 @@
                 "watch": "暫無機器人"
             },
             "mesh": {
-                "caption": "每個點代表一個已測試的策略。較亮的點通過了所有檢查；閃爍的點是機器人正在使用的策略。",
                 "summary": "通過 {robust} 個 · 淘汰 {killed} 個",
                 "title": "已測試的策略"
             },
@@ -1315,6 +1324,161 @@
             "title": "現成機器人",
             "trades": "交易次數",
             "watchNote": "測試中沒有任何規則獲利，因此這個市場暫時沒有機器人。"
+        },
+        "studio": {
+            "botName": "{idea} · {symbol}",
+            "calculating": "正在計算…",
+            "chart": {
+                "buys": "買入",
+                "caption": "拖曳粉紅色線可調整買入時機，拖曳紫色線可調整賣出時機。按「重播」觀看機器人交易。",
+                "captionNoLines": "這個想法沒有可拖曳的線，請在 3D 圖旁修改設定。按「重播」觀看機器人交易。",
+                "equity": "機器人價值與持有比較",
+                "first": "前半段：在這裡調整",
+                "indicators": {
+                    "deviation": "價格相對 {window} 小時均價",
+                    "drawdown": "價格相對 {window} 小時高點",
+                    "momentum": "{window} 小時漲跌幅",
+                    "rsi": "{window} 小時上漲占比"
+                },
+                "price": "{symbol} 價格（以 XOR 計）",
+                "replay": "重播",
+                "second": "後半段：在這裡檢驗",
+                "sells": "賣出",
+                "stop": "停止",
+                "summary": "前後兩段共買入 {buys} 次、賣出 {sells} 次。",
+                "title": "價格與交易"
+            },
+            "fairness": "前半段用於調整，後半段用於檢驗。如果您不斷修改設定，直到後半段看起來不錯，這就不再是公平的檢驗了。過往績效不保證未來報酬。",
+            "idea": "想法",
+            "intro": "選擇一個市場和一個想法，然後用 SORA 資金池的歷史資料調整它的規則。所有圖表顯示的都是同一個選擇：點選 3D 圖中的柱子、拖曳價格圖上的線，或在最後一張圖中篩選線條。",
+            "landscape": {
+                "caption": "每根柱子代表兩個主要設定的一種組合。高度表示前半段結果，顏色表示後半段結果。高柱子如果變成藍色，代表它只在調整所用的時段有效。",
+                "color": "顏色：後半段",
+                "describe": "{x}，{y}。按 Enter 套用這些設定。",
+                "height": "高度：前半段",
+                "help": "拖曳可旋轉視角。點選柱子，或使用方向鍵和 Enter，即可套用其設定。",
+                "pick": "點選以套用這些設定",
+                "title": "不同設定的結果"
+            },
+            "loading": "正在載入歷史資金池資料…",
+            "market": "市場",
+            "newIdea": "新",
+            "openLab": "在策略實驗室中開啟",
+            "outcomes": {
+                "first": "前半段",
+                "holding": "持有時間",
+                "idea": "想法",
+                "maxDrop": "最大跌幅",
+                "second": "後半段",
+                "trades": "交易次數"
+            },
+            "parallel": {
+                "caption": "每條線代表一種設定組合，從左側的設定連到右側的結果。沿任一座標軸拖曳，只保留該範圍內的線。",
+                "clear": "清除篩選",
+                "count": "顯示 {total} 條中的 {shown} 條",
+                "help": "沿座標軸拖曳可篩選。點選一條線即可套用其設定。按 Esc 清除。",
+                "pick": "點選以套用這些設定",
+                "title": "這個想法的所有設定組合"
+            },
+            "params": {
+                "amount": "每次買入金額",
+                "average": "賣出均價週期",
+                "buy": "低於均價買入",
+                "choppy": "單向占比",
+                "choppyWindow": "震盪週期",
+                "drop": "急跌幅度",
+                "exit": "低於均價賣出",
+                "fall": "低於高點",
+                "guard": "週跌幅上限",
+                "highWindow": "新高週期",
+                "hours": "急跌期間",
+                "jump": "急漲幅度",
+                "jumpHours": "急漲期間",
+                "lead": "高於均價買入",
+                "level": "上漲占比",
+                "lookback": "對比過去",
+                "lowWindow": "新低週期",
+                "peakWindow": "高點週期",
+                "percentile": "最罕見小時",
+                "pull": "拉回力道",
+                "pullWindow": "拉回週期",
+                "rsiWindow": "統計期間",
+                "sell": "高於均價賣出",
+                "window": "均價週期"
+            },
+            "recipes": {
+                "breakout": {
+                    "idea": "價格創新高時買入，創新低時賣出。",
+                    "name": "創新高"
+                },
+                "dip": {
+                    "idea": "價格明顯低於近期均價時買入，回升後賣出。現成機器人用的就是這個想法。",
+                    "name": "逢低買入"
+                },
+                "drop": {
+                    "idea": "幾小時內急跌後立即買入，價格回到均價附近時賣出。",
+                    "name": "急跌"
+                },
+                "elastic": {
+                    "idea": "只在價格近期每次變動後都被拉回均價附近時逢低買入。",
+                    "name": "回彈市場"
+                },
+                "oversold": {
+                    "idea": "近期幾乎每次價格變動都是下跌時買入，價格回到均價之上後賣出。",
+                    "name": "超跌反彈"
+                },
+                "peak": {
+                    "idea": "價格遠低於近期高點時買入，回升到均價時賣出。",
+                    "name": "遠低於高點"
+                },
+                "range": {
+                    "idea": "只在價格來回波動、而非單向走勢時逢低買入。",
+                    "name": "震盪市逢低買入"
+                },
+                "rare-drop": {
+                    "idea": "只在本小時跌幅位居近幾小時最大之列，且價格明顯低於均價時買入。",
+                    "name": "罕見下跌"
+                },
+                "rebound": {
+                    "idea": "逢低買入，然後在價格回升時賣出，或在價格快速上漲時立即賣出。",
+                    "name": "快速反彈"
+                },
+                "steady-dip": {
+                    "idea": "與「逢低買入」類似，但過去一週價格大跌時不買。",
+                    "name": "平穩週逢低買入"
+                },
+                "trend": {
+                    "idea": "價格升到均價之上時買入，跌回均價之下時賣出。",
+                    "name": "跟隨趨勢"
+                }
+            },
+            "result": {
+                "first": "前半段",
+                "second": "後半段",
+                "title": "您的策略"
+            },
+            "rule": {
+                "drawdownBelow": "價格相對 {window} 小時高點低於 {value}%",
+                "efficiencyBelow": "{window} 小時內朝同一方向的變動少於 {value}%",
+                "quantileBelow": "本小時漲跌幅位於過去 {window} 小時中最低的 {percentile}%",
+                "restoringAbove": "向 {window} 小時均價拉回的力道大於 {value}",
+                "rsiBelow": "{window} 小時內上漲次數少於全部變動的 {value}%",
+                "sellAny": "符合以下任一條件時賣出"
+            },
+            "steps": {
+                "check": "用後半段檢驗",
+                "paper": "進行模擬交易",
+                "pick": "選擇市場和想法",
+                "tune": "用前半段調整"
+            },
+            "title": "建立自己的機器人",
+            "units": {
+                "hours": "{value} 小時",
+                "level": "{value}",
+                "percent": "{value}%",
+                "percentile": "{value}%",
+                "xor": "{value} XOR"
+            }
         },
         "receiveToken": "交易代幣",
         "research": {
@@ -3697,11 +3861,46 @@
             "pendingInternal": "{Sora} 交易待處理...",
             "signAndClaim": "簽名並索賠"
         },
+        "analytics": {
+            "connectToSee": "連接您的帳戶以查看此內容。",
+            "feeShare": "費用佔本次領取的 {percent}。",
+            "market": {
+                "day": "24小時",
+                "period": "過去30天",
+                "title": "價格",
+                "unavailable": "目前無法取得價格數據。",
+                "week": "7天"
+            },
+            "showTable": "表格",
+            "skipped": "不在本次領取中",
+            "sources": {
+                "crowdloan": "眾貸",
+                "empty": "暫無可顯示的獎勵。",
+                "external": "{Ethereum} 帳戶",
+                "liquidity": "流動性費用",
+                "strategic": "戰略",
+                "title": "依來源",
+                "unpriced": "沒有價格的代幣會列在清單中，但不會畫在長條裡。"
+            },
+            "table": {
+                "share": "佔比",
+                "source": "來源",
+                "value": "價值"
+            },
+            "vesting": {
+                "empty": "沒有歸屬中的獎勵。",
+                "fullyUnlocked": "全部已解鎖",
+                "title": "歸屬"
+            }
+        },
         "andText": "和",
         "claimableAmountDoneVesting": "可領取的獎勵",
         "claiming": {
             "pending": "聲稱...",
             "success": "領取成功"
+        },
+        "claimSection": {
+            "title": "您可以領取的內容"
         },
         "events": {
             "BuyOnBondingCurve": "從TBC購買",
@@ -3718,11 +3917,19 @@
             "external": "已連結 {Ethereum} 帳戶的獎勵",
             "strategic": "戰略獎勵"
         },
+        "hero": {
+            "connectTitle": "查看並領取您的獎勵"
+        },
         "hint": {
             "connectAccounts": "要領取 PSWAP 和 VAL 獎勵，您需要連接您的 {Sora} 和 {Ethereum} 帳戶。",
             "connectAnotherAccount": "連接另一個 {Ethereum} 帳戶以檢查可用的 PSWAP 和 VAL 獎勵。",
             "connectExternalAccount": "連線 {Ethereum} 帳戶以檢查可用的 PSWAP 和 VAL 獎勵。",
             "howToClaimRewards": "要領取您的 {symbols} 獎勵，您需要在 {destination} 中簽署 {count} {transactions}。獎勵將存入您的 {Sora} 帳戶。"
+        },
+        "howTo": {
+            "choose": "選擇要領取的內容",
+            "connect": "連接您的 {Sora} 帳戶",
+            "title": "如何領取"
         },
         "notification": {
             "empty": "此帳戶沒有可用的索賠"
@@ -3733,6 +3940,16 @@
         "signing": {
             "accounts": "您的 {Sora} 和 {Ethereum} 帳戶分別",
             "extension": "{PolkadotJs} 瀏覽器擴充"
+        },
+        "stats": {
+            "locked": "仍鎖定",
+            "unlocked": "已解鎖"
+        },
+        "status": {
+            "connect": "帳戶未連接",
+            "empty": "暫無可領取內容",
+            "failed": "領取失敗",
+            "ready": "可以領取"
         },
         "totalVested": "總獎勵",
         "transactions": {

@@ -281,6 +281,82 @@ describe('durable qualification study access', () => {
     });
     expect(await context.store.evaluate(input, undefined, vi.fn())).toEqual(evidence(input));
   });
+  it('retains exact canonical UTF8 bytes for null prototypes, negative zero and escaped Unicode before projection', async () => {
+    const context = await setup();
+    await context.store.register(context.plan);
+    const input = request(context.plan);
+    const raw: Record<string, unknown> = Object.create(null) as Record<string, unknown>;
+    raw.z = '𒀀😀é\n"\\\ud800';
+    raw.a = [-0, null];
+    const encoded = String.raw`{"a":[0,null],"z":"𒀀😀é\n\"\\\ud800"}`;
+    const sha256 = createHash('sha256').update(encoded, 'utf8').digest('hex');
+    const envelope = `{"kind":"goal-study-raw-evidence-v1","name":"unicode","requestSha256":"${digest(input)}","sha256":"${sha256}","value":${encoded}}\n`;
+    const path = join(context.study, `raw-${digest(input)}`, 'unicode.json');
+    await context.store.evaluate(input, undefined, async (_, sink) => {
+      expect(await sink.retainEvidence('unicode', raw)).toEqual({
+        name: 'unicode',
+        sha256,
+        bytes: Buffer.byteLength(encoded),
+      });
+      // A successful receipt precedes dependent projection and covers the exact final file bytes.
+      expect(await readFile(path, 'utf8')).toBe(envelope);
+      return evidence(input);
+    });
+    expect(await context.store.evaluate(input, undefined, vi.fn())).toEqual(evidence(input));
+    await writeFile(path, envelope.replace(String.raw`\ud800`, String.raw`\ud801`));
+    const producer = vi.fn();
+    await expect(context.store.evaluate(input, undefined, producer)).rejects.toThrow('raw-evidence-corrupt');
+    expect(producer).not.toHaveBeenCalled();
+  });
+
+  it.each(['accessor', 'cycle'] as const)('does not reuse bytes from rejected raw %s data', async (kind) => {
+    const context = await setup();
+    await context.store.register(context.plan);
+    const input = request(context.plan),
+      getter = vi.fn(),
+      raw: Record<string, unknown> = {};
+    if (kind === 'accessor') Object.defineProperty(raw, 'result', { enumerable: true, get: getter });
+    else raw.self = raw;
+    await expect(
+      context.store.evaluate(input, undefined, async (_, sink) => {
+        await sink.retainEvidence(kind, raw);
+        return evidence(input);
+      })
+    ).rejects.toThrow('evaluation-failed-no-retry');
+    expect(getter).not.toHaveBeenCalled();
+    expect(await readdir(join(context.study, `raw-${digest(input)}`))).toEqual([]);
+    const files = await readdir(context.study);
+    expect(files).toContain(`failed-${digest(input)}.json`);
+    expect(files).not.toContain(`complete-${digest(input)}.json`);
+    await expect(context.store.evaluate(input, undefined, vi.fn())).rejects.toThrow('failed-evaluation-no-retry');
+  });
+
+  it.each([23, 24] as const)('independently checks outer raw wrapper depth after a %i-deep own-value snapshot', async (depth) => {
+    const context = await setup();
+    await context.store.register(context.plan);
+    const input = request(context.plan);
+    let raw: unknown = 0;
+    for (let index = 0; index < depth; index++) raw = [raw];
+    const pending = context.store.evaluate(input, undefined, async (_, sink) => {
+      if (depth === 24) await expect(sink.retainEvidence('depth', raw)).rejects.toThrow('raw-structure-limit');
+      else await sink.retainEvidence('depth', raw);
+      return evidence(input);
+    });
+    if (depth === 23) {
+      expect(await pending).toEqual(evidence(input));
+      expect(await readdir(join(context.study, `raw-${digest(input)}`))).toEqual(['depth.json']);
+    } else {
+      await expect(pending).rejects.toThrow('evaluation-failed-no-retry');
+      expect(await readdir(join(context.study, `raw-${digest(input)}`))).toEqual([]);
+      const files = await readdir(context.study);
+      expect(files).toContain(`access-${digest(input)}.json`);
+      expect(files).not.toContain(`failed-${digest(input)}.json`);
+      expect(files).not.toContain(`complete-${digest(input)}.json`);
+      // Wrapper validation still fails inside persist, poisoning further writes with its original precedence.
+      await expect(context.store.evaluate(input, undefined, vi.fn())).rejects.toThrow('store-closed');
+    }
+  });
+
   it('rejects raw accessors without reading them and permanently records the failed attempt', async () => {
     const context = await setup();
     await context.store.register(context.plan);

@@ -178,7 +178,11 @@ export const useRewardsStore = defineStore('rewards', {
         ...nextState
       } = initialState();
 
-      this.$patch(nextState);
+      // Assign rather than `$patch(nextState)`: a patch deep-merges objects and would keep crowdloan tags that the
+      // initial state does not have, so a previous account's selection could leak into the next one.
+      this.$patch((state) => {
+        Object.assign(state, nextState);
+      });
     },
     async subscribeOnRewards(): Promise<void> {
       const walletStore = useWalletStore();
@@ -253,7 +257,11 @@ export const useRewardsStore = defineStore('rewards', {
       }
     },
     async setSelectedRewards(value: SelectedRewards): Promise<void> {
-      this.$patch(value);
+      // Assign rather than `$patch(value)`: a patch deep-merges objects, so a smaller crowdloan selection could never
+      // drop a tag the user just unticked.
+      this.$patch((state) => {
+        Object.assign(state, value);
+      });
       await this.getNetworkFee();
     },
     async getExternalRewards(address: string): Promise<void> {

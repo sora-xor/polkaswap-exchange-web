@@ -5,17 +5,52 @@ import { defineStore } from 'pinia';
 
 import { ZeroStringValue } from '@/consts';
 import type { AssetsState, BridgeRegisteredAsset } from '@/stores/assets/types';
-import { useBridgeStore } from '@/stores/bridge';
 import { useWalletStore } from '@/stores/wallet';
 import { useWeb3Store } from '@/stores/web3';
-import { ethBridgeApi } from '@/utils/bridge/eth/api';
-import { evmBridgeApi } from '@/utils/bridge/evm/api';
-import { subBridgeApi } from '@/utils/bridge/sub/api';
-import ethersUtil from '@/utils/ethers-util';
 
 import type { Asset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
 import type { SubNetwork, SubAssetId } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
+
+type BridgeStoreModule = typeof import('@/stores/bridge');
+type EthBridgeApiModule = typeof import('@/utils/bridge/eth/api');
+type EvmBridgeApiModule = typeof import('@/utils/bridge/evm/api');
+type SubBridgeApiModule = typeof import('@/utils/bridge/sub/api');
+type EthersUtilModule = typeof import('@/utils/ethers-util');
+
+let bridgeStoreModulePromise: Promise<BridgeStoreModule> | null = null;
+let ethBridgeApiModulePromise: Promise<EthBridgeApiModule> | null = null;
+let evmBridgeApiModulePromise: Promise<EvmBridgeApiModule> | null = null;
+let subBridgeApiModulePromise: Promise<SubBridgeApiModule> | null = null;
+let ethersUtilModulePromise: Promise<EthersUtilModule> | null = null;
+
+// Bridge APIs, the bridge store and ethers are only needed by the async registry
+// actions below. Loading them on demand keeps them (and ethers) out of the startup
+// graph of every page that reads asset data, such as Swap.
+const loadBridgeStore = async () => {
+  bridgeStoreModulePromise ??= import('@/stores/bridge');
+  return (await bridgeStoreModulePromise).useBridgeStore();
+};
+
+const loadEthBridgeApi = async () => {
+  ethBridgeApiModulePromise ??= import('@/utils/bridge/eth/api');
+  return (await ethBridgeApiModulePromise).ethBridgeApi;
+};
+
+const loadEvmBridgeApi = async () => {
+  evmBridgeApiModulePromise ??= import('@/utils/bridge/evm/api');
+  return (await evmBridgeApiModulePromise).evmBridgeApi;
+};
+
+const loadSubBridgeApi = async () => {
+  subBridgeApiModulePromise ??= import('@/utils/bridge/sub/api');
+  return (await subBridgeApiModulePromise).subBridgeApi;
+};
+
+const loadEthersUtil = async () => {
+  ethersUtilModulePromise ??= import('@/utils/ethers-util');
+  return (await ethersUtilModulePromise).default;
+};
 
 const buildInitialState = (): AssetsState => ({
   registeredAssets: {},
@@ -104,6 +139,7 @@ const getSubAssetIdAddress = (address: SubAssetId, network: SubNetwork): string 
 };
 
 const fetchEthRegisteredAssets = async (): Promise<Record<string, BridgeRegisteredAsset>[]> => {
+  const ethBridgeApi = await loadEthBridgeApi();
   if (!ethBridgeApi?.getRegisteredAssets) return [];
 
   const networkAssets = await ethBridgeApi.getRegisteredAssets();
@@ -121,6 +157,7 @@ const fetchEvmRegisteredAssets = async (
   network: Nullable<EvmNetwork>
 ): Promise<Record<string, BridgeRegisteredAsset>[]> => {
   if (!network) return [];
+  const evmBridgeApi = await loadEvmBridgeApi();
   if (!evmBridgeApi?.getRegisteredAssets) return [];
 
   const networkAssets = await evmBridgeApi.getRegisteredAssets(network);
@@ -138,6 +175,7 @@ const fetchSubRegisteredAssets = async (
   network: Nullable<SubNetwork>
 ): Promise<Record<string, BridgeRegisteredAsset>[]> => {
   if (!network) return [];
+  const subBridgeApi = await loadSubBridgeApi();
   if (!subBridgeApi?.getRegisteredAssets) return [];
 
   const networkAssets = await subBridgeApi.getRegisteredAssets(network);
@@ -176,6 +214,7 @@ const updateEthAssetsData = async (
         asset.address = await web3Store.getEvmTokenAddressByAssetId(soraAddress);
         if (!asset.address) return [soraAddress, asset] as const;
 
+        const ethersUtil = await loadEthersUtil();
         asset.decimals = await ethersUtil.getTokenDecimals(asset.address);
       }
 
@@ -190,7 +229,7 @@ const updateSubAssetsData = async (
   assets: Record<string, BridgeRegisteredAsset>,
   network: Nullable<SubNetwork>
 ): Promise<Record<string, BridgeRegisteredAsset>> => {
-  const bridgeStore = useBridgeStore();
+  const [bridgeStore, subBridgeApi] = await Promise.all([loadBridgeStore(), loadSubBridgeApi()]);
   const { destinationNetwork, soraParachain, parachain } = bridgeStore.subBridgeConnector;
 
   const hasParachainApi =

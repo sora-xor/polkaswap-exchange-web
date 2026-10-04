@@ -331,15 +331,14 @@
       >
         <header class="quant-panel-heading">
           <h3 :id="`${titleId}-mesh`">{{ t('bots.quant.mesh.title') }}</h3>
-          <span v-if="result">{{ meshSummary }}</span>
+          <span v-if="result">{{ selectedAtlas ? `${selectedAtlas.market} · ${meshSummary}` : meshSummary }}</span>
         </header>
-        <QuantMesh
+        <p class="quant-caption">{{ t('bots.quant.atlas.caption') }}</p>
+        <QuantAtlasMap
+          :atlas="selectedAtlas"
+          :locale="locale"
+          :aria-label="t('bots.quant.mesh.title')"
           :paused="calm"
-          :nodes="result?.mesh ?? []"
-          :families="families"
-          :running="running"
-          :progress="progressFraction"
-          :caption="t('bots.quant.mesh.caption')"
         />
       </section>
       <section
@@ -375,7 +374,6 @@ import { useTranslation } from '@/composables/useTranslation';
 import {
   QUANT_AMOUNTS,
   QUANT_CAPITAL_XOR,
-  QUANT_FAMILIES,
   QUANT_FEE_BUDGET_XOR,
   type QuantMarketResult,
 } from '@/features/bot-trading/quant-loop';
@@ -392,7 +390,7 @@ import QuantEquity from './QuantEquity.vue';
 import QuantGauge from './QuantGauge.vue';
 import QuantGlassArt from './QuantGlassArt.vue';
 import QuantLattice from './QuantLattice.vue';
-import QuantMesh from './QuantMesh.vue';
+import QuantAtlasMap from './QuantAtlasMap.vue';
 import type { PlaygroundSettings } from '@/features/bot-trading/playground';
 import type { ResearchFeeSnapshot } from '@/features/bot-trading/research-fees';
 import type { StrategyRules } from '@/features/bot-trading/strategy-rules';
@@ -501,17 +499,6 @@ const statusText = computed(() => {
   }
 });
 
-const families = computed(() =>
-  QUANT_FAMILIES.map((family) => {
-    const totals = result.value?.families?.find((item) => item.family === family);
-    return {
-      key: family,
-      label: t(`bots.quant.families.${family}`),
-      robust: totals?.robust ?? 0,
-      tested: totals?.tested ?? 0,
-    };
-  })
-);
 const meshSummary = computed(() =>
   result.value
     ? t('bots.quant.mesh.summary', {
@@ -540,6 +527,13 @@ const selected = computed(
   () =>
     comparableMarkets.value.find((market) => market.asset.address === selectedAddress.value) ??
     comparableMarkets.value[0]
+);
+/** Every tested strategy of the market shown in "Results over time", for the strategy map. */
+const selectedAtlas = computed(
+  () =>
+    result.value?.atlas?.find((item) => item.market === selected.value?.asset.symbol) ??
+    result.value?.atlas?.[0] ??
+    null
 );
 const latticeSummary = computed(() => {
   const sells = selected.value?.walkForward?.fills.filter((fill) => fill.side === 'sell') ?? [];
@@ -816,7 +810,7 @@ async function prepare(market: QuantMarketResult, mode: 'live' | 'paper'): Promi
 
 .quant-grid {
   display: grid;
-  grid-template-columns: #{'minmax(0, 1fr) minmax(0, 1fr)'};
+  grid-template-columns: #{'minmax(0, 1.6fr) minmax(0, 1fr)'};
   gap: 20px;
   align-items: start;
 }

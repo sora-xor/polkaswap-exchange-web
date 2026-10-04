@@ -271,6 +271,7 @@
                 "noSmallerExactSample": "luksavve raonem gohed falom wakaot falom gohed falom",
                 "opening": "wakaot gohed falom luksavve falom, gohed raonem raonem raonem gohed gohed {loss}% luksavve raonem gohed gohed {symbol}, stakaon luksavve {limit}% gohed—falom falom stakaon wakaot.",
                 "openingDates": "{opened} → {firstTrade} {zone}",
+                "previousCheckThrough": "Previous check · data through {time}",
                 "quoteUnavailable": "falom falom stakaon",
                 "screenedDraft": "gohed #{number} falom gohed falom",
                 "screeningCount": "{drafted} stakaon · {tested} luksavve",
@@ -1192,6 +1193,15 @@
             "openai": "falom"
         },
         "quant": {
+            "atlas": {
+                "caption": "Evri laen hem wanfala plan wea mifala testim, from aedia blong hem go kasem risalt long evri hafu. Olketa pink laen mekem mani long mek tu hafu, an olketa blu laen lusim mani. Pulum long wanfala stanap laen fo chusim samfala nomoa.",
+                "edit": "Senisim disfala plan",
+                "help": "Pulum long wanfala stanap laen fo filtarem. Klikim wanfala laen fo lukim olketa rul blong hem. Presim Escape fo klinim.",
+                "passed": "Pas long evri chek",
+                "pick": "Klikim wanfala laen fo lukim olketa rul blong hem an senisim.",
+                "rejected": "No pas long evri chek",
+                "used": "Bot hem yusim"
+            },
             "banner": {
                 "detail": "Praes hem {value} kompeam wetem avarij blong {window} aoa. Hem winim laen fo baem long {threshold}, so bot wea hem wak bae baem nao.",
                 "title": "{symbol} raonem gohed gohed raonem falom"
@@ -1251,7 +1261,6 @@
                 "watch": "Nogat bot"
             },
             "mesh": {
-                "caption": "Evri dot hem wanfala plan wea mifala testim. Olketa dot wea saen hem pas long evri chek; olketa dot wea go big an smol nao olketa bot yusim.",
                 "summary": "{robust} pas · {killed} no pas",
                 "title": "Olketa plan wea mifala testim"
             },
@@ -1315,6 +1324,161 @@
             "title": "Olketa bot wea redi finis",
             "trades": "luksavve",
             "watchNote": "Nogat eni rul hem mekem mani long test, dastawe nogat bot fo maket ia yet."
+        },
+        "studio": {
+            "botName": "{idea} · {symbol}",
+            "calculating": "Kaontim…",
+            "chart": {
+                "buys": "Olketa baem",
+                "caption": "Pulum pink laen fo senisim taem hem baem, an pepol laen fo senisim taem hem salem. Presim “Pleim moa” fo lukim bot hem tred.",
+                "captionNoLines": "Disfala aedia no garem eni laen fo pulum; senisim olketa seting blong hem long saed blong 3D chart. Presim “Pleim moa” fo lukim bot hem tred.",
+                "equity": "Valiu blong bot kompeam wetem holem",
+                "first": "Fes hafu: stretem long hia",
+                "indicators": {
+                    "deviation": "Praes kompeam wetem avarij blong {window} aoa",
+                    "drawdown": "Praes kompeam wetem hae blong {window} aoa",
+                    "momentum": "Senis long praes insaed {window} aoa",
+                    "rsi": "Hamas muv go ap insaed {window} aoa"
+                },
+                "price": "Praes blong {symbol} long XOR",
+                "replay": "Pleim moa",
+                "second": "Mek tu hafu: chekim long hia",
+                "sells": "Olketa salem",
+                "stop": "Stopem",
+                "summary": "{buys} baem an {sells} salem long tufala hafu.",
+                "title": "Praes an olketa tred"
+            },
+            "fairness": "Fes hafu hem fo stretem, an mek tu hafu hem fo chekim. Sapos iu go go senisim olketa seting kasem mek tu hafu luk gud, datfala chek hem no stret nao. Risalt blong bifoa no promis fo mani long fiuja.",
+            "idea": "Aedia",
+            "intro": "Chusim wanfala maket an wanfala aedia, then stretem olketa rul blong hem long olketa praes blong SORA pul bifoa. Evri chart soem sem samting wea iu chusim: klikim wanfala pos long 3D chart, pulum olketa laen long praes chart, o katem daon olketa laen long las chart.",
+            "landscape": {
+                "caption": "Evri pos hem wanfala wei fo putim tufala mein seting tugeta. Hae blong pos hem soem fes hafu; kala blong hem soem mek tu hafu. Olketa longfala pos wea tan blu, olketa wak gud nomoa long olketa aoa wea olketa stretem long hem.",
+                "color": "Kala: mek tu hafu",
+                "describe": "{x}, {y}. Presim Enter fo yusim olketa seting ia.",
+                "height": "Hae: fes hafu",
+                "help": "Pulum fo tanem chart. Klikim wanfala pos, o yusim olketa ki wetem aro an Enter, fo yusim olketa seting blong hem.",
+                "pick": "Klikim fo yusim olketa seting ia",
+                "title": "Risalt fo evri seting"
+            },
+            "loading": "Lodim olketa praes blong pul bifoa…",
+            "market": "Maket",
+            "newIdea": "Niu",
+            "openLab": "Openem long Strategy Lab",
+            "outcomes": {
+                "first": "Fes hafu",
+                "holding": "Taem fo holem",
+                "idea": "Aedia",
+                "maxDrop": "Go daon wea moa big",
+                "second": "Mek tu hafu",
+                "trades": "Olketa tred"
+            },
+            "parallel": {
+                "caption": "Evri laen hem wanfala wei fo putim olketa seting tugeta, from olketa seting long lef saed go kasem olketa risalt long raet saed. Pulum long eni stanap laen fo kipim nomoa olketa laen insaed long datfala eria.",
+                "clear": "Klinim olketa filta",
+                "count": "Soem {shown} long {total}",
+                "help": "Pulum long wanfala stanap laen fo filtarem. Klikim wanfala laen fo yusim olketa seting blong hem. Presim Escape fo klinim.",
+                "pick": "Klikim fo yusim olketa seting ia",
+                "title": "Evri kaen blong disfala aedia"
+            },
+            "params": {
+                "amount": "Saes blong oda",
+                "average": "Avarij fo salem",
+                "buy": "Baem anda avarij",
+                "choppy": "Hamas go long wan saed",
+                "choppyWindow": "Ap an daon insaed",
+                "drop": "Saes blong foldaon",
+                "exit": "Salem anda avarij",
+                "fall": "Anda long hae",
+                "guard": "Moa big foldaon long wik",
+                "highWindow": "Niu hae insaed",
+                "hours": "Foldaon insaed",
+                "jump": "Saes blong jamp",
+                "jumpHours": "Jamp insaed",
+                "lead": "Baem ova avarij",
+                "level": "Hamas muv go ap",
+                "lookback": "Kompeam wetem",
+                "lowWindow": "Niu lo insaed",
+                "peakWindow": "Hae blong",
+                "percentile": "Olketa aoa wea no komon",
+                "pull": "Paoa blong pul",
+                "pullWindow": "Mesarem pul insaed",
+                "rsiWindow": "Kaontim muv insaed",
+                "sell": "Salem ova avarij",
+                "window": "Avarij blong"
+            },
+            "recipes": {
+                "breakout": {
+                    "idea": "Hem baem taem praes kasem niu hae, an hem salem taem praes kasem niu lo.",
+                    "name": "Niu hae"
+                },
+                "dip": {
+                    "idea": "Hem baem taem praes go daon big anda long avarij blong olketa las aoa, an hem salem taem praes kam bak ap. Olketa bot wea redi finis yusim disfala aedia.",
+                    "name": "Baem taem praes go daon"
+                },
+                "drop": {
+                    "idea": "Hem baem stretawe bihaen praes foldaon big insaed samfala aoa, an hem salem taem praes kam bak klosap long avarij.",
+                    "name": "Kwiktaem foldaon"
+                },
+                "elastic": {
+                    "idea": "Hem baem long olketa go daon nomoa sapos, long las taem, praes hem kam bak go long avarij bihaen evri muv.",
+                    "name": "Maket wea kam bak"
+                },
+                "oversold": {
+                    "idea": "Hem baem taem klosap evri muv blong praes long las taem hem go daon, then hem salem taem praes kam bak ova long avarij.",
+                    "name": "Kam bak ap bihaen plande salem"
+                },
+                "peak": {
+                    "idea": "Hem baem taem praes stap farawe anda long hae blong las taem, an hem salem taem praes kam bak ap long avarij.",
+                    "name": "Farawe anda long hae"
+                },
+                "range": {
+                    "idea": "Hem baem long olketa go daon nomoa taem praes hem go ap an daon, an no go long wanfala saed.",
+                    "name": "Go daon long maket wea go ap an daon"
+                },
+                "rare-drop": {
+                    "idea": "Hem baem nomoa taem foldaon long disfala aoa hem wanfala long olketa moa big long olketa las aoa, an praes stap farawe anda long avarij.",
+                    "name": "Foldaon wea no komon"
+                },
+                "rebound": {
+                    "idea": "Hem baem taem praes go daon, then hem salem taem praes kam bak ap, o stretawe taem praes jamp ap kwiktaem.",
+                    "name": "Kwiktaem kam bak ap"
+                },
+                "steady-dip": {
+                    "idea": "Olsem “Baem taem praes go daon”, bat hem no baem sapos praes go daon plande finis long las wik.",
+                    "name": "Go daon long kwaet wik"
+                },
+                "trend": {
+                    "idea": "Hem baem taem praes go ap ova long avarij, an hem salem taem praes foldaon bak anda long avarij.",
+                    "name": "Falom wei blong praes"
+                }
+            },
+            "result": {
+                "first": "Fes hafu",
+                "second": "Mek tu hafu",
+                "title": "Plan blong iu"
+            },
+            "rule": {
+                "drawdownBelow": "Praes anda {value}% kompeam wetem hae blong {window} aoa",
+                "efficiencyBelow": "Anda {value}% blong olketa muv insaed {window} aoa go long wanfala saed",
+                "quantileBelow": "Senis long disfala aoa hem stap insaed {percentile}% wea moa daon long las {window} aoa",
+                "restoringAbove": "Paoa wea pulum praes kam bak long avarij blong {window} aoa hem winim {value}",
+                "rsiBelow": "Olketa muv wea go ap hem anda {value}% blong evri muv insaed {window} aoa",
+                "sellAny": "Salem taem eniwan long olketa ia hem tru"
+            },
+            "steps": {
+                "check": "Chekim mek tu hafu",
+                "paper": "Traem wetem praktis tred",
+                "pick": "Chusim maket an aedia",
+                "tune": "Stretem long fes hafu"
+            },
+            "title": "Mekem bot blong iu seleva",
+            "units": {
+                "hours": "{value} aoa",
+                "level": "{value}",
+                "percent": "{value}%",
+                "percentile": "{value}%",
+                "xor": "{value} XOR"
+            }
         },
         "receiveToken": "gohed token",
         "research": {
@@ -3697,11 +3861,46 @@
             "pendingInternal": "{Sora} transaksen luksavve...",
             "signAndClaim": "saen wakaot tekem"
         },
+        "analytics": {
+            "connectToSee": "Konekem akaon blong iu fo lukim disfala.",
+            "feeShare": "Fi hem {percent} blong disfala tekem.",
+            "market": {
+                "day": "24 aoa",
+                "period": "Las 30 dei",
+                "title": "Praes",
+                "unavailable": "Praes data hem no stap distaem.",
+                "week": "7 dei"
+            },
+            "showTable": "Tabol",
+            "skipped": "No insaed long disfala tekem",
+            "sources": {
+                "crowdloan": "Crowdloan",
+                "empty": "No eni praes fo soem yet.",
+                "external": "Akaon {Ethereum}",
+                "liquidity": "Fi blong likwiditi",
+                "strategic": "Strateji",
+                "title": "Folem ples hem kam long",
+                "unpriced": "Olketa token wea no garem praes hem stap long list, bat hem no stap long bar."
+            },
+            "table": {
+                "share": "Pat",
+                "source": "Ples hem kam long",
+                "value": "Valiu"
+            },
+            "vesting": {
+                "empty": "No eni praes wea open smolsmol.",
+                "fullyUnlocked": "Evri samting hem open nao",
+                "title": "Open smolsmol"
+            }
+        },
         "andText": "wakaot",
         "claimableAmountDoneVesting": "falom praes",
         "claiming": {
             "pending": "stakaon...",
             "success": "wakaot gohed"
+        },
+        "claimSection": {
+            "title": "Wanem nao iu savve tekem"
         },
         "events": {
             "BuyOnBondingCurve": "raonem raonem gohed luksavve",
@@ -3718,11 +3917,19 @@
             "external": "praes luksavve gohed konek {Ethereum} akaon",
             "strategic": "raonem praes"
         },
+        "hero": {
+            "connectTitle": "Lukim olketa praes blong iu an tekem"
+        },
         "hint": {
             "connectAccounts": "luksavve tekem luksavve wakaot wakaot luksavve praes luksavve raonem luksavve konekem gohed luksavve {Sora} wakaot {Ethereum} raonem.",
             "connectAnotherAccount": "konekem luksavve {Ethereum} akaon luksavve falom luksavve gohed wakaot wakaot luksavve praes.",
             "connectExternalAccount": "konekem gohed {Ethereum} akaon luksavve falom luksavve gohed wakaot wakaot luksavve praes.",
             "howToClaimRewards": "luksavve tekem luksavve {symbols} praes luksavve raonem luksavve saen {count} {transactions} gohed {destination}. praes stakaon gohed gohed luksavve luksavve {Sora} akaon."
+        },
+        "howTo": {
+            "choose": "Pikim wanem nao iu laekem fo tekem",
+            "connect": "Konekem akaon {Sora} blong iu",
+            "title": "Hao fo tekem"
         },
         "notification": {
             "empty": "luksavve gohed wakaot luksavve raonem akaon"
@@ -3733,6 +3940,16 @@
         "signing": {
             "accounts": "luksavve {Sora} wakaot {Ethereum} raonem gohed",
             "extension": "{PolkadotJs} brausa gohed"
+        },
+        "stats": {
+            "locked": "Stap lok yet",
+            "unlocked": "Open nao"
+        },
+        "status": {
+            "connect": "Akaon no konek yet",
+            "empty": "No eni samting yet fo tekem",
+            "failed": "Tekem hem no wok",
+            "ready": "Redi fo tekem"
         },
         "totalVested": "total praes",
         "transactions": {

@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 const installCountryFlagEmoji = vi.fn();
 const installDayjsDuration = vi.fn();
 const installSoramitsuUI = vi.fn();
+const preloadLazySoramitsuComponents = vi.fn(async () => undefined);
 const installWallet = vi.fn();
 
 let echartsModuleLoaded = false;
@@ -26,6 +27,8 @@ vi.mock('@/plugins/soramitsuUI', () => ({
     soramitsuModuleLoaded = true;
     return installSoramitsuUI(...args);
   },
+  preloadLazySoramitsuComponents: (...args: Parameters<typeof preloadLazySoramitsuComponents>) =>
+    preloadLazySoramitsuComponents(...args),
 }));
 
 vi.mock('@/plugins/wallet', () => ({
@@ -67,6 +70,36 @@ describe('plugins/index', () => {
     expect(installSoramitsuUI).toHaveBeenCalledWith(app);
     expect(installWallet).toHaveBeenCalledWith(app, context);
     expect(echartsModuleLoaded).toBe(false);
+  });
+
+  it('resolves the lazily registered UI components after installing them', async () => {
+    const app = {} as any;
+    const { installRuntimePlugins } = await import('@/plugins');
+    installSoramitsuUI.mockClear();
+    preloadLazySoramitsuComponents.mockClear();
+
+    let resolvePreload!: () => void;
+    preloadLazySoramitsuComponents.mockImplementationOnce(
+      () =>
+        new Promise<undefined>((resolve) => {
+          resolvePreload = () => resolve(undefined);
+        })
+    );
+
+    let settled = false;
+    const pending = installRuntimePlugins(app).then(() => {
+      settled = true;
+    });
+    await vi.waitFor(() => expect(preloadLazySoramitsuComponents).toHaveBeenCalledWith(app));
+
+    expect(installSoramitsuUI.mock.invocationCallOrder[0]).toBeLessThan(
+      preloadLazySoramitsuComponents.mock.invocationCallOrder[0]
+    );
+    expect(settled).toBe(false);
+
+    resolvePreload();
+    await pending;
+    expect(settled).toBe(true);
   });
 
   it('keeps the default installer compatible', async () => {

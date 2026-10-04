@@ -271,6 +271,7 @@
                 "noSmallerExactSample": "No smaller size with a fresh eligible quote",
                 "opening": "By the first possible trade, the starting allocation loses at least {loss}% of its value in {symbol}, exceeding your {limit}% limit—even with zero fees.",
                 "openingDates": "{opened} → {firstTrade} {zone}",
+                "previousCheckThrough": "Previous check · data through {time}",
                 "quoteUnavailable": "Fresh quote unavailable",
                 "screenedDraft": "Draft #{number} skipped before testing",
                 "screeningCount": "{drafted} drafted · {tested} tested",
@@ -1192,6 +1193,15 @@
             "openai": "OpenAI"
         },
         "quant": {
+            "atlas": {
+                "caption": "Each line is one tested strategy, from its idea to its results in each half. Pink lines made money in the second half and blue lines lost money. Drag along an axis to narrow them down.",
+                "edit": "Edit this strategy",
+                "help": "Drag along an axis to filter. Click a line to see its rules. Press Escape to clear.",
+                "passed": "Passed every check",
+                "pick": "Click a line to see its rules and edit it.",
+                "rejected": "Did not pass every check",
+                "used": "Used by the bot"
+            },
             "banner": {
                 "detail": "Price is {value} vs its {window}-hour average, past the {threshold} buy trigger, so a running bot would buy now.",
                 "title": "{symbol} is in the buy zone"
@@ -1251,7 +1261,6 @@
                 "watch": "No bot"
             },
             "mesh": {
-                "caption": "Each dot is one tested strategy. Bright dots passed every check; pulsing dots are the ones the bots use.",
                 "summary": "{robust} passed · {killed} rejected",
                 "title": "Strategies tested"
             },
@@ -1713,6 +1722,161 @@
         },
         "strategy": "Strategy",
         "strategyPreview": "Generated configuration",
+        "studio": {
+            "botName": "{idea} · {symbol}",
+            "calculating": "Calculating…",
+            "chart": {
+                "buys": "Buys",
+                "caption": "Drag the pink line to change when it buys and the purple line to change when it sells. Press Replay to watch the bot trade.",
+                "captionNoLines": "This idea has no lines to drag; change its settings beside the 3D chart. Press Replay to watch the bot trade.",
+                "equity": "Bot value vs holding",
+                "first": "First half: tune here",
+                "indicators": {
+                    "deviation": "Price vs {window}h average",
+                    "drawdown": "Price vs {window}h high",
+                    "momentum": "{window}h price change",
+                    "rsi": "Up-move share over {window}h"
+                },
+                "price": "{symbol} price in XOR",
+                "replay": "Replay",
+                "second": "Second half: check here",
+                "sells": "Sells",
+                "stop": "Stop",
+                "summary": "{buys} buys and {sells} sells across both halves.",
+                "title": "Price and trades"
+            },
+            "fairness": "The first half is for tuning and the second half is the check. If you keep changing settings until the second half looks good, it is no longer a fair check. Past results do not guarantee future returns.",
+            "idea": "Idea",
+            "intro": "Pick a market and an idea, then tune its rules on past SORA pool data. All views show the same choice: click a column in the 3D chart, drag the lines on the price chart, or narrow down the lines in the last chart.",
+            "landscape": {
+                "caption": "Each column is one combination of the two main settings. Height shows the first half; colour shows the second half. Tall columns that turn blue only worked on the hours they were tuned on.",
+                "color": "Colour: second half",
+                "describe": "{x}, {y}. Press Enter to use these settings.",
+                "height": "Height: first half",
+                "help": "Drag to turn the view. Click a column, or use the arrow keys and Enter, to use its settings.",
+                "pick": "Click to use these settings",
+                "title": "Results by setting"
+            },
+            "loading": "Loading past pool data…",
+            "market": "Market",
+            "newIdea": "New",
+            "openLab": "Open in Strategy Lab",
+            "outcomes": {
+                "first": "First half",
+                "holding": "Time holding",
+                "idea": "Idea",
+                "maxDrop": "Biggest drop",
+                "second": "Second half",
+                "trades": "Trades"
+            },
+            "parallel": {
+                "caption": "Each line is one combination of settings, from the settings on the left to the results on the right. Drag along any axis to keep only the lines in that range.",
+                "clear": "Clear filters",
+                "count": "{shown} of {total} shown",
+                "help": "Drag along an axis to filter. Click a line to use its settings. Press Escape to clear.",
+                "pick": "Click to use these settings",
+                "title": "Every variation of this idea"
+            },
+            "params": {
+                "amount": "Order size",
+                "average": "Sell-back average",
+                "buy": "Buy below average",
+                "choppy": "One-way share",
+                "choppyWindow": "Choppiness over",
+                "drop": "Drop size",
+                "exit": "Sell below average",
+                "fall": "Below the high",
+                "guard": "Max weekly fall",
+                "highWindow": "New high over",
+                "hours": "Drop within",
+                "jump": "Jump size",
+                "jumpHours": "Jump within",
+                "lead": "Buy above average",
+                "level": "Up-move share",
+                "lookback": "Compared with",
+                "lowWindow": "New low over",
+                "peakWindow": "High over",
+                "percentile": "Rarest hours",
+                "pull": "Pull strength",
+                "pullWindow": "Pull measured over",
+                "rsiWindow": "Moves counted",
+                "sell": "Sell above average",
+                "window": "Average over"
+            },
+            "recipes": {
+                "breakout": {
+                    "idea": "Buys when the price makes a new high and sells when it makes a new low.",
+                    "name": "New high"
+                },
+                "dip": {
+                    "idea": "Buys when the price falls well below its recent average and sells when it recovers. The ready-made bots use this idea.",
+                    "name": "Buy the dip"
+                },
+                "drop": {
+                    "idea": "Buys right after a sharp drop within a few hours and sells when the price is back near its average.",
+                    "name": "Sudden drop"
+                },
+                "elastic": {
+                    "idea": "Buys dips only when the price has recently been pulled back toward its average after each move.",
+                    "name": "Bounce-back market"
+                },
+                "oversold": {
+                    "idea": "Buys when almost every recent price move was down, then sells when the price is back above its average.",
+                    "name": "Oversold bounce"
+                },
+                "peak": {
+                    "idea": "Buys when the price is far below its recent high and sells when it recovers to its average.",
+                    "name": "Far below the high"
+                },
+                "range": {
+                    "idea": "Buys dips only while the price has been moving back and forth instead of in one direction.",
+                    "name": "Choppy-market dip"
+                },
+                "rare-drop": {
+                    "idea": "Buys only when this hour's fall is among the biggest of recent hours and the price is well below its average.",
+                    "name": "Rare drop"
+                },
+                "rebound": {
+                    "idea": "Buys the dip, then sells either when the price recovers or as soon as it jumps quickly.",
+                    "name": "Quick rebound"
+                },
+                "steady-dip": {
+                    "idea": "Like Buy the dip, but skips dips while the price has fallen a lot over the past week.",
+                    "name": "Dip in a calm week"
+                },
+                "trend": {
+                    "idea": "Buys when the price rises above its average and sells when it falls back below.",
+                    "name": "Follow the trend"
+                }
+            },
+            "result": {
+                "first": "First half",
+                "second": "Second half",
+                "title": "Your strategy"
+            },
+            "rule": {
+                "drawdownBelow": "Price vs {window}h high below {value}%",
+                "efficiencyBelow": "Under {value}% of the moves over {window}h went one way",
+                "quantileBelow": "This hour's change is in the lowest {percentile}% of the last {window}h",
+                "restoringAbove": "Pull back to the {window}h average is stronger than {value}",
+                "rsiBelow": "Up moves are under {value}% of all moves over {window}h",
+                "sellAny": "Sell when any of these is true"
+            },
+            "steps": {
+                "check": "Check the second half",
+                "paper": "Paper trade it",
+                "pick": "Pick a market and an idea",
+                "tune": "Tune it on the first half"
+            },
+            "title": "Build your own bot",
+            "units": {
+                "hours": "{value} h",
+                "level": "{value}",
+                "percent": "{value}%",
+                "percentile": "{value}%",
+                "xor": "{value} XOR"
+            }
+        },
         "suggestionNote": "Review this deterministic strategy before applying it. Applying saves the configuration; it does not start trading.",
         "suggestStrategy": "Generate strategy",
         "swaps": "Swaps",
@@ -4330,11 +4494,46 @@
             "pendingInternal": "{Sora} transaction pending...",
             "signAndClaim": "Sign and claim"
         },
+        "analytics": {
+            "connectToSee": "Connect your account to see this.",
+            "feeShare": "The fee is {percent} of this claim.",
+            "market": {
+                "day": "24h",
+                "period": "Last 30 days",
+                "title": "Price",
+                "unavailable": "Price data is unavailable right now.",
+                "week": "7d"
+            },
+            "showTable": "Table",
+            "skipped": "Not in this claim",
+            "sources": {
+                "crowdloan": "Crowdloan",
+                "empty": "No rewards to show yet.",
+                "external": "{Ethereum} account",
+                "liquidity": "Liquidity fees",
+                "strategic": "Strategic",
+                "title": "By source",
+                "unpriced": "Tokens without a price are listed but not drawn in the bar."
+            },
+            "table": {
+                "share": "Share",
+                "source": "Source",
+                "value": "Value"
+            },
+            "vesting": {
+                "empty": "No vesting rewards.",
+                "fullyUnlocked": "Everything is unlocked",
+                "title": "Vesting"
+            }
+        },
         "andText": "and",
         "claimableAmountDoneVesting": "Claimable rewards",
         "claiming": {
             "pending": "Claiming...",
             "success": "Claimed successfully"
+        },
+        "claimSection": {
+            "title": "What you can claim"
         },
         "events": {
             "BuyOnBondingCurve": "buying from the TBC",
@@ -4351,11 +4550,19 @@
             "external": "Rewards for the connected {Ethereum} account",
             "strategic": "Strategic Rewards"
         },
+        "hero": {
+            "connectTitle": "See and claim your rewards"
+        },
         "hint": {
             "connectAccounts": "To claim your PSWAP and VAL rewards you need to connect both your {Sora} and {Ethereum} accounts.",
             "connectAnotherAccount": "Connect another {Ethereum} account to check for available PSWAP and VAL rewards.",
             "connectExternalAccount": "Connect an {Ethereum} account to check for available PSWAP and VAL rewards.",
             "howToClaimRewards": "To claim your {symbols} rewards you need to sign {count} {transactions} in {destination}. Rewards will be deposited to your {Sora} account."
+        },
+        "howTo": {
+            "choose": "Choose what to claim",
+            "connect": "Connect your {Sora} account",
+            "title": "How to claim"
         },
         "notification": {
             "empty": "No available claims for this account"
@@ -4366,6 +4573,16 @@
         "signing": {
             "accounts": "your {Sora} and {Ethereum} accounts respectively",
             "extension": "{PolkadotJs} browser extension"
+        },
+        "stats": {
+            "locked": "Still locked",
+            "unlocked": "Unlocked"
+        },
+        "status": {
+            "connect": "Account not connected",
+            "empty": "Nothing to claim yet",
+            "failed": "Claim failed",
+            "ready": "Ready to claim"
         },
         "totalVested": "Total rewards",
         "transactions": {

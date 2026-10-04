@@ -271,6 +271,7 @@
                 "noSmallerExactSample": "No smaller size with a fresh eligible quote",
                 "opening": "Saat transaksi pertama dapat dilakukan, alokasi awal kehilangan setidaknya {loss}% nilainya dalam {symbol}, melampaui batas {limit}% Anda, bahkan tanpa biaya.",
                 "openingDates": "{opened} → {firstTrade} {zone}",
+                "previousCheckThrough": "Pemeriksaan sebelumnya · data hingga {time}",
                 "quoteUnavailable": "Fresh quote unavailable",
                 "screenedDraft": "Draft #{number} skipped before testing",
                 "screeningCount": "{drafted} drafted · {tested} tested",
@@ -1192,6 +1193,15 @@
             "openai": "OpenAI"
         },
         "quant": {
+            "atlas": {
+                "caption": "Setiap garis adalah satu strategi yang diuji, dari idenya sampai hasilnya di tiap paruh. Garis merah muda menghasilkan untung di paruh kedua dan garis biru merugi. Seret di sepanjang sumbu untuk mempersempitnya.",
+                "edit": "Ubah strategi ini",
+                "help": "Seret di sepanjang sumbu untuk memfilter. Klik garis untuk melihat aturannya. Tekan Esc untuk menghapus filter.",
+                "passed": "Lolos semua pemeriksaan",
+                "pick": "Klik garis untuk melihat aturannya dan mengubah strategi.",
+                "rejected": "Tidak lolos semua pemeriksaan",
+                "used": "Dipakai oleh bot"
+            },
             "banner": {
                 "detail": "Harga {value} dibanding rata-rata {window} jam, melewati batas beli {threshold}, jadi bot yang sedang berjalan akan membeli sekarang.",
                 "title": "{symbol} sedang berada di zona beli"
@@ -1251,7 +1261,6 @@
                 "watch": "Belum ada bot"
             },
             "mesh": {
-                "caption": "Setiap titik adalah satu strategi yang diuji. Titik terang lolos semua pemeriksaan; titik yang berdenyut adalah strategi yang dipakai bot.",
                 "summary": "{robust} lolos · {killed} ditolak",
                 "title": "Strategi yang diuji"
             },
@@ -1315,6 +1324,161 @@
             "title": "Bot siap pakai",
             "trades": "Transaksi",
             "watchNote": "Tidak ada aturan yang menghasilkan untung dalam pengujian, jadi belum ada bot untuk pasar ini."
+        },
+        "studio": {
+            "botName": "{idea} · {symbol}",
+            "calculating": "Menghitung…",
+            "chart": {
+                "buys": "Pembelian",
+                "caption": "Seret garis merah muda untuk mengubah kapan bot membeli dan garis ungu untuk mengubah kapan bot menjual. Tekan “Putar ulang” untuk melihat bot bertransaksi.",
+                "captionNoLines": "Ide ini tidak punya garis untuk diseret; ubah pengaturannya di samping grafik 3D. Tekan “Putar ulang” untuk melihat bot bertransaksi.",
+                "equity": "Nilai bot vs menyimpan",
+                "first": "Paruh pertama: sesuaikan di sini",
+                "indicators": {
+                    "deviation": "Harga dibanding rata-rata {window} jam",
+                    "drawdown": "Harga dibanding puncak {window} jam",
+                    "momentum": "Perubahan harga {window} jam",
+                    "rsi": "Porsi gerakan naik dalam {window} jam"
+                },
+                "price": "Harga {symbol} dalam XOR",
+                "replay": "Putar ulang",
+                "second": "Paruh kedua: periksa di sini",
+                "sells": "Penjualan",
+                "stop": "Hentikan",
+                "summary": "{buys} pembelian dan {sells} penjualan di kedua paruh.",
+                "title": "Harga dan transaksi"
+            },
+            "fairness": "Paruh pertama untuk penyesuaian dan paruh kedua untuk pemeriksaan. Jika Anda terus mengubah pengaturan sampai paruh kedua terlihat bagus, pemeriksaannya tidak lagi adil. Hasil masa lalu tidak menjamin imbal hasil di masa depan.",
+            "idea": "Ide",
+            "intro": "Pilih pasar dan ide, lalu sesuaikan aturannya pada data pool SORA masa lalu. Semua tampilan menunjukkan pilihan yang sama: klik kolom di grafik 3D, seret garis di grafik harga, atau persempit garis di grafik terakhir.",
+            "landscape": {
+                "caption": "Setiap kolom adalah satu kombinasi dua pengaturan utama. Tinggi menunjukkan paruh pertama; warna menunjukkan paruh kedua. Kolom tinggi yang berwarna biru hanya berhasil pada jam yang dipakai untuk menyesuaikannya.",
+                "color": "Warna: paruh kedua",
+                "describe": "{x}, {y}. Tekan Enter untuk memakai pengaturan ini.",
+                "height": "Tinggi: paruh pertama",
+                "help": "Seret untuk memutar tampilan. Klik kolom, atau gunakan tombol panah dan Enter, untuk memakai pengaturannya.",
+                "pick": "Klik untuk memakai pengaturan ini",
+                "title": "Hasil per pengaturan"
+            },
+            "loading": "Memuat data pool masa lalu…",
+            "market": "Pasar",
+            "newIdea": "Baru",
+            "openLab": "Buka di Laboratorium strategi",
+            "outcomes": {
+                "first": "Paruh pertama",
+                "holding": "Waktu menahan posisi",
+                "idea": "Ide",
+                "maxDrop": "Penurunan terbesar",
+                "second": "Paruh kedua",
+                "trades": "Transaksi"
+            },
+            "parallel": {
+                "caption": "Setiap garis adalah satu kombinasi pengaturan, dari pengaturan di kiri ke hasil di kanan. Seret di sepanjang sumbu mana pun untuk menyisakan hanya garis dalam rentang itu.",
+                "clear": "Hapus filter",
+                "count": "{shown} dari {total} ditampilkan",
+                "help": "Seret di sepanjang sumbu untuk memfilter. Klik garis untuk memakai pengaturannya. Tekan Esc untuk menghapus filter.",
+                "pick": "Klik untuk memakai pengaturan ini",
+                "title": "Semua variasi ide ini"
+            },
+            "params": {
+                "amount": "Ukuran pesanan",
+                "average": "Rata-rata acuan jual",
+                "buy": "Beli di bawah rata-rata",
+                "choppy": "Porsi searah",
+                "choppyWindow": "Naik-turun selama",
+                "drop": "Besar penurunan",
+                "exit": "Jual di bawah rata-rata",
+                "fall": "Di bawah puncak",
+                "guard": "Penurunan mingguan maksimum",
+                "highWindow": "Titik tertinggi baru selama",
+                "hours": "Turun dalam",
+                "jump": "Besar lonjakan",
+                "jumpHours": "Lonjakan dalam",
+                "lead": "Beli di atas rata-rata",
+                "level": "Porsi gerakan naik",
+                "lookback": "Dibandingkan dengan",
+                "lowWindow": "Titik terendah baru selama",
+                "peakWindow": "Puncak selama",
+                "percentile": "Jam paling langka",
+                "pull": "Kekuatan tarikan",
+                "pullWindow": "Tarikan diukur selama",
+                "rsiWindow": "Gerakan dihitung selama",
+                "sell": "Jual di atas rata-rata",
+                "window": "Rata-rata selama"
+            },
+            "recipes": {
+                "breakout": {
+                    "idea": "Membeli saat harga mencapai titik tertinggi baru dan menjual saat harga mencapai titik terendah baru.",
+                    "name": "Titik tertinggi baru"
+                },
+                "dip": {
+                    "idea": "Membeli saat harga turun jauh di bawah rata-rata terbarunya dan menjual saat harga pulih. Bot siap pakai memakai ide ini.",
+                    "name": "Beli saat turun"
+                },
+                "drop": {
+                    "idea": "Membeli tepat setelah penurunan tajam dalam beberapa jam dan menjual saat harga kembali mendekati rata-ratanya.",
+                    "name": "Penurunan mendadak"
+                },
+                "elastic": {
+                    "idea": "Membeli saat turun hanya jika belakangan ini harga tertarik kembali ke rata-ratanya setelah setiap pergerakan.",
+                    "name": "Pasar yang memantul"
+                },
+                "oversold": {
+                    "idea": "Membeli saat hampir semua pergerakan harga terakhir turun, lalu menjual saat harga kembali di atas rata-ratanya.",
+                    "name": "Pantulan dari jenuh jual"
+                },
+                "peak": {
+                    "idea": "Membeli saat harga jauh di bawah puncak terbarunya dan menjual saat harga pulih ke rata-ratanya.",
+                    "name": "Jauh di bawah puncak"
+                },
+                "range": {
+                    "idea": "Membeli saat turun hanya selama harga bergerak naik-turun, bukan ke satu arah.",
+                    "name": "Turun di pasar naik-turun"
+                },
+                "rare-drop": {
+                    "idea": "Membeli hanya jika penurunan jam ini termasuk yang terbesar dalam beberapa jam terakhir dan harga jauh di bawah rata-ratanya.",
+                    "name": "Penurunan langka"
+                },
+                "rebound": {
+                    "idea": "Membeli saat turun, lalu menjual saat harga pulih atau begitu harga melonjak cepat.",
+                    "name": "Pantulan cepat"
+                },
+                "steady-dip": {
+                    "idea": "Seperti “Beli saat turun”, tetapi melewatkan penurunan jika harga sudah turun banyak selama seminggu terakhir.",
+                    "name": "Turun di minggu yang tenang"
+                },
+                "trend": {
+                    "idea": "Membeli saat harga naik di atas rata-ratanya dan menjual saat harga turun kembali di bawahnya.",
+                    "name": "Ikuti tren"
+                }
+            },
+            "result": {
+                "first": "Paruh pertama",
+                "second": "Paruh kedua",
+                "title": "Strategi Anda"
+            },
+            "rule": {
+                "drawdownBelow": "Harga dibanding puncak {window} jam di bawah {value}%",
+                "efficiencyBelow": "Kurang dari {value}% gerakan dalam {window} jam bergerak searah",
+                "quantileBelow": "Perubahan jam ini termasuk {percentile}% terendah dalam {window} jam terakhir",
+                "restoringAbove": "Tarikan kembali ke rata-rata {window} jam lebih kuat dari {value}",
+                "rsiBelow": "Gerakan naik kurang dari {value}% dari semua gerakan dalam {window} jam",
+                "sellAny": "Jual saat salah satu kondisi ini terpenuhi"
+            },
+            "steps": {
+                "check": "Periksa di paruh kedua",
+                "paper": "Jalankan perdagangan simulasi",
+                "pick": "Pilih pasar dan ide",
+                "tune": "Sesuaikan di paruh pertama"
+            },
+            "title": "Buat bot Anda sendiri",
+            "units": {
+                "hours": "{value} jam",
+                "level": "{value}",
+                "percent": "{value}%",
+                "percentile": "{value}%",
+                "xor": "{value} XOR"
+            }
         },
         "receiveToken": "Token perdagangan",
         "research": {
@@ -3697,11 +3861,46 @@
             "pendingInternal": "{Sora} transaksi tertunda...",
             "signAndClaim": "Tanda tangani dan klaim"
         },
+        "analytics": {
+            "connectToSee": "Hubungkan akun Anda untuk melihatnya.",
+            "feeShare": "Biayanya sebesar {percent} dari klaim ini.",
+            "market": {
+                "day": "24 jam",
+                "period": "30 hari terakhir",
+                "title": "Harga",
+                "unavailable": "Data harga sedang tidak tersedia.",
+                "week": "7 hari"
+            },
+            "showTable": "Tabel",
+            "skipped": "Tidak termasuk dalam klaim ini",
+            "sources": {
+                "crowdloan": "Crowdloan",
+                "empty": "Belum ada hadiah untuk ditampilkan.",
+                "external": "Akun {Ethereum}",
+                "liquidity": "Biaya dari likuiditas",
+                "strategic": "Strategis",
+                "title": "Berdasarkan sumber",
+                "unpriced": "Token tanpa harga ada di daftar, tetapi tidak ditampilkan di bilah."
+            },
+            "table": {
+                "share": "Porsi",
+                "source": "Sumber",
+                "value": "Nilai"
+            },
+            "vesting": {
+                "empty": "Tidak ada hadiah vesting.",
+                "fullyUnlocked": "Semua sudah tidak terkunci",
+                "title": "Vesting"
+            }
+        },
         "andText": "dan",
         "claimableAmountDoneVesting": "Jumlah yang dapat diklaim (selesai vesting)",
         "claiming": {
             "pending": "Sedang Mengklaim...",
             "success": "Klaim telah berhasil"
+        },
+        "claimSection": {
+            "title": "Yang bisa Anda klaim"
         },
         "events": {
             "BuyOnBondingCurve": "membeli dari TBC",
@@ -3718,11 +3917,19 @@
             "external": "Hadiah untuk akun {Ethereum} yang terhubung",
             "strategic": "Imbalan Strategis"
         },
+        "hero": {
+            "connectTitle": "Lihat dan klaim hadiah Anda"
+        },
         "hint": {
             "connectAccounts": "Untuk mengklaim hasil PSWAP dan VAL Anda, Anda perlu menghubungkan akun {Sora} dan {Ethereum} Anda.",
             "connectAnotherAccount": "Hubungkan akun {Ethereum} lain untuk memeriksa hasil PSWAP dan VAL yang tersedia.",
             "connectExternalAccount": "Hubungkan akun {Ethereum} untuk memeriksa hadiah PSWAP dan VAL yang tersedia.",
             "howToClaimRewards": "Untuk mengklaim {symbols} Anda harus menandatangani {count} {transactions} di {destination}. Hasil akan disetorkan ke akun {Sora} Anda."
+        },
+        "howTo": {
+            "choose": "Pilih yang ingin diklaim",
+            "connect": "Hubungkan akun {Sora} Anda",
+            "title": "Cara mengklaim"
         },
         "notification": {
             "empty": "Tidak ada klaim yang tersedia untuk akun ini"
@@ -3733,6 +3940,16 @@
         "signing": {
             "accounts": "akun {Sora} dan {Ethereum} Anda masing-masing",
             "extension": "ekstensi browser {PolkadotJs}"
+        },
+        "stats": {
+            "locked": "Masih terkunci",
+            "unlocked": "Tidak terkunci"
+        },
+        "status": {
+            "connect": "Akun belum terhubung",
+            "empty": "Belum ada yang bisa diklaim",
+            "failed": "Klaim gagal",
+            "ready": "Siap diklaim"
         },
         "totalVested": "Total hadiah",
         "transactions": {

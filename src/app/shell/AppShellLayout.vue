@@ -26,21 +26,13 @@
 </template>
 
 <script setup lang="ts">
-import { createAsyncComponent } from '@/shared/ui/async';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { isGetTsCheckoutRoute } from '@/features/misc/lib/getTsFlow';
 
+import { AppDisclaimer, AppFooter, AppHeader, AppLogoButton, AppMenu, TonswapJourneyNotice } from './chrome';
 import { useAppShellContext } from './context';
 
-const AppDisclaimer = createAsyncComponent(() => import('@/components/App/Header/AppDisclaimer.vue'));
-const AppFooter = createAsyncComponent(() => import('@/components/App/Footer/AppFooter.vue'));
-const AppHeader = createAsyncComponent(() => import('@/components/App/Header/AppHeader.vue'));
-const AppLogoButton = createAsyncComponent(() => import('@/components/App/Header/AppLogoButton.vue'));
-const AppMenu = createAsyncComponent(() => import('@/components/App/Menu/AppMenu.vue'));
-const TonswapJourneyNotice = createAsyncComponent(
-  () => import('@/features/misc/components/burn/TonswapJourneyNotice.vue')
-);
 const route = useRoute();
 const checkout = computed(() => isGetTsCheckoutRoute(route.path, route.query));
 

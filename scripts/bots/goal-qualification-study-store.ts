@@ -10,6 +10,8 @@ import {
   goalQualificationPolicy,
   goalQualificationEvidenceProtocol,
   goalQualificationDigest as digest,
+  assertGoalQualificationOwnData,
+  copyGoalQualificationOwnData,
   readGoalQualificationBinding,
   type GoalQualificationCertificate,
   type GoalQualificationEpisodeEvidence,
@@ -122,15 +124,15 @@ function freeze<T>(value: T): T {
   }
   return value;
 }
-/** The shared digest rejects getters, non-data objects, unsafe numbers and oversized structures before copying. */
+/** The shared own-data validator rejects getters, unsafe numbers and oversized structures before copying. */
 function snapshot<T>(value: T, maximumBytes = SMALL_BYTES): T {
-  digest(value);
+  assertGoalQualificationOwnData(value);
   const text = canonical(value);
   check(Buffer.byteLength(text) <= maximumBytes, 'record-too-large');
   return freeze(JSON.parse(text) as T);
 }
-/** Raw RPC metadata may exceed the qualification digest's 100k per-string cap; it remains bounded own-data. */
-function rawSnapshot<T>(value: T, maximumBytes: number): T {
+/** Preserve the checked canonical bytes beside detached frozen raw data; never trust caller serialization. */
+function rawSnapshotWithCanonical<T>(value: T, maximumBytes: number): { value: T; canonicalText: string } {
   let nodes = 0,
     stringBytes = 0;
   const visit = (item: unknown, depth: number): unknown => {
@@ -170,9 +172,14 @@ function rawSnapshot<T>(value: T, maximumBytes: number): T {
       )
     );
   };
-  const result = visit(value, 0) as T;
-  check(Buffer.byteLength(canonical(result)) <= maximumBytes, 'record-too-large');
-  return result;
+  const result = visit(value, 0) as T,
+    canonicalText = canonical(result);
+  check(Buffer.byteLength(canonicalText) <= maximumBytes, 'record-too-large');
+  return { value: result, canonicalText };
+}
+/** Raw RPC metadata may exceed the qualification digest's 100k per-string cap; it remains bounded own-data. */
+function rawSnapshot<T>(value: T, maximumBytes: number): T {
+  return rawSnapshotWithCanonical(value, maximumBytes).value;
 }
 const rawDigest = (ownValue: unknown) => createHash('sha256').update(canonical(ownValue), 'utf8').digest('hex');
 function fields(value: object, expected: readonly string[]): void {
@@ -219,7 +226,10 @@ async function writeOnce(
   maximumBytes = SMALL_BYTES,
   raw = false
 ): Promise<void> {
-  const body = `${canonical((raw ? rawSnapshot : snapshot)(value, maximumBytes))}\n`;
+  const canonicalText = raw
+    ? rawSnapshotWithCanonical(value, maximumBytes).canonicalText
+    : canonical(snapshot(value, maximumBytes));
+  const body = `${canonicalText}\n`;
   const temporary = join(directory, `.pending-${randomUUID()}`);
   const handle = await open(temporary, 'wx', 0o600);
   try {
@@ -230,10 +240,20 @@ async function writeOnce(
   }
   try {
     await link(temporary, join(directory, name));
-    await syncDirectory(directory);
   } finally {
-    await unlink(temporary);
-    await syncDirectory(directory);
+    let unlinkFailure: { reason: unknown } | undefined;
+    try {
+      await unlink(temporary);
+    } catch (reason) {
+      unlinkFailure = { reason };
+    }
+    // The final name and temporary-name removal become durable together before success.
+    try {
+      await syncDirectory(directory);
+    } catch (reason) {
+      if (!unlinkFailure) throw reason;
+    }
+    if (unlinkFailure) throw unlinkFailure.reason;
   }
 }
 /** No symlink following, unbounded reads or automatic repair of malformed durable records. */
@@ -265,8 +285,11 @@ async function readRecord<T>(
     }
     const text = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(Buffer.concat(chunks));
     check(text.endsWith('\n'), 'incomplete-record');
-    const value = (raw ? rawSnapshot : snapshot)(JSON.parse(text) as T, maximumBytes);
-    check(text === `${canonical(value)}\n`, 'noncanonical-record');
+    const parsed = JSON.parse(text) as T,
+      value = raw ? rawSnapshot(parsed, maximumBytes) : copyGoalQualificationOwnData(parsed);
+    const serialized = canonical(value);
+    if (!raw) check(Buffer.byteLength(serialized) <= maximumBytes, 'record-too-large');
+    check(text === `${serialized}\n`, 'noncanonical-record');
     return value;
   } finally {
     await handle.close();
@@ -372,12 +395,12 @@ function expectedRequest(
     episodeIndex,
   });
 }
-function evidenceFor(
+/** Check bindings only for a detached snapshot or a freshly fully checked regular completed record. */
+function checkEvidenceBinding(
   request: GoalQualificationEvaluationRequest,
-  value: GoalQualificationEpisodeEvidence,
+  evidence: GoalQualificationEpisodeEvidence,
   protocol: GoalQualificationPlan['protocol']
-): GoalQualificationEpisodeEvidence {
-  const evidence = snapshot(value, EVIDENCE_BYTES);
+): void {
   fields(evidence, [
     'protocol',
     'requestSha256',
@@ -401,6 +424,14 @@ function evidenceFor(
     evidence.opening.fundedAtMs === request.startAtMs && evidence.terminal.accountingAtMs === request.endAtMs,
     'evidence-window'
   );
+}
+function evidenceFor(
+  request: GoalQualificationEvaluationRequest,
+  value: GoalQualificationEpisodeEvidence,
+  protocol: GoalQualificationPlan['protocol']
+): GoalQualificationEpisodeEvidence {
+  const evidence = snapshot(value, EVIDENCE_BYTES);
+  checkEvidenceBinding(request, evidence, protocol);
   return evidence;
 }
 
@@ -905,7 +936,7 @@ async function openStudyStore(
         'raw-evidence-corrupt'
       );
     }
-    evidenceFor(request, value.evidence, protocol);
+    checkEvidenceBinding(request, value.evidence, protocol);
     return value;
   }
   async function trainingComplete(directory: string, plan: GoalQualificationPlan): Promise<void> {
@@ -1165,8 +1196,13 @@ async function openStudyStore(
                   rawNames.size < 16000,
                 'evidence-name'
               );
-              ownValue = rawSnapshot(value, EVIDENCE_BYTES - 1024);
-              receipt = { name, sha256: rawDigest(ownValue), bytes: Buffer.byteLength(canonical(ownValue)) };
+              const retained = rawSnapshotWithCanonical(value, EVIDENCE_BYTES - 1024);
+              ownValue = retained.value;
+              receipt = {
+                name,
+                sha256: createHash('sha256').update(retained.canonicalText, 'utf8').digest('hex'),
+                bytes: Buffer.byteLength(retained.canonicalText),
+              };
               check(rawBytes + receipt.bytes <= 512 * 1024 * 1024, 'raw-byte-limit');
               envelope = Object.freeze({
                 kind: 'goal-study-raw-evidence-v1',

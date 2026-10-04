@@ -271,6 +271,7 @@
                 "noSmallerExactSample": "No smaller size with a fresh eligible quote",
                 "opening": "Đến giao dịch đầu tiên có thể thực hiện, vốn phân bổ ban đầu mất ít nhất {loss}% giá trị tính bằng {symbol}, vượt giới hạn {limit}% của bạn, ngay cả khi không có phí.",
                 "openingDates": "{opened} → {firstTrade} {zone}",
+                "previousCheckThrough": "Lần kiểm tra trước · dữ liệu đến {time}",
                 "quoteUnavailable": "Fresh quote unavailable",
                 "screenedDraft": "Draft #{number} skipped before testing",
                 "screeningCount": "{drafted} drafted · {tested} tested",
@@ -1192,6 +1193,15 @@
             "openai": "OpenAI"
         },
         "quant": {
+            "atlas": {
+                "caption": "Mỗi đường là một chiến lược đã thử nghiệm, từ ý tưởng đến kết quả ở từng nửa. Đường màu hồng có lãi ở nửa sau, còn đường màu xanh dương bị lỗ. Kéo dọc theo một trục để thu hẹp.",
+                "edit": "Chỉnh sửa chiến lược này",
+                "help": "Kéo dọc theo trục để lọc. Nhấp vào một đường để xem quy tắc. Nhấn Esc để xóa.",
+                "passed": "Đã qua mọi bước kiểm tra",
+                "pick": "Nhấp vào một đường để xem quy tắc và chỉnh sửa.",
+                "rejected": "Không qua hết các bước kiểm tra",
+                "used": "Bot đang dùng"
+            },
             "banner": {
                 "detail": "Giá đang ở mức {value} so với trung bình {window} giờ, đã vượt ngưỡng mua {threshold}, nên bot đang chạy sẽ mua ngay lúc này.",
                 "title": "{symbol} đang ở vùng mua"
@@ -1251,7 +1261,6 @@
                 "watch": "Chưa có bot"
             },
             "mesh": {
-                "caption": "Mỗi chấm là một chiến lược đã thử nghiệm. Chấm sáng đã qua mọi bước kiểm tra; chấm nhấp nháy là chiến lược các bot đang dùng.",
                 "summary": "{robust} đạt · {killed} bị loại",
                 "title": "Chiến lược đã thử nghiệm"
             },
@@ -1315,6 +1324,161 @@
             "title": "Bot dựng sẵn",
             "trades": "Số giao dịch",
             "watchNote": "Không quy tắc nào có lãi khi thử nghiệm, nên thị trường này chưa có bot."
+        },
+        "studio": {
+            "botName": "{idea} · {symbol}",
+            "calculating": "Đang tính…",
+            "chart": {
+                "buys": "Mua",
+                "caption": "Kéo đường màu hồng để đổi thời điểm mua và đường màu tím để đổi thời điểm bán. Nhấn “Phát lại” để xem bot giao dịch.",
+                "captionNoLines": "Ý tưởng này không có đường để kéo; hãy đổi cài đặt bên cạnh biểu đồ 3D. Nhấn “Phát lại” để xem bot giao dịch.",
+                "equity": "Giá trị bot so với nắm giữ",
+                "first": "Nửa đầu: tinh chỉnh ở đây",
+                "indicators": {
+                    "deviation": "Giá so với trung bình {window} giờ",
+                    "drawdown": "Giá so với đỉnh {window} giờ",
+                    "momentum": "Thay đổi giá {window} giờ",
+                    "rsi": "Tỷ lệ tăng trong {window} giờ"
+                },
+                "price": "Giá {symbol} tính bằng XOR",
+                "replay": "Phát lại",
+                "second": "Nửa sau: kiểm tra ở đây",
+                "sells": "Bán",
+                "stop": "Dừng",
+                "summary": "{buys} lần mua và {sells} lần bán trong cả hai nửa.",
+                "title": "Giá và giao dịch"
+            },
+            "fairness": "Nửa đầu dùng để tinh chỉnh, nửa sau dùng để kiểm tra. Nếu bạn cứ đổi cài đặt cho đến khi nửa sau trông tốt, phép kiểm tra đó không còn công bằng nữa. Kết quả trong quá khứ không đảm bảo lợi nhuận trong tương lai.",
+            "idea": "Ý tưởng",
+            "intro": "Chọn một thị trường và một ý tưởng, rồi tinh chỉnh quy tắc trên dữ liệu pool SORA trong quá khứ. Mọi biểu đồ đều hiển thị cùng một lựa chọn: nhấp vào một cột trong biểu đồ 3D, kéo các đường trên biểu đồ giá, hoặc lọc bớt các đường ở biểu đồ cuối.",
+            "landscape": {
+                "caption": "Mỗi cột là một tổ hợp của hai cài đặt chính. Chiều cao thể hiện nửa đầu; màu thể hiện nửa sau. Cột cao mà chuyển sang màu xanh dương chỉ hiệu quả trên những giờ đã dùng để tinh chỉnh.",
+                "color": "Màu: nửa sau",
+                "describe": "{x}, {y}. Nhấn Enter để dùng cài đặt này.",
+                "height": "Chiều cao: nửa đầu",
+                "help": "Kéo để xoay góc nhìn. Nhấp vào một cột, hoặc dùng phím mũi tên và Enter, để dùng cài đặt của cột đó.",
+                "pick": "Nhấp để dùng cài đặt này",
+                "title": "Kết quả theo cài đặt"
+            },
+            "loading": "Đang tải dữ liệu pool trong quá khứ…",
+            "market": "Thị trường",
+            "newIdea": "Mới",
+            "openLab": "Mở trong Phòng thử nghiệm chiến lược",
+            "outcomes": {
+                "first": "Nửa đầu",
+                "holding": "Thời gian nắm giữ",
+                "idea": "Ý tưởng",
+                "maxDrop": "Mức giảm lớn nhất",
+                "second": "Nửa sau",
+                "trades": "Số giao dịch"
+            },
+            "parallel": {
+                "caption": "Mỗi đường là một tổ hợp cài đặt, từ cài đặt ở bên trái đến kết quả ở bên phải. Kéo dọc theo trục bất kỳ để chỉ giữ các đường trong khoảng đó.",
+                "clear": "Xóa bộ lọc",
+                "count": "Hiển thị {shown} trên {total}",
+                "help": "Kéo dọc theo trục để lọc. Nhấp vào một đường để dùng cài đặt của nó. Nhấn Esc để xóa.",
+                "pick": "Nhấp để dùng cài đặt này",
+                "title": "Mọi biến thể của ý tưởng này"
+            },
+            "params": {
+                "amount": "Mỗi lần mua",
+                "average": "Trung bình để bán",
+                "buy": "Mua dưới trung bình",
+                "choppy": "Tỷ lệ một chiều",
+                "choppyWindow": "Độ giằng co trong",
+                "drop": "Mức giảm",
+                "exit": "Bán dưới trung bình",
+                "fall": "Dưới đỉnh",
+                "guard": "Mức giảm tối đa trong tuần",
+                "highWindow": "Đỉnh mới trong",
+                "hours": "Giảm trong vòng",
+                "jump": "Mức tăng vọt",
+                "jumpHours": "Tăng vọt trong vòng",
+                "lead": "Mua trên trung bình",
+                "level": "Tỷ lệ tăng",
+                "lookback": "So với",
+                "lowWindow": "Đáy mới trong",
+                "peakWindow": "Đỉnh trong",
+                "percentile": "Giờ hiếm nhất",
+                "pull": "Lực kéo",
+                "pullWindow": "Đo lực kéo trong",
+                "rsiWindow": "Khoảng đếm biến động",
+                "sell": "Bán trên trung bình",
+                "window": "Trung bình trong"
+            },
+            "recipes": {
+                "breakout": {
+                    "idea": "Mua khi giá lập đỉnh mới và bán khi giá lập đáy mới.",
+                    "name": "Đỉnh mới"
+                },
+                "dip": {
+                    "idea": "Mua khi giá xuống thấp hơn hẳn mức trung bình gần đây và bán khi giá hồi lại. Các bot dựng sẵn dùng ý tưởng này.",
+                    "name": "Mua khi giá giảm"
+                },
+                "drop": {
+                    "idea": "Mua ngay sau một cú giảm mạnh trong vài giờ và bán khi giá quay về gần mức trung bình.",
+                    "name": "Giảm đột ngột"
+                },
+                "elastic": {
+                    "idea": "Chỉ mua khi giá giảm nếu gần đây giá thường bị kéo về mức trung bình sau mỗi lần biến động.",
+                    "name": "Thị trường hay bật lại"
+                },
+                "oversold": {
+                    "idea": "Mua khi gần như mọi biến động giá gần đây đều là giảm, rồi bán khi giá quay lại trên mức trung bình.",
+                    "name": "Bật lại sau chuỗi giảm"
+                },
+                "peak": {
+                    "idea": "Mua khi giá thấp hơn nhiều so với đỉnh gần đây và bán khi giá hồi về mức trung bình.",
+                    "name": "Xa dưới đỉnh"
+                },
+                "range": {
+                    "idea": "Chỉ mua khi giá giảm trong lúc giá dao động lên xuống thay vì đi theo một hướng.",
+                    "name": "Nhịp giảm khi giá giằng co"
+                },
+                "rare-drop": {
+                    "idea": "Chỉ mua khi mức giảm của giờ này thuộc nhóm lớn nhất trong các giờ gần đây và giá thấp hơn hẳn mức trung bình.",
+                    "name": "Cú giảm hiếm gặp"
+                },
+                "rebound": {
+                    "idea": "Mua khi giá giảm, rồi bán khi giá hồi lại hoặc ngay khi giá tăng vọt.",
+                    "name": "Hồi phục nhanh"
+                },
+                "steady-dip": {
+                    "idea": "Giống “Mua khi giá giảm”, nhưng bỏ qua khi giá đã giảm nhiều trong tuần qua.",
+                    "name": "Nhịp giảm trong tuần yên ắng"
+                },
+                "trend": {
+                    "idea": "Mua khi giá lên trên mức trung bình và bán khi giá quay xuống dưới.",
+                    "name": "Theo xu hướng"
+                }
+            },
+            "result": {
+                "first": "Nửa đầu",
+                "second": "Nửa sau",
+                "title": "Chiến lược của bạn"
+            },
+            "rule": {
+                "drawdownBelow": "Giá so với đỉnh {window} giờ thấp hơn {value}%",
+                "efficiencyBelow": "Dưới {value}% biến động trong {window} giờ đi theo một hướng",
+                "quantileBelow": "Biến động của giờ này nằm trong {percentile}% thấp nhất của {window} giờ qua",
+                "restoringAbove": "Lực kéo về trung bình {window} giờ mạnh hơn {value}",
+                "rsiBelow": "Số lần tăng dưới {value}% tổng số biến động trong {window} giờ",
+                "sellAny": "Bán khi có bất kỳ điều kiện nào đúng"
+            },
+            "steps": {
+                "check": "Kiểm tra trên nửa sau",
+                "paper": "Thử giao dịch mô phỏng",
+                "pick": "Chọn thị trường và ý tưởng",
+                "tune": "Tinh chỉnh trên nửa đầu"
+            },
+            "title": "Tự tạo bot của bạn",
+            "units": {
+                "hours": "{value} giờ",
+                "level": "{value}",
+                "percent": "{value}%",
+                "percentile": "{value}%",
+                "xor": "{value} XOR"
+            }
         },
         "receiveToken": "Token giao dịch",
         "research": {
@@ -3697,11 +3861,46 @@
             "pendingInternal": "Giao dịch {Sora} đang chờ xử lý...",
             "signAndClaim": "Ký và nhận phần thưởng"
         },
+        "analytics": {
+            "connectToSee": "Kết nối tài khoản của bạn để xem mục này.",
+            "feeShare": "Phí chiếm {percent} của lần nhận này.",
+            "market": {
+                "day": "24 giờ",
+                "period": "30 ngày qua",
+                "title": "Giá",
+                "unavailable": "Hiện chưa có dữ liệu giá.",
+                "week": "7 ngày"
+            },
+            "showTable": "Bảng",
+            "skipped": "Không nằm trong lần nhận này",
+            "sources": {
+                "crowdloan": "Crowdloan",
+                "empty": "Chưa có phần thưởng nào để hiển thị.",
+                "external": "Tài khoản {Ethereum}",
+                "liquidity": "Phí từ thanh khoản",
+                "strategic": "Chiến lược",
+                "title": "Theo nguồn",
+                "unpriced": "Token không có giá được liệt kê nhưng không hiển thị trên thanh."
+            },
+            "table": {
+                "share": "Tỷ lệ",
+                "source": "Nguồn",
+                "value": "Giá trị"
+            },
+            "vesting": {
+                "empty": "Không có phần thưởng vesting.",
+                "fullyUnlocked": "Tất cả đã được mở khóa",
+                "title": "Vesting"
+            }
+        },
         "andText": "và",
         "claimableAmountDoneVesting": "Phần thưởng có thể nhận",
         "claiming": {
             "pending": "Đang yêu cầu...",
             "success": "Đã yêu cầu thành công"
+        },
+        "claimSection": {
+            "title": "Những gì bạn có thể nhận"
         },
         "events": {
             "BuyOnBondingCurve": "mua từ TBC",
@@ -3718,11 +3917,19 @@
             "external": "Phần thưởng cho tài khoản {Ethereum} được kết nối",
             "strategic": "Phần thưởng chiến lược"
         },
+        "hero": {
+            "connectTitle": "Xem và nhận phần thưởng của bạn"
+        },
         "hint": {
             "connectAccounts": "Để yêu cầu phần thưởng PSWAP và VAL, bạn cần kết nối với cả 2 tài khoản {Sora} và {Ethereum} của bạn.",
             "connectAnotherAccount": "Kết nối với tài khoản {Ethereum} khác để kiểm tra phần thường PSWAP và VAL khả dụng",
             "connectExternalAccount": "Kết nối với 1 tài khoản {Ethereum} để kiểm tra phần thường PSWAP và VAL khả dụng",
             "howToClaimRewards": "Để yêu cầu phần thưởng {symbols} bạn cần ký tên {count} {transactions} tại {destination}. Phần thưởng sẽ được chuyển đến tài khoản {Sora} của bạn."
+        },
+        "howTo": {
+            "choose": "Chọn những gì bạn muốn nhận",
+            "connect": "Kết nối tài khoản {Sora} của bạn",
+            "title": "Cách nhận"
         },
         "notification": {
             "empty": "Không có yêu cầu nào cho tài khoản này"
@@ -3733,6 +3940,16 @@
         "signing": {
             "accounts": "tài khoản {Sora} và {Ethereum} tương ứng của bạn",
             "extension": "tiện ích mở rộng (extension) {PolkadotJs} của trình duyệt"
+        },
+        "stats": {
+            "locked": "Vẫn bị khóa",
+            "unlocked": "Đã mở khóa"
+        },
+        "status": {
+            "connect": "Tài khoản chưa được kết nối",
+            "empty": "Chưa có gì để nhận",
+            "failed": "Nhận thất bại",
+            "ready": "Sẵn sàng để nhận"
         },
         "totalVested": "Tổng giải thưởng",
         "transactions": {
