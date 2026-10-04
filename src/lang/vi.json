@@ -1374,6 +1374,8 @@
             "fairness": "Nửa đầu dùng để tinh chỉnh, nửa sau dùng để kiểm tra. Nếu bạn cứ đổi cài đặt cho đến khi nửa sau trông tốt, phép kiểm tra đó không còn công bằng nữa. Kết quả trong quá khứ không đảm bảo lợi nhuận trong tương lai.",
             "idea": "Ý tưởng",
             "intro": "Chọn một thị trường và một ý tưởng, rồi tinh chỉnh quy tắc trên dữ liệu pool SORA trong quá khứ. Mọi biểu đồ đều hiển thị cùng một lựa chọn: nhấp vào một cột trong biểu đồ 3D, kéo các đường trên biểu đồ giá, hoặc lọc bớt các đường ở biểu đồ cuối.",
+            "labImportInvalid": "Bản nháp Studio chiến lược này không hợp lệ hoặc siêu dữ liệu token không khả dụng. Hãy mở lại bản nháp từ Studio trước khi chạy thử nghiệm.",
+            "labImportNote": "Đã nhập cấu hình nguồn từ Studio chiến lược. Hãy kiểm tra thị trường hiện tại, vốn, quy mô lệnh, lịch sử và các thiết lập kiểm định trước khi chạy. Phòng thử nghiệm sử dụng dữ liệu quan sát theo giờ và mức phí mới nhất; kết quả có thể khác với Studio. Ngày của dữ liệu lưu trữ nguồn:",
             "landscape": {
                 "caption": "Mỗi cột là một tổ hợp của hai cài đặt chính. Chiều cao thể hiện nửa đầu; màu thể hiện nửa sau. Cột cao mà chuyển sang màu xanh dương chỉ hiệu quả trên những giờ đã dùng để tinh chỉnh.",
                 "color": "Màu: nửa sau",

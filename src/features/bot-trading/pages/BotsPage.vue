@@ -228,7 +228,8 @@
       :saving="busy || !!startIntent"
       :strategy-preset="navigation.strategy"
       :composer-open="navigation.composer"
-      :shared-rules="typeof route.query.rules === 'string' ? route.query.rules : undefined"
+      :shared-rules="route.query.rules"
+      :shared-study="route.query.study"
       @navigate="navigateLab"
       @save="savePlayground"
       @start="startFromResearch"
@@ -1277,6 +1278,7 @@ import type { BotDefinition, BotGoal, BotHistory, BotOrder, BotResearchSnapshot,
 import { encodeRuleShare } from '../rule-recipes';
 import { PageNames } from '@/consts/navigation';
 import {
+  botLabDraftLocation,
   botWorkspaceLocation,
   readBotNavigation,
   type BotNavigation,
@@ -1545,9 +1547,9 @@ const chartTab = computed({
     void router.push(botWorkspaceLocation('bots', { botId: selectedId.value, chart }));
   },
 });
-/** Keep public strategy and composer selections bookmarkable without serializing a research draft. */
+/** Preserve the existing public import while changing bookmarkable Lab panel choices. */
 function navigateLab(state: Pick<BotNavigation, 'strategy' | 'composer'>): void {
-  if (workspaceView.value === 'lab') void router.push(botWorkspaceLocation('lab', state));
+  if (workspaceView.value === 'lab') void router.push(botLabDraftLocation(state, route.query));
 }
 /** Selecting a strategy changes only the unsigned historical inspector, never bot execution. */
 function navigatePlayground(strategy: BotStrategyPreset): void {

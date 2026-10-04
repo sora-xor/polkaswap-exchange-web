@@ -1374,6 +1374,8 @@
             "fairness": "De eerste helft is om af te stemmen, de tweede helft is de controle. Als je de instellingen blijft wijzigen tot de tweede helft er goed uitziet, is het geen eerlijke controle meer. Resultaten uit het verleden bieden geen garantie voor de toekomst.",
             "idea": "Idee",
             "intro": "Kies een markt en een idee en stem de regels af op historische SORA-pooldata. Alle weergaven tonen dezelfde keuze: klik op een staaf in de 3D-grafiek, sleep de lijnen in de koersgrafiek of filter de lijnen in de laatste grafiek.",
+            "labImportInvalid": "Dit concept uit Strategy Studio is ongeldig of de metadata van de tokens zijn niet beschikbaar. Open het opnieuw vanuit Studio voordat je experimenten uitvoert.",
+            "labImportNote": "Bronconfiguratie geïmporteerd uit Strategy Studio. Controleer de huidige markt, het kapitaal, de ordergrootte, de historische gegevens en de validatie-instellingen voordat je de analyse uitvoert. Het strategielab gebruikt waarnemingen per uur en actuele transactiekosten; de resultaten kunnen afwijken van die van Studio. Datums van het bronarchief:",
             "landscape": {
                 "caption": "Elke staaf is één combinatie van de twee hoofdinstellingen. De hoogte toont de eerste helft, de kleur de tweede. Hoge staven die blauw worden, werkten alleen op de uren waarop ze zijn afgestemd.",
                 "color": "Kleur: tweede helft",

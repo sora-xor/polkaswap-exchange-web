@@ -1374,6 +1374,8 @@
             "fairness": "La primera mitad sirve para ajustar y la segunda para comprobar. Si cambias los ajustes hasta que la segunda mitad salga bien, ya no es una comprobación justa. Los resultados pasados no garantizan rentabilidades futuras.",
             "idea": "Idea de estrategia",
             "intro": "Elige un mercado y una idea, y ajusta sus reglas con datos históricos de los pools de SORA. Todas las vistas muestran la misma elección: haz clic en una columna del gráfico 3D, arrastra las líneas del gráfico de precios o filtra las líneas del último gráfico.",
+            "labImportInvalid": "Este borrador de Strategy Studio no es válido o los metadatos de sus tokens no están disponibles. Vuelve a abrirlo desde Studio antes de ejecutar experimentos.",
+            "labImportNote": "Configuración de origen importada de Strategy Studio. Revisa el mercado actual, el capital, el tamaño de la orden, el historial y los ajustes de validación antes de ejecutar. El laboratorio utiliza observaciones horarias y comisiones actualizadas; sus resultados pueden diferir de los de Studio. Fechas del archivo histórico de origen:",
             "landscape": {
                 "caption": "Cada columna es una combinación de los dos ajustes principales. La altura muestra la primera mitad; el color, la segunda. Las columnas altas que se vuelven azules solo funcionaron en las horas con las que se ajustaron.",
                 "color": "Color: segunda mitad",

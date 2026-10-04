@@ -1374,6 +1374,8 @@
             "fairness": "První polovina slouží k ladění a druhá ke kontrole. Když budete nastavení měnit, dokud druhá polovina nebude vypadat dobře, kontrola už není poctivá. Minulé výsledky nezaručují budoucí výnosy.",
             "idea": "Nápad",
             "intro": "Vyberte trh a nápad a pak vylaďte jeho pravidla na historických datech poolů SORA. Všechny pohledy ukazují stejnou volbu: klikněte na sloupec ve 3D grafu, posuňte čáry v cenovém grafu nebo zužte výběr čar v posledním grafu.",
+            "labImportInvalid": "Tento návrh ze Strategy Studio je neplatný nebo nejsou dostupná metadata jeho tokenů. Před spuštěním experimentů jej znovu otevřete ze Studia.",
+            "labImportNote": "Zdrojová konfigurace importována ze Strategy Studio. Před spuštěním zkontrolujte aktuální trh, kapitál, velikost objednávky, historii a nastavení ověření. Laboratoř používá hodinová pozorování a čerstvě zjištěné poplatky; její výsledky se mohou lišit od Studia. Datum začátku a konce zdrojového archivu:",
             "landscape": {
                 "caption": "Každý sloupec je jedna kombinace dvou hlavních nastavení. Výška ukazuje první polovinu, barva druhou. Vysoké sloupce, které zmodrají, fungovaly jen v hodinách, na kterých byly vyladěny.",
                 "color": "Barva: druhá polovina",

@@ -1374,6 +1374,8 @@
             "fairness": "La prima metà serve a mettere a punto, la seconda a verificare. Se continui a cambiare le impostazioni finché la seconda metà non sembra buona, la verifica non è più equa. I risultati passati non garantiscono rendimenti futuri.",
             "idea": "Idea strategica",
             "intro": "Scegli un mercato e un’idea, poi metti a punto le sue regole sui dati storici dei pool SORA. Tutte le viste mostrano la stessa scelta: fai clic su una colonna del grafico 3D, trascina le linee sul grafico dei prezzi o filtra le linee nell’ultimo grafico.",
+            "labImportInvalid": "Questa bozza di Strategy Studio non è valida oppure i metadati dei suoi token non sono disponibili. Riaprila da Studio prima di eseguire esperimenti.",
+            "labImportNote": "Configurazione di origine importata da Strategy Studio. Prima di avviare l'analisi, controlla il mercato attuale, il capitale, la dimensione degli ordini, lo storico e le impostazioni di validazione. Il laboratorio usa osservazioni orarie e commissioni aggiornate; i risultati possono differire da quelli di Studio. Date dell'archivio di origine:",
             "landscape": {
                 "caption": "Ogni colonna è una combinazione delle due impostazioni principali. L’altezza mostra la prima metà, il colore la seconda. Le colonne alte che diventano blu hanno funzionato solo sulle ore usate per metterle a punto.",
                 "color": "Colore: seconda metà",

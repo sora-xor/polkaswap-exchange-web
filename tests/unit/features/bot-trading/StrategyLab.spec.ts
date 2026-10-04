@@ -8,6 +8,18 @@ import { LAB_DEFAULT_SETTINGS } from '@/features/bot-trading/lab-config';
 import { createPlaygroundBot } from '@/features/bot-trading/playground';
 import { encodeRuleShare, ruleRecipe, RULE_RECIPE_IDS } from '@/features/bot-trading/rule-recipes';
 import type { ExperimentDefinition, ExperimentRun } from '@/features/bot-trading/experiments';
+import { createStudioLabHandoff, encodeLabStudyHandoff } from '@/features/bot-trading/strategy-lab-handoff';
+import { normalizeStudioState } from '@/features/bot-trading/quant-studio';
+
+vi.mock('@/lib/substrate/sdk/assets/consts', () => ({
+  XOR: { address: '0x0200000000000000000000000000000000000000000000000000000000000000', symbol: 'XOR', decimals: 18 },
+  VAL: { address: '0x0200040000000000000000000000000000000000000000000000000000000000', symbol: 'VAL', decimals: 18 },
+  PSWAP: {
+    address: '0x0200050000000000000000000000000000000000000000000000000000000000',
+    symbol: 'PSWAP',
+    decimals: 18,
+  },
+}));
 
 const mocks = vi.hoisted(() => ({
   list: vi.fn(),
@@ -19,6 +31,7 @@ const mocks = vi.hoisted(() => ({
   fees: vi.fn(),
   snapshot: vi.fn(),
   present: vi.fn(),
+  loadHistory: vi.fn(),
 }));
 vi.mock('@/composables/useTranslation', () => ({ useTranslation: () => ({ t: (key: string) => key }) }));
 vi.mock('@/features/bot-trading/experiment-storage', () => ({
@@ -31,8 +44,10 @@ vi.mock('@/features/bot-trading/research-runner', () => ({
   createExperimentRunner: (options: {
     onUpdate: (run: ExperimentRun) => void;
     awaitProgress: (checkpoint: { checkpoint: number }, signal: AbortSignal, id: string) => Promise<void>;
+    loadHistory: (...args: unknown[]) => Promise<unknown>;
   }) => {
     mocks.present.mockImplementation(options.awaitProgress);
+    mocks.loadHistory.mockImplementation(options.loadHistory);
     return {
       run: async (definitions: ExperimentDefinition[]) => {
         const completed: ExperimentRun[] | undefined = await mocks.run(definitions);
@@ -84,9 +99,9 @@ function savedRun(): ExperimentRun {
   } as unknown as ExperimentRun;
 }
 /** Mount the UI with mocked persistence and network boundaries; no wallet or service is contacted. */
-async function render() {
+async function render(props: Record<string, unknown> = {}) {
   const wrapper = mount(StrategyLab, {
-    props: { assets, loadHistory: vi.fn(), loadFees: mocks.fees },
+    props: { assets, loadHistory: vi.fn(), loadFees: mocks.fees, ...props },
     global: {
       stubs: {
         ExperimentCard: true,
@@ -100,6 +115,24 @@ async function render() {
   wrappers.push(wrapper);
   await flushPromises();
   return wrapper;
+}
+
+/** A dated public source draft with inert metadata and no fee or wallet state. */
+function studioDraft(amount = 3) {
+  const now = Date.now();
+  const endAt = Math.floor(now / 3_600_000) * 3_600_000 - 3_600_000;
+  return createStudioLabHandoff(
+    assets[0],
+    assets[2],
+    {
+      genesisHash: `0x${'7e'.repeat(32)}`,
+      denominator: '1' + '0'.repeat(38),
+      startAt: endAt - 100 * 3_600_000,
+      endAt,
+    },
+    normalizeStudioState({ recipe: 'dip', values: { window: 48, buy: 15, sell: 10, amount } }),
+    now
+  );
 }
 /** Explicitly start an unsigned research batch after the user reviews the builder. */
 async function selectAllPresets(wrapper: VueWrapper) {
@@ -646,6 +679,121 @@ describe('StrategyLab', () => {
     await wrapper.setProps({ sharedRules: 'malformed' });
     expect(wrapper.text()).toContain('bots.rules.invalidLink');
   });
+  it('imports Studio PSWAP dip sizing and dated controls without starting or restoring evidence', async () => {
+    mocks.list.mockResolvedValue([savedRun()]);
+    const draft = studioDraft();
+    const loadHistory = vi.fn().mockResolvedValue({ identity: draft.identity, candles: [] });
+    const wrapper = await render({
+      sharedStudy: encodeLabStudyHandoff(draft),
+      composerOpen: true,
+      strategyPreset: 'sma',
+      loadHistory,
+    });
+    expect(wrapper.get('[data-testid="lab-input-token"]').element).toHaveProperty('value', XOR.address);
+    expect(wrapper.get('[data-testid="lab-output-token"]').element).toHaveProperty('value', PSWAP.address);
+    expect(wrapper.get('[data-testid="lab-capital"]').element).toHaveProperty('value', '10');
+    expect(wrapper.get('[data-testid="lab-trade-percent"]').element).toHaveProperty('value', '30');
+    expect(wrapper.get('[data-testid="lab-interval-blocks"]').element).toHaveProperty('value', '600');
+    expect(wrapper.get('[data-testid="lab-history-range"]').element).toHaveProperty('value', 'custom');
+    expect(wrapper.get('[data-testid="lab-study-import"]').text()).toContain('bots.studio.labImportNote');
+    expect(wrapper.get('[data-testid="lab-data-status"]').text()).toContain('bots.uxLab.readyToTest');
+    expect(wrapper.find('[data-testid="lab-inspection"]').exists()).toBe(false);
+    expect(mocks.run).not.toHaveBeenCalled();
+    expect(mocks.fees).not.toHaveBeenCalled();
+    expect(wrapper.emitted('save')).toBeUndefined();
+    expect(wrapper.emitted('start')).toBeUndefined();
+    await startResearch(wrapper);
+    const definitions = mocks.run.mock.calls[0][0] as ExperimentDefinition[];
+    expect(definitions).toHaveLength(1);
+    expect(definitions[0].settings).toMatchObject({
+      ...draft.settings,
+      assetInAddress: XOR.address,
+      assetOutAddress: PSWAP.address,
+      optimize: false,
+      networkFeeXor: '',
+      swapFeePercent: '',
+      sellNetworkFeeXor: '',
+      sellSwapFeePercent: '',
+    });
+    expect(definitions[0].strategy).toMatchObject({
+      kind: 'rules',
+      rules: draft.rules,
+      amount: '3',
+      intervalMs: 3600000,
+    });
+    const bot = createPlaygroundBot(definitions[0].settings, assets);
+    await expect(mocks.loadHistory(bot, definitions[0].settings)).resolves.toMatchObject({ identity: draft.identity });
+    loadHistory.mockResolvedValueOnce({ identity: { ...draft.identity, denominator: '1' }, candles: [] });
+    await expect(mocks.loadHistory(bot, definitions[0].settings)).rejects.toThrow('bots.errors.denomination');
+  });
+
+  it('restores the same source payload on reentry but preserves edits during active panel changes', async () => {
+    const link = encodeLabStudyHandoff(studioDraft());
+    const wrapper = await render({ sharedStudy: link, active: true });
+    await wrapper.get('[data-testid="lab-capital"]').setValue('25');
+    await wrapper.get('[data-testid="lab-output-token"]').setValue(VAL.address);
+    await wrapper.setProps({ composerOpen: true });
+    expect(wrapper.get('[data-testid="lab-capital"]').element).toHaveProperty('value', '25');
+    await wrapper.setProps({ active: false });
+    await wrapper.setProps({ active: true });
+    expect(wrapper.get('[data-testid="lab-capital"]').element).toHaveProperty('value', '10');
+    expect(wrapper.get('[data-testid="lab-output-token"]').element).toHaveProperty('value', PSWAP.address);
+    expect(mocks.run).not.toHaveBeenCalled();
+  });
+
+  it('blocks invalid/repeated/missing imports and handles removal and back-forward without stale settings', async () => {
+    const link = encodeLabStudyHandoff(studioDraft());
+    const wrapper = await render({ sharedStudy: link });
+    for (const sharedStudy of ['bad', [link, link], '']) {
+      await wrapper.setProps({ sharedStudy });
+      expect(wrapper.get('[data-testid="lab-study-import-error"]').text()).toBe('bots.studio.labImportInvalid');
+      expect(wrapper.get('[data-testid="lab-run-batch"]').attributes('disabled')).toBeDefined();
+      await startResearch(wrapper);
+      expect(mocks.run).not.toHaveBeenCalled();
+    }
+    const composer = wrapper.getComponent({ name: 'StrategyComposer' });
+    expect(composer.props('busy')).toBe(true);
+    composer.vm.$emit('propose', {
+      name: 'Staged old draft',
+      settings,
+      strategy: createPlaygroundBot(settings, assets).strategy,
+    });
+    await flushPromises();
+    expect(mocks.run).not.toHaveBeenCalled();
+    await wrapper.setProps({ sharedStudy: undefined });
+    expect(wrapper.find('[data-testid="lab-study-import-error"]').exists()).toBe(false);
+    expect(wrapper.get('[data-testid="lab-capital"]').element).toHaveProperty('value', '100');
+    expect(wrapper.get('[data-testid="lab-output-token"]').element).toHaveProperty('value', VAL.address);
+    await wrapper.setProps({ sharedStudy: link, assets: assets.slice(0, 2) });
+    expect(wrapper.get('[data-testid="lab-run-batch"]').attributes('disabled')).toBeDefined();
+    expect(wrapper.get('[data-testid="lab-output-token"]').element).not.toHaveProperty('value', VAL.address);
+    await wrapper.setProps({ assets });
+    expect(wrapper.find('[data-testid="lab-study-import-error"]').exists()).toBe(false);
+    expect(wrapper.get('[data-testid="lab-output-token"]').element).toHaveProperty('value', PSWAP.address);
+    expect(wrapper.get('[data-testid="lab-capital"]').element).toHaveProperty('value', '10');
+    expect(wrapper.get('[data-testid="lab-run-batch"]').attributes('disabled')).toBeUndefined();
+    await wrapper.get('[data-testid="lab-capital"]').setValue('22');
+    await wrapper.setProps({ assets: [...assets] });
+    expect(wrapper.get('[data-testid="lab-capital"]').element).toHaveProperty('value', '22');
+  });
+
+  it('restores legacy rules with default context after Studio and rejects conflicting rule copies', async () => {
+    const draft = studioDraft(2);
+    const wrapper = await render({ sharedStudy: encodeLabStudyHandoff(draft) });
+    await wrapper.setProps({ sharedRules: encodeRuleShare(ruleRecipe('trend')) });
+    expect(wrapper.get('[data-testid="lab-run-batch"]').attributes('disabled')).toBeDefined();
+    await wrapper.setProps({ sharedStudy: undefined, sharedRules: encodeRuleShare(ruleRecipe('dip')) });
+    expect(wrapper.find('[data-testid="lab-study-import"]').exists()).toBe(false);
+    expect(wrapper.find('[data-testid="lab-study-import-error"]').exists()).toBe(false);
+    expect(wrapper.get('[data-testid="lab-capital"]').element).toHaveProperty('value', '100');
+    expect(wrapper.get('[data-testid="lab-trade-percent"]').element).toHaveProperty('value', '10');
+    expect(wrapper.get('[data-testid="lab-output-token"]').element).toHaveProperty('value', VAL.address);
+    expect(wrapper.getComponent({ name: 'RuleBuilder' }).props('editing')).toBe(true);
+    await wrapper.setProps({ sharedRules: [encodeRuleShare(ruleRecipe('dip'))] });
+    expect(wrapper.get('[data-testid="lab-run-batch"]').attributes('disabled')).toBeDefined();
+    expect(mocks.run).not.toHaveBeenCalled();
+  });
+
   it('starts one configured strategy only after an explicit preview', async () => {
     const wrapper = await render();
     expect(mocks.run).not.toHaveBeenCalled();

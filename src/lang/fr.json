@@ -1374,6 +1374,8 @@
             "fairness": "La première moitié sert à ajuster et la seconde à vérifier. Si vous changez les paramètres jusqu’à ce que la seconde moitié semble bonne, la vérification n’est plus équitable. Les résultats passés ne garantissent pas les rendements futurs.",
             "idea": "Idée",
             "intro": "Choisissez un marché et une idée, puis ajustez ses règles sur les données historiques des pools SORA. Toutes les vues montrent le même choix : cliquez sur une colonne du graphique 3D, faites glisser les lignes du graphique des prix ou filtrez les lignes du dernier graphique.",
+            "labImportInvalid": "Ce brouillon de Strategy Studio est invalide ou les métadonnées de ses jetons sont indisponibles. Rouvrez-le depuis Studio avant de lancer des expériences.",
+            "labImportNote": "Configuration source importée depuis Strategy Studio. Vérifiez le marché actuel, le capital, la taille des ordres, l'historique et les paramètres de validation avant de lancer l'analyse. Le laboratoire utilise des observations horaires et des frais actualisés ; ses résultats peuvent différer de ceux de Studio. Dates de l'archive source :",
             "landscape": {
                 "caption": "Chaque colonne est une combinaison des deux paramètres principaux. La hauteur montre la première moitié ; la couleur, la seconde. Les hautes colonnes qui virent au bleu n’ont fonctionné que sur les heures qui ont servi à les ajuster.",
                 "color": "Couleur : seconde moitié",

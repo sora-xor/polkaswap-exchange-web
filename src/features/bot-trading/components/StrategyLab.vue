@@ -5,6 +5,13 @@
     data-testid="strategy-lab"
     :aria-label="t('bots.lab.title')"
   >
+    <p v-if="importedStudy" data-testid="lab-study-import" class="lab-method-note">
+      {{ t('bots.studio.labImportNote') }}
+      {{ experimentDateRange(importedStudy.settings.historyStartAt, importedStudy.settings.historyEndAt) }}
+    </p>
+    <p v-if="sharedImportIssue" data-testid="lab-study-import-error" class="lab-error" role="alert">
+      {{ t(sharedImportIssue) }}
+    </p>
     <Teleport :to="marketControlsTarget || 'body'" :disabled="!marketControlsTarget" defer>
       <div v-show="active" class="lab-market-controls" data-testid="lab-market-controls">
         <label
@@ -399,7 +406,7 @@
       <StrategyComposer
         :assets="assets"
         :settings="settings"
-        :busy="running"
+        :busy="running || !!sharedImportIssue"
         :load-history="loadHistory"
         :selected-rules="rulesMode ? ruleDraft : undefined"
         :selected-strategy="customStrategy"
@@ -658,6 +665,7 @@ import { ruleRecipe, decodeRuleShare, buildRuleBatch, RULE_RECIPE_IDS, type Rule
 import { parseStrategyRules } from '../strategy-rules';
 import type { BotStrategyPreset, BotNavigation } from '../navigation';
 import { codec, toCodec } from '../amounts';
+import { decodeLabStudyHandoff, labHandoffAssetsMatch, type LabStudyHandoff } from '../strategy-lab-handoff';
 
 /** Parallel public research workspace. Saved experiments contain no wallet or provider connection. */
 const props = withDefaults(
@@ -673,7 +681,8 @@ const props = withDefaults(
     active?: boolean;
     strategyPreset?: BotStrategyPreset;
     composerOpen?: boolean;
-    sharedRules?: string;
+    sharedRules?: unknown;
+    sharedStudy?: unknown;
     /** Optional page-first target for the same market controls, preserving a single research draft. */
     marketControlsTarget?: string;
   }>(),
@@ -705,6 +714,15 @@ const validRules = computed(() => {
   }
 });
 const settings = reactive<ResearchSettings>(createLabDefaultSettings(Date.now()));
+const importedStudy = shallowRef<LabStudyHandoff | null>(null);
+const invalidSharedImport = ref('');
+const sharedImportIssue = computed(
+  () =>
+    invalidSharedImport.value ||
+    (importedStudy.value && !labHandoffAssetsMatch(importedStudy.value, props.assets)
+      ? 'bots.studio.labImportInvalid'
+      : '')
+);
 type StrategyChoice = ({ kind: 'preset'; id: ResearchSettings['preset'] } | { kind: 'recipe'; id: RuleRecipeId }) & {
   nameKey: string;
   ideaKey: string;
@@ -901,6 +919,7 @@ const batchCount = computed(
 const canBuild = computed(
   () =>
     ready.value &&
+    !sharedImportIssue.value &&
     !!inputAsset.value &&
     !!outputAsset.value &&
     validStartingCapital.value &&
@@ -910,7 +929,11 @@ const canBuild = computed(
     settings.assetInAddress !== settings.assetOutAddress
 );
 const selectedRun = computed(() => runs.value.find((run) => run.id === selectedId.value));
-const completedCount = computed(() => runs.value.filter((run) => run.status === 'complete').length);
+const completedCount = computed(() =>
+  importedStudy.value
+    ? Number(selectedRun.value?.status === 'complete')
+    : runs.value.filter((run) => run.status === 'complete').length
+);
 /** Batch progress excludes saved studies; a restored workspace summarizes its saved library until a new run starts. */
 const currentBatchRuns = computed(() => runs.value.filter((run) => batchIds.value.includes(run.id)));
 const summaryRuns = computed(() => (batchIds.value.length ? currentBatchRuns.value : runs.value));
@@ -932,6 +955,7 @@ const displayedRuns = computed(() =>
 const sortedRuns = computed(() => sortLabRuns(comparisonRuns.value, sort.value));
 const sourceState = computed(() => {
   if (!ready.value) return 'bots.uxLab.restoring';
+  if (sharedImportIssue.value) return sharedImportIssue.value;
   if (running.value)
     return runs.value.some((run) => run.status === 'running') ? 'bots.uxLab.computing' : 'bots.uxLab.loadingHistory';
   if (!inputAsset.value || !outputAsset.value) return 'bots.uxLab.waitingForAssets';
@@ -972,6 +996,7 @@ function symbol(address?: string): string {
 }
 /** Keep settings on a valid pair as asset metadata arrives or the input changes. */
 function ensurePair(): void {
+  if (importedStudy.value || invalidSharedImport.value) return;
   if (props.assets.length < 2) return;
   if (!inputAsset.value)
     settings.assetInAddress =
@@ -1097,19 +1122,77 @@ function focusComposer(): void {
   composerSection.value?.scrollIntoView?.({ block: 'start', behavior: 'auto' });
   composerSection.value?.focus();
 }
-/** A public link restores conditions only; it never queues work or copies a portfolio. */
+/** Route changes restore a reviewed public draft, never queueing work or copying a portfolio. */
+let previousSharedStudy: unknown;
+let previousSharedRules: unknown;
+let previouslyActive = false;
 watch(
-  () => props.sharedRules,
-  (value) => {
-    if (value === undefined) return;
-    const decoded = decodeRuleShare(value);
-    if (!decoded) {
-      error.value = 'bots.rules.invalidLink';
+  () => [props.sharedStudy, props.sharedRules, props.active] as const,
+  ([study, rules, active]) => {
+    const reactivated = active && !previouslyActive;
+    previouslyActive = active;
+    if (!active || (!reactivated && study === previousSharedStudy && rules === previousSharedRules)) return;
+    const hadImport = previousSharedStudy !== undefined || previousSharedRules !== undefined;
+    const hadStudy = previousSharedStudy !== undefined;
+    previousSharedStudy = study;
+    previousSharedRules = rules;
+    importedStudy.value = null;
+    invalidSharedImport.value = '';
+    error.value = '';
+    // A removed context must not leave a previous market/amount runnable as a new draft.
+    if (study === undefined && rules === undefined) {
+      if (hadImport) {
+        Object.assign(settings, createLabDefaultSettings(Date.now()));
+        choosePreset(props.strategyPreset ?? settings.preset);
+        historyRange.value = '90';
+        ensurePair();
+      }
       return;
     }
-    ruleDraft.value = decoded;
+    const draft = study === undefined ? null : decodeLabStudyHandoff(study);
+    const decodedRules = rules === undefined ? null : decodeRuleShare(rules);
+    if (
+      (study !== undefined && !draft) ||
+      (rules !== undefined && !decodedRules) ||
+      (draft && decodedRules && JSON.stringify(draft.rules) !== JSON.stringify(decodedRules))
+    ) {
+      invalidSharedImport.value = study === undefined ? 'bots.rules.invalidLink' : 'bots.studio.labImportInvalid';
+      return;
+    }
+    if (!draft && hadStudy) {
+      Object.assign(settings, createLabDefaultSettings(Date.now()));
+      historyRange.value = '90';
+      ensurePair();
+    }
+    ruleDraft.value = draft?.rules ?? decodedRules!;
     ruleName.value = t('bots.rules.sharedName');
+    extraOutputs.value = [];
+    variations.value = 1;
+    composerOpen.value = false;
+    customStrategyName.value = '';
     setRulesMode(true);
+    if (draft) {
+      importedStudy.value = draft;
+      Object.assign(settings, createLabDefaultSettings(Date.now()), draft.settings, {
+        assetInAddress: draft.input.address,
+        assetOutAddress: draft.output.address,
+        preset: 'dca',
+        intervalHours: 1,
+        optimize: false,
+        networkFeeXor: '',
+        swapFeePercent: '',
+        sellNetworkFeeXor: '',
+        sellSwapFeePercent: '',
+        priceImpactPercent: undefined,
+        sellPriceImpactPercent: undefined,
+      });
+      historyRange.value = 'custom';
+      // Preset/composer URL state is presentation only; any panel navigation preserves this draft.
+      previewPreset.value = props.strategyPreset ?? settings.preset;
+      presets.value = [settings.preset];
+      selectedId.value = '';
+      visibleIds.value = [];
+    }
   },
   { immediate: true }
 );
@@ -1129,6 +1212,10 @@ function experimentName(value: ResearchSettings): string {
 }
 /** Start an immutable batch; editing the builder never mutates an existing result. */
 async function startBatch(): Promise<void> {
+  if (props.sharedStudy !== undefined && !decodeLabStudyHandoff(props.sharedStudy)) {
+    invalidSharedImport.value = 'bots.studio.labImportInvalid';
+    return;
+  }
   if (running.value || !canBuild.value) return;
   error.value = '';
   try {
@@ -1179,7 +1266,7 @@ async function startBatch(): Promise<void> {
 }
 /** Queue up to 36 studies and retain at most 36 earlier runs in memory; persist each completed run separately. */
 async function runDefinitions(definitions: ExperimentDefinition[]): Promise<void> {
-  if (running.value || !definitions.length) return;
+  if (running.value || sharedImportIssue.value || !definitions.length) return;
   const current = ++generation;
   runner?.dispose();
   running.value = true;
@@ -1202,6 +1289,7 @@ async function runDefinitions(definitions: ExperimentDefinition[]): Promise<void
   const retainedIds = new Set(runs.value.map((run) => run.id));
   pinnedIds.value = pinnedIds.value.filter((id) => retainedIds.has(id));
   const writes: Promise<void>[] = [];
+  const sourceIdentity = importedStudy.value ? { ...importedStudy.value.identity } : null;
   runner = createExperimentRunner({
     assets: props.assets.map((asset) => ({ ...asset })),
     awaitProgress: async (checkpoint, signal, id) => {
@@ -1210,7 +1298,16 @@ async function runDefinitions(definitions: ExperimentDefinition[]): Promise<void
       if (view) await view.waitForCheckpoint(checkpoint.checkpoint, signal);
       else await awaitResearchPaint(signal);
     },
-    loadHistory: props.loadHistory,
+    loadHistory: async (bot, settings) => {
+      const history = await props.loadHistory(bot, settings);
+      if (
+        sourceIdentity &&
+        (history.identity?.genesisHash !== sourceIdentity.genesisHash ||
+          history.identity?.denominator !== sourceIdentity.denominator)
+      )
+        throw new Error('bots.errors.denomination');
+      return history;
+    },
     loadFees: props.loadFees,
     onUpdate: (run) => {
       if (!mounted || current !== generation) return;
@@ -1387,7 +1484,8 @@ onMounted(async () => {
       ...saved.filter((run) => !pinnedIds.value.includes(run.id)),
     ];
     visibleIds.value = preferred.slice(0, 3).map((run) => run.id);
-    selectedId.value = visibleIds.value[0] ?? '';
+    if (!importedStudy.value && !invalidSharedImport.value) selectedId.value = visibleIds.value[0] ?? '';
+    else visibleIds.value = [];
   } catch {
     if (mounted) storageError.value = true;
   }

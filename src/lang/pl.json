@@ -1374,6 +1374,8 @@
             "fairness": "Pierwsza połowa służy do strojenia, a druga do sprawdzenia. Jeśli zmieniasz ustawienia tak długo, aż druga połowa wygląda dobrze, sprawdzenie przestaje być uczciwe. Przeszłe wyniki nie gwarantują przyszłych zysków.",
             "idea": "Pomysł",
             "intro": "Wybierz rynek i pomysł, a potem dostrój jego reguły na historycznych danych pul SORA. Wszystkie widoki pokazują ten sam wybór: kliknij słupek na wykresie 3D, przeciągnij linie na wykresie ceny albo zawęź linie na ostatnim wykresie.",
+            "labImportInvalid": "Ten szkic ze Strategy Studio jest nieprawidłowy lub metadane jego tokenów są niedostępne. Otwórz go ponownie ze Studio przed uruchomieniem eksperymentów.",
+            "labImportNote": "Konfiguracja źródłowa zaimportowana ze Strategy Studio. Przed uruchomieniem sprawdź bieżący rynek, kapitał, wielkość zlecenia, historię i ustawienia walidacji. Laboratorium korzysta z obserwacji godzinowych oraz aktualnych opłat; jego wyniki mogą różnić się od wyników Studio. Daty archiwum źródłowego:",
             "landscape": {
                 "caption": "Każdy słupek to jedno połączenie dwóch głównych ustawień. Wysokość pokazuje pierwszą połowę, a kolor drugą. Wysokie słupki, które robią się niebieskie, działały tylko w godzinach, na których je dostrojono.",
                 "color": "Kolor: druga połowa",

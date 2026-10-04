@@ -12,6 +12,12 @@ import {
   type StudioState,
 } from '@/features/bot-trading/quant-studio';
 import type { ResearchFeeSnapshot } from '@/features/bot-trading/research-fees';
+import { decodeLabStudyHandoff } from '@/features/bot-trading/strategy-lab-handoff';
+
+vi.mock('@/lib/substrate/sdk/assets/consts', () => ({
+  XOR: { address: '0x0200000000000000000000000000000000000000000000000000000000000000', symbol: 'XOR', decimals: 18 },
+  VAL: { address: '0x0200040000000000000000000000000000000000000000000000000000000000', symbol: 'VAL', decimals: 18 },
+}));
 
 const mocks = vi.hoisted(() => ({ studio: null as unknown as Record<string, any> }));
 
@@ -268,11 +274,37 @@ describe('QuantStudio', () => {
     );
   });
 
-  it('opens the same rules in the Strategy Lab', () => {
+  it('opens the exact market, sizing, rules and archive window in the Strategy Lab without fee authority', () => {
     const wrapper = render();
     const to = JSON.parse(wrapper.get('[data-testid="studio-lab"]').attributes('data-to')!);
     expect(to.params).toEqual({ section: 'lab' });
-    expect(typeof to.query.rules).toBe('string');
+    expect(Object.keys(to.query)).toEqual(['study']);
+    const draft = decodeLabStudyHandoff(to.query.study)!;
+    expect(draft.rules).toEqual(studioCandidate(mocks.studio.state.value).rules);
+    expect(draft.input).toEqual(ASSETS[0]);
+    expect(draft.output).toEqual(PSWAP);
+    expect(draft.settings).toMatchObject({
+      capital: '10',
+      tradePercent: 30,
+      feeBudgetXor: '2',
+      slippagePercent: '0.5',
+      intervalBlocks: 600,
+      validation: 'holdout',
+      trainPercent: 50,
+      historyStartAt: START,
+      historyEndAt: END,
+    });
+    expect(draft.amount).toBe('3');
+    expect(draft.identity).toEqual({ genesisHash: FEES.genesisHash, denominator: '100' });
+    expect(JSON.stringify(draft)).not.toContain('networkFeeXor');
+  });
+
+  it('does not offer a Lab link when the selected market metadata is unavailable or mismatched', async () => {
+    const wrapper = render();
+    await wrapper.setProps({ assets: [ASSETS[0], { ...PSWAP, decimals: 6 }] });
+    expect(wrapper.find('[data-testid="studio-lab"]').exists()).toBe(false);
+    await wrapper.setProps({ assets: [ASSETS[0]] });
+    expect(wrapper.find('[data-testid="studio-lab"]').exists()).toBe(false);
   });
 
   it('observes fresh fees and hands a reviewed paper template to the page', async () => {

@@ -216,9 +216,10 @@
           <button type="button" class="studio-primary" data-testid="studio-paper" :disabled="!canPaper" @click="paper">
             {{ preparing ? t('bots.quant.preparing') : t('bots.quant.paper') }}
           </button>
-          <RouterLink class="studio-link" data-testid="studio-lab" :to="labLink"
+          <RouterLink v-if="labLink" class="studio-link" data-testid="studio-lab" :to="labLink"
             >{{ t('bots.studio.openLab') }} ↗</RouterLink
           >
+          <span v-else class="studio-link" aria-disabled="true">{{ t('bots.studio.openLab') }}</span>
         </div>
         <p class="studio-note">{{ t('bots.studio.fairness') }}</p>
       </aside>
@@ -304,7 +305,8 @@ import { computed, inject, onBeforeUnmount, onMounted, ref, toRef, useId, watch 
 import { routeLocationKey } from 'vue-router';
 import { useTranslation } from '@/composables/useTranslation';
 import { PageNames } from '@/consts/navigation';
-import { encodeRuleShare } from '@/features/bot-trading/rule-recipes';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
+import { createStudioLabHandoff, encodeLabStudyHandoff } from '@/features/bot-trading/strategy-lab-handoff';
 import {
   STUDIO_RECIPES,
   normalizeStudioState,
@@ -621,12 +623,32 @@ const asset = computed(() => {
 const canPaper = computed(
   () => status.value === 'ready' && replayCurrent.value && !!asset.value && !preparing.value && !props.busy
 );
-/** Open the same rules as an editable draft in the Strategy Lab, which tests any pair. */
-const labLink = computed(() => ({
-  name: PageNames.Bots,
-  params: { section: 'lab' },
-  query: { rules: encodeRuleShare(candidate.value.rules) },
-}));
+/** Carry the selected market and nominal study controls, without importing dated fee observations. */
+const labLink = computed(() => {
+  const archive = info.value;
+  const target = asset.value;
+  const input = props.assets.find((entry) => entry.address === XOR.address);
+  const market = archive?.markets.find((entry) => entry.symbol === symbol.value);
+  if (
+    !archive ||
+    !target ||
+    !input ||
+    !market ||
+    target.decimals !== market.decimals ||
+    target.symbol !== market.symbol
+  )
+    return undefined;
+  try {
+    const now = Date.now();
+    return {
+      name: PageNames.Bots,
+      params: { section: 'lab' },
+      query: { study: encodeLabStudyHandoff(createStudioLabHandoff(input, target, archive, state.value, now), now) },
+    };
+  } catch {
+    return undefined;
+  }
+});
 
 /** Observe fresh fees for this pair, then hand the exact template to the page's paper flow. */
 async function paper(): Promise<void> {

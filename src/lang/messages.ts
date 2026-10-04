@@ -19,6 +19,14 @@ import { VaultPageNames } from '../modules/vault/consts';
 import { AlertFrequencyTabs, AlertTypeTabs } from '../types/tabs';
 
 export default {
+  bots: {
+    studio: {
+      labImportInvalid:
+        'This Strategy Studio draft is invalid or its token metadata is unavailable. Reopen it from Studio before running experiments.',
+      labImportNote:
+        'Source configuration imported from Strategy Studio. Review the current market, capital, order size, history and validation settings before running. Lab uses hourly observations and fresh fees; its results may differ from Studio. Source archive dates:',
+    },
+  },
   buyXor: buyXorMessages.buyXor,
   communityStore: communityStoreMessages,
   getTs: {

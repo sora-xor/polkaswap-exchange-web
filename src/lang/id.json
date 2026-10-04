@@ -1374,6 +1374,8 @@
             "fairness": "Paruh pertama untuk penyesuaian dan paruh kedua untuk pemeriksaan. Jika Anda terus mengubah pengaturan sampai paruh kedua terlihat bagus, pemeriksaannya tidak lagi adil. Hasil masa lalu tidak menjamin imbal hasil di masa depan.",
             "idea": "Ide",
             "intro": "Pilih pasar dan ide, lalu sesuaikan aturannya pada data pool SORA masa lalu. Semua tampilan menunjukkan pilihan yang sama: klik kolom di grafik 3D, seret garis di grafik harga, atau persempit garis di grafik terakhir.",
+            "labImportInvalid": "Draf Studio strategi ini tidak valid atau metadata tokennya tidak tersedia. Buka kembali dari Studio sebelum menjalankan eksperimen.",
+            "labImportNote": "Konfigurasi sumber diimpor dari Studio strategi. Tinjau pasar saat ini, modal, ukuran order, riwayat, dan pengaturan validasi sebelum menjalankan. Laboratorium menggunakan pengamatan per jam dan biaya terbaru; hasilnya mungkin berbeda dari Studio. Tanggal arsip sumber:",
             "landscape": {
                 "caption": "Setiap kolom adalah satu kombinasi dua pengaturan utama. Tinggi menunjukkan paruh pertama; warna menunjukkan paruh kedua. Kolom tinggi yang berwarna biru hanya berhasil pada jam yang dipakai untuk menyesuaikannya.",
                 "color": "Warna: paruh kedua",

@@ -1,5 +1,5 @@
 import { PageNames } from '@/consts/navigation';
-import type { LocationQuery, RouteLocationRaw } from 'vue-router';
+import type { LocationQuery, RouteLocationAsRelativeGeneric } from 'vue-router';
 
 /** Public sections and harmless view state supported by the static Bots workspace. */
 export type BotWorkspaceView = 'simple' | 'discover' | 'lab' | 'playground' | 'bots';
@@ -15,7 +15,7 @@ export interface BotNavigation {
 
 const sections = { simple: '', discover: 'discover', lab: 'lab', playground: 'backtesting', bots: 'my-bots' } as const;
 
-/** Read only bounded, explicitly supported navigation values; repeated query keys are ignored. */
+/** Read bounded view choices; draft presence opens Lab for strict receiver validation. */
 export function readBotNavigation(section: unknown, query: LocationQuery): BotNavigation {
   const view =
     section === 'backtesting'
@@ -24,7 +24,11 @@ export function readBotNavigation(section: unknown, query: LocationQuery): BotNa
         ? 'bots'
         : section === 'discover'
           ? 'discover'
-          : section === 'lab' || query.strategy || query.panel === 'composer' || query.rules
+          : section === 'lab' ||
+              query.strategy ||
+              query.panel === 'composer' ||
+              query.rules !== undefined ||
+              query.study !== undefined
             ? 'lab'
             : 'simple';
   return {
@@ -45,7 +49,7 @@ export function readBotNavigation(section: unknown, query: LocationQuery): BotNa
 export function botWorkspaceLocation(
   view: BotWorkspaceView,
   state: Partial<Omit<BotNavigation, 'view'>> = {}
-): RouteLocationRaw {
+): RouteLocationAsRelativeGeneric {
   const query: Record<string, string> = {};
   if (view === 'bots') {
     if (state.botId && /^[\w-]{1,96}$/.test(state.botId)) query.bot = state.botId;
@@ -57,4 +61,16 @@ export function botWorkspaceLocation(
     if (view === 'lab' && state.composer) query.panel = 'composer';
   }
   return { name: PageNames.Bots, params: { section: sections[view] }, query };
+}
+
+/** Keep an imported public draft during harmless Lab panel navigation, including invalid values for visible rejection. */
+export function botLabDraftLocation(
+  state: Pick<BotNavigation, 'strategy' | 'composer'>,
+  current: LocationQuery
+): RouteLocationAsRelativeGeneric {
+  const location = botWorkspaceLocation('lab', state);
+  for (const key of ['rules', 'study'] as const) {
+    if (current[key] !== undefined) location.query = { ...location.query, [key]: current[key] };
+  }
+  return location;
 }

@@ -1802,6 +1802,8 @@
             "fairness": "The first half is for tuning and the second half is the check. If you keep changing settings until the second half looks good, it is no longer a fair check. Past results do not guarantee future returns.",
             "idea": "Idea",
             "intro": "Pick a market and an idea, then tune its rules on past SORA pool data. All views show the same choice: click a column in the 3D chart, drag the lines on the price chart, or narrow down the lines in the last chart.",
+            "labImportInvalid": "This Strategy Studio draft is invalid or its token metadata is unavailable. Reopen it from Studio before running experiments.",
+            "labImportNote": "Source configuration imported from Strategy Studio. Review the current market, capital, order size, history and validation settings before running. Lab uses hourly observations and fresh fees; its results may differ from Studio. Source archive dates:",
             "landscape": {
                 "caption": "Each column is one combination of the two main settings. Height shows the first half; colour shows the second half. Tall columns that turn blue only worked on the hours they were tuned on.",
                 "color": "Colour: second half",

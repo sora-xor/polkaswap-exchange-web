@@ -1374,6 +1374,8 @@
             "fairness": "Die erste Hälfte dient zum Abstimmen, die zweite zur Prüfung. Werden die Einstellungen so lange geändert, bis die zweite Hälfte gut aussieht, ist die Prüfung nicht mehr fair. Vergangene Ergebnisse garantieren keine künftigen Renditen.",
             "idea": "Idee",
             "intro": "Markt und Idee wählen, dann ihre Regeln mit historischen SORA-Pooldaten abstimmen. Alle Ansichten zeigen dieselbe Auswahl: eine Säule im 3D-Diagramm anklicken, die Linien im Kursdiagramm ziehen oder die Linien im letzten Diagramm eingrenzen.",
+            "labImportInvalid": "Dieser Entwurf aus Strategy Studio ist ungültig oder seine Token-Metadaten sind nicht verfügbar. Öffnen Sie ihn erneut aus dem Studio, bevor Sie Experimente starten.",
+            "labImportNote": "Quellkonfiguration aus Strategy Studio importiert. Prüfen Sie vor dem Start den aktuellen Markt, das Kapital, die Ordergröße, den historischen Zeitraum und die Validierungseinstellungen. Das Strategielabor nutzt stündliche Beobachtungen und aktuell ermittelte Gebühren; seine Ergebnisse können von denen des Studios abweichen. Zeitraum des Quellarchivs:",
             "landscape": {
                 "caption": "Jede Säule ist eine Kombination der zwei Haupteinstellungen. Die Höhe zeigt die erste Hälfte, die Farbe die zweite. Hohe Säulen, die blau werden, haben nur in den Stunden funktioniert, auf die sie abgestimmt wurden.",
                 "color": "Farbe: zweite Hälfte",
