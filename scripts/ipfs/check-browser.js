@@ -40,8 +40,6 @@ const CORRUPTED_UI_PATTERNS = [
   /Cannot read properties of undefined \(reading '\$refs'\)/i,
   /Cannot read properties of null \(reading 'query'\)/i,
 ];
-const CACHE_CONTROL_MAX_AGE_PATTERN = /(?:^|,)\s*max-age=(\d+)/i;
-const STABLE_HOST_HTML_MAX_AGE_SECONDS = 60;
 const PREVIEW_MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',
@@ -578,7 +576,8 @@ function shouldValidateStableHostHtmlCache(targetUrl) {
 }
 
 /**
- * Returns the cache-header issue that would keep old app shells or service workers alive.
+ * Requires stable app shells to forbid storage or require revalidation on every reuse.
+ * Shared-cache freshness must not override a zero browser max-age.
  */
 function findStableHostHtmlCacheIssue(headers, targetUrl) {
   if (!shouldValidateStableHostHtmlCache(targetUrl)) return null;
@@ -588,16 +587,36 @@ function findStableHostHtmlCacheIssue(headers, targetUrl) {
     return 'Stable host HTML response is missing Cache-Control.';
   }
 
-  if (/\bno-store\b/i.test(cacheControl)) {
+  // Keep quoted field lists intact so a qualified no-cache value cannot supply a directive.
+  const parts = cacheControl.match(/(?:[^,"]|"(?:\\.|[^"\\])*")+/g) || [];
+  if (parts.join(',') !== cacheControl) {
+    return `Stable host HTML has malformed Cache-Control: ${cacheControl}`;
+  }
+  const directives = parts.map((part) => part.trim().toLowerCase());
+
+  if (directives.includes('no-store')) {
     return null;
   }
 
-  const maxAge = Number(cacheControl.match(CACHE_CONTROL_MAX_AGE_PATTERN)?.[1] ?? 0);
-  if (/\bimmutable\b/i.test(cacheControl) || maxAge > STABLE_HOST_HTML_MAX_AGE_SECONDS) {
+  if (directives.includes('immutable')) {
     return `Stable host HTML must not be cached immutably; received Cache-Control: ${cacheControl}`;
   }
 
-  return null;
+  if (directives.includes('no-cache')) {
+    return null;
+  }
+
+  const maxAges = directives.filter((directive) => /^max-age\s*=/.test(directive));
+  const sharedMaxAges = directives.filter((directive) => /^s-maxage\s*=/.test(directive));
+  const zeroMaxAge = maxAges.length === 1 && /^max-age\s*=\s*(?:0|"0")$/.test(maxAges[0]);
+  const zeroSharedMaxAge =
+    sharedMaxAges.length === 0 || (sharedMaxAges.length === 1 && /^s-maxage\s*=\s*(?:0|"0")$/.test(sharedMaxAges[0]));
+
+  if (zeroMaxAge && zeroSharedMaxAge && directives.includes('must-revalidate')) {
+    return null;
+  }
+
+  return `Stable host HTML must require revalidation on every reuse; received Cache-Control: ${cacheControl}`;
 }
 
 const BROWSER_LAUNCHERS = {

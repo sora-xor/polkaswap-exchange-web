@@ -1,7 +1,7 @@
 # SORA Nexus address generator on the burn page
 
 `SoraNexusAccountGenerator.vue` appears inside the SOLSWAP campaign on
-`/#/burn`. It generates an independent SORA Nexus Ed25519 key and
+`/#/burn`. It generates an independent Minamoto mainnet SORA Nexus Ed25519 key and
 24-word recovery phrase locally in the browser. It does not connect, register,
 or fund a Nexus account. The current SORA Network wallet remains the signer for
 the XOR burn; the generated Nexus address is only the public recipient in the
@@ -37,8 +37,10 @@ steps:
 3. Save the exact public i105 address with the phrase and acknowledge that it
    was recorded. The address is shown only after the three answers match.
 
-The dialog cannot be closed by Escape or an overlay click. Discarding an
-unfinished account requires an explicit confirmation. Route navigation asks for
+Close, Cancel, and Escape open a discard confirmation. Repeating Escape or
+Close returns to the current backup step; an overlay click does not close the
+dialog. Confirming discard clears the pending words and address without
+accepting it. Reopening starts a fresh backup flow. Route navigation asks for
 confirmation while words are pending, and the browser warns before a reload or
 tab close. If the user leaves, the pending phrase is removed; the page never
 persists it. After the final acknowledgement, the phrase is removed from

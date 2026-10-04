@@ -44,6 +44,17 @@
       :close-on-click-modal="false"
       :close-on-esc="false"
     >
+      <template #header-actions>
+        <s-button
+          type="action"
+          size="sm"
+          :aria-label="t('closeText')"
+          data-testid="nexus-close"
+          @click="discardRequested ? cancelDiscard() : requestDiscard()"
+        >
+          <s-icon name="basic-close-24" size="28" />
+        </s-button>
+      </template>
       <p v-if="!discardRequested" class="nexus-generator__step">
         {{ t('burnPage.nexusGenerator.step', { step: stepNumber }) }}
       </p>
@@ -102,9 +113,9 @@
             </s-button>
           </template>
           <template v-else>
-            <button type="button" class="nexus-generator__discard-link" @click="requestDiscard">
-              {{ t('burnPage.nexusGenerator.discard') }}
-            </button>
+            <s-button type="secondary" class="nexus-generator__footer-secondary" @click="requestDiscard">
+              {{ t('cancelText') }}
+            </s-button>
             <s-button
               v-if="stage === 'verify' || stage === 'address'"
               type="secondary"
@@ -280,6 +291,15 @@ function requestDiscard(): void {
   discardRequested.value = true;
 }
 
+/** Routes Escape through the same confirmation as Close and Cancel. */
+function handleEscape(event: KeyboardEvent): void {
+  if (event.key !== 'Escape' || !dialogVisible.value) return;
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  if (discardRequested.value) cancelDiscard();
+  else requestDiscard();
+}
+
 /** Returns from the discard confirmation to the current backup step. */
 function cancelDiscard(): void {
   discardRequested.value = false;
@@ -316,8 +336,10 @@ watch(
   (visible) => {
     if (visible) {
       window.addEventListener('beforeunload', confirmBeforeUnload);
+      window.addEventListener('keydown', handleEscape, true);
     } else {
       window.removeEventListener('beforeunload', confirmBeforeUnload);
+      window.removeEventListener('keydown', handleEscape, true);
       discardPending();
     }
   },
@@ -325,6 +347,7 @@ watch(
 );
 onBeforeUnmount(() => {
   window.removeEventListener('beforeunload', confirmBeforeUnload);
+  window.removeEventListener('keydown', handleEscape, true);
   discardPending();
 });
 </script>

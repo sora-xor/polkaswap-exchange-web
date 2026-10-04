@@ -440,14 +440,14 @@ export default {
   noir: 'Noir',
   burnPage: {
     nexusGenerator: {
-      title: 'Create a SORA Nexus address for SOLSWAP',
+      title: 'Create Minamoto mainnet SORA Nexus address',
       intro:
-        'This address receives SORA Nexus XOR reserved by your SOLSWAP burn. It is separate from the SORA Network wallet that signs the burn.',
+        'This creates a SORA Nexus address on Minamoto mainnet. You can use it to receive SORA Nexus XOR reserved by your SOLSWAP burn. It is separate from the SORA Network wallet that signs the burn.',
       formatWarning:
         'Easy Wallets cannot restore this SORA Nexus account yet. Save all 24 words in order and the exact address. A wallet using another recovery method may show a different address. Assets sent here may be inaccessible until compatible recovery is available.',
-      recoveryWarningTitle: 'Before you create a recipient',
-      generate: 'Create SOLSWAP recipient',
-      generateAgain: 'Create another recipient',
+      recoveryWarningTitle: 'Before you create a Minamoto mainnet SORA Nexus address',
+      generate: 'Create Minamoto mainnet SORA Nexus address',
+      generateAgain: 'Create another Minamoto mainnet SORA Nexus address',
       step: 'Step {step} of 3',
       backupTitle: 'Write down 24 recovery words',
       backupInstruction:
@@ -461,11 +461,11 @@ export default {
       mismatch: 'The words do not match. Check your paper backup and try again.',
       showWords: 'Review words',
       finish: 'Finish backup',
-      addressLabel: 'Your SORA Nexus address',
+      addressLabel: 'Your Minamoto mainnet SORA Nexus address',
       addressInstruction:
         'Keep this exact public address with your recovery words. This page does not restore the account after you leave.',
       continueToAddress: 'Continue to address',
-      addressBackupTitle: 'Save your SORA Nexus address',
+      addressBackupTitle: 'Save your Minamoto mainnet SORA Nexus address',
       addressBackupInstruction:
         'Copy this public address and save it with your 24-word backup. Check it carefully: this page cannot restore the address after you leave.',
       addressBackupCheck: 'I saved this address with my 24 recovery words.',

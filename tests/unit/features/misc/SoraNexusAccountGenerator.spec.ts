@@ -24,7 +24,8 @@ vi.mock('@/lib/soraneo-wallet/src/components/DialogBase.vue', () => ({
     name: 'DialogBase',
     props: ['visible', 'showCloseButton', 'closeOnClickModal', 'closeOnEsc'],
     emits: ['update:visible'],
-    template: '<div v-if="visible" data-testid="nexus-dialog"><slot/><slot name="footer"/></div>',
+    template:
+      '<div v-if="visible" data-testid="nexus-dialog"><slot name="header-actions"/><slot/><slot name="footer"/></div>',
   },
 }));
 
@@ -148,7 +149,7 @@ describe('SoraNexusAccountGenerator', () => {
     expect(dialog.props('closeOnClickModal')).toBe(false);
     expect(dialog.props('closeOnEsc')).toBe(false);
 
-    await clickDialogButton(wrapper, 'burnPage.nexusGenerator.discard');
+    await clickDialogButton(wrapper, 'cancelText');
     expect(wrapper.find('[role="alert"]').text()).toBe('burnPage.nexusGenerator.discardWarning');
     expect(wrapper.findAll('.nexus-generator__words li')).toHaveLength(0);
 
@@ -156,12 +157,65 @@ describe('SoraNexusAccountGenerator', () => {
     expect(wrapper.findAll('.nexus-generator__words li')).toHaveLength(24);
     expect(wrapper.find('[data-testid="nexus-dialog"]').exists()).toBe(true);
 
-    await clickDialogButton(wrapper, 'burnPage.nexusGenerator.discard');
+    await clickDialogButton(wrapper, 'cancelText');
     await clickDialogButton(wrapper, 'burnPage.nexusGenerator.confirmDiscard');
 
     expect(wrapper.find('[data-testid="nexus-confirmed-address"]').exists()).toBe(false);
     expect(wrapper.find('[data-testid="nexus-dialog"]').exists()).toBe(false);
     expect(wrapper.vm.$.setupState.words).toEqual([]);
+  });
+
+  it.each(['display', 'verify', 'address'] as const)(
+    'offers Close and Cancel during the %s step without accepting the account',
+    async (step) => {
+      const wrapper = mountGenerator();
+      await startBackup(wrapper);
+      if (step === 'verify') await showChallenge(wrapper);
+      if (step === 'address') await showAddressStep(wrapper);
+
+      await wrapper.find('[data-testid="nexus-close"]').trigger('click');
+      expect(wrapper.find('[role="alert"]').text()).toBe('burnPage.nexusGenerator.discardWarning');
+      await wrapper.find('[data-testid="nexus-close"]').trigger('click');
+      expect(wrapper.vm.$.setupState.discardRequested).toBe(false);
+      expect(wrapper.vm.$.setupState.stage).toBe(step);
+      await clickDialogButton(wrapper, 'cancelText');
+      await clickDialogButton(wrapper, 'burnPage.nexusGenerator.confirmDiscard');
+
+      expect(wrapper.find('[data-testid="nexus-dialog"]').exists()).toBe(false);
+      expect(wrapper.find('[data-testid="nexus-confirmed-address"]').exists()).toBe(false);
+      expect(wrapper.emitted('useAddress')).toBeUndefined();
+      expect(generateMock).toHaveBeenCalledTimes(1);
+      expect(wrapper.vm.$.setupState.words).toEqual([]);
+      expect(wrapper.vm.$.setupState.pendingAddress).toBe('');
+
+      await startBackup(wrapper);
+      expect(generateMock).toHaveBeenCalledTimes(2);
+      expect(wrapper.vm.$.setupState.stage).toBe('display');
+      expect(wrapper.vm.$.setupState.backupAcknowledged).toBe(false);
+      expect(wrapper.vm.$.setupState.addressBackupAcknowledged).toBe(false);
+      expect(wrapper.vm.$.setupState.challengeAnswers).toEqual(['', '', '']);
+    }
+  );
+
+  it('handles Escape with confirmation and removes its listener after cancellation', async () => {
+    const wrapper = mountGenerator();
+    await startBackup(wrapper);
+    const escape = new KeyboardEvent('keydown', { key: 'Escape', cancelable: true });
+    window.dispatchEvent(escape);
+    await nextTick();
+    expect(escape.defaultPrevented).toBe(true);
+    expect(wrapper.find('[role="alert"]').text()).toBe('burnPage.nexusGenerator.discardWarning');
+
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    await nextTick();
+    expect(wrapper.findAll('.nexus-generator__words li')).toHaveLength(24);
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    await nextTick();
+    await clickDialogButton(wrapper, 'burnPage.nexusGenerator.confirmDiscard');
+    const afterClose = new KeyboardEvent('keydown', { key: 'Escape', cancelable: true });
+    window.dispatchEvent(afterClose);
+    expect(afterClose.defaultPrevented).toBe(false);
+    expect(wrapper.emitted('useAddress')).toBeUndefined();
   });
 
   it('guards route changes and browser unloads while recovery words are pending', async () => {
@@ -188,6 +242,9 @@ describe('SoraNexusAccountGenerator', () => {
     const afterLeave = new Event('beforeunload', { cancelable: true });
     window.dispatchEvent(afterLeave);
     expect(afterLeave.defaultPrevented).toBe(false);
+    const afterUnmountEscape = new KeyboardEvent('keydown', { key: 'Escape', cancelable: true });
+    window.dispatchEvent(afterUnmountEscape);
+    expect(afterUnmountEscape.defaultPrevented).toBe(false);
     confirm.mockRestore();
   });
 

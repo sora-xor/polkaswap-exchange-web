@@ -432,6 +432,46 @@ describe('check-browser helpers', () => {
     ).toBeNull();
   });
 
+  it.each([
+    'no-store',
+    'no-cache',
+    'no-cache, max-age=0, must-revalidate',
+    'public, max-age=0, must-revalidate',
+    'max-age="0", s-maxage="0", must-revalidate',
+    ' NO-CACHE , max-age=0 ',
+  ])('accepts stable HTML that must be refreshed before reuse: %s', (cacheControl) => {
+    expect(
+      checkBrowser.findStableHostHtmlCacheIssue({ 'cache-control': cacheControl }, 'https://polkaswap.io/')
+    ).toBeNull();
+  });
+
+  it.each([
+    'public',
+    'private',
+    'max-age=60',
+    'max-age=0',
+    'must-revalidate',
+    'max-age=0, s-maxage=86400',
+    'max-age=0, s-maxage=86400, must-revalidate',
+    'max-age=0, max-age=60, must-revalidate',
+    'max-age=0, s-maxage=invalid, must-revalidate',
+    'no-cache="set-cookie"',
+    'no-cache="set-cookie, no-store, other-header"',
+    'no-cache="set-cookie, no-store',
+  ])('rejects stable HTML that can be reused without revalidation: %s', (cacheControl) => {
+    expect(
+      checkBrowser.findStableHostHtmlCacheIssue({ 'cache-control': cacheControl }, 'https://polkaswap.io/')
+    ).not.toBeNull();
+  });
+
+  it('still requires a cache policy only for stable HTTP hosts', () => {
+    expect(checkBrowser.findStableHostHtmlCacheIssue({}, 'https://polkaswap.io/index.html')).toContain(
+      'missing Cache-Control'
+    );
+    expect(checkBrowser.findStableHostHtmlCacheIssue({}, 'https://gateway.example/ipfs/QmHash/')).toBeNull();
+    expect(checkBrowser.findStableHostHtmlCacheIssue({}, 'file:///dist/index.html')).toBeNull();
+  });
+
   it('reports optional endpoint failed requests', () => {
     const failedRequests = [
       { url: 'https://api.coingecko.com/api/v3/simple/price?ids=dai', errorText: 'net::ERR_FAILED' },
