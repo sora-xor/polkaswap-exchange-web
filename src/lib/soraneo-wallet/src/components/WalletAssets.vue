@@ -212,8 +212,8 @@ export default {
 
         const assetsAddresses = sortedAccountAssets.map((asset) => asset.address);
         api.assets.accountAssetsAddresses = assetsAddresses;
-        api.assets.updateAccountAssets();
         setAccountAssets(sortedAccountAssets);
+        void walletStore.subscribeOnAccountAssets();
       },
     });
     const visibleAssetList = computed<Array<AccountAsset>>({

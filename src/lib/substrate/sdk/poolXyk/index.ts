@@ -1,11 +1,10 @@
 import { assert } from '@polkadot/util';
-import { ReplaySubject, Subject, combineLatest, map } from 'rxjs';
+import { ReplaySubject, Subject, Subscription, combineLatest, map, throwIfEmpty } from 'rxjs';
 import { FPNumber, NumberLike, CodecString } from '@sora-substrate/math';
 import { getChameleonPools } from '@sora-substrate/liquidity-proxy';
 import type { Observable } from '@polkadot/types/types';
 import type { ITuple } from '@polkadot/types-codec/types';
 import type { u128 } from '@polkadot/types-codec';
-import type { Subscription } from 'rxjs';
 
 import { poolAccountIdFromAssetPair } from './account';
 import { DexId } from '../dex/consts';
@@ -59,6 +58,9 @@ export class PoolXykModule<T> {
   constructor(private readonly root: Api<T>) {}
   /** key = `baseAssetId,targetAssetId` */
   private subscriptions: Map<string, Subscription> = new Map();
+  private initialLiquidityRequests = new Map<string, Promise<void>>();
+  private accountSubscriptionGeneration = 0;
+  private accountLiquidityAddress: string | null = null;
   private subject = new Subject<void>();
   public updated = this.subject.asObservable();
   public accountLiquidity: Array<AccountLiquidity> = [];
@@ -289,51 +291,76 @@ export class PoolXykModule<T> {
     return [result.toCodecString(), pts.toCodecString()];
   }
 
+  /** Registers teardown before the first emission so an account switch can cancel pending LP queries. */
   private async subscribeOnAccountLiquidity(liquidity: Partial<AccountLiquidity>): Promise<void> {
-    if (this.subscriptions.has(serializeLPKey(liquidity))) return;
+    const key = serializeLPKey(liquidity);
+    if (this.subscriptions.has(key)) return this.initialLiquidityRequests.get(key);
 
     const { firstAddress, secondAddress } = liquidity;
     if (!(firstAddress && secondAddress)) return;
 
+    const generation = this.accountSubscriptionGeneration;
+    const account = this.root.accountPair?.address;
+    const isCurrent = () =>
+      generation === this.accountSubscriptionGeneration && account === this.root.accountPair?.address;
     const poolAccount = poolAccountIdFromAssetPair(this.root, firstAddress, secondAddress).toString();
-
-    const accountPoolBalanceObservable = this.getAccountPoolBalanceObservable(firstAddress, secondAddress);
-    const poolReservesObservable = this.getReservesObservable(firstAddress, secondAddress);
-    const poolTotalSupplyObservable = this.getTotalSupplyObservable(firstAddress, secondAddress);
-
-    let subscription!: Subscription;
-    let isFirstTick = true;
-
-    const key = serializeLPKey(liquidity);
-
-    await new Promise<void>((resolve) => {
-      subscription = combineLatest([
-        poolReservesObservable,
-        accountPoolBalanceObservable,
-        poolTotalSupplyObservable,
-      ]).subscribe(([reserves, balance, supply]) => {
-        const updatedLiquidity = this.getAccountLiquidityItem(
-          poolAccount,
-          firstAddress,
-          secondAddress,
-          reserves,
-          balance,
-          supply
-        );
-        // add or update liquidity only if subscription exists, or this is first subscription result
-        if (updatedLiquidity && (this.subscriptions.has(key) || isFirstTick)) {
-          this.addToLiquidityList(updatedLiquidity);
-        } else {
-          this.removeAccountLiquidity(liquidity); // Remove it from list if something was wrong
-        }
-
-        isFirstTick = false;
-        this.subject.next();
-        resolve();
-      });
-    });
-
+    const subscription = new Subscription();
     this.subscriptions.set(key, subscription);
+
+    const initialRequest = new Promise<void>((resolve, reject) => {
+      let receivedBalance = false;
+      subscription.add(resolve);
+      subscription.add(
+        combineLatest([
+          this.getReservesObservable(firstAddress, secondAddress).pipe(
+            throwIfEmpty(() => new Error('Pool liquidity stream completed before its first balance'))
+          ),
+          this.getAccountPoolBalanceObservable(firstAddress, secondAddress).pipe(
+            throwIfEmpty(() => new Error('Pool liquidity stream completed before its first balance'))
+          ),
+          this.getTotalSupplyObservable(firstAddress, secondAddress).pipe(
+            throwIfEmpty(() => new Error('Pool liquidity stream completed before its first balance'))
+          ),
+        ]).subscribe({
+          next: ([reserves, balance, supply]) => {
+            if (!isCurrent() || subscription.closed) return;
+            receivedBalance = true;
+            const updatedLiquidity = this.getAccountLiquidityItem(
+              poolAccount,
+              firstAddress,
+              secondAddress,
+              reserves,
+              balance,
+              supply
+            );
+            if (updatedLiquidity) {
+              this.addToLiquidityList(updatedLiquidity);
+            } else {
+              this.removeAccountLiquidity(liquidity);
+            }
+            this.subject.next();
+            resolve();
+          },
+          error: (error) => {
+            reject(error);
+            if (this.subscriptions.get(key) === subscription) this.unsubscribeFromAccountLiquidity(liquidity);
+          },
+          complete: () => {
+            if (!receivedBalance) reject(new Error('Pool liquidity stream completed before its first balance'));
+            if (this.subscriptions.get(key) === subscription) this.unsubscribeFromAccountLiquidity(liquidity);
+          },
+        })
+      );
+    });
+    if (!subscription.closed) this.initialLiquidityRequests.set(key, initialRequest);
+    try {
+      await initialRequest;
+    } catch (error) {
+      if (this.subscriptions.get(key) === subscription) this.unsubscribeFromAccountLiquidity(liquidity);
+      throw error;
+    } finally {
+      if (this.initialLiquidityRequests.get(key) === initialRequest) this.initialLiquidityRequests.delete(key);
+    }
   }
 
   private arrangeAssetsForParams(
@@ -429,9 +456,11 @@ export class PoolXykModule<T> {
     const key = serializeLPKey(liquidity);
     this.subscriptions.get(key)?.unsubscribe();
     this.subscriptions.delete(key);
+    this.initialLiquidityRequests.delete(key);
   }
 
   public unsubscribeFromAllUpdates(): void {
+    this.accountSubscriptionGeneration += 1;
     for (const key of this.subscriptions.keys()) {
       const liquidity = deserializeLPKey(key);
       if (liquidity) {
@@ -450,13 +479,17 @@ export class PoolXykModule<T> {
   public clearAccountLiquidity(): void {
     this.unsubscribeFromAllUpdates();
     this.accountLiquidity = [];
+    this.accountLiquidityAddress = null;
   }
 
   /**
    * Set subscriptions for balance updates of the account asset list
    * @param assetIdPairs
    */
-  private async updateAccountLiquiditySubscriptions(assetIdPairs: Array<Array<string>>): Promise<void> {
+  private async updateAccountLiquiditySubscriptions(
+    assetIdPairs: Array<Array<string>>,
+    isCurrent: () => boolean
+  ): Promise<void> {
     assert(this.root.account, Messages.connectWallet);
 
     // The aggregate account-pools storage is a discovery source. Existing
@@ -472,7 +505,7 @@ export class PoolXykModule<T> {
     });
     await Promise.all(subscribeOnAccountLiquidityPromises);
 
-    this.subject.next();
+    if (isCurrent()) this.subject.next();
   }
 
   /**
@@ -484,29 +517,50 @@ export class PoolXykModule<T> {
   public getUserPoolsSubscription(): Subscription {
     assert(this.root.accountPair, Messages.connectWallet);
 
-    this.accountLiquidityLoaded = new ReplaySubject<void>(1);
-
     const account = this.root.accountPair.address;
+    if (this.accountLiquidityAddress !== account) {
+      this.clearAccountLiquidity();
+      this.accountLiquidityAddress = account;
+    }
+    const generation = this.accountSubscriptionGeneration;
+    const loaded = new ReplaySubject<void>(1);
+    this.accountLiquidityLoaded = loaded;
+    const subscription = new Subscription();
+    const isCurrent = () =>
+      !subscription.closed &&
+      generation === this.accountSubscriptionGeneration &&
+      account === this.root.accountPair?.address;
     const baseAssetIds = this.root.dex.baseAssetsIds;
     const multiEntries = baseAssetIds.map((baseAssetId) => [account, baseAssetId]);
 
-    return this.root.apiRx.query.poolXYK.accountPools.multi(multiEntries).subscribe(async (lists) => {
-      const assetIdPairs: Array<string[]> = [];
-
-      lists.forEach((list, index) => {
-        const baseAssetId = baseAssetIds[index];
-
-        for (const targetAssetId of list) {
-          const pair = [baseAssetId, toAssetId(targetAssetId)];
-          assetIdPairs.push(pair);
-        }
-      });
-
-      await this.updateAccountLiquiditySubscriptions(assetIdPairs);
-
-      this.accountLiquidityLoaded?.next(); // Do not remove it to avoid 'no elements in sequence' error
-      this.accountLiquidityLoaded?.complete();
+    // Resolve waiters when discovery is cancelled without touching another account's readiness signal.
+    subscription.add(() => {
+      loaded.next();
+      loaded.complete();
     });
+    subscription.add(
+      this.root.apiRx.query.poolXYK.accountPools.multi(multiEntries).subscribe(async (lists) => {
+        if (!isCurrent()) return;
+        const assetIdPairs: Array<string[]> = [];
+
+        lists.forEach((list, index) => {
+          const baseAssetId = baseAssetIds[index];
+          for (const targetAssetId of list) {
+            assetIdPairs.push([baseAssetId, toAssetId(targetAssetId)]);
+          }
+        });
+
+        try {
+          await this.updateAccountLiquiditySubscriptions(assetIdPairs, isCurrent);
+          if (!isCurrent()) return;
+          loaded.next();
+          loaded.complete();
+        } catch (error) {
+          if (isCurrent()) loaded.error(error);
+        }
+      })
+    );
+    return subscription;
   }
 
   private calcAddTxParams(

@@ -19,6 +19,7 @@ const walletStoreMock = vi.hoisted(() => ({
   removePinnedAsset: vi.fn(),
   setMultiplePinnedAssets: vi.fn(),
   setAccountAssets: vi.fn(),
+  subscribeOnAccountAssets: vi.fn(async () => undefined),
   navigate: vi.fn(),
 }));
 
@@ -116,6 +117,7 @@ describe('Wallet WalletAssets', () => {
     walletStoreMock.removePinnedAsset.mockClear();
     walletStoreMock.setMultiplePinnedAssets.mockClear();
     walletStoreMock.setAccountAssets.mockClear();
+    walletStoreMock.subscribeOnAccountAssets.mockClear();
     walletStoreMock.navigate.mockClear();
   });
 
@@ -202,7 +204,8 @@ describe('Wallet WalletAssets', () => {
       expect(walletStoreMock.setMultiplePinnedAssets).toHaveBeenCalledWith(['pinned']);
       expect(walletStoreMock.setAccountAssets).toHaveBeenCalledWith([{ address: 'pinned' }, { address: 'free' }]);
       expect(fakeAssets.accountAssetsAddresses).toEqual(['pinned', 'free']);
-      expect(fakeAssets.updateAccountAssets).toHaveBeenCalledTimes(1);
+      expect(fakeAssets.updateAccountAssets).not.toHaveBeenCalled();
+      expect(walletStoreMock.subscribeOnAccountAssets).toHaveBeenCalledTimes(1);
     } finally {
       (api as any).assets = originalAssets;
     }

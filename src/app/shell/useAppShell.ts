@@ -26,6 +26,7 @@ import { shouldLoadTelegramMiniApp } from '@/utils/telegramLaunch';
 import { getBuildVariant, trackEvent } from '@/utils/telemetry';
 import { getMobileCssClasses } from '@/utils/device';
 
+import { createAccountInvitation } from './accountInvitation';
 import { closeVisibleDialog, syncRouteScopedDialogVisibility, type DialogVisibilityBinding } from './dialogVisibility';
 import { buildRuntimeEnvConfigUrls, resolveRuntimeEnvConfigPayload, type RuntimeEnvConfig } from './runtimeEnvConfig';
 import { resolveAppMainRouteClass } from './policies/resolveAppMainRouteClass';
@@ -187,7 +188,8 @@ const destroyTelegramMiniApp = (): void => {
  */
 export function useAppShell() {
   const { t } = useTranslation();
-  const { loading, withLoading, withApi } = useLoading();
+  const { loading, withLoading } = useLoading();
+  const { withApi: withInvitationApi } = useLoading();
 
   const route = useRoute();
   const settingsStore = useSettingsStore();
@@ -512,19 +514,18 @@ export function useAppShell() {
     return {};
   }
 
-  async function confirmInvitation(): Promise<void> {
-    await withApi(async () => {
-      await referralsStore.getReferrer();
-      if (!storageReferrer.value) return;
-
-      const accountValue = account.value;
-      if (accountValue && storageReferrer.value === accountValue.address) {
-        referralsStore.resetStorageReferrer();
-      } else if (!referrer.value) {
-        showConfirmInviteUser.value = true;
-      }
-    });
-  }
+  const { confirmInvitation, invalidateInvitation } = createAccountInvitation({
+    getAccountIdentity: () => `${walletStore.accountSource ?? ''}:${accountAddress.value}`,
+    getAccountAddress: () => accountAddress.value,
+    isLoggedIn: () => isLoggedIn.value,
+    getReferrer: () => withInvitationApi(() => referralsStore.getReferrer()),
+    getReferrerAddress: () => referrer.value,
+    getStorageReferrer: () => storageReferrer.value,
+    resetStorageReferrer: () => referralsStore.resetStorageReferrer(),
+    setVisible: (visible) => {
+      showConfirmInviteUser.value = visible;
+    },
+  });
 
   async function teardown(): Promise<void> {
     if (isTearingDown.value) return;
@@ -598,12 +599,6 @@ export function useAppShell() {
     }
   });
 
-  watch(isLoggedIn, (loggedIn) => {
-    if (loggedIn) {
-      void confirmInvitation();
-    }
-  });
-
   watch(
     () => route.fullPath,
     (nextPath, prevPath) => {
@@ -670,8 +665,14 @@ export function useAppShell() {
   );
 
   watch(
-    accountAddress,
-    (newAddress, oldAddress) => {
+    [accountAddress, () => walletStore.accountSource, isLoggedIn],
+    ([newAddress, newSource, loggedIn], [oldAddress, oldSource]) => {
+      invalidateInvitation();
+      if (newAddress !== oldAddress || newSource !== oldSource || !loggedIn) {
+        referralsStore.reset();
+      }
+      if (newAddress && loggedIn) void confirmInvitation();
+
       if (newAddress !== oldAddress) {
         showNotificationMST.value = false;
 

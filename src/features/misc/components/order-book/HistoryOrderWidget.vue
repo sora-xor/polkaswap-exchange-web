@@ -116,7 +116,11 @@ const {
 const currentFilter = ref(FilterEnum.open);
 const openOrdersLoading = ref(false);
 
+let subscriptionVersion = 0;
+
+/** Keeps loading and subscription ownership with the currently selected account and book. */
 const subscribe = async () => {
+  const version = ++subscriptionVersion;
   if (!(isLoggedIn.value && nodeIsConnected.value && orderBookId.value)) {
     openOrdersLoading.value = false;
     await unsubscribeFromUserLimitOrders();
@@ -126,17 +130,19 @@ const subscribe = async () => {
   openOrdersLoading.value = true;
   try {
     await unsubscribeFromUserLimitOrders();
+    if (version !== subscriptionVersion) return;
     await subscribeToUserLimitOrders();
   } catch (error) {
     console.error('[orderBook] Failed to refresh user limit orders subscription', error);
   } finally {
-    openOrdersLoading.value = false;
+    if (version === subscriptionVersion) openOrdersLoading.value = false;
   }
 };
 
-watch([orderBookId, soraAddress, nodeIsConnected, isLoggedIn], subscribe, { immediate: true });
+watch([orderBookId, soraAddress, nodeIsConnected, isLoggedIn], subscribe, { immediate: true, flush: 'sync' });
 
 onBeforeUnmount(() => {
+  subscriptionVersion += 1;
   unsubscribeFromUserLimitOrders();
 });
 

@@ -20,6 +20,25 @@ with the current filters preserved.
 - Cards have no synthetic history charts and do not request per-card history.
   Opening a market still loads its detailed outcome history.
 
+### Probability data contract
+
+Both Polkaswap and the standalone Polkamarkt app treat `probability` as a
+percentage, `priceYes` as a fractional legacy fallback, and implied probability
+basis points as hundredths of a percent. Values below one retain their units;
+for example, `probability: 0.8` means 0.8%, not 80%. Missing values are not zero.
+Implied probability fields take precedence over legacy indexed fields. Current
+runtime odds replace stale indexed odds while indexed metadata is retained.
+
+The runtime fallback uses the DPM virtual shares on both outcomes, with integer
+arithmetic and the same basis-point truncation as the pallet. Real-position
+totals alone are not market probabilities. Market discovery uses the public
+indexer's supported `ID_DESC` ordering; the board ranks results locally.
+
+Cards, detail labels and shares use one complementary rounding rule: round YES
+once, then display NO as its complement. Nonzero probabilities below 1% appear
+as `<1%` (and their complements as `>99%`). Historical snapshots retain their
+precision; detail labels prefer the current quote over an older snapshot.
+
 ## Trading
 
 Choose YES or NO, then **Buy shares** or **Sell shares**. When buying, **You pay

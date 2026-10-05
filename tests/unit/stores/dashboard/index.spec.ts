@@ -58,6 +58,41 @@ describe('dashboard store', () => {
     vi.useRealTimers();
   });
 
+  it('rejects an old account response before its lifecycle reset runs', async () => {
+    let resolveIds!: (value: string[]) => void;
+    shared.getOwnedAssetIds.mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          resolveIds = resolve;
+        })
+    );
+    const store = useDashboardStore();
+    const request = store.requestOwnedAssetIds();
+    shared.walletStore.account = { address: '5other' };
+    shared.walletStore.address = '5other';
+    await store.requestOwnedAssetIds();
+    resolveIds(['old-asset']);
+    await request;
+    expect(store.ownedAssetIds).toEqual(['0x01']);
+  });
+
+  it('does not start polling after the initiating account disconnects', async () => {
+    let resolveIds!: (value: string[]) => void;
+    shared.getOwnedAssetIds.mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          resolveIds = resolve;
+        })
+    );
+    const store = useDashboardStore();
+    const request = store.subscribeOnOwnedAssets();
+    shared.walletStore.isLoggedIn = false;
+    resolveIds(['old-asset']);
+    await request;
+    expect(store.ownedAssetIds).toEqual([]);
+    expect(store.ownedAssetIdsInterval).toBeNull();
+  });
+
   it('derives owned assets from wallet pinia data', () => {
     const store = useDashboardStore();
     store.ownedAssetIds = ['0x01'];

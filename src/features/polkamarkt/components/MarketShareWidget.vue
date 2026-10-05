@@ -168,7 +168,7 @@ import { computed, ref } from 'vue';
 import polkamarktLogoUrl from '@/assets/img/polkamarkt/pm_logo.svg?url';
 import { useTranslation } from '@/composables/useTranslation';
 import { POLKAMARKT_COLLATERAL_ASSET } from '../consts';
-import { getMarketDisplayStatus, yesNoPricesFromProbability } from '../lib/markets';
+import { formatMarketProbability, getMarketDisplayStatus, yesNoPricesFromProbability } from '../lib/markets';
 import {
   buildMarketShareSnapshot,
   buildMarketShareText,
@@ -225,7 +225,6 @@ const chartGridValues = [25, 50, 75] as const;
 type PlatformShareTarget = 'telegram' | 'x';
 type NativeFileShareResult = 'shared' | 'aborted' | 'unsupported';
 
-const formatPercent = (value?: number): string => (Number.isFinite(value) ? `${value}%` : t('polkamarkt.notIndexed'));
 const formatPrice = (value?: number): string =>
   Number.isFinite(value)
     ? `${(value ?? 0).toFixed(2)} ${POLKAMARKT_COLLATERAL_ASSET.symbol}`
@@ -237,8 +236,10 @@ const formatUsd = (value?: number): string =>
       )
     : t('polkamarkt.notIndexed');
 
-const yesPercent = computed(() => formatPercent(yesSplit.value));
-const noPercent = computed(() => formatPercent(noSplit.value));
+const yesPercent = computed(() =>
+  formatMarketProbability(props.market?.probability, false, t('polkamarkt.notIndexed'))
+);
+const noPercent = computed(() => formatMarketProbability(props.market?.probability, true, t('polkamarkt.notIndexed')));
 const yesPrice = computed(() => formatPrice(prices.value.yes));
 const noPrice = computed(() => formatPrice(prices.value.no));
 const liquidity = computed(() => formatUsd(props.market?.liquidity));

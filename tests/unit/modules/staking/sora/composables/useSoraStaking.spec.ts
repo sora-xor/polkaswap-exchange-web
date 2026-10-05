@@ -48,6 +48,7 @@ const shared = vi.hoisted(() => {
     selectValidators: vi.fn(),
     setStakingInfo: vi.fn(),
     setTotalNominators: vi.fn(),
+    resetAccountData: vi.fn(),
     resetActiveEraUpdates: vi.fn(),
     resetCurrentEraUpdates: vi.fn(),
     resetCurrentEraTotalStakeUpdates: vi.fn(),
@@ -218,5 +219,7 @@ describe('useSoraStaking', () => {
     expect(shared.stakingStore.nominate).toHaveBeenCalledTimes(1);
     expect(shared.stakingStore.subscribeOnCurrentEraTotalStake).toHaveBeenCalledTimes(1);
     expect(shared.stakingStore.resetCurrentEraTotalStakeUpdates).toHaveBeenCalledTimes(1);
+    staking.resetAccountData();
+    expect(shared.stakingStore.resetAccountData).toHaveBeenCalledTimes(1);
   });
 });

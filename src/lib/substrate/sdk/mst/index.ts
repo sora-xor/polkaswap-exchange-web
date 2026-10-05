@@ -37,6 +37,7 @@ export class MstModule<T> {
   public pendingTxsUpdated = this.pendingTxsSubject.asObservable();
   private lastPendingTxs: HistoryItem[] = [];
   private pendingTxsSubscription: Subscription | null = null;
+  private pendingTxsGeneration = 0;
 
   /**
    * Returns locally known multisig accounts when the wallet keyring has finished loading.
@@ -480,11 +481,19 @@ export class MstModule<T> {
     }
   }
 
+  /** Starts account-owned tracking and rejects late setup or reads from a previous account. */
   public async startPendingTxsSubscription(mstAccount: string): Promise<void> {
+    this.stopPendingTxsSubscription();
+    const generation = this.pendingTxsGeneration;
+    const accountAddress = this.root.account?.pair.address;
+    const isCurrentSubscription = (): boolean =>
+      generation === this.pendingTxsGeneration && this.root.account?.pair.address === accountAddress;
     try {
       const unsubscribe = await this.root.api.rpc.chain.subscribeNewHeads(async () => {
+        if (!isCurrentSubscription()) return;
         try {
           const pendingTxs = await this.subscribeOnPendingTxs(mstAccount);
+          if (!isCurrentSubscription()) return;
 
           this.lastPendingTxs = pendingTxs || [];
 
@@ -494,12 +503,19 @@ export class MstModule<T> {
         }
       });
 
-      this.pendingTxsSubscription = new Subscription(unsubscribe);
+      if (isCurrentSubscription()) {
+        this.pendingTxsSubscription = new Subscription(unsubscribe);
+      } else {
+        unsubscribe();
+      }
     } catch (error) {
       console.error('Error subscribing to new blocks:', error);
     }
   }
+  /** Invalidates asynchronous callbacks before detaching the active chain subscription. */
   public stopPendingTxsSubscription(): void {
+    this.pendingTxsGeneration += 1;
+    this.lastPendingTxs = [];
     if (this.pendingTxsSubscription) {
       this.pendingTxsSubscription.unsubscribe();
       this.pendingTxsSubscription = null;

@@ -25,6 +25,30 @@ const INDEXER_DELAY_MS = 4 * DEBT_INTERVAL_MS;
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 const stablecoinInfosSubscriptionGeneration = new WeakMap<object, number>();
+const accountVaultsSubscriptionGenerations = new WeakMap<object, number>();
+const closedVaultsRequestGenerations = new WeakMap<object, number>();
+const collateralSubscriptionGenerations = new WeakMap<object, number>();
+
+/** Invalidates account-bound vault work before a reset or replacement. */
+const nextAccountGeneration = (generations: WeakMap<object, number>, store: object): number => {
+  const generation = (generations.get(store) ?? 0) + 1;
+  generations.set(store, generation);
+  return generation;
+};
+
+/** Captures the selected wallet before fetching account-specific vault data. */
+const captureVaultAccount = () => {
+  const walletStore = useWalletStore();
+  const address = walletStore.address;
+  const source = walletStore.accountSource;
+  return {
+    address,
+    isCurrent: (): boolean =>
+      Boolean(
+        address && walletStore.isLoggedIn && address === walletStore.address && source === walletStore.accountSource
+      ),
+  };
+};
 
 const invalidateStablecoinInfosSubscription = (store: object): number => {
   const generation = (stablecoinInfosSubscriptionGeneration.get(store) ?? 0) + 1;
@@ -186,33 +210,53 @@ export const useVaultStore = defineStore('vault-legacy', {
       this.debtAddress = address ?? KUSD.address;
       this.updateTokenSubscription('debt');
     },
+    /** Applies closed-vault responses only to the account and request that initiated them. */
     async fetchClosedVaults(): Promise<void> {
-      const walletStore = useWalletStore();
+      const account = captureVaultAccount();
+      const generation = nextAccountGeneration(closedVaultsRequestGenerations, this);
+      const isCurrent = (): boolean => account.isCurrent() && generation === closedVaultsRequestGenerations.get(this);
       this.closedAccountVaultsLoaded = false;
+      if (!account.isCurrent()) {
+        this.closedAccountVaults = [];
+        return;
+      }
 
       try {
-        this.closedAccountVaults = [...(await fetchClosedVaults(walletStore.address))];
+        const vaults = await fetchClosedVaults(account.address);
+        if (isCurrent()) this.closedAccountVaults = [...vaults];
       } catch {
-        this.closedAccountVaults = [];
+        if (isCurrent()) this.closedAccountVaults = [];
       } finally {
-        this.closedAccountVaultsLoaded = true;
+        if (isCurrent()) this.closedAccountVaultsLoaded = true;
       }
     },
+    /** Restarts account vault streams while rejecting callbacks from earlier account lifecycles. */
     async subscribeOnAccountVaults(): Promise<void> {
+      const account = captureVaultAccount();
+      const generation = nextAccountGeneration(accountVaultsSubscriptionGenerations, this);
+      const isCurrent = (): boolean =>
+        account.isCurrent() && generation === accountVaultsSubscriptionGenerations.get(this);
       this.accountVaultIdsSubscription = unsubscribe(this.accountVaultIdsSubscription);
       this.accountVaultsSubscription = unsubscribe(this.accountVaultsSubscription);
       this.accountVaultsLoaded = false;
+      this.accountVaults = [];
+      this.closedAccountVaults = [];
 
       await this.fetchClosedVaults();
+      if (!isCurrent()) return;
 
       let firstExecution = true;
+      let vaultsGeneration = 0;
 
       try {
         this.accountVaultIdsSubscription = api.kensetsu.subscribeOnAccountVaultIds().subscribe((ids) => {
+          if (!isCurrent()) return;
+          const requestedVaultsGeneration = ++vaultsGeneration;
           this.accountVaultsSubscription = unsubscribe(this.accountVaultsSubscription);
 
           try {
             this.accountVaultsSubscription = api.kensetsu.subscribeOnVaults(ids).subscribe((vaults) => {
+              if (!isCurrent() || requestedVaultsGeneration !== vaultsGeneration) return;
               const prevVaultsLength = this.accountVaults.length;
               this.accountVaults = [...vaults];
               this.accountVaultsLoaded = true;
@@ -220,15 +264,19 @@ export const useVaultStore = defineStore('vault-legacy', {
               if (firstExecution) {
                 firstExecution = false;
               } else if (prevVaultsLength !== vaults.length) {
-                delay(INDEXER_DELAY_MS).then(() => this.fetchClosedVaults());
+                void delay(INDEXER_DELAY_MS).then(() => {
+                  if (isCurrent()) return this.fetchClosedVaults();
+                });
               }
             });
           } catch {
+            if (!isCurrent()) return;
             this.accountVaultsLoaded = true;
             this.accountVaults = [];
           }
         });
       } catch {
+        if (!isCurrent()) return;
         this.accountVaultIdsSubscription = unsubscribe(this.accountVaultIdsSubscription);
         this.accountVaultsSubscription = unsubscribe(this.accountVaultsSubscription);
         this.accountVaultsLoaded = true;
@@ -262,9 +310,13 @@ export const useVaultStore = defineStore('vault-legacy', {
         this.accountVaults = updatedVaults;
       }, DEBT_INTERVAL_MS);
     },
+    /** Rejects collateral responses after the stream that requested them has been reset. */
     async requestCollaterals(): Promise<void> {
+      const generation = collateralSubscriptionGenerations.get(this);
+      const isCurrent = (): boolean => generation === collateralSubscriptionGenerations.get(this);
       try {
         const newCollaterals = await api.kensetsu.getCollaterals();
+        if (!isCurrent()) return;
 
         if (areEqual(this.collaterals, newCollaterals)) {
           return;
@@ -273,18 +325,22 @@ export const useVaultStore = defineStore('vault-legacy', {
         this.collaterals = { ...newCollaterals };
         await this.subscribeOnAverageCollateralPrices();
       } catch {
-        this.collaterals = {};
+        if (isCurrent()) this.collaterals = {};
       }
     },
+    /** Starts network collateral updates only while this subscription lifecycle remains active. */
     async subscribeOnCollaterals(): Promise<void> {
+      const generation = nextAccountGeneration(collateralSubscriptionGenerations, this);
+      const isCurrent = (): boolean => generation === collateralSubscriptionGenerations.get(this);
       this.stablecoinInfosSubscription = unsubscribe(this.stablecoinInfosSubscription);
       this.collateralsSubscription = unsubscribe(this.collateralsSubscription);
 
       await this.subscribeOnStablecoinInfos();
+      if (!isCurrent()) return;
 
       try {
         this.collateralsSubscription = api.system.getBlockNumberObservable().subscribe(() => {
-          void this.requestCollaterals();
+          if (isCurrent()) void this.requestCollaterals();
         });
       } catch {
         // The chain API may be unavailable during boot (or in E2E stubs).
@@ -334,7 +390,11 @@ export const useVaultStore = defineStore('vault-legacy', {
         // Ignore when the Kensetsu API is not ready yet.
       }
     },
+    /** Clears vault data and invalidates work that may complete after teardown. */
     async reset(): Promise<void> {
+      nextAccountGeneration(accountVaultsSubscriptionGenerations, this);
+      nextAccountGeneration(closedVaultsRequestGenerations, this);
+      nextAccountGeneration(collateralSubscriptionGenerations, this);
       balanceSubscriptions.remove('debt');
       balanceSubscriptions.remove('collateral');
       this.debtTokenBalance = null;

@@ -1,7 +1,7 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { FPNumber } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { computed, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { PageNames } from '@/consts';
 
@@ -44,14 +44,14 @@ const settingsStoreMock = {
   telegramBotUrl: null as string | null,
 };
 
-const walletStoreMock = {
+const walletStoreMock = reactive({
   account: {
     address: '5mock-account',
   },
   networkFees: {
     ReferralSetInvitedUser: '1000000000000000000',
   },
-};
+});
 
 const assetsStoreMock = {
   xor: {
@@ -359,8 +359,9 @@ describe('ReferralProgram.vue', () => {
     expect(unsubscribeFromInvitedUsers).toHaveBeenCalled();
     expect(resetReferrerSubscription).toHaveBeenCalled();
 
-    wrapper.unmount();
     expect(resetReferrals).toHaveBeenCalledTimes(1);
+    wrapper.unmount();
+    expect(resetReferrals).toHaveBeenCalledTimes(2);
   });
 
   it('persists referrer address when approved', async () => {
@@ -410,5 +411,30 @@ describe('ReferralProgram.vue', () => {
     const infoLines = wrapper.findAll('.info-line-stub');
     expect(infoLines[0]?.attributes('data-integer-only')).toBe('true');
     expect(infoLines[1]?.attributes('data-integer-only')).toBe('true');
+  });
+  it('restarts account data on a direct account switch without resuming old initialization', async () => {
+    loginState.value = true;
+    let finishOld!: () => void;
+    getAccountReferralRewards.mockReturnValueOnce(
+      new Promise<void>((resolve) => {
+        finishOld = resolve;
+      })
+    );
+    const wrapper = buildWrapper();
+    await flushPromises();
+    expect(subscribeOnInvitedUsers).not.toHaveBeenCalled();
+
+    walletStoreMock.account = { address: '5next-account' };
+    await flushPromises();
+    expect(resetReferrals).toHaveBeenCalled();
+    expect(unsubscribeFromInvitedUsers).toHaveBeenCalled();
+    expect(getAccountReferralRewards).toHaveBeenCalledTimes(2);
+    expect(subscribeOnInvitedUsers).toHaveBeenCalledTimes(1);
+
+    finishOld();
+    await flushPromises();
+    expect(subscribeOnInvitedUsers).toHaveBeenCalledTimes(1);
+    expect(subscribeOnReferrer).toHaveBeenCalledTimes(1);
+    wrapper.unmount();
   });
 });

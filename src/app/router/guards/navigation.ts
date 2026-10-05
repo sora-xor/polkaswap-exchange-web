@@ -107,9 +107,13 @@ export const createBeforeEachGuard = (services: NavigationGuardServices): Naviga
       return;
     }
 
+    const authState = requiresAuth ? await getWalletAuthState() : { isLoggedIn: false };
     const referralActionRedirect = resolveReferralActionRedirect({
       current,
-      allowNavigation: isReferralActionPage(current) ? consumePendingReferralActionNavigation(current) : false,
+      // Connected users can open or reload the public bond/unbond URLs directly.
+      allowNavigation: isReferralActionPage(current)
+        ? consumePendingReferralActionNavigation(current) || authState.isLoggedIn
+        : false,
     });
 
     if (referralActionRedirect) {
@@ -122,7 +126,6 @@ export const createBeforeEachGuard = (services: NavigationGuardServices): Naviga
       return;
     }
 
-    const authState = requiresAuth ? await getWalletAuthState() : { isLoggedIn: false };
     const authRedirect = resolveAuthRedirect({
       requiresAuth,
       current,

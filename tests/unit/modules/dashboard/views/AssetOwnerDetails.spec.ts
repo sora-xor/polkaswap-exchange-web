@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils';
+import { flushPromises, mount } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
 import { ref } from 'vue';
 import { describe, expect, it, beforeEach, vi } from 'vitest';
@@ -28,6 +28,7 @@ const supplySubscribe = vi.fn((callback: (value: { toString: () => string }) => 
 
 const assetsRef = ref<OwnedAsset[]>([]);
 const loggedInRef = ref(true);
+const addressRef = ref('account-1');
 const screenBreakpointClassRef = ref('desktop');
 const routerPushMock = vi.fn();
 const routerBackMock = vi.fn();
@@ -125,6 +126,7 @@ vi.mock('@/shared/ui/async', () => ({
 vi.mock('@/composables/useInternalConnect', () => ({
   useInternalConnect: () => ({
     isLoggedIn: loggedInRef,
+    soraAddress: addressRef,
   }),
 }));
 
@@ -217,10 +219,38 @@ describe('AssetOwnerDetails.vue', () => {
       } as OwnedAsset,
     ];
     loggedInRef.value = true;
+    addressRef.value = 'account-1';
     startSubscriptionHandlers.splice(0, startSubscriptionHandlers.length);
     resetSubscriptionHandlers.splice(0, resetSubscriptionHandlers.length);
     updateSubscriptionsMock.mockClear();
     resetSubscriptionsMock.mockClear();
+  });
+
+  it('clears account amounts immediately and ignores callbacks from replaced subscriptions', async () => {
+    const wrapper = mount(AssetOwnerDetails, {
+      props: { parentLoading: false },
+      global: { stubs: globalStubs },
+    });
+    await flushPromises();
+    const exposed = (wrapper.vm as any).$?.exposed!;
+    const emitOldBalance = balanceSubscribe.mock.calls.at(-1)![0];
+    const emitOldSupply = supplySubscribe.mock.calls.at(-1)![0];
+    expect(exposed.formattedBalance.value).toBe('100');
+    exposed.openSendDialog();
+
+    addressRef.value = 'account-2';
+    await resetSubscriptionsMock();
+    expect(exposed.formattedBalance.value).toBe('—');
+    expect(exposed.fiatBalance.value).toBe('');
+    expect(exposed.formattedSupply.value).toBe('—');
+    expect(exposed.showSendDialog.value).toBe(false);
+
+    await updateSubscriptionsMock();
+    emitOldBalance({ transferable: '999' });
+    emitOldSupply({ toString: () => '999' });
+    expect(exposed.formattedBalance.value).toBe('100');
+    expect(exposed.formattedSupply.value).toBe('200');
+    wrapper.unmount();
   });
 
   it('redirects to asset list when user not logged in', async () => {

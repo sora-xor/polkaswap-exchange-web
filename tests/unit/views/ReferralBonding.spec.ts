@@ -2,6 +2,12 @@ import { flushPromises, mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { Operation } from '@sora-substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
+
+vi.mock('@sora-substrate/sdk', async () => ({
+  ...(await import('@tests/stubs/sora-sdk')),
+  Operation: (await import('@/lib/substrate/sdk/types')).Operation,
+}));
 
 const createStorageStub = () => ({
   get: vi.fn((key: string) =>
@@ -34,9 +40,13 @@ vi.mock('@/lib/soraneo-wallet/src/util/storage', () => ({
   runtimeStorage: runtimeStorageStub,
 }));
 
-const reserveXorMock = vi.fn();
-const unreserveXorMock = vi.fn();
+const reserveXorMock = vi.fn((amount: string) => ({ method: 'reserve', amount }));
+const unreserveXorMock = vi.fn((amount: string) => ({ method: 'unreserve', amount }));
+const submitExtrinsicMock = vi.fn(async () => undefined);
+const notificationErrors: unknown[] = [];
 const pushMock = vi.fn();
+const routeMock = { name: 'ReferralBonding' };
+const accountPair = { address: 'referral-test-account' };
 
 const infoLineStub = {
   name: 'InfoLine',
@@ -45,6 +55,8 @@ const infoLineStub = {
 };
 
 const genericPageHeaderStub = {
+  name: 'GenericPageHeader',
+  emits: ['back'],
   template: '<header class="generic-page-header"><slot /></header>',
 };
 
@@ -62,25 +74,22 @@ const referralsConfirmBondingStub = {
     '<div v-if="visible" class="confirm-dialog"><slot /><button class="confirm-btn" @click="$emit(\'confirm\')"></button></div>',
 };
 
-vi.mock('@tests/stubs/walletRuntime', () => ({
-  __esModule: true,
-  components: {
-    InfoLine: infoLineStub,
-  },
-  WALLET_CONSTS: {
-    FontSizeRate: { SMALL: 'SMALL' },
-    FontWeightRate: { MEDIUM: 'MEDIUM' },
-  },
-  api: {
-    referralSystem: {
-      reserveXor: reserveXorMock,
-      unreserveXor: unreserveXorMock,
+vi.mock('@/lib/soraneo-wallet/src/api', async () => {
+  const { ReferralSystemModule } = await import('@/lib/substrate/sdk/referralSystem');
+
+  return {
+    api: {
+      referralSystem: new ReferralSystemModule({
+        account: { pair: accountPair },
+        api: { tx: { referrals: { reserve: reserveXorMock, unreserve: unreserveXorMock } } },
+        submitExtrinsic: submitExtrinsicMock,
+      } as never),
     },
-  },
-}));
+  };
+});
 
 vi.mock('vue-router', () => ({
-  useRoute: () => ({ name: 'ReferralBonding' }),
+  useRoute: () => routeMock,
   useRouter: () => ({ push: pushMock }),
 }));
 
@@ -101,12 +110,10 @@ const storeMocks = (() => {
 
   const assetsStore = {
     xor: {
-      address: 'xor',
-      symbol: 'XOR',
-      decimals: 18,
+      ...XOR,
       balance: {
-        transferable: '1000000000000000000000000000000000000000000000',
-        bonded: '500000000000000000000000000000000000000000000',
+        transferable: '10000000000000000000',
+        bonded: '5000000000000000000',
       },
     },
   };
@@ -138,7 +145,13 @@ vi.mock('@/composables/useTranslation', () => ({
 vi.mock('@/composables/useTransaction', () => ({
   useTransaction: () => ({
     loading: { value: false },
-    withNotifications: (handler: () => Promise<void>) => handler(),
+    withNotifications: async (handler: () => Promise<void>) => {
+      try {
+        await handler();
+      } catch (error) {
+        notificationErrors.push(error);
+      }
+    },
   }),
 }));
 
@@ -179,6 +192,10 @@ describe('ReferralBonding view', () => {
     pushMock.mockClear();
     reserveXorMock.mockClear();
     unreserveXorMock.mockClear();
+    submitExtrinsicMock.mockReset();
+    submitExtrinsicMock.mockResolvedValue(undefined);
+    notificationErrors.length = 0;
+    routeMock.name = 'ReferralBonding';
     storeMocks.referralsStore.setAmount.mockClear();
     storeMocks.referralsStore.resetAmount.mockClear();
     storeMocks.referralsStore.amount = '0';
@@ -192,24 +209,66 @@ describe('ReferralBonding view', () => {
     expect(actionButton.text()).toContain('buttons.enterAmount');
   });
 
-  it('confirms bonding flow and resets amount', async () => {
-    storeMocks.referralsStore.amount = '100000000000';
+  it.each([
+    { route: 'ReferralBonding', method: 'reserve', operation: Operation.ReferralReserveXor, action: 'bond' },
+    { route: 'ReferralUnbonding', method: 'unreserve', operation: Operation.ReferralUnreserveXor, action: 'unbond' },
+  ])('submits $action through the real SDK module with the exact XOR amount', async ({ route, method, operation }) => {
+    routeMock.name = route;
+    storeMocks.referralsStore.amount = '1.234567890123456789';
     const wrapper = await mountView();
 
+    expect(wrapper.find('.action-button').attributes('disabled')).toBeUndefined();
     await wrapper.find('.action-button').trigger('click');
     await flushPromises();
 
     await wrapper.find('.confirm-btn').trigger('click');
     await flushPromises();
 
-    expect(reserveXorMock).toHaveBeenCalledWith('100000000000');
+    expect(notificationErrors).toEqual([]);
+    expect(submitExtrinsicMock).toHaveBeenCalledExactlyOnceWith(
+      { method, amount: '1234567890123456789' },
+      accountPair,
+      { symbol: 'XOR', amount: '1.234567890123456789', assetAddress: XOR.address, type: operation }
+    );
+    expect(method === 'reserve' ? unreserveXorMock : reserveXorMock).not.toHaveBeenCalled();
     expect(storeMocks.referralsStore.resetAmount).toHaveBeenCalled();
     expect(pushMock).toHaveBeenCalledWith({
       name: 'ReferralProgram',
-      params: {
-        referrerAddress: 'bond',
-      },
     });
     expect(wrapper.findComponent({ name: 'referrals-confirm-bonding' })).toBeTruthy();
   });
+
+  it.each(['ReferralBonding', 'ReferralUnbonding'])(
+    'retains the entered amount after a failed %s submission',
+    async (route) => {
+      routeMock.name = route;
+      storeMocks.referralsStore.amount = '1.25';
+      const submissionError = new Error('Wallet declined the transaction');
+      submitExtrinsicMock.mockRejectedValueOnce(submissionError);
+      const wrapper = await mountView();
+
+      await wrapper.find('.action-button').trigger('click');
+      await wrapper.find('.confirm-btn').trigger('click');
+      await flushPromises();
+
+      expect(notificationErrors).toEqual([submissionError]);
+      expect(storeMocks.referralsStore.amount).toBe('1.25');
+      expect(storeMocks.referralsStore.resetAmount).not.toHaveBeenCalled();
+      expect(pushMock).not.toHaveBeenCalled();
+    }
+  );
+
+  it.each(['ReferralBonding', 'ReferralUnbonding'])(
+    'returns from %s to the canonical referral dashboard URL',
+    async (route) => {
+      routeMock.name = route;
+      const wrapper = await mountView();
+
+      wrapper.findComponent({ name: 'GenericPageHeader' }).vm.$emit('back');
+      await flushPromises();
+
+      expect(pushMock).toHaveBeenCalledExactlyOnceWith({ name: 'ReferralProgram' });
+      expect(submitExtrinsicMock).not.toHaveBeenCalled();
+    }
+  );
 });

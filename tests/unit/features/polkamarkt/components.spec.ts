@@ -1994,6 +1994,39 @@ describe('polkamarkt components', () => {
     expect(wrapper.text()).not.toContain('previous endpoint unavailable');
   });
 
+  it('clears settled account positions immediately while the next account loads', async () => {
+    const position = { id: 'owned-by-first-account', marketId: 1, yesShares: 42 };
+    const trade = { id: 'previous-trade', marketId: 1 };
+    let resolveNext!: (activity: Record<string, unknown>) => void;
+    mocks.fetchActivity.mockReset().mockResolvedValueOnce({ positions: [position], trades: [trade] });
+    const wrapper = mount(PolkamarktPage, {
+      global: {
+        stubs: {
+          's-button': sButtonStub,
+          's-icon': sIconStub,
+          MarketList: true,
+          MarketDetail: true,
+          TradeTicket: true,
+          MyPositionsPanel: true,
+          CreateMarketDialog: true,
+        },
+      },
+    });
+    await flushPromises();
+    expect(wrapper.vm.positions).toEqual([position]);
+
+    mocks.fetchActivity.mockImplementation(() => new Promise((resolve) => (resolveNext = resolve)));
+    mocks.walletStore.address = 'cnNextAccount';
+    expect(wrapper.vm.positions).toEqual([]);
+    expect(wrapper.vm.trades).toEqual([]);
+    expect(mocks.fetchActivity).toHaveBeenLastCalledWith('cnNextAccount');
+
+    resolveNext({ positions: [], trades: [] });
+    await flushPromises();
+    expect(wrapper.vm.positions).toEqual([]);
+    wrapper.unmount();
+  });
+
   it('ignores an activity response for the previous account after an account switch', async () => {
     let resolvePreviousActivity!: (activity: Record<string, unknown>) => void;
     let resolveCurrentActivity!: (activity: Record<string, unknown>) => void;

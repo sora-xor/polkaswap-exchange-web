@@ -123,7 +123,12 @@ import { computed } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 import { MARKET_CATEGORIES, type MarketCategory, type MarketStatusFilter } from '../consts';
 import { getMarketQuestion } from '../lib/marketQuestion';
-import { filterMarkets, getMarketDisplayStatus, rankHotPolkamarktMarkets } from '../lib/markets';
+import {
+  filterMarkets,
+  formatMarketProbability,
+  getMarketDisplayStatus,
+  rankHotPolkamarktMarkets,
+} from '../lib/markets';
 
 import type { PolkamarktMarket } from '../types';
 import type { SelectOption } from '@/lib/soramitsu-ui/components/Select/types';
@@ -236,12 +241,7 @@ function marketStatusLabel(market: PolkamarktMarket): string {
 
 /** Formats display odds only; invalid or missing probabilities must never imply a quote. */
 function formatProbability(value?: number, no = false): string {
-  if (value === undefined || !Number.isFinite(value) || value < 0 || value > 100) return '—';
-  const probability = no ? 100 - value : value;
-  if (probability > 0 && probability < 1) return '<1%';
-  if (probability > 99 && probability < 100) return '>99%';
-  const yes = Math.round(value);
-  return `${no ? 100 - yes : yes}%`;
+  return formatMarketProbability(value, no);
 }
 
 /** Formats the existing USD volume display; no token amounts are calculated here. */

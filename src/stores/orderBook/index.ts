@@ -28,6 +28,7 @@ const ORDER_BOOK_API_READY_TIMEOUT_MS = 12_000;
 const ORDER_BOOK_API_READY_POLL_MS = 100;
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
+const userOrdersSubscriptionGeneration = new WeakMap<object, number>();
 const pagedLimitOrdersSubscriptionGeneration = new WeakMap<object, number>();
 
 const invalidatePagedLimitOrdersSubscription = (store: object): number => {
@@ -337,6 +338,7 @@ export const useOrderBookStore = defineStore('orderBook', {
       this.userLimitOrderUpdates = subscription;
     },
     resetUserLimitOrderUpdates(): void {
+      userOrdersSubscriptionGeneration.set(this, (userOrdersSubscriptionGeneration.get(this) ?? 0) + 1);
       this.userLimitOrderUpdates = clearSubscription(this.userLimitOrderUpdates);
     },
     setPagedUserLimitOrdersSubscription(subscription: Subscription): void {
@@ -501,6 +503,7 @@ export const useOrderBookStore = defineStore('orderBook', {
       this.setDeals();
       this.resetOrderBookStatsUpdates();
     },
+    /** Replaces account orders while rejecting obsolete snapshots and out-of-order live reads. */
     async subscribeToUserLimitOrders(): Promise<void> {
       const walletStore = useWalletStore();
       const { baseAssetAddress, quoteAssetAddress } = this;
@@ -508,10 +511,20 @@ export const useOrderBookStore = defineStore('orderBook', {
       const accountAddress = walletStore.address || walletStore.account?.address;
 
       this.unsubscribeFromUserLimitOrders();
+      const generation = userOrdersSubscriptionGeneration.get(this);
+      const isCurrent = (): boolean =>
+        userOrdersSubscriptionGeneration.get(this) === generation &&
+        (walletStore.address || walletStore.account?.address) === accountAddress &&
+        this.baseAssetAddress === baseAssetAddress &&
+        this.quoteAssetAddress === quoteAssetAddress &&
+        (Number.isFinite(this.dexId) ? this.dexId : undefined) === selectedDexId;
+      let snapshotVersion = 0;
 
       if (!(accountAddress && baseAssetAddress && quoteAssetAddress)) return;
 
       const syncUserLimitOrders = async (ids: number[]): Promise<void> => {
+        if (!isCurrent()) return;
+        const version = ++snapshotVersion;
         try {
           const userLimitOrders = await Promise.all(
             ids.map(async (id) => {
@@ -528,8 +541,9 @@ export const useOrderBookStore = defineStore('orderBook', {
             .filter((order): order is LimitOrder => !!order)
             .map((order) => normalizeLimitOrder(order));
 
-          this.setUserLimitOrders(orders);
+          if (isCurrent() && version === snapshotVersion) this.setUserLimitOrders(orders);
         } catch (error) {
+          if (!isCurrent() || version !== snapshotVersion) return;
           console.error('[orderBook] Failed to process user limit orders payload', error);
           this.setUserLimitOrders([]);
         }
@@ -544,10 +558,12 @@ export const useOrderBookStore = defineStore('orderBook', {
         );
         await syncUserLimitOrders(ids);
       } catch (error) {
+        if (!isCurrent()) return;
         console.error('[orderBook] Failed to load initial user limit orders', error);
         this.setUserLimitOrders([]);
       }
 
+      if (!isCurrent()) return;
       const subscription = api.orderBook
         .subscribeOnUserLimitOrdersIds(baseAssetAddress, quoteAssetAddress, accountAddress, selectedDexId)
         .subscribe({
@@ -555,12 +571,15 @@ export const useOrderBookStore = defineStore('orderBook', {
             await syncUserLimitOrders(ids);
           },
           error: (error) => {
+            if (!isCurrent()) return;
+            snapshotVersion += 1;
             console.error('[orderBook] User limit orders subscription failed', error);
             this.setUserLimitOrders([]);
           },
         });
 
-      this.setUserLimitOrderUpdates(subscription);
+      if (isCurrent()) this.setUserLimitOrderUpdates(subscription);
+      else subscription.unsubscribe();
     },
     async subscribeOnLimitOrders(ids: Array<number | string>): Promise<void> {
       const walletStore = useWalletStore();
@@ -610,8 +629,12 @@ export const useOrderBookStore = defineStore('orderBook', {
         }
       }
     },
+    /** Clears the previous account immediately, including selected and paginated orders. */
     unsubscribeFromUserLimitOrders(): void {
       this.resetUserLimitOrderUpdates();
+      this.resetPagedUserLimitOrdersSubscription();
+      this.setUserLimitOrders([]);
+      this.setOrdersToBeCancelled([]);
     },
   },
 });

@@ -300,6 +300,7 @@ export function useSoraStaking() {
     subscribeOnNominations,
     subscribeOnAccountLedger,
     subscribeOnCurrentEraTotalStake,
+    resetAccountData: () => stakingStore.resetAccountData(),
     resetActiveEraUpdates,
     resetCurrentEraUpdates,
     resetCurrentEraTotalStakeUpdates,

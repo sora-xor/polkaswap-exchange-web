@@ -61,6 +61,76 @@ describe('referrals store', () => {
     shared.walletStore.account = null;
   });
 
+  it('ignores old account referrer responses after switching accounts', async () => {
+    shared.walletStore.isLoggedIn = true;
+    shared.walletStore.account = { address: '5old' };
+    let resolveOld!: (value: string) => void;
+    shared.getAccountReferrer.mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          resolveOld = resolve;
+        })
+    );
+    const store = useReferralsStore();
+    const oldRequest = store.getReferrer();
+    shared.walletStore.account = { address: '5new' };
+    shared.getAccountReferrer.mockResolvedValueOnce('new-referrer');
+    await store.getReferrer();
+    resolveOld('old-referrer');
+    await oldRequest;
+    expect(store.referrer).toBe('new-referrer');
+  });
+
+  it('invalidates reward responses when reset interrupts their request', async () => {
+    shared.walletStore.isLoggedIn = true;
+    shared.walletStore.account = { address: '5wallet' };
+    let resolveRewards!: (value: unknown) => void;
+    shared.getReferralRewards.mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          resolveRewards = resolve;
+        })
+    );
+    const store = useReferralsStore();
+    const request = store.getAccountReferralRewards();
+    await vi.waitFor(() => expect(shared.getReferralRewards).toHaveBeenCalledTimes(1));
+    store.reset();
+    resolveRewards({ invitedUserRewards: { 'old-user': {} } });
+    await request;
+    expect(store.referralRewards).toBeNull();
+    expect(store.invitedUsers).toEqual([]);
+  });
+
+  it('clears a removed referrer and rejects old account subscription emissions', async () => {
+    shared.walletStore.isLoggedIn = true;
+    shared.walletStore.account = { address: '5wallet' };
+    let emitReferrer!: (value: string) => void;
+    let emitUsers!: (value: string[]) => void;
+    shared.subscribeOnReferrer.mockReturnValue({
+      subscribe: (handler: typeof emitReferrer) => {
+        emitReferrer = handler;
+        return { unsubscribe: vi.fn() };
+      },
+    });
+    shared.subscribeOnAccountInvitedUsers.mockReturnValue({
+      subscribe: (handler: typeof emitUsers) => {
+        emitUsers = handler;
+        return { unsubscribe: vi.fn() };
+      },
+    });
+    const store = useReferralsStore();
+    await store.subscribeOnReferrer();
+    await store.subscribeOnInvitedUsers();
+    emitReferrer('referrer');
+    emitReferrer('');
+    expect(store.referrer).toBe('');
+    shared.walletStore.account = { address: '5new' };
+    emitReferrer('old-referrer');
+    emitUsers(['old-user']);
+    expect(store.referrer).toBe('');
+    expect(store.invitedUsers).toEqual([]);
+  });
+
   it('hydrates storageReferrer from persisted storage', () => {
     shared.storageGet.mockReturnValueOnce('5storage');
     const store = useReferralsStore();
@@ -81,7 +151,7 @@ describe('referrals store', () => {
     expect(shared.storageSet).toHaveBeenCalledWith('storageReferral', '5new');
   });
 
-  it('resets local state without dropping active invited-user subscription state', () => {
+  it('resets account state and unsubscribes invited-user streams', () => {
     const referrerSubscription = { unsubscribe: vi.fn() };
     const invitedUsersSubscription = { unsubscribe: vi.fn() };
     const store = useReferralsStore();
@@ -103,11 +173,14 @@ describe('referrals store', () => {
     expect(store.amount).toBe('');
     expect(store.storageReferrer).toBe('');
     expect(store.isReferrerApproved).toBe(false);
-    expect(store.invitedUsers).toEqual(['a', 'b']);
-    expect(store.invitedUsersSubscription).toEqual(invitedUsersSubscription);
+    expect(store.invitedUsers).toEqual([]);
+    expect(store.invitedUsersSubscription).toBeNull();
+    expect(invitedUsersSubscription.unsubscribe).toHaveBeenCalledTimes(1);
   });
 
   it('fetches the current referrer and falls back to empty string on failure', async () => {
+    shared.walletStore.isLoggedIn = true;
+    shared.walletStore.account = { address: '5wallet' };
     const store = useReferralsStore();
     shared.getAccountReferrer.mockResolvedValueOnce('5ref');
 

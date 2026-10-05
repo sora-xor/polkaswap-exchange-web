@@ -39,6 +39,31 @@ const EMPTY_ACCOUNT_LIQUIDITY = Object.freeze([]) as readonly AccountLiquidity[]
 const EMPTY_ACCOUNT_LOCKED_LIQUIDITY = Object.freeze([]) as readonly AccountLockedPool[];
 const EMPTY_POOL_APY_OBJECT = Object.freeze({}) as PoolApyObject;
 
+type AccountSubscriptionKind = 'list' | 'updates' | 'locked' | 'apy' | `${AddLiquidityFocusedField}`;
+const accountSubscriptionGenerations = new WeakMap<object, Map<AccountSubscriptionKind, number>>();
+
+/** Invalidates pending pool work before replacing an account-specific subscription. */
+const invalidateAccountSubscription = (store: object, kind: AccountSubscriptionKind): number => {
+  const generations = accountSubscriptionGenerations.get(store) ?? new Map<AccountSubscriptionKind, number>();
+  const generation = (generations.get(kind) ?? 0) + 1;
+  generations.set(kind, generation);
+  accountSubscriptionGenerations.set(store, generations);
+  return generation;
+};
+
+/** Rejects delayed data from a prior subscription or wallet identity, including A → B → A switches. */
+const accountSubscriptionGuard = (store: object, kind: AccountSubscriptionKind): (() => boolean) => {
+  const generation = invalidateAccountSubscription(store, kind);
+  const wallet = useWalletStore();
+  const address = wallet.address;
+  const source = wallet.accountSource;
+  return () =>
+    accountSubscriptionGenerations.get(store)?.get(kind) === generation &&
+    wallet.isLoggedIn &&
+    wallet.address === address &&
+    wallet.accountSource === source;
+};
+
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 
 const buildAddLiquidityState = (): AddLiquidityState => ({
@@ -421,12 +446,16 @@ export const usePoolStore = defineStore('pool-legacy', {
       const isFirst = field === 'firstTokenValue';
       const token = isFirst ? this.addLiquidityFirstToken : this.addLiquiditySecondToken;
 
+      const isCurrent = accountSubscriptionGuard(this, field);
       balanceSubscriptions.remove(field);
+      if (isFirst) this.addLiquidity.firstTokenBalance = null;
+      else this.addLiquidity.secondTokenBalance = null;
 
       if (walletStore.isLoggedIn && token?.address && !(token.address in walletStore.accountAssetsAddressTable)) {
         balanceSubscriptions.add(field, {
           token,
           updateBalance: (balance) => {
+            if (!isCurrent()) return;
             if (isFirst) {
               this.addLiquidity.firstTokenBalance = balance ?? null;
             } else {
@@ -484,31 +513,39 @@ export const usePoolStore = defineStore('pool-legacy', {
       }
     },
     async subscribeOnAccountLiquidityList(): Promise<void> {
+      const isCurrent = accountSubscriptionGuard(this, 'list');
+      this.resetAccountLiquidity();
       this.accountLiquidityList = resetSubscription(this.accountLiquidityList);
 
       const walletStore = useWalletStore();
       if (!walletStore.isLoggedIn) return;
 
       await waitForAccountPair(async () => {
+        if (!isCurrent()) return;
         await ensurePoolDiscoveryReady();
+        if (!isCurrent()) return;
         this.accountLiquidityList = api.poolXyk.getUserPoolsSubscription();
 
         if (api.poolXyk.accountLiquidityLoaded) {
           await firstValueFrom(api.poolXyk.accountLiquidityLoaded);
         }
 
-        this.syncAccountLiquidity(api.poolXyk.accountLiquidity ?? []);
+        if (isCurrent()) this.syncAccountLiquidity(api.poolXyk.accountLiquidity ?? []);
       });
     },
     async subscribeOnAccountLiquidityUpdates(): Promise<void> {
+      const isCurrent = accountSubscriptionGuard(this, 'updates');
       this.accountLiquidityUpdates = resetSubscription(this.accountLiquidityUpdates);
 
       const walletStore = useWalletStore();
       if (!walletStore.isLoggedIn) return;
 
       await waitForAccountPair(async () => {
+        if (!isCurrent()) return;
         await ensurePoolDiscoveryReady();
+        if (!isCurrent()) return;
         this.accountLiquidityUpdates = api.poolXyk.updated.subscribe(() => {
+          if (!isCurrent()) return;
           this.syncAccountLiquidity(api.poolXyk.accountLiquidity ?? []);
         });
 
@@ -516,37 +553,44 @@ export const usePoolStore = defineStore('pool-legacy', {
       });
     },
     async subscribeOnAccountLockedLiquidity(): Promise<void> {
+      const isCurrent = accountSubscriptionGuard(this, 'locked');
+      this.accountLockedLiquidity = EMPTY_ACCOUNT_LOCKED_LIQUIDITY;
       this.accountLockedLiquiditySubscription = resetSubscription(this.accountLockedLiquiditySubscription);
 
       const walletStore = useWalletStore();
       if (!walletStore.isLoggedIn) return;
 
       await waitForAccountPair(() => {
+        if (!isCurrent()) return;
         this.accountLockedLiquiditySubscription = api.ceresLiquidityLocker
           .getLockerDataObservable()
           .subscribe((data) => {
+            if (!isCurrent()) return;
             this.accountLockedLiquidity = freezeArray(data) as readonly AccountLockedPool[];
           });
       });
     },
-    async getPoolApyObject(): Promise<void> {
+    async getPoolApyObject(isCurrent: () => boolean = () => true): Promise<void> {
       const data = await getPoolsApyObject();
 
-      if (data) {
+      if (data && isCurrent()) {
         this.poolApyObject = normalizePoolApy(data);
       }
     },
     async subscribeOnPoolsApy(): Promise<void> {
+      const generation = invalidateAccountSubscription(this, 'apy');
+      const isCurrent = () => accountSubscriptionGenerations.get(this)?.get('apy') === generation;
       this.poolApySubscription = resetCallbackSubscription(this.poolApySubscription);
 
-      await this.getPoolApyObject();
+      await this.getPoolApyObject(isCurrent);
+      if (!isCurrent()) return;
 
       const subscription = createPoolsApySubscription(
         (entity) => {
-          this.updatePoolApyObject(entity);
+          if (isCurrent()) this.updatePoolApyObject(entity);
         },
         () => {
-          this.resetPoolApyObject();
+          if (isCurrent()) this.resetPoolApyObject();
         }
       );
 
@@ -555,6 +599,10 @@ export const usePoolStore = defineStore('pool-legacy', {
       }
     },
     async unsubscribeAccountLiquidityListAndUpdates(): Promise<void> {
+      invalidateAccountSubscription(this, 'list');
+      invalidateAccountSubscription(this, 'updates');
+      invalidateAccountSubscription(this, 'locked');
+      invalidateAccountSubscription(this, 'apy');
       this.accountLiquidityList = resetSubscription(this.accountLiquidityList);
       this.accountLiquidityUpdates = resetSubscription(this.accountLiquidityUpdates);
       this.accountLockedLiquiditySubscription = resetSubscription(this.accountLockedLiquiditySubscription);
@@ -655,6 +703,10 @@ export const usePoolStore = defineStore('pool-legacy', {
       this.subscribeOnTotalSupply();
     },
     async resetAddLiquiditySubscriptions(): Promise<void> {
+      invalidateAccountSubscription(this, 'firstTokenValue');
+      invalidateAccountSubscription(this, 'secondTokenValue');
+      this.addLiquidity.firstTokenBalance = null;
+      this.addLiquidity.secondTokenBalance = null;
       balanceSubscriptions.remove('firstTokenValue');
       balanceSubscriptions.remove('secondTokenValue');
       this.addLiquidity.availabilitySubscription = resetSubscription(this.addLiquidity.availabilitySubscription);

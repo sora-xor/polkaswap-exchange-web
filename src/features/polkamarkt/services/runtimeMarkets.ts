@@ -39,6 +39,8 @@ type PolkamarktRpcApi = {
 
 const READ_ONLY_RUNTIME_TIMEOUT_MS = 15_000;
 const POLKAMARKT_COLLATERAL_DECIMALS = 18;
+/** SORA's current DPM seed; used only when neither RPC state nor the runtime constant supplies it. */
+const POLKAMARKT_DEFAULT_DPM_VIRTUAL_SHARES = 100n * 10n ** BigInt(POLKAMARKT_COLLATERAL_DECIMALS);
 const POLKAMARKT_DEFAULT_ORACLE = 'SORA On-Chain Governance';
 const MARKET_CATEGORIES: ReadonlyArray<PolkamarktMarket['category']> = [
   'Politics',
@@ -155,15 +157,18 @@ const recordValue = (record: Record<string, unknown>, ...keys: string[]): unknow
   return undefined;
 };
 
-const codecBigInt = (value: unknown): bigint => {
+/** Reads unsigned chain amounts without converting their base units to floating point. */
+const codecBigInt = (value: unknown): bigint | undefined => {
   const normalized = unwrapCodecOption(value);
 
-  if (typeof normalized === 'bigint') return normalized;
-  if (typeof normalized === 'number') return BigInt(Math.trunc(normalized));
+  if (typeof normalized === 'bigint') return normalized >= 0n ? normalized : undefined;
+  if (typeof normalized === 'number') {
+    return Number.isSafeInteger(normalized) && normalized >= 0 ? BigInt(normalized) : undefined;
+  }
 
   if (typeof normalized === 'string') {
     const text = normalized.replace(/,/g, '').trim();
-    if (!text) return 0n;
+    if (!text) return undefined;
     if (/^0x[0-9a-fA-F]+$/.test(text) || /^\d+$/.test(text)) return BigInt(text);
   }
 
@@ -171,7 +176,7 @@ const codecBigInt = (value: unknown): bigint => {
     return codecBigInt((normalized as { toString(): string }).toString());
   }
 
-  return 0n;
+  return undefined;
 };
 
 const codecAmountToNumber = (value: unknown): number => {
@@ -192,6 +197,24 @@ const codecAmountToNumber = (value: unknown): number => {
 const bpsToPercent = (value: unknown): number | undefined => {
   const bps = parseRuntimeNumber(value);
   return bps === undefined ? undefined : Math.max(0, Math.min(100, bps / 100));
+};
+
+/** Mirrors the runtime's virtual-share-inclusive ratios and integer basis-point floor. */
+const dpmProbabilityBps = (
+  virtualDepth: bigint,
+  realYesShares?: bigint,
+  realNoShares?: bigint
+): { yes: number; no: number } | undefined => {
+  if (realYesShares === undefined || realNoShares === undefined) return undefined;
+  const qYes = virtualDepth + realYesShares;
+  const qNo = virtualDepth + realNoShares;
+  const total = qYes + qNo;
+  if (total === 0n) return undefined;
+
+  return {
+    yes: Number((qYes * 10_000n) / total),
+    no: Number((qNo * 10_000n) / total),
+  };
 };
 
 const decodeHexText = (value: string): string => {
@@ -307,7 +330,8 @@ export async function parseRuntimePolkamarktMarket(
   storage: PolkamarktStorageApi,
   marketId: number,
   value: unknown,
-  rpc?: PolkamarktRpcApi
+  rpc?: PolkamarktRpcApi,
+  dpmVirtualShares?: unknown
 ): Promise<PolkamarktMarket | null> {
   const market = codecRecord(value);
   const conditionId = parseRuntimeNumber(recordValue(market, 'conditionId', 'condition_id'));
@@ -338,23 +362,29 @@ export async function parseRuntimePolkamarktMarket(
 
   const oracle = normalizeRuntimeMarketOracle(metadataText(recordValue(conditionRecord, 'oracle')));
   const resolutionSource = metadataText(recordValue(conditionRecord, 'resolutionSource', 'resolution_source'));
-  const totalYesShares = codecAmountToNumber(recordValue(totalsRecord, 'totalYesShares', 'total_yes_shares'));
-  const totalNoShares = codecAmountToNumber(recordValue(totalsRecord, 'totalNoShares', 'total_no_shares'));
-  const realYesShares = codecAmountToNumber(recordValue(stateRecord, 'realYesShares', 'real_yes_shares'));
-  const realNoShares = codecAmountToNumber(recordValue(stateRecord, 'realNoShares', 'real_no_shares'));
-  const yesShares = realYesShares || totalYesShares;
-  const noShares = realNoShares || totalNoShares;
-  const dpmCollateral =
-    codecAmountToNumber(recordValue(stateRecord, 'dpmCollateral', 'dpm_collateral')) ||
-    (storage.marketDpmCollateral ? codecAmountToNumber(await storage.marketDpmCollateral(marketId)) : 0);
-  const impliedYesProbability = bpsToPercent(recordValue(stateRecord, 'impliedYesProbabilityBps'));
-  const impliedNoProbability = bpsToPercent(recordValue(stateRecord, 'impliedNoProbabilityBps'));
-  const probability =
-    impliedYesProbability ??
-    (yesShares + noShares > 0
-      ? Math.max(0, Math.min(100, Math.round((yesShares / (yesShares + noShares)) * 100)))
-      : undefined);
   const mechanism = parseString(recordValue(stateRecord, 'mechanism')) ?? parseString(recordValue(market, 'mechanism'));
+  const realYesShares =
+    codecBigInt(recordValue(stateRecord, 'realYesShares', 'real_yes_shares')) ??
+    codecBigInt(recordValue(totalsRecord, 'totalYesShares', 'total_yes_shares'));
+  const realNoShares =
+    codecBigInt(recordValue(stateRecord, 'realNoShares', 'real_no_shares')) ??
+    codecBigInt(recordValue(totalsRecord, 'totalNoShares', 'total_no_shares'));
+  const virtualDepth =
+    codecBigInt(recordValue(stateRecord, 'virtualDepth', 'virtual_depth')) ??
+    (mechanism === 'DynamicPariMutuel'
+      ? (codecBigInt(dpmVirtualShares) ?? POLKAMARKT_DEFAULT_DPM_VIRTUAL_SHARES)
+      : undefined);
+  const dpmCollateral =
+    codecBigInt(recordValue(stateRecord, 'dpmCollateral', 'dpm_collateral')) ??
+    (storage.marketDpmCollateral ? codecBigInt(await storage.marketDpmCollateral(marketId)) : undefined);
+  const fallbackProbability =
+    mechanism === 'DynamicPariMutuel' && virtualDepth !== undefined
+      ? dpmProbabilityBps(virtualDepth, realYesShares, realNoShares)
+      : undefined;
+  const impliedYesProbabilityBps =
+    parseRuntimeNumber(recordValue(stateRecord, 'impliedYesProbabilityBps')) ?? fallbackProbability?.yes;
+  const impliedNoProbabilityBps =
+    parseRuntimeNumber(recordValue(stateRecord, 'impliedNoProbabilityBps')) ?? fallbackProbability?.no;
 
   return {
     id: String(marketId),
@@ -367,24 +397,20 @@ export async function parseRuntimePolkamarktMarket(
     oracle,
     resolutionSource,
     closeBlock: parseRuntimeNumber(recordValue(market, 'closeBlock', 'close_block')),
-    liquidity: dpmCollateral,
+    liquidity: codecAmountToNumber(dpmCollateral),
     volume,
-    probability,
+    probability: bpsToPercent(impliedYesProbabilityBps),
     trending: false,
     status: parseString(recordValue(market, 'status')),
     mechanism,
-    virtualDepth: codecAmountToNumber(recordValue(stateRecord, 'virtualDepth', 'virtual_depth')) || undefined,
-    dpmCollateral: dpmCollateral || undefined,
-    realYesShares: realYesShares || undefined,
-    realNoShares: realNoShares || undefined,
+    virtualDepth: virtualDepth === undefined ? undefined : codecAmountToNumber(virtualDepth),
+    dpmCollateral: dpmCollateral === undefined ? undefined : codecAmountToNumber(dpmCollateral),
+    realYesShares: realYesShares === undefined ? undefined : codecAmountToNumber(realYesShares),
+    realNoShares: realNoShares === undefined ? undefined : codecAmountToNumber(realNoShares),
     marginalYesPriceBps: parseRuntimeNumber(recordValue(stateRecord, 'marginalYesPriceBps')) ?? undefined,
     marginalNoPriceBps: parseRuntimeNumber(recordValue(stateRecord, 'marginalNoPriceBps')) ?? undefined,
-    impliedYesProbabilityBps:
-      parseRuntimeNumber(recordValue(stateRecord, 'impliedYesProbabilityBps')) ??
-      (impliedYesProbability === undefined ? undefined : Math.round(impliedYesProbability * 100)),
-    impliedNoProbabilityBps:
-      parseRuntimeNumber(recordValue(stateRecord, 'impliedNoProbabilityBps')) ??
-      (impliedNoProbability === undefined ? undefined : Math.round(impliedNoProbability * 100)),
+    impliedYesProbabilityBps,
+    impliedNoProbabilityBps,
     creatorFees,
     ...(earlyReport ?? {}),
   };
@@ -396,6 +422,7 @@ export async function parseRuntimePolkamarktMarket(
 export async function fetchRuntimePolkamarktMarkets(api?: ApiPromiseInstance | null): Promise<PolkamarktMarket[]> {
   const storage = api?.query?.polkamarkt as unknown as PolkamarktStorageApi | undefined;
   const rpc = api?.rpc?.polkamarkt as unknown as PolkamarktRpcApi | undefined;
+  const dpmVirtualShares = api?.consts?.polkamarkt?.dpmVirtualShares;
   if (!storage?.markets?.entries) return [];
 
   const entries = await storage.markets.entries();
@@ -404,7 +431,7 @@ export async function fetchRuntimePolkamarktMarkets(api?: ApiPromiseInstance | n
       const marketId = storageKeyNumber(key);
       return marketId === undefined
         ? Promise.resolve(null)
-        : parseRuntimePolkamarktMarket(storage, marketId, value, rpc);
+        : parseRuntimePolkamarktMarket(storage, marketId, value, rpc, dpmVirtualShares);
     })
   );
 
@@ -474,7 +501,9 @@ const earlyReportPatch = (
 });
 
 /**
- * Keeps indexed market data authoritative while appending markets that exist on-chain but are not indexed yet.
+ * Refreshes indexed quotes from chain state while preserving indexed identity and descriptive metadata.
+ * Quote snapshots replace stale basis-point fields together; absent runtime quotes retain indexed prices.
+ * Markets that are not indexed yet are appended from runtime storage.
  */
 export function mergePolkamarktMarkets(
   indexedMarkets: PolkamarktMarket[],
@@ -489,7 +518,35 @@ export function mergePolkamarktMarkets(
   });
   const enrichedIndexedMarkets = indexedMarkets.map((market) => {
     const runtimeMarket = runtimeById.get(marketRuntimeKey(market) ?? '');
-    return runtimeMarket?.earlyResolutionOutcome ? { ...market, ...earlyReportPatch(runtimeMarket) } : market;
+    if (!runtimeMarket) return market;
+
+    const probability = bpsToPercent(runtimeMarket.impliedYesProbabilityBps) ?? runtimeMarket.probability;
+    const quotePatch: Partial<PolkamarktMarket> =
+      probability === undefined
+        ? {}
+        : {
+            probability,
+            virtualDepth: runtimeMarket.virtualDepth,
+            dpmCollateral: runtimeMarket.dpmCollateral,
+            realYesShares: runtimeMarket.realYesShares,
+            realNoShares: runtimeMarket.realNoShares,
+            marginalYesPriceBps: runtimeMarket.marginalYesPriceBps,
+            marginalNoPriceBps: runtimeMarket.marginalNoPriceBps,
+            impliedYesProbabilityBps: runtimeMarket.impliedYesProbabilityBps,
+            impliedNoProbabilityBps: runtimeMarket.impliedNoProbabilityBps,
+          };
+
+    return {
+      ...market,
+      closeBlock: runtimeMarket.closeBlock ?? market.closeBlock,
+      liquidity: runtimeMarket.liquidity,
+      volume: runtimeMarket.volume,
+      status: runtimeMarket.status ?? market.status,
+      mechanism: runtimeMarket.mechanism ?? market.mechanism,
+      creatorFees: runtimeMarket.creatorFees ?? market.creatorFees,
+      ...quotePatch,
+      ...(runtimeMarket.earlyResolutionOutcome ? earlyReportPatch(runtimeMarket) : {}),
+    };
   });
   const indexedRuntimeIds = new Set(indexedMarkets.map(marketRuntimeKey).filter((id): id is string => Boolean(id)));
   const indexedIds = new Set(indexedMarkets.map((market) => market.id));

@@ -68,6 +68,7 @@ let currentEraRef: ReturnType<typeof ref<number | null>>;
 let dispatchStakingMocks: Record<string, ReturnType<typeof vi.fn>>;
 let commitStakingMocks: Record<string, ReturnType<typeof vi.fn>>;
 let updateSubscriptionsSpy: ReturnType<typeof vi.fn>;
+let resetHandlers: Array<() => Promise<unknown>>;
 
 const createDispatchMock = () => vi.fn().mockResolvedValue(undefined);
 
@@ -128,6 +129,7 @@ vi.mock('@/modules/staking/sora/composables/useSoraStaking', () => ({
     subscribeOnNominations: () => dispatchStakingMocks.subscribeOnNominations(),
     subscribeOnAccountLedger: () => dispatchStakingMocks.subscribeOnAccountLedger(),
     subscribeOnCurrentEraTotalStake: () => dispatchStakingMocks.subscribeOnCurrentEraTotalStake(),
+    resetAccountData: () => commitStakingMocks.resetAccountData(),
     resetActiveEraUpdates: () => commitStakingMocks.resetActiveEraUpdates(),
     resetCurrentEraUpdates: () => commitStakingMocks.resetCurrentEraUpdates(),
     resetCurrentEraTotalStakeUpdates: () => commitStakingMocks.resetCurrentEraTotalStakeUpdates(),
@@ -143,12 +145,15 @@ vi.mock('@/composables/useSubscriptions', () => ({
   useSubscriptions: ({
     parentLoading,
     startSubscriptions = [],
+    resetSubscriptions = [],
     autoStart,
   }: {
     parentLoading?: Readonly<{ value: boolean }> | (() => boolean);
     startSubscriptions?: Array<() => Promise<unknown>>;
+    resetSubscriptions?: Array<() => Promise<unknown>>;
     autoStart?: boolean;
   }) => {
+    resetHandlers = resetSubscriptions;
     const loading = ref(false);
     const resolveParent = () => {
       if (!parentLoading) return false;
@@ -234,6 +239,7 @@ describe('DataContainer.vue', () => {
       subscribeOnCurrentEraTotalStake: createDispatchMock(),
     };
     commitStakingMocks = {
+      resetAccountData: vi.fn(),
       resetActiveEraUpdates: vi.fn(),
       resetCurrentEraUpdates: vi.fn(),
       resetCurrentEraTotalStakeUpdates: vi.fn(),
@@ -255,6 +261,25 @@ describe('DataContainer.vue', () => {
     expect(dispatchStakingMocks.subscribeOnActiveEra).toHaveBeenCalledTimes(1);
     expect(dispatchStakingMocks.subscribeOnCurrentEraTotalStake).toHaveBeenCalledTimes(1);
     expect(routerPushMock).toHaveBeenCalledWith({ name: 'Overview' });
+  });
+
+  it('clears account-owned data when subscriptions are reset for an account change', async () => {
+    await mountComponent();
+    await Promise.all(resetHandlers.map((reset) => reset()));
+    expect(commitStakingMocks.resetAccountData).toHaveBeenCalledTimes(1);
+    expect(commitStakingMocks.resetActiveEraUpdates).toHaveBeenCalledTimes(1);
+    expect(commitStakingMocks.resetCurrentEraUpdates).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not recreate subscriptions when old initial reads finish after reset', async () => {
+    let finishOldRead!: () => void;
+    dispatchStakingMocks.getStakingInfo.mockReturnValueOnce(new Promise<void>((resolve) => (finishOldRead = resolve)));
+    const wrapper = await mountComponent();
+    await Promise.all(resetHandlers.map((reset) => reset()));
+    finishOldRead();
+    await flushPromises();
+    expect(dispatchStakingMocks.subscribeOnCurrentEraTotalStake).not.toHaveBeenCalled();
+    wrapper.unmount();
   });
 
   it('handles validators filter dialog interactions', async () => {

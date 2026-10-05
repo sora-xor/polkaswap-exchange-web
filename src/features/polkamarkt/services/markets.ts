@@ -2,7 +2,13 @@ import { gql } from '@urql/core';
 
 import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 
-import { normalizeMarketCategory, normalizeMarketOracle, parseBlockInput, parseProbability } from '../lib/markets';
+import {
+  normalizeMarketCategory,
+  normalizeMarketOracle,
+  parseBlockInput,
+  parseMarketProbability,
+  parseProbability,
+} from '../lib/markets';
 import {
   fetchReadOnlyRuntimePolkamarktMarkets,
   fetchRuntimePolkamarktMarkets,
@@ -30,7 +36,7 @@ type FetchPolkamarktMarketsOptions = {
 
 const MarketsQuery = gql<MarketsResponse>`
   query PolkamarktLatestMarkets($limit: Int = 48) {
-    markets(first: $limit, orderBy: [VOLUME_USD_DESC]) {
+    markets(first: $limit, orderBy: [ID_DESC]) {
       edges {
         node {
           id
@@ -74,7 +80,7 @@ const MarketsQuery = gql<MarketsResponse>`
 
 const LegacyMarketsQuery = gql<MarketsResponse>`
   query PolkamarktLatestMarkets($limit: Int = 48) {
-    markets(first: $limit, orderBy: [VOLUME_USD_DESC]) {
+    markets(first: $limit, orderBy: [ID_DESC]) {
       edges {
         node {
           id
@@ -121,16 +127,22 @@ const positiveNumber = (value: unknown): number | undefined => {
 };
 
 const nonNegativeNumber = (value: unknown): number | undefined => {
-  if (value === null || value === undefined || value === '') return undefined;
-  const parsed = coerceNumber(value);
-  return parsed >= 0 ? parsed : undefined;
+  if (typeof value !== 'number' && typeof value !== 'string') return undefined;
+  if (typeof value === 'string' && !value.trim()) return undefined;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) && parsed >= 0 ? parsed : undefined;
 };
+
+/** Keeps invalid implied odds out of both the headline and the pricing curve model. */
+const probabilityBps = (value: unknown): number | undefined =>
+  parseProbability(value, 'bps') === undefined ? undefined : Number(value);
 
 const parseCategory = (value: unknown): PolkamarktMarket['category'] => {
   const category = parseString(value);
   return category ? (normalizeMarketCategory(category) ?? 'Other') : 'Other';
 };
 
+/** Normalizes indexed metadata and implied odds without rounding away probability precision. */
 export function parseMarket(input: Record<string, unknown>): PolkamarktMarket | null {
   const marketId = parseBlockInput(input.marketId ?? input.id);
   const id = parseString(input.id) ?? (marketId !== undefined ? String(marketId) : undefined);
@@ -153,7 +165,7 @@ export function parseMarket(input: Record<string, unknown>): PolkamarktMarket | 
     closeBlock: parseBlockInput(input.closeBlock),
     liquidity: coerceNumber(input.liquidityUsd ?? input.liquidityUSD ?? input.liquidity ?? input.dpmCollateral),
     volume: coerceNumber(input.volumeUsd ?? input.volumeUSD ?? input.volume ?? input.marketVolume),
-    probability: parseProbability(input.probability ?? input.priceYes),
+    probability: parseMarketProbability(input),
     trending: Boolean(input.trending ?? false),
     status: parseString(input.status),
     mechanism: parseString(input.mechanism),
@@ -164,8 +176,8 @@ export function parseMarket(input: Record<string, unknown>): PolkamarktMarket | 
     realNoShares: positiveNumber(input.realNoShares),
     marginalYesPriceBps: nonNegativeNumber(input.marginalYesPriceBps),
     marginalNoPriceBps: nonNegativeNumber(input.marginalNoPriceBps),
-    impliedYesProbabilityBps: nonNegativeNumber(input.impliedYesProbabilityBps),
-    impliedNoProbabilityBps: nonNegativeNumber(input.impliedNoProbabilityBps),
+    impliedYesProbabilityBps: probabilityBps(input.impliedYesProbabilityBps),
+    impliedNoProbabilityBps: probabilityBps(input.impliedNoProbabilityBps),
     creatorFees: nonNegativeNumber(input.creatorFees),
     resolutionOutcome: parseString(input.resolutionOutcome),
     resolutionEvidenceUri: parseString(input.resolutionEvidenceUri),

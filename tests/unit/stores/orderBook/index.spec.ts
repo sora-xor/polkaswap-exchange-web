@@ -413,6 +413,61 @@ describe('useOrderBookStore', () => {
     expect(shared.userOrdersUnsubscribe).toHaveBeenCalledTimes(1);
   });
 
+  it('clears prior account orders and rejects a late initial account read', async () => {
+    let resolveOld!: (ids: number[]) => void;
+    shared.getUserLimitOrdersIds.mockReturnValueOnce(new Promise((resolve) => (resolveOld = resolve)));
+    shared.getUserLimitOrdersIds.mockResolvedValueOnce([]);
+    shared.subscribeOnUserLimitOrdersIds.mockReturnValue({
+      subscribe: () => ({ unsubscribe: shared.userOrdersUnsubscribe }),
+    });
+    const store = useOrderBookStore();
+    store.baseAssetAddress = 'base-1';
+    store.quoteAssetAddress = 'quote-1';
+    const pending = store.subscribeToUserLimitOrders();
+    store.setUserLimitOrders([{ id: 1 } as never]);
+    store.setOrdersToBeCancelled([{ id: 1 } as never]);
+    shared.walletStore.address = 'new-account';
+    const current = store.subscribeToUserLimitOrders();
+    expect(store.userLimitOrders).toEqual([]);
+    expect(store.ordersToBeCancelled).toEqual([]);
+    await current;
+    resolveOld([1]);
+    await pending;
+    expect(shared.getLimitOrder).not.toHaveBeenCalled();
+    expect(shared.subscribeOnUserLimitOrdersIds).toHaveBeenCalledTimes(1);
+    expect(store.userLimitOrders).toEqual([]);
+  });
+
+  it('keeps the latest live order snapshot and ignores reads finishing after teardown', async () => {
+    let emit!: (ids: number[]) => Promise<void>;
+    let resolveOld!: (order: unknown) => void;
+    shared.getUserLimitOrdersIds.mockResolvedValue([]);
+    shared.subscribeOnUserLimitOrdersIds.mockReturnValue({
+      subscribe: ({ next }: { next: (ids: number[]) => Promise<void> }) => {
+        emit = next;
+        return { unsubscribe: shared.userOrdersUnsubscribe };
+      },
+    });
+    shared.getLimitOrder.mockReturnValueOnce(new Promise((resolve) => (resolveOld = resolve)) as never);
+    const store = useOrderBookStore();
+    store.baseAssetAddress = 'base-1';
+    store.quoteAssetAddress = 'quote-1';
+    await store.subscribeToUserLimitOrders();
+    const previous = emit([1]);
+    await emit([]);
+    resolveOld({ id: 1, amount: '1', originalAmount: '1' });
+    await previous;
+    expect(store.userLimitOrders).toEqual([]);
+
+    shared.getLimitOrder.mockReturnValueOnce(new Promise((resolve) => (resolveOld = resolve)) as never);
+    const late = emit([2]);
+    store.unsubscribeFromUserLimitOrders();
+    resolveOld({ id: 2, amount: '2', originalAmount: '2' });
+    await late;
+    expect(store.userLimitOrders).toEqual([]);
+    expect(store.userLimitOrderUpdates).toBeNull();
+  });
+
   it('does not install or apply a late subscription from an older request', async () => {
     const store = useOrderBookStore();
     const firstUpdates = new Subject<any>();

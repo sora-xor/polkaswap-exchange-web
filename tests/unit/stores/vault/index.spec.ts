@@ -213,6 +213,75 @@ describe('vault store', () => {
     vi.useRealTimers();
   });
 
+  it('does not restore vaults or subscribe after reset interrupts startup', async () => {
+    let resolveVaults!: (value: Array<{ id: string }>) => void;
+    shared.fetchClosedVaults.mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          resolveVaults = resolve;
+        })
+    );
+    const store = useVaultStore();
+    const startup = store.subscribeOnAccountVaults();
+    await store.reset();
+    resolveVaults([{ id: 'old-vault' }]);
+    await startup;
+    expect(store.closedAccountVaults).toEqual([]);
+    expect(store.closedAccountVaultsLoaded).toBe(false);
+    expect(store.accountVaults).toEqual([]);
+    expect(shared.subscribeOnAccountVaultIds).not.toHaveBeenCalled();
+  });
+
+  it('rejects old account vault responses before lifecycle teardown', async () => {
+    let resolveVaults!: (value: Array<{ id: string }>) => void;
+    shared.fetchClosedVaults.mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          resolveVaults = resolve;
+        })
+    );
+    const store = useVaultStore();
+    const request = store.fetchClosedVaults();
+    shared.walletStore.address = 'account-2';
+    await store.fetchClosedVaults();
+    resolveVaults([{ id: 'old-vault' }]);
+    await request;
+    expect(store.closedAccountVaults).toEqual([{ id: 'closed-1' }]);
+  });
+
+  it('ignores stale vault stream callbacks when the account changes', async () => {
+    let emitVaults!: (vaults: any[]) => void;
+    shared.subscribeOnVaults.mockReturnValueOnce({
+      subscribe: (handler) => {
+        emitVaults = handler;
+        return { unsubscribe: shared.accountVaultsUnsubscribe };
+      },
+    });
+    const store = useVaultStore();
+    await store.subscribeOnAccountVaults();
+    shared.walletStore.address = 'account-2';
+    emitVaults([{ id: 'old-vault' }]);
+    expect(store.accountVaults).toEqual([]);
+    expect(store.accountVaultsLoaded).toBe(false);
+  });
+
+  it('does not resurrect collateral streams when reset interrupts their setup', async () => {
+    let finishSetup!: () => void;
+    const store = useVaultStore();
+    vi.spyOn(store, 'subscribeOnStablecoinInfos').mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          finishSetup = resolve;
+        })
+    );
+    const setup = store.subscribeOnCollaterals();
+    await store.reset();
+    finishSetup();
+    await setup;
+    expect(shared.getBlockNumberObservable).not.toHaveBeenCalled();
+    expect(store.collateralsSubscription).toBeNull();
+  });
+
   it('derives selected vault assets and borrow tax from local pinia state', async () => {
     const store = useVaultStore();
 

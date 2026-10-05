@@ -8,11 +8,11 @@
       <div class="market-outcome-chart__legend">
         <span class="market-outcome-chart__chip market-outcome-chart__chip--yes">
           <i />
-          {{ t('polkamarkt.outcomes.yes') }} {{ formatPercent(currentYes) }}
+          {{ t('polkamarkt.outcomes.yes') }} {{ formatMarketProbability(currentYes, false, '--') }}
         </span>
         <span class="market-outcome-chart__chip market-outcome-chart__chip--no">
           <i />
-          {{ t('polkamarkt.outcomes.no') }} {{ formatPercent(currentNo) }}
+          {{ t('polkamarkt.outcomes.no') }} {{ formatMarketProbability(currentYes, true, '--') }}
         </span>
       </div>
     </div>
@@ -111,7 +111,7 @@
           :style="seriesLabelStyle(series.labelY)"
           aria-hidden="true"
         >
-          {{ series.outcome }} {{ formatPercent(series.current) }}
+          {{ series.outcome }} {{ formatMarketProbability(currentYes, series.outcome === 'NO', '--') }}
         </span>
       </div>
 
@@ -131,6 +131,7 @@
 import { computed } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
+import { formatMarketProbability, parseProbability } from '../lib/markets';
 
 import type { MarketHistoryPoint, PolkamarktMarket, TicketOutcome } from '../types';
 
@@ -207,19 +208,34 @@ const formatPointDate = (point?: MarketHistoryPoint): string => {
   return new Date(timestampMs).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 };
 
+/** Ends indexed history at the current quote so the curve and its outcome labels agree. */
 const sortedPoints = computed(() => {
-  return [...(props.points ?? [])]
+  const points = [...(props.points ?? [])]
     .filter((point) => Number.isFinite(point.probability))
     .sort((left, right) => {
       const timestampDiff = (left.timestamp ?? 0) - (right.timestamp ?? 0);
       if (timestampDiff !== 0) return timestampDiff;
       return left.id.localeCompare(right.id);
     });
+  const current = parseProbability(props.market?.probability);
+  const latest = points.at(-1);
+  if (current !== undefined && latest && latest.probability !== current) {
+    const lastTimestamp = latest.timestamp ?? 0;
+    points.push({
+      id: `current-${props.market?.id}`,
+      probability: current,
+      timestamp: Math.max(
+        Math.floor(Date.now() / 1000),
+        lastTimestamp > 10_000_000_000 ? lastTimestamp / 1000 : lastTimestamp
+      ),
+    });
+  }
+  return points;
 });
 
 const yesValues = computed(() => sortedPoints.value.map((point) => point.probability));
 const noValues = computed(() => sortedPoints.value.map((point) => 100 - point.probability));
-const currentYes = computed(() => yesValues.value.at(-1) ?? props.market?.probability);
+const currentYes = computed(() => props.market?.probability ?? yesValues.value.at(-1));
 const currentNo = computed(() => (currentYes.value === undefined ? undefined : 100 - currentYes.value));
 const currentLabelY = computed(() => labelPositions(currentYes.value, currentNo.value));
 const startLabel = computed(() => formatPointDate(sortedPoints.value[0]));
@@ -247,8 +263,6 @@ const outcomeSeries = computed(() => [
     dot: 'var(--s-color-base-content-primary)',
   },
 ]);
-
-const formatPercent = (value?: number): string => (Number.isFinite(value) ? `${Math.round(value ?? 0)}%` : '--');
 </script>
 
 <style lang="scss" scoped>

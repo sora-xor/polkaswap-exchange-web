@@ -314,11 +314,38 @@ export function parseBlockInput(value: unknown): number | undefined {
   return Number.isSafeInteger(parsed) && parsed >= 0 ? parsed : undefined;
 }
 
-export function parseProbability(value: unknown): number | undefined {
+/** Reads a probability using its field's declared unit; values below 1 are not implicitly prices. */
+export function parseProbability(
+  value: unknown,
+  scale: 'percentage' | 'price' | 'bps' = 'percentage'
+): number | undefined {
+  if (typeof value !== 'number' && typeof value !== 'string') return undefined;
+  if (typeof value === 'string' && !value.trim()) return undefined;
   const raw = Number(value);
   if (!Number.isFinite(raw)) return undefined;
-  if (raw <= 1) return Math.max(0, Math.min(100, Math.round(raw * 100)));
-  return Math.max(0, Math.min(100, Math.round(raw)));
+  const percentage = scale === 'bps' ? raw / 100 : scale === 'price' ? raw * 100 : raw;
+  return percentage >= 0 && percentage <= 100 ? percentage : undefined;
+}
+
+/** Prefers indexed implied odds over legacy percentage and fractional-price fields. */
+export function parseMarketProbability(input: Record<string, unknown>): number | undefined {
+  const noProbability = parseProbability(input.impliedNoProbabilityBps, 'bps');
+  return (
+    parseProbability(input.impliedYesProbabilityBps, 'bps') ??
+    (noProbability === undefined ? undefined : 100 - noProbability) ??
+    parseProbability(input.probability) ??
+    parseProbability(input.priceYes, 'price')
+  );
+}
+
+/** Formats complementary whole-percent display odds, preserving nonzero sub-percent outcomes. */
+export function formatMarketProbability(value?: number, no = false, unavailable = '—'): string {
+  if (value === undefined || !Number.isFinite(value) || value < 0 || value > 100) return unavailable;
+  const probability = no ? 100 - value : value;
+  if (probability > 0 && probability < 1) return '<1%';
+  if (probability > 99 && probability < 100) return '>99%';
+  const yes = Math.round(value);
+  return `${no ? 100 - yes : yes}%`;
 }
 
 export const yesNoPricesFromProbability = (probability?: number): { yes?: number; no?: number } => {

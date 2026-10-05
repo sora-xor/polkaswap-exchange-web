@@ -45,6 +45,13 @@ describe('polkamarkt share helpers', () => {
     expect(buildMarketShareSnapshot(market, market.closeBlock)).toContain('Geopolitics · Closed');
   });
 
+  it('preserves sub-percent odds and complementary rounding in shared snapshots', () => {
+    expect(buildMarketShareSnapshot({ ...market, probability: 0.8 })).toContain('YES <1%');
+    expect(buildMarketShareSnapshot({ ...market, probability: 0.8 })).toContain('NO >99%');
+    expect(buildMarketShareSnapshot({ ...market, probability: 50.5 })).toContain('YES 51%');
+    expect(buildMarketShareSnapshot({ ...market, probability: 50.5 })).toContain('NO 49%');
+  });
+
   it('builds Telegram and X intent URLs with encoded snapshot and link', () => {
     const link = buildPolkamarktTradeLink(market, 'https://polkaswap.io/#/polkamarkt');
     const snapshot = buildMarketShareSnapshot(market);

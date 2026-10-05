@@ -7,6 +7,7 @@ import type { OwnedAsset } from '@/modules/dashboard/types';
 import type { DashboardState } from '@/stores/dashboard/types';
 
 const INTERVAL = 2 * 60_000;
+const ownedAssetsRequestGenerations = new WeakMap<object, number>();
 
 const buildInitialState = (): DashboardState => ({
   ownedAssetIds: [],
@@ -50,6 +51,15 @@ export const useDashboardStore = defineStore('dashboard', {
       const walletStore = useWalletStore();
       const accountId = walletStore.account?.address ?? walletStore.address;
       const subscriptionGeneration = this.ownedAssetIdsSubscriptionGeneration;
+      const accountSource = walletStore.accountSource;
+      const requestGeneration = (ownedAssetsRequestGenerations.get(this) ?? 0) + 1;
+      ownedAssetsRequestGenerations.set(this, requestGeneration);
+      const isCurrent = (): boolean =>
+        subscriptionGeneration === this.ownedAssetIdsSubscriptionGeneration &&
+        requestGeneration === ownedAssetsRequestGenerations.get(this) &&
+        walletStore.isLoggedIn &&
+        accountId === (walletStore.account?.address ?? walletStore.address) &&
+        accountSource === walletStore.accountSource;
 
       if (!walletStore.isLoggedIn || !accountId) {
         this.ownedAssetIds = [];
@@ -59,12 +69,12 @@ export const useDashboardStore = defineStore('dashboard', {
       try {
         const ownedAssetIds = await api.assets.getOwnedAssetIds(accountId);
 
-        if (subscriptionGeneration === this.ownedAssetIdsSubscriptionGeneration) {
+        if (isCurrent()) {
           this.ownedAssetIds = ownedAssetIds;
         }
       } catch (error) {
         console.error(error);
-        if (subscriptionGeneration === this.ownedAssetIdsSubscriptionGeneration) {
+        if (isCurrent()) {
           this.ownedAssetIds = [];
         }
       }
@@ -73,9 +83,19 @@ export const useDashboardStore = defineStore('dashboard', {
     async subscribeOnOwnedAssets(): Promise<void> {
       clearOwnedAssetsInterval(this);
       const subscriptionGeneration = ++this.ownedAssetIdsSubscriptionGeneration;
+      const walletStore = useWalletStore();
+      const address = walletStore.account?.address ?? walletStore.address;
+      const accountSource = walletStore.accountSource;
+      this.ownedAssetIds = [];
       await this.requestOwnedAssetIds();
 
-      if (subscriptionGeneration !== this.ownedAssetIdsSubscriptionGeneration) return;
+      if (
+        subscriptionGeneration !== this.ownedAssetIdsSubscriptionGeneration ||
+        !walletStore.isLoggedIn ||
+        address !== (walletStore.account?.address ?? walletStore.address) ||
+        accountSource !== walletStore.accountSource
+      )
+        return;
 
       this.ownedAssetIdsInterval = setInterval(() => {
         if (subscriptionGeneration !== this.ownedAssetIdsSubscriptionGeneration) return;
