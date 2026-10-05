@@ -1,0 +1,4 @@
+interface:
+  display_name: "Polkaswap Trade Preflight"
+  short_description: "Check live swap routes before connecting a wallet"
+  default_prompt: "Use $polkaswap-trade-preflight to check the live route, minimum received and execution constraints for my proposed Polkaswap swap without connecting a wallet."
