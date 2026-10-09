@@ -486,7 +486,7 @@ $points-card-min-width: 258px;
   &__card-grid {
     display: grid;
     gap: $inner-spacing-small;
-    grid-template-columns: repeat(auto-fit, minmax($points-card-min-width, 1fr));
+    grid-template-columns: #{'repeat(auto-fit, minmax(#{$points-card-min-width}, 1fr))'};
     padding-bottom: $inner-spacing-mini;
     width: 100%;
   }

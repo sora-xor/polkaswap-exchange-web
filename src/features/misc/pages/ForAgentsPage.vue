@@ -217,7 +217,7 @@ $link-grid-min: 240px;
 
   &__header {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(240px, 320px);
+    grid-template-columns: #{'minmax(0, 1fr) minmax(240px, 320px)'};
     gap: $inner-spacing-big;
     align-items: end;
     padding: $inner-spacing-medium 0 $inner-spacing-big;
@@ -267,7 +267,7 @@ $link-grid-min: 240px;
   &__playground {
     position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+    grid-template-columns: #{'minmax(0, 1.2fr) minmax(260px, 0.8fr)'};
     gap: $inner-spacing-big;
     margin-top: $inner-spacing-big;
     padding: $inner-spacing-big 0;
@@ -300,7 +300,7 @@ $link-grid-min: 240px;
 
   &__playground-link {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-columns: #{'auto minmax(0, 1fr) auto'};
     gap: $inner-spacing-small;
     align-items: center;
     width: min(100%, 560px);
@@ -350,7 +350,7 @@ $link-grid-min: 240px;
 
     li {
       display: grid;
-      grid-template-columns: 92px minmax(0, 1fr);
+      grid-template-columns: #{'92px minmax(0, 1fr)'};
       gap: $inner-spacing-small;
       padding: $inner-spacing-small 0;
       border-top: 1px solid var(--s-color-base-border-secondary);
@@ -364,7 +364,7 @@ $link-grid-min: 240px;
   &__secondary-entrypoints {
     display: grid;
     grid-column: 1 / -1;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: #{'repeat(2, minmax(0, 1fr))'};
     gap: $inner-spacing-medium;
 
     a {
@@ -417,7 +417,7 @@ $link-grid-min: 240px;
 
     article {
       display: grid;
-      grid-template-columns: minmax(220px, 0.7fr) minmax(0, 1.3fr);
+      grid-template-columns: #{'minmax(220px, 0.7fr) minmax(0, 1.3fr)'};
       gap: $inner-spacing-mini $inner-spacing-big;
       min-width: 0;
       padding: $inner-spacing-medium 0;
@@ -455,7 +455,7 @@ $link-grid-min: 240px;
 
   &__links {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax($link-grid-min, 1fr));
+    grid-template-columns: #{'repeat(auto-fit, minmax(#{$link-grid-min}, 1fr))'};
     gap: 0 $inner-spacing-medium;
     margin: 0;
     padding: 0;

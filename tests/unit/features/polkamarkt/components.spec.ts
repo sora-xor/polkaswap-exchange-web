@@ -576,7 +576,7 @@ describe('polkamarkt components', () => {
     expect(marketListSource).toContain('flex-wrap: wrap');
     expect(marketListSource).toContain("grid-template-columns: repeat(3, #{'minmax(0, 1fr)'})");
     expect(marketListSource).not.toContain('max-content auto');
-    expect(createMarketDialogSource).toContain('grid-template-columns: repeat(auto-fit, minmax(120px, 1fr))');
+    expect(createMarketDialogSource).toContain("grid-template-columns: repeat(auto-fit, #{'minmax(120px, 1fr)'})");
     expect(myPositionsPanelSource).toContain("grid-template-columns: #{'minmax(0, 1fr)'} auto auto");
   });
 

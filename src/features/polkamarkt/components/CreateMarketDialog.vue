@@ -362,7 +362,7 @@ watch(currentBlock, () => {
 
   &__preview {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-template-columns: repeat(auto-fit, #{'minmax(120px, 1fr)'});
     gap: $inner-spacing-mini;
 
     @include tablet(true) {
