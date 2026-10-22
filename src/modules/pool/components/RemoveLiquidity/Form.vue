@@ -28,7 +28,7 @@
             {{ t('buttons.max') }}
           </s-button>
         </div>
-        <div slot="bottom">
+        <div slot="bottom" class="remove-part-bottom">
           <s-slider
             class="slider-container"
             :value="sliderValue"
@@ -417,5 +417,14 @@ defineExpose({
 <style lang="scss">
 .s-input.s-input--remove-part {
   @include input-slider;
+
+  // Reserve the number's width before positioning the percentage suffix.
+  .s-input__input {
+    flex: 0 0 auto;
+  }
+
+  .remove-part-bottom {
+    width: 100%;
+  }
 }
 </style>
