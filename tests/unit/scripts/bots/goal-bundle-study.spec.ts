@@ -19,6 +19,8 @@ import {
   assertGoalBundleValidationMetadata,
 } from '@/features/bot-trading/goal-bundle-metadata';
 vi.unmock('@polkadot/util-crypto');
+/** Full journal replays need the fixture's 60-second budget when the full suite is under resource contention. */
+const FULL_STUDY_REPLAY_TIMEOUT_MS = 60_000;
 let base: Awaited<ReturnType<typeof createGoalBundleStudyFixture>>;
 beforeAll(async () => {
   base = await createGoalBundleStudyFixture();
@@ -289,20 +291,24 @@ describe('browser completed-study journal adapter', () => {
       expect(evaluateEpisode).toHaveBeenCalledOnce();
     }
   );
-  it('preserves ordinary studies without invoking a supplied continuation acquisition dependency', async () => {
-    const f = base.fork(),
-      prepare = vi.fn(async () => {
-        throw Error('must not inspect legacy acquisition');
+  it(
+    'preserves ordinary studies without invoking a supplied continuation acquisition dependency',
+    async () => {
+      const f = base.fork(),
+        prepare = vi.fn(async () => {
+          throw Error('must not inspect legacy acquisition');
+        });
+      const study = await createGoalBundleStudy({
+        reader: await f.open(),
+        evaluateEpisode: f.evidence,
+        acquisition: { prepare },
       });
-    const study = await createGoalBundleStudy({
-      reader: await f.open(),
-      evaluateEpisode: f.evidence,
-      acquisition: { prepare },
-    });
-    await study.reverify();
-    expect(prepare).not.toHaveBeenCalled();
-    study.dispose();
-  });
+      await study.reverify();
+      expect(prepare).not.toHaveBeenCalled();
+      study.dispose();
+    },
+    FULL_STUDY_REPLAY_TIMEOUT_MS
+  );
   it('abort during a pending validation artifact revokes the same admission before any body can finish', async () => {
     const f = base.fork();
     let capability: GoalBundleStudySelection | undefined, readStarted!: () => void, continueRead!: () => void;
@@ -333,37 +339,41 @@ describe('browser completed-study journal adapter', () => {
     expect(() => assertGoalBundleStudySelection(capability, selectionBinding(capability!))).toThrow('unowned');
     f.setBeforeFetch(undefined);
   });
-  it('guards direct lower validation reader access with the same live selected request capability', async () => {
-    const f = base.fork();
-    let capability!: GoalBundleStudySelection;
-    const state = await f.create(async (context) => {
-      if (context.selection) capability = context.selection;
-      return f.evidence(context);
-    });
-    await state.study.reverify();
-    const entry = f.index.episodes.at(-1)!,
-      fetcher = vi.fn(async (url: RequestInfo | URL) => {
-        const raw = f.content.get(String(url));
-        if (!raw) throw Error('missing fixture');
-        const response = new Response(new Uint8Array(raw));
-        Object.defineProperty(response, 'url', { value: String(url) });
-        return response;
+  it(
+    'guards direct lower validation reader access with the same live selected request capability',
+    async () => {
+      const f = base.fork();
+      let capability!: GoalBundleStudySelection;
+      const state = await f.create(async (context) => {
+        if (context.selection) capability = context.selection;
+        return f.evidence(context);
       });
-    const binding = {
-      ...selectionBinding(capability, entry.requestSha256),
-      candidateSha256: entry.candidateSha256,
-      requestSha256: entry.requestSha256,
-    };
-    const child = await createGoalValidationBundleReader(
-      { rootUrl: `${f.root}episodes/${entry.requestSha256}/`, manifestSha256: entry.manifestSha256 },
-      { fetch: fetcher },
-      { selection: capability, binding }
-    );
-    expect(child.summary.phase).toBe('validation');
-    state.study.dispose();
-    const calls = fetcher.mock.calls.length;
-    await expect(child.read('invented-raw')).rejects.toThrow();
-    expect(fetcher.mock.calls).toHaveLength(calls);
-    child.dispose();
-  });
+      await state.study.reverify();
+      const entry = f.index.episodes.at(-1)!,
+        fetcher = vi.fn(async (url: RequestInfo | URL) => {
+          const raw = f.content.get(String(url));
+          if (!raw) throw Error('missing fixture');
+          const response = new Response(new Uint8Array(raw));
+          Object.defineProperty(response, 'url', { value: String(url) });
+          return response;
+        });
+      const binding = {
+        ...selectionBinding(capability, entry.requestSha256),
+        candidateSha256: entry.candidateSha256,
+        requestSha256: entry.requestSha256,
+      };
+      const child = await createGoalValidationBundleReader(
+        { rootUrl: `${f.root}episodes/${entry.requestSha256}/`, manifestSha256: entry.manifestSha256 },
+        { fetch: fetcher },
+        { selection: capability, binding }
+      );
+      expect(child.summary.phase).toBe('validation');
+      state.study.dispose();
+      const calls = fetcher.mock.calls.length;
+      await expect(child.read('invented-raw')).rejects.toThrow();
+      expect(fetcher.mock.calls).toHaveLength(calls);
+      child.dispose();
+    },
+    FULL_STUDY_REPLAY_TIMEOUT_MS
+  );
 });

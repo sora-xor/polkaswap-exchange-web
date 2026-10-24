@@ -24,15 +24,27 @@ describe('vite.config', () => {
       })
     );
 
-    expect(pluginNames.includes('vite-plugin-node-polyfills')).toBe(polyfillsEnabled);
+    expect(pluginNames.includes('polkaswap:browser-node-polyfills')).toBe(polyfillsEnabled);
   });
 
   it('keeps Rollup on default chunking for the browser bundle', () => {
     expect(viteConfig.build?.rollupOptions?.output?.manualChunks).toBeUndefined();
   });
 
+  it('scans only the application entry instead of retained HTML reports and previous builds', () => {
+    expect(viteConfig.optimizeDeps?.entries).toEqual(['index.html']);
+  });
+
   it('emits one CSS bundle for IPFS CDN reliability', () => {
     expect(viteConfig.build?.cssCodeSplit).toBe(false);
+  });
+
+  it('enforces the dependency security boundary in web and Electron renderer builds', () => {
+    for (const plugins of [viteConfig.plugins, electronViteConfig.renderer?.plugins]) {
+      expect(plugins).toContainEqual(
+        expect.objectContaining({ name: 'polkaswap:dependency-security', apply: 'build' })
+      );
+    }
   });
 
   it('preloads dynamic import dependencies in parallel without the modulepreload polyfill', () => {
@@ -55,12 +67,12 @@ describe('vite.config', () => {
 
     const fallbackIndex = pluginNames.indexOf('polkaswap:browser-crypto-fallback');
     expect(fallbackIndex).toBeGreaterThanOrEqual(0);
-    expect(pluginNames.indexOf('vite-plugin-node-polyfills')).toBe(fallbackIndex + 1);
+    expect(pluginNames.indexOf('polkaswap:browser-node-polyfills')).toBe(fallbackIndex + 1);
   });
 
-  it('keeps Electron pointed at the dedicated main and preload entrypoints', () => {
+  it('keeps Electron pointed at its dedicated main and renderer without a preload bridge', () => {
     expect(electronViteConfig.main?.build?.lib?.entry).toBe('electron/main/index.ts');
-    expect(electronViteConfig.preload?.build?.lib?.entry).toBe('electron/preload/index.ts');
+    expect(electronViteConfig.preload).toBeUndefined();
     expect(JSON.stringify(electronViteConfig.renderer?.build?.rollupOptions?.input)).toContain(
       'src/renderer/index.html'
     );

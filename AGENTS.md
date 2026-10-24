@@ -81,15 +81,28 @@ This is a financial application — treat security as a first‑class concern.
 
 ### Bunny/IPFS Deployment Runbook
 
-Use the dedicated static origin at `https://pi.soramitsu.io` on the approved macOS host `208.83.1.62`, with Host header `pi.soramitsu.io`. Its private, offline Kubo service serves locally pinned content through nginx's `/ipfs/` route. See `docs/ipfs-origin.md` for the exact service paths and replication commands. Never use `ipfs.io`, `dweb.link`, or browser service-worker gateways as an origin or fallback.
+Use the dedicated static origin at `https://pi.soramitsu.io` on the approved MOF macOS host `207.254.29.218`, with Host header `pi.soramitsu.io`. Its private, offline Kubo service serves locally pinned content through nginx's `/ipfs/` route. See `docs/ipfs-origin.md` for the exact service paths and replication commands. Never use `ipfs.io`, `dweb.link`, or browser service-worker gateways as an origin or fallback.
 
-The restored production release is the original September 28 root, `bafybeidb3gmikyesy7f6gvs24zpqevf2n7pf2sxfbcjmvc6bbkhudvvl3a`, imported from its retained CAR without rebuilding. Loopback and direct HTTPS byte checks establish content availability; they do not establish completed Bunny/browser qualification. The recovery imported this production DAG; future publications must replicate and verify production and testnet DAGs separately.
+The October 22 liquidity layout release is production root
+`bafybeicjwe24zlmugkwtmtue6ynybsyqfcnzfjyeipdbonsinv7gt2ig7i`, with paired testnet root
+`bafybeice6og6ia5vtmx7bj4vnqjo6kotrqlplr6sse4pomwzwnqip2mumy`. Both DAGs are pinned
+on the approved origin. Bunny was updated and purged; all five candidate and
+public WebKit routes passed. See `docs/reports/deployment-2026-10-22.md` for
+the exact deployed source snapshot and release evidence.
+
+The October 24 dependency/security release is production root
+`bafybeicqvi4opmxmxoqem73mtybdh4ka2ltx3wo7nlvr5k46tqypd3bxea`, with paired testnet root
+`bafybeihezo3i5u3ohglt47rrjddcdy3ecacvooys3kze6mext5cwlyxshi`. It preserves the
+October 22 shipped feature assembly and liquidity fix while applying the security
+updates. Both DAGs passed origin pin integrity, Bunny was updated and purged,
+and all five candidate and live WebKit routes passed. See
+`docs/reports/deployment-2026-10-24.md` for the isolated source provenance and evidence.
 
 Use this exact order when the user asks to rebuild, redeploy to IPFS, and update Bunny:
 
 Before building, compare the candidate checkout with the currently deployed release. A feature-specific checkout must not replace the full site while omitting another shipped feature. Integrate the shipped Store configuration and payment package alongside Bots and the other app routes. Record the current and candidate CIDs and feature provenance in the release evidence.
 
-1. Run `IPFS_PUBLIC_GATEWAY_URL=https://pi.soramitsu.io yarn ipfs:publish` from the repo root. Supply this explicit override because the publisher's default has not yet been updated. Capture the **Production CID**, **Production CIDv1**, **Production Bunny origin URL**, and **Production Bunny origin host header** from the command output. Do not use the testnet CID for `polkaswap.io`. Before testing or switching the public origin, transfer production and testnet DAGs separately to the approved `208.83.1.62` repository with `ipfs dag export` and remote `ipfs dag import --pin-roots`, then verify both recursive root pins and full pin integrity using `docs/ipfs-origin.md`.
+1. Run `IPFS_PUBLIC_GATEWAY_URL=https://pi.soramitsu.io yarn ipfs:publish` from the repo root. Supply this explicit override because the publisher's default has not yet been updated. Capture the **Production CID**, **Production CIDv1**, **Production Bunny origin URL**, and **Production Bunny origin host header** from the command output. Do not use the testnet CID for `polkaswap.io`. Before testing or switching the public origin, transfer production and testnet DAGs separately to the approved `207.254.29.218` repository with `ipfs dag export` and remote `ipfs dag import --pin-roots`, then verify both recursive root pins and full pin integrity using `docs/ipfs-origin.md`.
 2. Before saving Bunny, test the candidate origin as a static gateway with the new production CIDv1. The origin is valid only if it returns the real built files with no `3xx` redirect and no IPFS service-worker shell:
    - `curl -sS -D - -o /tmp/origin-root.html <origin>/`
    - `curl -sS -D - -o /tmp/origin-index.js <origin>/assets/<index-*.js>`

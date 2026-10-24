@@ -1,5 +1,3 @@
-import { createRequire } from 'node:module';
-
 /**
  * CommonJS packages whose only `require('crypto')` is a Node.js fallback for
  * runtimes without the Web Crypto API. Each one checks `crypto.getRandomValues`
@@ -14,23 +12,7 @@ export const BROWSER_CRYPTO_FALLBACK_PACKAGES = Object.freeze(['crypto-js', 'twe
 /** Virtual module that stands in for Node's `crypto` inside the audited packages. */
 export const EMPTY_CRYPTO_MODULE_ID = '\0polkaswap:browser-crypto-fallback';
 
-const require = createRequire(import.meta.url);
-
 const normalizePath = (value = '') => value.replaceAll('\\', '/').replace(/[?#].*$/, '');
-
-/**
- * Resolves the directory that `vite-plugin-node-polyfills` aliases `crypto` to.
- *
- * @returns {string | null}
- */
-const resolveCryptoPolyfillDir = () => {
-  try {
-    const polyfills = require('node-stdlib-browser');
-    return typeof polyfills.crypto === 'string' ? normalizePath(polyfills.crypto) : null;
-  } catch {
-    return null;
-  }
-};
 
 /**
  * Returns whether a module id belongs to one of the audited fallback packages.
@@ -64,7 +46,8 @@ export const isNodeCryptoSpecifier = (source, cryptoPolyfillDir) => {
  * Keeps the `crypto-browserify` tree (browserify-sign, elliptic, asn1.js,
  * pbkdf2, readable-stream, ...) out of the browser bundle when the only
  * importers are the audited Node.js fallbacks above. Any other importer still
- * receives the regular polyfill from `vite-plugin-node-polyfills`.
+ * is left to the caller; the paired browser Node plugin rejects unsupported
+ * crypto imports rather than providing a different signing implementation.
  *
  * Applies to production builds only; dev pre-bundling and Vitest are unchanged.
  *
@@ -73,8 +56,7 @@ export const isNodeCryptoSpecifier = (source, cryptoPolyfillDir) => {
  */
 export function browserCryptoFallbackPlugin(options = {}) {
   const packages = options.packages ?? BROWSER_CRYPTO_FALLBACK_PACKAGES;
-  const cryptoPolyfillDir =
-    options.cryptoPolyfillDir === undefined ? resolveCryptoPolyfillDir() : options.cryptoPolyfillDir;
+  const cryptoPolyfillDir = options.cryptoPolyfillDir ?? null;
 
   return {
     name: 'polkaswap:browser-crypto-fallback',
