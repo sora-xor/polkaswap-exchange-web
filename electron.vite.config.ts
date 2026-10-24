@@ -12,14 +12,6 @@ export default defineConfig({
       },
     },
   },
-  preload: {
-    plugins: [externalizeDepsPlugin()],
-    build: {
-      lib: {
-        entry: 'electron/preload/index.ts',
-      },
-    },
-  },
   renderer: {
     build: {
       rollupOptions: {

@@ -5,7 +5,7 @@ Polkaswap Exchange Web is the Vue 3 + TypeScript client for the SORA network. It
 ## Requirements
 
 - Node 26.x (see `.nvmrc` and the `package.json` engine field). Use `nvm`, `fnm`, or another version manager to match the toolchain before installing dependencies.
-- Yarn 4.x (Berry). The repo pins the exact release via `.yarn/releases` and `.yarnrc.yml` (`yarnPath`); use `corepack` (bundled with Node) if needed.
+- Yarn 4.x (Berry). The repo pins the exact release via `.yarn/releases` and `.yarnrc.yml` (`yarnPath`). If no `yarn` command is installed, invoke the checked-in CLI with `node .yarn/releases/yarn-4.10.3.cjs`.
 - `npm install` is not supported (the repo uses Yarn's `patch:` protocol for dependencies).
 - Modern browsers with WebAssembly enabled for runtime usage.
 
@@ -66,6 +66,10 @@ yarn install
 - `@polkadot/rpc-provider@16.5.4` is patched (`.yarn/patches/@polkadot-rpc-provider-npm-16.5.4-*.patch`) so that `WsProvider` does not keep subscription notifications forever. Upstream stores every notification that arrives after an unsubscribe in `#waitingForId` for the life of the connection; a tab that quotes repeatedly (bots, Swap) grew by about 0.5 MB per hour. The patch drops notifications for subscriptions the client closed in the last five minutes (at most 4,096 records) and caps notifications for unknown subscriptions at 256. Out-of-order notifications for pending subscriptions are still delivered. `tests/unit/lib/substrate/connection/ws-provider-subscriptions.spec.ts` covers it; re-create the patch when upgrading `@polkadot/api`.
 - The app-owned source no longer imports the class-component stack directly, but the vendored Soraneo wallet/UI sources still require the Vue 3-compatible release lines: `vue-class-component@8.0.0-rc.1`, `vue-property-decorator@10.0.0-rc.3`, and `vuedraggable@4.1.0`. npm `latest` still points at Vue 2 lines for several of these packages, so do not replace them with the `latest` tag by default.
 - The vendored Soraneo wallet/UI bundles rely on browser helpers such as `vue-plugin-load-script`, `vue-observe-visibility`, `@urql/core`, `nft.storage`, `subscriptions-transport-ws`, `graphql`, and `@zxing/browser`. Keep these dependencies in `package.json` or `yarn build` will fail to resolve the wallet sources.
+
+### Dependency security
+
+Run `yarn security:audit` to check the complete Yarn dependency graph, copied vendor packages, and the separate `scripts/ucan` lockfile. Findings and registry failures return a nonzero exit code; advisories are not suppressed. See [dependency maintenance](docs/security-dependencies.md) and the [October 24 security review](docs/reports/dependency-security-2026-10-24.md) for resolved advisories, compatibility pins, and validation evidence. The optional [Electron shell](electron/README.md) uses a sandboxed renderer without a Node/IPC preload bridge.
 
 ## Scripts
 

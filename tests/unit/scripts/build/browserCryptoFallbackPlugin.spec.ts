@@ -1,5 +1,3 @@
-import { createRequire } from 'node:module';
-
 import { describe, expect, it } from 'vitest';
 
 import {
@@ -85,12 +83,10 @@ describe('scripts/build/browserCryptoFallbackPlugin', () => {
     expect(plugin.enforce).toBe('pre');
   });
 
-  it('defaults to the directory that vite-plugin-node-polyfills aliases crypto to', () => {
-    const require = createRequire(import.meta.url);
-    const polyfillDir = String(require('node-stdlib-browser').crypto).replaceAll('\\', '/');
+  it('uses audited raw crypto imports without requiring a blanket crypto polyfill package', () => {
     const plugin = browserCryptoFallbackPlugin();
     const resolveId = plugin.resolveId as unknown as ResolveHook;
 
-    expect(resolveId(polyfillDir, CRYPTO_JS_CORE)).toBe(EMPTY_CRYPTO_MODULE_ID);
+    expect(resolveId('crypto', CRYPTO_JS_CORE)).toBe(EMPTY_CRYPTO_MODULE_ID);
   });
 });

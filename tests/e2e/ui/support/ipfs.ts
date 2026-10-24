@@ -324,11 +324,11 @@ export async function ensureAppLoaded(page: Page): Promise<void> {
   const header = page.locator('header.header').first();
   const menu = page.locator('.app-menu');
 
-  await expect.poll(() => page.evaluate(() => document.querySelectorAll('#app').length)).resolves.toBe(1);
+  await expect.poll(() => page.evaluate(() => document.querySelectorAll('#app').length)).toBe(1);
   await expect(header).toBeVisible({ timeout: 15_000 });
   await expect(menu).toHaveCount(1);
 }
 
 export async function expectHash(page: Page, hash: string): Promise<void> {
-  await expect.poll(async () => page.evaluate(() => window.location.hash)).resolves.toBe(hash);
+  await expect.poll(async () => page.evaluate(() => window.location.hash)).toBe(hash);
 }

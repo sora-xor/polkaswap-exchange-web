@@ -30,7 +30,7 @@ test('renders the swap page shell', async ({ page }) => {
 
   await page.goto(`${ipfsEntryUrl}#/swap`);
 
-  await expect.poll(async () => page.evaluate(() => window.location.pathname)).resolves.toBe(`${ipfsBasePath}/`);
+  await expect.poll(async () => page.evaluate(() => window.location.pathname)).toBe(`${ipfsBasePath}/`);
   await ensureAppLoaded(page);
   await expect(page.evaluate(() => window.__PS_IPFS_CHECK__ === true)).resolves.toBe(true);
 
@@ -48,7 +48,7 @@ test('redirects the root hash route to the swap page shell', async ({ page }) =>
 
   await page.goto(`${ipfsEntryUrl}#/`);
 
-  await expect.poll(async () => page.evaluate(() => window.location.pathname)).resolves.toBe(`${ipfsBasePath}/`);
+  await expect.poll(async () => page.evaluate(() => window.location.pathname)).toBe(`${ipfsBasePath}/`);
   await ensureAppLoaded(page);
   await page.waitForFunction(
     () => window.location.hash === '#/swap' || window.location.hash.startsWith('#/swap/'),

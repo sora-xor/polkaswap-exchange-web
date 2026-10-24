@@ -1,9 +1,16 @@
 import { join } from 'path';
+import { pathToFileURL } from 'node:url';
 
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
-import { app, shell, BrowserWindow, ipcMain } from 'electron';
+import { app, shell, BrowserWindow } from 'electron';
 
+import { isAppNavigation, safeExternalUrl } from './security';
+
+/** Creates a sandboxed app window; remote links open only in the system browser. */
 function createWindow(): void {
+  const appFile = join(__dirname, '../renderer/index.html');
+  const devUrl = is.dev ? process.env['ELECTRON_RENDERER_URL'] : undefined;
+  const appUrl = devUrl || pathToFileURL(appFile).href;
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 900,
@@ -11,8 +18,9 @@ function createWindow(): void {
     show: false,
     autoHideMenuBar: true,
     webPreferences: {
-      preload: join(__dirname, '../preload/index.js'),
-      sandbox: false,
+      sandbox: true,
+      contextIsolation: true,
+      nodeIntegration: false,
     },
   });
 
@@ -21,16 +29,24 @@ function createWindow(): void {
   });
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
-    shell.openExternal(details.url);
+    const url = safeExternalUrl(details.url);
+    if (url) void shell.openExternal(url).catch(() => undefined);
     return { action: 'deny' };
+  });
+
+  mainWindow.webContents.on('will-navigate', (event) => {
+    if (!isAppNavigation(event.url, appUrl)) event.preventDefault();
+  });
+  mainWindow.webContents.on('will-redirect', (event) => {
+    if (event.isMainFrame && !isAppNavigation(event.url, appUrl)) event.preventDefault();
   });
 
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
-  if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-    mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL']);
+  if (devUrl) {
+    mainWindow.loadURL(devUrl);
   } else {
-    mainWindow.loadFile(join(__dirname, '../../index.html'));
+    mainWindow.loadFile(appFile);
   }
 }
 
@@ -47,9 +63,6 @@ app.whenReady().then(() => {
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window);
   });
-
-  // IPC test
-  ipcMain.on('ping', () => console.log('pong'));
 
   createWindow();
 

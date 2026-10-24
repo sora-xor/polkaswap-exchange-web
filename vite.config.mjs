@@ -6,10 +6,11 @@ import './scripts/suppress-baseline-warning.js';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import dynamicImport from 'vite-plugin-dynamic-import';
-import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import svgLoader from 'vite-svg-loader';
 import { browserCryptoFallbackPlugin } from './scripts/build/browserCryptoFallbackPlugin.mjs';
+import { browserNodePolyfillsPlugin } from './scripts/build/browserNodePolyfillsPlugin.mjs';
 import { compatAutoImportPlugin } from './scripts/build/compatAutoImportPlugin.mjs';
+import { dependencySecurityPlugin } from './scripts/build/dependencySecurityPlugin.mjs';
 import { storeRehearsalPlugin } from './scripts/build/storeRehearsalPlugin.mjs';
 
 const isTest = !!process.env.VITEST;
@@ -103,24 +104,6 @@ const alias = [
   { find: 'node:stream/web', replacement: 'web-streams-polyfill/dist/ponyfill.es2018.js' },
   { find: /^buffer$/, replacement: bufferShimPath },
   { find: /^node:buffer$/, replacement: bufferShimPath },
-  {
-    find: 'vite-plugin-node-polyfills/shims/global',
-    replacement: fileURLToPath(
-      new URL('./node_modules/vite-plugin-node-polyfills/shims/global/dist/index.js', import.meta.url)
-    ),
-  },
-  {
-    find: 'vite-plugin-node-polyfills/shims/buffer',
-    replacement: fileURLToPath(
-      new URL('./node_modules/vite-plugin-node-polyfills/shims/buffer/dist/index.js', import.meta.url)
-    ),
-  },
-  {
-    find: 'vite-plugin-node-polyfills/shims/process',
-    replacement: fileURLToPath(
-      new URL('./node_modules/vite-plugin-node-polyfills/shims/process/dist/index.js', import.meta.url)
-    ),
-  },
   { find: '@sora-substrate/sdk/build/index.js', replacement: `${soraSdkSrcPath}/index.ts` },
   { find: '@sora-substrate/sdk/build/index', replacement: `${soraSdkSrcPath}/index.ts` },
   { find: '@sora-substrate/sdk/build', replacement: soraSdkSrcPath },
@@ -218,11 +201,7 @@ if (isTest) {
   const ipfsStubPath = fileURLToPath(new URL('./tests/stubs/ipfs-unixfs-importer', import.meta.url));
   const nftStorageStubPath = fileURLToPath(new URL('./tests/stubs/nft-storage.ts', import.meta.url));
   const stubsPath = fileURLToPath(new URL('./tests/stubs', import.meta.url));
-  const punycodePath = fileURLToPath(new URL('./node_modules/punycode/punycode.js', import.meta.url));
-
   alias.unshift(
-    { find: /node-stdlib-browser\/node_modules\/punycode\/?$/, replacement: punycodePath },
-    { find: /^punycode\/?$/, replacement: punycodePath },
     { find: '@stubs', replacement: stubsPath },
     { find: 'nft.storage', replacement: nftStorageStubPath },
     { find: /^ipfs-unixfs-importer/, replacement: ipfsStubPath }
@@ -233,16 +212,19 @@ export default defineConfig({
   base: './',
   plugins: [
     storeRehearsalPlugin(),
+    dependencySecurityPlugin(),
     vue(),
     dynamicImport(),
     svgLoader(),
     compatAutoImportPlugin({ soramitsuUiRootPath, soraneoWalletSrcPath }),
-    ...(disableNodePolyfills ? [] : [browserCryptoFallbackPlugin(), nodePolyfills()]),
+    ...(disableNodePolyfills ? [] : [browserCryptoFallbackPlugin(), browserNodePolyfillsPlugin()]),
   ],
   resolve: {
     alias,
     extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
   },
+  // Retained report HTML and previous builds are not development application entries.
+  optimizeDeps: { entries: ['index.html'] },
   css: {
     preprocessorOptions: {
       scss: {

@@ -52,7 +52,7 @@ const sampleNoCorruptedUiText = async (page: Page): Promise<void> => {
 };
 
 const ensureShellLoaded = async (page: Page): Promise<void> => {
-  await expect.poll(() => page.evaluate(() => document.querySelectorAll('#app').length)).resolves.toBe(1);
+  await expect.poll(() => page.evaluate(() => document.querySelectorAll('#app').length)).toBe(1);
   await expect(page.locator('header.header').first()).toBeVisible({ timeout: 15_000 });
 };
 
