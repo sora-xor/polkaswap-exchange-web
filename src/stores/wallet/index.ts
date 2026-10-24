@@ -1109,18 +1109,21 @@ export const useWalletStore = defineStore('wallet', () => {
     marketplaceDid,
     ucan,
   }: { marketplaceDid?: string; ucan?: string } = {}): Promise<void> => {
+    settingsState.value.nftStorage = null;
     settingsState.value.nftStorage = await createNftStorage(
       resolveNftStorageOptions(settingsState.value.apiKeys, { marketplaceDid, ucan })
     );
   };
 
+  /** Rejects unavailable upload credentials so callers show the existing translated error notification. */
   const createNftStorageInstance = async (): Promise<void> => {
     if (settingsState.value.soraNetwork === SoraNetwork.Prod) {
       try {
         const { marketplaceDid, ucan } = await IpfsStorage.getUcanTokens();
         await setNftStorage({ marketplaceDid, ucan });
       } catch {
-        console.error('Error while getting API keys for NFT marketplace.');
+        settingsState.value.nftStorage = null;
+        throw new Error('unknownErrorText');
       }
     } else {
       await setNftStorage({});

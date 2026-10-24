@@ -29,3 +29,20 @@ The Yarn audit covers the application's resolved package graph, including depend
 The vendor checker does not treat manifest dependency ranges as installed versions, traverse nested `node_modules`, unpack archives, or inspect compiled code. Sora Pay's `.tgz` is covered by the root lockfile audit rather than by this copied-manifest inventory. The separate retained UI-library development manifests under `packages/` are not root workspaces and are outside these checks. Audit that project separately before installing or publishing it.
 
 Advisory databases do not prove that source code, modified vendored packages, bundled third-party code, or unpublished packages are secure. For a flagged package, establish whether its vulnerable API is reachable, apply a compatible patched release, and retain tests for any override that crosses a dependency's declared major version. Keep repository patches when updating their target packages, and test wallet signing, amount handling, IPFS encoding, and production builds after dependency changes. Do not suppress findings merely to obtain a passing audit.
+
+## Public configuration and upload credentials
+
+Every file shipped by this static application is public. Keep `API_KEYS.nftStorage`
+empty in checked-in environment configurations; a service bearer token cannot be
+kept secret in a browser build. NFT uploads require explicitly supplied runtime
+credentials, including the existing scoped marketplace delegation flow. Missing
+credentials or a failed delegation request clear any previous client and fail
+through the existing error notification before an upload can start. Minting from
+an existing IPFS link does not require an upload credential.
+
+The October 25 merge review removed previously committed NFT.Storage bearer
+tokens from the current configuration. Their owner must revoke or rotate them;
+removing current files does not remove historical exposure. A historical local
+Kubo identity key was also found in removed workspace files. Do not reuse that
+identity. Raw scans remain outside the public repository, and shared history
+must not be rewritten without a coordinated remediation plan.

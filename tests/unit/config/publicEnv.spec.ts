@@ -14,6 +14,17 @@ const getCspDirectiveValues = (csp: string, directive: string): string[] => {
 };
 
 describe('public env config', () => {
+  it.each(['env.json', 'public/env.json', 'public/env.dev.json', 'public/env.taira.json'])(
+    'does not publish an NFT.Storage service credential in %s',
+    async (envPath) => {
+      const raw = await readFile(path.resolve(process.cwd(), envPath), 'utf8');
+      const parsed = JSON.parse(raw) as { API_KEYS?: { nftStorage?: unknown } };
+
+      // Compare a boolean so a future regression cannot print a credential in test output.
+      expect(parsed.API_KEYS?.nftStorage === '').toBe(true);
+    }
+  );
+
   it('allows the local Polkaswap indexer through the static CSP', async () => {
     const html = await readFile(path.resolve(process.cwd(), 'index.html'), 'utf8');
     const csp = html.match(/http-equiv="Content-Security-Policy"\s+content="([^"]+)"/)?.[1] ?? '';

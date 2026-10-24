@@ -1849,6 +1849,39 @@ describe('wallet store actions', () => {
     expect(walletRuntimeBridge.store.commit).not.toHaveBeenCalled();
   });
 
+  it('rejects missing NFT upload credentials instead of creating an unauthenticated client', async () => {
+    const walletStore = useWalletStore();
+    walletStore.settingsState.soraNetwork = SoraNetwork.Test;
+    walletStore.settingsState.apiKeys = { nftStorage: '' };
+
+    await expect(walletStore.createNftStorageInstance()).rejects.toThrow('unknownErrorText');
+
+    expect(walletStore.settingsState.nftStorage).toBeNull();
+    expect(getUcanTokensMock).not.toHaveBeenCalled();
+  });
+
+  it('clears stale NFT clients and propagates marketplace credential failures to the notification flow', async () => {
+    const walletStore = useWalletStore();
+    walletStore.settingsState.soraNetwork = SoraNetwork.Prod;
+    walletStore.settingsState.nftStorage = new NFTStorage({ token: 'fixture-token' });
+    getUcanTokensMock.mockRejectedValueOnce(new Error('Marketplace unavailable'));
+
+    await expect(walletStore.createNftStorageInstance()).rejects.toThrow('unknownErrorText');
+
+    expect(walletStore.settingsState.nftStorage).toBeNull();
+  });
+
+  it('rejects empty marketplace upload credentials without leaving a client available', async () => {
+    const walletStore = useWalletStore();
+    walletStore.settingsState.soraNetwork = SoraNetwork.Prod;
+    walletStore.settingsState.apiKeys = { nftStorage: '' };
+    getUcanTokensMock.mockResolvedValueOnce({ marketplaceDid: 'did:market', ucan: '' });
+
+    await expect(walletStore.createNftStorageInstance()).rejects.toThrow('unknownErrorText');
+
+    expect(walletStore.settingsState.nftStorage).toBeNull();
+  });
+
   it('keeps usable account activity when one indexer history row cannot be parsed', async () => {
     const walletStore = useWalletStore();
     const parseError = new Error('bad history row');

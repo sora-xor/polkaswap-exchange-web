@@ -14,9 +14,14 @@ export const loadNftStorageConstructor = async (): Promise<NftStorageConstructor
 };
 
 /**
- * Creates an NFT.Storage client without pulling the library into app startup.
+ * Creates an NFT.Storage client only with explicit runtime upload credentials.
+ * Missing credentials fail before importing the SDK or making an upload request.
  */
 export const createNftStorage = async (options: NftStorageOptions): Promise<NFTStorageInstance> => {
+  if (typeof options.token !== 'string' || !options.token.trim()) {
+    throw new Error('unknownErrorText');
+  }
+
   const NFTStorage = await loadNftStorageConstructor();
   return new NFTStorage(options);
 };
