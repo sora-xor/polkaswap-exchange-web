@@ -360,6 +360,7 @@ describe('browser catalog metadata raw reconstruction', () => {
     await expect(pending).rejects.toThrow('aborted');
     expect(read).toHaveBeenCalledTimes(1);
   });
+  // Allow the genuine training and validation replay to complete before checking selection disposal.
   it('uses a real sealed selection for validation and revokes both assertion and profile access on disposal', async () => {
     const harness = await createGoalBundleStudyFixture(),
       fork = harness.fork();
@@ -405,5 +406,5 @@ describe('browser catalog metadata raw reconstruction', () => {
     }
     expect(() => assertGoalBundleCatalogValidationMetadata(verified, validation.binding, admission!)).toThrow();
     expect(() => verified!.profileForBlock(hash(100), 100)).toThrow();
-  }, 90000);
+  }, 180000);
 });

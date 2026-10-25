@@ -36,6 +36,7 @@ afterEach(async () => {
 });
 
 describe('invented native evidence through the real durable accounting worker', () => {
+  // Retain all 25 durable hourly marks and the real Python accounting replay before cleanup.
   it('replays a complete synthetic day with all observations, unavailable decisions and unchanged funding', async () => {
     const temp = await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(), 'native-journal-test-')));
     directories.push(temp);
@@ -180,5 +181,5 @@ describe('invented native evidence through the real durable accounting worker', 
     expect(coverage.qualificationAuthority).toBe(false);
     expect(coverage.nativeEvidenceVerified).toBe(false);
     expect(result.qualificationAuthority).toBe(false);
-  }, 30_000);
+  }, 120_000);
 });

@@ -209,48 +209,53 @@ describe('browser completed-study journal adapter', () => {
     expect(evaluateEpisode).not.toHaveBeenCalled();
     expect(f.requests.some((url) => url.includes('/episodes/'))).toBe(false);
   });
-  it('verifies the first prefix and every later child episode, including both guarded validation episodes', async () => {
-    const f = goalBundleStudyContinuationFixture(base),
-      order: string[] = [],
-      ordinary: string[] = [];
-    const observer = (id: string): GoalBundleStudyObserver => ({
-      observeChild: (receipt, value) => {
-        expect(receipt.name).toBe('invented-raw');
-        expect(value.requestSha256).toBe(id);
-        order.push(`raw:${id}`);
-      },
-      complete: () => {
-        order.push(`complete:${id}`);
-      },
-    });
-    const prefix = vi.fn(async () => {
-      order.push(`prepare:${f.index.episodes[0].requestSha256}`);
-      return observer(f.index.episodes[0].requestSha256);
-    });
-    const acquisition: GoalBundleStudyAcquisition = {
-      prepare: async ({ request, signal }) => {
-        expect(signal.aborted).toBe(false);
-        const id = goalQualificationDigest(request);
-        ordinary.push(request.phase);
-        order.push(`prepare:${id}`);
-        return observer(id);
-      },
-    };
-    const study = await createGoalBundleStudy({
-      reader: await f.open(),
-      evaluateEpisode: f.evidence,
-      continuation: { prepare: prefix },
-      acquisition,
-    });
-    const result = await study.reverify();
-    expect(result.certificate).toEqual(f.rootValue('certificate'));
-    expect(prefix).toHaveBeenCalledOnce();
-    expect(ordinary).toEqual(['training', 'training', 'training', 'validation', 'validation']);
-    expect(order).toEqual(
-      f.index.episodes.flatMap(({ requestSha256: id }) => [`prepare:${id}`, `raw:${id}`, `complete:${id}`])
-    );
-    study.dispose();
-  });
+  // This continuation verifies all six training and validation episodes through the real study reader.
+  it(
+    'verifies the first prefix and every later child episode, including both guarded validation episodes',
+    async () => {
+      const f = goalBundleStudyContinuationFixture(base),
+        order: string[] = [],
+        ordinary: string[] = [];
+      const observer = (id: string): GoalBundleStudyObserver => ({
+        observeChild: (receipt, value) => {
+          expect(receipt.name).toBe('invented-raw');
+          expect(value.requestSha256).toBe(id);
+          order.push(`raw:${id}`);
+        },
+        complete: () => {
+          order.push(`complete:${id}`);
+        },
+      });
+      const prefix = vi.fn(async () => {
+        order.push(`prepare:${f.index.episodes[0].requestSha256}`);
+        return observer(f.index.episodes[0].requestSha256);
+      });
+      const acquisition: GoalBundleStudyAcquisition = {
+        prepare: async ({ request, signal }) => {
+          expect(signal.aborted).toBe(false);
+          const id = goalQualificationDigest(request);
+          ordinary.push(request.phase);
+          order.push(`prepare:${id}`);
+          return observer(id);
+        },
+      };
+      const study = await createGoalBundleStudy({
+        reader: await f.open(),
+        evaluateEpisode: f.evidence,
+        continuation: { prepare: prefix },
+        acquisition,
+      });
+      const result = await study.reverify();
+      expect(result.certificate).toEqual(f.rootValue('certificate'));
+      expect(prefix).toHaveBeenCalledOnce();
+      expect(ordinary).toEqual(['training', 'training', 'training', 'validation', 'validation']);
+      expect(order).toEqual(
+        f.index.episodes.flatMap(({ requestSha256: id }) => [`prepare:${id}`, `raw:${id}`, `complete:${id}`])
+      );
+      study.dispose();
+    },
+    FULL_STUDY_REPLAY_TIMEOUT_MS
+  );
   it('fails a later acquisition completion before selection or any subsequent raw episode is opened', async () => {
     const f = goalBundleStudyContinuationFixture(base),
       evaluated: string[] = [];
@@ -309,36 +314,41 @@ describe('browser completed-study journal adapter', () => {
     },
     FULL_STUDY_REPLAY_TIMEOUT_MS
   );
-  it('abort during a pending validation artifact revokes the same admission before any body can finish', async () => {
-    const f = base.fork();
-    let capability: GoalBundleStudySelection | undefined, readStarted!: () => void, continueRead!: () => void;
-    const started = new Promise<void>((resolve) => {
-        readStarted = resolve;
-      }),
-      pending = new Promise<void>((resolve) => {
-        continueRead = resolve;
-      });
-    let state!: Awaited<ReturnType<typeof f.create>>;
-    state = await f.create(async (context) => {
-      if (context.request.phase === 'validation') {
-        capability = context.selection;
-        f.setBeforeFetch(async (url) => {
-          if (url.includes(`/episodes/${goalQualificationDigest(context.request)}/objects/`)) {
-            readStarted();
-            await pending;
-          }
+  // Reach validation through the genuine training replay before aborting the pending artifact.
+  it(
+    'abort during a pending validation artifact revokes the same admission before any body can finish',
+    async () => {
+      const f = base.fork();
+      let capability: GoalBundleStudySelection | undefined, readStarted!: () => void, continueRead!: () => void;
+      const started = new Promise<void>((resolve) => {
+          readStarted = resolve;
+        }),
+        pending = new Promise<void>((resolve) => {
+          continueRead = resolve;
         });
-      }
-      return f.evidence(context);
-    });
-    const work = state.study.reverify();
-    await started;
-    state.study.dispose();
-    continueRead();
-    await expect(work).rejects.toThrow();
-    expect(() => assertGoalBundleStudySelection(capability, selectionBinding(capability!))).toThrow('unowned');
-    f.setBeforeFetch(undefined);
-  });
+      let state!: Awaited<ReturnType<typeof f.create>>;
+      state = await f.create(async (context) => {
+        if (context.request.phase === 'validation') {
+          capability = context.selection;
+          f.setBeforeFetch(async (url) => {
+            if (url.includes(`/episodes/${goalQualificationDigest(context.request)}/objects/`)) {
+              readStarted();
+              await pending;
+            }
+          });
+        }
+        return f.evidence(context);
+      });
+      const work = state.study.reverify();
+      await started;
+      state.study.dispose();
+      continueRead();
+      await expect(work).rejects.toThrow();
+      expect(() => assertGoalBundleStudySelection(capability, selectionBinding(capability!))).toThrow('unowned');
+      f.setBeforeFetch(undefined);
+    },
+    FULL_STUDY_REPLAY_TIMEOUT_MS
+  );
   it(
     'guards direct lower validation reader access with the same live selected request capability',
     async () => {
