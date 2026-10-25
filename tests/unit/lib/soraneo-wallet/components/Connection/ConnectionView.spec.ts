@@ -48,6 +48,7 @@ const accountUtils = vi.hoisted(() => ({
   exportAccount: vi.fn(),
   deleteAccount: vi.fn(),
   createAccount: vi.fn(),
+  importAccountFromSeed: vi.fn(),
   restoreAccount: vi.fn(),
   checkExternalAccount: vi.fn(async () => undefined),
 }));
@@ -375,10 +376,13 @@ describe('Wallet ConnectionView', () => {
     };
     state.accountLoginVisibility.value = true;
 
-    await state.handleAccountLogin('Password123!');
+    await state.handleAccountLogin('x');
 
-    expect(gdriveAccounts.getAccount).toHaveBeenCalledWith('cn-demo-address', 'Password123!');
-    expect(accountUtils.restoreAccount).toHaveBeenCalled();
+    expect(gdriveAccounts.getAccount).toHaveBeenCalledWith('cn-demo-address', 'x');
+    expect(accountUtils.restoreAccount).toHaveBeenCalledWith(baseProps.chainApi, {
+      json: { address: 'cn-demo-address', meta: { name: 'Drive Account' } },
+      password: 'x',
+    });
     expect(loginAccount).toHaveBeenCalledWith({
       address: 'cn-demo-address',
       name: 'Drive Account',
@@ -389,6 +393,95 @@ describe('Wallet ConnectionView', () => {
     expect(state.accountLoginData.value).toBeNull();
     expect(closeView).toHaveBeenCalledTimes(1);
   });
+
+  it.each([AppWallet.Sora, AppWallet.GoogleDrive])(
+    'rejects short new-wallet passwords before persistence or backup upload (%s)',
+    async (wallet) => {
+      const actual = await vi.importActual<typeof import('@/lib/soraneo-wallet/src/util/account')>(
+        '@/lib/soraneo-wallet/src/util/account'
+      );
+      accountUtils.createAccount.mockImplementationOnce(actual.createAccount);
+      const pair = { toJson: vi.fn(() => ({ address: 'synthetic-address', encoded: 'synthetic-backup' })) };
+      const chainApi = {
+        ...baseProps.chainApi,
+        createAccountPair: vi.fn(() => pair),
+        addAccountPair: vi.fn(),
+      };
+      const { state } = mountSetup(ConnectionView as any, { ...baseProps, chainApi }, { emit: vi.fn() });
+      await flushPromises();
+      state.selectedWallet.value = wallet;
+      state.step.value = LoginStep.CreateCredentials;
+
+      await expect(
+        state.handleAccountCreate({
+          seed: 'synthetic mnemonic',
+          name: 'New wallet',
+          password: 'x',
+          passwordConfirm: 'x',
+        })
+      ).rejects.toThrow('desktop.password.desc');
+
+      expect(chainApi.createAccountPair).not.toHaveBeenCalled();
+      expect(pair.toJson).not.toHaveBeenCalled();
+      expect(chainApi.addAccountPair).not.toHaveBeenCalled();
+      expect(gdriveAccounts.add).not.toHaveBeenCalled();
+      expect(accountUtils.importAccountFromSeed).not.toHaveBeenCalled();
+      expect(state.step.value).toBe(LoginStep.CreateCredentials);
+    }
+  );
+
+  it.each([AppWallet.Sora, AppWallet.GoogleDrive])(
+    'keeps a short existing password when importing a JSON backup (%s)',
+    async (wallet) => {
+      const { state } = mountSetup(ConnectionView as any, baseProps, { emit: vi.fn() });
+      await flushPromises();
+      state.selectedWallet.value = wallet;
+      const json = { address: 'synthetic-address', encoded: 'synthetic-backup' };
+      accountUtils.verifyAccountJson.mockReturnValueOnce(json);
+
+      await state.handleAccountImport({ json, password: 'x' });
+
+      expect(accountUtils.verifyAccountJson).toHaveBeenCalledExactlyOnceWith(baseProps.chainApi, json, 'x');
+      expect(accountUtils.createAccount).not.toHaveBeenCalled();
+      expect(accountUtils.importAccountFromSeed).not.toHaveBeenCalled();
+      if (wallet === AppWallet.Sora) {
+        expect(accountUtils.restoreAccount).toHaveBeenCalledExactlyOnceWith(baseProps.chainApi, {
+          json,
+          password: 'x',
+        });
+        expect(gdriveAccounts.add).not.toHaveBeenCalled();
+      } else {
+        expect(gdriveAccounts.add).toHaveBeenCalledExactlyOnceWith(json, 'x');
+      }
+      expect(state.step.value).toBe(LoginStep.AccountList);
+    }
+  );
+
+  it.each([AppWallet.Sora, AppWallet.GoogleDrive])(
+    'uses the explicit legacy seed import path without invoking new-wallet validation (%s)',
+    async (wallet) => {
+      const { state } = mountSetup(ConnectionView as any, baseProps, { emit: vi.fn() });
+      await flushPromises();
+      state.selectedWallet.value = wallet;
+      const data = { seed: 'synthetic recovery phrase', name: 'Existing wallet', password: 'x', passwordConfirm: 'x' };
+      const json = { address: 'synthetic-address', encoded: 'synthetic-backup' };
+      accountUtils.importAccountFromSeed.mockReturnValueOnce(json);
+
+      await state.handleAccountImportFromSeed(data);
+
+      expect(accountUtils.createAccount).not.toHaveBeenCalled();
+      expect(accountUtils.importAccountFromSeed).toHaveBeenCalledExactlyOnceWith(
+        baseProps.chainApi,
+        wallet === AppWallet.Sora ? { ...data, saveAccount: true } : data
+      );
+      if (wallet === AppWallet.GoogleDrive) {
+        expect(gdriveAccounts.add).toHaveBeenCalledExactlyOnceWith(json, 'x', data.seed);
+      } else {
+        expect(gdriveAccounts.add).not.toHaveBeenCalled();
+      }
+      expect(state.step.value).toBe(LoginStep.AccountList);
+    }
+  );
 
   it('keeps Google creation open after a rejected backup and advances only after a successful retry', async () => {
     const closeView = vi.fn();

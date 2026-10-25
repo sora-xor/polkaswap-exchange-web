@@ -54,7 +54,7 @@
       v-else-if="isImportFlow"
       v-model:step="step"
       :loading="loading"
-      :create-account="handleAccountCreate"
+      :create-account="handleAccountImportFromSeed"
       :restore-account="handleAccountImport"
       :json-only="!isAppStored"
     ></import-account-step>
@@ -89,6 +89,7 @@ import {
   exportAccount,
   deleteAccount,
   createAccount,
+  importAccountFromSeed,
   restoreAccount,
   checkExternalAccount,
 } from '../../util/account';
@@ -376,23 +377,31 @@ export default {
       });
     };
 
-    const handleAccountCreate = async (data: CreateAccountArgs): Promise<void> => {
+    /** Shares storage/upload handling while callers select creation or legacy recovery explicitly. */
+    const saveSeedAccount = async (data: CreateAccountArgs, createFromSeed: typeof createAccount): Promise<void> => {
       await withLoading(async () => {
         await nextTick();
         await delay(250);
 
         await withAppNotification(async () => {
           if (selectedWallet.value === AppWallet.GoogleDrive) {
-            const accountJson = createAccount(props.chainApi, { ...data });
+            const accountJson = createFromSeed(props.chainApi, { ...data });
             await GDriveWallet.accounts.add(accountJson, data.password, data.seed);
           } else if (selectedWallet.value === AppWallet.Sora) {
-            createAccount(props.chainApi, { ...data, saveAccount: true });
+            createFromSeed(props.chainApi, { ...data, saveAccount: true });
           }
 
           navigateToAccountList();
         });
       });
     };
+
+    /** New wallets always pass through the password-enforcing helper, including Google backups. */
+    const handleAccountCreate = (data: CreateAccountArgs): Promise<void> => saveSeedAccount(data, createAccount);
+
+    /** Existing mnemonic imports retain their password even when it predates the new-wallet policy. */
+    const handleAccountImportFromSeed = (data: CreateAccountArgs): Promise<void> =>
+      saveSeedAccount(data, importAccountFromSeed);
 
     const resetStep = (): void => {
       step.value = getPreviousLoginStep();
@@ -615,6 +624,7 @@ export default {
       isExtensionsList,
       hasBackBtn,
       handleAccountImport,
+      handleAccountImportFromSeed,
       handleAccountCreate,
       handleAccountSelect,
       handleWalletSelect,

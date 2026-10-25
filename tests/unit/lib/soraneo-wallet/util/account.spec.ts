@@ -1,5 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
+import type { KeyringPair$Json } from '@/lib/soraneo-wallet/src/types/common';
+import type { WithKeyring } from '@sora-substrate/sdk';
+
 const accountUtilMocks = vi.hoisted(() => ({
   saveAsMock: vi.fn(),
   isInternalSourceMock: vi.fn(),
@@ -278,16 +281,137 @@ describe('wallet util/account', () => {
     const created = createAccount(api as any, {
       seed: 'seed phrase',
       name: 'Alice',
-      password: 'secret',
+      password: 'longer secret',
       saveAccount: true,
       exportAccount: true,
     });
 
     expect(created).toEqual({ address: '0xabc', encoded: 'json' });
     expect(api.createAccountPair).toHaveBeenCalledWith('seed phrase', 'Alice');
-    expect(api.addAccountPair).toHaveBeenCalledWith(pair, 'secret');
+    expect(pair.toJson).toHaveBeenCalledWith('longer secret');
+    expect(api.addAccountPair).toHaveBeenCalledWith(pair, 'longer secret');
     expect(accountUtilMocks.saveAsMock).toHaveBeenCalledWith(expect.any(Blob), '0xabc');
   });
+
+  it.each(['', 'x', '1234567', '🔒🔒🔒🔒'])(
+    'rejects a short new-wallet password before creating, encrypting, saving or exporting a pair (%j)',
+    async (password) => {
+      const { createAccount } = await loadAccountModule();
+      const api = createApi();
+      const pair = { toJson: vi.fn() };
+      api.createAccountPair.mockReturnValue(pair);
+
+      expect(() =>
+        createAccount(api as unknown as WithKeyring, {
+          seed: 'synthetic mnemonic fixture',
+          name: 'New wallet',
+          password,
+          passwordConfirm: password,
+          saveAccount: true,
+          exportAccount: true,
+        })
+      ).toThrow('desktop.password.desc');
+
+      expect(api.createAccountPair).not.toHaveBeenCalled();
+      expect(pair.toJson).not.toHaveBeenCalled();
+      expect(api.addAccountPair).not.toHaveBeenCalled();
+      expect(accountUtilMocks.saveAsMock).not.toHaveBeenCalled();
+    }
+  );
+
+  it.each(['12345678', '🔒🔒🔒🔒🔒🔒🔒🔒', ' 123456 '])(
+    'accepts a new-wallet password at the eight-character boundary without rewriting it (%j)',
+    async (password) => {
+      const { createAccount } = await loadAccountModule();
+      const api = createApi();
+      const json = { address: 'synthetic-address', encoded: 'synthetic-encrypted-backup' };
+      const pair = { toJson: vi.fn().mockReturnValue(json) };
+      api.createAccountPair.mockReturnValue(pair);
+
+      expect(
+        createAccount(api as unknown as WithKeyring, {
+          seed: 'synthetic mnemonic fixture',
+          name: 'New wallet',
+          password,
+          passwordConfirm: password,
+          saveAccount: true,
+        })
+      ).toBe(json);
+      expect(pair.toJson).toHaveBeenCalledExactlyOnceWith(password);
+      expect(api.addAccountPair).toHaveBeenCalledExactlyOnceWith(pair, password);
+    }
+  );
+
+  it.each(['x', ' x '])('imports an existing seed with its exact short password (%j)', async (password) => {
+    const { importAccountFromSeed } = await loadAccountModule();
+    const api = createApi();
+    const json = { address: 'synthetic-address', encoded: 'synthetic-encrypted-backup' };
+    const pair = { toJson: vi.fn().mockReturnValue(json) };
+    api.createAccountPair.mockReturnValue(pair);
+
+    expect(
+      importAccountFromSeed(api as unknown as WithKeyring, {
+        seed: 'synthetic existing mnemonic',
+        name: 'Existing wallet',
+        password,
+        passwordConfirm: password,
+        saveAccount: true,
+      })
+    ).toBe(json);
+
+    expect(api.createAccountPair).toHaveBeenCalledExactlyOnceWith('synthetic existing mnemonic', 'Existing wallet');
+    expect(pair.toJson).toHaveBeenCalledExactlyOnceWith(password);
+    expect(api.addAccountPair).toHaveBeenCalledExactlyOnceWith(pair, password);
+  });
+
+  it.each(['y', ''])(
+    'still rejects mismatched confirmation when importing an existing seed (%j)',
+    async (passwordConfirm) => {
+      const { importAccountFromSeed } = await loadAccountModule();
+      const api = createApi();
+
+      expect(() =>
+        importAccountFromSeed(api as unknown as WithKeyring, {
+          seed: 'synthetic existing mnemonic',
+          name: 'Existing wallet',
+          password: 'x',
+          passwordConfirm,
+          saveAccount: true,
+        })
+      ).toThrow('desktop.errorMessages.passwords');
+      expect(api.createAccountPair).not.toHaveBeenCalled();
+      expect(api.addAccountPair).not.toHaveBeenCalled();
+    }
+  );
+
+  it.each(['x', ' x ', ''])(
+    'preserves existing JSON verification, restore, export and unlock with the original password (%j)',
+    async (password) => {
+      const { verifyAccountJson, restoreAccount, exportAccount, unlockAccountPair } = await loadAccountModule();
+      const api = createApi();
+      const json = {
+        address: 'synthetic-address',
+        encoded: 'synthetic-encrypted-backup',
+        encoding: { content: ['pkcs8', 'sr25519'], type: ['scrypt', 'xsalsa20-poly1305'], version: '3' },
+        meta: {},
+      } as KeyringPair$Json;
+      const pair = { toJson: vi.fn().mockReturnValue(json) };
+      api.createAccountPairFromJson.mockReturnValue(pair);
+      api.getAccountPair.mockReturnValue(pair);
+      const keyring = api as unknown as WithKeyring;
+
+      expect(verifyAccountJson(keyring, json, password)).toBe(json);
+      restoreAccount(keyring, { json, password });
+      exportAccount(keyring, { address: json.address, password });
+      unlockAccountPair(keyring, password);
+
+      expect(pair.toJson).toHaveBeenNthCalledWith(1, password);
+      expect(pair.toJson).toHaveBeenNthCalledWith(2, password);
+      expect(api.restoreAccountFromJson).toHaveBeenCalledExactlyOnceWith(json, password);
+      expect(api.unlockPair).toHaveBeenCalledExactlyOnceWith(password);
+      expect(accountUtilMocks.saveAsMock).toHaveBeenCalledExactlyOnceWith(expect.any(Blob), json.address);
+    }
+  );
 
   it('throws an AppHandledError when the password confirmation does not match', async () => {
     const { createAccount } = await loadAccountModule();
@@ -297,12 +421,13 @@ describe('wallet util/account', () => {
       createAccount(api as any, {
         seed: 'seed phrase',
         name: 'Alice',
-        password: 'secret',
+        password: 'longer secret',
         passwordConfirm: 'different',
       });
       throw new Error('expected createAccount to throw');
     } catch (error) {
       expect((error as Error).name).toBe('AppHandledError');
+      expect((error as { key: string }).key).toBe('desktop.errorMessages.passwords');
       expect(api.createAccountPair).not.toHaveBeenCalled();
     }
   });

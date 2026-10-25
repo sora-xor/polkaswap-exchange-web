@@ -37,6 +37,17 @@ security fixes. Bunny was updated and purged, 409 complete public body checks
 passed, and all five candidate/live WebKit routes reported zero failed requests
 and zero raw console errors. See the [release report](reports/deployment-2026-10-24.md).
 
+The October 25 password-policy release uses production root
+`bafybeictpwld4czgcwbzwxaegopxsgzeaax52mykee2scwa7wonhz7ja7u` and paired testnet root
+`bafybeielqxowawakjsw24xku3bivyj25wgqfra435zngplbqosqkqlrxma`.
+Both DAGs were imported separately, and all 15 retained pins passed full
+integrity. The release preserves the October 24 shipped assembly while enforcing
+the new-wallet password minimum and retaining existing-wallet recovery behavior.
+Bunny was updated and purged, 419 complete public body checks passed, and all
+five candidate/live WebKit routes passed with zero failed requests and zero raw
+console errors. See the [release report](reports/deployment-2026-10-25.md) for
+source provenance and encrypted-wallet compatibility checks.
+
 ## Service
 
 | Setting | Value |
