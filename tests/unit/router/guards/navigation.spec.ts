@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { PageNames } from '@/consts';
 import {
@@ -45,17 +45,20 @@ const createServices = (overrides: Partial<NavigationGuardServices> = {}): Navig
 });
 
 describe('router navigation guard', () => {
-  it('redirects direct referral bonding entries to the referral dashboard while keeping the route hash segment', async () => {
+  beforeEach(() => {
     clearPendingReferralActionNavigation();
+  });
 
-    const services = createServices({
-      walletStore: { isLoggedIn: true },
-    });
+  it.each([
+    { name: PageNames.ReferralBonding, action: 'bond' },
+    { name: PageNames.ReferralUnbonding, action: 'unbond' },
+  ])('keeps disconnected direct $action entries on the referral dashboard', async ({ name, action }) => {
+    const services = createServices();
     const guard = createBeforeEachGuard(services);
     const next = vi.fn();
 
     await guard(
-      createRoute({ name: PageNames.ReferralBonding, meta: { requiresAuth: true } }),
+      createRoute({ name, meta: { requiresAuth: true } }),
       createRoute({ name: PageNames.ReferralProgram }),
       next
     );
@@ -67,9 +70,40 @@ describe('router navigation guard', () => {
     expect(next).toHaveBeenCalledWith({
       name: PageNames.ReferralProgram,
       params: {
-        referrerAddress: 'bond',
+        referrerAddress: action,
       },
     });
+  });
+
+  it.each([PageNames.ReferralBonding, PageNames.ReferralUnbonding])(
+    'opens %s directly for a connected account on reload',
+    async (name) => {
+      const getWalletStore = vi.fn(async () => ({ isLoggedIn: true }));
+      const services = createServices({ walletStore: undefined, getWalletStore });
+      const guard = createBeforeEachGuard(services);
+      const next = vi.fn();
+
+      await guard(createRoute({ name, meta: { requiresAuth: true } }), createRoute({}), next);
+
+      expect(getWalletStore).toHaveBeenCalledTimes(1);
+      expect(services.setRoute).toHaveBeenCalledWith({ prev: null, current: name });
+      expect(next).toHaveBeenCalledExactlyOnceWith();
+      expect(services.persistReferral).not.toHaveBeenCalled();
+    }
+  );
+
+  it('still requires authentication for explicit bonding navigation after an account disconnects', async () => {
+    markPendingReferralActionNavigation(PageNames.ReferralBonding);
+    const guard = createBeforeEachGuard(createServices());
+    const next = vi.fn();
+
+    await guard(
+      createRoute({ name: PageNames.ReferralBonding, meta: { requiresAuth: true } }),
+      createRoute({ name: PageNames.ReferralProgram }),
+      next
+    );
+
+    expect(next).toHaveBeenCalledExactlyOnceWith({ name: PageNames.Wallet });
   });
 
   it('allows explicit referral bonding navigation triggered from inside the app', async () => {

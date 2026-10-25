@@ -9,6 +9,8 @@ import { usePoolStore } from '@/stores/pool';
 const shared = vi.hoisted(() => {
   const walletStore = {
     isLoggedIn: true,
+    address: 'account-a',
+    accountSource: 'extension',
     accountAssetsAddressTable: {} as Record<string, unknown>,
   };
 
@@ -310,6 +312,7 @@ describe('pool store', () => {
   beforeEach(() => {
     setActivePinia(createPinia());
     shared.walletStore.isLoggedIn = true;
+    shared.walletStore.address = 'account-a';
     shared.walletStore.accountAssetsAddressTable = {};
     shared.settingsStore.slippageTolerance = '0.01';
     shared.assetsStore.assetDataByAddress.mockReset();
@@ -605,6 +608,78 @@ describe('pool store', () => {
     await store.resetAddLiquidityData();
     expect(store.addLiquidity.firstTokenAddress).toBe('');
     expect(store.addLiquidity.secondTokenAddress).toBe('');
+  });
+
+  it('clears cached add-liquidity balances when the next account already tracks the token', async () => {
+    const store = usePoolStore();
+    store.addLiquidity.firstTokenAddress = 'base';
+    store.updateAddLiquidityTokenSubscription('firstTokenValue');
+    const staleCallback = shared.balanceAdd.mock.calls[0][1].updateBalance;
+    staleCallback({ transferable: '900' });
+    expect(store.addLiquidity.firstTokenBalance?.transferable).toBe('900');
+
+    shared.walletStore.address = 'account-b';
+    shared.walletStore.accountAssetsAddressTable = { base: true };
+    store.updateAddLiquidityTokenSubscription('firstTokenValue');
+    expect(store.addLiquidity.firstTokenBalance).toBeNull();
+    staleCallback({ transferable: '999' });
+    expect(store.addLiquidity.firstTokenBalance).toBeNull();
+    expect(shared.balanceAdd).toHaveBeenCalledTimes(1);
+
+    shared.walletStore.address = 'account-a';
+    shared.walletStore.accountAssetsAddressTable = {};
+    store.updateAddLiquidityTokenSubscription('firstTokenValue');
+    shared.balanceAdd.mock.calls[1][1].updateBalance({ transferable: '25' });
+    staleCallback({ transferable: '999' });
+    expect(store.addLiquidity.firstTokenBalance?.transferable).toBe('25');
+  });
+
+  it('does not restart pending pool discovery after the subscriptions were reset', async () => {
+    const store = usePoolStore();
+    let finishDiscovery!: () => void;
+    shared.baseAssetsIds = [];
+    shared.waitUntil.mockReturnValueOnce(
+      new Promise<void>((resolve) => {
+        finishDiscovery = resolve;
+      })
+    );
+    const pending = store.subscribeOnAccountLiquidityList();
+    await Promise.resolve();
+    await Promise.resolve();
+    await store.unsubscribeAccountLiquidityListAndUpdates();
+    shared.baseAssetsIds = ['base'];
+    finishDiscovery();
+    await pending;
+    expect(shared.getUserPoolsSubscription).not.toHaveBeenCalled();
+    expect(store.accountLiquidityList).toBeNull();
+    expect(store.accountLiquidity).toEqual([]);
+  });
+
+  it('does not install an obsolete APY stream after account lifecycle teardown', async () => {
+    const store = usePoolStore();
+    let finishApy!: (value: Record<string, string>) => void;
+    shared.getPoolsApyObject.mockReturnValueOnce(
+      new Promise((resolve) => {
+        finishApy = resolve;
+      })
+    );
+    const pending = store.subscribeOnPoolsApy();
+    await store.unsubscribeAccountLiquidityListAndUpdates();
+    finishApy({ old: '1' });
+    await pending;
+    expect(shared.createPoolsApySubscription).not.toHaveBeenCalled();
+    expect(store.poolApyObject).toEqual({});
+    expect(store.poolApySubscription).toBeNull();
+  });
+
+  it('ignores old pool updates as soon as the account changes', async () => {
+    const store = usePoolStore();
+    await store.subscribeOnAccountLiquidityUpdates();
+    const previous = [...store.accountLiquidity];
+    shared.walletStore.address = 'account-b';
+    shared.accountLiquidity = [];
+    shared.emitPoolUpdate();
+    expect(store.accountLiquidity).toEqual(previous);
   });
 
   it('normalizes add-liquidity route data so supported base pairs subscribe in base-first order', async () => {

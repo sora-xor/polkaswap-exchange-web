@@ -51,11 +51,56 @@ The SDK additionally invalidates pending asset additions on removal, and ignores
 old callbacks after clearing the list. A direct balance confirmation can replace
 a stale nonzero value, but cannot overwrite a newer live update.
 
+Account selection invalidates balances, transaction history, deposit notifications,
+and pending multisig transactions before any asynchronous wallet-provider work.
+SDK logins are serialized and only the most recent selection may publish state;
+balance hydration does not delay a later account selection. Cross-tab account
+changes reconnect the SDK and its subscriptions instead of changing only the
+displayed address. History reads and subscription parsing discard results after
+an account change or history reset, including an A → B → A switch.
+
+An unsuccessful balance read is not an empty portfolio. SDK hydration propagates
+failed asset reads, and the wallet keeps `accountAssetsLoaded` false until every
+requested asset has loaded successfully. Existing loading placeholders therefore
+remain visible instead of reporting zero funds after a connection failure.
+Transient hydration failures retry automatically after 1, 2, and 4 seconds;
+account switches and subscription resets cancel pending retries immediately.
+After those attempts fail, balances remain unknown until reconnection or an
+explicit refresh starts a new hydration attempt.
+
+Staking account resets clear cached stake, rewards, and ledger data together with
+pending reads. Subscription generations reject old initialization results and
+live emissions, while the active subscription continues applying updates after
+its first emission. Polkamarkt clears positions and trades synchronously when
+the account, network, or indexer changes; a manual refresh of the same account
+preserves its visible snapshot while the new data loads.
+
+Page subscription lifecycles reset synchronously and let the newly selected
+account load without waiting for a stalled request from the previous account.
+Each subscription action must therefore invalidate its own pending setup and
+callbacks during reset. Only the latest lifecycle controls the page's loading
+state. Open-order snapshots also reject out-of-order reads within one account,
+and switching accounts clears selected cancellation orders and paged streams.
+
 `TokenBalanceSubscriptions` clears its value when subscription setup fails or
 the stream errors or completes. Replacing a key closes the old stream, and late
 callbacks from that stream cannot update the replacement. Consumers must keep
 an invalidated balance unknown; falling back to a cached wallet amount would
 undo the invalidation and could enable a transaction using stale funds.
+
+Pool subscriptions register teardown before waiting for their first balance.
+An account switch cancels pending discovery and LP reads, and only the owning
+account's generation can update positions or complete its readiness signal.
+Failed or empty balance streams reject readiness instead of leaving the page
+waiting indefinitely. Add-liquidity clears its direct balance overrides when
+subscriptions restart, so they cannot mask the new account's wallet snapshot.
+
+Points and referral pages refresh on account identity changes even when login
+status stays true. They clear the previous account's metadata immediately and
+reject delayed responses, including a switch back to the same address. Points
+recalculate when wallet holdings or liquidity arrive after indexer metadata;
+liquidity subscriptions restart on account changes and stop when leaving the
+points page.
 
 ## Preparing Polkamarkt transactions
 
@@ -80,6 +125,10 @@ subscription ownership. Relevant suites live in:
 
 - `tests/unit/lib/substrate/sdk/assets/`
 - `tests/unit/stores/wallet/index.spec.ts`
+- `tests/unit/composables/useSubscriptions.spec.ts`
+- `tests/unit/stores/{pool,staking,vault,referrals,orderBook,dashboard}/index.spec.ts`
+- `tests/unit/lib/substrate/sdk/{poolXyk,mst}/index.spec.ts`
+- `tests/unit/views/{PointSystem,PointSystemV2,ReferralProgram}.spec.ts`
 - `tests/unit/stores/swap.spec.ts`
 - `tests/unit/composables/useSwapBalanceSubscriptions.spec.ts`
 - `tests/unit/components/pages/Swap/Widget/Form.spec.ts`
@@ -89,3 +138,30 @@ subscription ownership. Relevant suites live in:
 For a new discrepancy, collect the public account address, selected node,
 screen, block number, and total/transferable values. Check the same account
 and chain state before attributing a discrepancy to browser caching.
+
+## Production deployment — 2026-10-05
+
+The account-switch freshness fixes are deployed at `https://polkaswap.io`.
+Production CIDv1 is
+`bafybeid27alfiwxd5pzvhb4ybqizfvxe7qavg6iizozfdtbffdgr4jubnq`, replacing
+`bafybeicnjvvhl6tyrjdi3gfrc4bggvr5ttudw34hvztaqebb2dx7j4u6ky`.
+The separately published testnet DAG is
+`bafybeifxs7pq3kzb746eh6cfs6a5n6sn6537mb5h3vs4jbs5v62jf3gqzi`.
+
+The release preserves the shipped Store configuration, Sora Pay package, Bots,
+Polkamarkt, referral bonding fixes, and the complete 45-route catalog. Production
+and testnet DAGs were imported separately into the approved Pi origin; all 34
+recursive pins passed integrity verification. Bunny's production origin was
+updated and its full pull-zone cache purged. All 100 required entry and Swap
+assets returned complete, matching bytes through both the origin and Bunny.
+
+Validation passed 13,878 unit tests and 13 translation tests. Candidate and live
+WebKit checks passed for Swap, Bots, Store, Buy XOR, and Get TS. A final live Swap
+check confirmed `Swap - Polkaswap`, mounted UI, the expected production CID,
+and zero failed requests or console errors. The browser checks verify release
+loading and RPC connectivity; account-switch races are covered by the mocked
+regression suites above. No wallet transaction was submitted.
+
+Local release evidence, source hashes, CAR files, checksums, logs, and browser
+screenshots are retained under `output/deployments/account-data-20261005/`;
+`release.json` records the completed deployment.

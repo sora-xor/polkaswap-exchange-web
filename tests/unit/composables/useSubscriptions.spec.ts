@@ -64,10 +64,11 @@ describe('useSubscriptions', () => {
   });
 
   const createHarness = async (options?: Parameters<typeof useSubscriptions>[0]) => {
+    let subscriptions!: ReturnType<typeof useSubscriptions>;
     const TestComponent = defineComponent({
       name: 'SubscriptionsHarness',
       setup() {
-        useSubscriptions({
+        subscriptions = useSubscriptions({
           connectionSource: computed(() => connection.value),
           ...options,
         });
@@ -94,7 +95,7 @@ describe('useSubscriptions', () => {
       },
     });
 
-    return { wrapper, router };
+    return { wrapper, router, subscriptions };
   };
 
   it('starts subscriptions on mount', async () => {
@@ -177,7 +178,7 @@ describe('useSubscriptions', () => {
     wrapper.unmount();
   });
 
-  it('queues an account refresh behind a slow startup instead of dropping it', async () => {
+  it('refreshes a new account without waiting for the old account startup', async () => {
     let resolveInitialStart!: () => void;
     const initialStart = new Promise<void>((resolve) => {
       resolveInitialStart = resolve;
@@ -189,29 +190,32 @@ describe('useSubscriptions', () => {
     });
     const resetSpy = vi.fn().mockResolvedValue(undefined);
 
-    const { wrapper } = await createHarness({
+    const { wrapper, subscriptions } = await createHarness({
       startSubscriptions: [startSpy],
       resetSubscriptions: [resetSpy],
     });
 
-    await nextTick();
+    await flushPromises();
     expect(startSpy).toHaveBeenCalledTimes(1);
 
     address.value = 'addr-2';
-    await nextTick();
-    expect(resetSpy).not.toHaveBeenCalled();
+    expect(resetSpy).toHaveBeenCalledTimes(1);
+    expect(subscriptions.subscriptionsDataLoading.value).toBe(true);
+    await flushPromises();
+
+    expect(startSpy).toHaveBeenCalledTimes(2);
+    expect(startedAddresses).toEqual(['addr-1', 'addr-2']);
+    expect(subscriptions.subscriptionsDataLoading.value).toBe(false);
 
     resolveInitialStart();
     await flushPromises();
-
     expect(resetSpy).toHaveBeenCalledTimes(1);
     expect(startSpy).toHaveBeenCalledTimes(2);
-    expect(startedAddresses).toEqual(['addr-1', 'addr-2']);
 
     wrapper.unmount();
   });
 
-  it('queues teardown after a pending startup when the component unmounts', async () => {
+  it('tears down immediately when unmounting during a pending startup', async () => {
     let resolveStart!: () => void;
     const startSpy = vi.fn(
       () =>
@@ -229,12 +233,38 @@ describe('useSubscriptions', () => {
     expect(startSpy).toHaveBeenCalledTimes(1);
 
     wrapper.unmount();
-    expect(resetSpy).not.toHaveBeenCalled();
+    expect(resetSpy).toHaveBeenCalledTimes(1);
 
     resolveStart();
     await flushPromises();
 
     expect(resetSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('skips obsolete starts during rapid account switches and logout', async () => {
+    const startedAddresses: string[] = [];
+    const startSpy = vi.fn(async () => {
+      startedAddresses.push(address.value);
+    });
+    const resetSpy = vi.fn().mockResolvedValue(undefined);
+    const { wrapper, subscriptions } = await createHarness({
+      startSubscriptions: [startSpy],
+      resetSubscriptions: [resetSpy],
+    });
+    await flushPromises();
+
+    address.value = 'addr-2';
+    expect(subscriptions.subscriptionsDataLoading.value).toBe(true);
+    address.value = 'addr-3';
+    await flushPromises();
+    expect(startedAddresses).toEqual(['addr-1', 'addr-3']);
+    expect(subscriptions.subscriptionsDataLoading.value).toBe(false);
+
+    address.value = 'addr-4';
+    login.value = false;
+    await flushPromises();
+    expect(startedAddresses).toEqual(['addr-1', 'addr-3']);
+    wrapper.unmount();
   });
 
   it('skips account refresh watcher when account tracking is disabled', async () => {

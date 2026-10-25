@@ -112,6 +112,7 @@ type CurrentIndexer = ReturnType<IndexerServicesModule['getCurrentIndexer']>;
 
 const UPDATE_ACTIVE_TRANSACTIONS_INTERVAL = 2_000;
 const UPDATE_ASSETS_TIMEOUT = BLOCK_PRODUCE_TIME * 3;
+const ACCOUNT_ASSETS_RETRY_DELAYS = [1_000, 2_000, 4_000] as const;
 /** Keeps account activity pages stable when an indexer changes its GraphQL defaults. */
 const HISTORY_ELEMENTS_ORDER_BY_NEWEST = ['TIMESTAMP_DESC', 'ID_DESC'] as const;
 
@@ -222,9 +223,15 @@ export const useWalletStore = defineStore('wallet', () => {
 
   const storageUpdatesSubscription = ref<Nullable<VoidFunction>>(null);
   let accountAssetsLoadingRequestId = 0;
+  let cancelAccountAssetsRetry: VoidFunction | null = null;
   let accountAssetsOwnerAddress = '';
   // Rendered snapshots survive disconnects even when the SDK's account cache is cleared.
   let accountAssetsSnapshotOwnerAddress = '';
+  let accountTransitionId = 0;
+  let accountTransition: Promise<void> = Promise.resolve();
+  let externalHistorySubscriptionId = 0;
+  let externalHistoryRequestId = 0;
+  let pendingMstSubscriptionId = 0;
 
   const address = computed(() => accountState.value.address ?? '');
   const soraAddress = computed(() => address.value);
@@ -424,6 +431,8 @@ export const useWalletStore = defineStore('wallet', () => {
   /** Cancels pending account hydration and live callbacks before detaching the SDK subscriptions. */
   const resetAccountAssetsSubscription = (clearSdkAccountAssets = true): void => {
     accountAssetsLoadingRequestId += 1;
+    cancelAccountAssetsRetry?.();
+    cancelAccountAssetsRetry = null;
     setAccountAssetsLoading(false);
     setAccountAssetsLoaded(false);
 
@@ -443,6 +452,19 @@ export const useWalletStore = defineStore('wallet', () => {
       walletApi.assets.accountAssets.filter((asset) => !walletApi.assets.isNftBlacklisted(asset, blacklist.value))
     );
   };
+
+  /** Backs off transient node failures while allowing a newer account or reset to cancel the wait. */
+  const waitForAccountAssetsRetry = (delay: number): Promise<boolean> =>
+    new Promise((resolve) => {
+      const timeout = setTimeout(() => {
+        cancelAccountAssetsRetry = null;
+        resolve(true);
+      }, delay);
+      cancelAccountAssetsRetry = () => {
+        clearTimeout(timeout);
+        resolve(false);
+      };
+    });
 
   /** Rebuilds live asset snapshots, clearing balances before a confirmed account-owner change. */
   const subscribeOnAccountAssets = async (): Promise<void> => {
@@ -464,6 +486,7 @@ export const useWalletStore = defineStore('wallet', () => {
     }
 
     setAccountAssetsLoading(true);
+    let hydrated = false;
 
     try {
       await waitForAccountPair(async () => {
@@ -471,7 +494,17 @@ export const useWalletStore = defineStore('wallet', () => {
           return;
         }
 
-        await walletApi.assets.updateAccountAssets();
+        for (let attempt = 0; ; attempt += 1) {
+          try {
+            await walletApi.assets.updateAccountAssets();
+            break;
+          } catch (error) {
+            if (!isCurrentRequest()) return;
+            const delay = ACCOUNT_ASSETS_RETRY_DELAYS[attempt];
+            if (delay === undefined) throw error;
+            if (!(await waitForAccountAssetsRetry(delay)) || !isCurrentRequest()) return;
+          }
+        }
 
         if (!isCurrentRequest()) {
           return;
@@ -492,6 +525,7 @@ export const useWalletStore = defineStore('wallet', () => {
 
         if (isCurrentRequest()) {
           accountState.value.accountAssetsSubscription = subscription;
+          hydrated = true;
         } else {
           subscription.unsubscribe();
         }
@@ -502,7 +536,7 @@ export const useWalletStore = defineStore('wallet', () => {
       }
     } finally {
       if (accountAssetsLoadingRequestId === loadingRequestId) {
-        setAccountAssetsLoaded(isCurrentRequest());
+        setAccountAssetsLoaded(hydrated && isCurrentRequest());
         setAccountAssetsLoading(false);
       }
     }
@@ -546,18 +580,24 @@ export const useWalletStore = defineStore('wallet', () => {
   };
 
   const resetExternalHistory = (): void => {
+    externalHistoryRequestId += 1;
     transactionsState.value.externalHistory = {};
     transactionsState.value.externalHistoryUpdates = {};
     transactionsState.value.externalHistoryTotal = 0;
   };
 
   const resetExternalHistorySubscription = (): void => {
+    externalHistorySubscriptionId += 1;
     transactionsState.value.externalHistorySubscription?.();
     transactionsState.value.externalHistorySubscription = null;
   };
 
   const subscribeOnExternalHistory = async (): Promise<void> => {
     resetExternalHistorySubscription();
+    const subscriptionId = externalHistorySubscriptionId;
+    const activeAddress = address.value;
+    const isCurrentSubscription = (): boolean =>
+      subscriptionId === externalHistorySubscriptionId && address.value === activeAddress && isLoggedIn.value;
 
     if (!(isLoggedIn.value && address.value)) {
       return;
@@ -565,9 +605,11 @@ export const useWalletStore = defineStore('wallet', () => {
 
     try {
       const indexer = await getCurrentIndexerService();
+      if (!isCurrentSubscription()) return;
       const subscription = indexer.services.explorer.account.createHistorySubscription(
-        address.value,
+        activeAddress,
         async (transaction) => {
+          if (!isCurrentSubscription()) return;
           let historyItem: Nullable<HistoryItem>;
 
           try {
@@ -576,6 +618,8 @@ export const useWalletStore = defineStore('wallet', () => {
             console.warn('[wallet] Failed to parse indexer history update', error);
             return;
           }
+
+          if (!isCurrentSubscription()) return;
 
           const id = typeof historyItem?.id === 'string' ? historyItem.id.trim() : '';
 
@@ -616,7 +660,11 @@ export const useWalletStore = defineStore('wallet', () => {
         }
       );
 
-      transactionsState.value.externalHistorySubscription = subscription;
+      if (isCurrentSubscription()) {
+        transactionsState.value.externalHistorySubscription = subscription;
+      } else {
+        subscription();
+      }
     } catch (error) {
       console.error(error);
     }
@@ -629,7 +677,12 @@ export const useWalletStore = defineStore('wallet', () => {
     page = 1,
     query = {},
   }: ExternalHistoryParams = {}): Promise<void> => {
+    const requestId = externalHistoryRequestId;
+    const activeAddress = accountState.value.address;
+    const isCurrentRequest = (): boolean =>
+      requestId === externalHistoryRequestId && accountState.value.address === activeAddress;
     const indexer = await getCurrentIndexerService();
+    if (!isCurrentRequest()) return;
     const operations = indexer.services.dataParser.supportedOperations;
     const filter = indexer.historyElementsFilter({
       assetAddress,
@@ -646,7 +699,7 @@ export const useWalletStore = defineStore('wallet', () => {
     try {
       const response = await indexer.services.explorer.account.getAccountHistory(address, variables);
 
-      if (!response) {
+      if (!response || !isCurrentRequest()) {
         return;
       }
 
@@ -672,6 +725,8 @@ export const useWalletStore = defineStore('wallet', () => {
           continue;
         }
 
+        if (!isCurrentRequest()) return;
+
         const historyItemId = typeof historyItem?.id === 'string' ? historyItem.id.trim() : '';
 
         if (!historyItemId || historyItemId !== id) {
@@ -688,6 +743,8 @@ export const useWalletStore = defineStore('wallet', () => {
           removeExternalUpdatesIds.push(id);
         }
       }
+
+      if (!isCurrentRequest()) return;
 
       if (removeInternalIds.length) {
         removeHistoryByIds(removeInternalIds);
@@ -979,28 +1036,66 @@ export const useWalletStore = defineStore('wallet', () => {
     syncWalletCurrentRoute();
   };
 
-  const loginAccount = async (nextAccount: PolkadotJsAccount): Promise<void> => {
-    if (isLoggedIn.value && !isConnectedAccount(nextAccount)) {
-      await cancelAccountBoundBridgeTasks();
-    }
-
-    await loginApi(walletApi as never, nextAccount as never, isAppStorageSource(accountState.value.source));
-    syncAccountWithStorage();
-    await afterLogin();
+  /** Removes account-owned snapshots and invalidates callbacks before changing the SDK identity. */
+  const resetAccountData = (): void => {
+    resetAccountAssetsSubscription();
+    setAccountAssets([]);
+    resetExternalHistorySubscription();
+    resetExternalHistory();
+    resetPendingMstTxsSubscription();
+    transactionsState.value.history = {};
+    transactionsState.value.activeTxsIds = [];
+    transactionsState.value.selectedTxId = null;
+    transactionsState.value.pendingMstTransactions = [];
+    accountState.value.assetsToNotifyQueue = [];
   };
 
-  const logout = async (): Promise<void> => {
+  /** Serializes SDK identity changes; a superseded login cannot publish account data. */
+  const loginAccount = (nextAccount: PolkadotJsAccount): Promise<void> => {
+    const transitionId = ++accountTransitionId;
+    const cancelBridge = isLoggedIn.value && !isConnectedAccount(nextAccount);
+    const currentAccountStoredInApp = isAppStorageSource(accountState.value.source);
+    resetAccountData();
+    setAccountAssetsLoading(true);
+
+    const operation = accountTransition.then(async () => {
+      if (transitionId !== accountTransitionId) return;
+      if (cancelBridge) await cancelAccountBoundBridgeTasks();
+      if (transitionId !== accountTransitionId) return;
+
+      await loginApi(walletApi as never, nextAccount as never, currentAccountStoredInApp);
+      if (transitionId !== accountTransitionId) return;
+      syncAccountWithStorage();
+    });
+    // A rejected wallet provider must not prevent the next account from connecting.
+    accountTransition = operation.catch(() => undefined);
+    return operation
+      .then(async () => {
+        if (transitionId === accountTransitionId) await afterLogin();
+      })
+      .finally(() => {
+        if (transitionId === accountTransitionId) setAccountAssetsLoading(false);
+      });
+  };
+
+  /** Invalidates visible account data immediately and waits for pending SDK logins before logout. */
+  const logout = (): Promise<void> => {
+    const transitionId = ++accountTransitionId;
     const forgetCurrentAccount = !isAppStorageSource(accountState.value.source);
+    const cancelBridge = Boolean(accountState.value.address);
+    resetAccountData();
 
-    if (accountState.value.address) {
-      await cancelAccountBoundBridgeTasks();
-    }
+    const operation = accountTransition.then(async () => {
+      if (transitionId !== accountTransitionId) return;
+      if (cancelBridge) await cancelAccountBoundBridgeTasks();
+      if (transitionId !== accountTransitionId) return;
 
-    logoutApi(walletApi as never, forgetCurrentAccount);
-    resetAccountAssetsSubscription();
-    resetExternalHistorySubscription();
-    resetAccountState();
-    syncWalletRoute();
+      logoutApi(walletApi as never, forgetCurrentAccount);
+      resetAccountState();
+      syncWalletRoute();
+    });
+    accountTransition = operation.catch(() => undefined);
+    return operation;
   };
 
   const renameAccount = async (payload: { address: string; name: string }): Promise<void> => {
@@ -1083,8 +1178,12 @@ export const useWalletStore = defineStore('wallet', () => {
   };
 
   const afterLogin = async (): Promise<void> => {
+    const transitionId = accountTransitionId;
+    const activeAddress = address.value;
     await subscribeOnAccountAssets();
-    await subscribeOnExternalHistory();
+    if (transitionId !== accountTransitionId || address.value !== activeAddress) return;
+    await Promise.all([subscribeOnExternalHistory(), trackPendingMstTxs()]);
+    if (transitionId !== accountTransitionId || address.value !== activeAddress) return;
     syncWalletRoute();
   };
 
@@ -1326,12 +1425,19 @@ export const useWalletStore = defineStore('wallet', () => {
     });
   };
 
+  /** Changes the displayed identity only after discarding the previous account's data. */
   const syncAccountWithStorage = (): void => {
     const isExternal = storage.get('isExternal');
+    const nextAddress = storage.get('address') || '';
+    const nextSource = (storage.get('source') as AppWallet) || '';
 
-    accountState.value.address = storage.get('address') || '';
+    if (nextAddress !== address.value || nextSource !== accountState.value.source) {
+      resetAccountData();
+    }
+
+    accountState.value.address = nextAddress;
     accountState.value.name = storage.get('name') || '';
-    accountState.value.source = (storage.get('source') as AppWallet) || '';
+    accountState.value.source = nextSource;
     accountState.value.isExternal = parseStoredBoolean(isExternal, false);
   };
 
@@ -1482,6 +1588,7 @@ export const useWalletStore = defineStore('wallet', () => {
   };
 
   const resetPendingMstTxsSubscription = (): void => {
+    pendingMstSubscriptionId += 1;
     transactionsState.value.pendingMstTxsSubscription?.unsubscribe();
     transactionsState.value.pendingMstTxsSubscription = null;
     walletApi.mst.stopPendingTxsSubscription();
@@ -1489,6 +1596,10 @@ export const useWalletStore = defineStore('wallet', () => {
 
   const trackPendingMstTxs = async (): Promise<void> => {
     resetPendingMstTxsSubscription();
+    const subscriptionId = pendingMstSubscriptionId;
+    const activeAddress = address.value;
+    const isCurrentSubscription = (): boolean =>
+      subscriptionId === pendingMstSubscriptionId && address.value === activeAddress && isLoggedIn.value;
 
     if (!(isLoggedIn.value && walletApi.mst.isMstAddressExist() && address.value)) {
       return;
@@ -1498,8 +1609,10 @@ export const useWalletStore = defineStore('wallet', () => {
       const mstAddress = walletApi.mst.getMstAddress();
 
       await walletApi.mst.startPendingTxsSubscription(mstAddress);
+      if (!isCurrentSubscription()) return;
 
       const subscription = walletApi.mst.pendingTxsUpdated.subscribe((pendingTxs) => {
+        if (!isCurrentSubscription()) return;
         if (pendingTxs?.length) {
           let userAddress = address.value;
 
@@ -1525,7 +1638,11 @@ export const useWalletStore = defineStore('wallet', () => {
         syncAccountHistory();
       });
 
-      transactionsState.value.pendingMstTxsSubscription = subscription;
+      if (isCurrentSubscription()) {
+        transactionsState.value.pendingMstTxsSubscription = subscription;
+      } else {
+        subscription.unsubscribe();
+      }
     } catch (error) {
       console.error('Error starting MST pending transactions subscription:', error);
     }
@@ -1550,8 +1667,19 @@ export const useWalletStore = defineStore('wallet', () => {
     resetStorageUpdatesSubscription();
 
     storageUpdatesSubscription.value = debounce(100)(() => {
-      syncAccountWithStorage();
-      syncAccountHistory();
+      const nextAddress = storage.get('address') || '';
+      const nextSource = storage.get('source') as AppWallet;
+
+      if (nextAddress !== address.value || nextSource !== accountState.value.source) {
+        const transition =
+          nextAddress && nextSource
+            ? loginAccount({ address: nextAddress, source: nextSource, name: storage.get('name') || '' })
+            : logout();
+        void transition.catch((error) => console.warn('[Wallet]: Unable to synchronize account', error));
+      } else {
+        syncAccountWithStorage();
+        syncAccountHistory();
+      }
     }) as VoidFunction;
 
     window.addEventListener('storage', storageUpdatesSubscription.value);

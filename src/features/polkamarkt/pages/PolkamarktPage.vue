@@ -98,7 +98,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { useInternalConnect } from '@/composables/useInternalConnect';
@@ -229,6 +229,7 @@ async function refreshMarkets(): Promise<void> {
   }
 }
 
+/** Publishes activity only while the requesting account and request still own this page. */
 async function refreshActivity(): Promise<void> {
   const requestId = ++activityRequestId;
   const requestedAccount = accountAddress.value;
@@ -326,7 +327,16 @@ watch(
   { immediate: true }
 );
 
-watch([isConnected, accountAddress], () => void refreshActivity(), { immediate: true });
+watch(
+  [isConnected, accountAddress, runtimeEndpoint, polkaswapIndexerEndpoint],
+  () => {
+    // Clear ownership synchronously: the ticket must never receive another account's positions.
+    positions.value = [];
+    trades.value = [];
+    void refreshActivity();
+  },
+  { immediate: true, flush: 'sync' }
+);
 
 watch(selectedMarket, (market) => void refreshMarketHistory(market), { immediate: true });
 
@@ -344,6 +354,12 @@ watch(currentBlock, (block) => {
 
 onMounted(() => {
   void refreshMarkets();
+});
+
+onBeforeUnmount(() => {
+  activityRequestId += 1;
+  marketsRequestId += 1;
+  marketHistoryRequestId += 1;
 });
 
 defineExpose({

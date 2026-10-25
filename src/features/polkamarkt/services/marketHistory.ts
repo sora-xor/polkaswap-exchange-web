@@ -2,7 +2,7 @@ import { gql } from '@urql/core';
 
 import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 
-import { parseBlockInput, parseProbability } from '../lib/markets';
+import { parseBlockInput, parseMarketProbability } from '../lib/markets';
 
 import type { MarketHistoryPoint, PolkamarktMarket } from '../types';
 
@@ -20,7 +20,7 @@ const MarketHistoryQuery = gql<MarketHistoryResponse>`
   query PolkamarktMarketHistory($marketId: Int!, $limit: Int = 96) {
     marketSnapshots(
       first: $limit
-      orderBy: [TIMESTAMP_ASC]
+      orderBy: [TIMESTAMP_DESC]
       filter: { marketId: { equalTo: $marketId }, type: { equalTo: "DEFAULT" } }
     ) {
       edges {
@@ -56,9 +56,10 @@ const extractSnapshotNodes = (value: MarketHistoryPayload | undefined): Array<Re
   return value?.edges?.map((edge) => edge.node).filter(isRecord) ?? [];
 };
 
+/** Preserves the indexer's percentage units and precision for historical outcome odds. */
 export function parseMarketHistoryPoint(input: Record<string, unknown>): MarketHistoryPoint | null {
   const id = typeof input.id === 'string' ? input.id : undefined;
-  const probability = parseProbability(input.probability ?? input.priceYes);
+  const probability = parseMarketProbability(input);
 
   if (!id || probability === undefined) return null;
 
@@ -104,7 +105,7 @@ export async function fetchPolkamarktMarketHistory(
       .map(parseMarketHistoryPoint)
       .filter((point): point is MarketHistoryPoint => Boolean(point));
 
-    return points;
+    return points.reverse();
   } catch (error) {
     console.warn('Polkamarkt market history is unavailable.', error);
     return [];

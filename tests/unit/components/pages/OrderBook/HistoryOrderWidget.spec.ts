@@ -210,6 +210,29 @@ describe('HistoryOrderWidget.vue', () => {
     expect(orderBookUserOrdersMocks.unsubscribeFromUserLimitOrders).toHaveBeenCalledTimes(2);
   });
 
+  it('keeps the current account loading when the previous subscription finishes late', async () => {
+    let resolvePrevious!: () => void;
+    let resolveCurrent!: () => void;
+    orderBookUserOrdersMocks.subscribeToUserLimitOrders
+      .mockReturnValueOnce(new Promise<void>((resolve) => (resolvePrevious = resolve)))
+      .mockReturnValueOnce(new Promise<void>((resolve) => (resolveCurrent = resolve)));
+    const wrapper = await mountWidget();
+    await flushPromises();
+    const vm = wrapper.vm as unknown as { openOrdersLoading: boolean };
+    expect(vm.openOrdersLoading).toBe(true);
+
+    soraAddressRef.value = 'addr-2';
+    await flushPromises();
+    expect(orderBookUserOrdersMocks.subscribeToUserLimitOrders).toHaveBeenCalledTimes(2);
+    resolvePrevious();
+    await flushPromises();
+    expect(vm.openOrdersLoading).toBe(true);
+    resolveCurrent();
+    await flushPromises();
+    expect(vm.openOrdersLoading).toBe(false);
+    wrapper.unmount();
+  });
+
   it('recovers loading state when user limit order subscription fails', async () => {
     orderBookUserOrdersMocks.subscribeToUserLimitOrders.mockRejectedValueOnce(new Error('subscription failed'));
     const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});

@@ -1077,7 +1077,7 @@ describe('wallet store actions', () => {
     expect(walletStore.accountPasswordTimeout).toBe(600_000);
     expect(logoutApiMock).toHaveBeenCalledTimes(1);
     expect(startPendingTxsSubscriptionMock).not.toHaveBeenCalled();
-    expect(stopPendingTxsSubscriptionMock).toHaveBeenCalledTimes(1);
+    expect(stopPendingTxsSubscriptionMock).toHaveBeenCalledTimes(2);
   });
 
   it('exposes wallet fiat preferences and network fee map from Pinia state', () => {
@@ -1152,6 +1152,7 @@ describe('wallet store actions', () => {
     expect(balanceUpdatedSubscribeMock).toHaveBeenCalledTimes(1);
     expect(updateAccountAssetsMock).toHaveBeenCalledTimes(1);
     expect(createHistorySubscriptionMock).toHaveBeenCalledWith('addr', expect.any(Function));
+    expect(startPendingTxsSubscriptionMock).toHaveBeenCalledWith('mst-address');
 
     storage.set('address', 'addr');
     storage.set('name', 'User');
@@ -1259,6 +1260,7 @@ describe('wallet store actions', () => {
     await vi.waitFor(() => {
       expect(walletStore.accountAssetsLoading).toBe(true);
       expect(walletStore.accountAssetsLoaded).toBe(false);
+      expect(updateAccountAssetsMock).toHaveBeenCalledTimes(1);
     });
 
     resolveUpdateAccountAssets();
@@ -1641,6 +1643,231 @@ describe('wallet store actions', () => {
     expect(walletStore.accountAssets).toEqual([]);
     expect(walletStore.accountAssetsLoading).toBe(false);
     expect(walletStore.accountAssetsLoaded).toBe(true);
+  });
+
+  it('does not report a failed balance read as an empty loaded portfolio', async () => {
+    const walletStore = useWalletStore();
+    walletStore.accountState.address = 'addr';
+    walletStore.accountState.source = AppWallet.PolkadotJS;
+    updateAccountAssetsMock.mockRejectedValue(new Error('Node disconnected'));
+    vi.useFakeTimers();
+    try {
+      const hydration = walletStore.subscribeOnAccountAssets();
+      await vi.advanceTimersByTimeAsync(7_000);
+      await hydration;
+
+      expect(walletStore.accountAssets).toEqual([]);
+      expect(walletStore.accountAssetsLoading).toBe(false);
+      expect(walletStore.accountAssetsLoaded).toBe(false);
+      expect(balanceUpdatedSubscribeMock).not.toHaveBeenCalled();
+      expect(updateAccountAssetsMock).toHaveBeenCalledTimes(4);
+      await vi.advanceTimersByTimeAsync(60_000);
+      expect(updateAccountAssetsMock).toHaveBeenCalledTimes(4);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('recovers a transient balance failure automatically without refreshing the page', async () => {
+    const walletStore = useWalletStore();
+    walletStore.accountState.address = 'addr';
+    walletStore.accountState.source = AppWallet.PolkadotJS;
+    const assets = [{ address: 'xor', balance: { transferable: '100' } }];
+    updateAccountAssetsMock.mockRejectedValueOnce(new Error('Temporary node failure'));
+    updateAccountAssetsMock.mockImplementationOnce(async () => {
+      Object.assign(walletApi.assets, { accountAssets: assets });
+    });
+    vi.useFakeTimers();
+    try {
+      const hydration = walletStore.subscribeOnAccountAssets();
+      await vi.advanceTimersByTimeAsync(999);
+      expect(walletStore.accountAssetsLoaded).toBe(false);
+      expect(walletStore.accountAssetsLoading).toBe(true);
+      await vi.advanceTimersByTimeAsync(1);
+      await hydration;
+
+      expect(updateAccountAssetsMock).toHaveBeenCalledTimes(2);
+      expect(walletStore.accountAssetsLoaded).toBe(true);
+      expect(walletStore.accountAssetsLoading).toBe(false);
+      expect(walletStore.accountAssets).toEqual(assets);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('cancels a failed old-account retry as soon as a new account is selected', async () => {
+    const walletStore = useWalletStore();
+    walletStore.accountState.address = 'first';
+    walletStore.accountState.source = AppWallet.PolkadotJS;
+    updateAccountAssetsMock.mockRejectedValueOnce(new Error('Temporary node failure'));
+    vi.useFakeTimers();
+    try {
+      const oldHydration = walletStore.subscribeOnAccountAssets();
+      await vi.advanceTimersByTimeAsync(0);
+      await walletStore.loginAccount({ address: 'second', name: '', source: AppWallet.PolkadotJS });
+      await oldHydration;
+      await vi.advanceTimersByTimeAsync(10_000);
+
+      expect(walletStore.address).toBe('second');
+      expect(walletStore.accountAssetsLoaded).toBe(true);
+      expect(updateAccountAssetsMock).toHaveBeenCalledTimes(2);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('keeps balances unsettled when the live balance subscription cannot start', async () => {
+    const walletStore = useWalletStore();
+    walletStore.accountState.address = 'addr';
+    walletStore.accountState.source = AppWallet.PolkadotJS;
+    balanceUpdatedSubscribeMock.mockImplementationOnce(() => {
+      throw new Error('Subscription unavailable');
+    });
+
+    await walletStore.subscribeOnAccountAssets();
+
+    expect(walletStore.accountAssetsLoaded).toBe(false);
+    expect(walletStore.accountAssetsLoading).toBe(false);
+    expect(walletStore.accountState.accountAssetsSubscription).toBeNull();
+  });
+
+  it('clears all previous account snapshots synchronously when storage changes identity', () => {
+    const walletStore = useWalletStore();
+    walletStore.accountState.address = 'previous';
+    walletStore.accountState.source = AppWallet.PolkadotJS;
+    walletStore.setAccountAssets([{ address: 'xor', balance: { transferable: '100' } }] as never);
+    walletStore.accountState.accountAssetsLoaded = true;
+    walletStore.transactionsState.history = { old: { id: 'old' } } as never;
+    walletStore.transactionsState.externalHistory = { old: { id: 'old' } } as never;
+    walletStore.transactionsState.externalHistoryTotal = 1;
+    walletStore.transactionsState.pendingMstTransactions = [{ id: 'old' }] as never;
+    storage.set('address', 'next');
+    storage.set('source', AppWallet.PolkadotJS);
+
+    walletStore.syncAccountWithStorage();
+
+    expect(walletStore.address).toBe('next');
+    expect(walletStore.accountAssets).toEqual([]);
+    expect(walletStore.accountAssetsLoaded).toBe(false);
+    expect(walletStore.transactionsState.history).toEqual({});
+    expect(walletStore.transactionsState.externalHistory).toEqual({});
+    expect(walletStore.transactionsState.externalHistoryTotal).toBe(0);
+    expect(walletStore.transactionsState.pendingMstTransactions).toEqual([]);
+  });
+
+  it('serializes rapid account selections and only hydrates the latest account', async () => {
+    const walletStore = useWalletStore();
+    const first = { address: 'first', name: 'First', source: AppWallet.PolkadotJS };
+    const second = { address: 'second', name: 'Second', source: AppWallet.PolkadotJS };
+    let finishFirst!: () => void;
+    loginApiMock.mockImplementationOnce(async () => {
+      await new Promise<void>((resolve) => {
+        finishFirst = resolve;
+      });
+      storage.set('address', first.address);
+      storage.set('source', first.source);
+    });
+
+    const firstLogin = walletStore.loginAccount(first);
+    await vi.waitFor(() => expect(loginApiMock).toHaveBeenCalledTimes(1));
+    const secondLogin = walletStore.loginAccount(second);
+    expect(loginApiMock).toHaveBeenCalledTimes(1);
+    finishFirst();
+    await Promise.all([firstLogin, secondLogin]);
+
+    expect(walletStore.address).toBe('second');
+    expect(loginApiMock).toHaveBeenCalledTimes(2);
+    expect(updateAccountAssetsMock).toHaveBeenCalledTimes(1);
+    expect(createHistorySubscriptionMock).toHaveBeenCalledTimes(1);
+    expect(createHistorySubscriptionMock).toHaveBeenCalledWith('second', expect.any(Function));
+  });
+
+  it('allows the next account to connect after a wallet provider rejects a login', async () => {
+    const walletStore = useWalletStore();
+    loginApiMock.mockRejectedValueOnce(new Error('Wallet unavailable'));
+
+    await expect(
+      walletStore.loginAccount({ address: 'first', name: '', source: AppWallet.PolkadotJS })
+    ).rejects.toThrow('Wallet unavailable');
+    expect(walletStore.accountAssetsLoaded).toBe(false);
+    expect(walletStore.accountAssetsLoading).toBe(false);
+
+    await walletStore.loginAccount({ address: 'second', name: '', source: AppWallet.PolkadotJS });
+    expect(walletStore.address).toBe('second');
+    expect(walletStore.accountAssetsLoaded).toBe(true);
+  });
+
+  it('switches accounts without waiting for old balance hydration to finish', async () => {
+    const walletStore = useWalletStore();
+    let finishFirst!: () => void;
+    updateAccountAssetsMock.mockImplementationOnce(
+      () =>
+        new Promise<void>((resolve) => {
+          finishFirst = resolve;
+        })
+    );
+    const firstLogin = walletStore.loginAccount({ address: 'first', name: 'First', source: AppWallet.PolkadotJS });
+    await vi.waitFor(() => expect(updateAccountAssetsMock).toHaveBeenCalledTimes(1));
+
+    await walletStore.loginAccount({ address: 'second', name: 'Second', source: AppWallet.PolkadotJS });
+    expect(walletStore.address).toBe('second');
+    expect(walletStore.accountAssetsLoaded).toBe(true);
+    finishFirst();
+    await firstLogin;
+
+    expect(createHistorySubscriptionMock).toHaveBeenCalledTimes(1);
+    expect(createHistorySubscriptionMock).toHaveBeenCalledWith('second', expect.any(Function));
+  });
+
+  it('keeps logout final when a previous SDK login completes late', async () => {
+    const walletStore = useWalletStore();
+    let finishLogin!: () => void;
+    loginApiMock.mockImplementationOnce(async () => {
+      await new Promise<void>((resolve) => {
+        finishLogin = resolve;
+      });
+      storage.set('address', 'late-account');
+      storage.set('source', AppWallet.PolkadotJS);
+    });
+    const login = walletStore.loginAccount({ address: 'late-account', name: '', source: AppWallet.PolkadotJS });
+    await vi.waitFor(() => expect(loginApiMock).toHaveBeenCalledTimes(1));
+    const logout = walletStore.logout();
+    finishLogin();
+    await Promise.all([login, logout]);
+
+    expect(walletStore.isLoggedIn).toBe(false);
+    expect(walletStore.accountAssetsLoaded).toBe(false);
+    expect(updateAccountAssetsMock).not.toHaveBeenCalled();
+    expect(logoutApiMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('reconnects the SDK and hydrates balances after an account switch in another tab', async () => {
+    const walletStore = useWalletStore();
+    walletStore.accountState.address = 'first';
+    walletStore.accountState.source = AppWallet.PolkadotJS;
+    walletStore.subscribeToStorageUpdates();
+
+    try {
+      storage.set('address', 'second');
+      storage.set('source', AppWallet.PolkadotJS);
+      storage.set('name', 'Second');
+      window.dispatchEvent(new Event('storage'));
+
+      await vi.waitFor(() => expect(walletStore.address).toBe('second'));
+      expect(loginApiMock).toHaveBeenCalledWith(
+        walletApi,
+        {
+          address: 'second',
+          name: 'Second',
+          source: AppWallet.PolkadotJS,
+        },
+        false
+      );
+      await vi.waitFor(() => expect(walletStore.accountAssetsLoaded).toBe(true));
+      expect(createHistorySubscriptionMock).toHaveBeenCalledWith('second', expect.any(Function));
+    } finally {
+      walletStore.resetStorageUpdatesSubscription();
+    }
   });
 
   it('forwards wallet settings actions', async () => {
@@ -2166,11 +2393,11 @@ describe('wallet store actions', () => {
     const walletStore = useWalletStore();
     const account = { address: 'addr', name: 'User', source: 'polkadot-js' } as WALLET_TYPES.PolkadotJsAccount;
 
+    await walletStore.loginAccount(account);
     walletStore.transactionsState.externalHistory = {
       'tx-live': { id: 'tx-live', type: Operation.Swap, amount: 'original' },
     } as never;
 
-    await walletStore.loginAccount(account);
     walletStore.saveExternalHistoryUpdates(true);
 
     const subscriptionCallback = createHistorySubscriptionMock.mock.calls.at(-1)?.[1];
@@ -2186,6 +2413,113 @@ describe('wallet store actions', () => {
       'tx-live': { id: 'tx-live', type: Operation.Swap, amount: 'original' },
     });
     expect(walletStore.transactionsState.externalHistoryUpdates).toEqual({});
+  });
+
+  it('discards realtime history parsing that finishes after switching away and back', async () => {
+    const walletStore = useWalletStore();
+    const account = { address: 'first', name: 'First', source: AppWallet.PolkadotJS };
+    await walletStore.loginAccount(account);
+    walletStore.saveExternalHistoryUpdates(true);
+    const callback = createHistorySubscriptionMock.mock.calls.at(-1)?.[1];
+    let finishParsing!: (value: unknown) => void;
+    parseTransactionAsHistoryItemMock.mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          finishParsing = resolve;
+        })
+    );
+    const pendingUpdate = callback?.({ id: 'stale' });
+
+    await walletStore.loginAccount({ address: 'second', name: 'Second', source: AppWallet.PolkadotJS });
+    await walletStore.loginAccount(account);
+    finishParsing({ id: 'stale', type: Operation.Swap });
+    await pendingUpdate;
+
+    expect(walletStore.transactionsState.externalHistoryUpdates).toEqual({});
+    expect(removeHistoryMock).not.toHaveBeenCalled();
+  });
+
+  it.each(['reset', 'account'] as const)('discards delayed history pages after a %s change', async (change) => {
+    const walletStore = useWalletStore();
+    walletStore.accountState.address = 'first';
+    walletStore.accountState.source = AppWallet.PolkadotJS;
+    let finishParsing!: (value: unknown) => void;
+    getExplorerHistoryMock.mockResolvedValueOnce({ nodes: [{ id: 'stale' }], totalCount: 1 });
+    parseTransactionAsHistoryItemMock.mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          finishParsing = resolve;
+        })
+    );
+    const pendingPage = walletStore.getExternalHistory({ address: 'first' });
+    await vi.waitFor(() => expect(parseTransactionAsHistoryItemMock).toHaveBeenCalledTimes(1));
+
+    if (change === 'account') {
+      storage.set('address', 'second');
+      storage.set('source', AppWallet.PolkadotJS);
+      walletStore.syncAccountWithStorage();
+    } else {
+      walletStore.resetExternalHistory();
+    }
+    finishParsing({ id: 'stale', type: Operation.Swap });
+    await pendingPage;
+
+    expect(walletStore.transactionsState.externalHistory).toEqual({});
+    expect(walletStore.transactionsState.externalHistoryTotal).toBe(0);
+    expect(removeHistoryMock).not.toHaveBeenCalled();
+  });
+
+  it('does not commit an old history total when delayed parsing fails after an account change', async () => {
+    const walletStore = useWalletStore();
+    walletStore.accountState.address = 'first';
+    walletStore.accountState.source = AppWallet.PolkadotJS;
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    let failParsing!: (error: Error) => void;
+    getExplorerHistoryMock.mockResolvedValueOnce({ nodes: [{ id: 'stale' }], totalCount: 10 });
+    parseTransactionAsHistoryItemMock.mockImplementationOnce(
+      () =>
+        new Promise((_, reject) => {
+          failParsing = reject;
+        })
+    );
+
+    try {
+      const pending = walletStore.getExternalHistory({ address: 'first' });
+      await vi.waitFor(() => expect(parseTransactionAsHistoryItemMock).toHaveBeenCalledTimes(1));
+      storage.set('address', 'second');
+      storage.set('source', AppWallet.PolkadotJS);
+      walletStore.syncAccountWithStorage();
+      failParsing(new Error('Parser unavailable'));
+      await pending;
+
+      expect(walletStore.transactionsState.externalHistory).toEqual({});
+      expect(walletStore.transactionsState.externalHistoryTotal).toBe(0);
+    } finally {
+      warn.mockRestore();
+    }
+  });
+
+  it('discards multisig subscription setup that completes after an account change', async () => {
+    const walletStore = useWalletStore();
+    walletStore.accountState.address = 'first';
+    walletStore.accountState.source = AppWallet.PolkadotJS;
+    let finishSetup!: () => void;
+    startPendingTxsSubscriptionMock.mockImplementationOnce(
+      () =>
+        new Promise<void>((resolve) => {
+          finishSetup = resolve;
+        })
+    );
+    const pendingSetup = walletStore.trackPendingMstTxs();
+
+    storage.set('address', 'second');
+    storage.set('source', AppWallet.PolkadotJS);
+    walletStore.syncAccountWithStorage();
+    finishSetup();
+    await pendingSetup;
+
+    expect(pendingTxsUpdatedSubscribeMock).not.toHaveBeenCalled();
+    expect(walletStore.transactionsState.pendingMstTransactions).toEqual([]);
   });
 
   it('ignores legacy bridge realtime history updates before mutating activity state', async () => {

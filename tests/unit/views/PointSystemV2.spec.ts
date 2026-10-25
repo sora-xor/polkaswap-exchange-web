@@ -15,11 +15,11 @@ const settingsStoreMock = {
   isWalletLoaded: true,
 };
 
-const walletStoreMock = {
+const walletStoreMock = reactive({
   account: { address: '5mock' },
   accountAssets: [] as Array<any>,
   fiatPriceObject: {} as Record<string, string>,
-};
+});
 
 const referralsStoreMock = {
   referralRewards: null as any,
@@ -30,6 +30,7 @@ const poolStoreMock = reactive({
   accountLiquidity: [] as Array<any>,
   subscribeOnAccountLiquidityList: subscribeOnList,
   subscribeOnAccountLiquidityUpdates: subscribeOnUpdates,
+  unsubscribeAccountLiquidityListAndUpdates: vi.fn().mockResolvedValue(undefined),
 });
 
 const assetsStoreMock = {
@@ -337,5 +338,50 @@ describe('PointSystemV2.vue', () => {
     await wrapper.vm.$nextTick();
 
     expect(vm.formattedTotalPoints).toBe('35,450');
+  });
+  it('clears the prior account cards and rejects metadata arriving after an account switch', async () => {
+    loginState.value = true;
+    let finishOld!: (value: unknown) => void;
+    fetchAccountMetaMock.mockImplementation((address) =>
+      address === '5mock'
+        ? new Promise((resolve) => {
+            finishOld = resolve;
+          })
+        : Promise.resolve({ createdAt: { timestamp: 2, block: 2 }, points: [] })
+    );
+    const wrapper = buildWrapper();
+    await flushPromises();
+
+    walletStoreMock.account = { address: '5next' };
+    expect(wrapper.vm.pointsForCards).toBeNull();
+    await flushPromises();
+    expect(fetchAccountMetaMock).toHaveBeenCalledWith('5next');
+    expect(subscribeOnList).toHaveBeenCalledTimes(2);
+    expect(subscribeOnUpdates).toHaveBeenCalledTimes(2);
+    expect(wrapper.vm.firstTxTimestamp).toBe(2);
+
+    finishOld({ createdAt: { timestamp: 99, block: 99 }, points: [] });
+    await flushPromises();
+    expect(wrapper.vm.firstTxTimestamp).toBe(2);
+  });
+
+  it('recalculates account holdings when balances arrive after point metadata', async () => {
+    loginState.value = true;
+    walletStoreMock.fiatPriceObject = { [VXOR.address]: FPNumber.fromNatural('1', 18).toCodecString() };
+    fetchAccountMetaMock.mockResolvedValue({ createdAt: { timestamp: 1, block: 1 }, points: [] });
+    const wrapper = buildWrapper();
+    await flushPromises();
+    expect(wrapper.vm.pointsForCards?.VXORHoldings.currentProgress).toBe(0);
+
+    walletStoreMock.accountAssets = [
+      {
+        address: VXOR.address,
+        symbol: VXOR.symbol,
+        decimals: 18,
+        balance: { [BalanceType.Transferable]: FPNumber.fromNatural('25', 18).toCodecString() },
+      },
+    ];
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.pointsForCards?.VXORHoldings.currentProgress).toBe(25);
   });
 });

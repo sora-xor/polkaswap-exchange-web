@@ -1,14 +1,11 @@
 import { POLKAMARKT_COLLATERAL_ASSET } from '../consts';
-import { getMarketDisplayStatus, yesNoPricesFromProbability } from './markets';
+import { formatMarketProbability, getMarketDisplayStatus, yesNoPricesFromProbability } from './markets';
 
 import type { PolkamarktMarket } from '../types';
 
 export type MarketShareTarget = 'telegram' | 'x';
 
 const POLKASWAP_URL = 'https://polkaswap.io/';
-
-const formatPercent = (value?: number): string =>
-  Number.isFinite(value) ? `${Math.round(value ?? 0)}%` : 'Not indexed';
 
 const formatPrice = (value?: number): string =>
   Number.isFinite(value) ? `${(value ?? 0).toFixed(2)} ${POLKAMARKT_COLLATERAL_ASSET.symbol}` : 'Not indexed';
@@ -40,16 +37,14 @@ export function buildPolkamarktTradeLink(market: Pick<PolkamarktMarket, 'chainId
  */
 export function buildMarketShareSnapshot(market: PolkamarktMarket, currentBlock?: number): string {
   const prices = yesNoPricesFromProbability(market.probability);
-  const yesPercent = Number.isFinite(market.probability)
-    ? Math.max(0, Math.min(100, Math.round(market.probability ?? 0)))
-    : undefined;
-  const noPercent = yesPercent === undefined ? undefined : 100 - yesPercent;
+  const yesPercent = formatMarketProbability(market.probability, false, 'Not indexed');
+  const noPercent = formatMarketProbability(market.probability, true, 'Not indexed');
   const status = getMarketDisplayStatus(market, currentBlock) ?? 'Active';
 
   return [
     market.title,
     `${market.category} · ${status}`,
-    `YES ${formatPercent(yesPercent)} (${formatPrice(prices.yes)}) · NO ${formatPercent(noPercent)} (${formatPrice(prices.no)})`,
+    `YES ${yesPercent} (${formatPrice(prices.yes)}) · NO ${noPercent} (${formatPrice(prices.no)})`,
     `Liquidity ${formatUsd(market.liquidity)} · Volume ${formatUsd(market.volume)}`,
     `Close block ${formatBlock(market.closeBlock)}`,
   ].join('\n');

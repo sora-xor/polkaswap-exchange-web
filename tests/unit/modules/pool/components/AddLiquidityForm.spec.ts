@@ -1,5 +1,5 @@
 import { Operation } from '@sora-substrate/sdk';
-import { computed, defineComponent, ref, type Ref } from 'vue';
+import { computed, defineComponent, reactive, ref, type Ref } from 'vue';
 import { flushPromises, mount } from '@vue/test-utils';
 import { createPinia } from 'pinia';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -201,6 +201,34 @@ vi.mock('@/modules/pool/router', () => ({
     }),
 }));
 
+const walletIdentity = reactive({
+  isLoggedIn: true,
+  address: 'account-a',
+  accountSource: 'extension',
+  isConfirmTxDialogDisabled: false,
+});
+vi.mock('@/stores/wallet', () => ({ useWalletStore: () => walletIdentity }));
+vi.mock('@/stores/settings', () => ({ useSettingsStore: () => ({ nodeIsConnected: true, slippageTolerance: '0.5' }) }));
+vi.mock('@/stores/assets', () => ({ useAssetsStore: () => ({ xor: storeGetters.assets.xor }) }));
+vi.mock('@/stores/pool', () => ({
+  usePoolStore: () => ({
+    addLiquidityShareOfPool: '10',
+    addLiquidityLiquidityInfo: null,
+    addLiquidityIsNotFirstLiquidityProvider: false,
+    updateAddLiquiditySubscriptions: () => updateSubscriptionsMock(),
+    resetAddLiquiditySubscriptions: () => resetSubscriptionsMock(),
+    submitAddLiquidity: () => addLiquidityMock(),
+  }),
+}));
+vi.mock('@/components/shared/Dialog/NetworkFeeWarning.vue', () => ({ default: { render: () => null } }));
+vi.mock('@/components/shared/Input/TokenInput.vue', () => ({ default: { render: () => null } }));
+vi.mock('@/components/shared/SelectAsset/SelectToken.vue', () => ({ default: { render: () => null } }));
+vi.mock('@/components/shared/Settings/SlippageTolerance.vue', () => ({ default: { render: () => null } }));
+vi.mock('@/modules/pool/components/AddLiquidity/Confirm.vue', () => ({ default: { render: () => null } }));
+vi.mock('@/modules/pool/components/AddLiquidity/TransactionDetails.vue', () => ({ default: { render: () => null } }));
+vi.mock('@/lib/soraneo-wallet/src/components/InfoLine.vue', () => ({ default: { render: () => null } }));
+const ActualAddLiquidityForm = (await import('@/modules/pool/components/AddLiquidity/Form.vue')).default;
+
 const AddLiquidityForm = defineComponent({
   name: 'AddLiquidityFormTestHarness',
   emits: ['back'],
@@ -265,6 +293,8 @@ const mountComponent = () =>
 
 describe('AddLiquidityForm.vue', () => {
   beforeEach(() => {
+    walletIdentity.address = 'account-a';
+    walletIdentity.isLoggedIn = true;
     allowFeePopupRef = ref(false);
     showWarningFeeDialogRef = ref(false);
     isWarningFeeDialogConfirmedRef = ref(false);
@@ -382,5 +412,36 @@ describe('AddLiquidityForm.vue', () => {
     expect(openWarningFeeDialogMock).toHaveBeenCalledTimes(1);
     expect(waitOnFeeWarningConfirmationMock).toHaveBeenCalledTimes(1);
     expect(addLiquidityMock).not.toHaveBeenCalled();
+  });
+  it('resets balances and confirmation synchronously when the connected account changes', async () => {
+    const wrapper = mount(ActualAddLiquidityForm, {
+      global: { stubs: { SForm: { template: '<div><slot /></div>' }, SButton: true, SIcon: true } },
+    });
+    await flushPromises();
+    expect(updateSubscriptionsMock).toHaveBeenCalledTimes(1);
+    (wrapper.vm as any).confirmDialogVisible = true;
+    showWarningFeeDialogRef.value = true;
+    const resetsBeforeSwitch = resetSubscriptionsMock.mock.calls.length;
+
+    walletIdentity.address = 'account-b';
+    expect(resetSubscriptionsMock).toHaveBeenCalledTimes(resetsBeforeSwitch + 1);
+    expect(updateSubscriptionsMock).toHaveBeenCalledTimes(2);
+    expect((wrapper.vm as any).confirmDialogVisible).toBe(false);
+    expect(showWarningFeeDialogRef.value).toBe(false);
+
+    walletIdentity.isLoggedIn = false;
+    expect(updateSubscriptionsMock).toHaveBeenCalledTimes(3);
+    expect(resetSubscriptionsMock).toHaveBeenCalledTimes(resetsBeforeSwitch + 2);
+    wrapper.unmount();
+  });
+  it('starts public pool subscriptions while the wallet is disconnected', async () => {
+    walletIdentity.isLoggedIn = false;
+    const wrapper = mount(ActualAddLiquidityForm, {
+      global: { stubs: { SForm: { template: '<div><slot /></div>' }, SButton: true, SIcon: true } },
+    });
+    await flushPromises();
+    expect(resetSubscriptionsMock).toHaveBeenCalledTimes(1);
+    expect(updateSubscriptionsMock).toHaveBeenCalledTimes(1);
+    wrapper.unmount();
   });
 });

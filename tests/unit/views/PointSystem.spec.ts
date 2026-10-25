@@ -1,6 +1,6 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { FPNumber } from '@sora-substrate/sdk';
-import { computed, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const loginState = ref(false);
@@ -21,11 +21,11 @@ const settingsStoreMock = {
   libraryTheme: 'dark',
 };
 
-const walletStoreMock = {
+const walletStoreMock = reactive({
   account: { address: '5mock' },
   currencySymbol: '$',
   accountAssets: [] as Array<any>,
-};
+});
 
 const referralsStoreMock = {
   referralRewards: {
@@ -259,5 +259,32 @@ describe('PointSystem.vue', () => {
     expect(vm.totalPoolTxs).toBe(6);
     expect(vm.totalSwapTxs).toBe(10);
     expect(vm.xorBurned.amount).not.toBeUndefined();
+  });
+  it('refreshes on account switches and ignores a late response from the previous account', async () => {
+    loginState.value = true;
+    let finishOld!: (value: Array<{ amount: FPNumber }>) => void;
+    fetchBurnXorDataMock.mockImplementation((_start, _end, address) =>
+      address === '5mock'
+        ? new Promise((resolve) => {
+            finishOld = resolve;
+          })
+        : Promise.resolve([{ amount: new FPNumber(7) }])
+    );
+    fetchBridgeDataMock.mockResolvedValue([]);
+    fetchCountMock.mockImplementation(async (_start, _end, address) => (address === '5mock' ? 99 : 2));
+    const wrapper = buildWrapper();
+    await flushPromises();
+
+    walletStoreMock.account = { address: '5next' };
+    expect((wrapper.vm as any).burnData).toBeNull();
+    await flushPromises();
+    expect(fetchBurnXorDataMock).toHaveBeenCalledWith(0, 100, '5next');
+    expect((wrapper.vm as any).burnData.toString()).toBe('7');
+    expect((wrapper.vm as any).totalSwapTxs).toBe(2);
+
+    finishOld([{ amount: new FPNumber(99) }]);
+    await flushPromises();
+    expect((wrapper.vm as any).burnData.toString()).toBe('7');
+    expect((wrapper.vm as any).totalSwapTxs).toBe(2);
   });
 });

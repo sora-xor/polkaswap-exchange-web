@@ -303,6 +303,32 @@ describe('AssetsModule asynchronous account ownership', () => {
     expect(assets.subscribeCount).toBe(0);
   });
 
+  it('rejects incomplete portfolio hydration and successfully retries missing balances', async () => {
+    const assets = new MultiBalanceEmissionAssetsModule({ account: { pair: { address: 'account-a' } } } as never);
+    const read = vi.spyOn(assets, 'getAccountAsset');
+    read.mockRejectedValueOnce(new Error('Balance unavailable'));
+
+    await expect(assets.updateAccountAssets()).rejects.toThrow('Balance unavailable');
+    expect(assets.accountAssets.map(({ address }) => address)).toEqual(['asset-b']);
+
+    await expect(assets.updateAccountAssets()).resolves.toBeUndefined();
+    expect(assets.accountAssets.map(({ address }) => address)).toEqual(['asset-a', 'asset-b']);
+  });
+
+  it('does not retain a cached asset when its balance subscription fails to start', async () => {
+    const assets = new SequenceBalanceEmissionAssetsModule({ account: { pair: { address: 'account-a' } } } as never);
+    vi.spyOn(assets, 'getAssetBalanceObservable').mockImplementationOnce(() => {
+      throw new Error('Subscription unavailable');
+    });
+
+    await expect(assets.updateAccountAssets()).rejects.toThrow('Subscription unavailable');
+    expect(assets.accountAssets).toEqual([]);
+
+    await expect(assets.updateAccountAssets()).resolves.toBeUndefined();
+    expect(assets.accountAssets).toHaveLength(1);
+    expect(assets.subscribeCount).toBe(1);
+  });
+
   it('applies a changed nonzero chain confirmation instead of retaining an older balance', async () => {
     const assets = new SequenceBalanceEmissionAssetsModule({ account: { pair: { address: 'account-a' } } } as never);
     await assets.updateAccountAssets();

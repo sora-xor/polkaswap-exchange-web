@@ -62,7 +62,6 @@ import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTransaction } from '@/composables/useTransaction';
 import { useTranslation } from '@/composables/useTranslation';
 import { PageNames, ZeroStringValue } from '@/consts';
-import { getReferralActionParam } from '@/shared/navigation/referralAction';
 import { useAssetsStore } from '@/stores/assets';
 import { useReferralsStore } from '@/stores/referrals';
 import { useSettingsStore } from '@/stores/settings';
@@ -191,11 +190,15 @@ const handleMaxValue = () => {
   handleInputXor(maxValue);
 };
 
+/** Submits through the SDK instance so reserve/unreserve retain their wallet and chain context. */
 const confirmBond = async () => {
   confirmDialogVisible.value = false;
   await withNotifications(async () => {
-    const action = isBond.value ? api.referralSystem.reserveXor : api.referralSystem.unreserveXor;
-    await action(amount.value);
+    if (isBond.value) {
+      await api.referralSystem.reserveXor(amount.value);
+    } else {
+      await api.referralSystem.unreserveXor(amount.value);
+    }
     resetAmount();
     handleBack();
   });
@@ -205,16 +208,8 @@ const handleConfirmBond = () => {
   confirmDialogVisible.value = true;
 };
 
-const handleBack = () => {
-  const currentAction = isBond.value ? PageNames.ReferralBonding : PageNames.ReferralUnbonding;
-
-  router.push({
-    name: PageNames.ReferralProgram,
-    params: {
-      referrerAddress: getReferralActionParam(currentAction),
-    },
-  });
-};
+/** Returns to the dashboard URL so reloading it cannot reopen the bonding form. */
+const handleBack = () => router.push({ name: PageNames.ReferralProgram });
 
 onBeforeUnmount(() => {
   resetAmount();

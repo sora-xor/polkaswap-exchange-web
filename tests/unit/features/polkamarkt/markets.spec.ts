@@ -1,3 +1,4 @@
+import { print } from 'graphql';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const indexerRequestMock = vi.hoisted(() => vi.fn());
@@ -19,6 +20,7 @@ import {
   filterMarkets,
   formatApproximateCloseDate,
   formatDateTimeLocalInput,
+  formatMarketProbability,
   getMarketDisplayStatus,
   groupHotMarketsByCategory,
   isActiveMarket,
@@ -29,15 +31,12 @@ import {
   normalizeMarketCategory,
   normalizeMarketOracle,
   parseProbability,
+  parseMarketProbability,
   rankHotPolkamarktMarkets,
   selectCardHistoryMarkets,
   validateMarketMetadata,
 } from '@/features/polkamarkt/lib/markets';
-import {
-  getPricingCurvePosition,
-  isDpmMarket,
-  pricingCurveSharePrice,
-} from '@/features/polkamarkt/lib/pricingCurve';
+import { getPricingCurvePosition, isDpmMarket, pricingCurveSharePrice } from '@/features/polkamarkt/lib/pricingCurve';
 import {
   fetchPolkamarktMarketHistory,
   marketRuntimeId,
@@ -132,9 +131,9 @@ describe('polkamarkt market helpers', () => {
       { category: 'Crypto', markets: [{ id: '2' }, { id: '4' }], totalVolume: 550 },
     ]);
 
-    expect(selectCardHistoryMarkets([liquidMarket, volumeMarket, trendingMarket], 100, 2).map((item) => item.id)).toEqual(
-      ['3', '2']
-    );
+    expect(
+      selectCardHistoryMarkets([liquidMarket, volumeMarket, trendingMarket], 100, 2).map((item) => item.id)
+    ).toEqual(['3', '2']);
   });
 
   it('derives DPM curve demand from virtual and real share reserves', () => {
@@ -245,7 +244,7 @@ describe('polkamarkt market helpers', () => {
       closeBlock: 26590569,
       status: 'Open',
     });
-    expect(runtimeMarket?.probability).toBe(0);
+    expect(runtimeMarket?.probability).toBe(49.75);
 
     const indexedMarket = baseMarket({ id: 'indexed-0', chainId: 0, volume: 5 });
     expect(mergePolkamarktMarkets([indexedMarket], [runtimeMarket as PolkamarktMarket])).toEqual([
@@ -254,7 +253,7 @@ describe('polkamarkt market helpers', () => {
     ]);
     expect(
       mergePolkamarktMarkets([indexedMarket], [{ ...(runtimeMarket as PolkamarktMarket), chainId: 0, id: '0' }])
-    ).toEqual([indexedMarket]);
+    ).toMatchObject([{ id: indexedMarket.id, chainId: 0, probability: 49.75 }]);
   });
 
   it('decodes pending early resolution reports from runtime storage', async () => {
@@ -364,6 +363,7 @@ describe('polkamarkt market helpers', () => {
       { chainId: 0, title: 'Indexed market' },
       { chainId: 1, title: 'Will GPT 5.6 ship before the market deadline?' },
     ]);
+    expect(print(indexerRequestMock.mock.calls[0][0])).toContain('orderBy: [ID_DESC]');
   });
 
   it('falls back to the legacy market query when the latest indexed schema is unavailable', async () => {
@@ -391,6 +391,7 @@ describe('polkamarkt market helpers', () => {
       { chainId: 3, title: 'Legacy indexed market' },
     ]);
     expect(indexerRequestMock).toHaveBeenCalledTimes(2);
+    expect(print(indexerRequestMock.mock.calls[1][0])).toContain('orderBy: [ID_DESC]');
   });
 
   it('filters active, finalized, search, category, and account-owned markets', () => {
@@ -496,10 +497,49 @@ describe('polkamarkt market helpers', () => {
     expect(formatApproximateCloseDate(new Date('invalid'))).toBe('');
   });
 
-  it('normalizes probability values from ratio or percentage fields', () => {
-    expect(parseProbability('0.51')).toBe(51);
+  it('uses explicit probability units and preserves sub-percent precision', () => {
+    expect(parseProbability('0.51')).toBe(0.51);
+    expect(parseProbability('0.51', 'price')).toBe(51);
+    expect(parseProbability('5986', 'bps')).toBe(59.86);
+    expect(parseProbability('1')).toBe(1);
+    expect(parseProbability('1', 'price')).toBe(100);
+    expect(parseProbability('0')).toBe(0);
     expect(parseProbability('51')).toBe(51);
-    expect(parseProbability('bad')).toBeUndefined();
+    for (const invalid of ['bad', '', ' ', null, undefined, true, [], {}, NaN, Infinity, -1, 101]) {
+      expect(parseProbability(invalid)).toBeUndefined();
+    }
+  });
+
+  it('prefers implied odds and falls back only to valid fields in their declared units', () => {
+    expect(parseMarketProbability({ impliedYesProbabilityBps: 5986, probability: 87, priceYes: 0.87 })).toBe(59.86);
+    expect(parseMarketProbability({ impliedYesProbabilityBps: 0, probability: 80 })).toBe(0);
+    expect(parseMarketProbability({ impliedYesProbabilityBps: 'bad', probability: '0.8', priceYes: 0.6 })).toBe(0.8);
+    expect(parseMarketProbability({ impliedNoProbabilityBps: 5800 })).toBe(42);
+    expect(parseMarketProbability({ probability: null, priceYes: '0.5986' })).toBeCloseTo(59.86);
+    expect(parseMarketProbability({ probability: null, priceYes: null })).toBeUndefined();
+    expect(parseMarket({ id: '42', title: 'BTC', probability: 87, impliedYesProbabilityBps: 5986 })?.probability).toBe(
+      59.86
+    );
+    expect(parseMarket({ id: '43', title: 'Senate', probability: '41.83' })?.probability).toBe(41.83);
+    expect(
+      parseMarket({ id: '43', title: 'Senate', probability: '41.83', impliedYesProbabilityBps: 'bad' })
+    ).toMatchObject({ probability: 41.83, impliedYesProbabilityBps: undefined });
+    const invalidBps = parseMarket({ id: '42', title: 'BTC', probability: 60, impliedYesProbabilityBps: 12000 });
+    expect(invalidBps).toMatchObject({ probability: 60, impliedYesProbabilityBps: undefined });
+    expect(getPricingCurvePosition(invalidBps ?? undefined).yesDemand).toBe(60);
+  });
+
+  it.each([
+    [59.86, '60%', '40%'],
+    [41.83, '42%', '58%'],
+    [50.5, '51%', '49%'],
+    [0.8, '<1%', '>99%'],
+    [1, '1%', '99%'],
+    [0, '0%', '100%'],
+    [undefined, '—', '—'],
+  ] as const)('formats complementary odds for %s', (value, yes, no) => {
+    expect(formatMarketProbability(value)).toBe(yes);
+    expect(formatMarketProbability(value, true)).toBe(no);
   });
 
   it('parses indexed market history without synthesizing missing snapshots', async () => {
@@ -509,7 +549,7 @@ describe('polkamarkt market helpers', () => {
         marketId: '7',
         timestamp: '1780229164',
         blockHeight: '10',
-        probability: '0.54',
+        probability: '54',
         priceYes: '0.54',
         priceNo: '0.46',
         liquidityUSD: '250',
@@ -529,6 +569,9 @@ describe('polkamarkt market helpers', () => {
     });
 
     expect(parseMarketHistoryPoint({ id: 'bad' })).toBeNull();
+    expect(parseMarketHistoryPoint({ id: 'low', probability: '0.8', priceYes: '0.008' })?.probability).toBe(0.8);
+    expect(parseMarketHistoryPoint({ id: 'one', probability: '1' })?.probability).toBe(1);
+    expect(parseMarketHistoryPoint({ id: 'legacy', priceYes: '0.54' })?.probability).toBe(54);
     expect(marketRuntimeId(baseMarket({ id: '42', chainId: undefined }))).toBe(42);
 
     indexerRequestMock.mockResolvedValueOnce({
@@ -559,5 +602,19 @@ describe('polkamarkt market helpers', () => {
 
     indexerRequestMock.mockResolvedValueOnce({ marketSnapshots: { edges: [] } });
     await expect(fetchPolkamarktMarketHistory(baseMarket({ probability: 51 }))).resolves.toEqual([]);
+  });
+
+  it('loads the newest history window and returns it in chronological order', async () => {
+    indexerRequestMock.mockResolvedValueOnce({
+      marketSnapshots: {
+        edges: [
+          { node: { id: 'recent', timestamp: 20, probability: 59.86 } },
+          { node: { id: 'previous', timestamp: 10, probability: 41.83 } },
+        ],
+      },
+    });
+    const history = await fetchPolkamarktMarketHistory(baseMarket(), 2);
+    expect(history.map((point) => point.id)).toEqual(['previous', 'recent']);
+    expect(print(indexerRequestMock.mock.calls[0][0])).toContain('orderBy: [TIMESTAMP_DESC]');
   });
 });

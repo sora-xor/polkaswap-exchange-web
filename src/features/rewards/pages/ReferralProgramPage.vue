@@ -245,6 +245,8 @@ const isTMA = computed(() => Boolean(settingsStore.isTMA));
 const telegramBotUrl = computed(() => settingsStore.telegramBotUrl as Nullable<string>);
 const xor = computed(() => assetsStore.xor as Nullable<AccountAsset>);
 const account = computed(() => walletStore.account as Nullable<PolkadotJsAccount>);
+const accountIdentity = computed(() => `${walletStore.accountSource ?? ''}:${account.value?.address ?? ''}`);
+let dataGeneration = 0;
 const networkFees = computed(() => walletStore.networkFees as Nullable<Record<string, CodecString>>);
 
 const referrerLinkOrCode = ref('');
@@ -476,22 +478,33 @@ const resetState = () => {
   referralsStore.reset();
 };
 
+/** Loads referral data only for the account that started this page refresh. */
 const initData = async () => {
-  if (!isLoggedIn.value) return;
+  const generation = ++dataGeneration;
+  const identity = accountIdentity.value;
+  const isCurrent = () => generation === dataGeneration && identity === accountIdentity.value && isLoggedIn.value;
+  if (!isLoggedIn.value || !account.value?.address) return;
 
   await referralsStore.getAccountReferralRewards();
+  if (!isCurrent()) return;
   await referralsStore.subscribeOnInvitedUsers();
+  if (!isCurrent()) return;
   await referralsStore.getReferrer();
+  if (!isCurrent()) return;
   await referralsStore.subscribeOnReferrer();
 };
 
-watch(isLoggedIn, async (value) => {
-  if (value) {
-    await initData();
-  } else {
+watch(
+  [isLoggedIn, accountIdentity],
+  () => {
+    dataGeneration += 1;
     resetSubscriptions();
-  }
-});
+    resetState();
+    currentPage.value = 1;
+    if (isLoggedIn.value) void withApi(initData);
+  },
+  { flush: 'sync' }
+);
 
 onMounted(() => {
   void withApi(async () => {
@@ -500,6 +513,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
+  dataGeneration += 1;
   resetSubscriptions();
   resetState();
 });

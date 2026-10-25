@@ -60,6 +60,38 @@ const unsubscribe = (subscription: Nullable<Subscription>): null => {
   return null;
 };
 
+type StakingRequestKey =
+  | 'stakingInfo'
+  | 'pendingRewards'
+  | 'activeEra'
+  | 'currentEra'
+  | 'currentEraTotalStake'
+  | 'controller'
+  | 'payee'
+  | 'nominations'
+  | 'accountLedger';
+const requestVersions = new WeakMap<object, Partial<Record<StakingRequestKey, number>>>();
+
+/** Invalidates pending reads and callbacks before a stream is replaced or reset. */
+function invalidateRequest(store: object, key: StakingRequestKey): number {
+  const versions = requestVersions.get(store) ?? {};
+  const version = (versions[key] ?? 0) + 1;
+  versions[key] = version;
+  requestVersions.set(store, versions);
+  return version;
+}
+
+/** Captures ownership across readiness waits, RPC responses, and live emissions. */
+function ownRequest(store: { stash: string }, key: StakingRequestKey, accountBound = true): () => boolean {
+  const version = invalidateRequest(store, key);
+  const stash = store.stash;
+  const chain = getConnectedChainApi();
+  return () =>
+    requestVersions.get(store)?.[key] === version &&
+    chain === getConnectedChainApi() &&
+    (!accountBound || (Boolean(stash) && stash === store.stash));
+}
+
 const StakingApiNotReadyError = 'Staking API is not ready';
 const INITIAL_SUBSCRIPTION_TIMEOUT_MS = 8_000;
 
@@ -90,7 +122,8 @@ const waitForStakingApiReady = async (): Promise<boolean> => {
 const subscribeWithInitialValue = async <T>(
   observable: Nullable<{
     subscribe: (handler: (value: T) => void, error?: (reason: unknown) => void, complete?: () => void) => Subscription;
-  }>
+  }>,
+  onValue: (value: T) => void
 ): Promise<{ subscription: Subscription; firstValue: T } | null> => {
   if (!observable) return null;
 
@@ -114,7 +147,10 @@ const subscribeWithInitialValue = async <T>(
     };
 
     subscription = observable.subscribe(
-      (value: T) => queueMicrotask(() => finish(true, value)),
+      (value: T) => {
+        onValue(value);
+        queueMicrotask(() => finish(true, value));
+      },
       () => queueMicrotask(() => finish(false)),
       () => queueMicrotask(() => finish(false))
     );
@@ -135,6 +171,23 @@ export const useStakingStore = defineStore('staking-legacy', {
     },
   },
   actions: {
+    /** Clears account-owned staking values and revokes outstanding reads before an account switch. */
+    resetAccountData(): void {
+      invalidateRequest(this, 'stakingInfo');
+      invalidateRequest(this, 'pendingRewards');
+      this.resetControllerUpdates();
+      this.resetPayeeUpdates();
+      this.resetNominationsUpdates();
+      this.resetAccountLedgerUpdates();
+      this.stakingInfo = null;
+      this.pendingRewards = null;
+      this.controller = null;
+      this.payee = null;
+      this.nominations = null;
+      this.accountLedger = null;
+      this.stakeAmount = ZeroStringValue;
+      this.selectedValidators = [];
+    },
     setStakeAmount(value: string): void {
       this.stakeAmount = value;
     },
@@ -173,18 +226,21 @@ export const useStakingStore = defineStore('staking-legacy', {
       this.activeEraStart = era.start;
     },
     resetActiveEraUpdates(): void {
+      invalidateRequest(this, 'activeEra');
       this.activeEraUpdates = unsubscribe(this.activeEraUpdates);
     },
     setCurrentEra(value: number): void {
       this.currentEra = value;
     },
     resetCurrentEraUpdates(): void {
+      invalidateRequest(this, 'currentEra');
       this.currentEraUpdates = unsubscribe(this.currentEraUpdates);
     },
     setCurrentEraTotalStake(value: string): void {
       this.currentEraTotalStake = value;
     },
     resetCurrentEraTotalStakeUpdates(): void {
+      invalidateRequest(this, 'currentEraTotalStake');
       this.currentEraTotalStakeUpdates = unsubscribe(this.currentEraTotalStakeUpdates);
     },
     setMaxNominations(value: Nullable<number>): void {
@@ -200,24 +256,28 @@ export const useStakingStore = defineStore('staking-legacy', {
       this.controller = value;
     },
     resetControllerUpdates(): void {
+      invalidateRequest(this, 'controller');
       this.controllerUpdates = unsubscribe(this.controllerUpdates);
     },
     setPayee(value: Nullable<string>): void {
       this.payee = value;
     },
     resetPayeeUpdates(): void {
+      invalidateRequest(this, 'payee');
       this.payeeUpdates = unsubscribe(this.payeeUpdates);
     },
     setNominations(value: Nullable<StashNominatorsInfo>): void {
       this.nominations = value;
     },
     resetNominationsUpdates(): void {
+      invalidateRequest(this, 'nominations');
       this.nominationsUpdates = unsubscribe(this.nominationsUpdates);
     },
     setAccountLedger(value: Nullable<AccountStakingLedger>): void {
       this.accountLedger = value;
     },
     resetAccountLedgerUpdates(): void {
+      invalidateRequest(this, 'accountLedger');
       this.accountLedgerUpdates = unsubscribe(this.accountLedgerUpdates);
     },
     async nominate(): Promise<void> {
@@ -309,10 +369,14 @@ export const useStakingStore = defineStore('staking-legacy', {
 
       return await api.staking.getPayoutNetworkFee(args);
     },
+    /** Refreshes the selected account without accepting a previous account's response. */
     async getStakingInfo(): Promise<void> {
-      if (!(await waitForStakingApiReady())) return;
+      const isCurrent = ownRequest(this, 'stakingInfo');
+      const stash = this.stash;
+      if (!(await waitForStakingApiReady()) || !isCurrent()) return;
 
-      this.setStakingInfo(await api.staking.getMyStakingInfo(this.stash));
+      const value = await api.staking.getMyStakingInfo(stash);
+      if (isCurrent()) this.setStakingInfo(value);
     },
     async getValidatorsInfo(): Promise<void> {
       const indexedValidators = await getValidatorsInfoFromIndexer();
@@ -325,10 +389,14 @@ export const useStakingStore = defineStore('staking-legacy', {
 
       this.setValidatorsInfo(await api.staking.getValidatorsInfo());
     },
+    /** Refreshes the selected account without accepting a previous account's response. */
     async getPendingRewards(): Promise<void> {
-      if (!(await waitForStakingApiReady())) return;
+      const isCurrent = ownRequest(this, 'pendingRewards');
+      const stash = this.stash;
+      if (!(await waitForStakingApiReady()) || !isCurrent()) return;
 
-      this.setPendingRewards(await api.staking.getNominatorsReward(this.stash));
+      const value = await api.staking.getNominatorsReward(stash);
+      if (isCurrent()) this.setPendingRewards(value);
     },
     async getMinNominatorBond(): Promise<void> {
       if (!(await waitForStakingApiReady())) return;
@@ -352,86 +420,125 @@ export const useStakingStore = defineStore('staking-legacy', {
     },
     async subscribeOnActiveEra(): Promise<void> {
       this.resetActiveEraUpdates();
+      const isCurrent = ownRequest(this, 'activeEra', false);
 
-      if (!(await waitForStakingApiReady())) return;
+      if (!(await waitForStakingApiReady()) || !isCurrent()) return;
 
-      const payload = await subscribeWithInitialValue(api.staking.getActiveEraObservable());
+      const payload = await subscribeWithInitialValue(api.staking.getActiveEraObservable(), (value) => {
+        if (isCurrent() && value) this.setActiveEra(value);
+      });
       if (!payload) return;
-
-      if (payload.firstValue) {
-        this.setActiveEra(payload.firstValue);
+      if (!isCurrent()) {
+        payload.subscription.unsubscribe();
+        return;
       }
-
       this.activeEraUpdates = payload.subscription;
     },
     async subscribeOnCurrentEra(): Promise<void> {
       this.resetCurrentEraUpdates();
+      const isCurrent = ownRequest(this, 'currentEra', false);
 
-      if (!(await waitForStakingApiReady())) return;
+      if (!(await waitForStakingApiReady()) || !isCurrent()) return;
 
-      const payload = await subscribeWithInitialValue(api.staking.getCurrentEraObservable());
+      const payload = await subscribeWithInitialValue(api.staking.getCurrentEraObservable(), (value) => {
+        if (isCurrent()) this.setCurrentEra(value);
+      });
       if (!payload) return;
-
-      this.setCurrentEra(payload.firstValue);
+      if (!isCurrent()) {
+        payload.subscription.unsubscribe();
+        return;
+      }
       this.currentEraUpdates = payload.subscription;
     },
     async subscribeOnCurrentEraTotalStake(): Promise<void> {
       this.resetCurrentEraTotalStakeUpdates();
+      const isCurrent = ownRequest(this, 'currentEraTotalStake', false);
 
-      if (!(await waitForStakingApiReady())) return;
+      if (!(await waitForStakingApiReady()) || !isCurrent()) return;
 
       if (this.currentEra === undefined || this.currentEra === null) {
         throw new Error('Current era is not set');
       }
 
-      const payload = await subscribeWithInitialValue(api.staking.getEraTotalStakeObservable(this.currentEra));
+      const payload = await subscribeWithInitialValue(
+        api.staking.getEraTotalStakeObservable(this.currentEra),
+        (value) => {
+          if (isCurrent()) this.setCurrentEraTotalStake(value);
+        }
+      );
       if (!payload) return;
-
-      this.setCurrentEraTotalStake(payload.firstValue);
+      if (!isCurrent()) {
+        payload.subscription.unsubscribe();
+        return;
+      }
       this.currentEraTotalStakeUpdates = payload.subscription;
     },
     async subscribeOnController(): Promise<void> {
       this.resetControllerUpdates();
+      const isCurrent = ownRequest(this, 'controller');
+      const stash = this.stash;
 
-      if (!(await waitForStakingApiReady())) return;
+      if (!(await waitForStakingApiReady()) || !isCurrent()) return;
 
-      const payload = await subscribeWithInitialValue(api.staking.getControllerObservable(this.stash));
+      const payload = await subscribeWithInitialValue(api.staking.getControllerObservable(stash), (value) => {
+        if (isCurrent()) this.setController(value);
+      });
       if (!payload) return;
-
-      this.setController(payload.firstValue);
+      if (!isCurrent()) {
+        payload.subscription.unsubscribe();
+        return;
+      }
       this.controllerUpdates = payload.subscription;
     },
     async subscribeOnPayee(): Promise<void> {
       this.resetPayeeUpdates();
+      const isCurrent = ownRequest(this, 'payee');
+      const stash = this.stash;
 
-      if (!(await waitForStakingApiReady())) return;
+      if (!(await waitForStakingApiReady()) || !isCurrent()) return;
 
-      const payload = await subscribeWithInitialValue(api.staking.getPayeeObservable(this.stash));
+      const payload = await subscribeWithInitialValue(api.staking.getPayeeObservable(stash), (value) => {
+        if (isCurrent()) this.setPayee(value);
+      });
       if (!payload) return;
-
-      this.setPayee(payload.firstValue);
+      if (!isCurrent()) {
+        payload.subscription.unsubscribe();
+        return;
+      }
       this.payeeUpdates = payload.subscription;
     },
     async subscribeOnNominations(): Promise<void> {
       this.resetNominationsUpdates();
+      const isCurrent = ownRequest(this, 'nominations');
+      const stash = this.stash;
 
-      if (!(await waitForStakingApiReady())) return;
+      if (!(await waitForStakingApiReady()) || !isCurrent()) return;
 
-      const payload = await subscribeWithInitialValue(api.staking.getNominationsObservable(this.stash));
+      const payload = await subscribeWithInitialValue(api.staking.getNominationsObservable(stash), (value) => {
+        if (isCurrent()) this.setNominations(value);
+      });
       if (!payload) return;
-
-      this.setNominations(payload.firstValue);
+      if (!isCurrent()) {
+        payload.subscription.unsubscribe();
+        return;
+      }
       this.nominationsUpdates = payload.subscription;
     },
     async subscribeOnAccountLedger(): Promise<void> {
       this.resetAccountLedgerUpdates();
+      const isCurrent = ownRequest(this, 'accountLedger');
+      const stash = this.stash;
 
-      if (!(await waitForStakingApiReady())) return;
+      if (!(await waitForStakingApiReady()) || !isCurrent()) return;
 
-      const payload = await subscribeWithInitialValue(api.staking.getAccountLedgerObservable(this.stash));
+      const payload = await subscribeWithInitialValue(api.staking.getAccountLedgerObservable(stash), (value) => {
+        if (isCurrent()) this.setAccountLedger(value);
+      });
       if (!payload) return;
-
-      this.setAccountLedger(payload.firstValue);
+      if (!isCurrent()) {
+        payload.subscription.unsubscribe();
+        return;
+      }
       this.accountLedgerUpdates = payload.subscription;
     },
   },

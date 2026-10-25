@@ -141,7 +141,7 @@
 <script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { ZeroStringValue } from '@/consts';
 import { Theme } from '@/consts/theme';
@@ -195,6 +195,8 @@ const blockNumber = computed(() => settingsStore.blockNumber);
 const networkFees = computed(() => settingsStore.networkFees as Nullable<NetworkFeesObject>);
 const libraryTheme = computed(() => (settingsStore.libraryTheme ?? Theme.LIGHT) as Theme);
 const account = computed(() => walletStore.account as Nullable<PolkadotJsAccount>);
+const accountIdentity = computed(() => `${walletStore.accountSource ?? ''}:${account.value?.address ?? ''}`);
+let dataGeneration = 0;
 const xor = computed(() => assetsStore.xor as Nullable<AccountAsset>);
 const currencySymbol = computed(() => walletStore.currencySymbol);
 const accountAssets = computed(() => walletStore.accountAssets as Array<AccountAsset>);
@@ -285,41 +287,50 @@ const resetStats = () => {
  * Fetches the point system metrics for the connected wallet.
  */
 const initData = async () => {
-  if (!isLoggedIn.value) {
-    resetStats();
-    return;
-  }
-
-  await referralsStore.getAccountReferralRewards();
-
+  const generation = ++dataGeneration;
+  const identity = accountIdentity.value;
   const accountAddress = account.value?.address;
   const endBlock = blockNumber.value;
+  const isCurrent = () => generation === dataGeneration && identity === accountIdentity.value && isLoggedIn.value;
 
-  if (!accountAddress || !endBlock) {
-    resetStats();
-    return;
-  }
+  resetStats();
+  if (!isLoggedIn.value || !accountAddress || !endBlock) return;
 
-  const burnEntries = await fetchBurnXorData(0, endBlock, accountAddress);
+  await referralsStore.getAccountReferralRewards();
+  if (!isCurrent()) return;
+
+  const [burnEntries, bridges, swaps, deposits, withdrawals] = await Promise.all([
+    fetchBurnXorData(0, endBlock, accountAddress),
+    fetchBridgeData(0, endBlock, accountAddress),
+    fetchCount(0, endBlock, accountAddress, CountType.Swap),
+    fetchCount(0, endBlock, accountAddress, CountType.PoolDeposit),
+    fetchCount(0, endBlock, accountAddress, CountType.PoolWithdraw),
+  ]);
+  if (!isCurrent()) return;
+
   burnData.value = burnEntries.reduce((acc, { amount }) => acc.add(amount), Zero);
-
-  bridgeData.value = await fetchBridgeData(0, endBlock, accountAddress);
-  totalSwapTxs.value = await fetchCount(0, endBlock, accountAddress, CountType.Swap);
-  poolDepositCount.value = await fetchCount(0, endBlock, accountAddress, CountType.PoolDeposit);
-  poolWithdrawCount.value = await fetchCount(0, endBlock, accountAddress, CountType.PoolWithdraw);
+  bridgeData.value = bridges;
+  totalSwapTxs.value = swaps;
+  poolDepositCount.value = deposits;
+  poolWithdrawCount.value = withdrawals;
 };
 
 onMounted(() => {
   void withApi(initData);
 });
 
-watch(isLoggedIn, async (value) => {
-  if (!value) {
+watch(
+  [isLoggedIn, accountIdentity],
+  () => {
+    dataGeneration += 1;
     resetStats();
-    return;
-  }
+    if (isLoggedIn.value) void withLoading(initData);
+  },
+  { flush: 'sync' }
+);
 
-  await withLoading(initData);
+onBeforeUnmount(() => {
+  dataGeneration += 1;
 });
 </script>
 

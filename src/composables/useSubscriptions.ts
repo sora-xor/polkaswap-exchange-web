@@ -62,8 +62,20 @@ function resolveParentLoading(source?: ParentLoadingSource): () => boolean {
   return () => toBoolean(source.value);
 }
 
-function runAsyncHandlers(handlers: SubscriptionHandler<AsyncFnWithoutArgs>): Promise<unknown[]> {
-  return Promise.all(handlers.value.map((handler) => (handler ?? NOOP_ASYNC)()));
+/** Waits for current startup handlers and skips handlers from a superseded lifecycle. */
+async function runAsyncHandlers(
+  handlers: SubscriptionHandler<AsyncFnWithoutArgs>,
+  isCurrent: () => boolean
+): Promise<void> {
+  const results = await Promise.allSettled(
+    handlers.value.map((handler) =>
+      Promise.resolve().then(() => {
+        if (isCurrent()) return (handler ?? NOOP_ASYNC)();
+      })
+    )
+  );
+  const failure = results.find((result): result is PromiseRejectedResult => result.status === 'rejected');
+  if (failure) throw failure.reason;
 }
 
 function runHandlers(handlers: SubscriptionHandler<FnWithoutArgs>): Promise<unknown[]> {
@@ -71,41 +83,48 @@ function runHandlers(handlers: SubscriptionHandler<FnWithoutArgs>): Promise<unkn
 }
 
 /**
- * Serializes subscription teardown/startup and deduplicates starts until an
- * intervening reset changes the requested lifecycle generation.
+ * Invalidates the old lifecycle immediately so a stalled account request cannot
+ * block a new account. Store reset handlers must invalidate in-flight callbacks.
  */
-function createSubscriptionLifecycle(runStart: AsyncFnWithoutArgs, runReset: AsyncFnWithoutArgs) {
-  let tail = Promise.resolve();
+function createSubscriptionLifecycle(
+  runStart: (isCurrent: () => boolean) => Promise<void>,
+  runReset: AsyncFnWithoutArgs
+) {
+  const pending = ref(false);
+  let pendingOperation: Promise<void> | null = null;
   let generation = 0;
   let pendingStart: Nullable<{ generation: number; promise: Promise<void> }> = null;
   let resetRequested = false;
   let lastReset = Promise.resolve();
 
-  const enqueue = (task: AsyncFnWithoutArgs): Promise<void> => {
-    const result = tail.then(task, task);
-    tail = result.then(NOOP, NOOP);
+  const trackOperation = (result: Promise<void>): Promise<void> => {
+    pending.value = true;
+    pendingOperation = result;
+    const finish = () => {
+      if (pendingOperation === result) pending.value = false;
+    };
+    void result.then(finish, finish);
     return result;
-  };
-
-  const rememberStart = (requestedGeneration: number, promise: Promise<void>): Promise<void> => {
-    const entry = { generation: requestedGeneration, promise };
-    pendingStart = entry;
-    void promise.then(
-      () => {
-        if (pendingStart === entry) pendingStart = null;
-      },
-      () => {
-        if (pendingStart === entry) pendingStart = null;
-      }
-    );
-    return promise;
   };
 
   const update = (): Promise<void> => {
     if (pendingStart?.generation === generation) return pendingStart.promise;
 
     resetRequested = false;
-    return rememberStart(generation, enqueue(runStart));
+    const requestedGeneration = generation;
+    const promise = trackOperation(
+      lastReset.then(async () => {
+        if (requestedGeneration !== generation) return;
+        await runStart(() => requestedGeneration === generation);
+      })
+    );
+    const entry = { generation: requestedGeneration, promise };
+    pendingStart = entry;
+    const finish = () => {
+      if (pendingStart === entry) pendingStart = null;
+    };
+    void promise.then(finish, finish);
+    return promise;
   };
 
   const reset = (): Promise<void> => {
@@ -113,23 +132,18 @@ function createSubscriptionLifecycle(runStart: AsyncFnWithoutArgs, runReset: Asy
 
     resetRequested = true;
     generation += 1;
-    lastReset = enqueue(runReset);
+    // Invoke reset synchronously, before Vue can render the new account's page.
+    lastReset = trackOperation(runReset());
     return lastReset;
   };
 
   const refresh = (): Promise<void> => {
     resetRequested = false;
-    const requestedGeneration = ++generation;
-    return rememberStart(
-      requestedGeneration,
-      enqueue(async () => {
-        await runReset();
-        await runStart();
-      })
-    );
+    reset();
+    return update();
   };
 
-  return { update, reset, refresh };
+  return { update, reset, refresh, pending };
 }
 
 /**
@@ -139,24 +153,18 @@ function createSubscriptionLifecycle(runStart: AsyncFnWithoutArgs, runReset: Asy
  */
 export function useSubscriptions(options: UseSubscriptionsOptions = {}) {
   if (isTestEnvironment) {
-    const loading = ref(false);
     const trackLogin = ref(options.trackLogin ?? true);
     const trackAccount = ref(options.trackAccount ?? true);
     const trackConnection = ref(options.trackConnection ?? true);
     const startHandlers = ref<Array<AsyncFnWithoutArgs | undefined>>([...(options.startSubscriptions ?? [])]);
     const resetHandlers = ref<Array<FnWithoutArgs | undefined>>([...(options.resetSubscriptions ?? [])]);
     const parentLoadingResolver = resolveParentLoading(options.parentLoading);
-    const subscriptionsDataLoading = computed(() => loading.value || parentLoadingResolver());
     const walletStore = useWalletStore();
     const settingsStore = useSettingsStore();
 
-    const runStartHandlers = async () => {
-      loading.value = true;
-      try {
-        await runAsyncHandlers(startHandlers);
-      } finally {
-        loading.value = false;
-      }
+    const runStartHandlers = async (isCurrent: () => boolean) => {
+      if (!isCurrent()) return;
+      await runAsyncHandlers(startHandlers, isCurrent);
     };
 
     const runResetHandlers = async () => {
@@ -164,6 +172,8 @@ export function useSubscriptions(options: UseSubscriptionsOptions = {}) {
     };
 
     const lifecycle = createSubscriptionLifecycle(runStartHandlers, runResetHandlers);
+    const loading = computed(() => lifecycle.pending.value);
+    const subscriptionsDataLoading = computed(() => loading.value || parentLoadingResolver());
 
     if (options.autoStart ?? true) {
       void lifecycle.update();
@@ -199,11 +209,15 @@ export function useSubscriptions(options: UseSubscriptionsOptions = {}) {
       void restartSubscriptions(value);
     });
 
-    const stopAccountWatcher = watch(accountIdentity, (value, previous) => {
-      if (!trackLogin.value || !trackAccount.value) return;
-      if (!(value && previous) || value === previous) return;
-      void lifecycle.refresh();
-    });
+    const stopAccountWatcher = watch(
+      accountIdentity,
+      (value, previous) => {
+        if (!trackLogin.value || !trackAccount.value) return;
+        if (!(value && previous) || value === previous) return;
+        void lifecycle.refresh();
+      },
+      { flush: 'sync' }
+    );
 
     const stopConnectionWatcher = watch(nodeIsConnected, (value) => {
       if (!trackConnection.value) return;
@@ -256,7 +270,9 @@ export function useSubscriptions(options: UseSubscriptionsOptions = {}) {
 
   const parentLoadingResolver = resolveParentLoading(options.parentLoading);
   const loadingApi = useLoading({ parentLoading: options.parentLoading });
-  const { loading, withApi, withParentLoading } = loadingApi;
+  const { withApi, withParentLoading } = loadingApi;
+  // A superseded startup must not keep the current account's loading flag set.
+  const startupLoadingApi = useLoading({ parentLoading: options.parentLoading });
 
   const isLoggedIn = resolveBooleanSource(options.loginSource, () => walletStore.isLoggedIn);
   const accountIdentity = computed(
@@ -264,12 +280,11 @@ export function useSubscriptions(options: UseSubscriptionsOptions = {}) {
   );
   const nodeIsConnected = resolveBooleanSource(options.connectionSource, () => settingsStore.nodeIsConnected ?? false);
 
-  const subscriptionsDataLoading = computed(() => loading.value || parentLoadingResolver());
-
-  const runStartSubscriptions = async (): Promise<void> => {
-    await withApi(async () => {
-      await withParentLoading(async () => {
-        await runAsyncHandlers(startHandlers);
+  const runStartSubscriptions = async (isCurrent: () => boolean): Promise<void> => {
+    await startupLoadingApi.withApi(async () => {
+      await startupLoadingApi.withParentLoading(async () => {
+        if (!isCurrent()) return;
+        await runAsyncHandlers(startHandlers, isCurrent);
       });
     });
   };
@@ -279,6 +294,8 @@ export function useSubscriptions(options: UseSubscriptionsOptions = {}) {
   };
 
   const lifecycle = createSubscriptionLifecycle(runStartSubscriptions, runResetSubscriptions);
+  const loading = computed(() => loadingApi.loading.value || lifecycle.pending.value);
+  const subscriptionsDataLoading = computed(() => loading.value || lifecycle.pending.value || parentLoadingResolver());
   const updateSubscriptions = lifecycle.update;
   const resetSubscriptions = lifecycle.reset;
 
@@ -303,11 +320,15 @@ export function useSubscriptions(options: UseSubscriptionsOptions = {}) {
     }
 
     if (!stopAccountWatcher) {
-      stopAccountWatcher = watch(accountIdentity, (value, previous) => {
-        if (!trackLogin.value || !trackAccount.value) return;
-        if (!(value && previous) || value === previous) return;
-        void lifecycle.refresh();
-      });
+      stopAccountWatcher = watch(
+        accountIdentity,
+        (value, previous) => {
+          if (!trackLogin.value || !trackAccount.value) return;
+          if (!(value && previous) || value === previous) return;
+          void lifecycle.refresh();
+        },
+        { flush: 'sync' }
+      );
     }
 
     if (!stopConnectionWatcher) {

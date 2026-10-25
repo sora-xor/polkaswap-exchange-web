@@ -495,7 +495,13 @@ export class AssetsModule<T> {
       }
       if (!this.getAsset(address)) {
         this.accountAssets.push(asset);
-        this.subscribeToAssetBalance(asset);
+        try {
+          this.subscribeToAssetBalance(asset);
+        } catch (error) {
+          // A retry must rebuild the failed stream instead of accepting its cached value.
+          this.accountAssets = this.accountAssets.filter((item) => item !== asset);
+          throw error;
+        }
       }
     } finally {
       if (this.pendingAssetLoads.get(address) === loadId) {
@@ -644,8 +650,11 @@ export class AssetsModule<T> {
     if (!currentAddresses.length) return;
 
     const addToAccountAssetsListPromises = currentAddresses.map((assetId) => this.addToAccountAssetsList(assetId));
-    await Promise.allSettled(addToAccountAssetsListPromises);
+    const results = await Promise.allSettled(addToAccountAssetsListPromises);
     if (!this.isAccountAssetsContextCurrent(accountAddress, generation)) return;
+    // A partial portfolio must not be reported as a successfully loaded balance.
+    const failed = results.find((result): result is PromiseRejectedResult => result.status === 'rejected');
+    if (failed) throw failed.reason;
     // sort assets by currentAddresses list
     this.accountAssets.sort((a, b) => {
       return currentAddresses.indexOf(a.address) - currentAddresses.indexOf(b.address);

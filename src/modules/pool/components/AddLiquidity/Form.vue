@@ -253,16 +253,16 @@ const updateSubscriptions = () => poolStore.updateAddLiquiditySubscriptions();
 const resetSubscriptions = () => poolStore.resetAddLiquiditySubscriptions();
 const setFocusedField = (value: FocusedField) => poolStore.setAddLiquidityFocusedField(value);
 
+// Reset account-owned balances before the new identity can render or reuse a confirmation.
 watch(
-  nodeIsConnected,
-  (connected) => {
-    if (connected) {
-      void updateSubscriptions();
-    } else {
-      void resetSubscriptions();
-    }
+  [nodeIsConnected, isLoggedIn, () => `${walletStore.accountSource ?? ''}:${walletStore.address ?? ''}`],
+  ([connected]) => {
+    void resetSubscriptions();
+    confirmDialogVisible.value = false;
+    closeWarningFeeDialog();
+    if (connected) void updateSubscriptions();
   },
-  { immediate: true }
+  { immediate: true, flush: 'sync' }
 );
 
 onBeforeUnmount(() => {

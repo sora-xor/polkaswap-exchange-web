@@ -68,16 +68,12 @@ describe('substrate sdk poolXyk account liquidity subscriptions', () => {
     return reserves.get(key)!;
   };
 
-  const createPoolXykModule = () =>
+  const createPoolXykModule = (accountPair = { address: 'account-address' }) =>
     new PoolXykModule({
       account: {
-        pair: {
-          address: 'account-address',
-        },
+        pair: accountPair,
       },
-      accountPair: {
-        address: 'account-address',
-      },
+      accountPair,
       apiRx: {
         query: {
           poolXYK: {
@@ -131,6 +127,103 @@ describe('substrate sdk poolXyk account liquidity subscriptions', () => {
     expect(poolXyk.accountLiquidity.map(({ firstAddress, secondAddress }) => [firstAddress, secondAddress])).toEqual([
       ['base', 'quote-b'],
     ]);
+  });
+
+  it('cancels pending LP balances before the first emission when the account changes', async () => {
+    const pair = { address: 'account-a' };
+    const poolXyk = createPoolXykModule(pair);
+    const oldBalance = new Subject<string>();
+    vi.spyOn(poolXyk, 'getAccountPoolBalanceObservable').mockReturnValueOnce(oldBalance);
+    const discoveryA = poolXyk.getUserPoolsSubscription();
+    emitAccountPools(['quote-a']);
+    expect(oldBalance.observed).toBe(true);
+
+    poolXyk.clearAccountLiquidity();
+    pair.address = 'account-b';
+    expect(oldBalance.observed).toBe(false);
+    const discoveryB = poolXyk.getUserPoolsSubscription();
+    const readyB = vi.fn();
+    poolXyk.accountLiquidityLoaded!.subscribe(readyB);
+    await Promise.resolve();
+    await Promise.resolve();
+    expect(readyB).not.toHaveBeenCalled();
+    expect(poolXyk.accountLiquidity).toEqual([]);
+
+    const loadedB = firstValueFrom(poolXyk.accountLiquidityLoaded!);
+    emitAccountPools(['quote-b']);
+    await loadedB;
+    expect(poolXyk.accountLiquidity.map(({ secondAddress }) => secondAddress)).toEqual(['quote-b']);
+    pair.address = 'account-a';
+    const discoveryA2 = poolXyk.getUserPoolsSubscription();
+    const loadedA2 = firstValueFrom(poolXyk.accountLiquidityLoaded!);
+    emitAccountPools(['quote-c']);
+    await loadedA2;
+    oldBalance.next('999');
+    expect(poolXyk.accountLiquidity.map(({ secondAddress }) => secondAddress)).toEqual(['quote-c']);
+    discoveryA.unsubscribe();
+    discoveryB.unsubscribe();
+    discoveryA2.unsubscribe();
+    poolXyk.clearAccountLiquidity();
+  });
+
+  it('keeps discovery loading until shared pending pool balance subscriptions emit', async () => {
+    const poolXyk = createPoolXykModule();
+    const balance = new Subject<string>();
+    vi.spyOn(poolXyk, 'getAccountPoolBalanceObservable').mockReturnValueOnce(balance);
+    const discovery = poolXyk.getUserPoolsSubscription();
+    const ready = vi.fn();
+    poolXyk.accountLiquidityLoaded!.subscribe(ready);
+    emitAccountPools(['quote-a']);
+    emitAccountPools(['quote-a']);
+    await Promise.resolve();
+    await Promise.resolve();
+    expect(ready).not.toHaveBeenCalled();
+
+    const loaded = firstValueFrom(poolXyk.accountLiquidityLoaded!);
+    balance.next('10');
+    await loaded;
+    expect(poolXyk.accountLiquidity).toHaveLength(1);
+    discovery.unsubscribe();
+    poolXyk.clearAccountLiquidity();
+  });
+
+  it.each(['error', 'complete'] as const)(
+    'rejects readiness when a pool balance stream ends with %s before loading',
+    async (ending) => {
+      const poolXyk = createPoolXykModule();
+      const balance = new Subject<string>();
+      vi.spyOn(poolXyk, 'getAccountPoolBalanceObservable').mockReturnValueOnce(balance);
+      const discovery = poolXyk.getUserPoolsSubscription();
+      const loaded = firstValueFrom(poolXyk.accountLiquidityLoaded!);
+      const failedLoad = expect(loaded).rejects.toThrow(ending === 'error' ? 'RPC failed' : 'before its first balance');
+      emitAccountPools(['quote-a']);
+      if (ending === 'error') balance.error(new Error('RPC failed'));
+      else balance.complete();
+      await failedLoad;
+      expect(balance.observed).toBe(false);
+      expect(poolXyk.accountLiquidity).toEqual([]);
+      discovery.unsubscribe();
+    }
+  );
+
+  it('clears cached LP rows when subscribing for a different account without a prior logout', async () => {
+    const pair = { address: 'account-a' };
+    const poolXyk = createPoolXykModule(pair);
+    const discoveryA = poolXyk.getUserPoolsSubscription();
+    const loadedA = firstValueFrom(poolXyk.accountLiquidityLoaded!);
+    emitAccountPools(['quote-a']);
+    await loadedA;
+    expect(poolXyk.accountLiquidity).toHaveLength(1);
+
+    pair.address = 'account-b';
+    const discoveryB = poolXyk.getUserPoolsSubscription();
+    expect(poolXyk.accountLiquidity).toEqual([]);
+    const loadedB = firstValueFrom(poolXyk.accountLiquidityLoaded!);
+    emitAccountPools([]);
+    await loadedB;
+    expect(poolXyk.accountLiquidity).toEqual([]);
+    discoveryA.unsubscribe();
+    discoveryB.unsubscribe();
   });
 
   it('estimates minted pool tokens using each reserve asset precision', () => {

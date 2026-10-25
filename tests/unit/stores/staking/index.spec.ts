@@ -122,9 +122,11 @@ const shared = vi.hoisted(() => {
   };
 });
 
-vi.mock('@/stores/wallet', () => ({
-  useWalletStore: () => shared.walletStore,
-}));
+vi.mock('@/stores/wallet', async () => {
+  const { reactive } = await import('vue');
+  shared.walletStore = reactive(shared.walletStore);
+  return { useWalletStore: () => shared.walletStore };
+});
 
 vi.mock('@/indexer/queries/staking/validators', () => ({
   getValidatorsInfoFromIndexer: shared.getIndexedValidatorsInfo,
@@ -381,6 +383,113 @@ describe('staking store', () => {
     expect(shared.payeeUnsubscribe).toHaveBeenCalledTimes(1);
     expect(shared.nominationsUnsubscribe).toHaveBeenCalledTimes(1);
     expect(shared.accountLedgerUnsubscribe).toHaveBeenCalledTimes(1);
+  });
+
+  it.each([
+    ['ActiveEra', 'activeEra', 'getActiveEraObservable', { index: 12, start: 200 }, 12],
+    ['CurrentEra', 'currentEra', 'getCurrentEraObservable', 13, 13],
+    ['CurrentEraTotalStake', 'currentEraTotalStake', 'getEraTotalStakeObservable', '2000', '2000'],
+    ['Controller', 'controller', 'getControllerObservable', 'controller-new', 'controller-new'],
+    ['Payee', 'payee', 'getPayeeObservable', 'payee-new', 'payee-new'],
+    [
+      'Nominations',
+      'nominations',
+      'getNominationsObservable',
+      { targets: ['validator-new'] },
+      { targets: ['validator-new'] },
+    ],
+    ['AccountLedger', 'accountLedger', 'getAccountLedgerObservable', { active: '123' }, { active: '123' }],
+  ] as const)('keeps %s live and ignores callbacks after reset', async (suffix, field, method, update, expected) => {
+    let emit!: (value: unknown) => void;
+    const stop = vi.fn();
+    shared[method].mockImplementationOnce(
+      () =>
+        ({
+          subscribe(callback: (value: unknown) => void) {
+            emit = callback;
+            callback(update);
+            return { unsubscribe: stop };
+          },
+        }) as never
+    );
+    const store = useStakingStore();
+    store.currentEra = 1;
+    await store[`subscribeOn${suffix}`]();
+    // A second emission must update the store, rather than only satisfying initialization.
+    store[field] = null as never;
+    emit(update);
+    expect(store[field]).toEqual(expected);
+
+    store[`reset${suffix}Updates`]();
+    store[field] = null as never;
+    emit(update);
+    expect(store[field]).toBeNull();
+    expect(stop).toHaveBeenCalledTimes(1);
+  });
+
+  it('revokes delayed account streams and snapshots when account data is reset', async () => {
+    let emitLedger!: (value: unknown) => void;
+    let resolveInfo!: (value: Awaited<ReturnType<typeof shared.getMyStakingInfo>>) => void;
+    let resolveRewards!: (value: Awaited<ReturnType<typeof shared.getNominatorsReward>>) => void;
+    const stop = vi.fn();
+    shared.getAccountLedgerObservable.mockImplementationOnce(() => ({
+      subscribe(callback: (value: unknown) => void) {
+        emitLedger = callback;
+        return { unsubscribe: stop };
+      },
+    }));
+    shared.getMyStakingInfo.mockReturnValueOnce(new Promise((resolve) => (resolveInfo = resolve)));
+    shared.getNominatorsReward.mockReturnValueOnce(new Promise((resolve) => (resolveRewards = resolve)));
+    const store = useStakingStore();
+    store.controller = 'old-controller';
+    store.payee = 'old-payee';
+    store.accountLedger = { active: '456' } as never;
+    store.stakeAmount = '456';
+    const pending = Promise.all([store.subscribeOnAccountLedger(), store.getStakingInfo(), store.getPendingRewards()]);
+    await vi.waitFor(() => expect(emitLedger).toBeDefined());
+
+    store.resetAccountData();
+    expect(store.accountLedger).toBeNull();
+    expect(store.controller).toBeNull();
+    expect(store.payee).toBeNull();
+    expect(store.stakeAmount).toBe('0');
+    emitLedger({ active: '999' });
+    resolveInfo({ totalStake: '999', activeStake: '999', redeemAmount: '0', myValidators: [] });
+    resolveRewards([{ era: 99 }]);
+    await pending;
+    expect(store.stakingInfo).toBeNull();
+    expect(store.pendingRewards).toBeNull();
+    expect(store.accountLedger).toBeNull();
+    expect(store.accountLedgerUpdates).toBeNull();
+    expect(stop).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not start old account reads after waiting for API readiness', async () => {
+    let resolveReady!: () => void;
+    shared.apiRef.isReady = new Promise<void>((resolve) => (resolveReady = resolve));
+    const store = useStakingStore();
+    const pending = Promise.all([store.getStakingInfo(), store.getPendingRewards(), store.subscribeOnController()]);
+    shared.walletStore.account = { address: 'stash-2' };
+    shared.walletStore.address = 'stash-2';
+    resolveReady();
+    await pending;
+    expect(shared.getMyStakingInfo).not.toHaveBeenCalled();
+    expect(shared.getNominatorsReward).not.toHaveBeenCalled();
+    expect(shared.getControllerObservable).not.toHaveBeenCalled();
+  });
+
+  it('keeps new account staking info when the old account responds last', async () => {
+    let resolveOld!: (value: Awaited<ReturnType<typeof shared.getMyStakingInfo>>) => void;
+    shared.getMyStakingInfo.mockReturnValueOnce(new Promise((resolve) => (resolveOld = resolve)));
+    const store = useStakingStore();
+    const oldRequest = store.getStakingInfo();
+    await vi.waitFor(() => expect(shared.getMyStakingInfo).toHaveBeenCalledWith('stash-1'));
+    shared.walletStore.account = { address: 'stash-2' };
+    shared.walletStore.address = 'stash-2';
+    await store.getStakingInfo();
+    resolveOld({ totalStake: '999', activeStake: '999', redeemAmount: '0', myValidators: [] });
+    await oldRequest;
+    expect(store.stakingInfo?.totalStake).toBe('10');
   });
 
   it('times out and unsubscribes when a staking stream never emits', async () => {

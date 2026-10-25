@@ -49,3 +49,79 @@ describe('MstModule.getMstAccount', () => {
     expect(root.formatAddress).not.toHaveBeenCalled();
   });
 });
+
+describe('MstModule pending transaction ownership', () => {
+  it('disposes a subscription that finishes setup after it was stopped', async () => {
+    let completeSetup!: (unsubscribe: () => void) => void;
+    const unsubscribe = vi.fn();
+    const root = {
+      account: { pair: { address: 'first' } },
+      api: {
+        rpc: {
+          chain: {
+            subscribeNewHeads: vi.fn(
+              () =>
+                new Promise<() => void>((resolve) => {
+                  completeSetup = resolve;
+                })
+            ),
+          },
+        },
+      },
+    };
+    const mst = new MstModule(root as never);
+    const setup = mst.startPendingTxsSubscription('mst-first');
+
+    mst.stopPendingTxsSubscription();
+    completeSetup(unsubscribe);
+    await setup;
+
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
+  });
+
+  it('discards delayed reads from a replaced account subscription', async () => {
+    const callbacks: Array<() => Promise<void>> = [];
+    const unsubscribe = vi.fn();
+    const root = {
+      account: { pair: { address: 'first' } },
+      api: {
+        rpc: {
+          chain: {
+            subscribeNewHeads: vi.fn(async (callback: () => Promise<void>) => {
+              callbacks.push(callback);
+              return unsubscribe;
+            }),
+          },
+        },
+      },
+    };
+    const mst = new MstModule(root as never);
+    let finishRead!: (transactions: never) => void;
+    const read = vi
+      .spyOn(mst, 'subscribeOnPendingTxs')
+      .mockImplementationOnce(
+        () =>
+          new Promise((resolve) => {
+            finishRead = resolve;
+          })
+      )
+      .mockResolvedValueOnce([{ id: 'current' }] as never);
+    const updates = vi.fn();
+    const subscription = mst.pendingTxsUpdated.subscribe(updates);
+    await mst.startPendingTxsSubscription('mst-first');
+    const staleRead = callbacks[0]();
+
+    root.account.pair.address = 'second';
+    await mst.startPendingTxsSubscription('mst-second');
+    finishRead([{ id: 'stale' }] as never);
+    await staleRead;
+    await callbacks[0]();
+    expect(updates).not.toHaveBeenCalled();
+    expect(read).toHaveBeenCalledTimes(1);
+
+    await callbacks[1]();
+    expect(updates).toHaveBeenCalledWith([{ id: 'current' }]);
+    subscription.unsubscribe();
+    mst.stopPendingTxsSubscription();
+  });
+});

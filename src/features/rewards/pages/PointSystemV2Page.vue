@@ -85,7 +85,7 @@
 
 <script lang="ts" setup>
 import { BalanceType, XOR, KUSD, VXOR } from '@sora-substrate/sdk/build/assets/consts';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { pointSystemCategory } from '@/consts/pointSystem';
 import { fetchAccountMeta } from '@/indexer/queries/pointSystem';
@@ -143,6 +143,9 @@ const referralRewards = computed(() => referralsStore.referralRewards as Nullabl
 const accountAssets = computed(() => walletStore.accountAssets as Array<AccountAsset>);
 const accountLiquidity = computed(() => poolStore.accountLiquidity as Array<AccountLiquidity>);
 const account = computed(() => walletStore.account as Nullable<PolkadotJsAccount>);
+const accountIdentity = computed(() => `${walletStore.accountSource ?? ''}:${account.value?.address ?? ''}`);
+let dataGeneration = 0;
+let liquidityGeneration = 0;
 const getAsset = (addr?: string) => assetsStore.assetDataByAddress(addr) as Nullable<AccountAsset>;
 
 const totalPoints = computed(() => {
@@ -258,21 +261,21 @@ const updatePointsForCards = (): void => {
  * Loads the point system snapshot for the active account.
  */
 const initData = async (): Promise<void> => {
-  if (!isLoggedIn.value) {
-    resetPointData();
-    return;
-  }
+  const generation = ++dataGeneration;
+  const identity = accountIdentity.value;
+  const accountAddress = account.value?.address;
+  const isCurrent = () => generation === dataGeneration && identity === accountIdentity.value && isLoggedIn.value;
+
+  resetPointData();
+  if (!isLoggedIn.value || !accountAddress) return;
 
   await referralsStore.getAccountReferralRewards();
+  if (!isCurrent()) return;
 
-  const accountAddress = account.value?.address;
-  if (!accountAddress) {
-    resetPointData();
-    return;
-  }
+  const metadata = await fetchAccountMeta(accountAddress);
+  if (!isCurrent()) return;
 
-  accountPointSystems.value = await fetchAccountMeta(accountAddress);
-
+  accountPointSystems.value = metadata;
   updatePointsForCards();
 };
 
@@ -280,7 +283,9 @@ const initData = async (): Promise<void> => {
  * Starts long-lived liquidity subscriptions without holding the page-level loading overlay open.
  */
 const subscribeAccountLiquidity = async (): Promise<void> => {
+  const generation = ++liquidityGeneration;
   await poolStore.subscribeOnAccountLiquidityList();
+  if (generation !== liquidityGeneration) return;
   await poolStore.subscribeOnAccountLiquidityUpdates();
 };
 
@@ -289,16 +294,30 @@ onMounted(() => {
   void withApi(initData);
 });
 
-watch(isLoggedIn, async (value) => {
-  if (!value) {
+watch(
+  [isLoggedIn, accountIdentity],
+  () => {
+    dataGeneration += 1;
     resetPointData();
-    return;
-  }
+    liquidityGeneration += 1;
+    void poolStore.unsubscribeAccountLiquidityListAndUpdates();
+    if (isLoggedIn.value) {
+      void subscribeAccountLiquidity().catch(console.error);
+      void withLoading(initData);
+    }
+  },
+  { flush: 'sync' }
+);
 
-  await withLoading(initData);
+watch([accountLiquidity, accountAssets, referralRewards, () => walletStore.fiatPriceObject], updatePointsForCards, {
+  deep: true,
 });
 
-watch(accountLiquidity, updatePointsForCards, { deep: true });
+onBeforeUnmount(() => {
+  dataGeneration += 1;
+  liquidityGeneration += 1;
+  void poolStore.unsubscribeAccountLiquidityListAndUpdates();
+});
 </script>
 
 <style lang="scss">
@@ -467,7 +486,7 @@ $points-card-min-width: 258px;
   &__card-grid {
     display: grid;
     gap: $inner-spacing-small;
-    grid-template-columns: repeat(auto-fit, minmax($points-card-min-width, 1fr));
+    grid-template-columns: #{'repeat(auto-fit, minmax(#{$points-card-min-width}, 1fr))'};
     padding-bottom: $inner-spacing-mini;
     width: 100%;
   }

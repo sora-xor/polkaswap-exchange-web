@@ -40,7 +40,12 @@
                 :value="fiatBalance"
               ></formatted-amount>
             </div>
-            <s-button class="s-typography-button--small" size="small" @click="openSendDialog">
+            <s-button
+              class="s-typography-button--small"
+              size="small"
+              :disabled="balance === null"
+              @click="openSendDialog"
+            >
               <s-icon name="finance-send-24" size="16"></s-icon>
               Send
             </s-button>
@@ -200,7 +205,7 @@ import StatsSupplyChart from '@/components/shared/Widget/SupplyChart.vue';
 import { createAsyncComponent } from '@/shared/ui/async';
 import { DashboardPageNames } from '@/features/dashboard/consts';
 import type { OwnedAsset } from '@/features/dashboard/types';
-import { PageNames, ZeroStringValue } from '@/consts';
+import { PageNames } from '@/consts';
 import { BreakpointClass } from '@/consts/layout';
 import {
   FontSizeRate as WalletFontSizeRate,
@@ -250,15 +255,16 @@ const route = useRoute();
 const router = useRouter();
 const { t } = useTranslation();
 const { formatCodecNumber, getFiatAmountByCodecString } = useFormattedAmount();
-const { isLoggedIn } = useInternalConnect();
+const { isLoggedIn, soraAddress } = useInternalConnect();
 const dashboardStore = useDashboardStore();
 const settingsStore = useSettingsStore();
 
 const responsiveClass = computed(() => settingsStore.screenBreakpointClass as BreakpointClass);
 const assets = computed(() => dashboardStore.ownedAssets as OwnedAsset[]);
 
-const balance = ref<CodecString>(ZeroStringValue);
-const supply = ref<CodecString>(ZeroStringValue);
+const balance = ref<Nullable<CodecString>>(null);
+const supply = ref<Nullable<CodecString>>(null);
+let subscriptionGeneration = 0;
 const showSendDialog = ref(false);
 const showBurnDialog = ref(false);
 const showMintDialog = ref(false);
@@ -273,18 +279,18 @@ const asset = computed<Nullable<OwnedAsset>>(() => {
 });
 
 const formattedBalance = computed(() =>
-  balance.value ? formatCodecNumber(balance.value, asset.value?.decimals) : '0'
+  balance.value !== null ? formatCodecNumber(balance.value, asset.value?.decimals) : '—'
 );
 const fiatBalance = computed(() =>
-  asset.value && balance.value ? getFiatAmountByCodecString(balance.value, asset.value) : ZeroStringValue
+  asset.value && balance.value !== null ? getFiatAmountByCodecString(balance.value, asset.value) : ''
 );
 const hasFiat = computed(() => Boolean(fiatBalance.value));
 
 const formattedSupply = computed(() =>
-  supply.value ? formatCodecNumber(supply.value, asset.value?.decimals) : ZeroStringValue
+  supply.value !== null ? formatCodecNumber(supply.value, asset.value?.decimals) : '—'
 );
 const fiatSupply = computed(() =>
-  asset.value && supply.value ? getFiatAmountByCodecString(supply.value, asset.value) : ZeroStringValue
+  asset.value && supply.value !== null ? getFiatAmountByCodecString(supply.value, asset.value) : ''
 );
 
 const isAddLiquidityDisabled = computed(() => !asset.value?.decimals);
@@ -315,25 +321,40 @@ function goToAddLiquidity(): void {
   router.push({ name: PageNames.AddLiquidity, params: { first: XOR.symbol, second: asset.value.address } });
 }
 
+/** Invalidates old callbacks and removes amounts and dialogs belonging to the previous account. */
 function stopAssetSubscriptions(): void {
+  subscriptionGeneration += 1;
+  balance.value = null;
+  supply.value = null;
+  showSendDialog.value = false;
+  showMintDialog.value = false;
+  showBurnDialog.value = false;
   balanceSubscription.value?.unsubscribe?.();
   supplySubscription.value?.unsubscribe?.();
   balanceSubscription.value = null;
   supplySubscription.value = null;
 }
 
+/** Binds balance and supply callbacks to this account, asset, and subscription generation. */
 async function subscribeToCurrentAsset(): Promise<void> {
   stopAssetSubscriptions();
 
   const target = asset.value;
-  if (!target) return;
+  const address = soraAddress.value;
+  const generation = subscriptionGeneration;
+  const isCurrent = (): boolean =>
+    generation === subscriptionGeneration &&
+    isLoggedIn.value &&
+    address === soraAddress.value &&
+    target?.address === asset.value?.address;
+  if (!target || !isLoggedIn.value || !address) return;
 
   balanceSubscription.value = api.assets.getAssetBalanceObservable(target).subscribe((result) => {
-    balance.value = result.transferable;
+    if (isCurrent()) balance.value = result.transferable;
   });
 
   supplySubscription.value = api.apiRx.query.tokens.totalIssuance(target.address).subscribe((result) => {
-    supply.value = result.toString();
+    if (isCurrent()) supply.value = result.toString();
   });
 }
 

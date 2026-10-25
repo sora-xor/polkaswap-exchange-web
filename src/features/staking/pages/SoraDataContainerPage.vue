@@ -59,15 +59,15 @@ const {
   resetActiveEraUpdates,
   resetCurrentEraUpdates,
   resetCurrentEraTotalStakeUpdates,
-  resetControllerUpdates,
-  resetPayeeUpdates,
-  resetNominationsUpdates,
-  resetAccountLedgerUpdates,
+  resetAccountData,
 } = useSoraStaking();
 
 const parentLoadingFlag = computed(() => Boolean(props.parentLoading));
+let subscriptionGeneration = 0;
 
+/** Prevents delayed initial reads from recreating streams after account reset or navigation. */
 const startStakingSubscriptions: AsyncFnWithoutArgs = async () => {
+  const generation = ++subscriptionGeneration;
   await Promise.all([
     getStakingInfo(),
     getValidatorsInfo(),
@@ -83,17 +83,16 @@ const startStakingSubscriptions: AsyncFnWithoutArgs = async () => {
     subscribeOnNominations(),
     subscribeOnAccountLedger(),
   ]);
+  if (generation !== subscriptionGeneration) return;
   await subscribeOnCurrentEraTotalStake();
 };
 
 const resetStakingSubscriptions = async () => {
+  subscriptionGeneration += 1;
   resetActiveEraUpdates();
   resetCurrentEraUpdates();
   resetCurrentEraTotalStakeUpdates();
-  resetControllerUpdates();
-  resetPayeeUpdates();
-  resetNominationsUpdates();
-  resetAccountLedgerUpdates();
+  resetAccountData();
 };
 
 const { loading, subscriptionsDataLoading, updateSubscriptions } = useSubscriptions({
