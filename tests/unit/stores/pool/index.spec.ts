@@ -451,6 +451,89 @@ describe('pool store', () => {
     expect(store.addLiquidity.secondTokenValue).toBe('0.5');
   });
 
+  it.each([
+    {
+      firstDecimals: 18,
+      secondDecimals: 6,
+      reserveA: '1000000000000000000',
+      reserveB: '1000000000',
+      editFirst: false,
+      amount: '0.000001',
+      expected: '0.000000001',
+    },
+    {
+      firstDecimals: 6,
+      secondDecimals: 18,
+      reserveA: '1000000000',
+      reserveB: '1000000000000000000',
+      editFirst: true,
+      amount: '0.000001',
+      expected: '0.000000001',
+    },
+    {
+      firstDecimals: 6,
+      secondDecimals: 18,
+      reserveA: '1000000',
+      reserveB: '3000000000000000000',
+      editFirst: false,
+      amount: '1',
+      expected: '0.333333',
+    },
+    {
+      firstDecimals: 18,
+      secondDecimals: 6,
+      reserveA: '3000000000000000000',
+      reserveB: '1000000',
+      editFirst: true,
+      amount: '1',
+      expected: '0.333333',
+    },
+    {
+      firstDecimals: 18,
+      secondDecimals: 18,
+      reserveA: '3000000000000000000',
+      reserveB: '1000000000000000000',
+      editFirst: true,
+      amount: '0.000000000000000003',
+      expected: '0.000000000000000001',
+    },
+  ])('rounds only the counter asset after applying the reserve ratio: %#', (example) => {
+    shared.assetsStore.assetDataByAddress.mockImplementation((address?: string) => {
+      if (address === 'base') return { address: 'base', symbol: 'BASE', decimals: example.firstDecimals };
+      if (address === 'quote') return { address: 'quote', symbol: 'QUOTE', decimals: example.secondDecimals };
+      return null;
+    });
+    const store = usePoolStore();
+    store.addLiquidity.firstTokenAddress = 'base';
+    store.addLiquidity.secondTokenAddress = 'quote';
+    store.addLiquidity.reserve = [example.reserveA, example.reserveB];
+
+    if (example.editFirst) {
+      store.addLiquidity.firstTokenValue = example.amount;
+      store.updateAddLiquiditySecondTokenValue();
+      expect(store.addLiquidity.secondTokenValue).toBe(example.expected);
+    } else {
+      store.addLiquidity.secondTokenValue = example.amount;
+      store.updateAddLiquidityFirstTokenValue();
+      expect(store.addLiquidity.firstTokenValue).toBe(example.expected);
+    }
+  });
+
+  it('preserves the user-specified starting ratio while pool reserves are zero', () => {
+    const store = usePoolStore();
+    store.addLiquidity.firstTokenAddress = 'base';
+    store.addLiquidity.secondTokenAddress = 'quote';
+    store.addLiquidity.reserve = ['0', '0'];
+    store.addLiquidity.firstTokenValue = '2';
+    store.addLiquidity.secondTokenValue = '3';
+
+    store.updateAddLiquidityFirstTokenValue();
+    store.updateAddLiquiditySecondTokenValue();
+
+    expect(store.addLiquidity.firstTokenValue).toBe('2');
+    expect(store.addLiquidity.secondTokenValue).toBe('3');
+  });
+
   it('subscribes native pool state and strategic apy without the legacy bridge', async () => {
     const store = usePoolStore();
 

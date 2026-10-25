@@ -2608,7 +2608,10 @@ describe('wallet store actions', () => {
 
   it('keeps local mutation-backed wallet state in sync', async () => {
     const walletStore = useWalletStore();
-    const unlockPair = vi.fn();
+    const accountPair = { isLocked: true };
+    const unlockPair = vi.fn(() => {
+      accountPair.isLocked = false;
+    });
 
     walletStore.addPriceAlert({ token: 'XOR' } as any);
     walletStore.editPriceAlert({ alert: { token: 'VAL' }, position: 1 } as any);
@@ -2625,7 +2628,7 @@ describe('wallet store actions', () => {
     await walletStore.selectIndexer('polkaswap');
     walletStore.setSignTxDialogDisabled(true);
     walletStore.setAccountPassphrase({ address: 'alice', password: 'secret' });
-    await walletStore.beforeTransactionSign({ address: 'alice', unlockPair } as any);
+    await walletStore.beforeTransactionSign({ address: 'alice', accountPair, unlockPair } as any);
 
     expect(walletStore.alerts).toEqual([{ token: 'XOR' }]);
     expect(walletStore.allowTopUpAlert).toBe(true);
@@ -2648,6 +2651,7 @@ describe('wallet store actions', () => {
     expect(createFiatPriceSubscriptionMock).toHaveBeenCalledTimes(1);
     expect(walletStore.indexerType).toBe('polkaswap');
     expect(unlockPair).toHaveBeenCalledWith('secret');
+    expect(accountPair.isLocked).toBe(false);
   });
 
   it('clears fiat prices when the configured indexer price refresh fails', async () => {

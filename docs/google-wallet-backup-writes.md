@@ -10,6 +10,20 @@ Previously `GoogleDriveApi.updateFile()` resolved every `request.execute()` call
 
 ## Verification and limits
 
+Recovery preserves the exact SORA Nexus account identity. The mapper prefers a
+stored keyring JSON export and decrypts it before checking the key, rather than
+trusting its address header or recreating a root account from optional mnemonic
+metadata. Mnemonic- and seed-only backups retain their Substrate derivation path
+and supported key type. The recovered identity must match both the backup and
+the account selected from Drive; alternate SS58 prefixes remain valid. A mismatch,
+incorrect password or unsupported key type stops recovery. Temporary recovered
+key pairs are locked after creating the verified export, including on failure.
+
+The recovery unit tests use only Polkadot's public development phrase and
+synthetic seeds. They cover root and derived accounts, supported key types,
+JSON precedence, SS58 aliases, forged JSON headers, selected-account mismatches
+and incorrect passwords without accessing Google Drive.
+
 Focused unit tests mock providers only: asynchronous API rejection, malformed success responses, matching IDs, a successful explicit retry, one-request creation, no deletion or metadata-only file creation, unchanged account cache on failure, and retained create credentials/seed. No Google login, customer account, actual Drive write, signature or financial transaction is used.
 
 This prevents new metadata-only files; it does not automatically repair or delete artifacts left by older versions. A lost response after Google accepts a complete upload can leave a complete duplicate backup on retry. Provider authentication, cold mobile popup behavior, account switching, and live device recovery need separate validation. Ordinary web bootstrap still registers Google conditionally; the local SORA wallet is registered only in desktop mode.

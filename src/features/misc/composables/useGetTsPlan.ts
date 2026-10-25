@@ -11,6 +11,8 @@ import {
 import {
   clearGetTsPlan,
   emptyGetTsPlan,
+  getTsSwapAsset,
+  getTsSwapAssetAddress,
   isGetTsTransactionReference,
   patchGetTsPlan,
   parseGetTsPlan,
@@ -91,7 +93,12 @@ export function useGetTsPlan(purpose: MaybeRefOrGetter<GetTsPurpose> = 'ts') {
   /** Persists the exact reviewed row across reloads, without storing wallet addresses or success. */
   function rememberBridgeDraft(row: EthHistory): boolean {
     const draft = createGetTsBridgeDraft(row, selected.value);
-    if (!draft || draft.amount !== current.value.daiAmount) return false;
+    if (
+      !draft ||
+      draft.amount !== current.value.daiAmount ||
+      row.assetAddress !== getTsSwapAssetAddress(getTsSwapAsset(current.value))
+    )
+      return false;
     const references = { ...current.value.references };
     delete references.bridge;
     delete references.swap;
@@ -120,7 +127,7 @@ export function useGetTsPlan(purpose: MaybeRefOrGetter<GetTsPurpose> = 'ts') {
   function rememberSwapDraft(row: HistoryItem, genesis: string): boolean {
     if (current.value.swapDraft || current.value.bridgeDraft) return false;
     const draft = createGetTsSwapDraft(row, genesis, selected.value);
-    if (!draft) return false;
+    if (!draft || row.assetAddress !== getTsSwapAssetAddress(getTsSwapAsset(current.value))) return false;
     const references = { ...current.value.references };
     delete references.swap;
     delete references.burn;

@@ -1,5 +1,5 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import { DAI, XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { DAI, ETH, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import type { TonswapBurnSnapshot } from '@/indexer/queries/tonswapBurn';
 import { evaluateTonswapLiquidity, SORA_FUNDING_MAINNET_GENESIS, type TonswapFeeEvidence } from './tonswapLiquidity';
@@ -11,6 +11,7 @@ import {
 } from './tonswapConversion';
 import { isSwapPriceImpactAllowed } from '@/features/swap/services/priceImpactLimit';
 import type { GetTsPurpose, GetTsSource } from './getTsFlow';
+import type { GetTsSwapAsset } from './getTsPlan';
 
 export type GetTsPaymentAsset = 'USD' | 'ETH' | 'USDT' | 'TON' | 'DAI' | 'XOR';
 export type GetTsPlanState = 'idle' | 'loading' | 'ready' | 'blocked' | 'unavailable';
@@ -31,12 +32,7 @@ export type GetTsPlanReason =
   | 'cap-exceeded'
   | 'expired';
 export type GetTsPlanLimitation =
-  | 'indicative'
-  | 'ethereum-gas'
-  | 'ton-gas'
-  | 'provider-handoff'
-  | 'card-provider'
-  | 'native-ton';
+  'indicative' | 'ethereum-gas' | 'ton-gas' | 'provider-handoff' | 'card-provider' | 'native-ton';
 export interface GetTsPlanFee {
   stage: 'provider' | 'swap' | 'burn';
   amount: string;
@@ -64,6 +60,10 @@ export interface GetTsPlanPreviewResult extends GetTsPlanRequest {
   providerMinimumUsd?: string;
   daiAmount?: string;
   daiIntent?: string;
+  /** `ETH` when the route swaps ETH on SORA (card purchases of XOR); DAI routes leave it out and set `daiAmount`. */
+  swapAsset?: GetTsSwapAsset;
+  /** ETH amount quoted for the SORA swap when `swapAsset` is ETH, before Ethereum gas. */
+  swapAmount?: string;
   eligibleXor?: string;
   excessXor?: string;
   indexedThroughBlock?: number;
@@ -82,6 +82,7 @@ export interface GetTsPlanDependencies {
   checkMainnet?: () => boolean;
   snapshot?: () => Promise<TonswapBurnSnapshot>;
   quoteDai?: (amount: string) => Promise<{ amount: string; amountWithoutImpact: string }>;
+  quoteEth?: (amount: string) => Promise<{ amount: string; amountWithoutImpact: string }>;
   conversion?: (
     source: TonswapConversionSource,
     target: TonswapConversionTarget,
@@ -140,12 +141,19 @@ function isMainnet(): boolean {
   return !!chain?.isConnected && chain.genesisHash?.toString().toLowerCase() === SORA_FUNDING_MAINNET_GENESIS;
 }
 /** Requests a read-only SMART DAI/XOR quote from the verified SORA connection. */
-export async function quoteDai(amount: string): Promise<{ amount: string; amountWithoutImpact: string }> {
+export function quoteDai(amount: string): Promise<{ amount: string; amountWithoutImpact: string }> {
+  return quoteXor(DAI.address, amount);
+}
+/** Requests a read-only SMART ETH/XOR quote (bridged ETH on SORA) from the verified SORA connection. */
+export function quoteEth(amount: string): Promise<{ amount: string; amountWithoutImpact: string }> {
+  return quoteXor(ETH.address, amount);
+}
+async function quoteXor(asset: string, amount: string): Promise<{ amount: string; amountWithoutImpact: string }> {
   const chain = api.connection?.api;
   if (!isMainnet() || !chain) throw new Error('Mainnet unavailable');
   const quote = await chain.rpc.liquidityProxy.quote(
     0,
-    DAI.address,
+    asset,
     XOR.address,
     new FPNumber(amount).toCodecString(),
     'WithDesiredInput',
@@ -207,7 +215,11 @@ function knownFee(codec: unknown): FPNumber | null {
     ? FPNumber.fromCodecValue(codec, 18)
     : null;
 }
-/** Computes a conservative, short-lived plan without connecting or inspecting a user's wallet. */
+/**
+ * Computes a conservative, short-lived plan without connecting or inspecting a user's wallet.
+ * Card purchases of XOR swap the delivered ETH on SORA (no conversion to DAI). The card cost review also asks for
+ * `{ source: 'sora', paymentAsset: 'ETH', purpose: 'xor' }`: the ETH that reaches SORA after Ethereum gas.
+ */
 export async function requestGetTsPlanPreview(
   request: GetTsPlanRequest,
   dependencies: GetTsPlanDependencies
@@ -222,7 +234,10 @@ export async function requestGetTsPlanPreview(
     feasible: blocked ? false : null,
     reason,
   });
-  if (!getTsPlanAssets(request.source).includes(request.paymentAsset)) return stop('unsupported-asset', true);
+  const bridgedEth = purpose === 'xor' && request.source === 'sora' && request.paymentAsset === 'ETH';
+  const ethSwap = bridgedEth || (purpose === 'xor' && request.source === 'card');
+  if (!getTsPlanAssets(request.source).includes(request.paymentAsset) && !bridgedEth)
+    return stop('unsupported-asset', true);
   if (!request.amount) return emptyGetTsPlan(request);
   if (!isGetTsPlanAmount(request.amount, request.paymentAsset)) return stop('invalid-amount', true);
   if (request.source === 'ton' && request.paymentAsset === 'TON') {
@@ -278,7 +293,7 @@ export async function requestGetTsPlanPreview(
         return stop('card-provider');
       }
     }
-    if (request.paymentAsset !== 'DAI') {
+    if (!ethSwap && request.paymentAsset !== 'DAI') {
       try {
         const readConversion = dependencies.conversion ?? conversion;
         const consume = (quote: PreviewConversion): string => {
@@ -331,12 +346,19 @@ export async function requestGetTsPlanPreview(
         );
       }
     }
-    result.daiAmount = daiAmount;
-    result.daiIntent = daiIntent;
+    const swapAmount = ethSwap ? conversionAmount : daiAmount;
+    if (ethSwap) {
+      result.swapAsset = 'ETH';
+      result.swapAmount = swapAmount;
+    } else {
+      result.daiAmount = daiAmount;
+      result.daiIntent = daiIntent;
+    }
     try {
-      const quote = await bounded((dependencies.quoteDai ?? quoteDai)(daiAmount), dependencies.signal);
+      const readQuote = ethSwap ? (dependencies.quoteEth ?? quoteEth) : (dependencies.quoteDai ?? quoteDai);
+      const quote = await bounded(readQuote(swapAmount), dependencies.signal);
       const checked = evaluateTonswapLiquidity(
-        daiAmount,
+        swapAmount,
         quote.amount,
         quote.amountWithoutImpact,
         dependencies.fees,
@@ -398,7 +420,7 @@ export interface GetTsCardQuote {
 export function parseGetTsQuoteJson(text: string): unknown {
   if (text.length > 100_000) throw new Error('Oversized quote');
   let encoded = '';
-  for (let index = 0; index < text.length; ) {
+  for (let index = 0; index < text.length;) {
     if (text[index] === '"') {
       const start = index++;
       while (index < text.length) {
@@ -441,8 +463,7 @@ export async function requestGetTsCardQuote(
   if (!response.ok) throw new Error('Card quote unavailable');
   const value = parseGetTsQuoteJson(await response.text()) as Record<string, unknown>;
   const crypto = value?.quoteCurrency as
-    | { code?: string; metadata?: { chainId?: string; networkCode?: string; contractAddress?: string } }
-    | undefined;
+    { code?: string; metadata?: { chainId?: string; networkCode?: string; contractAddress?: string } } | undefined;
   if (
     value?.baseCurrencyCode !== 'usd' ||
     value?.quoteCurrencyCode !== 'eth' ||
@@ -463,9 +484,12 @@ export async function requestGetTsCardQuote(
   const totalUsd = natural('totalAmount');
   if (!new FPNumber(ethAmount).gt(FPNumber.ZERO) || !new FPNumber(totalUsd).gt(FPNumber.ZERO))
     throw new Error('Empty card quote');
-  const fees = ['feeAmount', 'extraFeeAmount', 'networkFeeAmount'].map(
-    (field): GetTsPlanFee => ({ stage: 'provider', amount: natural(field), symbol: 'USD', included: true })
-  );
+  const fees = ['feeAmount', 'extraFeeAmount', 'networkFeeAmount'].map((field): GetTsPlanFee => ({
+    stage: 'provider',
+    amount: natural(field),
+    symbol: 'USD',
+    included: true,
+  }));
   const sum = fees.reduce(
     (total, fee) => total.add(new FPNumber(fee.amount)),
     new FPNumber(natural('baseCurrencyAmount'))

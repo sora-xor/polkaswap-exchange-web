@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { effectScope, nextTick, reactive, ref } from 'vue';
 import { Operation, type HistoryItem } from '@sora-substrate/sdk';
-import { DAI, XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { DAI, ETH, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import {
   matchGetTsSwapHistory,
   readGetTsSwapProgress,
@@ -215,6 +215,34 @@ describe('Get TS verified swap progress', () => {
     expect(matchGetTsSwapHistory([row], hash, 'another')).toBeNull();
     expect(matchGetTsSwapHistory([row], block, 'sora-one')).toBeNull();
     expect(matchGetTsSwapHistory([{ ...row, asset2Address: DAI.address }], hash, 'sora-one')).toBeNull();
+  });
+  it('reads an ETH → XOR purchase swap, whose exchange must sell the same ETH', async () => {
+    const ethRow = { ...row, assetAddress: ETH.address };
+    expect(matchGetTsSwapHistory([ethRow], hash, 'sora-one')).toEqual(ethRow);
+    const ethCall = {
+      ...extrinsic(),
+      method: { section: 'liquidityProxy', method: 'swap', args: [0, ETH.address, XOR.address] },
+    };
+    const exchange = (input: string) =>
+      event('liquidityProxy', 'Exchange', [
+        'sora-one',
+        '0',
+        input,
+        XOR.address,
+        '6200000000000000',
+        '1500000000000000000',
+      ]);
+    calls.block.mockResolvedValueOnce({ block: { header: header(10, block), extrinsics: [ethCall] } });
+    calls.events.mockResolvedValueOnce([
+      event('system', 'ExtrinsicSuccess'),
+      exchange(ETH.address),
+      event('xorFee', 'FeeWithdrawn', ['sora-one', '10000000000000000']),
+    ]);
+    expect(await read(ethRow)).toMatchObject({ state: 'received', xorReceived: '1.49' });
+    // An exchange of another asset inside the ETH swap is not this purchase's output.
+    calls.block.mockResolvedValueOnce({ block: { header: header(10, block), extrinsics: [ethCall] } });
+    calls.events.mockResolvedValueOnce([event('system', 'ExtrinsicSuccess'), exchange(DAI.address)]);
+    expect((await read(ethRow)).state).toBe('unavailable');
   });
   it('requires actual finalized inclusion and exact swap events before reporting received', async () => {
     expect(await read()).toMatchObject({ state: 'received', reference: hash, blockId: block, xorReceived: '1.49' });

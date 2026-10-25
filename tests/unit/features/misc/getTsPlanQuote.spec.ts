@@ -102,16 +102,26 @@ describe('amount-first Get TS plan', () => {
   });
   it('keeps generic card outcomes qualified by gas and bound to live mainnet evidence', async () => {
     const cardQuote = async () => ({ ethAmount: '0.03', totalUsd: '100', fees: [], expiresAt: 31000 });
+    // Buy XOR swaps the card's ETH on SORA: no conversion to DAI on Ethereum.
+    const conversionQuote = vi.fn(async () => conversion);
+    const quoteEth = vi.fn(async () => ({ amount: amount('100'), amountWithoutImpact: amount('102') }));
+    const quoteDai = vi.fn();
     const result = await requestGetTsPlanPreview(
       { source: 'card', paymentAsset: 'USD', amount: '100', purpose: 'xor' },
-      { ...deps(), cardQuote, conversion: async () => conversion }
+      { ...deps(), cardQuote, conversion: conversionQuote, quoteEth, quoteDai }
     );
     expect(result).toMatchObject({
       state: 'ready',
       paymentEthAmount: '0.03',
+      swapAsset: 'ETH',
+      swapAmount: '0.03',
       spendableXor: '97.019',
       costCoverage: 'partial',
     });
+    expect(result.daiAmount).toBeUndefined();
+    expect(quoteEth).toHaveBeenCalledWith('0.03');
+    expect(conversionQuote).not.toHaveBeenCalled();
+    expect(quoteDai).not.toHaveBeenCalled();
     expect(result.limitations).toContain('ethereum-gas');
     const checkMainnet = vi.fn().mockReturnValueOnce(true).mockReturnValue(false);
     expect(await requestGetTsPlanPreview({ ...sora, purpose: 'xor' }, { ...deps(), checkMainnet })).toMatchObject({
@@ -121,6 +131,26 @@ describe('amount-first Get TS plan', () => {
     expect(
       await requestGetTsPlanPreview({ ...sora, purpose: 'xor' }, { ...deps(), fees: { swapFeeCodec: '0' } })
     ).toMatchObject({ reason: 'fees-unavailable', state: 'unavailable' });
+  });
+  it('lets Buy XOR swap ETH on SORA up to 15% price impact, the card cost review’s bridged ETH included', async () => {
+    const quoteEth = vi.fn(async () => ({ amount: amount('86'), amountWithoutImpact: amount('100') }));
+    const bridged = { source: 'sora', paymentAsset: 'ETH', amount: '0.00994', purpose: 'xor' } as const;
+    // 14% impact passes for Buy XOR.
+    expect(await requestGetTsPlanPreview(bridged, { ...deps(), quoteEth })).toMatchObject({
+      state: 'ready',
+      swapAsset: 'ETH',
+      priceImpact: '14',
+    });
+    // More than 15% is blocked.
+    quoteEth.mockResolvedValue({ amount: amount('84'), amountWithoutImpact: amount('100') });
+    expect(await requestGetTsPlanPreview(bridged, { ...deps(), quoteEth })).toMatchObject({
+      state: 'blocked',
+      reason: 'price-impact',
+    });
+    // ETH already on SORA is not a payment method anyone can pick, and TS purchases never swap ETH.
+    expect(await requestGetTsPlanPreview({ ...bridged, purpose: 'ts' }, { ...deps(), quoteEth })).toMatchObject({
+      reason: 'unsupported-asset',
+    });
   });
   it('never treats zero fees or missing mainnet as free transactions', async () => {
     expect(await requestGetTsPlanPreview(sora, { ...deps(), fees: { swapFeeCodec: '0' } })).toMatchObject({

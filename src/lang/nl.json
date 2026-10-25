@@ -4711,28 +4711,35 @@
             "reserved": "ETH bewaard voor geschatte netwerkkosten",
             "charge": "Jij betaalt",
             "bridge": "Conservatief bedrag van DAI voor de brug",
+            "bridgeEth": "Naar SORA verzonden ETH",
             "convert": "ETH beschikbaar voor conversie",
             "provider": "Kosten van de kaartaanbieder zijn inbegrepen in het budget van USD",
             "conversionFee": "Kosten voor conversieprovider",
             "conversionGas": "Conversie gasreserve",
             "details": "Zie het tariefoverzicht",
             "bridgeGas": "DAI goedkeuring en overbruggingsgasreserve",
+            "bridgeEthGas": "Gasreserve voor de overdracht via de brug",
             "bridgeFee": "Aparte DAI overbruggingsvergoeding",
             "reserveExplanation": "Netwerkreserves gebruiken actuele tariefgegevens met een marge. Ze zijn afkomstig van de met een kaart gefinancierde ETH; Voor deze schatting is geen bestaand ETH-saldo vereist. Ongebruikte reserves blijven in uw Ethereum-portemonnee.",
             "bridgeExplanation": "Voor de normale inkomende DAI-overboeking gelden geen afzonderlijke DAI-kosten. Ethereum-goedkeuring en overdrachtsgas zijn hierboven gereserveerd; bridge-timing en latere kosten kunnen veranderen.",
+            "bridgeEthExplanation": "Voor de ETH-overdracht naar SORA geldt geen aparte brugvergoeding. Het Ethereum-gas ervoor is hierboven gereserveerd; de timing van de brug kan veranderen.",
             "nativeSwapFee": "SORA swapvergoeding gereserveerd voor XOR output",
             "limits": "Deze controle vervalt na 30 seconden. Beschikbaarheid van de kaart, de definitieve offerte van de aanbieder en latere portemonneebeoordelingen zijn nog steeds van toepassing. Kaartverwerking kan langer duren dan deze schatting, dus prijzen en kosten worden vóór elke transactie opnieuw gecontroleerd; levering wordt door deze schatting niet gegarandeerd.",
             "existing": "Bestaande portemonnee ETH, uitgesloten van dit budget",
             "nativeTsFees": "SORA ruil- en brandkosten gereserveerd voor XOR uitvoer",
+            "priceImpact": "Prijsimpact van de wissel op SORA",
             "refresh": "Vernieuw de kostencontrole",
             "errors": {
                 "wallet": "Verbind de beoogde Ethereum- en SORA-accounts op het hoofdnet en vernieuw vervolgens deze controle.",
                 "simulation": "We konden deze conversie niet simuleren voor uw account. Ververs voordat u betaalt; er is geen transactie verzonden.",
                 "budget": "Er blijft voor dit kaartbudget niet genoeg ETH over na de geschatte conversie- en overbruggingskosten. Controleer het bedrag voordat u betaalt.",
+                "budgetEth": "Er blijft voor dit kaartbudget niet genoeg ETH over na het geschatte gas voor de brug. Controleer het bedrag voordat u betaalt.",
                 "gas": "De huidige Ethereum-netwerkkosten zijn niet beschikbaar. Vernieuw voordat u betaalt.",
                 "provider": "De kaartaanbieder kon dit exacte budget van USD niet opgeven. Ververs of bekijk het bedrag voordat u betaalt.",
                 "liquidity": "De resterende DAI kan momenteel niet voldoen aan de oorspronkelijke liquiditeits- en kostencontrole van XOR. Controleer het bedrag of vernieuw het voordat u betaalt.",
+                "liquidityEth": "De ETH die op SORA aankomt, kan momenteel niet voldoen aan de liquiditeits- en kostencontrole van XOR. Controleer het bedrag of vernieuw voordat u betaalt.",
                 "bridge": "De inkomende DAI-brug of de huidige kostencontrole zijn niet beschikbaar. Vernieuw voordat u betaalt.",
+                "bridgeEth": "De ETH-brug naar SORA of de huidige kostencontrole zijn niet beschikbaar. Vernieuw voordat u betaalt.",
                 "conversion": "De conversie van ETH naar DAI kan momenteel niet worden geverifieerd binnen de prijsimpactlimiet van 5%. Vernieuw voordat u betaalt.",
                 "expired": "Deze kostencontrole is verlopen. Vernieuw voordat u betaalt."
             },
@@ -4986,7 +4993,7 @@
         "walletsDescription": "Uw XOR wordt bewaard in deze SORA portemonnee. Houd toegang ertoe en bescherm uw herstelinformatie.",
         "claimWallet": "SORA ontvangende portemonnee",
         "createClaimWallet": "Maak of koppel uw SORA portemonnee",
-        "swapDescription": "Uw DAI-bedrag is ingevuld. Bekijk de meest recente offerte en netwerkkosten om XOR in uw SORA-portemonnee te ontvangen.",
+        "swapDescription": "Uw {asset}-bedrag is ingevuld. Bekijk de meest recente offerte en netwerkkosten om XOR in uw SORA-portemonnee te ontvangen.",
         "initialEstimate": "Initiële schatting · vernieuwd vóór de ruil",
         "receivingNotice": "XOR wordt afgeleverd in uw SORA portemonnee. U kunt het vasthouden, verzenden of gebruiken nadat de ruil is bevestigd.",
         "receivedTitle": "XOR ontvangen",
@@ -4998,7 +5005,7 @@
         "swapReceived": "Wissel bevestigd. XOR is ontvangen door uw SORA portemonnee.",
         "existingXor": "Bekijk bestaande XOR in mijn portemonnee",
         "routes": {
-            "card": "Kaart → ETH op Ethereum → DAI → overboeken naar SORA → XOR in uw portemonnee. Vereist Ethereum- en SORA-portemonnees. MoonPay controleert de geschiktheid, identiteitscontroles, minimumbedragen en definitieve vergoedingen.",
+            "card": "Kaart → ETH op Ethereum → overboeken naar SORA → ETH wisselen voor XOR in je portemonnee. Alleen een SORA-portemonnee is nodig: een tijdelijke Ethereum-portemonnee op deze pagina verzendt de ETH namens je naar SORA. MoonPay controleert de geschiktheid, identiteitscontroles, minimumbedragen en definitieve vergoedingen.",
             "ethereum": "ETH of USDT op Ethereum mainnet → DAI → overboeken naar SORA → XOR in uw portemonnee. Bestaande Ethereum DAI slaat de conversie over. Bewaar ETH voor netwerkkosten.",
             "ton": "Native TON heeft eerst een externe TON-naar-USDT-wissel nodig. USDT op TON → ETH op Ethereum via Symbiosis → DAI → overboeken naar SORA → XOR in uw portemonnee. De provider verzorgt de TON-overdracht en het herstel ervan. Bewaar TON en ETH voor netwerkkosten.",
             "sora": "DAI in uw SORA portemonnee → wissel naar XOR. De schatting houdt rekening met de swapvergoeding van SORA."
@@ -5014,6 +5021,7 @@
             "xorBudget": "XOR staat al in uw SORA portemonnee",
             "cardEth": "MoonPay schat momenteel dat {eth} ETH is afgeleverd. Bewaar wat ETH voor gas; Als u dit aan vergoedingen besteedt, wordt het uiteindelijke bedrag van XOR verlaagd.",
             "method": "Dit is een indicatief plan, dat elke 30 seconden wordt vernieuwd. Schattingen omvatten een conservatieve conversie- en slippagebuffer. Providerbedragen, gas en tarieven kunnen vóór de definitieve beoordeling worden gewijzigd.",
+            "impact": "Huidige {asset} → XOR prijsimpact: {impact}%. De limiet is {limit}%.",
             "notice": "Deze route verwerft XOR op het SORA hoofdnet. Controleer elke transactie voordat u ondertekent.",
             "reason": {
                 "fees-insufficient": "Dit bedrag zou na de swapvergoeding geen XOR besteedbaar zijn. Probeer een grotere hoeveelheid.",
@@ -5025,7 +5033,8 @@
             "allowed": "Deze schatting voldoet aan de prijsimpactlimiet en laat XOR na de geschatte swapvergoeding over. Tarieven en vergoedingen kunnen veranderen.",
             "feeReserve": "Geschatte swapvergoeding: {fees} XOR. Conservatief besteedbaar bedrag: {spendable} XOR.",
             "feesUnavailable": "Wachten op de huidige swapvergoeding van SORA mainnet.",
-            "feesInsufficient": "Dit bedrag zou na de swapvergoeding geen XOR besteedbaar zijn. Verhoog het bedrag van DAI en controleer het opnieuw; het moet ook binnen de prijsimpactlimiet van 5% blijven."
+            "feesInsufficient": "Dit bedrag zou na de swapvergoeding geen XOR besteedbaar zijn. Verhoog het bedrag van DAI en controleer het opnieuw; het moet ook binnen de prijsimpactlimiet van 15% blijven.",
+            "blocked": "De prijsimpact is groter dan 15%. Probeer een kleiner bedrag of wacht op meer liquiditeit."
         },
         "return": "Terug naar kopen XOR",
         "resumeTitle": "Ga door met kopen XOR",
@@ -5060,25 +5069,134 @@
             "useUsdt": "In plaats daarvan met USDT betalen",
             "next": "Wat er nu gebeurt",
             "steps": {
+                "walletsCard": "Koppel een SORA-wallet. Op het volgende scherm kun je er een aanmaken. Je hebt geen Ethereum-wallet nodig.",
                 "walletsEthereum": "Koppel een Ethereum-wallet, zoals MetaMask, en een SORA-wallet. Op het volgende scherm kun je een SORA-wallet aanmaken.",
                 "walletSora": "Koppel je SORA-wallet.",
                 "walletsTon": "Koppel je TON-, Ethereum- en SORA-wallets.",
-                "card": "Betaal met je kaart bij MoonPay. MoonPay stuurt ETH naar je Ethereum-wallet.",
+                "card": "Betaal met je kaart bij MoonPay. MoonPay stuurt ETH naar een tijdelijke portemonnee op deze pagina.",
                 "ton": "Verplaats je USDT van TON naar Ethereum in de app van de aanbieder.",
                 "convert": "Keur in je Ethereum-wallet de wissel naar DAI en de overdracht naar SORA goed.",
+                "sendCard": "Deze pagina verzendt namens je de ETH naar SORA.",
                 "transfer": "Keur in je Ethereum-wallet de overdracht van je DAI naar SORA goed.",
                 "swap": "Keur in je SORA-wallet de wissel naar XOR goed. Je XOR komt in die wallet aan."
             },
             "stepsNote": "Er wordt niets verzonden totdat je het goedkeurt. Overdrachten tussen netwerken kunnen enkele minuten duren.",
+            "stepsNoteCard": "Er wordt niets afgeschreven totdat je bij MoonPay betaalt. Overdrachten tussen netwerken kunnen enkele minuten duren.",
             "otherWays": "Andere manieren om te betalen:",
             "inProgress": "Je hebt een lopende aankoop: {amount}."
         },
         "card": {
-            "description": "Betaal met je kaart bij MoonPay. MoonPay stuurt ETH naar je Ethereum-wallet en de volgende stappen maken er XOR van.",
+            "description": "Betaal met je kaart bij MoonPay. MoonPay stuurt ETH naar het Ethereum-adres hieronder en de volgende stappen maken er XOR van.",
             "copy": "Kopieer je Ethereum-adres:",
             "paste": "Open MoonPay. Als om een walletadres wordt gevraagd, plak dan dit adres. Gebruik niet je SORA-adres.",
             "return": "Rond de betaling af bij MoonPay en kom daarna terug naar deze pagina.",
             "open": "Adres kopiëren en MoonPay openen"
+        },
+        "run": {
+            "title": "Je aankoop",
+            "temporaryMode": "Een tijdelijke portemonnee op deze pagina ontvangt de ETH en ondertekent de Ethereum-stappen voor je.",
+            "ownMode": "Je Ethereum-wallet vraagt je om elke Ethereum-stap te bevestigen.",
+            "steps": {
+                "pay": {
+                    "title": "Met kaart betalen",
+                    "detail": "Controleer het bedrag hieronder en betaal daarna bij MoonPay."
+                },
+                "receive": {
+                    "title": "MoonPay stuurt ETH",
+                    "detail": "Wachten op MoonPay. Dit duurt meestal een paar minuten, soms langer.",
+                    "detailSaved": "Wachten op MoonPay. Dit duurt meestal een paar minuten, soms langer. Je kunt deze pagina sluiten; de aankoop gaat verder als je terugkomt."
+                },
+                "send": {
+                    "title": "{asset} naar SORA verzenden",
+                    "detail": "Deze pagina ondertekent de overdracht.",
+                    "detailOwn": "Bevestig de overdracht in je Ethereum-wallet."
+                },
+                "arrive": {
+                    "title": "{asset} komt aan op SORA",
+                    "detail": "De brug heeft meestal enkele minuten nodig."
+                },
+                "swap": {
+                    "title": "{asset} wisselen voor XOR",
+                    "detail": "Bevestig de wissel hieronder in je SORA-wallet."
+                }
+            },
+            "done": "De XOR staat in je SORA-wallet.",
+            "failures": {
+                "wallet": "De aankoopportemonnee kon niet worden geopend. Probeer het opnieuw.",
+                "vault": "De aankoopportemonnee die in deze browser is opgeslagen, kon niet worden geopend. Herstel hem met de bijbehorende herstelzin.",
+                "liquidity": "De XOR-markt op SORA kan dit bedrag nu niet aan. Probeer het later opnieuw.",
+                "bridge": "De overdracht naar SORA is gestopt. Probeer het opnieuw."
+            },
+            "retry": "Opnieuw proberen",
+            "wallet": "Aankoopportemonnee",
+            "savedFunds": "Een eerdere tijdelijke portemonnee bevat nog {amount}.",
+            "useSaved": "Aankoop ermee afronden",
+            "notSaved": "Deze browser laat de pagina de aankoopportemonnee niet opslaan. Bewaar de herstelzin ervan voordat je betaalt.",
+            "walletNote": "Kaartbetalingen gebruiken een tijdelijke Ethereum-portemonnee op deze pagina, dus je hebt alleen een SORA-wallet nodig.",
+            "ownWallet": "Liever mijn eigen Ethereum-wallet gebruiken"
+        }
+    },
+    "temporaryWallet": {
+        "offerTitle": "Geen Ethereum-portemonnee? Gebruik een tijdelijke",
+        "offerText": "Hij wordt op deze pagina aangemaakt en blijft bestaan tot je het tabblad sluit. MoonPay stuurt je ETH ernaartoe en je keurt hier elke volgende stap goed.",
+        "create": "Tijdelijke portemonnee aanmaken",
+        "restore": "Tijdelijke portemonnee herstellen",
+        "backupTitle": "Bewaar je herstelzin",
+        "backupText": "Deze portemonnee bestaat alleen in dit browsertabblad. Als het tabblad sluit voordat je geld SORA bereikt, zijn deze 12 woorden de enige manier om het terug te krijgen.",
+        "privateWarning": "Iedereen met deze woorden kan het geld uit deze portemonnee halen. Deel ze met niemand.",
+        "phrase": "Herstelzin",
+        "address": "Portemonnee-adres",
+        "copyPhrase": "Zin kopiëren",
+        "copied": "Gekopieerd",
+        "download": "Downloaden als bestand",
+        "confirmSaved": "Ik heb de herstelzin bewaard.",
+        "use": "Deze portemonnee gebruiken",
+        "cancel": "Annuleren",
+        "restoreTitle": "Tijdelijke portemonnee herstellen",
+        "restoreText": "Voer de herstelzin in van een tijdelijke portemonnee die je op deze pagina hebt aangemaakt.",
+        "restoreWarning": "Voer hier niet de herstelzin van je hoofdportemonnee in.",
+        "restoreAction": "Portemonnee herstellen",
+        "invalidPhrase": "Deze woorden vormen geen geldige herstelzin. Controleer de spelling en de volgorde.",
+        "openTitle": "Je tijdelijke portemonnee is nog open",
+        "useAgain": "Opnieuw gebruiken",
+        "showPhrase": "Herstelzin tonen",
+        "hidePhrase": "Herstelzin verbergen",
+        "close": "Tijdelijke portemonnee sluiten",
+        "closeWarning": "Deze portemonnee bevat nog {amount}. Zonder de herstelzin ben je dat geld kwijt als je de portemonnee sluit.",
+        "closeWarningUnknown": "Het saldo kon niet worden gecontroleerd. Als er nog geld in deze portemonnee staat, heb je de herstelzin nodig om het terug te krijgen.",
+        "closeConfirm": "Toch sluiten",
+        "keepOpen": "Open laten",
+        "connectFailed": "De tijdelijke portemonnee kon geen verbinding maken. Probeer het opnieuw.",
+        "active": "Tijdelijke portemonnee op deze pagina",
+        "keepPageOpen": "Je gebruikt een tijdelijke portemonnee. Houd deze pagina open tot je overdracht naar SORA is verzonden. Als de pagina sluit, herstel de portemonnee dan met de bijbehorende herstelzin.",
+        "leftover": "Na de netwerkkosten blijft er meestal ETH over. Die staat in deze portemonnee. Om die later te gebruiken, importeer je de herstelzin in een willekeurige portemonnee-app voor Ethereum.",
+        "file": {
+            "title": "Tijdelijke Ethereum-portemonnee van Polkaswap",
+            "created": "Aangemaakt",
+            "path": "Afleidingspad",
+            "help": "Om deze portemonnee later te openen, importeer je de herstelzin in een portemonnee-app voor Ethereum zoals MetaMask, of gebruik je “Tijdelijke portemonnee herstellen” op de pagina Koop XOR van Polkaswap."
+        },
+        "request": {
+            "title": "Tijdelijke portemonnee",
+            "convert": "{amount} ETH wisselen voor minstens {minimum} DAI",
+            "allowBridge": "De SORA-brug {amount} DAI laten verplaatsen",
+            "allowBridgeAll": "De SORA-brug elk bedrag aan DAI uit deze portemonnee laten verplaatsen",
+            "bridge": "{amount} DAI naar SORA verzenden",
+            "bridgeEth": "{amount} ETH naar SORA verzenden",
+            "send": "{amount} ETH verzenden",
+            "contract": "Contract aanroepen",
+            "from": "Van",
+            "to": "Naar",
+            "soraAccount": "SORA-account",
+            "otherSoraAccount": "Dit SORA-account is niet het account dat met Polkaswap is verbonden. Kies alleen “Goedkeuren” als je echt geld naar dit account wilde sturen.",
+            "value": "Verzonden ETH",
+            "fee": "Netwerkkosten",
+            "feeValue": "ongeveer {estimate} ETH, maximaal {max} ETH",
+            "feeIncreased": "De netwerkkosten zijn gestegen. Controleer de nieuwe kosten en keur daarna opnieuw goed.",
+            "note": "Er wordt niets verzonden totdat je goedkeurt.",
+            "approve": "Goedkeuren",
+            "reject": "Afwijzen",
+            "sending": "Verzenden…"
         }
     }
 }
