@@ -11,6 +11,90 @@ import CreateAccountStep from '@/lib/soraneo-wallet/src/components/Connection/St
 import { LoginStep } from '@/lib/soraneo-wallet/src/consts';
 
 describe('Wallet CreateAccountStep', () => {
+  it.each(['', 'x', '1234567', '😀😀😀😀'])(
+    'blocks creation with a short password, including direct form submission (%j)',
+    async (password) => {
+      const createSeed = vi.fn(() => ({ seed: 'synthetic mnemonic' }));
+      const createAccount = vi.fn();
+      const props = reactive({ chainApi: { createSeed }, step: LoginStep.CreateCredentials, createAccount });
+      const state = (CreateAccountStep as any).setup(props, {
+        attrs: {},
+        emit: vi.fn(),
+        expose: vi.fn(),
+        slots: {},
+      });
+      state.accountName.value = 'Wallet';
+      state.accountPassword.value = password;
+      state.accountPasswordConfirm.value = password;
+
+      expect(state.btnConfirmDisabled.value).toBe(true);
+      await expect(state.handleAccountCreate()).resolves.toBeUndefined();
+      expect(createAccount).not.toHaveBeenCalled();
+      expect(createSeed).not.toHaveBeenCalled();
+    }
+  );
+
+  it.each(['12345678', '😀😀😀😀😀😀😀😀'])(
+    'accepts exactly eight characters without changing the password (%j)',
+    async (password) => {
+      const createAccount = vi.fn().mockResolvedValue(undefined);
+      const props = reactive({
+        chainApi: { createSeed: () => ({ seed: 'synthetic mnemonic' }) },
+        step: LoginStep.CreateCredentials,
+        createAccount,
+      });
+      const state = (CreateAccountStep as any).setup(props, {
+        attrs: {},
+        emit: vi.fn(),
+        expose: vi.fn(),
+        slots: {},
+      });
+      state.accountName.value = 'Wallet';
+      state.accountPassword.value = password;
+      state.accountPasswordConfirm.value = password;
+
+      expect(state.btnConfirmDisabled.value).toBe(false);
+      await state.handleAccountCreate();
+      expect(createAccount).toHaveBeenCalledExactlyOnceWith({
+        seed: 'synthetic mnemonic',
+        name: 'Wallet',
+        password,
+        passwordConfirm: password,
+        exportAccount: false,
+      });
+    }
+  );
+
+  it('blocks mismatched passwords and duplicate submits while loading', async () => {
+    const createSeed = vi.fn(() => ({ seed: 'synthetic mnemonic' }));
+    const createAccount = vi.fn();
+    const props = reactive({
+      chainApi: { createSeed },
+      step: LoginStep.CreateCredentials,
+      createAccount,
+      loading: false,
+    });
+    const state = (CreateAccountStep as any).setup(props, {
+      attrs: {},
+      emit: vi.fn(),
+      expose: vi.fn(),
+      slots: {},
+    });
+    state.accountName.value = 'Wallet';
+    state.accountPassword.value = '12345678';
+    state.accountPasswordConfirm.value = 'different';
+    expect(state.btnConfirmDisabled.value).toBe(true);
+    await state.handleAccountCreate();
+
+    state.accountPasswordConfirm.value = '12345678';
+    props.loading = true;
+    expect(state.btnConfirmDisabled.value).toBe(true);
+    await state.handleAccountCreate();
+
+    expect(createAccount).not.toHaveBeenCalled();
+    expect(createSeed).not.toHaveBeenCalled();
+  });
+
   it('clears the selected words and starts error feedback when mnemonic order is wrong', () => {
     const props = reactive({
       chainApi: {

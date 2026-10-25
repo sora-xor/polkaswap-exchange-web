@@ -3,6 +3,7 @@ import { saveAs } from 'file-saver';
 import { AppWallet } from '../consts';
 import { isInternalSource, getWallet, checkWallet } from '../services/wallet';
 import { AppError, formatAccountAddress } from '../util';
+import { isValidNewAccountPassword } from './password';
 
 /** Account management helpers shared across wallet onboarding flows. */
 
@@ -155,14 +156,27 @@ export type CreateAccountArgs = {
 };
 
 /**
- * Creates a new keyring pair from the provided seed/mnemonic and optionally
- * persists or exports it depending on the supplied flags.
+ * Creates a new wallet only after enforcing its password policy, before any
+ * keyring, export or persistence side effects. Use importAccountFromSeed for
+ * an existing wallet whose password may predate this policy.
  */
-export const createAccount = (
+export const createAccount = (api: WithKeyring, data: CreateAccountArgs): KeyringPair$Json => {
+  if (!isValidNewAccountPassword(data.password)) {
+    throw new AppError({ key: 'desktop.password.desc' });
+  }
+
+  return importAccountFromSeed(api, data);
+};
+
+/**
+ * Imports an existing seed/mnemonic without imposing a new password minimum.
+ * Preserve the exact password for legacy recovery, encryption and persistence.
+ */
+export const importAccountFromSeed = (
   api: WithKeyring,
   { seed, name, password, passwordConfirm, saveAccount, exportAccount }: CreateAccountArgs
 ): KeyringPair$Json => {
-  if (passwordConfirm && password !== passwordConfirm) {
+  if (passwordConfirm !== undefined && password !== passwordConfirm) {
     throw new AppError({ key: 'desktop.errorMessages.passwords' });
   }
 

@@ -40,11 +40,36 @@ describe('Wallet ImportAccountStep', () => {
     );
 
     state.json.value = json;
-    state.accountPassword.value = 'secret';
+    state.accountPassword.value = 'x';
+    expect(state.disabledImportStep.value).toBe(false);
     await state.importAccount();
 
-    expect(restoreAccount).toHaveBeenCalledWith({ json, password: 'secret' });
+    expect(restoreAccount).toHaveBeenCalledWith({ json, password: 'x' });
     expect(createAccount).not.toHaveBeenCalled();
     expect(state.accountPassword.value).toBe('');
+  });
+
+  it('preserves a legacy short password when importing a recovery phrase', async () => {
+    const restoreAccount = vi.fn();
+    const createAccount = vi.fn().mockResolvedValue(undefined);
+    const state = (ImportAccountStep as any).setup(
+      { step: LoginStep.ImportCredentials, restoreAccount, createAccount },
+      { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} }
+    );
+    state.mnemonicPhrase.value = 'synthetic recovery phrase';
+    state.accountName.value = 'Existing wallet';
+    state.accountPassword.value = 'x';
+    state.accountPasswordConfirm.value = 'x';
+
+    expect(state.disabledImportStep.value).toBe(false);
+    await state.importAccount();
+
+    expect(createAccount).toHaveBeenCalledExactlyOnceWith({
+      seed: 'synthetic recovery phrase',
+      name: 'Existing wallet',
+      password: 'x',
+      passwordConfirm: 'x',
+    });
+    expect(restoreAccount).not.toHaveBeenCalled();
   });
 });

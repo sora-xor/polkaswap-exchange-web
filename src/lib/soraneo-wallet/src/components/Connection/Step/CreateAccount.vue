@@ -69,8 +69,20 @@
           :placeholder="t('desktop.accountName.placeholder')"
         ></s-input>
         <p class="login__create-account-desc">{{ t('desktop.accountName.desc') }}</p>
-        <password-input v-model="accountPassword" :disabled="loading"></password-input>
-        <p class="login__create-account-desc">{{ t('desktop.password.desc') }}</p>
+        <password-input
+          v-model="accountPassword"
+          :disabled="loading"
+          :minlength="NEW_ACCOUNT_PASSWORD_MIN_LENGTH"
+          :aria-invalid="!!accountPassword && !isValidNewAccountPassword(accountPassword)"
+        ></password-input>
+        <p
+          :class="[
+            'login__create-account-desc',
+            { error: accountPassword && !isValidNewAccountPassword(accountPassword) },
+          ]"
+        >
+          {{ t('desktop.password.desc') }}
+        </p>
         <s-input
           v-model="accountPasswordConfirm"
           type="password"
@@ -110,6 +122,7 @@ import { computed, ref, watch } from 'vue';
 import { useNotification } from '../../../composables/useNotification';
 import { LoginStep } from '../../../consts';
 import { copyToClipboard } from '../../../util';
+import { isValidNewAccountPassword, NEW_ACCOUNT_PASSWORD_MIN_LENGTH } from '../../../util/password';
 import PasswordInput from '../../Input/Password.vue';
 
 import type { CreateAccountArgs } from '@/stores/wallet/account/types';
@@ -188,7 +201,13 @@ const btnTypeConfirmStep = computed(() =>
 );
 const isInputsNotFilled = computed(() => !accountName.value || !accountPassword.value || !accountPasswordConfirm.value);
 const arePasswordsEqual = computed(() => accountPassword.value === accountPasswordConfirm.value);
-const btnConfirmDisabled = computed(() => isInputsNotFilled.value || !arePasswordsEqual.value);
+const btnConfirmDisabled = computed(
+  () =>
+    props.loading ||
+    isInputsNotFilled.value ||
+    !arePasswordsEqual.value ||
+    !isValidNewAccountPassword(accountPassword.value)
+);
 
 function isHiddenWord(wordIndex: number): boolean {
   return seedPhraseToCompareIdx.value.includes(wordIndex);
@@ -249,8 +268,11 @@ function handleMnemonicCheck(): void {
   }
 }
 
-function handleAccountCreate(): Promise<void> {
-  return props.createAccount({
+/** Guard form/Enter submissions as well as the disabled creation button. */
+async function handleAccountCreate(): Promise<void> {
+  if (btnConfirmDisabled.value) return;
+
+  await props.createAccount({
     seed: seedPhrase.value,
     name: accountName.value,
     password: accountPassword.value,

@@ -99,6 +99,15 @@ updates. Both DAGs passed origin pin integrity, Bunny was updated and purged,
 and all five candidate and live WebKit routes passed. See
 `docs/reports/deployment-2026-10-24.md` for the isolated source provenance and evidence.
 
+The October 25 password-policy release is production root
+`bafybeictpwld4czgcwbzwxaegopxsgzeaax52mykee2scwa7wonhz7ja7u`, with paired testnet root
+`bafybeielqxowawakjsw24xku3bivyj25wgqfra435zngplbqosqkqlrxma`. It preserves the
+October 24 shipped assembly and enforces the minimum password length for new
+wallets while preserving existing-wallet recovery. Both DAGs passed full origin
+pin integrity. Bunny was updated and purged; 419 complete public body checks and
+all five candidate/live WebKit routes passed. See
+`docs/reports/deployment-2026-10-25.md` for provenance and wallet compatibility evidence.
+
 Use this exact order when the user asks to rebuild, redeploy to IPFS, and update Bunny:
 
 Before building, compare the candidate checkout with the currently deployed release. A feature-specific checkout must not replace the full site while omitting another shipped feature. Integrate the shipped Store configuration and payment package alongside Bots and the other app routes. Record the current and candidate CIDs and feature provenance in the release evidence.
