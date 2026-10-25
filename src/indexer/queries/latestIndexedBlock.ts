@@ -1,10 +1,7 @@
 import { gql } from '@urql/core';
 
 import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
-import type {
-  ConnectionQueryResponse,
-  ConnectionQueryResponseData,
-} from '@/lib/soraneo-wallet/src/services/indexer/types';
+import type { ConnectionQueryResponseData } from '@/lib/soraneo-wallet/src/services/indexer/types';
 
 type LatestIndexedBlockEntity = {
   blockHeight: string | number | null;
@@ -33,14 +30,10 @@ const PolkaswapIndexerStreamBlockQuery = gql<IndexerStreamBlockResponse>`
   }
 `;
 
-const PolkaswapLatestIndexedBlockQuery = gql<ConnectionQueryResponse<LatestIndexedBlockEntity>>`
-  query PolkaswapLatestIndexedBlockQuery {
-    data: historyElements(first: 1, orderBy: [BLOCK_HEIGHT_DESC, ID_DESC]) {
-      edges {
-        node {
-          blockHeight
-        }
-      }
+const PolkaswapIndexerCheckpointBlockQuery = gql<IndexerStreamBlockResponse>`
+  query PolkaswapIndexerCheckpointBlockQuery {
+    data: updatesStream(id: "chainState") {
+      block
     }
   }
 `;
@@ -48,7 +41,11 @@ const PolkaswapLatestIndexedBlockQuery = gql<ConnectionQueryResponse<LatestIndex
 /**
  * Normalizes an indexer-provided block number into a safe display value.
  */
-export function parseIndexerBlock(value: unknown): Nullable<number> {
+export function parseIndexerBlock(value: unknown): number | null {
+  if (typeof value !== 'number' && (typeof value !== 'string' || !/^\d+$/.test(value.trim()))) {
+    return null;
+  }
+
   const block = Number(value);
 
   return Number.isSafeInteger(block) && block >= 0 ? block : null;
@@ -57,25 +54,35 @@ export function parseIndexerBlock(value: unknown): Nullable<number> {
 /**
  * Extracts a safe integer block height from the indexer's latest history record.
  */
-export function parseLatestIndexedBlock(response: Nullable<LatestIndexedBlockResponse>): Nullable<number> {
+export function parseLatestIndexedBlock(response: Nullable<LatestIndexedBlockResponse>): number | null {
   return parseIndexerBlock(response?.edges?.[0]?.node?.blockHeight);
 }
 
-function parseIndexerStreamBlock(response: Nullable<IndexerStreamBlockResponse>): Nullable<number> {
+function parseIndexerStreamBlock(response: Nullable<IndexerStreamBlockResponse>): number | null {
   return parseIndexerBlock(response?.data?.block);
 }
 
 /**
- * Fetches the most recent block height from the active Polkaswap indexer.
+ * Reads the price stream first, then the bounded worker checkpoint record.
+ * Preserves the first request error when neither stream provides a valid block.
  */
-async function fetchPolkaswapLatestIndexedBlock(): Promise<Nullable<number>> {
+async function fetchPolkaswapLatestIndexedBlock(): Promise<number | null> {
   const explorer = (getCurrentIndexer() as PolkaswapIndexer).services.explorer;
-  const streamResponse = await explorer.request(PolkaswapIndexerStreamBlockQuery);
-  const streamBlock = parseIndexerStreamBlock(streamResponse);
-  if (streamBlock !== null) return streamBlock;
+  const errors: unknown[] = [];
 
-  const response = await explorer.fetchEntities(PolkaswapLatestIndexedBlockQuery);
-  return parseLatestIndexedBlock(response);
+  for (const query of [PolkaswapIndexerStreamBlockQuery, PolkaswapIndexerCheckpointBlockQuery]) {
+    try {
+      const response = await explorer.request(query);
+      const block = parseIndexerStreamBlock(response);
+      if (block !== null) return block;
+    } catch (error) {
+      errors.push(error);
+    }
+  }
+
+  if (errors.length) throw errors[0];
+
+  return null;
 }
 
 /**
@@ -84,13 +91,15 @@ async function fetchPolkaswapLatestIndexedBlock(): Promise<Nullable<number>> {
 export async function fetchLatestIndexedBlock(
   sorametricsApiEndpoint = ''
 ): Promise<Nullable<LatestIndexedBlockResult>> {
-  let indexerError: unknown = null;
+  let indexerError: unknown;
+  let indexerFailed = false;
 
   try {
     const block = await fetchPolkaswapLatestIndexedBlock();
     if (block !== null) return { block, source: 'polkaswap' };
   } catch (error) {
     indexerError = error;
+    indexerFailed = true;
   }
 
   if (sorametricsApiEndpoint) {
@@ -99,7 +108,7 @@ export async function fetchLatestIndexedBlock(
     if (block !== null) return { block, source: 'sorametrics' };
   }
 
-  if (indexerError) throw indexerError;
+  if (indexerFailed) throw indexerError;
 
   return null;
 }
