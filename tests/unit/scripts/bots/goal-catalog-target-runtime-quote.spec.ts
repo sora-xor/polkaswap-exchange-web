@@ -1,9 +1,16 @@
+import {
+  runtimeWasmFixturePath,
+  readRuntimeMetadataHexSync,
+  readRuntimeDispatchFixture,
+} from '../../../fixtures/bots/runtime-artifacts';
 /** Actual target WASM with invented storage under genuine historical schemas; no economic observations. */
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
-import { TypeRegistry } from '@polkadot/types';
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
-import { createGoalRuntimeCatalog } from '@/features/bot-trading/execution-codecs/runtime-catalog';
+import {
+  createGoalRuntimeCatalog,
+  GOAL_RUNTIME_CATALOG_PROFILES,
+} from '@/features/bot-trading/execution-codecs/runtime-catalog';
 import {
   createGoalCatalogTargetRuntimeStateCodec,
   type GoalTargetStateReceipt,
@@ -15,21 +22,11 @@ import {
 } from '../../../../scripts/bots/historical-execution-codec';
 
 vi.unmock('@polkadot/util-crypto');
-const syntheticRoot = new URL(
-  '../../../../output/go-history/goal-runtime-wasm-offline-20260921/synthetic-episode-v2/',
-  import.meta.url
-);
-const schemaRoot = new URL(
-  '../../../../output/go-history/partial-target-window-metadata-20260921/source-schemas/',
-  import.meta.url
-);
-const sourceSchema = (version: number) =>
-  JSON.parse(readFileSync(new URL(`source${version}-unverified-schema.json`, schemaRoot), 'utf8'));
-const synthetic = (name: string) => JSON.parse(readFileSync(new URL(name, syntheticRoot), 'utf8'));
-const targetMetadataHex = new TypeRegistry()
-  .createType('Bytes', Buffer.from(synthetic('metadata-131.json').actualExport.resultHex.slice(2), 'hex'))
-  .toHex();
-const sourceSchemas = [128, 129, 130].map(sourceSchema);
+const targetMetadataHex = readRuntimeMetadataHexSync(131);
+const sourceSchemas = [128, 129, 130].map((version) => ({
+  metadataHex: readRuntimeMetadataHexSync(version as 128 | 129 | 130),
+  runtimeProfile: Object.values(GOAL_RUNTIME_CATALOG_PROFILES).find((profile) => profile.specVersion === version)!,
+}));
 const catalog = createGoalRuntimeCatalog({
   source128MetadataHex: sourceSchemas[0].metadataHex,
   source129MetadataHex: sourceSchemas[1].metadataHex,
@@ -44,7 +41,7 @@ function verifiedState(version: number, unavailable = false) {
     catalog,
     sourceCodeHash: sourceSchemas.find((s) => s.runtimeProfile.specVersion === version).runtimeProfile.codeHash,
   });
-  const declarations = synthetic('dispatch-130-kusd-xor-success.json').declarations as {
+  const declarations = readRuntimeDispatchFixture().declarations as {
     key: string;
     value: string | null;
   }[];
@@ -90,9 +87,7 @@ describe('actual target runtime over catalog-owned source schemas', () => {
   beforeAll(async () => {
     vi.stubGlobal('fetch', network);
     adapter = await createGoalTargetRuntimeAsyncQuoteAdapter({
-      compressedBytes: readFileSync(
-        '/Users/takemiyamakoto/dev/sora2-network/runtime-upgrade-4.8.9/framenode-runtime-4.8.9.compact.compressed.wasm'
-      ),
+      compressedBytes: readFileSync(runtimeWasmFixturePath(131)),
     });
   }, 30000);
   afterAll(() => {

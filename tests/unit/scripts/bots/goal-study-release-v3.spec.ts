@@ -1,4 +1,5 @@
 /** Publication-layer tests with invented qualifying episodes; never evidence of market profitability. */
+import { runtimeWasmFixturePath } from '../../../fixtures/bots/runtime-artifacts';
 import { readFileSync } from 'node:fs';
 import { mkdtemp, readFile, readdir, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -28,10 +29,7 @@ vi.mock('node:fs/promises', async (importOriginal) => {
 });
 vi.unmock('@polkadot/util-crypto');
 const indexSha256 = 'a'.repeat(64);
-const binary = () =>
-  readFileSync(
-    '/Users/takemiyamakoto/dev/sora2-network/runtime-upgrade-4.8.9/framenode-runtime-4.8.9.compact.compressed.wasm'
-  );
+const binary = () => readFileSync(runtimeWasmFixturePath(131));
 
 describe('fixed V3 release publication', () => {
   let directory: string;
@@ -206,7 +204,9 @@ describe('fixed V3 release publication', () => {
       transport.compressedBytes.fill(0);
       transport.signal = AbortSignal.abort();
       expect(locator.indexSha256).toBe(indexSha256);
-      expect(owned.compressedBytes).toEqual(originalBytes);
+      expect(owned.compressedBytes).toBeInstanceOf(Uint8Array);
+      // Compare the complete multi-megabyte WASM buffers in native code.
+      expect(Buffer.from(owned.compressedBytes).equals(Buffer.from(originalBytes))).toBe(true);
       expect(owned.compressedBytes).not.toBe(transport.compressedBytes);
       expect(owned.signal).toBe(controller.signal);
       return { ...result, dispose };

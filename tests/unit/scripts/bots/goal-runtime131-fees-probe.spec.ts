@@ -10,8 +10,9 @@ import {
   ENDPOINT,
   EXPECTED,
   type Receipt,
-} from '../../../../output/go-history/goal-runtime131-fees-20260921/probe.mts';
+} from '../../../fixtures/bots/runtime-tools/goal-runtime131-fees-20260921/probe.mts';
 import { types } from '@/lib/substrate/type-definitions';
+import { readRuntimeMetadataHex } from '../../../fixtures/bots/runtime-artifacts';
 const directories: string[] = [];
 afterEach(async () => {
   await Promise.all(directories.splice(0).map((path) => rm(path, { recursive: true, force: true })));
@@ -73,9 +74,7 @@ describe('runtime131 conformance-only probe', () => {
   it('runs both fixed input envelopes with invented fees and retained131 metadata, never asking for market state', async () => {
     const directory = await mkdtemp(join(tmpdir(), 'runtime131-fees-'));
     directories.push(directory);
-    const metadataHex = JSON.parse(
-      await readFile('output/go-history/earlier-goal-study-20260921/current-runtime-metadata-response.json', 'utf8')
-    ).result;
+    const metadataHex = await readRuntimeMetadataHex(131);
     const registry = new TypeRegistry();
     registry.register(types);
     registry.setMetadata(new Metadata(registry, metadataHex), undefined, undefined, true);

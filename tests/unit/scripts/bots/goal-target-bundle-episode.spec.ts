@@ -1,5 +1,6 @@
 // @vitest-environment node
 /** Complete invented archive observations; actual fixed target131 binary and original producer/evaluator. */
+import { runtimeWasmFixturePath } from '../../../fixtures/bots/runtime-artifacts';
 import { readFileSync } from 'node:fs';
 import { beforeAll, afterAll, describe, expect, it, vi } from 'vitest';
 import { createGoalBundleEpisodeFixture } from '../../../fixtures/bots/goal-bundle-episode';
@@ -19,9 +20,7 @@ import {
   GOAL_QUALIFICATION_POLICY_V2,
 } from '../../../../src/features/bot-trading/goal-qualification';
 
-const binary = readFileSync(
-  '/Users/takemiyamakoto/dev/sora2-network/runtime-upgrade-4.8.9/framenode-runtime-4.8.9.compact.compressed.wasm'
-);
+const binary = readFileSync(runtimeWasmFixturePath(131));
 const network = vi.fn(() => {
   throw Error('Network forbidden');
 });

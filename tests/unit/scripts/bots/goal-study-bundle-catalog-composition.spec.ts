@@ -1,4 +1,5 @@
 /** Fixed-dependency dispatch tests only: observers are test spies, not raw chain or profitability evidence. */
+import { runtimeWasmFixturePath } from '../../../fixtures/bots/runtime-artifacts';
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { readFile } from 'node:fs/promises';
 import { reverifyGoalStudyBundleV3 } from '../../../../scripts/bots/goal-study-bundle-verifier-v3';
@@ -53,9 +54,7 @@ vi.mock('../../../../scripts/bots/goal-target-bundle-episode', () => ({
 }));
 let compressedBytes: Uint8Array, catalog: Awaited<ReturnType<typeof loadCatalogPoolFixture>>;
 beforeAll(async () => {
-  compressedBytes = await readFile(
-    '/Users/takemiyamakoto/dev/sora2-network/runtime-upgrade-4.8.9/framenode-runtime-4.8.9.compact.compressed.wasm'
-  );
+  compressedBytes = await readFile(runtimeWasmFixturePath(131));
   catalog = await loadCatalogPoolFixture();
 });
 const pin = 'a'.repeat(64),

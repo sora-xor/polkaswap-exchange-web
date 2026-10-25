@@ -1,3 +1,8 @@
+import {
+  runtimeWasmFixturePath,
+  readRuntimeMetadataHexSync,
+  readRuntimeDispatchFixture,
+} from '../../../fixtures/bots/runtime-artifacts';
 /** Original-style invented artifacts with real metadata, market codecs and the exact target worker. No network. */
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
@@ -52,15 +57,7 @@ import {
   catalogMetadataFixtureVersion,
 } from '../../../fixtures/bots/goal-bundle-catalog-metadata';
 
-const directory = new URL(
-  '../../../../output/go-history/goal-runtime-wasm-offline-20260921/synthetic-episode-v2/',
-  import.meta.url
-);
-const artifact = (name: string) => JSON.parse(readFileSync(new URL(name, directory), 'utf8'));
-const metadata = (version: number) =>
-  new TypeRegistry()
-    .createType('Bytes', Buffer.from(artifact(`metadata-${version}.json`).actualExport.resultHex.slice(2), 'hex'))
-    .toHex();
+const metadata = readRuntimeMetadataHexSync;
 const sha = (value: string | Uint8Array) => createHash('sha256').update(value).digest('hex');
 const canonical = (value: unknown): string =>
   Array.isArray(value)
@@ -90,9 +87,7 @@ const network = vi.fn(() => {
 
 beforeAll(async () => {
   vi.stubGlobal('fetch', network);
-  binary = readFileSync(
-    '/Users/takemiyamakoto/dev/sora2-network/runtime-upgrade-4.8.9/framenode-runtime-4.8.9.compact.compressed.wasm'
-  );
+  binary = readFileSync(runtimeWasmFixturePath(131));
   sourceMetadataHex = metadata(130);
   codec = createGoalTargetRuntimeStateCodec({ sourceMetadataHex, targetMetadataHex: metadata(131) });
   oracle = createGoalTargetRuntimeQuoteAdapter(Buffer.from(binary));
@@ -120,7 +115,7 @@ beforeAll(async () => {
     const type = query[pallet][name].meta.type;
     return `0x${Buffer.from(registry.createType(registry.createLookupType(type.isPlain ? type.asPlain : type.asMap.value), value).toU8a()).toString('hex')}`;
   };
-  const declarations = artifact('dispatch-130-kusd-xor-success.json').declarations as {
+  const declarations = readRuntimeDispatchFixture().declarations as {
     key: string;
     value: string | null;
   }[];
@@ -224,15 +219,14 @@ afterAll(() => {
 
 type QuoteScenario = {
   codec:
-    | ReturnType<typeof createGoalTargetRuntimeStateCodec>
-    | ReturnType<typeof createGoalCatalogTargetRuntimeStateCodec>;
+    ReturnType<typeof createGoalTargetRuntimeStateCodec> | ReturnType<typeof createGoalCatalogTargetRuntimeStateCodec>;
   valuation: ReturnType<typeof verifyGoalBundleValuation>;
   model: GoalTargetExecutionModel;
   block: { hash: string; height: number };
 };
 function fixture(disabled = false, reverse = false, scenario: QuoteScenario = { codec, valuation, model, block }) {
   const { codec, valuation, model, block } = scenario;
-  const declarations = artifact('dispatch-130-kusd-xor-success.json').declarations as {
+  const declarations = readRuntimeDispatchFixture().declarations as {
     key: string;
     value: string | null;
   }[];
@@ -737,7 +731,7 @@ async function catalogScenario(
   const entry = entryAt(height),
     selectedBlock = { hash: H(height), height };
   const stateCodec = createGoalCatalogTargetRuntimeStateCodec({ catalog, sourceCodeHash: entry.profile.codeHash });
-  const declarations = artifact('dispatch-130-kusd-xor-success.json').declarations as {
+  const declarations = readRuntimeDispatchFixture().declarations as {
     key: string;
     value: string | null;
   }[];

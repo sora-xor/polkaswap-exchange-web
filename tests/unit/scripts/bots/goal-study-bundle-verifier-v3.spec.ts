@@ -1,3 +1,4 @@
+import { runtimeWasmFixturePath } from '../../../fixtures/bots/runtime-artifacts';
 import { describe, expect, it, vi } from 'vitest';
 import { reverifyGoalStudyBundleV3 } from '../../../../scripts/bots/goal-study-bundle-verifier-v3';
 import { readFileSync } from 'node:fs';
@@ -5,10 +6,7 @@ import { goalRawBytesSha256 } from '@/features/bot-trading/goal-raw-envelope';
 import type { GoalStudyBundleIndex } from '../../../../scripts/bots/goal-study-bundle-export';
 
 vi.unmock('@polkadot/util-crypto');
-const binary = () =>
-  readFileSync(
-    '/Users/takemiyamakoto/dev/sora2-network/runtime-upgrade-4.8.9/framenode-runtime-4.8.9.compact.compressed.wasm'
-  );
+const binary = () => readFileSync(runtimeWasmFixturePath(131));
 const rootUrl = 'https://evidence.example.org/study/';
 const sha = (n: number) => n.toString(16).padStart(64, '0');
 /** Valid distribution identities with deliberately absent raw metadata, never a strategy fixture. */

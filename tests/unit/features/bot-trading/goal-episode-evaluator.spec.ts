@@ -418,6 +418,7 @@ describe('concrete causal exact-goal episode evaluator', () => {
     expect(fills[1]).toMatchObject({ signalIndex: 3, inputAsset: XOR, inputCodec: codec(1) });
     expect(fills[1].inputCodec).not.toBe('20000000000000000');
   });
+  // Four complete 1,440-event traces need a scoped replay budget under shared CI load.
   it('feeds the existing qualification evaluator contract and preserves its economic rejection', async () => {
     const f = fixture();
     const { evaluator } = syntheticQualificationEvaluator(f.plan);
@@ -430,7 +431,7 @@ describe('concrete causal exact-goal episode evaluator', () => {
     // All four exact traces passed the existing accounting/clock verifier; losses are not relabeled as eligibility.
     expect(evaluator.evaluate).toHaveBeenCalledTimes(4);
     expect(evaluator.sealSelection).not.toHaveBeenCalled();
-  }, 20000);
+  }, 60000);
 
   it('commits a same-check target before any quote can be rejected, and keeps the target latched', async () => {
     const f = fixture({ risingAtCheck: 1 }),

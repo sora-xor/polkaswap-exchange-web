@@ -1,5 +1,4 @@
 /** Actual catalog collector fixture: genuine schema bytes, invented canonical blocks, no network or market values. */
-import { readFile } from 'node:fs/promises';
 import { compactStripLength, hexToU8a, u8aToHex } from '@polkadot/util';
 import { createGoalRuntimeCatalog } from '../../../src/features/bot-trading/execution-codecs/runtime-catalog';
 import {
@@ -12,6 +11,7 @@ import { buildGoalMetadataReplayRawManifest } from '../../../scripts/bots/goal-q
 import { createCatalogHistoricalExecutionBlockReader } from '../../../scripts/bots/historical-execution-block-reader';
 import { metadataFixtureSha as sha, metadataFixtureDigest as digest } from './goal-bundle-metadata';
 import type { GoalBundleMetadataBinding } from '../../../src/features/bot-trading/goal-bundle-metadata';
+import { readRuntimeMetadataExport } from './runtime-metadata';
 export const catalogMetadataFixtureHash = (n: number) => `0x${n.toString(16).padStart(64, '0')}`;
 export const catalogMetadataFixtureVersion = (n: number) => (n === 164 ? 128 : n < 120 ? 128 : n < 150 ? 129 : 130);
 /** Optional invented chronology for complete episode tests; defaults retain the small mutation fixture. */
@@ -42,19 +42,8 @@ export async function createGoalBundleCatalogMetadataFixture(
     versionAt = options.versionAt ?? ((height: number) => catalogMetadataFixtureVersion(height - firstHeight + 100));
   const anchors = options.schemaAnchorHeights ?? [firstHeight, firstHeight + 30, firstHeight + 60];
   const hash = catalogMetadataFixtureHash;
-  const metadata = async (n: number) =>
-    JSON.parse(
-      await readFile(
-        `output/go-history/partial-target-window-metadata-20260921/source-schemas/source${n}-unverified-schema.json`,
-        'utf8'
-      )
-    ).metadataHex;
-  const target = JSON.parse(
-    await readFile(
-      'output/go-history/goal-runtime-wasm-offline-20260921/synthetic-episode-v2/metadata-131.json',
-      'utf8'
-    )
-  ).actualExport.resultHex;
+  const metadata = readRuntimeMetadataExport;
+  const target = await readRuntimeMetadataExport(131);
   progress('catalog-schema-loaded');
   const catalog = createGoalRuntimeCatalog({
     source128MetadataHex: await metadata(128),

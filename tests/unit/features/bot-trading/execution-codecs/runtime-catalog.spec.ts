@@ -1,5 +1,4 @@
 // @vitest-environment node
-import { readFile } from 'node:fs/promises';
 import { compactStripLength, hexToU8a, u8aToHex } from '@polkadot/util';
 import { beforeAll, afterAll, afterEach, describe, expect, it, vi } from 'vitest';
 import {
@@ -11,6 +10,7 @@ import {
   type GoalRuntimeCatalog,
   type GoalRuntimeCatalogInput,
 } from '@/features/bot-trading/execution-codecs/runtime-catalog';
+import { readRuntimeMetadataExport } from '../../../../fixtures/bots/runtime-metadata';
 
 vi.unmock('@polkadot/util-crypto');
 const instrumentation = vi.hoisted(() => ({ fault: '', calls: 0 }));
@@ -63,19 +63,9 @@ const network = vi.fn(() => {
 let input: GoalRuntimeCatalogInput, catalog: GoalRuntimeCatalog, otherCatalog: GoalRuntimeCatalog;
 beforeAll(async () => {
   vi.stubGlobal('fetch', network);
-  const source = async (version: number): Promise<string> =>
-    JSON.parse(
-      await readFile(
-        `output/go-history/partial-target-window-metadata-20260921/source-schemas/source${version}-unverified-schema.json`,
-        'utf8'
-      )
-    ).metadataHex;
-  const target = JSON.parse(
-    await readFile(
-      'output/go-history/goal-runtime-wasm-offline-20260921/synthetic-episode-v2/metadata-131.json',
-      'utf8'
-    )
-  ).actualExport.resultHex;
+  // Retain the original exports and all catalog pins without depending on ignored local output.
+  const source = readRuntimeMetadataExport;
+  const target = await source(131);
   input = {
     source128MetadataHex: await source(128),
     source129MetadataHex: await source(129),

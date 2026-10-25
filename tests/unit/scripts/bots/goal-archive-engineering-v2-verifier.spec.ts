@@ -6,8 +6,8 @@ import { createHash } from 'node:crypto';
 import {
   replayEngineeringTrace,
   verifyEngineeringDirectory,
-} from '../../../../output/go-history/goal-archive-engineering-20260920/verify-engineering-v2.mts';
-import { save } from '../../../../output/go-history/goal-archive-engineering-20260920/run-engineering-v2.mts';
+} from '../../../fixtures/bots/runtime-tools/goal-archive-engineering-20260920/verify-engineering-v2.mts';
+import { save } from '../../../fixtures/bots/runtime-tools/goal-archive-engineering-20260920/run-engineering-v2.mts';
 import { buildGoalQualificationClockV2 } from '../../../../scripts/bots/goal-qualification-clock-builder-v2';
 import {
   GOAL_EXACT_KUSD as KUSD,

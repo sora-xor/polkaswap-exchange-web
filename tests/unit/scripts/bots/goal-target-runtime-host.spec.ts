@@ -1,7 +1,8 @@
+import { runtimeWasmFixturePath } from '../../../fixtures/bots/runtime-artifacts';
 /** Invented state and tiny WASM only; actual131 vectors use the installed pinned artifact offline. */
 import { beforeAll, describe, expect, it } from 'vitest';
 import { createRequire } from 'node:module';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { runInThisContext } from 'node:vm';
 const require = createRequire(import.meta.url);
@@ -276,15 +277,14 @@ describe('strict read-only target runtime host', () => {
   });
 });
 
-const binaryPath =
-  '/Users/takemiyamakoto/dev/sora2-network/runtime-upgrade-4.8.9/framenode-runtime-4.8.9.compact.compressed.wasm';
-describe.skipIf(!existsSync(binaryPath))('exact131 read-only invented route', () => {
+const binaryPath = runtimeWasmFixturePath(131);
+describe('exact131 read-only invented route', () => {
   let current: any, binary: any, profile: any, fixtures: any;
   beforeAll(() => {
-    const loader = require('../../../../output/go-history/goal-runtime-wasm-offline-20260921/runtime-host.cjs');
+    const loader = require('../../../fixtures/bots/runtime-tools/goal-runtime-wasm-offline-20260921/runtime-host.cjs');
     profile = loader.PROFILES[1];
     binary = loader.loadBinary(profile, binaryPath);
-    fixtures = require('../../../../output/go-history/goal-runtime-wasm-offline-20260921/fixture.cjs');
+    fixtures = require('../../../fixtures/bots/runtime-tools/goal-runtime-wasm-offline-20260921/fixture.cjs');
     const bytes = readFileSync(binaryPath);
     current = host.createGoalTargetRuntimeHost(bytes);
     bytes.fill(0);
@@ -324,7 +324,9 @@ describe.skipIf(!existsSync(binaryPath))('exact131 read-only invented route', ()
       .sort()[0];
     expect(after).toBeTruthy();
     const state = { entries, prefix: { ...empty().prefix, after } };
-    const { quoteInput } = require('../../../../output/go-history/goal-runtime-wasm-offline-20260921/runtime-host.cjs');
+    const {
+      quoteInput,
+    } = require('../../../fixtures/bots/runtime-tools/goal-runtime-wasm-offline-20260921/runtime-host.cjs');
     const quote = current.invoke({
       api: 'LiquidityProxyAPI_quote',
       inputHex: '0x' + quoteInput(reverse).toString('hex'),

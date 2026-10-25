@@ -9,17 +9,11 @@ import { createHash } from 'node:crypto';
 import { TypeRegistry } from '@polkadot/types';
 
 const require = createRequire(import.meta.url);
-const base = resolve('output/go-history/goal-runtime-wasm-offline-20260921');
+const base = resolve('tests/fixtures/bots/runtime-tools/goal-runtime-wasm-offline-20260921');
 const host = require(join(base, 'runtime-synthetic.cjs'));
 const fixture = require(join(base, 'fixture.cjs'));
-const available =
-  process.platform === 'darwin' &&
-  existsSync('/usr/bin/sandbox-exec') &&
-  ['4.8.8', '4.8.9'].every((version) =>
-    existsSync(
-      `/Users/takemiyamakoto/dev/sora2-network/runtime-upgrade-${version}/framenode-runtime-${version}.compact.compressed.wasm`
-    )
-  );
+// These cases assert kernel-enforced socket denial using the macOS sandbox.
+const available = process.platform === 'darwin' && existsSync('/usr/bin/sandbox-exec');
 let output = '';
 const json = async (name: string) => JSON.parse(await readFile(join(output, name), 'utf8'));
 

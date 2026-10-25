@@ -3,7 +3,10 @@ import { mkdtemp, readFile, readdir, rm, symlink, writeFile } from 'node:fs/prom
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
-import { bytes, save } from '../../../../output/go-history/goal-archive-engineering-20260920/run-engineering.mts';
+import {
+  bytes,
+  save,
+} from '../../../fixtures/bots/runtime-tools/goal-archive-engineering-20260920/run-engineering.mts';
 const directories: string[] = [];
 afterEach(async () => {
   await Promise.all(directories.splice(0).map((path) => rm(path, { recursive: true, force: true })));

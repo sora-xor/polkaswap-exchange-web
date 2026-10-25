@@ -1,7 +1,11 @@
+import {
+  runtimeWasmFixturePath,
+  readRuntimeMetadataHexSync,
+  readRuntimeDispatchFixture,
+} from '../../../fixtures/bots/runtime-artifacts';
 /** Exact installed WASM plus invented retained state only; no network, wallet or cryptographic signing. */
 import { createHash } from 'node:crypto';
-import { existsSync, readFileSync } from 'node:fs';
-import { TypeRegistry } from '@polkadot/types';
+import { readFileSync } from 'node:fs';
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   createGoalTargetRuntimeQuoteAdapter,
@@ -51,26 +55,14 @@ vi.mock('../../../../scripts/bots/goal-target-runtime-host.cjs', async (original
     },
   };
 });
-const directory = new URL(
-  '../../../../output/go-history/goal-runtime-wasm-offline-20260921/synthetic-episode-v2/',
-  import.meta.url
-);
-const retainedSynthetic = (name: string) => JSON.parse(readFileSync(new URL(name, directory), 'utf8'));
-const metadata = (version: number) =>
-  new TypeRegistry()
-    .createType(
-      'Bytes',
-      Buffer.from(retainedSynthetic(`metadata-${version}.json`).actualExport.resultHex.slice(2), 'hex')
-    )
-    .toHex();
+const metadata = readRuntimeMetadataHexSync;
 const codec = createGoalTargetRuntimeStateCodec({ sourceMetadataHex: metadata(130), targetMetadataHex: metadata(131) });
-const binaryPath =
-  '/Users/takemiyamakoto/dev/sora2-network/runtime-upgrade-4.8.9/framenode-runtime-4.8.9.compact.compressed.wasm';
+const binaryPath = runtimeWasmFixturePath(131);
 const block = { hash: `0x${'ab'.repeat(32)}`, height: 100 };
 
 /** Wrap invented fixture values in exact retained-style RPC receipts to obtain genuine parser ownership. */
 function state(disabled = false) {
-  const declarations = retainedSynthetic('dispatch-130-kusd-xor-success.json').declarations as {
+  const declarations = readRuntimeDispatchFixture().declarations as {
     key: string;
     value: string | null;
   }[];
@@ -108,7 +100,7 @@ function state(disabled = false) {
   return codec.verify({ sourceBlock: block, receipts });
 }
 
-describe.skipIf(!existsSync(binaryPath))('offline exact target runtime quote adapter', () => {
+describe('offline exact target runtime quote adapter', () => {
   let adapter: ReturnType<typeof createGoalTargetRuntimeQuoteAdapter>;
   const network = vi.fn(() => {
     throw new Error('Network forbidden');
@@ -295,7 +287,7 @@ describe.skipIf(!existsSync(binaryPath))('offline exact target runtime quote ada
   });
 });
 
-describe.skipIf(!existsSync(binaryPath))('owned asynchronous target quote worker', () => {
+describe('owned asynchronous target quote worker', () => {
   const create = (options = {}) =>
     createGoalTargetRuntimeAsyncQuoteAdapter({ compressedBytes: readFileSync(binaryPath), ...options });
   const pending = () => ({ state: state(), assetIn: KUSD, assetOut: XOR, amountInCodec: '2500000000000000000' });

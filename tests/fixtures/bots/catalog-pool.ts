@@ -1,5 +1,4 @@
 /** Genuine schema bytes with entirely invented chain headers and pool storage; no market observations. */
-import { readFile } from 'node:fs/promises';
 import { Metadata, TypeRegistry } from '@polkadot/types';
 import { expandMetadata } from '@polkadot/types/metadata';
 import { hexToU8a, u8aToHex } from '@polkadot/util';
@@ -9,35 +8,21 @@ import {
   type GoalRuntimeCatalog,
 } from '@/features/bot-trading/execution-codecs/runtime-catalog';
 import { HISTORICAL_EXECUTION_XOR as XOR } from '@/features/bot-trading/execution-codecs/execution';
+import { readRuntimeMetadataExport } from './runtime-metadata';
 
 export const catalogPoolHash = (n: number) => `0x${n.toString(16).padStart(64, '0')}`;
 export const CATALOG_POOL_DENOMINATOR = '100000000000000000000000000000000000000';
 /** Read only the four retained public metadata files and establish the real private catalog capability. */
 export async function loadCatalogPoolFixture() {
   const schemas = await Promise.all(
-    [128, 129, 130].map(
-      async (version) =>
-        JSON.parse(
-          await readFile(
-            `output/go-history/partial-target-window-metadata-20260921/source-schemas/source${version}-unverified-schema.json`,
-            'utf8'
-          )
-        ).metadataHex as string
-    )
+    ([128, 129, 130] as const).map(async (version) => readRuntimeMetadataExport(version))
   );
-  const target = JSON.parse(
-    await readFile(
-      'output/go-history/goal-runtime-wasm-offline-20260921/synthetic-episode-v2/metadata-131.json',
-      'utf8'
-    )
-  );
+  const target = await readRuntimeMetadataExport(131);
   return createGoalRuntimeCatalog({
     source128MetadataHex: schemas[0],
     source129MetadataHex: schemas[1],
     source130MetadataHex: schemas[2],
-    target131MetadataHex: new TypeRegistry()
-      .createType('Bytes', Buffer.from(target.actualExport.resultHex.slice(2), 'hex'))
-      .toHex(),
+    target131MetadataHex: new TypeRegistry().createType('Bytes', Buffer.from(target.slice(2), 'hex')).toHex(),
   });
 }
 /** Encode arbitrary invented values through the selected genuine storage schema. */

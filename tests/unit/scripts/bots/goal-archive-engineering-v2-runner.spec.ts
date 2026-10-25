@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { selectClockCoverage } from '../../../../output/go-history/goal-archive-engineering-20260920/run-engineering-v2.mts';
+import { selectClockCoverage } from '../../../fixtures/bots/runtime-tools/goal-archive-engineering-20260920/run-engineering-v2.mts';
 import { buildGoalQualificationClockV2 } from '../../../../scripts/bots/goal-qualification-clock-builder-v2';
 import { GOAL_EXACT_POLICY } from '../../../../src/features/bot-trading/goal-exact-ledger';
 const START = 3600000,

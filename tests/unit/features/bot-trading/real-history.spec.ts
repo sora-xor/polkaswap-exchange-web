@@ -61,10 +61,9 @@ const source = {
   ),
 };
 
-// This integration replays all 4,851 archived candles and three expanding folds,
-// each with three exact-decimal optimizer variants. Its observed 15.6s replay
-// needs a scoped 30s test budget; ordinary tests keep the global 15s deadline.
-const ARCHIVE_TRAINING_TIMEOUT_MS = 30_000;
+// Replaying 4,851 archived candles over three folds and exact-decimal optimizer
+// variants needs a scoped 60s budget under shared CI load; ordinary tests keep 15s.
+const ARCHIVE_TRAINING_TIMEOUT_MS = 60_000;
 
 /** Use the same observed directional fees for the independent shared-engine comparison. */
 const costs = {

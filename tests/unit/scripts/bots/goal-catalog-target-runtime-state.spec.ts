@@ -1,5 +1,5 @@
+import { readRuntimeMetadataHexSync, readRuntimeDispatchFixture } from '../../../fixtures/bots/runtime-artifacts';
 import { createHash } from 'node:crypto';
-import { readFileSync } from 'node:fs';
 import { Metadata, TypeRegistry } from '@polkadot/types';
 import { expandMetadata } from '@polkadot/types/metadata';
 import { compactStripLength } from '@polkadot/util';
@@ -14,23 +14,8 @@ import {
 } from '../../../../scripts/bots/goal-target-runtime-state';
 
 const sha = (value: string) => createHash('sha256').update(value).digest('hex');
-const fixtureRoot = 'output/go-history/goal-runtime-wasm-offline-20260921/synthetic-episode-v2/';
-const metadata = (version: 128 | 129 | 130) =>
-  JSON.parse(
-    readFileSync(
-      `output/go-history/partial-target-window-metadata-20260921/source-schemas/source${version}-unverified-schema.json`,
-      'utf8'
-    )
-  ).metadataHex as string;
-const targetMetadata = new TypeRegistry()
-  .createType(
-    'Bytes',
-    Buffer.from(
-      JSON.parse(readFileSync(`${fixtureRoot}metadata-131.json`, 'utf8')).actualExport.resultHex.slice(2),
-      'hex'
-    )
-  )
-  .toHex();
+const metadata = readRuntimeMetadataHexSync;
+const targetMetadata = metadata(131);
 const catalog = createGoalRuntimeCatalog({
   source128MetadataHex: metadata(128),
   source129MetadataHex: metadata(129),
@@ -52,8 +37,7 @@ const block = { hash: `0x${'ab'.repeat(32)}`, height: 100 };
 function fixture(version: 128 | 129 | 130, members = 1) {
   const entry = sourceEntry(version);
   const codec = createGoalCatalogTargetRuntimeStateCodec({ catalog, sourceCodeHash: entry.profile.codeHash });
-  const declarations = JSON.parse(readFileSync(`${fixtureRoot}dispatch-130-kusd-xor-success.json`, 'utf8'))
-    .declarations as { key: string; value: string | null }[];
+  const declarations = readRuntimeDispatchFixture().declarations as { key: string; value: string | null }[];
   const properties = declarations.find((row) => row.key === codec.fixedKeys.properties)!.value;
   const pool = codec.derivePoolKeys(properties);
   const keys = [...Object.values(codec.fixedKeys), pool.poolXor, pool.poolKusd];

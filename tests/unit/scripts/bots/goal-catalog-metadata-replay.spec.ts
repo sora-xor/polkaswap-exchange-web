@@ -1,6 +1,5 @@
 // @vitest-environment node
 import { createHash } from 'node:crypto';
-import { readFileSync } from 'node:fs';
 import { compactStripLength, hexToU8a, u8aToHex } from '@polkadot/util';
 import { beforeAll, afterAll, describe, expect, it, vi } from 'vitest';
 import {
@@ -28,6 +27,7 @@ import {
   type GoalCatalogMetadataReplayInput,
   type GoalMetadataReplayEvidence,
 } from '../../../../scripts/bots/goal-qualification-metadata-replay';
+import { readRuntimeMetadataExport } from '../../../fixtures/bots/runtime-metadata';
 
 const endpoint = 'https://mof2.sora.org/';
 const hash = (n: number) => `0x${n.toString(16).padStart(64, '0')}`;
@@ -109,20 +109,12 @@ function answer(r: Rpc) {
 }
 beforeAll(async () => {
   vi.stubGlobal('fetch', network);
-  const metadata = (version: number) =>
-    JSON.parse(
-      readFileSync(
-        `output/go-history/partial-target-window-metadata-20260921/source-schemas/source${version}-unverified-schema.json`,
-        'utf8'
-      )
-    ).metadataHex;
-  const target = JSON.parse(
-    readFileSync('output/go-history/goal-runtime-wasm-offline-20260921/synthetic-episode-v2/metadata-131.json', 'utf8')
-  ).actualExport.resultHex;
+  const metadata = readRuntimeMetadataExport;
+  const target = await readRuntimeMetadataExport(131);
   catalog = createGoalRuntimeCatalog({
-    source128MetadataHex: metadata(128),
-    source129MetadataHex: metadata(129),
-    source130MetadataHex: metadata(130),
+    source128MetadataHex: await metadata(128),
+    source129MetadataHex: await metadata(129),
+    source130MetadataHex: await metadata(130),
     target131MetadataHex: u8aToHex(compactStripLength(hexToU8a(target))[1]),
   });
   const ranges = [

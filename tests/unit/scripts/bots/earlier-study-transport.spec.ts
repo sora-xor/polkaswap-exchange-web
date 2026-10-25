@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import {
   assertStudyEndpoint,
   createStudyTransport,
-} from '../../../../output/go-history/earlier-goal-study-20260921/study-transport.mts';
+} from '../../../fixtures/bots/runtime-tools/earlier-goal-study-20260921/study-transport.mts';
 
 const URL = 'https://mof2.sora.org/';
 function fixture(maximumStarts = 10) {

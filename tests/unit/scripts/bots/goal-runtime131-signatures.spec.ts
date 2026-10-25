@@ -13,20 +13,16 @@ import {
   verifyCase131,
   verifyDirectory131,
   type SyntheticSignatureCase,
-} from '../../../../output/go-history/goal-runtime131-signatures-20260921/verify.mts';
+} from '../../../fixtures/bots/runtime-tools/goal-runtime131-signatures-20260921/verify.mts';
 import { readGoalFinalizedReceipt } from '@/features/bot-trading/goal-receipt';
 import { captureGoalSigningPayload, retainGoalSignedMortality } from '@/features/bot-trading/goal-mortality';
 import { GOAL_EXACT_POLICY } from '@/features/bot-trading/goal-exact-ledger';
 
 const require = createRequire(import.meta.url);
-const base = resolve('output/go-history/goal-runtime131-signatures-20260921');
-const old = resolve('output/go-history/goal-runtime-wasm-offline-20260921');
-const available =
-  process.platform === 'darwin' &&
-  existsSync('/usr/bin/sandbox-exec') &&
-  existsSync(
-    '/Users/takemiyamakoto/dev/sora2-network/runtime-upgrade-4.8.9/framenode-runtime-4.8.9.compact.compressed.wasm'
-  );
+const base = resolve('tests/fixtures/bots/runtime-tools/goal-runtime131-signatures-20260921');
+const old = resolve('tests/fixtures/bots/runtime-tools/goal-runtime-wasm-offline-20260921');
+// These cases assert kernel-enforced socket denial using the macOS sandbox.
+const available = process.platform === 'darwin' && existsSync('/usr/bin/sandbox-exec');
 let directory = '',
   metadataHex = '';
 const read = async (name: string) => JSON.parse(await readFile(join(directory, name + '.json'), 'utf8'));

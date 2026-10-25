@@ -1,67 +1,73 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { createRequire } from 'node:module';
 import { execFileSync } from 'node:child_process';
+import { existsSync } from 'node:fs';
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { resolve, join } from 'node:path';
 import { TypeRegistry } from '@polkadot/types';
 import { types } from '@/lib/substrate/type-definitions';
 const require = createRequire(import.meta.url);
-const host = require('../../../../output/go-history/goal-runtime-wasm-offline-20260921/runtime-host.cjs');
-const base = resolve('output/go-history/goal-runtime-wasm-offline-20260921');
+const host = require('../../../fixtures/bots/runtime-tools/goal-runtime-wasm-offline-20260921/runtime-host.cjs');
+const base = resolve('tests/fixtures/bots/runtime-tools/goal-runtime-wasm-offline-20260921');
+// Only this case claims kernel-enforced socket denial through the macOS sandbox.
+const hasMacOsNetworkSandbox = process.platform === 'darwin' && existsSync('/usr/bin/sandbox-exec');
 const paths: string[] = [];
 afterEach(async () => {
   await Promise.all(paths.splice(0).map((p) => rm(p, { recursive: true, force: true })));
 });
 
 describe('strict offline runtime readiness', () => {
-  it('executes both Core_version exports only after OS connect denial, then traps instead of inventing fixture state', async () => {
-    const output = await mkdtemp(join(tmpdir(), 'offline-wasm-'));
-    paths.push(output);
-    const stdout = execFileSync(
-      '/usr/bin/sandbox-exec',
-      ['-f', join(base, 'network-deny.sb'), process.execPath, join(base, 'run.cjs'), output],
-      { encoding: 'utf8', timeout: 15000 }
-    );
-    const result = JSON.parse(stdout);
-    expect(result).toMatchObject({
-      complete: true,
-      runtimeVersions: [130, 131],
-      coreVersionExportExecuted: true,
-      customSectionUsedInstead: false,
-      remoteStateReads: 0,
-      walletCalls: 0,
-      transactionSubmissions: 0,
-      fixtureReady: false,
-      economicEquivalence: false,
-      runtimeAdmissionGranted: false,
-      networkDenial: { code: 'EPERM', syscall: 'connect', networkPacketsSent: 0 },
-    });
-    for (const version of [130, 131]) {
-      const record = JSON.parse(await readFile(join(output, `runtime-${version}.json`), 'utf8'));
-      expect(record.core).toMatchObject({
-        success: true,
-        api: 'Core_version',
-        decoded: { specVersion: version, transactionVersion: version },
-      });
-      expect(record.core.hostCalls.map((call: { name: string }) => call.name)).toEqual([
-        'ext_logging_max_level_version_1',
-        'ext_allocator_malloc_version_1',
-      ]);
-      expect(record.quoteBoundary.success).toBe(false);
-      expect(record.quoteBoundary.error).toBe('unsupported-host:ext_storage_get_version_1');
-      expect(record.quoteBoundary.hostCalls.at(-1).keyHex).toBe(
-        '0xa1bd2c8b755a708aa525cd47c8e225fd49e90400771bdeb88bf8ecd95a3c447db4def25cfda6ef3a00000000'
-      );
-    }
-    expect(() =>
-      execFileSync(
+  it.skipIf(!hasMacOsNetworkSandbox)(
+    'executes both Core_version exports only after OS connect denial, then traps instead of inventing fixture state',
+    async () => {
+      const output = await mkdtemp(join(tmpdir(), 'offline-wasm-'));
+      paths.push(output);
+      const stdout = execFileSync(
         '/usr/bin/sandbox-exec',
         ['-f', join(base, 'network-deny.sb'), process.execPath, join(base, 'run.cjs'), output],
-        { encoding: 'utf8', timeout: 15000, stdio: 'pipe' }
-      )
-    ).toThrow();
-  });
+        { encoding: 'utf8', timeout: 15000 }
+      );
+      const result = JSON.parse(stdout);
+      expect(result).toMatchObject({
+        complete: true,
+        runtimeVersions: [130, 131],
+        coreVersionExportExecuted: true,
+        customSectionUsedInstead: false,
+        remoteStateReads: 0,
+        walletCalls: 0,
+        transactionSubmissions: 0,
+        fixtureReady: false,
+        economicEquivalence: false,
+        runtimeAdmissionGranted: false,
+        networkDenial: { code: 'EPERM', syscall: 'connect', networkPacketsSent: 0 },
+      });
+      for (const version of [130, 131]) {
+        const record = JSON.parse(await readFile(join(output, `runtime-${version}.json`), 'utf8'));
+        expect(record.core).toMatchObject({
+          success: true,
+          api: 'Core_version',
+          decoded: { specVersion: version, transactionVersion: version },
+        });
+        expect(record.core.hostCalls.map((call: { name: string }) => call.name)).toEqual([
+          'ext_logging_max_level_version_1',
+          'ext_allocator_malloc_version_1',
+        ]);
+        expect(record.quoteBoundary.success).toBe(false);
+        expect(record.quoteBoundary.error).toBe('unsupported-host:ext_storage_get_version_1');
+        expect(record.quoteBoundary.hostCalls.at(-1).keyHex).toBe(
+          '0xa1bd2c8b755a708aa525cd47c8e225fd49e90400771bdeb88bf8ecd95a3c447db4def25cfda6ef3a00000000'
+        );
+      }
+      expect(() =>
+        execFileSync(
+          '/usr/bin/sandbox-exec',
+          ['-f', join(base, 'network-deny.sb'), process.execPath, join(base, 'run.cjs'), output],
+          { encoding: 'utf8', timeout: 15000, stdio: 'pipe' }
+        )
+      ).toThrow();
+    }
+  );
   it('rejects a changed binary before decompression and unsupported profiles before file access', async () => {
     const output = await mkdtemp(join(tmpdir(), 'offline-wasm-invalid-'));
     paths.push(output);

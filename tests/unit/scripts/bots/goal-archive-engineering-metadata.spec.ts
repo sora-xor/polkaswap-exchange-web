@@ -3,7 +3,7 @@ import {
   allowEngineeringMetadataRequest,
   engineeringDefinition,
   engineeringRange,
-} from '../../../../output/go-history/goal-archive-engineering-20260920/engineering-metadata.mts';
+} from '../../../fixtures/bots/runtime-tools/goal-archive-engineering-20260920/engineering-metadata.mts';
 
 const hash = (n: number) => `0x${n.toString(16).padStart(64, '0')}`;
 const block = (height: number, timestampMs: number) => ({

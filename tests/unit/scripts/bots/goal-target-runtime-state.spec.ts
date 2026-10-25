@@ -1,5 +1,10 @@
-import { createHash } from 'node:crypto';
-import { existsSync, readFileSync } from 'node:fs';
+import {
+  runtimeWasmFixturePath,
+  readRuntimeMetadataHexSync,
+  readRuntimeDispatchFixture,
+  readRuntimeQuoteFeeFixture,
+} from '../../../fixtures/bots/runtime-artifacts';
+import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { Metadata, TypeRegistry } from '@polkadot/types';
 import { expandMetadata } from '@polkadot/types/metadata';
@@ -13,25 +18,14 @@ import {
 } from '../../../../scripts/bots/goal-target-runtime-state';
 import { acquireGoalTargetRuntimeState } from '../../../../scripts/bots/goal-target-runtime-transport';
 
-const directory = new URL(
-  '../../../../output/go-history/goal-runtime-wasm-offline-20260921/synthetic-episode-v2/',
-  import.meta.url
-);
-const original = (name: string) => JSON.parse(readFileSync(new URL(name, directory), 'utf8'));
-const sha = (text: string) => createHash('sha256').update(text).digest('hex');
-const encode = (bytes: Uint8Array) => `0x${Buffer.from(bytes).toString('hex')}`;
-const metadataHex = (version: 130 | 131) =>
-  new TypeRegistry()
-    .createType('Bytes', Buffer.from(original(`metadata-${version}.json`).actualExport.resultHex.slice(2), 'hex'))
-    .toHex();
+const metadataHex = readRuntimeMetadataHexSync;
 const pinned = { sourceMetadataHex: metadataHex(130), targetMetadataHex: metadataHex(131) };
 const codec = createGoalTargetRuntimeStateCodec(pinned);
 const block = { hash: `0x${'ab'.repeat(32)}`, height: 100 };
 const network = vi.fn(() => {
   throw new Error('No network in state verification');
 });
-const binaryPath =
-  '/Users/takemiyamakoto/dev/sora2-network/runtime-upgrade-4.8.9/framenode-runtime-4.8.9.compact.compressed.wasm';
+const binaryPath = runtimeWasmFixturePath(131);
 const require = createRequire(import.meta.url);
 beforeAll(() => vi.stubGlobal('fetch', network));
 afterAll(() => {
@@ -57,7 +51,7 @@ function fixture(count = 0) {
         .toHex(),
     };
   }).sort((a, b) => a.key.localeCompare(b.key, 'en'));
-  const declarations = original('dispatch-130-kusd-xor-success.json').declarations as {
+  const declarations = readRuntimeDispatchFixture().declarations as {
     key: string;
     value: string | null;
   }[];
@@ -108,87 +102,79 @@ function alterParams(receipt: GoalTargetStateReceipt, params: unknown[]) {
 }
 
 describe('genuine-state declaration codec for exact target runtime quote/fees', () => {
-  it.skipIf(!existsSync(binaryPath))(
-    'composes bounded acquisition, original receipts, state verification and exact target WASM',
-    async () => {
-      const f = fixture(1);
-      const retained: unknown[] = [];
-      const responses = new Map(
-        f.receipts.map((r) => [JSON.stringify([r.method, r.params]), JSON.parse(r.responseBody).result])
-      );
-      const transport = vi.fn(async (_url: string | URL | Request, init?: RequestInit) => {
-        const request = JSON.parse(init!.body as string);
-        const key = JSON.stringify([request.method, request.params]);
-        if (!responses.has(key)) throw new Error('Unspecified synthetic RPC');
-        return new Response(JSON.stringify({ jsonrpc: '2.0', id: request.id, result: responses.get(key) }), {
-          status: 200,
+  it('composes bounded acquisition, original receipts, state verification and exact target WASM', async () => {
+    const f = fixture(1);
+    const retained: unknown[] = [];
+    const responses = new Map(
+      f.receipts.map((r) => [JSON.stringify([r.method, r.params]), JSON.parse(r.responseBody).result])
+    );
+    const transport = vi.fn(async (_url: string | URL | Request, init?: RequestInit) => {
+      const request = JSON.parse(init!.body as string);
+      const key = JSON.stringify([request.method, request.params]);
+      if (!responses.has(key)) throw new Error('Unspecified synthetic RPC');
+      return new Response(JSON.stringify({ jsonrpc: '2.0', id: request.id, result: responses.get(key) }), {
+        status: 200,
+      });
+    });
+    const acquired = await acquireGoalTargetRuntimeState({
+      blockHash: block.hash,
+      pointKeys: [...Object.values(codec.fixedKeys), f.pool.poolXor, f.pool.poolKusd],
+      prefix: codec.xstPrefix,
+      fetch: transport as typeof fetch,
+      retain: async (receipt) => {
+        retained.push(receipt);
+      },
+    });
+    expect(acquired.requests).toBe(11);
+    expect(retained).toEqual(acquired.receipts);
+    expect(transport).toHaveBeenCalledTimes(11);
+    expect(acquired.financialActions).toBe(false);
+    const verified = codec.verify({ sourceBlock: block, receipts: acquired.receipts });
+    expect(verified.hostState).toEqual(codec.verify(f.evidence).hostState);
+    const { createGoalTargetRuntimeHost } = require('../../../../scripts/bots/goal-target-runtime-host.cjs');
+    const host = createGoalTargetRuntimeHost(readFileSync(binaryPath));
+    for (const direction of ['kusd-xor', 'xor-kusd']) {
+      const quote = readRuntimeQuoteFeeFixture(direction).quote;
+      const fees = readRuntimeQuoteFeeFixture(direction).fees;
+      for (const [api, inputHex, expected] of [
+        ['LiquidityProxyAPI_quote', quote.inputHex, quote.resultHex],
+        ['TransactionPaymentApi_query_info', fees.inputHex, fees.infoResultHex],
+        ['TransactionPaymentApi_query_fee_details', fees.inputHex, fees.detailsResultHex],
+      ])
+        expect(host.invoke({ api, inputHex, state: verified.hostState })).toMatchObject({
+          success: true,
+          resultHex: expected,
+          storageWrites: 0,
+          transactionExecution: false,
+          admissionGranted: false,
         });
-      });
-      const acquired = await acquireGoalTargetRuntimeState({
-        blockHash: block.hash,
-        pointKeys: [...Object.values(codec.fixedKeys), f.pool.poolXor, f.pool.poolKusd],
-        prefix: codec.xstPrefix,
-        fetch: transport as typeof fetch,
-        retain: async (receipt) => {
-          retained.push(receipt);
-        },
-      });
-      expect(acquired.requests).toBe(11);
-      expect(retained).toEqual(acquired.receipts);
-      expect(transport).toHaveBeenCalledTimes(11);
-      expect(acquired.financialActions).toBe(false);
-      const verified = codec.verify({ sourceBlock: block, receipts: acquired.receipts });
-      expect(verified.hostState).toEqual(codec.verify(f.evidence).hostState);
-      const { createGoalTargetRuntimeHost } = require('../../../../scripts/bots/goal-target-runtime-host.cjs');
-      const host = createGoalTargetRuntimeHost(readFileSync(binaryPath));
+    }
+  }, 30000);
+  it('feeds verified source state to exact131 quote and both fee APIs in both directions', () => {
+    const { createGoalTargetRuntimeHost } = require('../../../../scripts/bots/goal-target-runtime-host.cjs');
+    const host = createGoalTargetRuntimeHost(readFileSync(binaryPath));
+    for (const count of [0, 1]) {
+      const state = codec.verify(fixture(count).evidence).hostState;
       for (const direction of ['kusd-xor', 'xor-kusd']) {
-        const quote = original(`quote-131-${direction}.json`);
-        const fees = original(`dispatch-131-${direction}-success.json`).feeMethods;
+        const quote = readRuntimeQuoteFeeFixture(direction).quote;
+        const fees = readRuntimeQuoteFeeFixture(direction).fees;
         for (const [api, inputHex, expected] of [
-          ['LiquidityProxyAPI_quote', quote.inputHex, quote.actualExport.resultHex],
-          ['TransactionPaymentApi_query_info', fees.inputHex, fees.info.resultHex],
-          ['TransactionPaymentApi_query_fee_details', fees.inputHex, fees.details.resultHex],
-        ])
-          expect(host.invoke({ api, inputHex, state: verified.hostState })).toMatchObject({
+          ['LiquidityProxyAPI_quote', quote.inputHex, quote.resultHex],
+          ['TransactionPaymentApi_query_info', fees.inputHex, fees.infoResultHex],
+          ['TransactionPaymentApi_query_fee_details', fees.inputHex, fees.detailsResultHex],
+        ]) {
+          const result = host.invoke({ api, inputHex, state });
+          expect(result).toMatchObject({
             success: true,
             resultHex: expected,
             storageWrites: 0,
             transactionExecution: false,
             admissionGranted: false,
           });
-      }
-    },
-    30000
-  );
-  it.skipIf(!existsSync(binaryPath))(
-    'feeds verified source state to exact131 quote and both fee APIs in both directions',
-    () => {
-      const { createGoalTargetRuntimeHost } = require('../../../../scripts/bots/goal-target-runtime-host.cjs');
-      const host = createGoalTargetRuntimeHost(readFileSync(binaryPath));
-      for (const count of [0, 1]) {
-        const state = codec.verify(fixture(count).evidence).hostState;
-        for (const direction of ['kusd-xor', 'xor-kusd']) {
-          const quote = original(`quote-131-${direction}.json`);
-          const fees = original(`dispatch-131-${direction}-success.json`).feeMethods;
-          for (const [api, inputHex, expected] of [
-            ['LiquidityProxyAPI_quote', quote.inputHex, quote.actualExport.resultHex],
-            ['TransactionPaymentApi_query_info', fees.inputHex, fees.info.resultHex],
-            ['TransactionPaymentApi_query_fee_details', fees.inputHex, fees.details.resultHex],
-          ]) {
-            const result = host.invoke({ api, inputHex, state });
-            expect(result).toMatchObject({
-              success: true,
-              resultHex: expected,
-              storageWrites: 0,
-              transactionExecution: false,
-              admissionGranted: false,
-            });
-          }
         }
       }
-    },
-    30000
-  );
+    }
+  }, 30000);
   it('matches both actual metadata layouts and derives known synthetic pool keys without reading prices', () => {
     const f = fixture();
     const result = codec.verify(f.evidence);

@@ -1,5 +1,10 @@
+import {
+  runtimeWasmFixturePath,
+  readRuntimeMetadataHexSync,
+  readRuntimeDispatchFixture,
+} from '../../../fixtures/bots/runtime-artifacts';
 /** Invented storage, exact installed target WASM, and injected transport only. */
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { Metadata, TypeRegistry } from '@polkadot/types';
 import { expandMetadata } from '@polkadot/types/metadata';
 import { compactStripLength, u8aToHex } from '@polkadot/util';
@@ -49,21 +54,12 @@ vi.mock('../../../../scripts/bots/goal-target-runtime-quote', async (original) =
     },
   };
 });
-const directory = new URL(
-  '../../../../output/go-history/goal-runtime-wasm-offline-20260921/synthetic-episode-v2/',
-  import.meta.url
-);
-const synthetic = (name: string) => JSON.parse(readFileSync(new URL(name, directory), 'utf8'));
-const metadata = (version: number) =>
-  new TypeRegistry()
-    .createType('Bytes', Buffer.from(synthetic(`metadata-${version}.json`).actualExport.resultHex.slice(2), 'hex'))
-    .toHex();
+const metadata = readRuntimeMetadataHexSync;
 const sourceMetadataHex = metadata(130);
 const codec = createGoalTargetRuntimeStateCodec({ sourceMetadataHex, targetMetadataHex: metadata(131) });
-const binaryPath =
-  '/Users/takemiyamakoto/dev/sora2-network/runtime-upgrade-4.8.9/framenode-runtime-4.8.9.compact.compressed.wasm';
+const binaryPath = runtimeWasmFixturePath(131);
 const block = { hash: `0x${'ab'.repeat(32)}`, height: 100 };
-const declarations = synthetic('dispatch-130-kusd-xor-success.json').declarations as {
+const declarations = readRuntimeDispatchFixture().declarations as {
   key: string;
   value: string | null;
 }[];
@@ -143,7 +139,7 @@ function fixture(nonempty = false, disabled = false) {
   return { input, fetcher, retain, records, events, values };
 }
 
-describe.skipIf(!existsSync(binaryPath))('owned archive target-runtime quote session', () => {
+describe('owned archive target-runtime quote session', () => {
   const sessions: Awaited<ReturnType<typeof createGoalTargetRuntimeArchiveQuote>>[] = [];
   const open = async (signal?: AbortSignal) => {
     const session = await createGoalTargetRuntimeArchiveQuote({ compressedBytes: readFileSync(binaryPath), signal });

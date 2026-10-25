@@ -1,3 +1,4 @@
+import { runtimeWasmFixturePath, readRuntimeMetadataHexSync } from '../../../fixtures/bots/runtime-artifacts';
 import {
   GOAL_QUALIFICATION_PROTOCOL_V2,
   GOAL_QUALIFICATION_PROTOCOL_V3,
@@ -8,7 +9,6 @@ import {
 import { verifyGoalEpisodeClock } from '../../../../src/features/bot-trading/goal-qualification-clock-v2';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
-import { TypeRegistry } from '@polkadot/types';
 import { createHistoricalExecutionPoolCodec } from '../../../../scripts/bots/historical-execution-pool-codec';
 import { GoalTargetRuntimeQuoteError } from '../../../../scripts/bots/goal-target-runtime-quote';
 import {
@@ -933,15 +933,8 @@ describe('archive source v2 deadline and publication', () => {
 /** Public metadata and invented pool values only. The target helper is tested independently with the actual WASM. */
 function targetSetup() {
   const h = setup();
-  const folder = new URL(
-    '../../../../output/go-history/goal-runtime-wasm-offline-20260921/synthetic-episode-v2/',
-    import.meta.url
-  );
-  const exportResult = JSON.parse(readFileSync(new URL('metadata-130.json', folder), 'utf8')).actualExport.resultHex;
-  const metadataHex = new TypeRegistry().createType('Bytes', Buffer.from(exportResult.slice(2), 'hex')).toHex();
-  const compressedBytes = readFileSync(
-    '/Users/takemiyamakoto/dev/sora2-network/runtime-upgrade-4.8.9/framenode-runtime-4.8.9.compact.compressed.wasm'
-  );
+  const metadataHex = readRuntimeMetadataHexSync(130);
+  const compressedBytes = readFileSync(runtimeWasmFixturePath(131));
   const hashFile = (file: string) =>
     createHash('sha256')
       .update(readFileSync(new URL(`../../../../scripts/bots/${file}`, import.meta.url)))

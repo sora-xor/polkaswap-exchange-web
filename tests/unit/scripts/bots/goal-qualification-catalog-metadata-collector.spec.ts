@@ -1,7 +1,6 @@
 // @vitest-environment node
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { createHash } from 'node:crypto';
-import { readFile } from 'node:fs/promises';
 import { TypeRegistry } from '@polkadot/types';
 import { createGoalRuntimeCatalog } from '@/features/bot-trading/execution-codecs/runtime-catalog';
 import {
@@ -20,6 +19,7 @@ import {
   type CatalogHistoricalBlockProfile,
   type HistoricalBlockRpcEvidence,
 } from '../../../../scripts/bots/historical-execution-block-reader';
+import { readRuntimeMetadataExport } from '../../../fixtures/bots/runtime-metadata';
 
 const hash = (n: number) => `0x${n.toString(16).padStart(64, '0')}`;
 const sha = (raw: string) => createHash('sha256').update(raw).digest('hex');
@@ -48,29 +48,14 @@ let catalog: ReturnType<typeof createGoalRuntimeCatalog>;
 beforeAll(async () => {
   vi.stubGlobal('fetch', network);
   const schemas = await Promise.all(
-    [128, 129, 130].map(
-      async (version) =>
-        JSON.parse(
-          await readFile(
-            `output/go-history/partial-target-window-metadata-20260921/source-schemas/source${version}-unverified-schema.json`,
-            'utf8'
-          )
-        ).metadataHex as string
-    )
+    ([128, 129, 130] as const).map(async (version) => readRuntimeMetadataExport(version))
   );
-  const target = JSON.parse(
-    await readFile(
-      'output/go-history/goal-runtime-wasm-offline-20260921/synthetic-episode-v2/metadata-131.json',
-      'utf8'
-    )
-  );
+  const target = await readRuntimeMetadataExport(131);
   catalog = createGoalRuntimeCatalog({
     source128MetadataHex: schemas[0],
     source129MetadataHex: schemas[1],
     source130MetadataHex: schemas[2],
-    target131MetadataHex: new TypeRegistry()
-      .createType('Bytes', Buffer.from(target.actualExport.resultHex.slice(2), 'hex'))
-      .toHex(),
+    target131MetadataHex: new TypeRegistry().createType('Bytes', Buffer.from(target.slice(2), 'hex')).toHex(),
   });
 });
 afterAll(() => {

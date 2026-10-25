@@ -1,5 +1,6 @@
 // @vitest-environment node
 /** Complete invented 24-hour mixed-runtime observations; actual producer, target WASM and independent raw replay. */
+import { runtimeWasmFixturePath } from '../../../fixtures/bots/runtime-artifacts';
 import { readFileSync } from 'node:fs';
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { createGoalBundleEpisodeFixture } from '../../../fixtures/bots/goal-bundle-episode';
@@ -15,9 +16,7 @@ import {
 } from '../../../../src/features/bot-trading/goal-target-model';
 import type { GoalBundleEpisodeInput } from '../../../../src/features/bot-trading/goal-bundle-episode';
 
-const binary = readFileSync(
-  '/Users/takemiyamakoto/dev/sora2-network/runtime-upgrade-4.8.9/framenode-runtime-4.8.9.compact.compressed.wasm'
-);
+const binary = readFileSync(runtimeWasmFixturePath(131));
 const network = vi.fn(() => {
   throw Error('Network forbidden');
 });

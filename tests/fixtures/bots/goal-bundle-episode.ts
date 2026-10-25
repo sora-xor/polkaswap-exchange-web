@@ -1,4 +1,5 @@
 /** Entirely invented chain/indexer replies passed through the real original archive source and evaluator. */
+import { readRuntimeDispatchFixture, readRuntimeMetadataHexSync, runtimeWasmFixturePath } from './runtime-artifacts';
 import { Metadata, TypeRegistry } from '@polkadot/types';
 import { expandMetadata } from '@polkadot/types/metadata';
 import { types } from '@/lib/substrate/type-definitions';
@@ -137,28 +138,13 @@ export async function createGoalBundleEpisodeFixture(
   let targetCodec: ReturnType<typeof createGoalTargetRuntimeStateCodec> | undefined;
   let targetDeclarations: Map<string, string | null> | undefined;
   if (targetRuntime) {
-    const directory = new URL(
-      '../../../output/go-history/goal-runtime-wasm-offline-20260921/synthetic-episode-v2/',
-      import.meta.url
-    );
-    const synthetic = (name: string) => JSON.parse(readFileSync(new URL(name, directory), 'utf8'));
-    const metadata = (version: number) =>
-      new TypeRegistry()
-        .createType('Bytes', Buffer.from(synthetic(`metadata-${version}.json`).actualExport.resultHex.slice(2), 'hex'))
-        .toHex();
-    codec.identity.metadataHex = metadata(130);
-    targetBinary = readFileSync(
-      '/Users/takemiyamakoto/dev/sora2-network/runtime-upgrade-4.8.9/framenode-runtime-4.8.9.compact.compressed.wasm'
-    );
+    codec.identity.metadataHex = readRuntimeMetadataHexSync(130);
+    targetBinary = readFileSync(runtimeWasmFixturePath(131));
     targetCodec = createGoalTargetRuntimeStateCodec({
       sourceMetadataHex: codec.identity.metadataHex,
-      targetMetadataHex: metadata(131),
+      targetMetadataHex: readRuntimeMetadataHexSync(131),
     });
-    targetDeclarations = new Map(
-      (synthetic('dispatch-130-kusd-xor-success.json').declarations as { key: string; value: string | null }[]).map(
-        (r) => [r.key, r.value]
-      )
-    );
+    targetDeclarations = new Map(readRuntimeDispatchFixture().declarations.map((r) => [r.key, r.value]));
     const poolKeys = createHistoricalExecutionPoolCodec(codec.identity).storageKeys();
     for (const key of ['kusd', 'xor', 'dex0', 'properties', 'reserves'] as const) {
       const value = targetDeclarations.get(poolKeys[key]);

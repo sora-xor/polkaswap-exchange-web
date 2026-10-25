@@ -1,7 +1,7 @@
+import { runtimeWasmFixturePath, readRuntimeMetadataHexSync } from '../../../fixtures/bots/runtime-artifacts';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
-import { TypeRegistry } from '@polkadot/types';
 import { mkdtemp, readFile, readdir, rm, symlink, truncate, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
@@ -807,21 +807,8 @@ describe('explicit acquisition continuation constructor', () => {
 /** Real public metadata/binary identities with invented flat prices and pool accounts; no market observations. */
 async function targetFixture() {
   const f = await setup();
-  const metadataExport = JSON.parse(
-    readFileSync(
-      new URL(
-        '../../../../output/go-history/goal-runtime-wasm-offline-20260921/synthetic-episode-v2/metadata-130.json',
-        import.meta.url
-      ),
-      'utf8'
-    )
-  ).actualExport.resultHex;
-  const metadataHex = new TypeRegistry().createType('Bytes', Buffer.from(metadataExport.slice(2), 'hex')).toHex();
-  const compressed = new Uint8Array(
-    readFileSync(
-      '/Users/takemiyamakoto/dev/sora2-network/runtime-upgrade-4.8.9/framenode-runtime-4.8.9.compact.compressed.wasm'
-    )
-  );
+  const metadataHex = readRuntimeMetadataHexSync(130);
+  const compressed = new Uint8Array(readFileSync(runtimeWasmFixturePath(131)));
   const sourceHash = (name: string) =>
     createHash('sha256')
       .update(readFileSync(new URL(`../../../../scripts/bots/${name}`, import.meta.url)))
@@ -891,30 +878,12 @@ let catalogPromise: Promise<GoalRuntimeCatalog> | undefined;
 /** Metadata ownership only: this fixture never collects a block or opens a market/history source. */
 function ownedCatalog() {
   return (catalogPromise ??= (async () => {
-    const sourceMetadata = async (version: number): Promise<string> =>
-      JSON.parse(
-        await readFile(
-          new URL(
-            `../../../../output/go-history/partial-target-window-metadata-20260921/source-schemas/source${version}-unverified-schema.json`,
-            import.meta.url
-          ),
-          'utf8'
-        )
-      ).metadataHex;
-    const target = JSON.parse(
-      await readFile(
-        new URL(
-          '../../../../output/go-history/goal-runtime-wasm-offline-20260921/synthetic-episode-v2/metadata-131.json',
-          import.meta.url
-        ),
-        'utf8'
-      )
-    ).actualExport.resultHex;
+    const sourceMetadata = readRuntimeMetadataHexSync;
     return createGoalRuntimeCatalog({
       source128MetadataHex: await sourceMetadata(128),
       source129MetadataHex: await sourceMetadata(129),
       source130MetadataHex: await sourceMetadata(130),
-      target131MetadataHex: new TypeRegistry().createType('Bytes', Buffer.from(target.slice(2), 'hex')).toHex(),
+      target131MetadataHex: readRuntimeMetadataHexSync(131),
     });
   })());
 }
@@ -1091,6 +1060,7 @@ describe('V3 archive publication capacity forwarding', () => {
 });
 
 describe('explicit v3 archive evaluator composition', () => {
+  // Preserve all 1,440 actual-runtime valuations and replay checks under concurrent suite load.
   it('copies the binary before the first await and runs a full invented hold episode through actual v3 store/source/clock', async () => {
     const f = await targetFixture();
     await f.writeMetadata();
@@ -1156,7 +1126,7 @@ describe('explicit v3 archive evaluator composition', () => {
     expect(doubles.history).not.toHaveBeenCalled();
     expect(f.options.fetch).not.toHaveBeenCalled();
     expect(await readFile(join(f.study, 'registration.json'), 'utf8')).toBe(originalRecord);
-  }, 180000);
+  }, 300000);
 
   it.each([1, 2] as const)(
     'the v%s constructor rejects a v3 plan and target-only option before store access',

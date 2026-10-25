@@ -1,4 +1,10 @@
 // @vitest-environment node
+import {
+  runtimeWasmFixturePath,
+  readRuntimeMetadataHexSync,
+  readRuntimeDispatchFixture,
+  readRuntimeQuoteFeeFixture,
+} from '../../../fixtures/bots/runtime-artifacts';
 /** All storage is invented; local pinned runtime/metadata are offline codec and execution oracles. */
 import { createHash } from 'node:crypto';
 import { EventEmitter } from 'node:events';
@@ -8,7 +14,6 @@ import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { runInThisContext } from 'node:vm';
 import { Worker as NativeWorker, type WorkerOptions } from 'node:worker_threads';
-import { TypeRegistry } from '@polkadot/types';
 import ts from 'typescript';
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import * as stateModule from '../../../../scripts/bots/goal-target-runtime-state';
@@ -20,14 +25,11 @@ import {
 } from '../../../../scripts/bots/goal-target-runtime-worker-client';
 
 const require = createRequire(import.meta.url);
-const binaryPath =
-  '/Users/takemiyamakoto/dev/sora2-network/runtime-upgrade-4.8.9/framenode-runtime-4.8.9.compact.compressed.wasm';
+const binaryPath = runtimeWasmFixturePath(131);
 const clientPath = resolve('scripts/bots/goal-target-runtime-worker-client.ts');
 const workerPath = resolve('scripts/bots/goal-target-runtime-worker.cjs');
 const hostPath = resolve('scripts/bots/goal-target-runtime-host.cjs');
 const sha = (value: string) => createHash('sha256').update(value).digest('hex');
-const artifacts = resolve('output/go-history/goal-runtime-wasm-offline-20260921');
-const original = (name: string) => JSON.parse(readFileSync(resolve(artifacts, 'synthetic-episode-v2', name), 'utf8'));
 const { createGoalTargetRuntimeHost } = require(hostPath);
 let bytes: Buffer;
 let oracle: { profile: GoalTargetRuntimeWorker['profile']; metadataHex: string; invoke(value: unknown): unknown };
@@ -38,15 +40,12 @@ const clients: GoalTargetRuntimeWorker[] = [];
 
 /** Use genuine state-verifier ownership around complete synthetic RPC receipts, never a capability mock. */
 function verifiedState() {
-  const metadata = (version: number) =>
-    new TypeRegistry()
-      .createType('Bytes', Buffer.from(original(`metadata-${version}.json`).actualExport.resultHex.slice(2), 'hex'))
-      .toHex();
+  const metadata = readRuntimeMetadataHexSync;
   const codec = stateModule.createGoalTargetRuntimeStateCodec({
     sourceMetadataHex: metadata(130),
     targetMetadataHex: metadata(131),
   });
-  const fixture = original('dispatch-130-kusd-xor-success.json');
+  const fixture = readRuntimeDispatchFixture();
   const declarations = fixture.declarations as { key: string; value: string | null }[];
   const pool = codec.derivePoolKeys(declarations.find((value) => value.key === codec.fixedKeys.properties)!.value);
   const keys = [...Object.values(codec.fixedKeys), pool.poolXor, pool.poolKusd];
@@ -78,7 +77,7 @@ function verifiedState() {
   const length = Buffer.alloc(4);
   length.writeUInt32LE(extrinsic.length);
   feeInput = `0x${Buffer.concat([extrinsic, length]).toString('hex')}`;
-  quoteInput = `0x${require(resolve(artifacts, 'runtime-host.cjs')).quoteInput(false).toString('hex')}`;
+  quoteInput = readRuntimeQuoteFeeFixture('kusd-xor').quote.inputHex;
   return codec.verify({ sourceBlock: block, receipts });
 }
 

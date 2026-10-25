@@ -12,8 +12,9 @@ import {
   ENDPOINT,
   EXPECTED,
   type Receipt,
-} from '../../../../output/go-history/partial-target-current-fees-20260921/probe.mts';
+} from '../../../fixtures/bots/runtime-tools/partial-target-current-fees-20260921/probe.mts';
 import { types } from '@/lib/substrate/type-definitions';
+import { readRuntimeMetadataHex } from '../../../fixtures/bots/runtime-artifacts';
 const directories: string[] = [];
 afterEach(async () => {
   await Promise.all(directories.splice(0).map((path) => rm(path, { recursive: true, force: true })));
@@ -75,15 +76,7 @@ describe('bounded current fee-only probe', () => {
   it('runs four fixed input envelopes with invented fees and retained131 metadata, never asking for market state', async () => {
     const directory = await mkdtemp(join(tmpdir(), 'runtime131-fees-'));
     directories.push(directory);
-    const retainedMetadata = JSON.parse(
-      await readFile(
-        'output/go-history/goal-runtime-wasm-offline-20260921/synthetic-episode-v2/metadata-131.json',
-        'utf8'
-      )
-    );
-    const metadataHex = new TypeRegistry()
-      .createType('Bytes', Buffer.from(retainedMetadata.actualExport.resultHex.slice(2), 'hex'))
-      .toHex();
+    const metadataHex = await readRuntimeMetadataHex(131);
     const registry = new TypeRegistry();
     registry.register(types);
     registry.setMetadata(new Metadata(registry, metadataHex), undefined, undefined, true);

@@ -1,9 +1,13 @@
 // @vitest-environment node
+import {
+  runtimeWasmFixturePath,
+  readRuntimeMetadataHexSync,
+  readRuntimeDispatchFixture,
+} from '../../../fixtures/bots/runtime-artifacts';
 /** Pinned local binary/metadata and invented state only. No historical market archive or network is read. */
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { performance } from 'node:perf_hooks';
-import { TypeRegistry } from '@polkadot/types';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   replayGoalTargetRuntimeEstimate,
@@ -53,17 +57,8 @@ vi.mock('../../../../scripts/bots/goal-target-runtime-quote', async (original) =
   };
 });
 
-const binaryPath =
-  '/Users/takemiyamakoto/dev/sora2-network/runtime-upgrade-4.8.9/framenode-runtime-4.8.9.compact.compressed.wasm';
-const directory = new URL(
-  '../../../../output/go-history/goal-runtime-wasm-offline-20260921/synthetic-episode-v2/',
-  import.meta.url
-);
-const original = (name: string) => JSON.parse(readFileSync(new URL(name, directory), 'utf8'));
-const metadata = (version: number) =>
-  new TypeRegistry()
-    .createType('Bytes', Buffer.from(original(`metadata-${version}.json`).actualExport.resultHex.slice(2), 'hex'))
-    .toHex();
+const binaryPath = runtimeWasmFixturePath(131);
+const metadata = readRuntimeMetadataHexSync;
 const sha = (value: string) => createHash('sha256').update(value).digest('hex');
 const block = { hash: `0x${'ab'.repeat(32)}`, height: 100 };
 let bytes: Buffer;
@@ -76,7 +71,7 @@ const network = vi.fn(() => {
 
 /** Original-style complete receipts around invented pool state, with actual pinned metadata decoding. */
 function fixture(disabled = false, reverse = false): GoalTargetRuntimeEstimateReplayInput {
-  const declarations = original('dispatch-130-kusd-xor-success.json').declarations as {
+  const declarations = readRuntimeDispatchFixture().declarations as {
     key: string;
     value: string | null;
   }[];

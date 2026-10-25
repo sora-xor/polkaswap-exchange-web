@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import {
   openingState,
   retain,
-} from '../../../../output/go-history/goal-archive-engineering-20260920/preflight-market.mts';
+} from '../../../fixtures/bots/runtime-tools/goal-archive-engineering-20260920/preflight-market.mts';
 const target = Date.parse('2026-06-29T13:00:00Z') - 13000;
 const hash = (n: number) => `0x${n.toString(16).padStart(64, '0')}`;
 const block = (height: number, timestampMs: number) => ({

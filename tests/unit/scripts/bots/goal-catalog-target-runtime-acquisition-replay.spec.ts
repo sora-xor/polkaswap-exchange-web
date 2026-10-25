@@ -1,9 +1,16 @@
+import {
+  runtimeWasmFixturePath,
+  readRuntimeMetadataHexSync,
+  readRuntimeDispatchFixture,
+} from '../../../fixtures/bots/runtime-artifacts';
 /** Actual fixed target worker with invented storage and genuine source metadata; no market or network access. */
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { TypeRegistry } from '@polkadot/types';
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
-import { createGoalRuntimeCatalog } from '@/features/bot-trading/execution-codecs/runtime-catalog';
+import {
+  createGoalRuntimeCatalog,
+  GOAL_RUNTIME_CATALOG_PROFILES,
+} from '@/features/bot-trading/execution-codecs/runtime-catalog';
 import { createGoalCatalogTargetRuntimeStateCodec } from '../../../../scripts/bots/goal-target-runtime-state';
 import {
   createGoalCatalogTargetRuntimeArchiveQuote,
@@ -19,32 +26,20 @@ import {
 } from '../../../../scripts/bots/historical-execution-codec';
 import type { GoalTargetStateRpcReceipt } from '../../../../scripts/bots/goal-target-runtime-transport';
 vi.unmock('@polkadot/util-crypto');
-const root = new URL('../../../../output/go-history/', import.meta.url);
-const load = (name: string) => JSON.parse(readFileSync(new URL(name, root), 'utf8'));
-const sources = [128, 129, 130].map((v) =>
-  load(`partial-target-window-metadata-20260921/source-schemas/source${v}-unverified-schema.json`)
-);
-const targetMetadataHex = new TypeRegistry()
-  .createType(
-    'Bytes',
-    Buffer.from(
-      load('goal-runtime-wasm-offline-20260921/synthetic-episode-v2/metadata-131.json').actualExport.resultHex.slice(2),
-      'hex'
-    )
-  )
-  .toHex();
+const sources = [128, 129, 130].map((version) => ({
+  metadataHex: readRuntimeMetadataHexSync(version as 128 | 129 | 130),
+  runtimeProfile: Object.values(GOAL_RUNTIME_CATALOG_PROFILES).find((profile) => profile.specVersion === version)!,
+}));
+const targetMetadataHex = readRuntimeMetadataHexSync(131);
 const catalog = createGoalRuntimeCatalog({
   source128MetadataHex: sources[0].metadataHex,
   source129MetadataHex: sources[1].metadataHex,
   source130MetadataHex: sources[2].metadataHex,
   target131MetadataHex: targetMetadataHex,
 });
-const compressedBytes = readFileSync(
-  '/Users/takemiyamakoto/dev/sora2-network/runtime-upgrade-4.8.9/framenode-runtime-4.8.9.compact.compressed.wasm'
-);
+const compressedBytes = readFileSync(runtimeWasmFixturePath(131));
 const sourceBlock = { hash: `0x${'ab'.repeat(32)}`, height: 100 };
-const declarations = load('goal-runtime-wasm-offline-20260921/synthetic-episode-v2/dispatch-130-kusd-xor-success.json')
-  .declarations as Array<{ key: string; value: string | null }>;
+const declarations = readRuntimeDispatchFixture().declarations as Array<{ key: string; value: string | null }>;
 const network = vi.fn(() => {
   throw Error('network forbidden');
 });

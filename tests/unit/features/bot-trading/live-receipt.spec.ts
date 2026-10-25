@@ -1,4 +1,3 @@
-import { createHash } from 'node:crypto';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { hexToU8a } from '@polkadot/util';
 import { blake2AsHex, encodeAddress } from '@polkadot/util-crypto';
@@ -7,6 +6,9 @@ import type { BotOrder } from '@/features/bot-trading/types';
 import type { BotStorage } from '@/features/bot-trading/storage';
 import type { PolkaswapAgentApi } from '@/features/agent-trading/types';
 import { XOR } from '@/lib/substrate/sdk/assets/consts';
+
+// Keep the independent digest oracle in Node without adding crypto to the browser module graph.
+const { createHash } = process.getBuiltinModule('crypto');
 
 const wallet = vi.hoisted(() => ({ api: null as unknown }));
 // Override the concrete wallet module as allowed by tests/README.md; no wallet is constructed.

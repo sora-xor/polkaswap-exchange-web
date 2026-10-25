@@ -1,4 +1,5 @@
 /** Genuine metadata bootstrap plus raw catalog verification; invented chain history and no qualification. */
+import { runtimeWasmFixturePath } from '../../../fixtures/bots/runtime-artifacts';
 import { beforeAll, afterAll, afterEach, describe, expect, it, vi } from 'vitest';
 import { readFile } from 'node:fs/promises';
 import { createGoalStudyBundleCatalog } from '../../../../scripts/bots/goal-study-bundle-catalog';
@@ -18,9 +19,7 @@ const network = vi.fn(() => {
 beforeAll(async () => {
   vi.stubGlobal('fetch', network);
   original = await createGoalBundleCatalogMetadataFixture();
-  compressedBytes = await readFile(
-    '/Users/takemiyamakoto/dev/sora2-network/runtime-upgrade-4.8.9/framenode-runtime-4.8.9.compact.compressed.wasm'
-  );
+  compressedBytes = await readFile(runtimeWasmFixturePath(131));
 }, 30000);
 afterEach(() => vi.useRealTimers());
 afterAll(() => {
