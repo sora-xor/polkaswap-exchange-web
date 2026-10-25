@@ -13,6 +13,7 @@ This repository is a Node.js + Vue (Vite) project that compiles into a static si
 - `npm install` is not supported (the repo uses Yarn's `patch:` protocol for dependencies).
 - Build: `yarn build` produces static assets (dist/) suitable for IPFS hosting.
 - Dev: `yarn serve` for local development.
+- CI, including Jenkins, is permanently retired. Run required checks locally and record their results in the PR. Do not restore pipelines or obsolete required status checks. Historical migration plans may mention CI; those instructions are superseded.
 
 ## Testing Requirements
 

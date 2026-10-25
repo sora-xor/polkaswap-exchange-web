@@ -15,11 +15,12 @@ This guide documents how to prepare Polkaswap for an IPFS release, publish the b
    ```bash
    yarn install
    ```
-2. Run the nightly parity script (translation + native Vue 3 build). This matches what the CI pipeline uses:
+2. Run the local unit and translation checks. CI is permanently retired:
    ```bash
-   yarn ci:nightly
+   yarn test:unit
+   yarn test:translation
    ```
-   The command runs `yarn test:translation` followed by `yarn build:vue3`. Fix any failures before continuing.
+   Record the results and fix any failures before continuing.
 3. Ensure the regular Vite build succeeds with an IPFS-safe base path:
    ```bash
    yarn build --base ./

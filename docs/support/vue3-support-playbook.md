@@ -10,7 +10,7 @@ This playbook equips support and on-call engineers with the concrete steps requi
 | Migration lead      | @migration-lead      | #migration-status / incident bridge        | Decides on go/no-go, coordinates cross-team response                  |
 | Platform engineer   | @platform-oncall     | #migration-status / #release               | Handles Pinia store regressions, telemetry fixes                      |
 | QA lead             | @qa-lead             | QA War Room (Slack huddle)                 | Verifies repro steps, updates regression matrix                       |
-| DevOps on-call      | @devops-oncall       | PagerDuty (Release – Vue3)                 | Executes rollback, IPFS publish, monitors CI/nightly jobs             |
+| DevOps on-call      | @devops-oncall       | PagerDuty (Release – Vue3)                 | Executes rollback, IPFS publish, reviews local validation results    |
 | Localization lead   | @l10n-lead           | #l10n                                       | Handles translation gaps flagged by `yarn test:translation` or agents |
 
 Escalate Sev1 issues immediately via #release and start an incident call. For Sev2/Sev3, log in Zendesk/Jira and sync during the daily post-launch office hours (Sprint 4 Week 2).
@@ -39,9 +39,9 @@ When a ticket or alert arrives:
    - `pinia_store_usage` events (confirm `isLegacyFallback` and `storeName` fields).
    - Native Vue 3 runtime/bootstrap logs for regressions around legacy wallet shims.
    - `translation_missing` events for locale gaps.
-4. **Review monitoring**:
-   - Nightly `yarn build:vue3` job status.
-   - `yarn ci:nightly` logs for translation/test regressions.
+4. **Review local validation** (CI and Jenkins are permanently retired):
+   - Recorded `yarn build` results for the candidate source revision.
+   - `yarn test:unit` and `yarn test:translation` logs for regressions.
 5. **Log pilot feedback when applicable**:
    - If the report comes from a pilot cohort, capture structured feedback via the global helper exposed in the app: `window.__PS_SUBMIT_PILOT_FEEDBACK__({ cohort: '<cohort>', sentiment, category, notes })` (see `src/utils/telemetry.ts`). Any form annotated with `data-pilot-feedback` will auto-wire on load; default field names: `cohort`, `sentiment`, `category`, `notes`, `source`.
    - Use `?telemetryStub=1` in staging to verify the event emits (`[telemetry stub] pilot_feedback ...` in console); avoid entering PII in notes.

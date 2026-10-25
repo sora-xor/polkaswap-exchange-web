@@ -77,9 +77,9 @@ Run `yarn security:audit` to check the complete Yarn dependency graph, copied ve
 | --- | --- |
 | `yarn serve` | Start the Vite dev server against the native Vue 3 app shell. |
 | `yarn build` | Build the production bundle (`dist/`) for the native Vue 3 runtime. |
-| `yarn build:vue3` | Compatibility alias for `yarn build`; kept for CI/release scripts that still reference the old migration name. |
+| `yarn build:vue3` | Compatibility alias for `yarn build`; kept for local release scripts that still reference the old migration name. |
 | `yarn preview` | Serve the last build locally to mirror the IPFS bundle. |
-| `yarn ci:nightly` | Convenience alias for `yarn test:translation && yarn build:vue3`; used by nightly jobs. |
+| `yarn ci:nightly` | Legacy manual alias for `yarn test:translation && yarn build:vue3`; no CI or nightly job runs it. |
 | `yarn lint` | Run ESLint across the repo. |
 | `yarn analyze:store` | Produce the Vuex-to-Pinia usage audit (`docs/reports/store-access-audit.*`). |
 | `yarn test:unit` | Execute the Vitest unit suites (`tests/unit/**`). |
@@ -117,14 +117,14 @@ Vitest is configured via `vitest.config.mjs` with projects for unit suites and i
 - `yarn test:e2e:live` — runs real-runtime UI smoke tests without request/WebSocket stubbing.
 - `yarn test:e2e:all` — runs default + root + live e2e checks in sequence.
 - `yarn agent:runner` — runs the copyable Playwright agent example against a deployed or local app URL.
-- `yarn test:all` — alias for unit tests, handy for CI hooks.
+- `yarn test:all` — alias for the local unit tests.
 
-Always keep `yarn test:unit` and `yarn test:translation` green locally before opening a PR. They are also part of `yarn ci:nightly`, so failures break the nightly Vue 3 smoke streak.
+CI and Jenkins are permanently retired, and GitHub Actions is disabled. Run `yarn test:unit`, `yarn test:translation`, and `yarn build` locally before opening a PR, and record the results for reviewers. The legacy `yarn ci:nightly` alias runs only translations and the build; it does not run unit tests. Historical migration plans may refer to CI jobs, but they do not describe the current validation process.
 
 ## Build & IPFS
 
 - `yarn build` produces the production-ready native Vue 3 bundle.
-- `yarn build:vue3` is an alias for the same native Vue 3 build and remains available for existing CI jobs and release checklists.
+- `yarn build:vue3` is an alias for the same native Vue 3 build and remains available for local release checklists.
 - `yarn preview` serves the generated bundle so you can smoke-test the IPFS artifacts locally.
 - `yarn ipfs:publish` runs the publish workflow described in `docs/ipfs.md` (publishes to the configured gateway/IPFS node and logs the CID in `ipfs_publish.log`). `yarn ipfs:check` and `yarn ipfs:check:electron` verify the browser/electron bundles after a publish.
 - [Startup performance](docs/startup-performance.md) explains what the first page load downloads and the rules that keep heavy libraries off it.
