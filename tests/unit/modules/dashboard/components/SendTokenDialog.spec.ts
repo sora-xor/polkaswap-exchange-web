@@ -1,0 +1,424 @@
+import { mount } from '@vue/test-utils';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+import SendTokenDialog from '@/modules/dashboard/components/SendTokenDialog.vue';
+import { Operation } from '@sora-substrate/sdk';
+
+const walletMocks = vi.hoisted(() => ({
+  transferMock: vi.fn(),
+  validateAddressMock: vi.fn((value: string) => value === 'valid-address'),
+}));
+
+const storeStateMocks = vi.hoisted(() => ({
+  networkFees: {
+    XorlessTransfer: '1',
+  } as Record<string, string>,
+  accountXor: { balance: { transferable: '10' } } as { balance: { transferable: string } } | null,
+}));
+
+const transactionMocks = vi.hoisted(() => ({
+  loading: { value: false },
+  withNotifications: vi.fn(async (handler: () => unknown | Promise<unknown>) => {
+    await handler();
+    return { submitted: true };
+  }),
+}));
+
+const formattedAmountMocks = vi.hoisted(() => {
+  const createFp = (input: string | number) => {
+    const value = Number(input);
+    return {
+      value,
+      sub(other: ReturnType<typeof createFp>) {
+        return createFp(value - other.value);
+      },
+      mul(n: number) {
+        return createFp(value * n);
+      },
+      div(other: ReturnType<typeof createFp>) {
+        return createFp(value / other.value);
+      },
+      toNumber(_precision?: number) {
+        return value;
+      },
+      toString() {
+        return String(value);
+      },
+      isLtZero() {
+        return value < 0;
+      },
+      isZero() {
+        return value === 0;
+      },
+      isFinity() {
+        return Number.isFinite(value);
+      },
+    };
+  };
+
+  return {
+    Zero: createFp(0),
+    getFPNumber: vi.fn((input: string | number) => createFp(input)),
+    getFPNumberFromCodec: vi.fn((input: string | number) => createFp(input)),
+    formatCodecNumber: vi.fn((value: string) => `formatted-${value}`),
+    getFiatAmountByCodecString: vi.fn((value: string) => `fiat-${value}`),
+  };
+});
+
+const utilsMocks = vi.hoisted(() => ({
+  getMaxValue: vi.fn(() => '10'),
+  hasInsufficientBalance: vi.fn((_asset: unknown, amount: string | number) => Number(amount) > 10),
+  isMaxButtonAvailable: vi.fn(() => true),
+}));
+const tokenInputFocusMock = vi.hoisted(() => vi.fn());
+
+vi.mock('@/lib/soraneo-wallet/src/api', () => ({
+  api: {
+    assets: {
+      transfer: walletMocks.transferMock,
+    },
+    validateAddress: walletMocks.validateAddressMock,
+  },
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/DialogBase.vue', () => ({
+  default: {
+    name: 'DialogBaseStub',
+    props: {
+      visible: {
+        type: Boolean,
+        default: false,
+      },
+      title: {
+        type: String,
+        default: '',
+      },
+      tooltip: {
+        type: String,
+        default: '',
+      },
+    },
+    emits: ['update:visible', 'after-open'],
+    setup:
+      (_props, { slots }) =>
+      () =>
+        slots.default?.(),
+  },
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/InfoLine.vue', () => ({
+  default: {
+    name: 'InfoLineStub',
+    setup: () => () => null,
+  },
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/AddressBook/Input.vue', () => ({
+  default: {
+    name: 'AddressBookInputStub',
+    props: {
+      modelValue: {
+        type: String,
+        default: '',
+      },
+    },
+    emits: ['update:modelValue'],
+    setup: () => () => null,
+  },
+}));
+
+vi.mock('@/components/shared/Input/TokenInput.vue', () => ({
+  default: {
+    name: 'TokenInputStub',
+    props: {
+      modelValue: {
+        type: String,
+        default: '',
+      },
+    },
+    emits: ['update:modelValue', 'max', 'slide'],
+    setup: (_props: unknown, { expose }: { expose: (exposed: { focus: ReturnType<typeof vi.fn> }) => void }) => {
+      expose({ focus: tokenInputFocusMock });
+      return () => null;
+    },
+  },
+}));
+
+vi.mock('@/stores/settings', () => ({
+  useSettingsStore: () => ({
+    get networkFees() {
+      return storeStateMocks.networkFees;
+    },
+  }),
+}));
+
+vi.mock('@/stores/assets', () => ({
+  useAssetsStore: () => ({
+    get xor() {
+      return storeStateMocks.accountXor;
+    },
+  }),
+}));
+
+vi.mock('@/composables/useTransaction', () => ({
+  useTransaction: () => ({
+    loading: transactionMocks.loading,
+    withNotifications: transactionMocks.withNotifications,
+  }),
+  __mocks: transactionMocks,
+}));
+
+vi.mock('@/composables/useTranslation', () => ({
+  useTranslation: () => ({
+    t: (key: string, params?: Record<string, string>) => {
+      if (key === 'insufficientBalanceText') {
+        return `insufficient-${params?.tokenSymbol ?? ''}`;
+      }
+      return key;
+    },
+  }),
+}));
+
+vi.mock('@/composables/useFormattedAmount', () => ({
+  useFormattedAmount: () => formattedAmountMocks,
+  __mocks: formattedAmountMocks,
+}));
+
+vi.mock('@/utils', () => ({
+  getMaxValue: utilsMocks.getMaxValue,
+  hasInsufficientBalance: utilsMocks.hasInsufficientBalance,
+  isMaxButtonAvailable: utilsMocks.isMaxButtonAvailable,
+}));
+
+let transferMock: ReturnType<typeof vi.fn>;
+let validateAddressMock: ReturnType<typeof vi.fn>;
+let storeState: typeof storeStateMocks;
+let transactionState: typeof transactionMocks;
+
+const mountComponent = (props: Record<string, unknown> = {}) =>
+  mount(SendTokenDialog, {
+    props: {
+      visible: true,
+      balance: '10',
+      editableFiat: false,
+      asset: {
+        address: '0x01',
+        symbol: 'TKN',
+        decimals: 18,
+      },
+      ...props,
+    },
+    global: {
+      stubs: {
+        's-button': {
+          props: {
+            disabled: { type: Boolean, default: false },
+          },
+          emits: ['click'],
+          template: '<button class="action-button" :disabled="disabled" @click="$emit(\'click\')"><slot /></button>',
+        },
+        's-input': {
+          props: {
+            modelValue: {
+              type: String,
+              default: '',
+            },
+            disabled: {
+              type: [Boolean, Object],
+              default: false,
+            },
+          },
+          emits: ['update:modelValue'],
+          template:
+            '<textarea class="comment-input" :disabled="disabled" :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)"></textarea>',
+        },
+        's-tooltip': { template: '<span><slot /></span>' },
+        's-icon': { template: '<i />' },
+      },
+    },
+  });
+
+beforeEach(() => {
+  transferMock = walletMocks.transferMock;
+  validateAddressMock = walletMocks.validateAddressMock;
+  storeState = storeStateMocks;
+  transactionState = transactionMocks;
+
+  transferMock.mockClear();
+  validateAddressMock.mockClear();
+  transactionState.withNotifications.mockClear();
+  transactionState.withNotifications.mockImplementation(async (handler: () => unknown | Promise<unknown>) => {
+    await handler();
+    return { submitted: true };
+  });
+  transactionState.loading.value = false;
+  storeState.networkFees.XorlessTransfer = '1';
+  storeState.accountXor = { balance: { transferable: '10' } };
+  utilsMocks.getMaxValue.mockClear().mockReturnValue('10');
+  utilsMocks.hasInsufficientBalance
+    .mockClear()
+    .mockImplementation((_asset: unknown, amount: string | number) => Number(amount) > 10);
+  utilsMocks.isMaxButtonAvailable.mockClear().mockReturnValue(true);
+  tokenInputFocusMock.mockClear();
+});
+
+describe('SendTokenDialog.vue', () => {
+  it('disables action button when requirements are not met', () => {
+    const wrapper = mountComponent();
+    const exposed = (wrapper.vm as any).$?.exposed!;
+    expect(exposed.disabled.value).toBe(true);
+  });
+
+  it('submits transfer when form is valid', async () => {
+    const wrapper = mountComponent();
+    const exposed = (wrapper.vm as any).$?.exposed!;
+
+    exposed.value.value = '5';
+    exposed.address.value = 'valid-address';
+    exposed.comment.value = 'note';
+
+    await exposed.handleSend();
+
+    expect(transactionState.withNotifications).toHaveBeenCalledTimes(1);
+    expect(transferMock).toHaveBeenCalledWith(
+      expect.objectContaining({ address: '0x01', symbol: 'TKN' }),
+      'valid-address',
+      '5',
+      { feeType: 'xor', comment: 'note' }
+    );
+    expect(exposed.isVisible.value).toBe(false);
+    expect(wrapper.emitted()['update:visible']).toBeTruthy();
+  });
+
+  it('rejects negative amounts before unsigned-chain encoding', async () => {
+    const wrapper = mountComponent();
+    const exposed = (wrapper.vm as any).$?.exposed!;
+
+    exposed.value.value = '-1';
+    exposed.address.value = 'valid-address';
+
+    expect(exposed.invalidValue.value).toBe(true);
+    expect(exposed.disabled.value).toBe(true);
+
+    await exposed.handleSend();
+
+    expect(transactionState.withNotifications).not.toHaveBeenCalled();
+    expect(transferMock).not.toHaveBeenCalled();
+  });
+
+  it('keeps the form open when the transaction is rejected', async () => {
+    transactionState.withNotifications.mockResolvedValueOnce({ submitted: false, error: new Error('rejected') });
+    const wrapper = mountComponent();
+    const exposed = (wrapper.vm as any).$?.exposed!;
+
+    exposed.value.value = '5';
+    exposed.address.value = 'valid-address';
+
+    await exposed.handleSend();
+
+    expect(exposed.isVisible.value).toBe(true);
+  });
+
+  it('shows alert when balance is insufficient', async () => {
+    const wrapper = mountComponent();
+    const exposed = (wrapper.vm as any).$?.exposed!;
+    const alertMock = vi.fn();
+    const proxy = (wrapper.vm as any).$?.proxy as { $alert?: ReturnType<typeof vi.fn> };
+    proxy.$alert = alertMock;
+
+    exposed.value.value = '100';
+    exposed.address.value = 'valid-address';
+
+    await exposed.handleSend();
+
+    expect(transactionState.withNotifications).not.toHaveBeenCalled();
+    expect(alertMock).toHaveBeenCalledWith('insufficient-TKN', { title: 'errorText' });
+    expect(exposed.isVisible.value).toBe(true);
+  });
+
+  it('fills MAX from the fee-adjusted sendable value', () => {
+    utilsMocks.getMaxValue.mockReturnValue('8.999999');
+    const wrapper = mountComponent();
+    const exposed = (wrapper.vm as any).$?.exposed!;
+
+    exposed.handleMaxValue();
+
+    expect(utilsMocks.getMaxValue).toHaveBeenCalledWith(
+      expect.objectContaining({ balance: { transferable: '10' } }),
+      '1'
+    );
+    expect(exposed.value.value).toBe('8.999999');
+  });
+
+  it('treats amounts above the fee-adjusted sendable value as insufficient', () => {
+    utilsMocks.hasInsufficientBalance.mockImplementation(
+      (_asset: unknown, amount: string | number, fee: string) => fee === '1' && Number(amount) > 8.999999
+    );
+    const wrapper = mountComponent();
+    const exposed = (wrapper.vm as any).$?.exposed!;
+
+    exposed.value.value = '9';
+
+    expect(exposed.isInsufficientBalance.value).toBe(true);
+    expect(exposed.disabled.value).toBe(true);
+    expect(utilsMocks.hasInsufficientBalance).toHaveBeenCalledWith(
+      expect.objectContaining({ balance: { transferable: '10' } }),
+      '9',
+      '1'
+    );
+  });
+
+  it('uses the fee-adjusted sendable value for the 100 percent slider position', () => {
+    utilsMocks.getMaxValue.mockReturnValue('8.999999');
+    const wrapper = mountComponent();
+    const exposed = (wrapper.vm as any).$?.exposed!;
+
+    exposed.handlePercentChange(100);
+
+    expect(exposed.value.value).toBe('8.999999');
+  });
+
+  it('rejects invalid comment characters', () => {
+    const wrapper = mountComponent();
+    const exposed = (wrapper.vm as any).$?.exposed!;
+    const preventDefault = vi.fn();
+
+    exposed.handleCommentInput({ key: 'a', preventDefault } as unknown as KeyboardEvent);
+    expect(preventDefault).not.toHaveBeenCalled();
+
+    exposed.handleCommentInput({ key: '!', preventDefault } as unknown as KeyboardEvent);
+    expect(preventDefault).toHaveBeenCalledTimes(1);
+  });
+
+  it('reset helper clears state', () => {
+    const wrapper = mountComponent();
+    const exposed = (wrapper.vm as any).$?.exposed!;
+
+    exposed.value.value = '10';
+    exposed.address.value = 'valid-address';
+    exposed.comment.value = 'note';
+
+    exposed.resetForm();
+
+    expect(exposed.value.value).toBe('');
+    expect(exposed.address.value).toBe('');
+    expect(exposed.comment.value).toBe('');
+  });
+
+  it('refocuses the amount input after the modal opens without clearing typed value', async () => {
+    const wrapper = mountComponent();
+    const exposed = (wrapper.vm as any).$?.exposed!;
+
+    await wrapper.vm.$nextTick();
+    await wrapper.vm.$nextTick();
+    exposed.value.value = '1';
+    tokenInputFocusMock.mockClear();
+
+    wrapper.getComponent({ name: 'DialogBaseStub' }).vm.$emit('after-open');
+    await wrapper.vm.$nextTick();
+    await wrapper.vm.$nextTick();
+
+    expect(exposed.value.value).toBe('1');
+    expect(tokenInputFocusMock).toHaveBeenCalledTimes(1);
+  });
+});

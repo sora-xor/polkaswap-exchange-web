@@ -1,0 +1,19 @@
+{
+  "scope": "MV and PG only; public read-only source recovery; proposed MV change requires root/Asia peer review; main arrays untouched.",
+  "MV": {
+    "proposed": "supported",
+    "basis": "General domestic processing/risk definition, supported by international technical evidence and current personal-food conditions; no bespoke tea waiver necessary.",
+    "coreCitations": [
+      "Act12/2011 sections19,20(b),22,25,36,37",
+      "MFDA-FCD STAN6-2021 Rev1 November2025 sections4,6.2,9.1",
+      "ISPM32 section2 Category1 and Appendix2 tea example"
+    ],
+    "materialCaution": "The English reading is an unofficial paraphrase of official Dhivehi. The registered-article definition enumerates plants/products, storage, packing, conveyances, containers, soil and other organisms/articles capable of carrying/spreading pests and needing phytosanitary measures. Read in the statutory risk-control context; no unsupported claim that every ordinary clean food pouch inherently requires a phytosanitary certificate. If a contrary current specific commodity measure is subsequently found, it would control.",
+    "newRegulationListing": "IPPC global index contains an otherwise unresolved June12,2025 PlantProtectionRegulation report. Actual report URL recovered but returned navigation-only body; no attachment or operative text. It is not assumed to be either the repealed2008 rule or a new rule extending finished-tea scope."
+  },
+  "PG": {
+    "proposed": "unresolved",
+    "newEvidence": "Public Parliament REST index/source filter recovered; final Biosecurity text still absent.",
+    "limit": "Absence from search is not evidence of non-enactment."
+  }
+}

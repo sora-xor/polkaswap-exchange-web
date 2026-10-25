@@ -1,0 +1,1093 @@
+                        SAINT VINCENT AND THE GRENADINES
+
+                             PLANT       PROTECTION     ACT, 2005
+
+
+j   SECTION
+                                ARRANGEMENT         OF SECTIONS
+
+
+
+                                            PART I
+
+                                          PRELIMINARY
+
+        1. Short title and commencement
+
+        2. Interpretation
+
+                                            PART II
+
+                                       ADMINlSfRATION
+
+        3. Powers of Minister
+
+        4. Designation ofNPPO
+
+        5. Duties ofNPPO
+
+        6. Appointment or designation of inspectors
+
+        7. Duties of inspectors
+
+        8. Designation of official laboratories and analysts
+
+       9. Plant quarantine stations
+
+                                            PARTm
+
+                                           IMPORTS
+
+       10. Restrictions on importation
+
+       11. Import permit
+
+
+I      12. Inspection on importation
+
+       13. Release of imports
+
+       14. Minister may restrict certain imports
+
+       15. Duty to report arrivals to the NPPO
+                                        n
+
+                                     PARTlY
+
+                                     EXPORTS
+
+16. Restriction on export
+
+17. Inspection of exports
+
+
+
+                                     PART V
+
+             CONTAINMENT AND ERADICATION OF PESTS
+
+18. Duty of occupier to notify NPPO
+
+19. Order declaring a quarantine
+
+20. Expiration of Order
+
+21. Action where quarantine pest is present
+
+22. Service of notice in absence of occupier
+
+23. Declaration of phytosanitary emergency
+
+24. Expiration of declaration
+
+25. Declaration of pest free or low pest prevalence area
+
+                                      PART VI
+
+                                   ENFORCEMENT
+
+ 26. Power of entry and search
+
+ 27. Seizure and notice of seizure
+
+ 28. Storage, removal etc.
+
+ 29. Forfeiture
+
+ 30. Confiscation and disposal
+
+ 31. Protection of action taken in good faith
+
+ 32. Limitation on Liability
+                                       III
+
+
+33. Compensation
+
+34. Proceedings presumed to be valid
+
+35. Offences
+
+36. Penalties
+
+
+
+                                 PART        vn
+                             MISCELLANEOUS
+
+37. Appeal
+
+38. Regulations etc.
+
+39. Repeal and savings
+
+40. Act to bind Crown
+                                              419
+
+
+
+
+                                          @
+                                          ~
+                         SAINT VINCENT AND THE GRENADINES
+
+
+                                   ACT NO. 16 OF 2005
+
+                                          I ASSENT
+
+                                                           DR. FREDERICK BALLANTYNE
+[L.S.]                                                                   Governor-General
+                                                                        25th October, 2005
+
+AN ACT to prevent the introduction and to control the spread of plant
+   pests, to protect plant resources; to facilitate trade in plants and plant
+   products, and to regulate matters related thereto.
+
+                                                          [By Proclamation]
+
+    BE IT ENACTED by the Queen's Most Excellent Majesty, by and
+with the advice and consent of the House of Assembly of Saint Vincent
+and the Grenadines and by the authority of the same as follows:-
+
+
+                                  PART I
+
+                              PRELIMINARY
+
+     1.   (1) This Act may be cited as the Plant Protection Act 2005.           Short  title and
+                                                                                commencement
+         (2) This Act shall come into operation on such date as the
+Governor-General may appoint by Proclamation l?ublished in the Gazette.
+     2.   In this Act,
+                                                                                Interpretation
+          "affected" means infected or infested with a pest;
+          "area" means an area, place or site of production;
+          "area of low pest prevalence" means an area, whether all or part
+               of Saint Vincent and the Grenadines, as identified by the
+               Minister, in which a specific pest occurs at low levels and
+               which is subject to effective surveillance,     control or
+               eradication measures;
+                         420
+
+No. 16             Plant Protection                                   2005
+
+
+         "beneficial organism" means an organism including fungi,
+             bacteria, virus, virus-like organism and invertebrate or other
+             animal, which is declared by the Minister in writing to be
+             beneficial to flora or agricultural production;
+
+         "consignment" means a quantity of plants, plant products or
+             other regulated articles being moved from one country to
+             another and covered,       when required,  by a single
+             phytosanitary certificate;
+
+         "contain" means apply phytosanitary measures in and around
+              an infested area to prevent the spread of a pest;
+
+         "container" means a box, bag, or other receptacle in which plants,
+              plant products or other regulated articles that may carry
+              pests have been or are being transported;
+
+         "conveyance" means any vessel, aircraft, vehicle, cart, container,
+             animal, or other thing that can convey plants, plant products,
+             pests, beneficial organisms, or other regulated articles from
+             one place to another;
+
+         "detain" means keep a consignment in official custody or
+              confinement for phytosanitary reasons;
+
+         "entry" means the movement of a pest into an area where it is not
+              yet present, or present but not widely distributed and being
+              officially controlled;
+
+         "eradicate" means apply phytosanitary measures to eliminate a
+              pest from an area;
+
+         "establishment" means the perpetuation, for the foreseeable
+              future, of a pest within an area after entry;
+
+         "germplasrn" means a plant intended for use in breeding or
+             conservation programmes;
+
+         "Government" means the Government of Saint Vincent and the
+             Grenadines;
+
+         "import permit" means a permit in a form as may be prescribed;
+                                            421
+
+o. 16                                 Plant Protection                        2005
+
+
+        "importer" means a person who, whether as owner, consignor,
+            consignee, agent, broker or otherwise, is in possession of or
+            in any way entitled to the custody of a plant, plant product,
+            pest, beneficial organism or other regulated article landed or
+            likely to be landed in Saint Vincent and the Grenadines from
+            another country;
+
+        "inspection" means official visual examination of plants, plant
+             products or other regulated articles to determine ifpests are
+             present or to determine compliance with phytosanitary
+             requirements;
+
+        "inspector" means a person appointed        or designated    under
+             section 6;
+
+        "introduction"    means the entry of a pest resulting        In its
+             establishment in Saint Vincent and the Grenadines;
+
+        "IPPC" means International Plant Protection Convention, as may
+            be amended from time to time;
+
+        "IPPC Secretariat" means the Secretariat of the International Plant
+            Protection Convention;
+
+        "Minister" means the Minister responsible for agriculture;
+
+        "Ministry" means the Ministry responsible for agriculture;
+
+        "National Plant Protection Organisation" or "NPPO" means the
+             official unit designated under section 4 to discharge the
+             functions assigned to that unit under the IPPC;
+
+        "occupier", in relation to any land or building, means a person in
+            actual occupation thereof;
+
+        "official" means established,   authorised or performed by the
+             NPPO;
+
+        "official control" means the active enforcement of mandatory
+             phytosanitary requirements and the application ofmandatory
+             phytosanitary procedures with the objective of eradicating
+             or containing quarantine pests or for the management of
+             regulated non-quarantine pests;
+                          422
+
+No. 16             Plant Protection                                   2005
+
+
+         "outbreak" means an isolated pest population, recently detected
+              and expected to survive for the immediate future;
+
+         "owner", in relation to any thing, includes any person having for
+             the time being the possession, custody, or control thereof;
+
+         "packaging" means any material used to pack, contain, or keep
+             plants, plant products or other regulated articles;
+
+         "pest" means any species, strain or biotype of plant, animal, or
+              pathogenic agent injurious to plants or plant products;
+
+         "pest free area" means an area in which a specific pest does not
+              occur as demonstrated by scientific evidence and in which,
+              where appropriate,    this condition is being officially
+              maintained;
+
+         "pest risk analysis" means the process of evaluating biological
+              or other scientific and economic evidence to determine
+              whether a pest should be regulated and the strength of any
+              phytosanitary measures to be taken against it;
+
+         "phytosanitary certificate"   means a certificate patterned after
+             the model certificate     of the IPPC, and which may be
+             prescribed;
+
+         "phytosanitary emergency" means an emergency declared under
+             section 23;
+
+         "phytosanitary   measure" means any legislation or official
+             procedure having the purpose of preventing the introduction
+             or spread of quarantine pests, or limiting the economic impact
+             of regulated non-quarantine pests;
+
+         "plant products" means unmanufactured material of pi ant origin,
+              including grain, and manufactured products which, by their
+              nature or that of their processing, may create a risk for the
+              introduction and spread of pests;
+
+         "plants" means living plants and parts thereof, including seeds
+              and germplasm;
+                                              423
+
+No. 16                                 Plant Protection                         2005
+
+
+         "pre-clearance" means phytosanitary certification or clearance
+              in the exporting country, performed by or under the
+              supervision of the NPPO;
+
+         "premises" means land or a building or other structure situated
+             on land;
+
+         "quarantine pest" means a pest of potential economic importance
+             to the area endangered thereby, not yet present there, or
+             present but not widely distributed and being officially
+             controlled, and declared as such by Order;
+
+         "regulated article" means a storage place, packaging, conveyance,
+              container, soil, or other organism, object or material capable
+              of harbouring or spreading pests, deemed to require
+              phytosanitary measures, particularly where international
+              transport is involved, and includes beneficial organisms;
+
+         "regulated non-quarantine pest" means a pest which is not a
+              quarantine pest, whose presence in plants for planting affects
+              the intended use of those plants with an economically
+              unacceptable impact, and which is therefore regulated in
+              Saint Vincent and the Grenadines, and which is declared as
+              such by Order;
+
+         "soil" means material wholly or partly derived from the upper
+              layer of the earth's crust, which is capable of sustaining
+              plant life and which contains solid organic substances such
+              as parts of plants, humus, peat, or bark, but excluding any
+              medium which is sterile, composed entirely of unused peat,
+              or otherwise incapable of harbouring or transmitting pests;
+
+         "surveillance" means an official process facilitating the collection
+              and recording of data on pest occurrence or absence by
+              monitoring or other procedures;
+
+         "treatment" means an officially authorised procedure for killing
+              or removing pests, or making pests infertile.
+                                             424
+
+No. 16                                Plant Protection                                     2005
+
+
+                                                    PART II
+
+                                              ADMINISIRATION
+
+Powers of               3. (1) The primary responsibility for the administration of this Act
+Minister           lies with the Minister.
+
+                             (2) Notwithstanding subsection (1), the Minister may in writing
+                   delegate to the National Plant Protection Organisation, other government
+                   officials or any other person the performance of specified powers subject
+                   to conditions that may be specified.
+
+Designation   of        4. (1) The Ministry responsible for agriculture is hereby designated
+NPPO
+                   the National Plant Protection Organisation.
+
+                             (2) The Minister shall report the name of the NPPO to the IPPC
+                   Secretariat.
+Duties of NPPO         5.   The duties of the NPPO shall include:
+
+                                (a) implementing the IPPC and the International Standards
+                                    for Phytosanitary     Measures established      thereto,
+                                    including the following responsibilities required under
+                                    Article IV of the IPPC-
+
+                                     (i)   issuing phytosanitary   certificates,
+
+                                     (ii) carrying out surveillance      of growing plants,
+                                          including areas under cultivation and wild flora,
+                                          and of plants and plant products in storage or being
+                                          transported, for the purpose of reporting the
+                                          occurrence, outbreak, and spread of pests, and of
+                                          controlling those pests,
+
+                                     (iii) inspecting consignments        of plants and plant
+                                           products and where appropriate, inspecting other
+                                           regulated articles for the purpose of preventing the
+                                           introduction or spread of pests, or both,
+
+                                     (iv) carrying out pre-clearance        inspections   where
+                                          requested,
+                                    425
+
+No. 16                       Plant Protection                         2005
+
+
+         (v) disinfesting or disinfecting consignments of plants,
+             plant products and other regulated articles,
+
+         (vi) protecting endangered areas and designating,
+              maintaining, and surveying pest free areas and
+              areas of low pest prevalence,
+
+         (vii) providing information to other countries concerning
+               phytosanitary measures applied, either through
+               pest risk analysis or by reference to applicable
+               international standards,
+
+         (viii) notifying trading partners of relevant instances of
+               non-compliance with import requirements,
+
+         (ix) ensuring    the phytosanitary        security    of
+              consignments after certification and before export,
+
+         (x) establishing audit and trace-back procedures for
+             plants, plant products and other regulated articles
+             for phytosanitary certification,
+
+         (xi) establishing minimum qualifications for overseeing
+              training and development of inspectors and other
+              NPPOstaff,
+
+         (xii) distributing information concerning regulated pests
+               and the means of their prevention and control,
+
+         (xiii)proposing, reviewing, and enforcing phytosanitary
+               measures,
+
+         (xiv)notifying    phytosani tary .measures   to other
+              countries    in accordance   with international
+              obligations, and
+
+         (xv) providing information concerning import and export
+              regulations in force, and technical requirements for
+              plants, plant products and other regulated articles,
+              on the request of any interested international,
+              regional, or other national plant protection
+              organisation;
+                                             426
+
+No. 16                                Plant Protection                                      2005
+
+
+                                (b) enforcing this Act, as well as any other legislation
+                                    relating to plant protection as may be specified;
+
+                                (c) representing Saint Vincent and the Grenadines in
+                                    bilateral, regional, and international fora related to
+                                    phytosanitary matters;
+
+                                (d) developing pest diagnostic, investigative and analytical
+                                    capabilities as well as establishing laboratories and
+                                    quarantine stations at places as may be considered
+                                    necessary; and
+
+                                (e) establishing procedures for accrediting quarantine
+                                    stations, official analysts, official laboratories, or any
+                                    other person or institution from the public or private
+                                    sector involved in phytosanitary matters.
+
+Appointment   or        6. The Public Service Conunission or the Ministry, as the case may
+designation   of   be, may appoint or designate officers of the NPPO to carry out the duties
+inspectors
+                   assigned to inspectors under this Act.
+
+Duties        of       7.   (1) The duties of inspectors shall include the following:
+inspectors
+                                (a) inspecting plants, plant products or other regulated
+                                    articles under cultivation, in storage or in transit, in order
+                                    to report the existence, outbreak, and spread of
+                                    quarantine pests and regulated non-quarantine pests;
+                                (b) inspecting consignments of plants, plant products or
+                                    other regulated articles destined for import into or export
+                                    from Saint Vincent and the Grenadines to determine
+                                    whether they are affected, and where necessary, verify
+                                    the pest status of consignments by taking samples or
+                                    otherwise;
+
+                                (c) ensuring the disinfestation        or disinfection       of
+                                    consignments      of plants, plant products or other
+                                    regulated articles destined for import into or export from
+                                    Saint Vincent and the Grenadines, as well as their
+                                    containers, packaging, storage places, and transport
+                                    facilities;
+                                                427
+No. 16                                   Plant Protection                                        2005
+
+              (d) ensuring that where waste is being disposed of from-
+
+                    (i)   aircraft, ships, and pleasure craft arriving in Saint
+                          Vincent and the Grenadines, and
+
+                    (ii) premises which process or wash imported plants,
+                         plant products or other regulated articles,
+
+                    no threat to plant resources in Saint Vincent and the
+                    Grenadines is caused;
+
+              (e) issuing phytosanitary certificates on behalf of the NPPO;
+
+              (t)   inspecting and certifying exports of plants, plant
+                    products and other regulated articles from Saint Vincent
+                    and the Grenadines;
+
+              (g) carrying out detection      activities to ensure the
+                  maintenance of up-to-date information on the pest status
+                  of Saint Vincent and the Grenadines;
+
+              (h) enforcing the provisions of this Act;
+
+              (i)   attending to other matters as may be prescribed.
+
+           (2) An inspector may carry out an inspection under subsection
+(1) (b) in the territory of an exporting country as a pre-clearance inspection
+at the invitation of an exporting country.
+
+          (3) In carrying out his duties under subsection (1) or (2), an
+inspector shall, upon request, identify himselfby showing his identification
+card or other proof of his appointment or designation.
+
+      8. The Minister may designate laboratories to be official laboratories      Designation        of
+and analysts to be official analysts to carry out analyses for the                official
+administration of this Act.                                                       laboratories    and
+                                                                                  analysts
+      9. The NPPO may:                                                            Plant quarantine
+                                                                                  stations
+              (a) designate certain places as plant quarantine stations
+                  where plants, plant products or other regulated articles
+                  may be kept for phytosanitary observation, research,
+                  inspection, testing, treatment, detention, or destruction.
+                                                 428
+No. 16                                    Plant Protection                                    2005
+
+
+                                     (b) require that imported plants, plant products or other
+                                         regulated articles be kept or cultivated at a plant
+                                         quarantine station or at any other location identified by
+                                         the NPPO and kept under the supervision of the NPPO
+                                         for such time as the NPPO considers necessary.
+
+                                                       PART ill
+
+                                                       IMPORTS
+Restrictions      on        10. (1) Plants, plant products and other regulated articles may be
+importation            imported into Saint Vincent and the Grenadines only at the ports of entry
+                       prescribed under this Act or any other Act.
+
+                                 (2) The Minister, upon the advice of the NPPO, may require
+                       that certain plants, plant products or other regulated articles not be
+                       imported into Saint Vincent and the Grenadines except:
+
+                                     (a) by virtue of an import permit granted under section 11
+                                         (1);
+
+                                     (b) they are accompanied by -
+
+                                         (i)   an original phytosanitary certificate dated not more
+                                               than thirty days before the entry of the articles
+                                               into Saint Vincent and the Grenadines, and
+
+                                         (ii) any other documentation that may be prescribed;
+                                              and
+
+                                         (c) they meet al1 other requirements        that may be
+                                             prescribed.
+
+Import   permit             11. (1) Where an import permit is required under section 10 (2) (a),
+                       an importer shall apply to the NPPO in the prescribed manner and shall
+                       pay the prescribed fee, if any.
+
+                                 (2) In evaluating an application for an import permit, the NPPO
+                       shall apply existing international standards or conduct pest risk analysis
+                       in order to determine the applicable phytosanitary requirements.
+Inspection        on        12. (1) Plants, plant products and other regulated articles shall,
+importation            upon importation into Saint Vincent and the Grenadines, be presented to
+                       an inspector for inspection at the ports of entry prescribed under this Act
+                       or any other Act.
+                                            429
+No. 16                                Plant Protection                                      2005
+
+
+         (2) Notwithstanding subsection (1), upon application by the
+importer and where a container has been sealed and marked, certain plants,
+plant products and other regulated articles may be inspected by an
+inspector at their final destination, as may be prescribed.
+
+         (3) Inspections carried out under subsection       (1) or (2) are
+subject to the prescribed fee.
+
+          (4) Inspections under subsection (1) or (2) shall be carried out
+during regular working hours, except where the plants, plant products or
+other regulated articles are in transit or extremely perishable or where
+their entry has otherwise been delayed, in which case, upon application
+by the importer and upon payment of the prescribed fee, the NPPO may
+agree to an inspection being carried out at any other time.
+
+      13. If upon inspection carried out under section 12 the inspector       Release of
+determines that the imported plants, plant products or other regulated        imports
+
+articles do not present a risk of the introduction and spread of pests, he
+may release the consignment to the importer.
+
+     14. The Minister may, on the advice of the NPPO, to protect plant        Minister         may
+resources or the environment, or both:                                        restrict     certain
+                                                                              imports
+             (a) permit the entry of a plant, plant product or other
+                 regulated article for scientific or experimental purposes,
+                 subject to terms and conditions that may be considered
+                 appropriate;
+
+             (b) prohibit or restrict the entry of plants, plant products
+                 or other regulated articles into Saint Vincent and the
+                 Grenadines;
+
+             (c) take any other necessary action to prevent             the
+                 introduction or spread of quarantine pests.
+
+      15. (1) A worker of the Saint Vincent and the Grenadines Postal         Duty to report
+Corporation, private postal operator or private shipping concern or an        arrivals to the
+                                                                              NPPO
+official of the Customs Department, Saint Vincent and the Grenadines
+Port Authority or the Royal Saint Vincent and the Grenadines Police Force
+who has knowledge of the arrival of plants, plant products or other
+regulated articles in Saint Vincent and the Grenadines shall forthwith
+report the arrival to the NPPO and shall detain the plants, plant products
+or other regulated articles.
+                                              430
+
+No. 16                                 Plant Protection                                       2005
+
+
+                             (2) The NPPO shall take custody of any items detained under
+                   subsection (1) within three days of their detention.
+
+                            (3) A detention carried out under subsection (1) shall be deemed
+                   to be an action taken by or on delegation from the NPPO.
+
+                                                    PART IV
+
+                                                    EXPORTS
+
+Restriction   on         16. A person shall not export plants, plant products or other regulated
+export             articles from Saint Vincent and the Grenadines unless he:
+
+                                 (a) applies to the NPPO in the prescribed manner;
+
+                                 (b) provides all documentations      that are prescribed;
+
+                                 (c) makes the consignment available for inspection under
+                                     section 17;
+
+                                 (d) pays the prescribed fees.
+
+Inspection    of         17. (1) The NPPO shall, upon application by an exporter under
+exports
+                   section 16, cause an inspection of the consignment to be carried out, and:
+
+                                 (a) issue a phytosanitary    certificate in a form as may be
+                                     prescribed where-
+
+                                      (i)   the consignment meets the documentary and other
+                                            requirements for import of the country to which
+                                            the consignment is to be exported;
+
+                                      (ii) the consignment satisfies any other requirements
+                                           for export specified by the NPPO or any applicable
+                                           law in Saint Vincent and the Grenadines; or
+
+                                 (b) deny the issue of a certificate where the requirements
+                                     specified in subsection (1) (a) have not been met.
+
+                             (2) Upon being issued a phytosanitary          certificate      under
+                   subsection (1) (a), the exporter shall pay the prescribed fee.
+                                             431
+
+No. 16                                Plant Protection                                      2005
+
+
+                                PART V
+
+         CONTAINMENT AND ERADICATION OF PESTS
+
+     18. The occupier or owner of premises in which a thing that a person     Duty of occupier
+suspects to be a pest is present or is suspected to be present shall notify   to notify    NPPO
+the NPPO forthwith.
+
+    19. (1) The Minister may, on the advice of the NPPO, by Order:            Order declaring     a
+                                                                              quarantine
+              (a) declare premises that are affected or are suspected of
+                  being affected with a quarantine pest to be under
+                  quarantine;
+
+              (b) prescribe measures for the treatment or disposal of
+                  plants, plant products or other regulated articles and
+                  the treatment of conveyances whether or not they have
+                  been found to be affected, in order to limit the spread
+                  of quarantine pests;
+
+              (c) prescribe the period of quarantine.
+
+         (2) For the purpose of subsection (1), "to quarantine" includes:
+
+              (a) to prohibit the movement of people, conveyances,
+                  plants, plant products or other regulated articles from
+                  or to a specified location;
+
+              (b) to prohibit the planting or replanting of a specified
+                  location;
+
+              (c) to take any other measure which the Minister, on the
+                  advice of the NPPO, considers necessary under the
+                  circumstances.
+
+     20. An Order made under section 19 (l)expires in respect of some         Expiration        of
+or all of the affected premises when the Minister, on the advice of the       Order
+NPPO, determines that:
+
+              (a) the relevant quarantine pest is no longer present in the
+                  premises in respect of which the quarantine was made;
+                  and
+                                                  432
+
+No. 16                                     Plant Protection                                   2005
+
+
+                                      (b) it is no longer necessary for the quarantine to be
+                                          maintained in respect of some or all of the affected
+                                          premises.
+
+Action        where         21. If the NPPO believes that a quarantine pest is present on any
+quarantine    pest is   premises, it shall:
+present
+                                      (a) require, by notice in writing, the owner or occupier of
+                                          the premises, and if the NPPO considers it necessary,
+                                          the owner or occupier of any premises in the vicinity,
+                                          to take measures on his premises which the NPPO
+                                          considers necessary to eradicate, contain or restrict
+                                          the spread of the pest;
+
+                                      (b) take measures for the treatment or disposal of plants,
+                                          plant products or other regulated articles present on
+                                          the premises.
+
+Service of notice            22. If there is no person in actual occupation of any premises, or if
+in absence of oc-
+                        the occupier cannot be found, service of any notice under this Act may
+cupier
+                        be made by affixing the same in some conspicuous place on the premises,
+                        and such affixing shall be deemed to be sufficient service for the purpose
+                        of taking the measures authorised by section 21.
+
+Declaration       of         23. (1) The Minister may, on the advice of the NPPO, by Order
+phytosanitary           declare a phytosanitary emergency based on an inspection carried out
+emergency
+                        under this Act or on analysis of samples taken under section 26 (1) (d).
+
+                                 (2) The NPPO shall take steps to bring a declaration to the
+                        notice of persons likely to be affected by it.
+
+Expiration         of        24. A declaration made under section 23 expires when the Minister,
+declaration             on the advice of the NPPO, determines that the conditions giving rise to
+                        the declaration of the phytosanitary emergency, no longer exist.
+
+Declaration      of          25. (1) Where the NPPO is satisfied that a pest is not present in an
+pestfree    or low
+                        area, adopts phytosanitary measures to keep the area free of the pest,
+pest prevalence
+area                    and institutes a surveillance system to verify that the area remains free of
+                        the pest, the Minister may declare it a pest-free area.
+
+                                 (2) Where the PPO is satisfied that a pest occurs at low levels
+                        in an area, adopts phytosanitary measures to keep the pest levels low
+                                             433
+
+No. 16                                Plant Protection                                      2005
+
+
+and institutes a surveillance system to verify that the pest levels remain
+low, the Minister may declare it an area oflow pest prevalence.
+
+                                PART VI
+
+                            ENFORCEMENT
+
+    26. (1) For the purpose of detecting pests or ensuring compliance         Power    of   entry
+with this Act, an inspector may:                                              and search
+
+              (a) stop any conveyance, which the inspector believes on
+                  reasonable grounds may harbour a pest;
+
+              (b) subject to subsections (2) and (3), at a reasonable time,
+                  enter and inspect any premises, not being a dwelling
+                  house;
+
+              (c) open any container, receptacle or other thing that the
+                  inspector believes on reasonable grounds contains any
+                  thing in respect of which this Act applies;
+
+              (d) examine any thing in respect of which this Act applies
+                  and take samples of it.
+
+          (2) An inspector may not enter a dwelling house except with
+the consent of the occupier or under the authority of a warrant issued by
+a magistrate.
+
+          (3) An inspector may, with a warrant issued by a magistrate,
+enter and search any premises, where there is reasonable cause to believe
+that an offence against this Act has taken or is taking place.
+
+          (4) An inspector may, in the performance of his duties under
+this section, be accompanied and assisted by a police officer.
+
+      27. (1) In the course of an inspection carried out under this Act, if   Seizure and nonce
+an inspector believes on reasonable grounds that the provisions of this       of seizure
+Act have been or are being contravened, or any plant, plant product or
+other regulated article presents a risk of the introduction or spread of
+pests, the inspector may seize the plant, plant product or other regulated
+article:
+                                                  434
+
+No. 16                                     Plant Protection                                    2005
+
+
+                                     (a) by means of or in relation to which he believes on
+                                         reasonable grounds that the contravention has been
+                                         or is being committed;
+
+                                     (b) that he believes on reasonable grounds will afford
+                                         evidence in respect of the contravention    of the
+                                         provisions of this Act.
+
+                                 (2) An inspector who seizes and detains a plant, plant product
+                       or other regulated article under this Act shall, as soon as is practicable,
+                       advise the owner of the plant, plant product or other regulated article of
+                       the reason for the seizure and that some or all of the plant, plant product
+                       or other regulated article may be subject within a specified time to any
+                       action specified in section 28.
+
+                                 (3) An inspector, who seizes and detains a plant, plant product
+                       or other regulated article may forego advising the owner of the plant,
+                       plant product or other regulated article of the reason for the seizure if, ill
+                       the opinion of the inspector, it is urgently required to destroy the plant,
+                       plant product or other regulated article or the giving of the reason for the
+                       seizure is impractical.
+
+Storage,     removal        28. An inspector who seizes and detains a plant, plant product or
+etc.                   other regulated article under this Act, or any other person designated by
+                       the NPPO, may:
+
+                                     (a) store, treat, quarantine or dispose of the plant, plant
+                                         product or other regulated article at the place where it
+                                         was seized or move it to any other place for storage,
+                                         treatment, quarantine or disposition;
+
+                                     (b) require its owner to store, treat, dispose of, export or
+                                         move it to any other place.
+Forfeiture                  29. (1) Where a person is convicted of an offence under this Act,
+                       the magistrate's court may, in addition to any penalty imposed, order that
+                       any thing used in the perpetration of the offence be forfeited to the
+                       Crown and shall be disposed of as the Minister may direct.
+
+                                 (2) Where the owner of a thing that is seized and detained
+                       under this Act consents to the seizure and detention, it is thereby forfeited
+                       to the Crown and shall be disposed of as the Minister may direct.
+                                             435
+
+No. 16                                 Plant Protection                                       2005
+
+
+    30. (1) An inspector may confiscate and dispose of:                        Confiscation      and
+                                                                               disposal
+              (a) any plant, plant product or other regulated article that,
+                  after its entry into Saint Vincent and the Grenadines or
+                  after treatment, lies unclaimed for a prescribed time;
+
+              (b) any thing that the inspector believes on reasonable
+                  grounds is a pest;
+
+          (2) An inspector who confiscates a plant, plant product or other
+regulated article or a pest shall, forthwith, advise the owner of the reason
+for its confiscation.
+
+     31. No suit, prosecution or other legal proceeding shall lie against      Protection         of
+an inspector for any act or omission which is done in good faith in            action    taken    in
+                                                                               good faith
+pursuance of the exercise of duties under this Act.
+
+     32. Subject to section 33, the Crown shall bear no liability for loss     Limitation         of
+resulting from the destruction or disposal of plants, plant products or        liability
+
+other regulated articles carried out under the authority of this Act.
+
+     33. (1) The Cabinet may, out of money voted for that purpose by           Compensation
+Parliament, order compensation to be paid to occupiers or owners of
+premises in respect of healthy plants destroyed in order to restrict the
+spread of pests.
+
+          (2) No compensation is payable to a person who commits an
+offence under this Act and claims compensation in respect of any premises
+or thing by means of or in relation to which the offence was committed.
+
+      34. No act or proceedings taken under this Act shall be invalid          Proceedings
+merely by reason of any formal irregularity not affecting the merit of the     presumed    to be
+                                                                               valid
+case.
+
+    35. A person who:                                                          Offences
+
+              (a) grows, possesses, sells, offers for sale, transports, or
+                  distributes in any manner any plants, plant products or
+                  other regulated articles knowing that they are affected
+                  by a quarantine pest;
+
+              (b) assaults, resists, threatens, intimidates, or obstructs
+                  an inspector exercising lawful powers under this Act;
+                                      436
+
+No. 16                          Plant Protection                                  2005
+
+
+                         (c) tampers with any samples taken under section 26 (1)
+                             (d);
+
+                         (d) fails to comply with an order or direction lawfully made
+                             or given under this Act;
+
+                         (e) imports any plants, plant products or other regulated
+                             articles at a port of entry that is not prescribed by this
+                             Act or any other Act;
+
+                         (f)   imports any plants, plant products or other regulated
+                               articles contrary to any requirements prescribed under
+                               this Act;
+
+                         (g) intentionally introduces, or causes the introduction or
+                             spread of a quarantine pest;
+
+                         (h) exports any plants, plant products or other regulated
+                             articles except in accordance with Part IV;
+
+                         (i)   fails to safeguard the phytosanitary   security of a
+                               consignment      after the issue of a phytosanitary
+                               certificate under section 17 (1 )(a);
+
+                         G) fails to allow a search, inspection or taking of samples
+                               authorised under this Act;
+
+                         (k) knowingly or recklessly provides information which is
+                             false for the purpose of obtaining any document under
+                             this Act; or
+
+                         (1) alters, forges, defaces,    or destroys   any document
+                             issued under this Act;
+            commits an offence.
+
+Penalties       36. A person who commits an offence under this Act is liable on
+            summary conviction to a fine not exceeding one thousand dollars or to
+            imprisonment for a period not exceeding six months, or to both fine and
+            imprisonment.
+Appeal           37. (1) A person who is aggrieved by a decision or action of an
+            inspector or the NPPO under this Act may lodge an appeal with the
+            Minister within three days of the decision or action in respect of which
+            the appeal is made.
+                                             437
+
+No. 16                                 Plant Protection                                     2005
+
+
+         (2) Cabinet shall appoint a Tribunal to hear the appeal which
+shall consist of one or more persons but not more than three persons.
+
+         (3) The decision of the Tribunal    is [mal and conclusive and is
+not subject to further appeal.
+
+                                PART    vn
+                           MISCElLANEOUS
+
+     38. (1) The Minister may make regulations to give effect to the          Regulations
+provisions of this Act.
+
+          (2) In particular and without prejudice to the generality of
+subsection (1), the Minister may make regulations prescribing all or any
+of the following matters:
+
+             (a) procedures to be followed by inspectors in the exercise
+                 of their duties under this Act;
+
+             (b) conditions for the importation and exportation of any
+                 plants, plant products, or other regulated articles;
+
+             (c) the circumstances     under which phytosanitary
+                 requirements for import may be modified based on pest
+                 risk analysis;
+
+             (d) the manner in which permits and certificates shall be
+                 issued under this Act, and their form and content;
+
+             (e) procedures      and    guidelines    for   pre-clearance
+                 inspections;
+
+             (f)   the procedure by which an importer may apply for
+                   inspection to take place at any location other than at
+                   the port of entry prescribed under this Act or any other
+                   Act outside of regular working hours;
+
+             (g) the manner in which containers must be sealed and
+                 marked if they are to be inspected at their final
+                 destination rather than at the port of entry;
+
+             (h) the way in which plants, plant products and other
+                 regulated articles must be stored or transported in Saint
+                 Vincent and the Grenadines;
+                                                438
+
+No. 16                                    Plant Protection                                   2005
+
+
+                                   (i)   the procedures to be adopted for the treatment of
+                                         imported plants, plant products and other regulated
+                                         articles;
+
+                                   G)    the location, management, and functioning of any plant
+                                         quarantine stations established under this Act;
+
+                                   (k) the requirements for the control and care of regulated
+                                       articles kept or maintained at plant quarantine stations;
+
+                                   (I)   the manner in which inspectors shall arrange for the
+                                         destruction, removal, uprooting, or treatment of plants,
+                                         plant products and other regulated articles within an
+                                         area or location declared to be under quarantine;
+
+                                   (m) the period within which it shall not be lawful to plant or
+                                       re-plant any thing in all or part of an area declared to be
+                                       under quarantine;
+
+                                   (n) the manner in which any samples may be taken, marked
+                                       and retained under this Act;
+
+                                   (0) the process by which any area may be declared pest-
+                                       free or an area of low pest prevalence;
+
+                                   (P) procedures relating to appeals;
+
+                                   (q) fees recoverable in respect of services provided under
+                                       this Act;
+
+                                   (r)   criteria for the declaration of a phytosanitary emergency
+                                         under section 23;
+
+                                   (s) any other measures to be taken for the purpose of
+                                       preventing the introduction or spread of pests.
+
+Repeal and savings       39. (I) The Plant Protection Act is hereby repealed.
+Act No. 10 of
+1941                           (2)   otwithstanding subsection (1), subsidiary legislation
+                     issued under or made by virtue of the Plant Protection Act, No. 10 of 1941,
+                     shall remain in force, so far as they are not inconsistent with this Act,
+                     until they have been repealed by subsidiary legislation issued or made
+                                           439
+
+No. 16                               Plant Protection                                  2005
+
+
+under the provisions of this Act, and shall be deemed for all purposes to
+have been made thereunder.
+
+    40. This Act shall bind the Crown.                                      Act to bind Crown
+
+
+
+
+    Passed in the House of Assembly this 3rd day of May,2005.
+
+
+                                                              NICOLE HERBERT
+                                                          Clerk of the House of Assembly
+
+
+          Printed by the Government Printer at the Government Printing Office,
+                     Carnpden Park, St. Vincent and the Grenadines.
+
+                                          2005                              [Price $12.60]
+

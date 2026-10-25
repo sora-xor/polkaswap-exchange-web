@@ -1,0 +1,57 @@
+{
+  "code": "LB",
+  "status": "not_verified",
+  "rule": "Law 778/2006 Article 2 risk-qualifies manufactured plant products; Article 4 includes postal imports and Article 9 requires phytosanitary certification for covered products. Finished sencha’s phytosanitary classification remains unresolved. Independently, enacted Ministry of Agriculture Decision 101/1 of 17 March 2007 Article 1 requires a listed food certificate with every imported consignment; its Article 2 table expressly includes packaged tea. The official Customs compilation applies this rule to HS0902 packaged tea and identifies the certificates as originating in the country of origin. This independent food-certificate duty prevents a no-certificate route under the broad scope of the enacted rule.",
+  "personalMailApplicability": "Plant Law 778 Article 4 expressly includes public/private post and traveller consignments, but finished-tea pest-risk classification remains unresolved. Decision 101/1 Article 1 uses an unqualified every-imported-consignment duty and contains no personal-use, postal or quantity exception in its complete two-page text. Applying that food-certificate rule to a paid 100 g sealed tea parcel for personal consumption is a stated legal-scope inference; personal postal tea is not separately named in that decision. LibanPost’s unspecified food-preapproval threshold concerns a separate approval and supplies no waiver from the independent food-certificate duty.",
+  "quantityLimit": null,
+  "authority": "Lebanon Ministry of Agriculture; Lebanon Customs; LibanPost",
+  "evidenceUrls": [
+    "https://regulations.agriculture.gov.lb/Backoffice-mvc/API/File/Law%20778_20220819115205.pdf",
+    "https://regulations.agriculture.gov.lb/en",
+    "https://www.agriculture.gov.lb/Media/News/2026/%D9%88%D8%B2%D8%A7%D8%B1%D8%A9-%D8%A7%D9%84%D8%B2%D8%B1%D8%A7%D8%B9%D8%A9-%D8%AA%D8%B9%D8%AA%D9%85%D8%AF-%D8%AA%D8%AF%D8%A7%D8%A8%D9%8A%D8%B1-%D8%A7%D8%B3%D8%AA%D8%AB%D9%86%D8%A7%D9%8A%D9%8A%D8%A9-%D9%84%D8%AA%D8%B3%D8%B1%D9%8A%D8%B9-%D8%A7%D8%B3%D8%AA%D9%8A%D8%B1%D8%A7",
+    "https://regulations.agriculture.gov.lb/en/product-details/173?headerId=4",
+    "https://www.customs.gov.lb/Files/Government_Controls/Circular_No1_16-07-2021.pdf",
+    "https://libanpost.com/english/tools-support",
+    "https://www.libanpost.com/Library/Assets/Documents/ImportToLebanon.pdf",
+    "https://faolex.fao.org/docs/pdf/leb81057.pdf",
+    "https://faolex.fao.org/docs/pdf/leb88608.pdf",
+    "https://regulations.agriculture.gov.lb/backoffice-mvc/API/File/decision%20349%20full_20220912141057.pdf"
+  ],
+  "remainingQuestion": "The phytosanitary classification of manufactured sencha under Law 778 and LibanPost’s separate food-preapproval threshold remain unresolved. Neither issue removes the independent food-certificate barrier identified in Decision 101/1. No personal/postal waiver from that unqualified certificate duty was located.",
+  "researchAttempts": [
+    "Read current ministry-hosted Law 778 definitions, postal scope and certificate provisions.",
+    "Checked ministry product portal (green tea listed) and 14 March 2026 temporary certificate-copy measure; neither establishes personal finished-tea exemption.",
+    "30 September: The Ministry of Agriculture green-tea commodity page (HS090210/090220) provides labelling and laboratory rules but no explicit personal-postal phytosanitary exemption. Its health-certificate decision concerns EXPORTS from Lebanon, so it cannot establish an import requirement or waiver for Japanese sencha.",
+    "Located Lebanon Customs 2021 consolidated controls, page 101: packaged tea HS0902 appears under laboratory examination and one of origin export/quality/HACCP certificates (Decision 1/101 of 3 April 2007). Its exact personal-parcel applicability and interaction with 2022/349 food-lab rules require verification; it is not used to conclude that all private tea parcels require certificates.",
+    "30 September final review: downloaded and read the actual Customs consolidated controls PDF. Pages 98–99 list HS0902 agricultural endorsement; page 101 lists packaged tea for laboratory examination plus an origin export/quality/HACCP certificate under Decision 1/101 (3 April 2007); page 102 lists tea pesticide-residue testing under Decision 1/586 (31 July 2018). No explicit personal waiver appears in these entries.",
+    "Read current LibanPost support page and its linked ImportToLebanon guide: food exceeding a minimum threshold requires prior Ministry of Commerce approval, but the amount is not stated. Did not assume this threshold is exceeded by 100 g. The ministry’s 2022/349 laboratory validity provisions and 2026 temporary acceptance of certificate copies do not resolve that personal scope question.",
+    "Recovered and visually read the complete original Decision 101/1 from Official Gazette No18 of 29 March 2007, printed pp1774–1775 (FAOLEX leb81057.pdf). Article1 expressly requires a listed certificate with every imported consignment. Article2’s table includes packaged coffee, tea, herbs and spices; no personal-use, postal or small-quantity exception appears in the complete text. Applying the broad duty to this personal postal order is a legal-scope inference, supported by Customs’ explicit HS0902 listing.",
+    "Corrected the instrument date from the Customs compilation: the original decision is signed 17 March 2007 and was published 29 March 2007; Customs’ 3 April 2007 date is inconsistent with the original. The later Decision 208/1 also identifies Decision 101/1 as dated 17 March 2007.",
+    "Recovered and visually read Decision 208/1 of 4 May 2009, Official Gazette No21 of 7 May 2009, pp3131–3132 (FAOLEX leb88608.pdf). Its Article 1 substitutes only the first paragraph of Article 2 of Decision 101/1, establishing initial testing and subsequent six-month testing for the described sealed branded products; the Article 2 table remains unchanged. It does not amend Article 1’s certificate duty.",
+    "Downloaded and visually read the actual two-page Decision 349/1 of 8 August 2022 linked by the current Ministry green-tea page. It sets the validity of laboratory results in customs custody and requires retesting after expiry. Its repeal clause addresses conflicting provisions, especially Decision 833/1 of 11 September 2012; nothing in this text waives the independent food-certificate duty.",
+    "Independent consistency review concluded that retaining the agricultural status as not_verified while excluding the no-certificate shipping route accurately distinguishes the still-unresolved phytosanitary pest-risk question from the separate enacted food-certificate requirement. LibanPost’s unspecified approval threshold is not treated as exceeded by 100 g and is not used as a certificate waiver."
+  ],
+  "reviewedAt": "2026-09-30",
+  "permitFreeDecision": "not_supported",
+  "permitFreeReason": "The actual enacted Decision 101/1 Article 1 requires an appropriate listed food certificate with every imported consignment, while Article 2 expressly covers packaged tea. Customs’ official HS0902 entry corroborates the origin-country certificate requirement. Health/health-supervision, manufactured-product export or HACCP certification are relevant listed alternatives; the quality-certificate option specifically concerns frozen fruit/vegetables. The decision contains no personal-use or small-quantity exception. Applying its unqualified wording to a paid personal postal tea order is an explicit legal-scope inference. Decision 208/1 of 4 May 2009 changes only Article 2’s first paragraph on laboratory testing, leaving Article 1 intact; Decision 349/1 of 8 August 2022 regulates laboratory-result validity/retesting without waiving food certificates. The store cannot satisfy this independent requirement without certificates. This is not a finding that tea is prohibited, nor a resolution of manufactured tea’s separate phytosanitary classification. LibanPost’s unspecified preapproval threshold does not establish a certificate exemption.",
+  "permitFreeSources": [
+    "https://regulations.agriculture.gov.lb/Backoffice-mvc/API/File/Law%20778_20220819115205.pdf",
+    "https://regulations.agriculture.gov.lb/en",
+    "https://www.agriculture.gov.lb/Media/News/2026/%D9%88%D8%B2%D8%A7%D8%B1%D8%A9-%D8%A7%D9%84%D8%B2%D8%B1%D8%A7%D8%B9%D8%A9-%D8%AA%D8%B9%D8%AA%D9%85%D8%AF-%D8%AA%D8%AF%D8%A7%D8%A8%D9%8A%D8%B1-%D8%A7%D8%B3%D8%AA%D8%AB%D9%86%D8%A7%D9%8A%D9%8A%D8%A9-%D9%84%D8%AA%D8%B3%D8%B1%D9%8A%D8%B9-%D8%A7%D8%B3%D8%AA%D9%8A%D8%B1%D8%A7",
+    "https://regulations.agriculture.gov.lb/en/product-details/173?headerId=4",
+    "https://www.customs.gov.lb/Files/Government_Controls/Circular_No1_16-07-2021.pdf",
+    "https://libanpost.com/english/tools-support",
+    "https://www.libanpost.com/Library/Assets/Documents/ImportToLebanon.pdf",
+    "https://faolex.fao.org/docs/pdf/leb81057.pdf",
+    "https://faolex.fao.org/docs/pdf/leb88608.pdf",
+    "https://regulations.agriculture.gov.lb/backoffice-mvc/API/File/decision%20349%20full_20220912141057.pdf"
+  ],
+  "requiredDocument": "An appropriate origin food certificate under Decision 101/1 Article 1 and Customs’ HS0902 packaged-tea control: health/health-supervision certificate, manufactured-product export certificate or HACCP certificate. The decision’s separate quality-certificate alternative is specific to frozen fruit/vegetables. Phytosanitary certification remains a separate unresolved product-classification issue.",
+  "paperworkType": "food_certificate_required_personal_post_scope_inference",
+  "sourceDateClarification": "Decision 101/1: signed 17 March 2007, Official Gazette No18 dated 29 March 2007, pp1774–1775. The Customs 2021 compilation instead gives 3 April 2007. The original and Decision 208/1’s cross-reference establish the 17 March date.",
+  "savedSourceFiles": [
+    "gulf-sources/lb-decision101-2007.pdf",
+    "gulf-sources/lb-decision208-2009.pdf",
+    "gulf-sources/lb-decision349-2022.pdf"
+  ]
+}

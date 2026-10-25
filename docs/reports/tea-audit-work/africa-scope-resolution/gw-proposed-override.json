@@ -1,0 +1,95 @@
+{
+  "code": "GW",
+  "status": "conditional",
+  "rule": "Explicit legal-scope inference: Decree-Law4/99 Article2(a) defines living plants/parts; Article2(b) covers unprocessed products or simple preparation. The stated industrial steaming, rolling and drying that manufactures sencha is inferred to be transformation beyond that class, not raw or merely dried herbs. Current-linked ISPM32 tea Category1 is corroborating technical evidence of manufacturing, not a directly incorporated Guinea-Bissau exemption. Article8 permits for plants/products/other objects are read within Article1 phytosanitary purpose and Article5 contamination-related inspection powers, not as controlling every clean manufactured food. No contrary national rule specifically treating manufactured tea as simply prepared was identified in the reviewed primary sources.",
+  "personalMailApplicability": "This is a product-definition interpretation applying to a paid private postal order, not a passenger/gift concession. The buyer consumes the sealed plain tea and does not resell it. Ordinary customs declaration and lawful arrival food/pest inspection remain.",
+  "quantityLimit": null,
+  "authority": "Guinea-Bissau legislation, FAOLEX copy",
+  "evidenceUrls": [
+    "https://faolex.fao.org/docs/pdf/gbs23411.pdf",
+    "https://www.fao.org/faolex/country-profiles/general-profile/en/?iso3=GNB",
+    "https://www.wto.org/french/tratop_f/tpr_f/s362-04_f.pdf",
+    "https://faolex.fao.org/docs/pdf/gbs117287.pdf",
+    "https://faolex.fao.org/docs/pdf/gbs118159.pdf",
+    "https://www.ippc.int/en/publications/587/",
+    "https://assets.ippc.int/static/media/files/publications/ru/1366800159_ISPM_32_2009_Ru_2012-12-10.pdf"
+  ],
+  "remainingQuestion": null,
+  "researchAttempts": [
+    "Read articles 2,7,8 and searched processed-tea and postal exceptions.",
+    "Independently reread article 2(b) and articles 7–8; checked the current FAO country-profile listing and searched tea-specific rules in Portuguese and English. No operative tea classification or postal waiver was located; did not treat commercial export documentation or other countries' quarantine rules as Guinea-Bissau import rules.",
+    "30 September final primary-scope review: The 2017 WTO review Table 3.5 expressly associates the general plants/plant-products category with prior agricultural authorization and origin phytosanitary certification. Its stated exceptions concern active substances in phytopharmaceutical products, not processed food. Section 3.38 likewise gives a general SPS-certificate account. These corroborate the controlled pathway but do not classify sencha under the national simple-preparation definition or supply a personal-post exemption. No new current national commodity list was found.",
+    "30 September independent food/conformity pass: Downloaded Gazette Decree 62-E/1992 of 30 December 1992, Regime do Controlo Sanitário dos Géneros Alimentícios. Article 1 includes food imports; article 2 includes treated/processed foods. Articles 10–11 delegate inspection methods, administrative documents and import conditions to implementing regulation. Article 14 likewise leaves food-quality certification to a specific regulation. These enabling provisions do not themselves prove a mandatory private-import certificate. Complete Gazette extract downloaded from FAOLEX and text read. The file also contains tail material from a preceding tourism law, which was kept separate. No newer implementing certificate rule for private tea located.",
+    "30 September fresh official-online recovery: New actual Gazette recovery: Decree-Law 8/2011 of 10 May, Article 10(1)(a) abolishes BRPI/BRPE prior import/export forms; 10(2) replaces them with a written declaration lodged with Customs. Article 10(3) preserves special regulated-activity requirements. This defeats relying on the repealed general prior form as a separate-doc barrier, but does not override Decree-Law 4/99 plant-health conditions or settle steamed-tea simple-preparation scope.",
+    "30 September common-definition review: Read Decree-Law 4/99 Article 2(b), Articles 7–8 and Article 16. The plant-product definition is unprocessed goods or simple preparation, without an operative ISPM definition adoption or examples determining steam-manufactured tea. IPPC reference is preambular. Article 16 leaves interpretation disputes to ministerial order; that is not a processing exemption. The food law delegates documentary methods rather than itself establishing a private certificate.",
+    "30 September manufacturing-scope peer review: reread complete Decree-Law4/99 Articles1–2,5,7–8,16 and separate Food Decree62-E/1992 and trade-simplification8/2011. Applied the actual multistage industrial sencha manufacture to the general unprocessed/simple-preparation boundary, using current-linked ISPM32 tea Category1 as technical corroboration without claiming national incorporation. Examined Article8 other-objects breadth in statutory pest-protection context; no general document duty for every clean manufactured object inferred. No contrary national manufactured/dried-tea schedule located in the reviewed full sources and exact contrary-rule searches. Unlike the French overseas law, no domestic dried-tea counterexample was identified. This explicit combined factual/legal interpretation supersedes the previous demand for a commodity-specific rule; general laws can decide scope."
+  ],
+  "reviewedAt": "2026-09-30",
+  "permitFreeDecision": "supported",
+  "permitFreeReason": "Supported conditionally for sealed uncontaminated plain Camellia tea made by industrial steaming, rolling and drying, applying the general domestic transformation boundary. No bespoke tea classification letter is needed for that inference. Article8 other-objects wording is interpreted in the phytosanitary context of Articles1/5, while infected or pest-carrying packaging remains controlled. Food Decree62-E/1992 covers imports but Articles10–11 and14 delegate administrative-document/certification rules; these are not themselves an unavoidable private certificate. Decree-Law8/2011 Article10 abolishes prior trade-registration bulletins and routes the replacement simple declaration through Customs. Ordinary customs and food safety remain.",
+  "permitFreeSources": [
+    "https://faolex.fao.org/docs/pdf/gbs23411.pdf",
+    "https://www.fao.org/faolex/country-profiles/general-profile/en/?iso3=GNB",
+    "https://www.wto.org/french/tratop_f/tpr_f/s362-04_f.pdf",
+    "https://faolex.fao.org/docs/pdf/gbs117287.pdf",
+    "https://faolex.fao.org/docs/pdf/gbs118159.pdf",
+    "https://www.ippc.int/en/publications/587/",
+    "https://assets.ippc.int/static/media/files/publications/ru/1366800159_ISPM_32_2009_Ru_2012-12-10.pdf"
+  ],
+  "independentFoodConformityRule": "Decree62-E/1992 Articles1–2 cover imported processed food. Article3 establishes food safety and recognizes Codex conformity, provable by any means; Article4 concerns market placement and possible future prior controls, not an immediate universal certificate. Articles10–11 delegate inspection methods, administrative documents and specific import conditions; Article14 leaves certification to specific regulation. No separate special-document duty for the private plain-tea order is established by these clauses. Decree-Law8/2011 Article10 abolishes BRPI/BRPE prior registration bulletins and provides a simple written declaration submitted through Customs; this does not itself waive SPS rules, whose manufactured-product scope is separately interpreted.",
+  "foodConformitySourceFiles": [
+    "docs/reports/tea-audit-work/food-conformity-second-sources/gw-foodcontrol.pdf",
+    "docs/reports/tea-audit-work/food-conformity-second-sources/gw-foodcontrol.txt",
+    "docs/reports/tea-audit-work/food-conformity-second-sources/eight-country-food-scope-review.json"
+  ],
+  "foodConformityAccessNotes": "Complete Gazette extract downloaded from FAOLEX and text read. The file also contains tail material from a preceding tourism law, which was kept separate. No newer implementing certificate rule for private tea located.",
+  "officialOnlineRecovery": {
+    "code": "GW",
+    "outcome": "unresolved",
+    "outcomeChanged": false,
+    "finding": "New actual Gazette recovery: Decree-Law 8/2011 of 10 May, Article 10(1)(a) abolishes BRPI/BRPE prior import/export forms; 10(2) replaces them with a written declaration lodged with Customs. Article 10(3) preserves special regulated-activity requirements. This defeats relying on the repealed general prior form as a separate-doc barrier, but does not override Decree-Law 4/99 plant-health conditions or settle steamed-tea simple-preparation scope.",
+    "remainingEvidence": null,
+    "sources": [
+      "gw-tradesimplification2011.pdf"
+    ],
+    "supersededBy": "africa-scope-resolution/gw-proposed-override.json"
+  },
+  "officialOnlineRecoveryFiles": [
+    "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/gw-tradesimplification2011.pdf"
+  ],
+  "definitionReview": {
+    "code": "GW",
+    "outcome": "unresolved",
+    "finding": "Read Decree-Law 4/99 Article 2(b), Articles 7–8 and Article 16. The plant-product definition is unprocessed goods or simple preparation, without an operative ISPM definition adoption or examples determining steam-manufactured tea. IPPC reference is preambular. Article 16 leaves interpretation disputes to ministerial order; that is not a processing exemption. The food law delegates documentary methods rather than itself establishing a private certificate.",
+    "remainingEvidence": "A general binding processing interpretation or applicable implementing rule defining simple preparation for industrially steamed/rolled/dried tea. A personal ruling is not intrinsically required; any operative general rule would suffice.",
+    "sourceFiles": [
+      "docs/reports/tea-audit-work/africa-followup-sources/gw-law.pdf",
+      "docs/reports/tea-audit-work/africa-followup-sources/gw-law.txt"
+    ],
+    "sources": [
+      "https://faolex.fao.org/docs/pdf/gbs23411.pdf",
+      "https://faolex.fao.org/docs/pdf/gbs117287.pdf",
+      "https://faolex.fao.org/docs/pdf/gbs118159.pdf"
+    ],
+    "reviewedAt": "2026-09-30"
+  },
+  "manufacturingInterpretation": {
+    "basis": "Explicit application of the national processing definition to actual manufacturing; ISPM32 is supporting factual evidence, not assumed national law.",
+    "domesticProvisions": [
+      "Decree-Law4/99 Articles1,2(a–b),5(1)(b),7–8",
+      "Food Decree62-E/1992 Articles1–4,10–11,14",
+      "Decree-Law8/2011 Article10"
+    ],
+    "scopeCaveat": "Other objects in Article8 is broad and undefined; the proposed reading keeps it in the law's phytosanitary/pest-carrier context rather than treating the phrase as a universal permit for every imported object. Actual contamination or raw plant additions change the analysis.",
+    "conditions": [
+      "Only factory-manufactured plain Camellia tea involving industrial steaming/rolling/drying, not raw leaves or merely dried herbs.",
+      "Clean sealed packet and packaging without soil, seeds, pests or unprocessed additives.",
+      "Private end consumption, ordinary customs declaration and arrival inspection."
+    ],
+    "sourceFiles": [
+      "docs/reports/tea-audit-work/africa-followup-sources/gw-law.pdf",
+      "docs/reports/tea-audit-work/food-conformity-second-sources/gw-foodcontrol.pdf",
+      "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/gw-tradesimplification2011.pdf"
+    ]
+  }
+}

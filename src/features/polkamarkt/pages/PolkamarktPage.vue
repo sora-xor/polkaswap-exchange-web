@@ -1,0 +1,491 @@
+<template>
+  <main class="polkamarkt">
+    <section class="polkamarkt__top">
+      <div>
+        <h1>{{ t('pageTitle.Polkamarkt') }}</h1>
+        <p>{{ t('polkamarkt.pageSubtitle') }}</p>
+      </div>
+      <div class="polkamarkt__actions">
+        <s-button type="secondary" size="small" @click="createDialogVisible = true">
+          {{ t('polkamarkt.actions.createMarket') }}
+        </s-button>
+      </div>
+    </section>
+
+    <section v-if="shouldShowMarketBoard" class="polkamarkt__market-discovery">
+      <market-list
+        v-model:search="search"
+        v-model:category="category"
+        v-model:status="status"
+        v-model:mine-only="mineOnly"
+        :markets="markets"
+        :selected-id="selectedMarket?.id"
+        :account="accountAddress"
+        :current-block="currentBlock"
+        :loading="marketsLoading"
+        @select="selectMarket"
+        @refresh="refreshMarkets"
+      />
+    </section>
+
+    <section v-else class="polkamarkt__detail">
+      <s-button
+        class="polkamarkt__back"
+        type="action"
+        size="small"
+        alternative
+        :tooltip="t('backText')"
+        :aria-label="t('backText')"
+        @click="returnToMarketBoard"
+      >
+        <s-icon name="arrows-chevron-left-rounded-24" size="24"></s-icon>
+      </s-button>
+
+      <p v-if="marketsLoading && !selectedMarket" class="polkamarkt__detail-state">
+        {{ t('polkamarkt.loadingMarkets') }}
+      </p>
+      <p v-else-if="!selectedMarket" class="polkamarkt__detail-state">
+        {{ t('polkamarkt.noMarkets') }}
+      </p>
+
+      <section v-else class="polkamarkt__workspace">
+        <market-detail
+          :market="selectedMarket"
+          :history="marketHistory"
+          :history-loading="marketHistoryLoading"
+          :current-block="currentBlock"
+        />
+        <trade-ticket
+          :market="selectedMarket"
+          :account-position="selectedPosition"
+          :current-block="currentBlock"
+          @submitted="handleTransactionSubmitted"
+        />
+      </section>
+    </section>
+
+    <my-positions-panel
+      v-if="shouldShowAccountActivity"
+      :markets="markets"
+      :positions="positions"
+      :trades="trades"
+      :account="accountAddress"
+      :current-block="currentBlock"
+      :is-logged-in="isConnected"
+      :loading="activityLoading"
+      @connect="connectSoraWallet"
+      @select="selectMarket"
+      @open-position="selectPositionMarket"
+    />
+
+    <p v-if="marketsError" class="polkamarkt__error">{{ marketsError }}</p>
+    <p v-if="activityError" class="polkamarkt__error">{{ activityError }}</p>
+
+    <footer class="polkamarkt__footer">
+      <a
+        class="polkamarkt__external-link"
+        href="https://polkamarkt.com"
+        target="_blank"
+        rel="nofollow noopener noreferrer"
+      >
+        {{ t('polkamarkt.officialSite') }}
+      </a>
+      <p class="polkamarkt__disclaimer">{{ t('polkamarkt.disclaimer') }}</p>
+    </footer>
+
+    <create-market-dialog v-model:visible="createDialogVisible" @created="handleMarketCreated" />
+  </main>
+</template>
+
+<script setup lang="ts">
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+
+import { useInternalConnect } from '@/composables/useInternalConnect';
+import { useTranslation } from '@/composables/useTranslation';
+import { IndexerType, PageNames } from '@/consts';
+import { useSettingsStore } from '@/stores/settings';
+import CreateMarketDialog from '../components/CreateMarketDialog.vue';
+import MarketDetail from '../components/MarketDetail.vue';
+import MarketList from '../components/MarketList.vue';
+import MyPositionsPanel from '../components/MyPositionsPanel.vue';
+import TradeTicket from '../components/TradeTicket.vue';
+import { fetchPolkamarktAccountActivity } from '../services/accountActivity';
+import { fetchPolkamarktMarketHistory } from '../services/marketHistory';
+import { fetchPolkamarktMarkets } from '../services/markets';
+
+import type { AccountPosition, AccountTrade, MarketHistoryPoint, PolkamarktMarket } from '../types';
+import type { MarketCategory, MarketStatusFilter } from '../consts';
+import type { ApiPromise } from '@polkadot/api';
+
+defineOptions({
+  name: 'PolkamarktPage',
+});
+
+const { t } = useTranslation();
+const router = useRouter();
+const route = useRoute();
+const settingsStore = useSettingsStore();
+const { isLoggedIn, soraAddress, connectSoraWallet } = useInternalConnect();
+const POLKAMARKT_RUNTIME_ENDPOINT_FALLBACK = 'wss://ws.mof.sora.org';
+
+const markets = ref<PolkamarktMarket[]>([]);
+const marketsLoading = ref(false);
+const marketsError = ref('');
+const activityLoading = ref(false);
+const activityError = ref('');
+const positions = ref<AccountPosition[]>([]);
+const trades = ref<AccountTrade[]>([]);
+const marketHistory = ref<MarketHistoryPoint[]>([]);
+const marketHistoryLoading = ref(false);
+const selectedMarketId = ref('');
+const search = ref('');
+const category = ref<MarketCategory | 'all'>('all');
+const status = ref<MarketStatusFilter>('active');
+const mineOnly = ref(false);
+const createDialogVisible = ref(false);
+
+type MaybeValue<T> = T | { value: T };
+
+const isConnectedSource = isLoggedIn as unknown as MaybeValue<boolean>;
+const accountAddressSource = soraAddress as unknown as MaybeValue<string | undefined>;
+const isConnected = computed(() =>
+  Boolean(typeof isConnectedSource === 'object' ? isConnectedSource.value : isConnectedSource)
+);
+const accountAddress = computed(() =>
+  String(typeof accountAddressSource === 'object' ? (accountAddressSource.value ?? '') : (accountAddressSource ?? ''))
+);
+const currentBlock = computed(() => Number(settingsStore.blockNumber ?? 0));
+const runtimeApi = computed(() => (settingsStore.appConnection?.connection?.api ?? null) as ApiPromise | null);
+const runtimeEndpoint = computed(() =>
+  String(
+    settingsStore.appConnection?.connection?.endpoint ||
+      settingsStore.appConnection?.node?.address ||
+      settingsStore.appConnection?.defaultNodes?.[0]?.address ||
+      POLKAMARKT_RUNTIME_ENDPOINT_FALLBACK
+  )
+);
+const polkaswapIndexerEndpoint = computed(() =>
+  String(settingsStore.indexers?.[IndexerType.POLKASWAP]?.endpoint ?? '')
+);
+const selectedMarket = computed(() => {
+  if (!markets.value.length) return undefined;
+
+  const id = selectedMarketId.value || String(route.params.marketId ?? '');
+  if (id) {
+    const routedMarket = markets.value.find((market) => String(market.chainId ?? market.id) === id || market.id === id);
+    if (routedMarket) return routedMarket;
+  }
+
+  return undefined;
+});
+const shouldShowMarketBoard = computed(() => !selectedMarketId.value);
+const shouldShowMarketWorkspace = computed(() => Boolean(selectedMarket.value));
+const shouldShowAccountActivity = computed(() => shouldShowMarketWorkspace.value || status.value !== 'active');
+
+const selectedPosition = computed(() => {
+  const marketId = selectedMarket.value?.chainId;
+  if (marketId === undefined) return undefined;
+  return positions.value.find((position) => position.marketId === marketId);
+});
+
+let marketHistoryRequestId = 0;
+let activityRequestId = 0;
+let marketsRequestId = 0;
+let refreshedRuntimeMarkets = false;
+
+async function refreshMarkets(): Promise<void> {
+  const requestId = ++marketsRequestId;
+  const requestedApi = runtimeApi.value;
+  const requestedRuntimeEndpoint = runtimeEndpoint.value;
+  const requestedIndexerEndpoint = polkaswapIndexerEndpoint.value;
+  const isCurrentSource = () =>
+    requestedApi === runtimeApi.value &&
+    requestedRuntimeEndpoint === runtimeEndpoint.value &&
+    requestedIndexerEndpoint === polkaswapIndexerEndpoint.value;
+
+  marketsLoading.value = true;
+  marketsError.value = '';
+  try {
+    const nextMarkets = await fetchPolkamarktMarkets({ api: requestedApi, endpoint: requestedRuntimeEndpoint });
+
+    if (requestId === marketsRequestId && isCurrentSource()) {
+      markets.value = nextMarkets;
+      if (requestedApi || requestedRuntimeEndpoint) {
+        refreshedRuntimeMarkets = true;
+      }
+      if (!selectedMarketId.value && route.params.marketId) {
+        selectedMarketId.value = String(route.params.marketId);
+      }
+    }
+  } catch (err) {
+    if (requestId === marketsRequestId && isCurrentSource()) {
+      marketsError.value = err instanceof Error ? err.message : t('polkamarkt.errors.loadMarkets');
+    }
+  } finally {
+    if (requestId === marketsRequestId) {
+      marketsLoading.value = false;
+    }
+  }
+}
+
+/** Publishes activity only while the requesting account and request still own this page. */
+async function refreshActivity(): Promise<void> {
+  const requestId = ++activityRequestId;
+  const requestedAccount = accountAddress.value;
+
+  if (!isConnected.value || !requestedAccount) {
+    positions.value = [];
+    trades.value = [];
+    activityError.value = '';
+    activityLoading.value = false;
+    return;
+  }
+
+  activityLoading.value = true;
+  activityError.value = '';
+  try {
+    const activity = await fetchPolkamarktAccountActivity(requestedAccount);
+    const isCurrentAccount = isConnected.value && accountAddress.value === requestedAccount;
+
+    if (requestId === activityRequestId && isCurrentAccount) {
+      positions.value = activity.positions;
+      trades.value = activity.trades;
+    }
+  } catch (err) {
+    const isCurrentAccount = isConnected.value && accountAddress.value === requestedAccount;
+
+    if (requestId === activityRequestId && isCurrentAccount) {
+      positions.value = [];
+      trades.value = [];
+      activityError.value = err instanceof Error ? err.message : t('polkamarkt.errors.loadActivity');
+    }
+  } finally {
+    if (requestId === activityRequestId) {
+      activityLoading.value = false;
+    }
+  }
+}
+
+async function refreshMarketHistory(market = selectedMarket.value): Promise<void> {
+  const requestId = ++marketHistoryRequestId;
+
+  if (!market) {
+    marketHistory.value = [];
+    marketHistoryLoading.value = false;
+    return;
+  }
+
+  marketHistoryLoading.value = true;
+  try {
+    const history = await fetchPolkamarktMarketHistory(market);
+    if (requestId === marketHistoryRequestId) {
+      marketHistory.value = history;
+    }
+  } finally {
+    if (requestId === marketHistoryRequestId) {
+      marketHistoryLoading.value = false;
+    }
+  }
+}
+
+function selectMarket(market: PolkamarktMarket): void {
+  const id = String(market.chainId ?? market.id);
+  selectedMarketId.value = id;
+  router.push({ name: PageNames.Polkamarkt, params: { marketId: id } });
+}
+
+function returnToMarketBoard(): void {
+  selectedMarketId.value = '';
+  router.replace({ name: PageNames.Polkamarkt });
+}
+
+function selectPositionMarket(position: AccountPosition): void {
+  const market = markets.value.find((item) => item.chainId === position.marketId);
+  if (market) {
+    selectMarket(market);
+  }
+}
+
+async function handleTransactionSubmitted(): Promise<void> {
+  await Promise.allSettled([refreshMarkets(), refreshActivity(), refreshMarketHistory()]);
+}
+
+async function handleMarketCreated(marketId?: number): Promise<void> {
+  await refreshMarkets();
+  if (marketId !== undefined) {
+    const market = markets.value.find((item) => item.chainId === marketId);
+    if (market) selectMarket(market);
+  }
+}
+
+watch(
+  () => route.params.marketId,
+  (value) => {
+    selectedMarketId.value = String(value ?? '');
+  },
+  { immediate: true }
+);
+
+watch(
+  [isConnected, accountAddress, runtimeEndpoint, polkaswapIndexerEndpoint],
+  () => {
+    // Clear ownership synchronously: the ticket must never receive another account's positions.
+    positions.value = [];
+    trades.value = [];
+    void refreshActivity();
+  },
+  { immediate: true, flush: 'sync' }
+);
+
+watch(selectedMarket, (market) => void refreshMarketHistory(market), { immediate: true });
+
+watch(polkaswapIndexerEndpoint, (endpoint, previousEndpoint) => {
+  if (!endpoint || endpoint === previousEndpoint) return;
+
+  void refreshMarkets();
+});
+
+watch(currentBlock, (block) => {
+  if (block <= 0 || refreshedRuntimeMarkets || !(runtimeApi.value || runtimeEndpoint.value)) return;
+
+  void refreshMarkets();
+});
+
+onMounted(() => {
+  void refreshMarkets();
+});
+
+onBeforeUnmount(() => {
+  activityRequestId += 1;
+  marketsRequestId += 1;
+  marketHistoryRequestId += 1;
+});
+
+defineExpose({
+  markets,
+  selectedMarket,
+  shouldShowMarketBoard,
+  marketHistory,
+  positions,
+  trades,
+  refreshMarkets,
+  refreshActivity,
+  refreshMarketHistory,
+});
+</script>
+
+<style lang="scss" scoped>
+.polkamarkt {
+  display: grid;
+  gap: $inner-spacing-big;
+  margin: 0 $inner-spacing-big $inner-spacing-big 0;
+  padding-bottom: calc(#{$inner-spacing-big} + 56px);
+
+  @include tablet(true) {
+    margin: 0 $inner-spacing-mini $inner-spacing-big;
+  }
+
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    gap: $inner-spacing-medium;
+    align-items: center;
+    flex-wrap: wrap;
+
+    h1 {
+      margin: 0;
+      font-size: var(--s-heading2-font-size);
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: $inner-spacing-tiny 0 0;
+      color: var(--s-color-base-content-secondary);
+      max-width: 760px;
+      line-height: 1.6;
+    }
+  }
+
+  &__external-link {
+    display: inline-flex;
+    margin-top: $inner-spacing-tiny;
+    color: var(--s-color-theme-accent);
+    font-weight: 700;
+    line-height: 1.4;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px 20px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--s-color-base-border-secondary);
+    font-size: var(--s-font-size-mini);
+  }
+
+  &__disclaimer {
+    margin: 0;
+    color: var(--s-color-base-content-secondary);
+    line-height: 1.6;
+  }
+
+  &__actions {
+    display: flex;
+    gap: $inner-spacing-mini;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  &__market-discovery {
+    min-width: 0;
+  }
+
+  &__detail {
+    display: grid;
+    gap: $inner-spacing-medium;
+    min-width: 0;
+  }
+
+  &__back {
+    justify-self: flex-start;
+  }
+
+  &__detail-state {
+    display: grid;
+    min-height: 220px;
+    place-items: center;
+    border: 1px dashed var(--s-color-base-border-secondary);
+    border-radius: var(--s-border-radius-small);
+    color: var(--s-color-base-content-secondary);
+    margin: 0;
+    padding: $inner-spacing-big;
+    text-align: center;
+  }
+
+  &__workspace {
+    display: grid;
+    grid-template-columns: #{'minmax(0, 1fr)'} #{'minmax(280px, 380px)'};
+    gap: $inner-spacing-big;
+    align-items: flex-start;
+
+    @media (max-width: 1100px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__error {
+    color: var(--s-color-status-error);
+    margin: 0;
+  }
+}
+</style>

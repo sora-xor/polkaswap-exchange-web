@@ -1,0 +1,3500 @@
+
+ PLANT PROTECTION ACT, 2023–2 
+
+
+
+ 
+  Short title  
+
+
+
+  Interpretation  Arrangement of Sections   PART I PRELIMINARY   PART II ADMINISTRATION  
+
+
+
+  Establishment of the National Plant Protection Organization  
+
+
+
+  Functions of the Organization  
+
+
+
+  Chief Plant Health Officer and other staff  
+
+
+
+  Powers of Minister  
+
+
+
+  Delegations and authorizations  
+
+
+
+  Appointment of plant protection inspectors  
+
+
+
+  Designation of official analysts, official laboratory and reference laboratory  
+
+
+
+  Advisory Working Group  
+
+
+
+  Vacancy in membership of Advisory Working Group  
+
+
+
+  Phytosanitary Emergency Fund  
+
+
+
+  Register  
+
+
+
+  Principles for the approval and implementation of phytosanitary   measures  
+
+
+
+  Duty to assist and co-operate  
+
+
+
+  Review and audit   PART III IMPORTS  
+
+
+
+  Duty to declare regulated articles brought in person  
+
+
+
+  Restrictions on import  
+
+
+
+  Import permit  
+
+
+
+  Arrival notification  
+
+
+
+  Inspection on importation  
+
+
+
+  Inspection facilities  
+
+
+
+  Detention or destruction of imports  
+
+
+
+  Release of imports  
+
+
+
+  Minister may restrict certain imports  
+
+
+
+  Designation of plant quarantine stations and places for inspection  
+
+
+
+  Duty to report and seize certain imports   PART IV  EXPORTS AND CONSIGNMENTS IN TRANSIT  
+
+
+
+  Restriction on exports  
+
+
+
+  Issuance of a phytosanitary certificate  
+
+
+
+  Re-export  
+
+
+
+  Transit   PART V  CONTAINMENT AND ERADICATION OF PESTS  
+
+
+
+  Phytosanitary control measures  
+
+
+
+  List of declared pests  
+
+
+
+  Duty to notify Organization  
+
+
+
+  Surveillance  
+
+
+
+  Declaration of provisional quarantine  
+
+
+
+  Declaration of quarantine  
+
+
+
+  Procedure when quarantine pest on premises  
+
+
+
+  Service of quarantine notice in absence of occupier  
+
+
+
+  Duration of quarantine notice  
+
+
+
+  Declaration of phytosanitary emergency  
+
+
+
+  Lifting of quarantine  
+
+
+
+  Declaration of low pest prevalence area and pest free area  
+
+
+
+  Pest free places of production and pest free production sites   PART VI ENFORCEMENT  
+
+
+
+  Powers of a plant protection inspector  
+
+
+
+  Notice of seizure  
+
+
+
+  Storage or removal of affected items  
+
+
+
+  Confiscation and disposal of unclaimed items  
+
+
+
+  Appeals   
+
+
+
+    Offences  PART VII OFFENCES AND PENALTIES  
+
+
+
+  Liability of officials  
+
+
+
+  Procedure for offences  
+
+
+
+  Administrative penalty  
+
+
+
+  Powers of the Chief Agricultural Officer in administrative proceedings  
+
+
+
+  Fixed penalty notice for prescribed offences  
+
+
+
+  Evidence  
+
+
+
+  Limitation on liability  
+
+
+
+  Good faith defence  
+
+
+
+  Unpaid administrative fine or fixed penalty to constitute a debt to the   State  
+
+
+
+  General provisions as to prosecutions under Act  
+
+
+
+  Compensation  
+
+
+
+  Forfeiture   PART VIII MISCELLANEOUS  
+
+
+
+  Control of waste from vessels  
+
+
+
+  Documents may be submitted in electronic format  
+
+
+
+  Regulations  
+
+
+
+  Repeal and savings  
+
+
+
+  Act binds the State  
+
+
+
+  Commencement  BARBADOS I assentS. MASONPresident of Barbados 16th February, 2023. 2023–2 An Act to provide for the protection of plant resources by preventing the introduction plant pests and controlling the spread of plant pests in order to facilitate the trade in plants and plant products in accordance with the obligations under the World Trade Organization Agreement on the Application of Sanitary and Phytosanitary Measures, the International Plant Protection Convention and the International Standards on Phytosanitary Measures; and for related matters. [Commencement: by Proclamation] ENACTED by the Parliament of Barbados as follows:  PART I PRELIMINARY  Short title 1.  This Act may be cited as the  Plant Protection Act, 2023 . Interpretation 2.(1) In this Act,“affected” means infected or infested with a pest;“area” means an officially defined whole or part of Barbados and includes a place or site of production;“area of low pest prevalence” means an area, whether all or part of Barbados or all or parts of several countries, as identified by the competent authorities, in which a specific pest is present at low levels and which is subject to effective surveillance or control measures;“area under cultivation” includes a field, plantation, nursery, garden, green house and laboratory;“beneficial organism” means any organism, (including fungi, bacteria, viruses, virus-like organisms and invertebrate or other animals), which is identified by a competent authority to be directly or indirectly advantageous to flora or agricultural production;“buffer zone” means an area surrounding or adjacent to an area officially delimited for phytosanitary purposes in order to minimize the probability of spread of the target pest into or out of the delimited area;“consignment” means a quantity of plants, plant products or other regulated articles (which may be composed of one or more commodities or lots) being moved from one country to another and covered, when required, by a single phytosanitary certificate;“consignment in transit” means a consignment which passes through a country without being imported, and may be subject to phytosanitary measures;“contain” means to apply phytosanitary measures in and around an affected area to prevent the spread of a pest;“container” means a box, bag, wrapper, covering or other receptacle in which any plant, plant product or other regulated article that may carry pests has been or is being transported;“containment” means the application of phytosanitary measures in and around an affected area to prevent the spread of a pest;“control” means the suppression, containment or eradication of a pest population;“control area” means a defined zone established to prevent the spread of a disease or a pest from an infected area to an area free of that disease or pest;“conveyance” means any vessel, aircraft, vehicle, cart, container, animal or other thing that can convey a plant, plant product, pest, beneficial organism or other regulated article from one place to another;“detain” means to keep a consignment in official custody or confinement as a phytosanitary measure;“emergency measure” means a phytosanitary measure including a provisional measure established as a matter of urgency in a new or unexpected phytosanitary situation;“endangered area” means an area where ecological factors favour the establishment of a pest whose presence in the area will result in economically important loss; “entry”(a) (b) in relation to a pest, means the movement of a pest into an area where it is not yet present, or present but not widely distributed and being officially controlled;in relation to a consignment, means the movement of the consignment through a port of entry into an area;“eradicate” means to apply phytosanitary measures to eliminate a pest from an area;“establishment” means the perpetuation, for the foreseeable future, of a pest within an area after entry;“export” means to send outside Barbados to another country any plant, plant product, pest, beneficial organism or other regulated article by means of a conveyance;“exporter” means any person who, whether as owner, consignor, consignee, agent, broker or otherwise, is in possession of, or in any way is entitled to the custody or control of any plant, plant product, beneficial organism or other regulated article to be taken out of Barbados for arrival in another country;“Fund” means the Phytosanitary Emergency Fund established under section 12; “germplasm” means a plant intended for use in breeding or in a conservationprogramme;“import” means to bring into Barbados from another country any plant, plant product, pest, beneficial organism or other regulated article by means of a conveyance;“import permit” means an official document or its electronic equivalent authorizing the importation of a commodity in accordance with specified phytosanitary import requirements; “importer” means a person who, whether as owner, consignor, consignee, agent, broker or otherwise, is in possession of or in any way is entitled to the custody or control of any plant, plant product, pest, beneficial organism or other regulated article landed or likely to be landed in Barbados from another country;“infestation” means the presence in a commodity of a living pest of the plant or plant product concerned and includes an infection;“inspection” means official visual examination of a plant, plant product or other regulated article to determine if pests are present or to determine compliance with phytosanitary requirements;“introduction” means the entry of a pest resulting in its establishment in Barbados;“IPPC” means the new Revised Text of the International Plant Protection Convention;“IPPC Secretariat” means the Secretariat of the Commission on Phytosanitary Measures established under the International Plant Protection Convention;“Minister” means the Minister responsible for Agriculture; “Ministry” means the Ministry responsible for Agriculture;“national pest of concern” means a non-regulated pest with a significant economic impact, the biological and epidemiological characteristics of which determine that its control in Barbados
+ 
+ must be performed beyond a local level; and 
+
+
+
+ requires the official intervention of the National Plant Protection Organization for its management within Barbados, for technical coordination or for enforcement; 
+ 
+ 
+ 
+
+
+
+ “National Plant Protection Organization” or “Organization” means the competent authority for Barbados established under section 3; 
+
+
+
+ “occupier” in relation to any land or building, means a person in actual occupation thereof; 
+
+
+
+ “official” means established, authorised or performed by the National Plant Protection Organization; 
+
+
+
+ “official control” means the active enforcement of mandatory phytosanitary requirements and the application of mandatory phytosanitary procedures with the objective of 
+
+
+
+ 
+ eradicating or containing quarantine pests; or 
+
+
+
+ managing regulated non-quarantine pests; 
+ 
+
+
+
+ “operator” means a person who imports or exports plants, plant products or other regulated articles; 
+
+
+
+ “outbreak” means 
+
+
+
+ 
+ a recently detected pest population, including an incursion, in an area; or 
+
+
+
+ a sudden significant increase of an established pest population in an area;“owner” includes any person having for the time being the possession, custody or control of a plant, plant product or other regulated article;“packaging” means any material used in supporting, protecting or carrying a plant, plant product or other regulated article;“pest” means any species, strain or biotype of any plant, animal or pathogenic agent injurious to a plant or plant product;“pest free area” means an area in which a specific pest is absent as demonstrated by scientific evidence and in which, where appropriate, this condition is being officially maintained;“pest risk analysis” means the process of evaluating biological or other scientific and economic evidence to determine whether an organism is a pest that should be regulated and the strength of any phytosanitary measures to be taken against it;“phytosanitary action” means
+ 
+ the conduct of an official procedure, including inspection, testing, surveillance or treatment; or 
+
+
+
+ official control undertaken to implement any phytosanitary measure; 
+ 
+ 
+ 
+
+
+
+ “phytosanitary certificate” means an official paper document or its electronic equivalent that 
+
+
+
+ 
+ is consistent with the model certificate of the IPPC stating that a consignment meets phytosanitary import requirements; and 
+
+
+
+ is issued under section 29; 
+ 
+
+
+
+ “phytosanitary emergency” means an emergency declared under sections 25 (c)  and 41; 
+
+
+
+ “phytosanitary measure” means any enactment, regulation or official procedure having the purpose of preventing the introduction or spread of quarantine pests, or limiting the economic impact of regulated non-quarantine pests; 
+
+
+
+ “plant” means any living plant and its parts and includes a seed or germplasm; “plant product” means any unmanufactured material of plant origin, including 
+
+
+
+ grain, and a manufactured product which, by its nature or that of its 
+
+
+
+ processing, may create a risk for the introduction and spread of a pest; 
+
+
+
+ “plant protection inspector” or “inspector” means a person designated or appointed under section 8; 
+
+
+
+ “port of entry” means an airport or seaport; “port of exit” means an airport or seaport; 
+
+
+
+ “pre-shipment inspection” means an inspection conducted in the exporting country under the supervision of the National Plant Protection Organization of the importing country, before a consignment is exported, to verify that 
+
+
+
+ the consignment complies with phytosantirary requirements of the importing country; 
+
+
+
+ “premises” includes any building or other structure, permanent or otherwise, together with the land on which the same is situated and any adjoining land situated in Barbados; 
+
+
+
+ “processing” means the act of washing, peeling, scraping, mincing, scrubbing or any other method used on any plant, plant product or other regulated article; 
+
+
+
+ “quarantine” means official confinement of plants, plant products or other regulated articles for observation and research or for further inspection, testing or treatment; 
+
+
+
+ “quarantine area” means an area where a quarantine pest is present and is being officially controlled; 
+
+
+
+ “quarantine pest” means a pest declared under section 33; 
+
+
+
+ “quarantine station” means a plant quarantine station designated under section 26; 
+
+
+
+ “regular business hours” means the normal working hours of a Government office in Barbados; 
+
+
+
+ “regulated article” means any plant, plant product, storage place, packaging, conveyance, container, soil and any other organism, object or material capable of harbouring or spreading pests, deemed to require phytosanitary measures, particularly where international transportation is involved, and includes a beneficial organism; 
+
+
+
+ “regulated non-quarantine pest” means any pest which is not a quarantine pest and whose presence in a plant for planting affects the intended use of the plant with an economically unaccepted impact and which is regulated in Barbados, and declared as such by regulations; 
+
+
+
+ “regulated pest” means a quarantine pest or a regulated non-quarantine pest; 
+
+
+
+ “sell” includes to offer, advertise, keep, store, display, transmit, consign, convey or deliver for sale, or to exchange or dispose of to any person in any manner whether for consideration or otherwise; 
+
+
+
+ “soil” means material wholly or partly derived from the upper layer of the earth’s crust which is capable of sustaining plant life and which contains solid organic substances such as parts of a plant, humus, peat or bark but excluding any medium which is sterile, composed entirely of unused peat or otherwise incapable of harbouring or transmitting pests; 
+
+
+
+ “SPS Agreement” means the WTO Agreement on the Application of Sanitary and Phytosanitary Measures, to which Barbados is a party; 
+
+
+
+ “suppression” means the application of phytosanitary measures in an affected area to reduce a pest population; 
+
+
+
+ “surveillance” means an official process which collects and records data on pest presence or absence by surveying, monitoring or other procedure; 
+
+
+
+ “treatment” means an officially authorised procedure for 
+
+
+
+ 
+ the killing, inactivation or removal of pests; or 
+
+
+
+ rendering a pest infertile or for devitalisation; 
+ 
+
+
+
+ “vehicle” means any vessel, aircraft, conveyance, cart, container, motor vehicle, animal or other thing that can transport plants, plant products or other regulated articles from one place to another; 
+
+
+
+ “vessel” means any ship, aircraft or other means of travel by sea or air; 
+
+
+
+ “WTO” means the World Trade Organization established in 1995, of which Barbados is a member. 
+
+
+
+ (2) This section shall be interpreted in accordance with the IPPC’s 
+
+
+
+ International Standard for Phytosanitary Measures No. 5 Glossary on Phytosanitary Terms, as may be amended from time to time. 
+
+
+
+  PART II ADMINISTRATION  
+
+
+
+  Establishment of the National Plant Protection Organization  
+
+
+
+ 3.(1) There is established an Organization to be known as the National Plant 
+
+
+
+ Protection Organization for the regulation of plant health in Barbados. 
+
+
+
+ 
+ The Minister shall inform the IPPC Secretariat of the establishment of theNational Plant Protection Organization to serve as the Organization of for Barbados. 
+
+
+
+ The Organization shall be equipped with
+ 
+ inspection and testing facilities; and 
+
+
+
+ tools and equipment,for the detention, treatment and destruction of intercepted consignments.  Functions of the Organization 4.(a)The functions of the Organization are as follows: to implement the IPPC including the following:
+ 
+ issuing phytosanitary certificates for export, re-export and transit; 
+
+
+
+ carrying out surveillance of any ornamental and growing plant, including areas under cultivation and wild flora, and of any plant and plant product in storage or in transport, for the purpose of reporting the occurrence, outbreak and spread of pests, and controlling those pests; 
+
+
+
+ inspecting and testing any consignment of a plant and plant product and, where appropriate, inspecting any other regulated article, for the purpose of preventing the introduction and spread of pests; 
+
+
+
+ conducting pre-shipment inspections; 
+
+
+
+ supervising the treatment and consignment of any plant, plant product and other regulated article; 
+
+
+
+ protecting endangered areas, and designating, maintaining and surveying pest free areas and areas of low pest prevalence; 
+
+
+
+ conducting pest risk analyses; 
+
+
+
+ providing information to other countries concerning phytosanitary measures applied, either through pest risk analysis or by reference to applicable international standards; 
+
+
+
+ notifying trading partners of relevant instances of non- compliance with import requirements that may be prescribed; 
+
+
+
+ ensuring the phytosanitary security of consignments after certification and before export; 
+
+
+
+ establishing auditing and trace-back procedures for any plant, plant product and other regulated article for phytosanitary certification; 
+
+
+
+ establishing minimum qualifications for and overseeing the training and development of inspectors and other Organization staff; 
+
+
+
+ distributing information regarding regulated pests and the means of their prevention and control; 
+
+
+
+ proposing, reviewing, preparing and enforcing phytosanitary measures and other necessary enactments; 
+
+
+
+ notifying phystosanitary measures to other countries in accordance with international obligations; 
+
+
+
+ providing information regarding import and export regulations in force, and technical requirements for any plant, plant product and other regulated article, on the request of any interested international, regional or other national plant protection organization; 
+
+
+
+ conducting research and investigation in the field of plant protection; 
+
+
+
+ preventing and controlling the introduction of regulated pests; 
+
+
+
+ restricting the movement and spread of regulated pests and national pests of concern; 
+
+
+
+ controlling all plant pests, including living modified organisms, biological control agents and invasive alien species; 
+
+
+
+ developing a list of quarantine pests, regulated non-quarantine pests, regulated articles and pests of national concern and regularly updating and publishing those lists; 
+
+
+
+ requiring phytosanitary action as conditions or prohibitions for the importation of plants and plant products and other regulated articles; 
+
+
+
+ establishing and implementing certification programmes for planting material and plant products; 
+
+
+
+ issuing import permits; 
+
+
+
+ establishing internal operations manuals; and 
+
+
+
+ establishing and maintaining registers of operators, nurseries, farmers and phytosanitary service providers; 
+ 
+ 
+ 
+ 
+ 
+
+
+
+ 
+ to enforce this Act, as well as of any other enactment relating to plant protection, as the Minister may direct; 
+
+
+
+ to develop pest diagnostic, investigative and analytical capabilities; 
+
+
+
+ to co-ordinate laboratories, plant quarantine stations and other phytosanitary facilities; 
+
+
+
+ to establish procedures for the accreditation of any official laboratory, plant quarantine station, official analyst or any other institution or person from the public or private sector involved in phytosanitary matters; 
+
+
+
+ to carry out and supervise the treatment and consignment of any plant, plant product and other regulated article including disinfesting or disinfecting; and 
+
+
+
+ any other function that the Minister considers necessary for the purposes of this Act. 
+ 
+
+
+
+  Chief Plant Health Officer and other staff  
+
+
+
+ 5.(1) There shall be a Chief Plant Health Officer who shall be the head of 
+
+
+
+ the National Plant Protection Organization. 
+
+
+
+ 
+ The post of Chief Plant Health Officer shall be established in accordance with the   Public Service Act  , Cap. 29.  
+
+
+
+ The Chief Plant Health Officer
+ 
+ shall be responsible for the operations of the Organization; and 
+
+
+
+ shall report to the Chief Agricultural Officer. 
+ 
+ 
+
+
+
+ The functions of the Chief Plant Health Officer shall be as follows:
+ 
+ to provide technical and administrative direction to the Organization; 
+
+
+
+ to liaise with other ministries and foreign authorities; 
+
+
+
+ to make recommendations to the Chief Agricultural Officer regarding the declaration of emergencies and the establishment of pest free areas, areas of low pest prevalence, pest free places of production and pest- free production sites; 
+
+
+
+ to formulate proposals for work programmes for the National Plant Protection Organization in collaboration with other government entities; 
+
+
+
+ to serve as the IPPC contact point; and 
+
+
+
+ to submit to the IPPC a description of the structure of the National Plant Protection Organization and of any changes to that structure. 
+ 
+ 
+
+
+
+ The Chief Plant Health Officer shall be assisted by such staff appointed inaccordance with subsection (6), as is required for the purpose of carrying out the functions of the Organization under this Act. 
+
+
+
+ The offices of the staff required for the purposes of subsection (5) shall be 
+ 
+
+
+
+  established in accordance with the   Public Service Act  , Cap. 29.  
+
+
+
+  Powers of Minister  
+
+
+
+ 6. 
+
+
+
+ (a) 
+
+
+
+ (b) 
+
+
+
+ (c) 
+
+
+
+ The Minister shall 
+
+
+
+ designate by notice official and reference laboratories; designate by notice quarantine stations; and 
+
+
+
+ declare by order control areas, quarantine areas and pest free areas on the advice of the Chief Agricultural Officer. 
+
+
+
+  Delegations and authorizations  
+
+
+
+ 7.(1) The Minister may by order delegate to the Chief Plant Health Officer, 
+
+
+
+ any power or function conferred or imposed on him under this Act except the power to make subsidiary legislation. 
+
+
+
+ 
+ The Chief Agricultural Officer may, on the advice of the Chief Plant HealthOfficer, authorize any person or entity to perform the functions of the Organization except the following functions:
+ 
+ official liaison duties with other ministries or foreign authorities or any notification responsibilities to other ministries or foreign authorities; 
+
+
+
+ the granting of approval of phytosanitary measures or requirements; and 
+
+
+
+ the issuance of phytosanitary certificates. 
+ 
+ 
+
+
+
+ The Chief Agricultural Officer may, on the advice of the Chief Plant HealthOfficer, authorize any qualified public officer who is not a member of staff of the Organization, to issue phytosanitary certificates under the direct supervision of the Organization. 
+
+
+
+ Where the Chief Agricultural Officer authorizes the functions of theOrganization in accordance with subsection (2) to be performed by an individual or public or private entity, the authorization shall include the following:
+ 
+ the duration of the authorization; 
+
+
+
+ the specific tasks to be covered by the authorization; 
+
+
+
+ the control, supervision and payment of the person to whom the authorization is granted; 
+
+
+
+ the competencies and skills required by the person or entity to whom the function has been authorized; and 
+
+
+
+ the conditions of withdrawal of the authorization. 
+ 
+ 
+ 
+
+
+
+  Appointment of plant protection inspectors  
+
+
+
+ 8.(1) There shall be plant protection inspectors who shall have appropriate 
+
+
+
+ experience in plant health or a related field of agriculture. 
+
+
+
+ 
+ The post of plant protection inspector shall be established in accordance with the  Public Service Act   , Cap. 29.  
+
+
+
+ Where a person who is appointed as an inspector has any actual orreasonably perceived interest in a matter or other action to be taken by the Organization, whether such interest is direct or indirect, that interest shall be communicated to the Chief Agricultural Officer, and where such interest is in conflict with the impartiality, integrity, objectivity or independence of an inspector, the  Third Schedule   to the   Public Service Act , Cap. 29 shall apply. 
+
+
+
+ For the purposes of subsection (1), “plant health” includes entomology,plant pathology and pest diagnostics.  Designation of official analysts, official laboratory and reference laboratory 9.(1) For the purposes of this Act, the Minister shall on the recommendationof the Organization designate by notice such number of
+ 
+ analysts to be official analysts for the purpose of conducting inspections and tests required under this Act; 
+
+
+
+ laboratories to be reference laboratories; and 
+
+
+
+ laboratories to be official laboratories for the purpose of conducting specified laboratory tests required under this Act. 
+ 
+ 
+ 
+
+
+
+ 
+ An official laboratory or official analyst designated under subsection (1)shall be impartial and independent. 
+
+
+
+ A reference laboratory shall be used
+ 
+ for comparative testing in the case of conflicting results or contested results; 
+
+
+
+ to facilitate the collaboration with official laboratories in their area of competence; 
+
+
+
+ to disseminate information relating to plant health testing procedures to official laboratories; 
+
+
+
+ to provide scientific and technical assistance to the Organization for the implementation of this Act; and 
+
+
+
+ to facilitate the carrying out of such other duties as may be prescribed. 
+ 
+ 
+
+
+
+ For the purposes of subsection (3), the services of a reference laboratoryoutside Barbados may be procured by such contractual or other means as may be considered appropriate.  Advisory Working Group 10.(1) There is established an Advisory Working Group which shall advisethe Minister and the Organization on issues of plant protection and which shall be responsible for
+ 
+ advising on phytosanitary policy; 
+
+
+
+ making recommendations for the enactment of legislation; 
+
+
+
+ assisting in the determination of criteria for the declaration of a phytosanitary emergency under sections 25 (c)  and 41; 
+
+
+
+ serving as a mechanism through which emergencies can be co- ordinated under the technical leadership of the Chief Agricultural Officer; and 
+
+
+
+ serving as a mechanism for the co-ordination and consultation among public entities or between public and private entities for the purposes of scientific advice on phytosanitary matters.
+ 
+ The Advisory Working Group shall consist of 15 members comprised asfollows:(a) (b) three staff members of the Ministry, including the Chief Plant Health Officer; andone person from each of the following:
+ 
+ the Ministry responsible for the environment; 
+
+
+
+ the Ministry responsible for health; 
+
+
+
+ the Ministry responsible for trade; 
+
+
+
+ the Ministry responsible for legal affairs; 
+
+
+
+ the Customs Department; 
+
+
+
+ the Barbados Police Service; 
+
+
+
+ the University of the West Indies or other tertiary institution; 
+
+
+
+ the Barbados Chamber of Commerce; 
+
+
+
+ the Barbados National Standards Institution; and 
+
+
+
+ a farmers’organization; 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+
+ 
+ one person representing the interests of importers; and 
+
+
+
+ one person representing the interest of exporters. 
+ 
+
+
+
+ 
+ The members of the Advisory Working Group shall serve for a period notexceeding 3 years and be eligible for re-appointment. 
+
+
+
+ The members of the Advisory Working Group shall be remunerated as theMinister may determine from time to time. 
+
+
+
+ Nine members of the Advisory Working Group shall constitute a quorum. 
+
+
+
+ The Advisory Working Group shall meet at least 3 times each year. 
+
+
+
+ The Advisory Working Group shall elect a Chairman at its first meeting,which shall take place within 6 months from the date of commencement of this Act. 
+
+
+
+ The Advisory Working Group shall regulate its own procedure.  Vacancy in membership of Advisory Working Group 11.(1) The Chairman or a member of the Advisory Working Group may atany time resign his office by instrument in writing addressed to the Minister and from the date of receipt of the instrument that person shall cease to be a member of the Advisory Working Group.
+ 
+ A vacancy shall be deemed to arise in the membership of the AdvisoryWorking Group in the case of
+ 
+ the death or resignation of a member; 
+
+
+
+ the revocation by the Minister of the appointment of a member; 
+
+
+
+ the failure of a member to attend 3 consecutive meetings of the Advisory Working Group unless such failure to attend was approved by the Minister. 
+ 
+ 
+ 
+ 
+ 
+
+
+
+  Phytosanitary Emergency Fund  
+
+
+
+ 12.(1) There shall continue to be a Phytosanitary Emergency Fund which 
+
+
+
+ shall be administered by the Ministry and into which funds, donations, grants, awards and endowments given to the Advisory Working Group shall be paid to facilitate the work of the Organization. 
+
+
+
+ 
+ All monies collected or received in accordance with subsection (1) shall be paid into the general account of the Fund in a bank approved by the Minister of Finance and administered in accordance with the   Financial Management and Audit (Financial) Rules   (S.I. 2011 No. 54).  
+
+
+
+ When a phytosanitary emergency is declared in accordance with sections 
+ 
+
+
+
+ 25 (c)  and 41, the resources of the Fund shall be made available to the Organization. 
+
+
+
+  Register  
+
+
+
+ 
+ The Organization shall establish a register of operators and shall keeprecords relating to imports, exports, domestic producers and nurseries of plants, plant products and other regulated articles.  Principles for the approval and implementation of phytosanitary measures 14.(1) In accordance with the principles contained in the SPS Agreement,the Organization shall develop and implement phytosanitary measures for Barbados which shall
+ 
+ be in harmony with international standards; 
+
+
+
+ be technically based on pest risk analyses or risk assessments and science-based decisions; 
+
+
+
+ be favourable to the development of regionalization; 
+
+
+
+ be favourable to trade; and 
+
+
+
+ be proportional to the risk. 
+ 
+ 
+ 
+
+
+
+ (2) The phytosanitary measures developed in accordance with subsection (1) 
+
+
+
+ shall be kept under review every 3 years and published on the government portal. 
+
+
+
+  Duty to assist and co-operate  
+
+
+
+ 15.(1) The Organization may request from public officers, ministries and 
+
+
+
+ departments of Government, statutory bodies and private organizations the provision of adequate facilities and services to assist a plant protection inspector in the performance of his functions and the exercise of his powers under this Act. 
+
+
+
+ (2) The Organization may enter into agreements to establish collaborative 
+
+
+
+ arrangements, for the purposes of subsection (1). 
+
+
+
+  Review and audit  
+
+
+
+ 16.(1) The Organization shall arrange for its own performance to be subject 
+
+
+
+ to review, evaluation and audit by an external body or shall carry out a self-audit. 
+
+
+
+ 
+ The Organization shall periodically review the effectiveness ofphytosanitary measures issued under this Act every 3 years. 
+
+
+
+ The Organization shall, in collaboration with any entity responsible foragricultural health and food control
+ 
+ monitor and evaluate the implementation of this Act; and 
+
+
+
+ set out the conclusions based on the monitoring and evaluations under paragraph  (a) , in a report. 
+ 
+ 
+
+
+
+ The first report prepared under subsection (3) shall be published no later 
+ 
+
+
+
+ than 5 years after this Act comes into force and thereafter shall be published at intervals not exceeding 3 years. 
+
+
+
+  PART III IMPORTS  
+
+
+
+  Duty to declare regulated articles brought in person  
+
+
+
+ 17.(1) Every person who arrives in Barbados at a designated port of entry 
+
+
+
+ and has in his possession any plant, plant product or other regulated article, shall declare that plant, plant product or other regulated article to a plant protection inspector and if there is no inspector present, the declaration shall be made to a customs officer. 
+
+
+
+ 
+ The customs officer referred to in subsection (1) shall take custody of theregulated article until such time as a plant protection inspector is available to inspect the regulated article. 
+
+
+
+ The master of every vessel arriving in Barbados shall inform passengers 
+ 
+
+
+
+ that they have a duty to declare any plant, plant product, or other regulated article on arrival at a designated port of entry. 
+
+
+
+  Restrictions on import  
+
+
+
+ 18.(1) Subject to section 17, a plant, plant product and other regulated article 
+
+
+
+ shall be imported into Barbados only at a designated port of entry. 
+
+
+
+ 
+ No person shall import a plant, plant product or other regulated article intoBarbados except
+ 
+ by virtue of an import permit granted under section 19(2); and 
+
+
+
+ the plant, plant product or other regulated article is accompanied by
+ 
+ an original phytosanitary certificate issued by the country of export, where required; and 
+
+
+
+ any other documentation that may be prescribed. 
+ 
+ 
+ 
+ 
+
+
+
+ A plant, plant product or other regulated article that does not comply withthe requirements under subsection (2) shall be prohibited from entry into Barbados. 
+
+
+
+ The Minister, on the recommendation of the Organization, shall by noticespecify the phytosanitary import requirements and measures for plants, plant products and other regulated articles which shall
+ 
+ apply to regulated pests; and 
+
+
+
+ be based on a pest risk analysis or existing international standards. 
+ 
+ 
+
+
+
+ Where there is a change in conditions or as new facts become available,the Minister shall amend the notice referred to in subsection (4). 
+
+
+
+ Where the Organization has modified or revoked a phytosanitary importrequirement or measure, the Minister shall, place those changes on the government portal for the benefit of importers. 
+
+
+
+ A copy of the notice made under subsection (4) or (5) shall be placed atthe designated ports of entry. 
+
+
+
+ The Minister, on the recommendation of the Organization, shall prescribethe plants, plant products and other regulated articles for which no import permit is required. 
+
+
+
+ A person who contravenes subsection (2) is guilty of an offence and isliable on summary conviction to a fine of $50 000 dollars or to imprisonment for a term of one year or to both.  Import permit 19.(1) A person who intends to import a plant, plant product or otherregulated article into Barbados shall obtain an import permit from the Organization, where that plant, plant product or other regulated article
+ 
+ is from a country of origin where there are confirmed or suspected quarantine pests; 
+
+
+
+ is subject to post-entry quarantine requirements; 
+
+
+
+ is for a prescribed end use or for research purposes; 
+
+
+
+ is required in response to a humanitarian crisis or natural disaster; 
+
+
+
+ is required to be traced over a period of time; or 
+
+
+
+ is subjected to a pest risk analysis conducted by the Organisation and the Organisation determines that there is a risk. 
+ 
+ 
+ 
+
+
+
+ 
+ Where an import permit is required, an importer shall apply to theOrganization in the prescribed manner and may be granted a permit on the payment of the prescribed fee. 
+
+
+
+ In evaluating an application for an import permit, the Organization shallconsider existing international standards or conduct a pest risk analysis to determine the phytosanitary requirements that would apply. 
+
+
+
+ The Organization may review, modify or revoke an import permit for aplant, plant product or other regulated article issued, at any time where
+ 
+ the type or quantity of the plant, plant product or other regulated article has changed; 
+
+
+
+ there is a change in pest status of the country of export; 
+
+
+
+ the country of origin has changed; or 
+
+
+
+ the period of validity of the import permit has been exceeded. 
+ 
+ 
+
+
+
+ The Organization shall revoke an import permit where it is satisfied that
+ 
+ the holder of the permit
+ 
+ made a false declaration or statement in the application for the permit; 
+
+
+
+ provided incorrect information in the application for the permit; 
+
+
+
+ failed to comply with any of the terms of the permit; or 
+ 
+ 
+
+
+
+ the level of risk associated with the importation is no longer acceptable. 
+ 
+ 
+
+
+
+ Where the Organization has reviewed, modified or revoked a permit 
+ 
+
+
+
+ pursuant to subsection (4) or (5), the Organization shall inform the holder of the permit in writing. 
+
+
+
+  Arrival notification  
+
+
+
+ 
+ An importer shall notify the Organization in advance of the arrival ofa regulated article in Barbados from another country.  Inspection on importation 21.(1) A person who imports a plant, plant product or other regulated articleinto Barbados, shall present it for inspection to a plant protection inspector at a designated port of entry.  Notwithstanding subsection (1), and subject to subsection (3), any plant,plant product or other regulated article may be inspected on the payment of the prescribed fee, at  a quarantine station or other designated facility; or  the final port of destination.    An inspection may be carried out under subsection (2)  on the application by an importer; and  if the container in which the plant, plant product or other regulated article is contained has been sealed and marked, as prescribed.    An inspection referred to in subsection (1) or (2) shall be carried out duringregular business hours, except where the plant, plant product or other regulated article  is in transit;  is extremely perishable; or  is delayed in its arrival,    in which case, on application by the importer and on payment of the prescribed fee, the Organization may grant permission for the inspection to be carried out at  some  other time.  Every plant, plant product or other regulated article imported into Barbadosshall be under the phytosanitary detention of the Organization until it is officially released by the Organization to the importer.  The Organization may determine with an exporting country  the arrangements relating to pre-shipment inspections in the country of origin; and  the evaluation, and where feasible, the acceptance of alternative phytosanitary measures proposed by an exporting country’s national plant protection organization as being equivalent to the phytosanitary measures required by the Organization.      Inspection facilities 22.(1) The Minister shall prescribe standards and requirements for inspectionfacilities on the advice of the Organization.  The owner or operator of an inspection facility shall provide and maintainadequate areas and offices, including buildings, furnishings and fixtures for the purpose of inspecting a plant, plant product or other regulated article.  The Minister may, where the inspection facility is not a private residence,  serve notice on the owner or operator of any improvements that he considers desirable to any area, office, or other facility provided pursuant to subsection (1); or  post, on or about the area, office, or other facility for as long as is required, a notice of compliance in relation to subsection (1).      Detention or destruction of imports 23.(1) Where, on an inspection carried out in accordance with section 21, theinspector determines that the imported plant, plant product or other regulated article
+ 
+ is not accompanied by the relevant documentation required under section 18(2); or 
+
+
+
+ presents any risk for the introduction or spread of pests,the inspector shall detain the item and immediately serve written notice on the importer stating that part or all of the imported plant, plant product or other regulated article may be subject, within the time period specified in the notice, to the phytosanitary actions set out in subsection (2).  In accordance with subsection (1), the physosanitary actions to which partor all of an imported plant, plant product or other regulated article may be subject are as follows:  detention until the receipt of the relevant documentation is presented within a reasonable time;  testing;  phytosanitary treatment in order to remove the risk;  removal to a quarantine station or other approved facility;  sorting or re-configuring;  re-exportation;  confiscation; or  destruction.    An inspector may forego notice and carry out any of the actions listed undersubsection (1) where in his opinion, the destruction of the imported plant, plant product or other regulated article is urgently required or the giving of notice is impracticable.  Where, after its entry into Barbados or after treatment, any imported plant,plant product or other regulated article remains unclaimed for a period of time, as may be prescribed, the Organization may take action to destroy the imported plant, plant product or other regulated article.  The costs and responsibility for any action taken under subsection (1), (3)or (4 ) shall be borne by the importer, except where in exceptional cases, the Organization determines that the State should take responsibility for the associated costs.  The State may assume financial responsibility under subsection (4) withoutprejudice to its right to recover costs from the importer as a debt.  Where any action is taken under subsection (1), (3) or (4), the method usedto calculate the costs charged shall be prescribed.  The State shall not be liable for the confiscation, destruction or disposal ofany plant, plant product or other regulated article carried out in accordance with this section.  Where the Organization intercepts a pest or where emergency action is  required, the Organization shall notify the exporting country and the IPPC Secretariat of any action taken and the grounds for such action.  Release of imports 
+ 
+ Where on an inspection carried out under section 21, the inspectordetermines that the imported plant, plant product or other regulated article does not present any risk for the importation and spread of pests, and otherwise complies with the requirements of this Act, the inspector shall release the consignment to the importer.  Minister may restrict certain imports  
+
+
+
+ The Minister, on the advice of the Organization, and in order to protectplant resources, human health, animal health or the environment, may
+ 
+ permit the entry into Barbados of any plant, plant product or other regulated article for scientific or experimental purposes, subject to such terms and conditions that the Minister, may consider appropriate; 
+
+
+
+ prohibit or restrict the entry of any plant, plant product or other regulated article; 
+
+
+
+ declare a phytosanitary emergency; or 
+
+
+
+ take any other necessary action to prevent the introduction or spread of a quarantine pest and regulated non-quarantine pest.  Designation of plant quarantine stations and places for inspection  
+ 
+ 
+
+
+
+  
+ 
+ 
+ 
+ 
+ 
+
+
+
+ (a) 
+
+
+
+ (b) 
+
+
+
+ 
+  The Organization maydesignate certain places as plant quarantine stations where a plant, plant product or other regulated article may be kept for phytosanitary observation, research, inspection, testing, treatment, detention or destruction;require that imported plants, plant products or other regulated articles be kept or cultivated at a plant quarantine station, or at any other location identified by the Organization, and kept under the Organization’s supervision for such time as the Organization considers necessary;designate certain places for the purpose of inspecting plants, plant products and other regulated articles; and 
+
+
+
+ approve facilities owned and operated by public or private entities to be used for inspections under the supervision of the Organization. 
+ 
+
+
+
+  Duty to report and seize certain imports  
+
+
+
+ 27.(1) A postal officer, customs officer, a member of the Police Service, a 
+
+
+
+ member of the Defence Force, a postal courier or any other person designated by the Organization who has knowledge of the arrival or importation of any plant, plant product or other regulated article into Barbados shall, on its arrival, if a plant protection inspector is not present, 
+
+
+
+ 
+ where practicable, notify the Organization of the arrival or importation of the plant, plant product or other regulated article; and 
+
+
+
+ detain the plant, plant product or other regulated article for inspection by a plant protection inspector. 
+ 
+
+
+
+ 
+ With respect to subsection (1), a postal officer, customs officer, a memberof the Police Service, a member of the Defence Force, a postal courier or any other person designated by the Organization shall not release or dispose of the plants, plant products or other regulated article unless authorised by an inspector. 
+
+
+
+ A detention carried out under subsection (1) (b)  shall be deemed to be anaction taken by or on the authorization of the Organization. 
+
+
+
+ The Organization shall take custody of any item detained under subsection(1) (b)  within 3 days of its detention.  PART IV  EXPORTS AND CONSIGNMENTS IN TRANSIT  Restriction on exports 28.(1) Where an importing country requires a phytosanitary certificate,treatment or testing before authorising the importation of a plant, plant product or other regulated article, no person shall export a plant, plant product or other regulated article from Barbados unless that person
+ 
+ applies to the Organization for a phytosanitary certificate in the prescribed manner; 
+
+
+
+ submits all prescribed documents to the Organization; 
+
+
+
+ makes the plant, plant product or other regulated article available for inspection in accordance with section 29; 
+
+
+
+ pays the prescribed fee; and 
+
+
+
+ is granted a phytosanitary certificate. 
+ 
+ 
+
+
+
+ Where a person intends to export a plant, plant product or other regulatedarticle from Barbados, the Organization shall
+ 
+ have the sole authority for the control, issuance and revocation of the phytosanitary certificate; and 
+
+
+
+ be responsible for the phytosanitary security and integrity of a plant, plant product or other regulated article after it has been certified. 
+ 
+ 
+ 
+
+
+
+  Issuance of a phytosanitary certificate  
+
+
+
+ 29.(1) The Organization shall, on an application of an exporter in accordance 
+
+
+
+ with section 28(1) (a)  and on the payment of the prescribed fee in accordance with section 28(1) (d) , cause an inspection of the consignment to be carried out and 
+
+
+
+ 
+ issue a phytosanitary certificate, in such form as may be prescribed, where the consignment
+ 
+ meets the documentary and other requirements for import of the country to which the consignment is to be exported; and 
+
+
+
+ satisfies any other requirement for export specified by the Organization or under any other enactment in Barbados; or 
+ 
+ 
+
+
+
+ deny the issue of a phytosanitary certificate where the requirements specified in section 28 have not been met. 
+ 
+
+
+
+ 
+ Where a phytosanitary certificate has been issued to an exporter, theexporter shall export the consignment in accordance with the instructions of the Organization in order to maintain the phytosanitary security and physical integrity of the consignment. 
+
+
+
+ The Organization shall certify all exports of plants, plant products or otherregulated articles in accordance with the requirements of the importing country.  Re-export 30.(1) Where a consignment of plants, plant products or other regulatedarticles is imported into Barbados and thereafter exported to a third country of destination, the exporter shall
+ 
+ apply to the Organization for a re-export phytosanitary certificate; 
+
+
+
+ submit all prescribed documents to the Organization; 
+
+
+
+ make the consignment available for phytosanitary inspection; and 
+
+
+
+ pay the prescribed fee. 
+ 
+ 
+ 
+
+
+
+ 
+ Where an exporter makes an application in accordance with paragraph(a) of subsection (1), the Organization shall, immediately on the receipt of the application, carry out a phytosanitary inspection of the consignment. 
+
+
+
+ Where the inspection reveals that
+ 
+ the consignment is not infested; and 
+
+
+
+ the documents comply with the phytosanitary requirements of the country of destination,the Organization shall issue a re-export phytosanitary certificate in the prescribed form. 
+ 
+ 
+
+
+
+ The exporter shall re-export the consignment in accordance with anyinstructions or directives issued by the Organization for maintaining the phytosanitary security and integrity of the consignment. 
+
+
+
+ A consignment for re-export shall be accompanied by the originaldocumentation and phytosanitary certificates issued from the country of origin. 
+
+
+
+ Where a consignment for re-export has, while in Barbados,
+ 
+ been exposed to infestation or contamination by a pest; 
+
+
+
+ lost its phytosanitary security or integrity; or 
+
+
+
+ been processed to change its nature,the Organization shall issue a phytosanitary certificate which indicates the country of origin and shall include the original documentation relating to the consignment. 
+ 
+ 
+
+
+
+ Where a re-export phytosanitary certificate has been issued to an exporter, 
+ 
+
+
+
+ the exporter shall re-export the consignment in compliance with instructions of the Organization concerning the maintenance of the phytosanitary security of a consignment after certification. 
+
+
+
+  Transit  
+
+
+
+ 31.(1) A person who intends to transit a consignment of plants, plant products 
+
+
+
+ or other regulated articles through Barbados shall apply to the Organization in the prescribed form and pay the prescribed fee for transit authorization. 
+
+
+
+ 
+ Where the Organization receives an application for transit authorization,the Organization shall apply existing international standards and conduct a risk assessment to determine whether to grant authorization for the transit of a consignment of plants, plant products or other regulated articles through Barbados. 
+
+
+
+ The Organization shall
+ 
+ approve the application for transit authorization where it is satisfied that the level of risk is acceptable or can otherwise be successfully managed or mitigated; or 
+
+
+
+ deny the application where it fails to meet the requirements under paragraph  (a) ; and 
+
+
+
+ inform the applicant in writing of the decision made pursuant to paragraph  (a)  or  (b) . 
+ 
+ 
+
+
+
+ Phytosanitary requirements are not applicable to a consignment in transitthrough Barbados where
+ 
+ the consignment has been packed so as not to permit any risk of the spread of regulated pests that might be present in the consignment; 
+
+
+
+ the consignment, as well as the accompanying documents, comply with the phytosanitary requirements of the country of destination; and 
+
+
+
+ the consignment is accompanied by the phytosanitary certificate of the country of origin. 
+ 
+ 
+ 
+
+
+
+  PART V  
+
+
+
+ CONTAINMENT AND ERADICATION OF PESTS 
+
+
+
+  Phytosanitary control measures  
+
+
+
+ 32.(1) A pest free area, area of low pest prevalence, buffer zone or an area 
+
+
+
+ or premises infested or suspected of being infested by a regulated pest may be subject to the following phytosanitary control measures: 
+
+
+
+ 
+ treatment or disposal of plants, plant products or other regulated articles, including the treatment of vehicles whether or not they have been found to be infested; 
+
+
+
+ mandatory pest control treatment; 
+
+
+
+ prohibition or restriction of the movement of any plant, plant product or other regulated article within, from or to the area or zone; 
+
+
+
+ prohibition of planting or replanting specific plants in a specified location; or 
+
+
+
+ any other phytosanitary action which the Organization thinks is necessary. 
+
+
+
+ The phytosanitary control measures specified in subsection (1) may beapplied to other pests of national concern based on the economic impact of such pests and the potential regional movement of such pests.  List of declared pests 33.(1) The Organization may, by order declare, with the approval of theMinister, a pest to be
+ 
+ a quarantine pest, where the Organization is satisfied that the pest is of potential economic importance to the area endangered and
+ 
+ is not yet present; or 
+
+
+
+ is present but is not widely distributed and is being officially controlled; 
+ 
+ 
+
+
+
+ a regulated non-quarantine pest, where the Organization is satisfied, based on a pest risk analysis that
+ 
+ the pest is not a quarantine pest; and 
+
+
+
+ the presence of the pest in a plant for planting would affect the intended use of the plant with an economically unacceptable impact; or 
+ 
+ 
+
+
+
+ a national pest of concern, based on surveillance and the potential local economic impact of the pest.  Where the Organization makes a declaration pursuant to subsection (1),the Organization shall  maintain and periodically review the lists of regulated pests and national pests of concern; and  submit the lists of regulated pests to the IPPC Secretariat.    The Organization shall provide the list of regulated pests to an international  or regional organization or other national plant protection organization, where a request for the list is made from such a body.  Duty to notify Organization 34.(1) An occupier or owner of any premises who has knowledge of orreasonably suspects the presence of a quarantine pest on his premises shall immediately notify the Organization.(2) Any person who has knowledge of or reasonably suspects the presence ofa new pest or a regulated pest shall immediately notify the Organization.  Surveillance   The Organization, through general and specific surveillance, shallgather the following data for regulated pests and pests of national concern:  the biology of the pest;  the distribution of the pest; and  the potential impact of the pest.      Declaration of provisional quarantine 36.(1) Where a plant protection inspector reasonably believes that aquarantine pest may be present in any area or premises, he may  enter into such area or premises in accordance with section 45;  inspect any plants, plant products or other regulated articles; and  take such samples as he may consider necessary to verify the presence of the quarantine pest.    Where an inspection under subsection (1) provides further grounds for theinspector to believe that a quarantine pest is present in the area or on the premises, he may declare that area or the premises to be under provisional quarantine.  Where an inspector has declared an area or premises to be under provisionalquarantine, he shall inform the Organization in writing of the proposed measures to limit the spread of any quarantine pest and shall give reasons for those measures.  Where the Organization has considered the proposed measures referred toin subsection (3), the Organization may within the prescribed period  take emergency measures to limit the spread of any quarantine pest; and  advise the Minister  to declare the premises or area that is affected or is suspected of being affected with a quarantine pest to be under quarantine in accordance with section 37; or  to revoke the declaration of provisional quarantine made under subsection (2).        Declaration of quarantine 37. (a) (b) (c) 
+
+
+
+  
+ 
+ 
+ 
+
+
+
+ The Minister may, on the advice of the Organization, 
+
+
+
+ declare any premises or area that is affected or is suspected of being affected with any quarantine pest to be under quarantine; 
+
+
+
+ prescribe measures for the treatment or disposal of a plant, plant product or other regulated article, and the treatment of a conveyance whether or not it has been found to be affected, in order to limit the spread of any quarantine pest; 
+
+
+
+ prescribe the period of quarantine; and 
+
+
+
+ set any conditions for subsequent renewals of the declaration. 
+
+
+
+  Procedure when quarantine pest on premises  
+
+
+
+ 38.(1) Where the Organization reasonably believes that a quarantine pest is 
+
+
+
+ present on any premises, the Organization may, subject to subsection (2) of section 45, 
+
+
+
+ 
+ authorise an inspector to
+ 
+ enter the premises at any reasonable time, 
+
+
+
+ inspect any plant, plant product or other regulated article on the premises; 
+
+
+
+ take such samples as he may consider necessary; and 
+
+
+
+ destroy any plants that may not be affected but may have been exposed to the quarantine pest in buffer zones surrounding the affected plants; and 
+ 
+ 
+
+
+
+ require, by notice in writing, the owner or occupier of the premises, and where the Organization deems it appropriate, the owner or occupier of any premises in the vicinity, to take within a specified period, such measures on his premises as the Organization considers appropriate to eradicate, contain or restrict the spread of the pest. 
+ 
+
+
+
+ 
+ If any owner or occupier of premises fails to comply with any term of anotice issued under paragraph  (b)  of subsection (1), the Organization may direct an inspector or other authorised person to enter the premises in question in order to carry out the requirements of the notice and, where necessary, destroy the plant, plant product or other regulated article in order to eradicate, contain or restrict the spread of the pest. 
+
+
+
+ The owner of the plant, plant product or other regulated article shall beliable to pay the costs for any action taken under subsection (2), except where in exceptional cases, the Organization determines that the State should take responsibility for the associated costs on prescribed grounds including food security. 
+
+
+
+ The State may assume financial responsibility under subsection (3) withoutprejudice to its right to recover costs from the owner as a civil debt. 
+
+
+
+ Where the Organization takes any action under subsection (2), the methodused to calculate the costs charged shall be prescribed. 
+
+
+
+ Without prejudice to subsections (3) and (4), the State shall not be liable 
+ 
+
+
+
+ for the destruction or disposal of any plant, plant product or other regulated article carried out in accordance with this section. 
+
+
+
+  Service of quarantine notice in absence of occupier  
+
+
+
+ 39. Where a person is not in actual occupation of any premises, or if the 
+
+
+
+ occupier cannot be found, service of any notice under this Act may be made by affixing the same in a conspicuous place on the premises, and such affixing shall be deemed to be sufficient service of notice. 
+
+
+
+  Duration of quarantine notice  
+
+
+
+ 40.(1) A notice issued under section 38 or 39 shall remain in force until an 
+
+
+
+ inspector gives the owner or occupier concerned, a certificate in writing stating that the premises or area is free from pests. 
+
+
+
+ 
+ A person shall not remove, or allow or cause to be removed, any plant,plant product or other regulated article from the premises or area under quarantine while a notice issued under section 38 or 39 is in force.  Declaration of phytosanitary emergency 41.(1) The Minister may declare a phytosanitary emergency on the advice ofthe Organization where there is a grave threat to plant resources or food security based on
+ 
+ a risk analysis; or 
+
+
+
+ evidence obtained from
+ 
+ an inspection carried out under this Act; or 
+
+
+
+ an analysis of a sample taken under section 38(1) (a) (iii). 
+ 
+ 
+ 
+ 
+
+
+
+ A phytosanitary emergency declaration made under this section shall
+ 
+ enable the application of emergency measures and responses by the Organization in the manner prescribed in a phytosanitary emergency plan; 
+
+
+
+ be time-bound and subject to periodic review and evaluation as prescribed in regulations and in the phytosanitary emergency plan; and 
+
+
+
+ cause the Organization to request assistance from the Advisory Working Group and other authorities or persons as may be required to carry out an effective response. 
+ 
+ 
+ 
+
+
+
+  Lifting of quarantine  
+
+
+
+ 42.(1) The Organization shall regularly assess an area declared to be under 
+
+
+
+ quarantine to determine whether 
+
+
+
+ 
+ the quarantine pest continues to be present; or 
+
+
+
+ quarantine is no longer required in respect of some or all of the affected area or premises. 
+ 
+
+
+
+ 
+ Where the Organization determines that
+ 
+ the relevant quarantine pest is no longer considered to be present; or 
+
+
+
+ it is no longer appropriate for the quarantine to be maintained in respect of some or all of the affected area or premises,the Chief Plant Health Officer shall recommend to the Minister that the declaration of quarantine made under section 37, be revoked. 
+ 
+ 
+
+
+
+ Where the Minister revokes a declaration that an area or premises is under 
+ 
+
+
+
+ quarantine, the Organization shall serve written notice on all owners or occupiers of the affected area or premises that the quarantine is lifted. 
+
+
+
+  Declaration of low pest prevalence area and pest free area  
+
+
+
+ 
+ The Chief Agricultural Officer may, on the recommendation of theChief Plant Health Officer,
+ 
+ declare by order an area of low pest prevalence where he is satisfied that
+ 
+ a pest is present at low levels in the area; 
+
+
+
+ phytosanitary measures have been implemented to keep the pest levels low; and 
+
+
+
+ a surveillance system has been instituted to verify that the pest levels remain low; or 
+ 
+ 
+
+
+
+ declare by order an area pest free where the Organization is satisfied that
+ 
+ a pest is not present in the area; 
+
+
+
+ phytosanitary measures have been implemented to keep the area free of the pest; and 
+
+
+
+ a surveillance system has been instituted to verify that the area remains free of the pest. 
+ 
+ 
+ 
+ 
+ 
+
+
+
+  Pest free places of production and pest free production sites  
+
+
+
+ 44.(1) The Organization may declare a place of production or production site 
+
+
+
+ to be pest free where the Organization is satisfied that, 
+
+
+
+ 
+ a pest is not present in the area; 
+
+
+
+ phytosanitary measures have been implemented to keep the place of production or production site free of the pest; and 
+
+
+
+ a surveillance system has been instituted to verify that the place of production or production site remains free of the pest. 
+ 
+
+
+
+ 
+ For the purpose of this section, a place of production or production site ispest free where a specific pest is absent as demonstrated by scientific evidence and in which, where appropriate, the condition is being officially maintained for a defined period.  PART VI ENFORCEMENT  Powers of a plant protection inspector 45.(1) For the purpose of detecting a regulated pest or ensuring compliancewith the provisions of this Act, a plant protection inspector may
+ 
+ stop and, without a warrant, search a person, vehicle, container or conveyance entering or moving within Barbados that the inspector believes on reasonable grounds is harbouring a regulated pest; 
+
+
+
+ subject to subsections (2) and (3), at a reasonable time enter any premises to inspect plants, plant products and other regulated articles under cultivation, in storage or in transport in order to report the presence of regulated pests or regulated non-quarantine pests; 
+
+
+
+ open any container, receptacle or other thing that the inspector believes on reasonable grounds contains anything in respect of which this Act applies; 
+
+
+
+ examine any thing in respect of which this Act applies and take a sample of it; 
+
+
+
+ request any information, including documents, regarding any plants, plant products and other regulated articles from the owner or person in charge of the area or premises; 
+
+
+
+ examine, make copies of or take extracts from any book, statement or other document found at the area or premises, and request from the  
+
+
+
+   
+
+
+
+  
+
+
+
+   
+
+
+
+   
+
+
+
+   
+
+
+
+   
+
+
+
+   
+
+
+
+  owner or any person in charge, an explanation relating to an entry found in any book, statement or other document;take phytosanitary action such as but not limited to treatment, disposal, reshipment, or confinement of plants, plant products or other regulated articles in such area or on such premises;take any photographs;seize any plant, plant product, other regulated article, object, book, statement or document which appears to provide proof of a contravention of any provision of this Act providing a signed receipt in the prescribed form which shall be countersigned immediately by the owner or person in charge;ensure that the treatment of plants, plant products or other regulated articles for import into Barbados is undertaken in accordance with the phytosanitary import requirements;issue phytosanitary certificates and re-export phytosanitary certificates on the behalf of the Organization to ensure compliance with the import requirements of other countries, and where necessary, carry out any required treatment;order the treatment, disposal, reshipment, or confinement in a quarantine station, of pests, any plant, plant product or other regulated article, imported into Barbados or in transit, whether or not covered by a phytosanitary import permit or a phytosanitary certificate;stop the distribution, sale or use of any plant, plant product or other regulated article for a prescribed period, where the inspector believes that a plant, plant product or other regulated article is being distributed, sold or used in contravention of the provisions of this Act;seize any plant, plant product or other regulated article where the inspector believes that a plant, plant product or other regulated article is being distributed, sold or used in contravention of the provisions of this Act; 
+
+
+
+ conduct inquiries and request information or documentation where the inspector suspects that the provisions of this Act have been or are being contravened; and 
+
+
+
+ carry out any other necessary phytosanitary action. 
+ 
+ 
+ 
+
+
+
+ 
+ An inspector may not enter a dwelling except with the consent of theoccupier or under the authority of a warrant issued by a magistrate. 
+
+
+
+ Subject to subsection (2), an inspector may enter and search any premiseswhere there is reasonable cause to believe that an offence under this Act has taken place or is taking place. 
+
+
+
+ An inspector shall be present where the seal on a sealed containercontaining a plant, plant product or other regulated article is to be broken. 
+
+
+
+ An inspector may, in the performance of his duties under this section, beaccompanied and assisted by a member of the Police Service. 
+
+
+
+ In the course of an inspection carried out under subsections (1), (2) and 
+
+
+
+ , an inspector may, as he considers necessary,
+ 
+ seize, destroy, detain, treat or otherwise dispose of any plant, plant product or other regulated article, or order that any such action be taken, at the expense of the owner; and 
+
+
+
+ serve a written notice on the owner with a description of the action taken and the reasons for so doing. 
+ 
+ 
+ 
+
+
+
+ 
+ An inspector may carry out an inspection in the territory of an exportingcountry, as a pre-shipment inspection, at the invitation of the exporting country. 
+
+
+
+ An inspector shall, in the course of the performance of his duties,
+ 
+ identify himself as an inspector by showing his identification card or other proof of his appointment or designation as an inspector; 
+
+
+
+ maintain and secure any proprietary or confidential information, received or uncovered during the execution of his function; 
+
+
+
+ be accompanied and assisted by one or more members of the Police Service or such other persons as may reasonably be required for the performance of that function; or 
+
+
+
+ use any aids, including any equipment or device, subject to compliance with any enactment regarding the use of such aids. 
+ 
+ 
+ 
+
+
+
+  Notice of seizure  
+
+
+
+ 46.(1) A plant protection inspector who seizes and detains a plant, plant 
+
+
+
+ product or other regulated article 
+
+
+
+ 
+ shall immediately provide to the owner of the plant, plant product or other regulated article a detention certificate in the prescribed form and shall, as soon as practicable, advise the owner that part or all of the plant, plant product or other regulated article may be subject within a specified time to any action specified under section 48; or 
+
+
+
+ may forego advising the owner of the plant, plant product or other regulated article of the reason for the seizure if, in the opinion of the inspector, it is urgently required to destroy the plant, plant product or other regulated article. 
+
+
+
+ Notwithstanding subsection (1) (b)  an inspector shall provide notice of theseizure to the owner or person in charge of the plant, plant product or other regulated article as soon as may be practicable after the seizure has been carried out.  Storage or removal of affected items 
+ 
+ Where an inspector seizes and detains a plant, plant product or otherregulated article under this Act, the inspector or any other person designated by the Organization, may
+ 
+ store, treat, quarantine or dispose of the plant, plant product or other regulated article at the place where it was seized or move it to any other place for storage, treatment, quarantine or disposal; or 
+
+
+
+ require the owner or the person in charge of the plant, plant product or other regulated article to store, treat, dispose of, export or move it to any other place.  Confiscation and disposal of unclaimed items 48.(1)(a) (b) 
+
+
+
+  An inspector may confiscate and dispose ofany plant, plant product or other regulated article that, after treatment, following its entry into Barbados, remains unclaimed for a prescribed time;any quarantine pest or regulated non-quarantine pest; oranything that the inspector believes on reasonable grounds contains or harbours a quarantine pest or regulated non-quarantine pest.(2) An inspector who confiscates a plant, plant product or other regulatedarticle or a quarantine pest or regulated non-quarantine pest(a) (b)  Appeals 49. (1)shall, as soon as is practicable, advise the owner of the reason for the confiscation; ormay forego advising the owner of the plant, plant product or other regulated article or pest of the reason for the confiscation if the giving of reasons for the confiscation is impractical. Any person aggrieved by an action or decision of a plant protectioninspector or an official analyst may, within 10 days of the action or decision appeal in writing to the Chief Plant Health Officer.
+ 
+ The Chief Plant Health Officer shall give a decision within 28 days ofreceiving the appeal. 
+
+
+
+ An appeal from a decision of the Chief Plant Health Officer shall lie to theChief Agricultural Officer within 10 days of the decision of the Chief Plant Health Officer. 
+
+
+
+ The Chief Agricultural Officer shall give a final decision within 14 daysof receiving the appeal. 
+
+
+
+ An aggrieved party may appeal to a Judge in Chambers from a decisiongiven pursuant to subsection (2) or (4), on a matter of law. 
+
+
+
+ Notwithstanding subsections (1), (2), (3), and (4) the Organization shall 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+
+ act in a timely manner in response to a regulated pest or a perishable item. 
+
+
+
+  PART VII OFFENCES AND PENALTIES  
+
+
+
+  Offences 50. (1) 
+
+
+
+ (a) 
+
+
+
+ (b) 
+
+
+
+ (c) 
+
+
+
+ 
+   
+
+
+
+   
+
+
+
+   
+
+
+
+   A person whogrows, sells, offers for sale, transports or distributes in any manner any plant, plant product or other regulated article knowing that it is affected by a quarantine pest;assaults, resists, intimidates, threatens, abuses in any manner whatsoever, or obstructs an inspector exercising lawful powers under this Act;tampers with any sample taken pursuant to this Act;fails to comply with any order or direction lawfully made or given under this Act;imports any plant, plant product or other regulated article at a place other than a designated port of entry;imports any plant, plant product or other regulated article contrary to any other requirement that is prescribed;intentionally permits, introduces or causes the introduction or spread of a quarantine pest; 
+
+
+
+   
+
+
+
+   
+
+
+
+  
+
+
+
+  
+
+
+
+   
+
+
+
+  
+
+
+
+  
+
+
+
+   
+
+
+
+  
+ 
+
+
+
+ exports any plant, plant product or other regulated article except in accordance with Part IV; 
+
+
+
+ fails to safeguard the phytosanitary security of a consignment after the issuance of a phytosanitary certificate under subsection (1) of section 28; 
+
+
+
+ fails to allow a search or inspection authorised under this Act; fails to allow the taking of any sample authorised under this Act; 
+
+
+
+ breaks the seal on a sealed container containing a plant, plant product or other regulated article except in the presence of an inspector; 
+
+
+
+ knowingly or recklessly provides information which is false; 
+
+
+
+ alters, forges, defaces or destroys any document issued under this Act; 
+
+
+
+ submits any written material for publication referring to the occurrence of a quarantine pest in Barbados without prior or simultaneous communication of the existence of the pest to the Organization; or 
+
+
+
+ otherwise contravenes a provision of this Act, 
+
+
+
+ is guilty of an offence and liable on summary conviction to a fine of $ 50 000 or to imprisonment for a term of one year or to both. 
+
+
+
+ (2) Paragraph  (l)  of subsection (1) shall not apply to a customs officer who 
+
+
+
+ breaks a seal on a sealed container in accordance with the provisions of any enactment relating to customs. 
+
+
+
+  Liability of officials  
+
+
+
+ 
+ An inspector, official analyst or other Organization staff or therepresentative of the Organization who
+ 
+ asks for or takes any personal payment or other reward in connection with any official duties; 
+
+
+
+ agrees to do, abstains from doing, permits, conceals or connives at any act or thing which is contrary to the proper execution of official duties under this Act, or otherwise contrary to the laws of Barbados; 
+
+
+
+ discloses any information acquired in the performance of his official duties relating to any person, firm or business, except when required by his supervisor in the course of official duties, or where ordered to do so by any court; or 
+
+
+
+ otherwise abuses his powers granted under this Act, 
+ 
+ 
+ 
+
+
+
+ is guilty of an offence. 
+
+
+
+  Procedure for offences  
+
+
+
+ 52.(1) Where a plant protection inspector reasonably believes that a person 
+
+
+
+ has contravened any of the provisions of this Act, he shall provide such information to the Chief Plant Health Officer. 
+
+
+
+ 
+ The Chief Agricultural Officer on the advice of the Chief Plant HealthOfficer shall determine whether the matter shall be subject
+ 
+ to an administrative penalty; 
+
+
+
+ to criminal prosecution; or 
+
+
+
+ to both an administrative penalty and criminal prosecution. 
+ 
+ 
+ 
+
+
+
+  Administrative penalty  
+
+
+
+ 53.(1) Where the Organization is satisfied that a person has committed an 
+
+
+
+ act which does not warrant criminal prosecution, the Organization may issue an administrative penalty notice in the prescribed form specifying the nature of the act constituting the contravention and the penalty. 
+
+
+
+ 
+ Pursuant to subsection (1), the Organization may
+ 
+ issue a fine not exceeding $500; 
+
+
+
+ suspend or revoke any licence or other authorization; or 
+
+
+
+ issue any other administrative penalty. 
+ 
+ 
+
+
+
+ Where the administrative penalty is the issue of a fine the administrativenotice shall specify the amount of the penalty to be paid and shall require the person to whom it is addressed to pay the fine within a period of 14 days from the date of the notice. 
+
+
+
+ A person who is in receipt of an administrative penalty notice issued undersubsection (3) shall, in the manner prescribed, pay the amount of the fine and comply with any additional requirement contained in the notice on or before the date specified in the notice. 
+
+
+
+ A person to whom an administrative penalty notice is addressed and whowishes to challenge the notice, may make an appeal in accordance with section 49. 
+
+
+
+ In cases of serious or repeated violations of this Act, a licence or any other 
+ 
+
+
+
+ authorization issued by the Organization, the Organization shall recommend to the ministry responsible for industry and commerce that the business license be revoked. 
+
+
+
+  Powers of the Chief Agricultural Officer in administrative proceedings  
+
+
+
+ 
+ Where a matter is to be dealt with administratively by the ChiefAgricultural Officer, the Chief Agricultural Officer, on the advice of the Chief Plant Health Officer, may
+ 
+ seize a regulated article; 
+
+
+
+ stay the proceedings for condemnation of anything forfeited under this Act; 
+
+
+
+ restore anything seized under this Act, subject to any conditions he thinks fit; 
+
+
+
+ impose penalties or fines as the case may be, in respect of a breach that does not warrant criminal prosecution but is the subject of an administrative penalty. 
+ 
+ 
+ 
+
+
+
+  Fixed penalty notice for prescribed offences  
+
+
+
+ 55.(1) This section shall apply to any offence prescribed by regulations as a 
+
+
+
+ fixed penalty offence. 
+
+
+
+ 
+ For the purposes of this Act, a fixed penalty offence is any offence forwhich the maximum penalty, excluding any additional fines if the offence is a continuing one, does not exceed $2 500 or 50 per cent of the value of the regulated article, whichever is the greater. 
+
+
+
+ Where on any occasion an inspector finds a person who he has reason tobelieve is committing, or has committed, a fixed penalty offence, he may on the spot, issue that person a fixed penalty notice, and shall inform the person
+ 
+ to appear before the magistrate on the date specified; or 
+
+
+
+ pay the fixed penalty,  in lieu  of appearance before a magistrate. 
+ 
+ 
+
+
+
+ Where a person is issued a fixed penalty notice in respect of a fixed penaltyoffence and he
+ 
+ pays the fine within the time prescribed in the fixed penalty notice, no proceedings shall be instituted for that offence and he shall be treated for all purposes in law as a person who has not committed, been charged with, prosecuted for, convicted of or sentenced for the offence in respect of which the payment was made; or 
+
+
+
+ does not pay the fine within the time prescribed in the fixed penalty notice, the Organization shall decide whether to
+ 
+ increase the fine to be paid through written notice, specifying a new time period for payment; or 
+
+
+
+ take other action as established under this Act. 
+ 
+ 
+ 
+ 
+
+
+
+ A fixed penalty notice shall
+ 
+ be in the form set out in regulations; 
+
+
+
+ give such reasonable particulars of the circumstances alleged to constitute the offence to which the notice relates; and 
+
+
+
+ state
+ 
+ the amount of the fixed penalty, which shall not exceed 20 % of the maximum amount of any fine or fines that are specified under this Act in respect of the offences to which the fixed penalty notice relates; 
+
+
+
+ the period for paying the fixed penalty, which shall not exceed 21 days upon receipt of the fixed penalty notice; and 
+
+
+
+ the person to whom, and the address at which
+ 
+ the fixed penalty may be paid; and 
+
+
+
+ any correspondence relating to the fixed penalty notice maybe sent; 
+ 
+ 
+
+
+
+ the method or methods by which payment may be made; and 
+
+
+
+ the consequences of not making a payment within the period for paying the fixed penalty. 
+ 
+ 
+ 
+ 
+
+
+
+ The Chief Agricultural Officer on the advice of the Chief Plant HealthOfficer may extend the period for paying the fixed penalty in any particular case if he considers it appropriate to do so by sending notice to the person to whom the fixed penalty notice was given. 
+
+
+
+ The admission of guilt and the fixed penalty paid under this section shall 
+ 
+
+
+
+ be dealt with by the magistrate in the same manner as adjudication in court of an offence punishable on summary conviction and for which no conviction is recorded. 
+
+
+
+  Evidence 56.  
+
+
+
+ (a) 
+
+
+
+ (b) 
+
+
+
+ In any prosecution for an offence under this Act 
+
+
+
+ a declaration, certificate, report or other document of the Organization or an official analyst, inspector or member of the Police Service, purporting to have been signed on behalf of the Organization or the official analyst, inspector or member of the Police Service, is in the absence of evidence to the contrary, proof of the matters asserted in it; and 
+
+
+
+ a copy of an extract from any record or other document that is made by the Organization, an official analyst, inspector or member of the Police Service, as a true copy or extract, is admissible in evidence. 
+
+
+
+  Limitation on liability  
+
+
+
+ 57.(1) The costs of any action taken by an inspector under section 45 shall 
+
+
+
+ be borne by the owner, except where in exceptional cases the Organization determines that the State shall bear the costs. 
+
+
+
+ (2) Subject to section 61, the State is not liable for loss resulting from the 
+
+
+
+ destruction or disposal of any plant, plant product or other regulated article carried out under this Act. 
+
+
+
+  Good faith defence  
+
+
+
+ 
+ No member of the Organization, inspector, official analyst, official orreference laboratory or any other government entity with a role in phytosanitary matters shall be liable to prosecution in respect of anything done in good faith in the performance of their official functions under this Act.  Unpaid administrative fine or fixed penalty to constitute a debt to the State  
+
+
+
+ Any administrative fine or penalty that remains unpaid after theexpiration of one month after it becomes due and payable under this Act is a debt due to the State and may be recovered as a debt due to the State in civil proceedings before a magistrate for District “A”, notwithstanding that the amount exceeds the monetary limit on the jurisdiction of a magistrate’s court.  General provisions as to prosecutions under Act  
+
+
+
+ A plant protection inspector or other officer may, although not anattorney-at-law, prosecute or conduct before a court of summary jurisdiction any proceedings under this Act.  Compensation 61.(1) The Minister may, on the recommendation of the Advisory WorkingGroup out of money voted for that purpose by Parliament, order compensation to be paid in respect of
+ 
+ the treatment required of affected premises; 
+
+
+
+ the prohibition or restriction imposed under this Act on the use of premises; and 
+
+
+
+ owners affected by pest eradication procedures implemented by the Organization.(2) Compensation is not payable to a person who is guilty of an offence underthis Act and claims compensation in respect of any premises or things by means of or in relation to which the offence was committed.  Forfeiture 62.(1) Where a person is convicted of an offence under this Act the courtmay, in addition to any other penalty imposed, order that anything used in the perpetration of the offence be forfeited to the State.  Where the owner or person in charge of a plant, plant product, otherregulated article, or other thing is convicted of an offence under this Act and a fine is imposed, the plant, plant product, other regulated article or other thing may be  detained until the fine is paid; or  sold in satisfaction of the fine.    Where the court does not order the forfeiture of a regulated article, thatregulated article, or any proceeds realized from its disposition shall be returned to the owner or person in charge at the time of its seizure.  The Organization shall determine the appropriate holding of a regulatedarticle seized or forfeited under this Act, prior to its disposition by a magistrate  Any plant, plant product, other regulated article or other thing ordered tobe forfeited under this Act, at the expiry of the time limited for appeal and if no appeal is lodged, may be destroyed, sold, leased or donated to a charitable organization.  The proceeds of any sale of an item forfeited in accordance with this section  shall be paid into the Consolidated Fund.  PART VIII MISCELLANEOUS  Control of waste from vessels 63. The Organization shall establish the requirements for the handling anddisposal of waste from any conveyance.  Documents may be submitted in electronic format 64. (a)(b)For the purposes of this Act, wherea notice is required to be furnished in writing; ora document is required to be furnished to the Minister or an inspector, such notice or document may be furnished in an electronic format.  Regulations 65. The Minister may, after consultation with the Advisory WorkingGroup and the Organization, make regulations to give effect to the provisions of this Act, for all or any of the following matters:(a)(b) (c) 
+
+
+
+   
+
+
+
+  
+
+
+
+   
+
+
+
+   
+
+
+
+   
+
+
+
+   
+
+
+
+  procedures to be followed by an inspector in the exercise of his duties;conditions for the import of any plant, plant product or other regulated article;the designation of the ports of entry in Barbados that are appropriate for the import and export of any plant, plant product and other regulated article;the circumstances under which phytosanitary requirements for import may be modified based on a pest risk analysis;procedure and guidelines for pre-shipment inspections;the manner in which permits and certificates shall be issued and their form, content and language;the procedure by which an importer may apply for inspection to take place at any location other than the port of entry, or at a time outside regular business hours;the manner in which containers shall be sealed, marked and transported if they are to be inspected at their final destination rather than at the port of entry;the way in which any plant, plant product and other regulated article shall be stored or transported in Barbados;the procedures to be adopted for the treatment of any imported plant, plant product or other regulated article and the conveyance bringing it into Barbados; 
+
+
+
+ the location, management and functioning of any plant quarantine station established under this Act; 
+
+
+
+ the requirements for the control and care of any plant, plant product and other regulated article kept or maintained at a plant quarantine station; 
+
+
+
+ the manner in which an inspection shall be arranged for the destruction, removal, uprooting or treatment of any plant, plant product or other regulated article within an area or location declared as under quarantine; 
+
+
+
+ the period within and conditions under which it shall not be lawful to plant or re-plant anything in all or part of an area declared as under quarantine; 
+
+
+
+ the manner in which any sample being transported or stored must be taken, marked and retained under this Act; 
+
+
+
+ the operating procedures of any official laboratory designated under this Act; 
+
+
+
+ the procedure by which an area may be declared pest-free or an area of low pest prevalence; 
+
+
+
+ the conditions for the export of any plant, plant product or other regulated article; 
+
+
+
+ the operating procedures for the inspection of any plant, plant product or other regulated article, and any physical structure or premises containing such a product or article, for the purposes of export; 
+
+
+
+ the offences subject to the fixed penalty procedure outlined in section 55; 
+
+
+
+ the criteria for the declaration of a phytosanitary emergency under sections 25 (c)  and 41; 
+
+
+
+   
+
+
+
+  
+ 
+ 
+ 
+
+
+
+ the guidelines, policy directives or protocols promoting co-operation between relevant departments relating to plant protection; 
+
+
+
+ any additional measures to be taken for the purpose of preventing the introduction or spread of a pest. 
+
+
+
+  Repeal and savings  
+
+
+
+ 66.(1) 
+
+
+
+ (a) 
+
+
+
+ (b) 
+
+
+
+ The following Acts are repealed: 
+
+
+
+  the   Plant Pest and Disease (Eradication) Act  , Cap. 266A; and the   Plant Protection Act , Cap. 268. 
+
+
+
+ 
+ Notwithstanding subsection (1) (a) , all statutory instruments made under the   Plant Pest and Disease (Eradication) Act , Cap. 266A shall continue in force with such modifications as are necessary to bring them into conformity with this Act and shall have effect as if made under this Act, until revoked.  Act binds the State   This Act shall bind the State.  Commencement   This Act shall come into force on a date to be fixed by Proclamation.   20th February, 20232023–3 COMPANIES (ECONOMIC SUBSTANCE) (AMENDMENT) ACT, 2023–3 Arrangement of Sections   Short title    Insertion of section 9A into Act 2019-43   COMPANIES (ECONOMIC SUBSTANCE) (AMENDMENT) ACT,2023–3 3 BARBADOS I assentS. MASONPresident of Barbados 16th February, 2023. 2023–3  An Act to amend the   Companies (Economic Substance) Act, 2019  (Act 2019-43).  [Commencement: 20th February, 2023] ENACTED by the Parliament of Barbados as follows:COMPANIES (ECONOMIC SUBSTANCE) (AMENDMENT) ACT, 4 2023–3 Short title 1.  This Act may be cited as the  Companies (Economic Substance) (Amendment) Act, 2023.  Insertion of section 9A into Act 2019-43 2.  The   Companies (Economic Substance) Act, 2019 (Act 2019-43) is amended by inserting after section 9, the following: “Exchange of information generally for certain fiscal periods9A.(1) Notwithstanding section 9, the Director shall provide to theBarbados competent authority the information filed pursuant to section 8 by a resident company for a fiscal period commencing in 2019, 2020 or 2021.
+ 
+ Where the Barbados competent authority receives informationfrom the Director under subsection (1) relating to a resident company, the Barbados competent authority shall, in accordance with any law or international agreement relating to exchange of information, exchange full details for each fiscal period of the resident company to the foreign competent authority of the country in which
+ 
+ a holding company; 
+
+
+
+ the ultimate holding company; and 
+
+
+
+ the ultimate beneficial owner, 
+ 
+ 
+ 
+ 
+ 
+
+
+
+ of the resident company, is resident.”. 
+
+
+
+ 20th February, 2023 
+
+
+
+ 2023–4 
+
+
+
+ FINAL APPROPRIATION (2021-2022) ACT, 2023–4 
+
+
+
+ Arrangement of Sections 
+
+
+
+ 
+  Short title  
+
+
+
+  Supplementary grant of $650,595,886  
+
+
+
+  Date on which grant takes effect  
+
+
+
+  Appropriation of sum granted  
+ 
+
+
+
+ SCHEDULE 
+
+
+
+ BARBADOS 
+
+
+
+ I assent 
+
+
+
+ S. MASON 
+
+
+
+ President of Barbados 16th February, 2023. 
+
+
+
+ 2023–4 
+
+
+
+ An Act to grant an additional sum of money out of the Consolidated Fund and to appropriate the same for the services of the Island for the Financial Year that ended 31st March, 2022. 
+
+
+
+ [Commencement: 1st April, 2021] 
+
+
+
+  WHEREAS  the sum of money granted out of the Consolidated Fund by the  Appropriation Act, 2021  for the services of the Island for the Financial Year ended 31st March, 2022 has proved insufficient to meet the demands for such services; 
+
+
+
+  AND WHEREAS  certain Resolutions were passed during the Financial Year that ended 31st March, 2022 granting additional sums out of the Consolidated Fund for the services of that year, and it is deemed expedient to appropriate the same in the manner hereinafter mentioned; 
+
+
+
+ NOW THEREFORE BE IT ENACTED by the Parliament of Barbados as follows: 
+
+
+
+  Short title 1.  
+
+
+
+ 2023. 
+
+
+
+ This Act may be cited as the  Final Appropriation (2021-2022) Act,  
+
+
+
+  Supplementary grant of $650,595,886  
+
+
+
+ 
+ The Accountant General may, on the warrant of the Minister or someperson authorised by the Minister in writing, issue out of the Consolidated Fund and apply for making good the sums granted for the supply of services for the year ended 31st March, 2022 the sum of six hundred and fifty million, five hundred and ninety-five thousand, eight hundred and eighty-six dollars.  Date on which grant takes effect  
+
+
+
+ The sum granted by this Act shall be deemed to have been granted onthe 1st April, 2021 in addition to the sum granted by the  Appropriation Act, 2021 .  Appropriation of sum granted  
+
+
+
+ The sum granted by this Act out of the Consolidated Fund for makinggood the sums granted for the purpose specified in section 2 is appropriated from 1st April, 2021 for the purposes specified in the  Schedule .   SCHEDULE PART I  (Section 4)ABSTRACTS OF THE APPROPRIATION GRANTS  ServiceAppropriated for 2021-2022  $11.Ministry of the Public Service50,00012.Parliament5,934,77713.Prime Minister’s Oﬃce68,182,96215.Cabinet Oﬃce3,000,00027.Ministry of Tourism and International Transport6,226,54530.Oﬃce of the Attorney General16,018,19431.Ministry of Innovation, Science and Smart Technology3,644,46333.Ministry of Home Aﬀairs, Information and Public Aﬀairs10,646,00734.Ministry of Finance, Economic Aﬀairs and Investment82,295,05935.Ministry of People Empowerment and Elder Aﬀairs15,803,39639.Ministry of International Business and Industry5,292,00081.Ministry of Transport, Works and Water ResourcesC/F86,226,935 303,320,338 Schedule – (Cont’d) PART I  – (Concl’d)  ABSTRACTS OF THE APPROPRIATION GRANTS –  (Cont’d)   Service Appropriated for 2021-2022   $  B/F303,320,33882.Ministry of the Environment and National Beautification 51,954,33783.Ministry of Agriculture and Food Security 29,170,72486.Ministry of Health and Wellness 133,534,74587.Ministry of Education, Technological and Vocational Training 46,334,60391.Ministry of Youth, Sports and Community Empowerment 9,352,50892.Ministry of Energy, Small Business and Entrepreneurship 2,540,00093.Ministry of Housing, Lands and Maintenance 74,388,631   650,595,886 Schedule – (Cont’d)  PART II CURRENT AND CAPITAL HEAD 11 – MINISTRY OF THE PUBLIC SERVICE PROGRAMME 082- IMPLEMENTATION OF PERSONNEL CONDITION OF SERVICE Sub-programme 0086- People Resourcing and Compliance50,000HEAD 12 – PARLIAMENT  PROGRAMME 030- PARLIAMENT Sub-programme 0030- Management Commission of Parliament 5,882,579Sub-programme 0031- Commonwealth Parliamentary Association and Exchange Visits 52,198 HEAD 13 – PRIME MINISTER’S OFFICEPROGRAMME 040- DIRECTION AND POLICY FORMULATION SERVICES Sub-programme 0033- National Transformation531,750PROGRAMME 041- NATIONAL DEFENCE AND SECURITY PREPAREDNESS Sub-programme 0043- Barbados Defence Force9,735,000PROGRAMME 166- RURAL DEVELOPMENT Sub-programme 0181- Rural Development Commission5,000,000 Schedule – (Cont’d)  PART II – (Cont’d) CURRENT AND CAPITAL – (Cont’d)HEAD 13 – PRIME MINISTER’S OFFICE – (Concl’d) PROGRAMME 276- CULTURE Sub-programme 7005- General Management and Coordination Services 700,158Sub-programme 0297- Special Projects633,000PROGRAMME 299- URBAN REHABILITATION AND FLOOD MITIGATION Sub-programme 0356- Speightstown Flood Mitigation Project1,000,000Sub-programme 0357- Constitution Flood Mitigation Project4,000,000PROGRAMME 332- DEVELOPMENT OF TOURISM POTENTIAL Sub-programme 0347- Barbados Tourism Investment Inc.24,583,054PROGRAMME 337- INVESTMENT PROMOTION FACILITATION Sub-programme 7083- Invest Barbados6,000,000PROGRAMME 366- NATIONAL CRISIS MANAGEMENT Sub-programme 6205- Programme Management – COVID-1910,000,000PROGRAMME 631- URBAN DEVELOPMENT Sub-programme 0534- Urban Development Commission6,000,000 Schedule – (Cont’d)  PART II – (Cont’d) CURRENT AND CAPITAL – (Cont’d)HEAD 15 – CABINET OFFICE PROGRAMME 070- CABINET SECRETARIAT Sub-programme 7020- General Management and Coordination Services 1,000,000PROGRAMME 071- CONSTITUTIONAL AND STATUTORY AUTHORITIES Sub-programme 0073- Electoral and Boundaries Commission2,000,000 HEAD 27 – MINISTRY OF TOURISM AND INTERNATIONAL TRANSPORT PROGRAMME 040- DIRECTION AND POLICY FORMULATION SERVICES Sub-programme 7060- General Management and Co-ordination Services 385,100PROGRAMME 332- DEVELOPMENT OF TOURISM POTENTIAL Sub-programme 0554- Caves of Barbados4,101,445PROGRAMME 333- IINTERNATIONAL TRANSPORT Sub-programme 7065- General Management and Coordination Services 1,740,000 Schedule – (Cont’d)  PART II – (Cont’d) CURRENT AND CAPITAL – (Cont’d)HEAD 30 – ATTORNEY GENERAL PROGRAMME 040- DIRECTION AND POLICY FORMULATION SERVICES Sub-programme 7075- General Management and Coordination Services 1,877,894Sub-programme 0240- Forensic Services633,361PROGRAMME 240- LEGAL SERVICES Sub-programme 0246- Parliamentary Counsel Services500,000PROGRAMME 244- POLICE SERVICES Sub-programme 0255- Police Headquarters and Management2,197,528Sub-programme 0256- General Police Services10,809,411 HEAD 31 – MINISTRY OF INNOVATION, SCIENCE AND SMART TECHNOLOGY PROGRAMME 043- APPLICATION OF MODERN INFORMATION TECHNOLOGY Sub-programme 0087- Shared Services3,644,463 Schedule – (Cont’d)  PART II – (Cont’d) CURRENT AND CAPITAL – (Cont’d)HEAD 33 – MINISTRY OF HOME AFFAIRS, INFORMATION AND PUBLIC AFFAIRS PROGRAMME 040- DIRECTION AND POLICY FORMULATION SERVICES Sub-programme 7070- General Management and Coordination Services 106,118Sub-programme 7156- General Management and Coordination Services 5,921,897PROGRAMME 042- INFORMATION AND MEDIA RELATIONS Sub-programme 0047- Government Advertising400,000PROGRAMME 200- NATIONAL EMERGENCY PREPAREDNESS Sub-programme 0206- Department of Emergency1,122,227 Management PROGRAMME 243- CORRECTION AND REHABILITATIVE SERVICES Sub-programme 0252- Prison Department670,940Sub-programme 0254- Industrial Schools1,735,891PROGRAMME 247- SERVICES IN PUBLIC AFFAIRS Sub-programme 0207- Management and Operation of Department of Public Aﬀairs 688,934 Schedule – (Cont’d)  PART II – (Cont’d) CURRENT AND CAPITAL – (Cont’d)HEAD 34 – MINISTRY OF FINANCE, ECONOMIC AFFAIRS AND INVESTMENTPROGRAMME 040 – DIRECTION AND POLICYFORMULATION SERVICESSub-programme 0022 – Contingencies 23,374,637 Sub-programme 7010 – General Management andCoordination Services 139,851 PROGRAMME 113 – REVENUE COLLECTIONSub-programme 0185 – Barbados Revenue Authority 3,587,721 PROGRAMME 116 – SUPPLIES AND PURCHASINGMANAGEMENTSub-programme 0559 – Modernisation of Public ProcurementSystems 192,850PROGRAMME 120 – OPERATIONS OF NATIONALINSURANCE AND SOCIAL SECURITYSub-programme 0142 – National Insurance Department 50,000,000 PROGRAMME 124 – BARBADOS EMPLOYMENT ANDSUSTAINABLE TRANSFORMATION (BEST) PLANSub-programme 0576 – Enterprise Growth Fund Ltd.(EGFL) Fund Managers 5,000,000 Schedule – (Cont’d)  PART II – (Cont’d) CURRENT AND CAPITAL – (Cont’d)HEAD 35 – MINISTRY OF PEOPLE EMPOWERMENT AND ELDER AFFAIRS PROGRAMME 040- DIRECTION AND POLICY FORMULATION SERVICES Sub-programme 7155- General Management and Coordination Services 4,590,925PROGRAMME 423- PERSONAL SOCIAL SERVICES DELIVERY PROGRAMME Sub-programme 0427- Welfare Department6,309,150Sub-programme 0428- National Assistance Board4,403,321Sub-programme 0435- National Disabilities Unit500,000 HEAD 39 – MINISTRY OF INTERNATIONAL BUSINESS AND INDUSTRY PROGRAMME 040- DIRECTION AND POLICY FORMULATION SERVICES Sub-programme 0490- International Business and Financial Services 292,000PROGRAMME 460- INVESTMENT, INDUSTRIAL AND EXPORT DEVELOPMENT Sub-programme 0462- Barbados Investment and Development Corporation 5,000,000 Schedule – (Cont’d) PART II – (Cont’d) CURRENT AND CAPITAL – (Cont’d)HEAD 81 – MINISTRY OF TRANSPORT, WORKS AND WATER RESOURCES PROGRAMME 510- ROAD NETWORKS SERVICES Sub-programme 0511- Highway Construction and Maintenance Services 50,659,597Sub-programme 0544- Road and Bridge Rehabilitation Scotland District 1,800,000Sub-programme 0530- IDB Road Rehabilitation and Improving Connectivity 321,599 PROGRAMME 511 – DRAINAGE PROGRAMME 516Flooding- PUBLIC TRANSPORT1,501,882Sub-programme 0524- Provision of Traﬃc and Street Lighting 4,000,000PROGRAMME 517- TRANSPORT Sub-programme 0527- Transport Board (Subsidy)9,713,462PROGRAMME 518- BARBADOS WATER AUTHORITY Sub-programme 0542- Barbados Water Authority18,230,395Sub-programme 0515 – Maintenance of Drainage to Prevent Schedule – (Cont’d)  PART II – (Cont’d) CURRENT AND CAPITAL – (Cont’d)HEAD 82 – MINISTRY OF THE ENVIRONMENT AND NATIONAL BEAUTIFICATION PROGRAMME 400- ENVIRONMENTAL HEALTH SERVICES Sub-programme 0372- Sanitation Service Authority17,556,500 PROGRAMME 650 – PRESERVATION AND CONSERVATIONOF THE TERRESTRIAL AND MARINE ENVIRONMENT Sub-programme 0117 – National Clean-Up Programme 13,495,800 Sub-programme 0386 – National Conservation Commission 18,566,157 Sub-programme 0399 – Botanical Gardens 2,335,880HEAD 83 – MINISTRY OF AGRICULTURE AND FOOD SECURITY PROGRAMME 040- DIRECTION AND POLICY FORMULATION SERVICES Sub-programme 7055- General Management and Coordination Services 50,000Sub-programme 0160- Technical Management Research and Coordination 110,000 Schedule – (Cont’d)  PART II – (Cont’d) CURRENT AND CAPITAL – (Cont’d)HEAD 83 – MINISTRY OF AGRICULTURE AND FOOD SECURITY – (Concl’d) PROGRAMME 160- MEASURES TO STIMULATE INCREASED CROP PRODUCTION Sub-programme 0636- Barbados Agricultural Development and Marketing Corporation 7,431,041Sub-programme 0637- Barbados Agricultural Management Company 5,434,980PROGRAMME 162- RESOURCE DEVELOPMENT AND PROTECTION Sub-programme 0170- Veterinary Services242,261PROGRAMME 164- GENERAL SUPPORT SERVICES Sub-programme 0178- Incentives and Other Subsidies15,537,442 PROGRAMME 165 – ANCILLARY TECHNICAL AND ANALYTICAL SERVICES Sub-programme 0180- Meteorology Department Service365,000 Schedule – (Cont’d)  PART II – (Cont’d) CURRENT AND CAPITAL – (Cont’d)HEAD 86 – MINISTRY OF HEALTH AND WELLNESS PROGRAMME 040- DIRECTION AND POLICY FORMULATION SERVICES Sub-programme 7045- General Management and Coordination Services 3,059,195Sub-programme 0361- Technical Management Services600,000PROGRAMME 360- PRIMARY HEALTH CARE SERVICES Sub-programme 0363- Laboratory Services3,000,000Sub-programme 0366- David Thompson Polyclinic71,258Sub-programme 0407- Eunice Gibson Polyclinic144,644Sub-programme 0413- St. Philip Polyclinic54,199Sub-programme 0414- Branford Taitt Polyclinic98,337Sub-programme 0416- Glebe Polyclinic212,000PROGRAMME 361- HOSPITAL SERVICES Sub-programme 0375- Queen Elizabeth Hospital20,578,775Sub-programme 0377- Psychiatric Hospital5,373,079 Schedule – (Cont’d)  PART II – (Cont’d) CURRENT AND CAPITAL – (Cont’d)HEAD 86 – MINISTRY OF HEALTH AND WELLNESS – (Concl’d) PROGRAMME 364- CARE OF THE ELDERLY Sub-programme 0446- Geriatric District Hospital1,281,262Sub-programme 0448- Gordon Cummins District Hospital340,103PROGRAMME 365- HIV/AIDS PREVENTION AND CONTROL PROJECT Sub-programme 0446- Treatment300,000PROGRAMME 366- NATIONAL CRISIS MANAGEMENT Sub-programme 6200- Program Management COVID-1953,963,625Sub-programme 6201- COVID-19 Programme Management44,458,268 HEAD 87 – MINISTRY OF EDUCATION, TECHNOLOGY AND VOCATIONAL TRAINING PROGRAMME 040 – DIRECTION AND POLICYFORMULATION SERVICES Sub-programme 7100 – General Management andCoordination Services 2,909,596 Schedule – (Cont’d)  PART II – (Cont’d) CURRENT AND CAPITAL – (Cont’d)HEAD 87 – MINISTRY OF EDUCATION, TECHNOLOGY AND VOCATIONAL TRAINING – (Concl’d) PROGRAMME 271 – BASIC EDUCATIONAL DEVELOPMENT Sub-programme 0277 – Primary Education DomesticProgramme 5,190,038Sub-programme 0302 – Education Sector EnhancementProgram 7,390,133 Sub-programme 0571 – Nursery and Primary Schools 9,891,107 PROGRAMME 272 – SECONDARYSub-programme 0307 – New Horizons Academy 150,000 Sub-programme 0644 – Coleridge and Parry 1,633,117 Sub-programme 0650 – Harrison College 424,794 Sub-programme 0642 – Alma Parris 1,947,213 PROGRAMME 273 – TERTIARYSub-programme 0284 – University of the West Indies 14,400,000 Sub-programme 0569 – Higher Education DevelopmentUnit Department 2,284,605 PROGRAMME 275 – SPECIAL SERVICESSub-programme 0294 – School Meals Department 114,000 Schedule – (Cont’d)  PART II – (Cont’d) CURRENT AND CAPITAL – (Cont’d)HEAD 91 – MINISTRY OF YOUTH, SPORTS AND COMMUNITY EMPOWERMENT PROGRAMME 277- YOUTH AFFAIRS AND SPORTS Sub-programme 7110- General Management and Coordination Services 4,970,284PROGRAMME 422- COMMUNITY DEVELOPMENT Sub-programme 0426- Community Development Department1,722,224PROGRAM 425- PROMOTION OF SPORTING ACHIEVEMENT Sub-programme 0432- National Sports Council2,660,000 HEAD 92 – MINISTRY OF ENERGY, SMALL BUSINESS AND ENTREPRENEURSHIP PROGRAMME 040- DIRECTION AND POLICY FORMULATION SERVICES Sub-programme 0410- Electronic Single Window Project500,000PROGRAMME 144- ENERGY AND NATURAL RESOURCES Sub-programme 0455- Smart Energy Fund2,040,000 Schedule – (Concl’d) PART II – (Concl’d) CURRENT AND CAPITAL – (Concl’d)HEAD 93 – MINISTRY OF HOUSING, LANDS AND MAINTENANCE PROGRAMME 040 – DIRECTION AND POLICYFORMULATION SERVICESSub-programme 0531 – Housing Planning Unit 29,985,200 PROGRAMME 520 – HOUSING PROGRAMMESub-programme 0533 – National Housing Corporation 36,172,681 PROGRAMME 521 – LAND USE REGULATIONSAND CERTIFICATIONSSub-programme 0536 – Land Registry 80,000 PROGRAMME 522 – LAND AND PROPERTYACQUISITION AND MANAGEMENT PROGRAMME Sub-programme 0539 – Property Management 8,150,750 20th February, 20232023-5 MINOR OFFENCES (AMENDMENT) ACT, 2023-5 Arrangement of Sections
+ 
+  Short title  
+
+
+
+  Insertion of sections 4A, 4B and 4C into Cap. 137  
+
+
+
+  Amendment of section 5 of Cap. 137  
+
+
+
+  Insertion of   Schedule   into Cap.   137  
+ 
+ 
+ 
+
+
+
+ SCHEDULE 
+
+
+
+ BARBADOS 
+
+
+
+ I assent 
+
+
+
+ S. MASON 
+
+
+
+ President of Barbados 20th February, 2023. 
+
+
+
+ 2023-5 
+
+
+
+  An Act to amend the   Minor Offences Act  , Cap. 137  
+
+
+
+ [Commencement: 20th February, 2023] ENACTED by the Parliament of Barbados as follows: 
+
+
+
+  Short title  
+
+
+
+ 1. 
+
+
+
+ 2023. 
+
+
+
+ This Act may be cited as the  Minor Offences (Amendment) Act,  
+
+
+
+  Insertion of sections 4A, 4B and 4C into Cap. 137  
+
+
+
+ 
+  The Minor Offences Act, Cap.  137, in this Act referred to as theprincipal Act, is amended by inserting immediately after section 4 the following new sections: “Offence of flying a kite which makes noise between specified hours4A.(1) Any person who flies or causes to be flown any kite with anyobject which
+ 
+ creates noise when attached to the kite; or 
+
+
+
+ causes the kite to make noise,between the hours of 7:00 p.m. and 6:00 a.m. is guilty of an offence and is liable on summary conviction to a fixed penalty of $500.  Where a person contravenes subsection (1), a member of thePolice Service shall  ask the person to give his full name and address;  serve personally upon the person a fixed penalty notice in the relevant form set out in the  Schedule ; and  send a duplicate of the notice to the clerk of the magistrate’s court referred to in paragraph  (c) .    The fixed penalty notice shall be signed by the member of thePolice Service and shall state the following:  the date, time and place of service of the notice;  the provision of this Act which creates the alleged offence and such particulars of the offence as are required under this Act;  the time within which the fixed penalty may be paid in accordance with subsection (6); and  the clerk of the magistrate’s court to whom the fixed penalty may be paid and the address of the magistrate’s court where the fixed penalty may be paid or remitted.    A person who refuses to answer or who gives a false answer inrespect of a question mentioned in paragraph  (a)  of subsection (2) is guilty of an offence and is liable on summary conviction to a fine of$500 or to imprisonment for 6 months.  A person upon whom a fixed penalty notice is served maycomplete the notice in the prescribed manner and pay the fixed penalty in accordance with the notice.  A fixed penalty is payable within 14 days from the date of thefixed penalty.  Payment of the fixed penalty shall be  made to the clerk of the magistrate’s court as stated in the notice; and  accompanied by the completed notice.     Direction from member of the Police Service4B.(1) A member of the Barbados Police Service shall require anowner or a person in charge of any kite found flying in contravention of section 4A to cause the kite to cease flying immediately and the owner or person in charge of the kite shall comply with the direction of the member of the Barbados Police Service.  Where a person fails or refuses to comply with a direction givenby a member of the Police Service under subsection (1),  that person is guilty of an offence and is liable on summary conviction to a fixed penalty of $500; and  subsections (2) to (7) of section 4A and the  Schedule  shall apply  mutatis mutandis .     Penalty to constitute a debt to the State4C. A fixed penalty may be recovered as a debt due to the Statein civil proceedings before a Magistrate for District “A”.”.   Amendment of section 5 of Cap. 137  
+ 
+ 
+
+
+
+ Section 5 of the principal Act, is amended by deleting the words“police officer” and substituting the words “member of the Barbados Police Service”.  Insertion of   Schedule  into Cap. 137 
+
+
+
+ The principal Act is amended by inserting the Schedule set out in 
+ 
+
+
+
+ the Schedule to this Act. 
+
+
+
+ SCHEDULE 
+
+
+
+ “ 
+
+
+
+ SCHEDULE 
+
+
+
+ FORM A 
+
+
+
+ Minor Oﬀences Act 
+
+
+
+ Cap. 137 
+
+
+
+ NOTICE OF FIXED PENALTY 
+
+
+
+ Section A 
+
+
+
+ (Section 4) 
+
+
+
+ (Sections 4A and 4B) 
+
+
+
+ Serial No.: 
+
+
+
+ Take notice that, I, 
+
+
+
+ (Name of member of the Police Service) 
+
+
+
+ (Rank) 
+
+
+
+ , 
+
+
+
+ (Number) 
+
+
+
+ have reason to believe that you have committed the oﬀence herein. The fixed penalty for the oﬀence is $500. 
+
+
+
+ In paying the fixed penalty, the following conditions shall be observed: 
+
+
+
+ 
+ The payment of the fixed penalty shall be accompanied by this notice. 
+
+
+
+ Payment of the fixed penalty shall be made or remitted to the clerk of the magistrate’s court for District . 
+ 
+
+
+
+ Schedule – (Cont’d) 
+
+
+
+ This notice was given at 
+
+
+
+ (place) 
+
+
+
+ on 
+
+
+
+ (state date) 
+
+
+
+ 20 , at 
+
+
+
+ a.m./p.m. 
+
+
+
+ (state time) 
+
+
+
+ PARTICULARS OF OFFENCE 
+
+
+
+ At a.m./p.m. on the day of , 20 you, 
+
+
+
+ of 
+
+
+
+ (name) (address) 
+
+
+
+ at 
+
+
+
+ (place) 
+
+
+
+ were flying/caused to be flown 
+
+
+
+ a kite with an object contrary to section 4A of the  Minor Oﬀences Act,  Cap. 137. 
+
+
+
+ Signature of member of the Police Service 
+
+
+
+ Schedule – (Cont’d) 
+
+
+
+ Instructions to Oﬀender 
+
+
+
+ Cash should be paid to the clerk. Cheques, postal orders or money orders may be sent by post and made payable to the clerk of the magistrate’s court of District . A receipt for the payment will be given. Part payment will not be accepted by the clerk. 
+
+
+
+ The person paying the fixed penalty must forward with the remittance Section B of this notice or identify this notice by quoting its serial number. 
+
+
+
+ A fixed penalty may be recovered as a debt due to the State in civil proceedings before a Magistrate for District “A”. 
+
+
+
+ Schedule – (Cont’d) 
+
+
+
+ Section B 
+
+
+
+ Serial No.(of notice) To: Clerk of the magistrate’s court for District . 
+
+
+
+ I enclosed the sum of $500 as payment of the fixed penalty for the oﬀence mentioned in Part A of this notice. 
+
+
+
+ Name: Address: 
+
+
+
+ (Signature) (Date) 
+
+
+
+ Schedule – (Cont’d) 
+
+
+
+ FORM B 
+
+
+
+ Minor Oﬀences Act 
+
+
+
+ Cap. 137 
+
+
+
+ NOTICE OF FIXED PENALTY 
+
+
+
+ Section A 
+
+
+
+ Serial No.: 
+
+
+
+ Take notice that, I, 
+
+
+
+ (Name of member of the Police Service) 
+
+
+
+ (Rank) 
+
+
+
+ , 
+
+
+
+ (Number) 
+
+
+
+ have reason to believe that you have committed the oﬀence herein. The fixed penalty for the oﬀence is $500. 
+
+
+
+ In paying the fixed penalty, the following conditions shall be observed: 
+
+
+
+ 
+ The payment of the fixed penalty shall be accompanied by this notice. 
+
+
+
+ Payment of the fixed penalty shall be made or remitted to the clerk of the magistrate’s court for District . 
+ 
+
+
+
+ This notice was given at 
+
+
+
+ (place) 
+
+
+
+ on 
+
+
+
+ (state date) 
+
+
+
+ 20 , at 
+
+
+
+ a.m./p.m. 
+
+
+
+ (state time) 
+
+
+
+ Schedule – (Cont’d) 
+
+
+
+ PARTICULARS OF OFFENCE 
+
+
+
+ At a.m./p.m. on the day of , 20 you, 
+
+
+
+ of 
+
+
+
+ (name) (address) 
+
+
+
+ at 
+
+
+
+ (place) 
+
+
+
+ failed or refused to comply 
+
+
+
+ with a direction of a member of the Police Service to cause a kite to cease flying contrary to section 4B of the  Minor Oﬀences Act , Cap. 137. 
+
+
+
+ Signature of member of the Police Service 
+
+
+
+ Schedule – (Cont’d) 
+
+
+
+ Instructions to Oﬀender 
+
+
+
+ Cash should be paid to the clerk. Cheques, postal orders or money orders may be sent by post and made payable to the clerk of the magistrate’s court of District . A receipt for the payment will be given. Part payment will not be accepted by the clerk. 
+
+
+
+ The person paying the fixed penalty must forward with the remittance Section B of this notice or identify this notice by quoting its serial number. 
+
+
+
+ A fixed penalty may be recovered as a debt due to the State in civil proceedings before a Magistrate for District “A”. 
+
+
+
+ Schedule – (Concl’d) 
+
+
+
+ Section B 
+
+
+
+ Serial No.(of notice) To: Clerk of the magistrate’s court for District . 
+
+
+
+ I enclosed the sum of $500 as payment of the fixed penalty for the oﬀence mentioned in Part A of this notice. 
+
+
+
+ Name: Address: 
+
+
+
+ “. 
+
+
+
+ (Signature) (Date) 
+
+
+
+ 20th February, 2023 
+
+
+
+ 2023-6 
+
+
+
+ VALUE ADDED TAX (AMENDMENT) ACT, 2023-6 
+
+
+
+ Arrangement of Sections 
+
+
+
+ 
+  Short title  
+
+
+
+  Amendment of section 7 of Cap. 87  
+ 
+
+
+
+ VALUE ADDED TAX (AMENDMENT) ACT, 2023-6 3 
+
+
+
+ BARBADOS 
+
+
+
+ I assent 
+
+
+
+ S. MASON 
+
+
+
+ President of Barbados 20th February, 2023. 
+
+
+
+ 2023-6 
+
+
+
+  An Act to amend the   Value Added Tax Act , Cap. 87 to temporarily reduce the rate of tax payable on the supply of electricity for domestic premises. 
+
+
+
+ [Commencement: 20th February, 2023] ENACTED by the Parliament of Barbados as follows: 
+
+
+
+  Short title  
+
+
+
+ 1. 
+
+
+
+ 2023. 
+
+
+
+ This Act may be cited as the  Value Added Tax (Amendment) Act,  
+
+
+
+  Amendment of section 7 of Cap. 87  
+
+
+
+ 2.  Section 7 of the Value Added Tax Act, Cap. 87 is amended by  
+
+
+
+ inserting immediately after subsection (13), the following new subsections: 
+
+
+
+ “(14) Notwithstanding subsection (1), the tax imposed by that subsection on the supply of electricity for domestic premises shall be 
+
+
+
+ 7.5 per cent of the value of such supply of electricity not exceeding 250 kilowatt hours, inclusive of the customer charge. 
+
+
+
+ 
+ For the purposes of subsection (14), the tax imposed for thesupply of electricity in excess of 250 kilowatt hours for domestic premises shall be 17.5 per cent. 
+
+
+
+ The tax imposed by subsections (14) and (15) is payable by theregistrant at the time the supply is made. 
+
+
+
+ Subsections (14) and (15) shall be deemed to have come intoeffect on the 1st day of August, 2022 and shall cease to have effect on the 30th day of September, 2023. 
+
+
+
+ The Minister may, by order, extend the expiration date referred 
+ 
+
+
+
+ to in subsection (17). ”. 
+
+
+
+ 20th February, 2023 
+
+
+
+ Statu tory Instrument  
+
+
+
+ S.I. 2023 No. 8 
+
+
+
+ LAND ACQUISITION ACT, CAP. 228 
+
+
+
+ (Notice under Section 5) 
+
+
+
+ The acquisition for public purposes of the parcel of land situate at Balls Plantation in the parish of Christ Church in this Island more particularly described in the Schedule hereto with the appurtenances having been decided on by the Minister responsible for Lands with the approval of both Houses of Parliament it is hereby declared in pursuance of Section 5 of the Land Acquisition Act, Cap. 228 that the said parcel of land has been acquired for the public purpose of erecting a water storage tank by the Barbados Water Authority. 
+
+
+
+ SCHEDULE 
+
+
+
+ ALL THAT land the property of the Apostolic Teaching Centre situate at Balls Plantation in the parish of Christ Church in this Island containing by admeasurement 3802.7 square metres or thereabouts abutting and bounding on lands now or formerly of the Apostolic Teaching Centre (Lot B) on lands now or formerly of the Barbados Government (Rising Sun Reservoir) and on a Right of Way 8.00 metres wide leading to Highway No. 6 or however else the same may abut and bound as shown and delineated on a Plan certified on the 27th day of June, 2022 by Samuel N.Taylor, Land Surveyor and recorded in the Lands and Surveys Department on the 29th day of June, 2022 as Plan No. 1026/2022. 
+
+
+
+ Dated this 30th day of January Two Thousand and Twenty-three. 
+
+
+
+ S. MASON PRESIDENT 
+
+
+
+ 2  S.I. 2023 No. 3  
+
+
+
+ 20th February, 2023 
+
+
+
+ S.I. 2023 No. 9 
+
+
+
+ Land (Adjudication of Rights and Interests) Act CAP. 228A 
+
+
+
+ LAND (ADJUDICATION OF RIGHTS AND INTERESTS) (DECLARATION OF REGISTRATION DISTRICT) ORDER, 2023 
+
+
+
+ The Minister, in exercise of the powers conferred on him by section 10 of the  Land (Adjudication of Rights and Interests) Act , makes the following Order: 
+
+
+
+ 
+ This Order may be cited as the  Land (Adjudication of Rights and Interests) (Declaration of Registration District) Order, 2023. 
+
+
+
+  In this Order “Regulations” means the   Land (Adjudication of Rights  and Interests) Regulations 1988   (S.I. 1988 No. 73).  
+
+
+
+ The area described in the  First Schedule  and delineated in the  Second Schedule is hereby declared a registration district for the purposes of the adjudication of all titles to land and all rights and interests over land within that district in accordance with the Act and the Regulations. 
+
+
+
+ The presentation of claims or applications respecting title to land or 
+ 
+
+
+
+ rights or interests over land shall commence 28 days after the publication of this Order in the manner prescribed by the Regulations. 
+
+
+
+ FIRST SCHEDULE 
+
+
+
+ ALL THAT area of land situate in the parish of Saint Philip, commencing at Bottom Bay proceeding along the Southeastern side of Bottom Bay/Applehall Road in a northwesterly direction to its junction with Highway 5B then continuing in a northerly direction along Highway 5B until its junction with Hill View Road then continuing in an easterly direction along Hill View Road to include parcels located south of the road until it meets the sea then continuing along the coast in a southerly direction to the point of commencement comprising of Applehall, Merricks, Coles, Coles Pasture, Coles Terrace, Coles Close, Coles Crescent, Content Cot, Industry Hall, Hill Drive, Hill View, Peat Bay, Ragged Point, Sealy Hall, East Point and Marley Vale. 
+
+
+
+ S.I. 2023 No. 9 3 
+
+
+
+ SECOND SCHEDULE 
+
+
+
+ (Paragraph 3) 
+
+
+
+ Made by the Minister this 1st day of February, 2023. 
+
+
+
+ D. SUTHERLAND Minister responsible for Lands 

@@ -1,0 +1,2608 @@
+SERBIEN
+
+Pflanzenschutzgesetz
+
+(Закон о здрављу биља, 2009)
+
+Quelle: www.pravno-informacioni-sistem.rs, aufgerufen am 05.11.2020
+
+(Auszugsweise Übersetzung aus dem Serbischen; Konsolidierung durch Julius Kühn-Institut,
+Bundesforschungsinstitut für Kulturpflanzen, Institut für nationale und internationale Angelegenheiten
+der Pflanzengesundheit, 10.08.2022)
+
+Übersetzung und Wiedergabe erfolgen ohne Gewähr.
+
+Inoffiziell konsolidierte Fassung. Geändert durch:
+M1 Änderungsgesetz, Amtsblatt Nr. 17 vom 14. März 2019
+
+
+                                         LAW ON PLANT HEALTH 1
+
+                                            I BASIC PROVISIONS
+
+                                           Scope of Application
+
+                                                   Article 1
+
+This Law shall regulate the protection and promotion of plant health; measures for preventing
+introduction of harmful organisms, for detecting them, preventing their spread and suppressing
+them; phytosanitary control; requirements for the production, processing, finishing, importation,
+storage and circulation of plants, plant products and regulated objects, as well as requirements for
+providing services in the sphere of the protection of plant health.
+
+                                                   Article 2
+
+Protection of plant health, within the meaning of this Law, shall encompass the following:
+
+1)      the protection of plants, plant products and regulated objects from harmful organisms;
+
+2)      prevention of the introduction and spread of harmful organisms and their suppression by the
+        application of phytosanitary measures;
+
+3)      detection and identification of harmful organisms;
+
+4)      providing for an optimal production and circulation of plants, plant products and regulated
+        objects;
+
+5)      protection of the environment from the consequences of the activity of harmful organisms;
+
+6)      measures, requirements and instruments for sustainable management, preservation of integrity
+        and diversity in the sphere of the protection of plant health;
+
+7)      measures and procedures for the protection of plant health;
+
+8)      education and public information.
+
+
+
+1    Law on Plant Health was adopted by the National Parliament of the Republic of Serbia on May 29, 2009 and
+     published in the Official Gazette of the Republic of Serbia No. 41/09.
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                     1/43
+                                                   Article 3
+
+The measures and procedures for protection of plant health referred to in Article 2 item 7 of this
+Law are as follows:
+
+1)    constant supervision of plants, which encompasses cultivated plants (fields, gardens,
+      plantations, nurseries, seed nurseries, greenhouses, nethouses, laboratories etc.), spontaneous
+      flora, as well as plants and plant products in storage facilities, in the processing and finishing
+      processes and in transport;
+
+2)    monitoring the presence of harmful organisms, estimating their risk, and suppressing them;
+
+3)    phytosanitary control of imports aimed at preventing introduction and spread of harmful
+      organisms;
+
+4)    phytosanitary control of export consignments of plants and plant products which are subject to
+      specific phytosanitary requirements in other countries;
+
+5)    special phytosanitary inspections for the presence of certain harmful organisms through
+      inspection of health status, monitoring and special supervision;
+
+6)    phytosanitary controls for the issuance of plant passports, phytosanitary certificates and other
+      official documents and acts;
+
+7)    performance of inspectorial supervision for the purpose of protecting the health of plants;
+
+8)    implementation of phytosanitary measures;
+
+9)    laboratory analyses and testing of plants, plant products and regulated objects, in order to
+      detect the presence of harmful organisms and the intensity of their presence;
+
+10)   forecasting the occurrence of harmful organisms, their development and movements of their
+      populations, and determining optimal timeframes for their suppression;
+
+11)   applied and other research in the area of harmful organism diagnostics and the protection of
+      plant health;
+
+12)   education and providing advice and recommendations related to the harmful organisms;
+
+13)   suppression of harmful organisms by implementation of disinfection, disinsection, deratization,
+      decontamination and application of other treatment procedures.
+
+                                                 Definitions
+
+                                                   Article 4
+
+The terms used in this Law shall have the following meaning:
+
+1)    autochthonous organisms shall mean those organisms which are naturally present in a given
+      eco-system;
+
+2)    plants shall mean living plants and live plant segments, including seeds;
+
+3)    plant products shall mean all products of plant origin, unprocessed or subjected to simple
+      processing methods, on account of which they can no longer be regarded as plants, as well as
+      wood, if it retains fully or partially its naturally rounded surface, with or without bark, or if it is in
+      the form of chipboard, sawdust, small fragments or wood waste or if it is used in the form of
+
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                       2/43
+      sawn timber, packagings, laths, pallets and packing materials in the transportation of
+      consignments, and may be a risk for the plant health;
+
+4)    plants intended for planting shall mean:
+
+      (1)   plants which have already been planted, intended to remain planted or to be re-planted
+            after their introduction;
+
+      (2)   plants which have not been planted but are intended for planting;
+
+5)    a plant passport shall mean an official document, identification or other official designation
+      certifying that plants, plant products and regulated objects in circulation fulfill phytosanitary
+      requirements prescribed by this Law and regulations adopted pursuant to this Law;
+
+6)    biological protection of plants shall mean the strategy of suppressing harmful organisms in the
+      agriculture and forestry by employing natural adversaries, antagonists or competitors or their
+      products and other self- reproducing living organisms;
+
+7)    visual inspections shall mean inspections of plants, plant products and regulated objects with
+      the naked eye or with the help of magnifying glasses, binoculars or microscopes, without
+      performing laboratory analyses, for the purpose of establishing the presence of harmful
+      organisms on plants, plant products and regulated objects;
+
+8)    holders of plants, plant products and regulated objects (hereinafter: plant holders) shall mean
+      legal and natural persons or operators who are the owners or users of plants, plant products
+      and regulated objects, or persons involved in their production, processing, finishing, storage,
+      circulation and importation or use them in other manner, as well as owners or users of land on
+      which is determined the presence of harmful organisms;
+
+9)    plant health shall mean the protection of health of plants, plant products and regulated objects
+      from harmful organisms by the application of phytosanitary measures;
+
+10)   country of origin shall mean the country in which the plant was cultivated or the country in which
+      were cultivated the plants from which the plant products were derived or the country in which
+      plant products were exposed to the influence of harmful organisms for the first time;
+
+11)   reporting shall mean the official procedure according to which the flow of information is
+      established in the prescribed manner;
+
+12)   export shall mean every transportation of a consignment outside the territory of the Republic of
+      Serbia, which includes re-exporting and temporary exports;
+
+13)   introduced organisms shall mean all types of organisms brought by humans into an eco-system
+      where they had not existed until such moment;
+
+►M1 13a) Lot shall mean a number of units of a single commodity, identifiable by its homogeneity of
+    composition, origin etc., forming part of a consignment; ◄
+
+14)   production site shall mean any place of production or production facility which represents an
+      integrated production unit, with all ancillary facilities, machinery and equipment;
+
+15)   internationally recognized standards, recommendations and recommendations shall mean
+      those developed by the Secretariat of the International Plant Protection Convention (IPPC) and
+      in cooperation with regional organizations acting in conformity with the IPPC;
+
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                     3/43
+16)   health monitoring shall mean the procedure of monitoring and examining the phytosanitary
+      status in the Republic of Serbia;
+
+17)   health examination shall mean the official procedure whereby visual inspections of plants,
+      taking of official samples and laboratory analyses are used to determine the presence of
+      harmful organisms on plants, plant products and regulated objects;
+
+18)   transit shall mean the passing of a consignment through the territory of the Republic of Serbia
+      ►M1 under cumstoms supervision; ◄
+
+19)   regulated objects shall mean plots of agricultural and forest land, facilities intended for storing,
+      treating, finishing and processing plants and plant products, product and transportation
+      packagings, containers, earth and other substrata in or on which are cultivated plants or other
+      organisms, objects and materials which may contain and transmit harmful organisms;
+
+20)   special supervision shall mean an official procedure implemented in a designated period of time
+      for the purpose of detecting the presence of harmful organisms or determining the properties of
+      their populations or determining the extent of the area regarded as contaminated by harmful
+      organisms, infected by or free of harmful organisms;
+
+21)   a consignment of plants shall mean covered by a single document ►M1 required for customs
+      formalities or for other formalities, such as a single phytosanitary certificate or a single
+      alternative document or mark; a consignment may be composed of one or more lots; ◄
+
+►M1 21a) Planting or sowing shall mean any operation the subsequent growth, reproduction or
+propagation of plants; ◄
+
+22)   seeds shall mean seed in the botanical sense, intended for sowing;
+
+►M1 22a)    official statement or measure shall mean:
+
+      (1)   a statement or measure made or taken by the competent plant health authority of another
+            state or a public officer who is technically qualified and duly authorized by that competent
+            authority, in the case of statements or measures related to the issuing of phytosanitary
+            certificates and / or phytosanitary certificates for re-export or their electronic equivalent;
+
+      (2)   a statement or measure made or taken by the competent plant health authority of the
+            Republic of Serbia or by qualified staff member of an official authority in accordance with
+            this Law, provided that such agents have no personal interest in the outcome of the
+            measures they take;◄
+
+►M1 22b) Offical clearance shall mean any verification of compliance with phytosanitary
+    regulations;◄
+
+23)   official sample shall mean a sample taken by the phytosanitary inspector or person performing
+      activities of public interest;
+
+24)   permanent supervision shall mean the official process of recording, gathering and processing
+      data on the presence of absence of harmful organisms based on phytosanitary inspections,
+      monitoring, examinations of health status or other procedures and based on other sources;
+
+25)   import of a consignment shall mean any introduction of a consignment of plants, plant products
+      and regulated objects into the territory of the Republic of Serbia, except for ►M1 transit◄;
+
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                  4/43
+26)   introduction of a harmful organism shall mean every introduction of a harmful organism in a
+      particular area in which that organism is not present or is its presence is limited;
+
+27)   ►M1 a phytosanitary measure shall mean an official procedure having the purpose to prevent
+      the introduction or spread of quarantine pests or to limit the economic impact of regulated non-
+      quarantine pests; ◄
+
+28)   a phytosanitary inspection shall mean an inspection of documents, identities and health status
+      of plants, plant products and regulated objects, for the purpose of determining the presence or
+      absence of harmful organisms, as well as every other inspection of conformity with
+      phytosanitary regulations;
+
+29)   phytosanitary certificate (hereinafter: phytosanitary certificate) shall mean an international
+      certificate on the health status of a consignment of plants of issued by the competent plant
+      protection authority of the country of origin of the plant consignment which accompanies the
+      consignment in exportation, importation and transit;
+
+30)   phytosanitary certificate for re-exportation (hereinafter: re-export phytosanitary certificate) shall
+      mean an international certificate on the health status of plant consignments issued by the
+      competent authority of a country which is not the country of origin, and on whose territory the
+      consignment has been imported, stored, repacked or fragmented and must accompany a
+      consignment which is being re-exported;
+
+31)   living parts of plants shall mean:
+
+      (1)    fruit, in the botanical sense, except for those which are kept in deep-freeze conditions;
+
+      (2)    vegetables, except for those which are kept in deep-freeze conditions;
+
+      (3)    tubers, corms, bulbs, rhizomes and other subterranean reproductive parts;
+
+      (4)    cut flowers;
+
+      (5)    branches with leaves or needles;
+
+      (6)    cut trees with leaves or needles;
+
+      ►M1 (6a)     leaves, foliage; ◄
+
+      (7)    live pollen;
+
+      (8)    buds, budwood, cuttings, scions and grafts;
+
+      (9)    plant tissue cultures;
+
+      (10)   ►M1 other parts of plants in accordance with this Law. ◄
+
+32)   harmful organisms shall mean all varieties, species and biotypes of plants, animals or other
+      pathogenic organisms which are harmful to plants or plant products.
+
+33)   ►M1 regulated harmful organisms shall mean any harmful organism of Lists IA Part I, Liste IA
+      Part II, List IIA Part I, List IIA Part II, List IB and List IIB or a harmful organism.◄
+
+                                                 Article 5
+
+Protection of plant health in the territory of the Republic of Serbia, within their competences, shall
+be provided by the Republic of Serbia through its ministry in charge for plant health affairs
+(hereinafter: Ministry), entities which are registered in the ►M1 Phytoregister ◄ of Producers,
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                   5/43
+Processors, Finishers, Importers, Keepers and Traders in Plants, Plant Products and Regulated
+Objects and other entities in the sphere of protection of plant health.
+
+The entities referred to in paragraph 1 of this Article shall be:
+
+     1) legal persons performing activities of public interest pursuant to this Law;
+
+     2) legal persons and operators who provide services in the sphere of protection of plant
+          health;
+
+     3) holders of plants.
+
+The Ministry, and legal persons performing activities of public interest pursuant to this Law shall utilize
+official markings in the performance of activities within the scope of their competences.
+
+The Minister in charge of plant health affairs in the agriculture and forestry (hereinafter: the Minister)
+shall prescribe the shape, size, content and design of the official markings, and the manner of use of
+the official markings.
+
+                                                 Article 6
+
+In the implementation of protection of plant health the Ministry, legal and natural persons shall be
+liable for every action, or failure to implement measures for protection of plant health, in
+accordance with this Law.
+
+                                                 Article 7
+
+The Ministry shall implement international obligations in conformity with IPPC recommendations,
+the Agreement on the Application of Sanitary and Phytosanitary Measures (the SPS Agreement),
+international conventions and other international agreements, and exchange information with
+other national organizations responsible for plant health.
+
+                                                 Article 8
+
+The entities engaged in protection of plant health shall be obliged to cooperate in performing
+phytosanitary inspections, monitoring and supervising plants, plant products and regulated
+objects, for the purpose of detection and reporting on the presence of harmful organisms and
+their suppression and eradication.
+
+                     II RIGHTS AND OBLIGATIONS OF HOLDERS OF PLANTS
+
+                                         Rights of Plant Holders
+
+                                                 Article 9
+
+►M1 Plant holder shall be entitled to:
+
+1)     information on harmful organisms on the lists specified by this Law and phytosanitary
+       measures;
+
+2)     professional training with respect to this Law. ◄
+
+                                   Obligations of Holders of Plants
+
+                                                Article 10
+
+Holders of plants shall be obliged to:
+
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                  6/43
+1)    conduct inspections of plants on arable land (fields, plantations, nurseries, gardens,
+      greenhouses etc.), non-arable land and wasteland (boundary land, untended land etc.), facilities
+      for storing, finishing and processing plants and plant products, conveyances of plants, plant
+      products and regulated objects, as well as plants, plant products and regulated objects for their
+      own use;
+
+2)    suppress harmful organisms which may endanger their plants, plant products and regulated
+      objects, as well as the plants, plant products and regulated objects of other plant holders;
+
+3)    undertake measures for protection of plant health to ensure optimal plant production;
+
+4)    keep records of measures taken for protection of plant health, treatment of plants and plant
+      products, in the field and in protected areas;
+
+5)    enable phytosanitary inspections, in conformity with this Law;
+
+6)    inform the competent inspector about every new and unusual occurrence of harmful organisms,
+      of which the inspector shall inform the Ministry forthwith;
+
+7)    implement without delay ordered phytosanitary measures in conformity with this Law.
+
+Where holders of plants fail to implement measures referred to in paragraph 1 items 2, 3 and 7 of
+this Article, the competent inspector shall order implementation of those measures at the expense
+of the holder.
+
+III PERSONS IN THE AREA OF PLANT HEALTH REGISTERED IN THE ►M1 PHYTOREGISTER
+◄ Of PRODUCERS, PROCESSORS, SUPPLIERS, IMPORTERS, WAREHOUSES AND AGENTS
+             IN PLANTS, PLANT PRODUCTS AND REGULATED OBJECTS
+
+                                   Persons Subject to Registration
+
+                                                Article 11
+
+The following may engage in production, processing, finishing, importing, storing and circulating
+plants, plant products and regulated objects which are specified in List VA Part I, List VA Part II, List
+VB Part I and List VB Part II: legal persons and operators registered in the ►M1 Phytoregister ◄ of
+Economic Operators and which are registered in the the ►M1 Phytoregister ◄ of Producers,
+Processors, Finishers, Importers, Keepers and Traders in Plants, Plant Products and Regulated
+Objects (hereinafter: the Register) kept by the Ministry.
+
+Legal persons and operators registered in the Register of Economic Operators and duly registered in
+the the ►M1 Phytoregister ◄ referred to in paragraph 1 of this Article may engage in production,
+processing, finishing, importing, storing and circulating certain kinds of plants, plant products and
+regulated objects which are not specified in List VA Part I and List VA Part II.
+
+Legal persons and operators referred to in paragraphs 1 and 2 of this Article shall be registered in the
+Register of Economic Operators in accordance with the law governing the registration of economic
+operators.
+
+►M1 The production of certain typs of plants, plant products and regulated objects referred to in
+paragraph 2 of this Article which are intended for circulation may also be carried out by natural
+persons registered in the the Phytoregister ◄.
+
+The Minister shall determine the particular types of plants, plant products and regulated objects
+referred to in paragraph 2 of this Article.
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                  7/43
+…
+
+                                       Manner of Registration
+                                            Article 12
+
+Registration in the ►M1 Phytoregister ◄ shall be performed on the basis of a request submitted to
+the Ministry by the legal person or operator referred to in Article 11 of this Law.
+
+The request for registration shall contain the following in particular:
+
+1)    data about the applicant (title, headquarters, address, official registration number, tax
+      identification number and data about the responsible person);
+
+2)    activity code;
+
+3)    data about the person in charge for plant health (name and surname, address and citizens’
+      personal identification number);
+
+4)    data about the agricultural land used for the production of plants and its purpose (cadastral
+      municipality and cadastral plot number).
+
+5)    data about the form and location of storing, finishing, processing or circulating plants, plant
+      products and regulated objects.
+
+To the request referred to in paragraph 2 of this Article shall be attached proof that the person in
+charge for plant health has professional experience in connection with the health of plants of one
+year’s duration.
+
+Natural persons shall submit the following data in their requests for registration to the ►M1
+Phytoregister ◄: name and surname, address, citizens’ personal identification number, number in the
+►M1 Phytoregister ◄ of Agricultural Holdings – if they are registered therein, as well as data referred
+to in paragraph 2 items 4 and 5 of this Article.
+
+…
+
+Legal persons, operators and natural persons shall have an obligation to notify the Ministry of any
+change of the data no later than 15 days from the date of the change.
+
+                                                Register
+
+                                               Article 13
+
+Data kept in the ►M1 Phytoregister ◄ shall be public.
+
+The ►M1 Phytoregister ◄ shall be kept in an electronic form and may be linked to other data bases
+and registers of the Ministry.
+
+The Minister shall prescribe the manner of administering the ►M1 Phytoregister ◄, as well as the
+form of the application for registration.
+
+                              Obligations of Persons in the Register
+
+                                               Article 14
+
+Legal persons, operators and natural persons registered in the ►M1 Phytoregister ◄ shall have the
+following obligations:
+
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                   8/43
+1)     to keep accurate data about production, processing, finishing, storage and circulation of
+       plants, plant products and regulated objects which they store, sow, plant, produce, finish,
+       process or circulate;
+
+     2) keep for five years data about the locations where plants, plant products and regulated
+         objects are cultivated, produced, finished, processed, stored, kept or used;
+
+     3) conduct regular visual inspections for the presence of harmful organisms in the duly
+         prescribed manner;
+
+     4) keep prescribed documentation for five years, in accordance with this Law.
+
+The Minister shall prescribe the manner of performing visual inspections of plants, plant products
+and regulated objects, as well as the manner of communicating data.
+
+                               Deletion from the ►M1 Phytoregister ◄
+
+                                                Article 15
+
+Legal persons, operators and natural persons shall be deleted from the ►M1 Phytoregister ◄:
+
+1)     if they issue a decision to discontinue engaging in the activity recorded in the ►M1
+       Phytoregister ◄;
+
+2)     if they fail to give notice in the prescribed period of the changes of data referred to in Article
+       12 paragraph 2 items 4 and 5 of this Law.
+
+3)     ►M1 if the phytosanitary or forestry inspector decides that he is does not fulfil the duties
+       referred to in Article 14 Paragraph 1 of this Law. ◄
+
+The Minister shall issue a decision on deletion from the ►M1 Phytoregister ◄.
+
+     IV OTHER ENTITIES IN THE FIELD OF PROTECTION OF PLANT HEALTH AND THEIR
+                              ORGANIZATIONAL FORMS
+
+…
+
+                   V EXPERT COUNCIL FOR PROTECTION OF PLANT HEALTH
+
+            Establishment of the Expert Council for ►M1 Plant Health Protection◄
+
+                                                Article 26
+
+For the purpose of reviewing professional issues, rendering professional opinions and
+participating in the realization of projects assignments related to the protection of plant health, the
+Minister pursuant to the legislation that regulate the state administration shall establish by
+decision a specialized working group - the Expert Council for Protection of Plant Health
+(hereinafter: Expert Council).
+
+                              ►M1 Activities of the Expert Council ◄
+
+                                                Article 27
+
+The Expert Council shall review professional issues, render professional opinions and participate
+in the realization pf project assignments in connection with the following:
+
+1)     risk analyses of the introduction and spread of harmful organisms and estimates of possible
+       negative consequences for the plant health;
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                 9/43
+2)      long-term plant health protection strategies;
+
+3)      harmful organisms, for which the Program of Measures for the Protection of Plant Health is
+        adopted;
+
+4)      proposed lists of harmful organisms and lists of plants, plant products and regulated
+        objects;
+
+5)      plant health protection plans and special programs;
+
+6)      phytosanitary measures which need to be adopted or amended for the purpose of
+        promoting plant health protection;
+
+7)      issuing recommendations for professional training;
+
+8)      performing other necessary tasks in connection with the protection and promotion of plant
+        health.
+
+                                   VI PROFESSIONAL TRAINING
+
+                            ►M1 Obligation of Professional Training ◄
+
+                                               Article 28
+
+Phytosanitary and forestry inspectors, as well as persons employed in the Ministry who perform tasks
+in the sphere of protection of plant health, shall undergo training and shall be subject to prescribed
+knowledge examinations within a program adopted by the Ministry.
+
+►M1 Persons who perform duties of public interes shall undergo training adopted by the Ministry. ◄
+
+►M1 Service providers shall undergo training and shall be subject to prescribed knowledge
+examinations within a program adopted by the Ministry in cooperation with the Reference Laboratory.
+
+Training for holders of plants, service providers and other persons who have an interest in harmful
+organisms encompassed by the prescribed lists shall be organized and implemented by the
+Ministry◄.
+
+                               VII PROTECTION OF PLANT HEALTH
+
+     1. Measures to Prevent the Introduction, to Detect, to Prevent the Spread of and to Control
+                                       Harmful Organisms
+
+                                              Article 29
+
+Plan documents shall be adopted for the purpose of protecting plant health and improving
+activities on protection of plant health.
+
+The plan documents referred to in paragraph 1 of this Article are as follows:
+
+1)      Long-Term Strategy of Protecting Plant Health;
+
+2)      Program of Measures for Protection of Plant Health;
+
+3)      specific programs of protecting plant health.
+
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                            10/43
+                          Long-Term Strategy of Protecting Plant Health
+
+                                               Article 30
+
+The Government shall adopt the Long-Term Strategy of Protecting Plant Health for a period of five
+years.
+
+The Long-Term Strategy referred to in paragraph 1 of this Article shall define the interests of the
+Republic of Serbia in the sphere of plant health, the scope of measures for preventing the introduction
+and spread of harmful organisms and for their suppression, and the manner of their implementation,
+elements for adopting programs for the suppression of endemic and other harmful organisms which
+threaten agriculture and forestry of the Republic of Serbia, as well as the manner of their enactment.
+
+The Long-Term Strategy referred to in paragraph 1 of this Article shall also determine the amount of
+the funds needed for its implementation which shall be provided from the Budget of the Republic of
+Serbia.
+
+                        Program of Measures for Protection of Plant Health
+
+                                               Article 31
+
+For the purpose of preventing the occurrence, introduction and spread of harmful organisms and their
+suppression, the Minister shall adopt the Program of Measures for Protection of Plant Health
+(hereinafter: Program of Measures) no later than the end of January for the year for which the
+Program of Measures is being adopted.
+
+The harmful organisms for which the Program of Measures is adopted shall be determined on the
+basis of the opinion of the Expert Council. The opinion of the Expert Council for including certain
+harmful organisms in the Program of Measures must be based on the assessment of risk to health of
+plants in the agriculture and forestry, as well as recommendations and obligations stemming from
+membership in international organizations.
+
+The Program of Measures shall define concrete measures, time limits, manner of implementing those
+measures, the entities who will implement them, sources of funds and manner of securing and using
+funds, as well as the manner of controlling the implementation of the measures.
+
+                         Specific Programs for Protection of Plant Health
+
+                                               Article 32
+
+Specific programs for protection of plant health shall be adopted in the case of need to implement
+urgent phytosanitary measures due to the occurrence of certain harmful organisms, as well as in the
+prevention of the spread of harmful organisms, their suppression and eradication.
+
+►M1 Specific plant health programs are also adopted and created for the Republic of Serbia to
+improve the plant health system. ◄
+
+Specific ►M1 program◄ for protection of plant health shall define concrete measures, time limits, the
+manner of implementing those measures, the entities who will implement them, sources of funds and
+manner of securing and using funds, as well as the manner of controlling the implementation of the
+measures.
+
+The Minister shall issue specific programs for protection of plant health.
+
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                             11/43
+              ▼M1 Survey and Monitoring of seeds, seedling and planting Material
+
+                                                Article 32a
+
+…
+
+     2. Lists of Harmful Organisms and Lists of Plants, Plant Products and Regulated Objects
+
+                                                Article 33
+
+For the purpose of preventing the introduction and spread of harmful organisms and their
+suppression on the territory of the Republic of Serbia, the lists of harmful organisms and lists of
+plants, plant products and regulated objects which may be carriers of harmful organisms shall be
+determined.
+
+                                      Lists of Harmful Organisms
+
+                                                Article 34
+
+Lists of harmful organisms referred to in Article 33 of this Law shall be determined depending on
+the degree of risk to the health and survival of plants, plant products and regulated objects, as well
+as economic damage they may cause, as follows:
+
+1)      List IA part I shall determine harmful organisms not known to be present on the territory of the
+        Republic of Serbia whose introduction and spreading in the Republic of Serbia is prohibited;
+
+2)      List IA part II shall determine harmful organisms known to be present in a limited area in the
+        Republic of Serbia and whose introduction and spreading in the Republic of Serbia is prohibited;
+
+3)      List IB shall determine harmful organisms whose introduction in certain protected zones and
+        spreading within those zones is prohibited;
+
+4)      List IIA part I shall determine harmful organisms not known to be present on the territory of the
+        Republic of Serbia and whose introduction and spreading in the Republic of Serbia is prohibited,
+        if they are present on certain plants, plant products and regulated objects;
+
+5)      List IIA part II shall determine harmful organisms known to be present in a limited area of the
+        Republic of Serbia and whose introduction and spreading in the Republic of Serbia is prohibited,
+        if they are present on certain plants, plant products and regulated objects;
+
+6)      List II.B shall determine harmful organisms whose introduction in certain protected zones and
+        spreading within those zones is prohibited, if they are present on certain plants, plant products
+        and regulated objects.
+
+The Minister shall prescribe the lists of harmful organisms referred to in paragraph 1 of this Article.
+
+                       Lists of Plants, Plant Products and Regulated Objects
+
+                                                Article 35
+
+Lists of plants, plant products and regulated objects which may be carriers of harmful organisms
+referred to in Article 34 of this Law, and which represent a threat to the health of plants, are as
+follows:
+
+1)      List IIIA shall determine the types of plants, plant products and regulated objects whose
+        importation into the Republic of Serbia is prohibited;
+
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                12/43
+2)    List IIIB shall determine the types of plants, plant products and regulated objects whose
+      introduction into a certain protected zone is prohibited;
+
+3)    List IV.A part I shall determine the types of plants, plant products and regulated objects subject
+      to specific phytosanitary requirements in importation;
+
+4)    List IVA part II shall determine the types of plants, plant products and regulated objects
+      intended for circulation which are subject to specific phytosanitary requirements during
+      relocation;
+
+5)    List IVB shall determine the types of plants, plant products and regulated objects which are
+      subject to specific phytosanitary requirements in their introduction into certain protected zones;
+
+6)    List VA part I shall determine the types of plants, plant products and regulated objects which are
+      subject to compulsory phytosanitary inspections for the purpose of the issuance of plant
+      passports;
+
+7)    List VA part II shall determine the types of plants, plant products and regulated objects which
+      are subject to compulsory phytosanitary inspections for the purpose of the issuance of plant
+      passports at introduction into a protected zone;
+
+8)    List VB part I shall determine the types of plants, plant products and regulated objects which are
+      subject to compulsory phytosanitary inspection at importation which must be accompanied by a
+      phytosanitary certificate;
+
+9)    List V.B part II. shall determine the types of plants, plant products and regulated objects which
+      are subject to a compulsory phytosanitary inspection in importation into protected zones and
+      which must be accompanied by phytosanitary certificates for those zones;
+
+10)   List VI. shall determine the types of plants, plant products and regulated objects to which
+      special procedures and phytosanitary measures may be applied.
+
+The Minister shall prescribe the lists of plants, plant products and regulated objects referred to in
+paragraph 1 of this Article.
+
+                                       Monitoring Health Status
+
+                                                 Article 36
+
+Constant supervision and phytosanitary measures shall be implemented, in accordance with this
+Law, for the purpose of preventing the introduction of harmful organisms into the territory of the
+Republic of Serbia, their detection, prevention of their spread and their suppression.
+
+►M1 The Minister may lay down the implementation of special phytosanitary inspections to detect
+specific harmful organism on plants, plant products and other objects, as well as phytosanitary
+measures to prevent the introduction and spread of and to control certain harmful organism. ◄
+
+                                   Presence of Harmful Organisms
+
+                                                Article 37
+
+Harmful organisms are deemed to be present on plants, plant products and regulated objects in
+the following cases:
+
+1)    when harmful organisms from List IA part I, List IA part II, List IIA part I and List IIA part II occur
+      on the territory of the Republic of Serbia;
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                   13/43
+2)    when harmful organisms from List IB and List IIB occur in specific protected zones;
+
+3)    when unusual occurrences of harmful organisms or symptoms leading to suspicion about the
+      occurrence of harmful organisms from List IA part I, List IA part II, List IIA part I, List IIA part II,
+      List IB and List IIB or organisms which are harmful to plants intended for planting, are detected
+      on plants, plant products and regulated objects;
+
+Holders of plants shall have an obligation to report to the Ministry through the competent inspector
+the occurrence of harmful organisms referred to in paragraph 1 of this Article on plants, plant
+products and regulated objects.
+
+The Minister shall prescribe the manner of reporting and the form of the report referred to in
+paragraph 2 of this Article.
+
+                        Detection and Identification of Harmful Organisms
+
+                                                 Article 38
+
+Where the occurrence of harmful organisms referred to in Article 37 ►M1 paragraph 1 ◄ of this Law
+is suspected, the phytosanitary inspector shall take an official sample and forward it to an official
+laboratory, i.e. to the authorized reference laboratory.
+
+►M1 The Reference Laboratory shall confirm or negate the suspicion of the presence of harmful
+organisms and determines the cause of the appearance of the symptoms. ◄
+
+Official samples shall be treated in such a manner that the identity of the sample is secured and the
+risk of spreading of the harmful organism is avoided.
+
+►M1 Official Gazette of RS, No 17/2019◄
+
+           Measures in the Event of the Presence or Infection by Harmful Organism
+
+                                                 Article 39
+
+When on the basis of the results of examination is determined the existence of an infection by a
+harmful organism from List IA part I, List IA part II, List IIA part I and List IIA part II or harmful
+organism from List IB and List IIB in a protected zone, the phytosanitary inspector shall be
+obliged to, depending on the circumstances, order one or more phytosanitary measures, as
+follows: treatment, destruction or other form of removal of the harmful organism, infected plants,
+plant products and regulated objects, for the purpose of preventing the spread of the harmful
+organism, its suppression or eradication.
+
+In the event of an infection by harmful organisms from the lists referred to in paragraph 1 of this
+Article, holders of plants shall have the following obligations:
+
+1)    to protect plants, plant products and regulated objects by applying phytosanitary measures
+      ordered by the phytosanitary inspector;
+
+2)    prevent contacts between infected plants and other plants, plant products and regulated objects
+      to which the infection could spread.
+
+For the purpose of preventing infections or infestations of harmful organisms, the Ministry shall inform
+other entities and holders of plants about the occurrence and
+
+intensity of the infection, phytosanitary measures and the threat posed by the harmful organism, and
+the measures recommended by international plant protection organizations,.
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                    14/43
+The Minister shall determine the measures to be implemented in the event of the occurrence of the
+harmful organism referred to in paragraph 1 of this Article.
+
+                                                 Risk Analysis
+
+                                                    Article 40
+
+The risk analysis shall encompass an assessment of biological and other scientific and economic data
+as to whether a certain harmful organism should be regulated or subjected to a special phytosanitary
+measure or procedure.
+
+The regulated harmful organisms referred to in paragraph 1 of this Article are all harmful organisms
+from List IA part I, List IA part II, List IIA part I, List IIA part II, List IB and List IIB, or harmful organisms
+which by their presence on plants which are intended for planting cause unacceptable economic
+damage.
+
+►M1 The risk analysis shall be performed in conformity with the Program of Measures. ◄
+
+Risk ►M1 assessment ◄ shall encompass an assessment of the possibility of the introduction,
+domestication or spread of regulated harmful organisms, in conformity with internationally accepted
+standards, guidelines and recommendations.
+
+Risk management shall be determination and implementation of phytosanitary measures.
+
+►M1 In a new or unexpected phytosanitary situation, temporary phytosanitary emergency measures
+may be established according to a preliminary risk assessment or the precautionary principle. ◄
+
+                      Records of Harmful Organism Occurrences and Findings
+
+                                                   Article 41
+
+The Ministry shall keep a record of the occurrence, introduction, spreading, findings and applied
+measures to suppress harmful organisms and findings of harmful organisms, as well as other records
+of constant supervision.
+
+The Minister shall define the content and manner of keeping the record referred to in paragraph 1 of
+this Article.
+
+                             Publication of Data about Harmful Organisms
+
+                                                   Article 42
+
+Unauthorized disclosure or publication of data about the first occurrence of harmful organisms from
+List IA part I, List IA part II, List IIA part I and List IIA part II shall be prohibited.
+
+The Minister shall define the manner of publication of data about the first occurrence of harmful
+organisms from List IA part I, List IA part II, List IIA part I and List IIA part II.
+
+                                        Specially Regulated Zones
+
+                                                   Article 43
+
+Specially regulates zones shall be infected areas, threatened areas or areas free of harmful organisms
+in which protection of health of plants, plant products and regulated objects is implemented by way of
+special supervision.
+
+The Minister shall prescribe the manner of designating the limits of infected and threatened areas and
+areas free of harmful organisms, measures of detection, prevention of the spread of and suppression
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                        15/43
+for every harmful organism, requirements for discontinuing a measure which has been ordered, as
+well as the manner of notification about measures which have been taken and about their termination.
+
+Special supervision of certain harmful organisms shall be performed in conformity with the Program of
+Measures.
+
+Where special supervision detects the presence of a harmful organism, the phytosanitary inspector
+shall mark the site of the infection and depending on the type of harmful organism and type of
+specially regulated zone orders appropriate measures to be implemented by holders of plants.
+
+The Minister shall prescribe the limits of infected areas, threatened areas or areas free of harmful
+organisms.
+
+                                           Protected Zones
+
+                                               Article 44
+
+Protected zones shall be areas where the presence of one or more harmful organisms has not been
+detected, although there existed favorable conditions for their occurrence, or areas where there exists
+a threat of infection by certain harmful organisms under favorable ecological conditions on certain
+types of plants and the presence of such harmful organisms has so far not been detected.
+
+In protected zones in which the presence of one or more harmful organisms has not been determined
+although there existed favorable conditions for their occurrence, the Ministry shall organize constant
+monitoring for the purpose of detecting the occurrence of those harmful organisms for which that zone
+was declared protected.
+
+In protected zones where there is a danger of infection by certain harmful organisms under favorable
+ecological conditions on certain types of plants, and the presence of those harmful organisms has so
+far not been determined on the territory of the Republic of Serbia, the Ministry shall secure periodical
+monitoring for the possible detection of the occurrence of those harmful organisms for which that zone
+was declared protected.
+
+If the presence of one or more harmful organisms for which an area was declared a protected zone is
+determined in that protected zone, and phytosanitary measures for their eradication have not been
+implemented or have been implemented but were inefficient in a period at least two consecutive years,
+that territory shall lose the status of a protected zone.
+
+The Minister shall prescribe conditions and manner of designating protected zones, the list of
+protected zones, conditions and manner of monitoring for the possible detection of the occurrence of
+those harmful organisms for those areas were declared protected zones, and the deletion of a
+protected zone from the list of protected zones.
+
+                                     Compensation for Damage
+
+                                               Article 45
+
+Holders of plants, who produce plants, plant products and regulated objects shall be entitled to a
+compensation for damage, provided they:
+
+1)    reported immediately the occurrence or suspicion of occurrence of harmful organisms from List
+      IA part I and harmful organisms from List IA part II, for which the Minister has prescribed certain
+      measures of eradication or prevention of spreading, or in the case of a protected zone harmful
+      organisms from List IB and List IIB;
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                              16/43
+2)     implemented all measures for protecting plant health, as well as phytosanitary measures which
+       have been ordered.
+
+The funds for compensation shall be secured in the Budget of the Republic of Serbia.
+
+The compensation referred to in paragraph 1 of this Article shall not be paid out if the harmful
+organism was detected during a phytosanitary inspection of plants, plant products and regulated
+objects during importation into the Republic of Serbia and during customs supervisions.
+
+Holders of plants, plant products and regulated objects which have been destroyed shall submit
+compensation claims to the Ministry.
+
+Compensation claims shall be submitted no later than 30 days from the date of delivery of the decision
+on the destruction of plants, plant products and regulated objects.
+
+Prescribed documentation shall be submitted along with the compensation claim. The Minister shall
+prescribe the amount of compensation.
+
+The Minister shall prescribe the conditions, procedure, manner of determining the amount of
+compensation and required documentation for compensation of damage for harmful organisms from
+the lists referred to in paragraph 1.1 of this Article, as well as the types of harmful organisms from List
+IA part II.
+
+                                  3. Prohibitions and Restrictions
+                 Prohibition of Introduction and Spreading of Harmful Organisms
+
+                                                  Article 46
+
+It shall be prohibited to bring harmful organisms from List IA part I, List IA part II, List IIA part I and List
+IIA part II into the territory of the Republic of Serbia and to spread them through plants, plant products
+and regulated objects.
+
+It shall be prohibited to bring harmful organisms from List IB and List IIB into protected zones and to
+spread them through plants, plant products and regulated objects in protected zones.
+
+If there is a threat to the plant health, introduction and spreading of other types of harmful organisms
+may also be prohibited or restricted, as follows:
+
+1)     those suspected of being harmful to plants, plant products and regulated objects but which are
+       not listed in the lists referred to in paragraphs 1 and 2 of this Article;
+
+2)     the harmful organisms listed in List IIA part I, List IIA part II and List IIB which are suspected to
+       be harmful to plants, plant products and regulated objects which are not specified in those lists;
+
+3)     the harmful organisms listed in the lists referred to in paragraphs 1 and 2 of this Article if those
+       organisms are in cultures and if it is estimated that in such a state they are harmful to plants,
+       plant products and regulated objects.
+
+The Minister shall prescribe Criteria for the prevention and restriction of introduction and for
+prevention and restriction of spreading of other types of harmful organisms referred to in
+paragraph 3 of this Article.
+
+                  Import Bans for Plants, Plant Products and Regulated Objects
+
+                                                  Article 47
+
+The importation of plants, plant products and regulated objects from List IIIA shall be prohibited.
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                     17/43
+The importation into a protected zone of plants, plant products and regulated objects from List IIIB for
+which that zone was declared protected shall be prohibited.
+
+The Minister may allow by decision the importation of plants, plant products and regulated objects
+from List IIIA and List IIIB, provided they are cultivated, produced or used in an area alongside the
+border in a neighboring country, for the purpose of being used in nearby locations alongside the
+border of the Republic of Serbia and if there exists no risk of a spread of harmful organisms.
+
+The decision referred to in paragraph 3 of this Article shall contain the designation of the location and
+the name of the user.
+
+The Minister shall define the manner and conditions referred to in paragraph 3 of this Article.
+
+The Ministry shall keep a record of performed imports referred to in paragraph 3 of this Article.
+
+ Prohibition of Importation and Circulation of Plants, Plant Products and Regulated Objects
+                  which do not Fulfill Specific Phytosanitary Requirements
+
+Article 48
+
+Importation and circulation of plants, plant products and regulated objects from List IVA part I and List
+IVA part II which do not fulfill specific phytosanitary requirements shall be prohibited.
+
+Importation and circulation of plants, plant products and regulated objects from List IVB which do not
+fulfill specific phytosanitary requirements into a protected zone and their circulation in the protected
+zone shall be prohibited.
+
+Importation and circulation of plants, plant products and regulated objects which are not contained on
+the lists referred to in paragraphs 1 and 2 of this Article may be prohibited if it is established through a
+prescribed risk analysis that there exists a threat to the health of plants on the territory of the Republic
+of Serbia.
+
+The Minister may permit by decision the importation of plants, plant products and regulated objects
+from List IVA part I, List IVA part II and List IVB provided they were cultivated, produced or used in an
+area in a neighboring country alongside the border, for the purpose of use in nearby locations
+alongside the border of the Republic of Serbia and where there exists no risk of a spread of harmful
+organisms.
+
+The decision referred to in paragraph 4 of this Article shall contain the designation of the location and
+the name of the user.
+
+The Minister shall prescribe the manner and conditions referred to in paragraph 4 of this Article.
+
+The Ministry shall keep a record of performed imports referred to in paragraph 4 of this Article.
+
+       Exemptions for Experiments, Research Work and Work on Cloning Selections
+
+                                                 Article 49
+
+Introduction of harmful organisms from List IA part I, List IA part II, List IIA part I, List IIA part II,
+List IB and List IIB, as well as importation of plants, plant products and regulated objects from List
+IIIА, List IIIB, List IVA part I, List IVA part II and List IVB, may be conducted by legal persons:
+
+1)    for the purpose of experiments or scientific purposes or for work on cloning selection;
+
+2)    who are technically qualified in conformity with international standards, guidelines and
+      recommendations to prevent the threat of spreading of a harmful organism;
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                  18/43
+3)    ►M1 who obtained an import permit for the import of plants, plant products and regulated
+      objects, or a permit for the introduction of harmful organisms; ◄
+
+4)    who have a phytosanitary certificate for ►M1 the shipment of plants, palnt products and other
+      objects.◄
+
+The Ministry shall issue the import permit referred to in paragraph 1 item 3 of this Article, and
+applied for by a legal person.
+
+The application shall contain the following, in particular:
+
+1)    data about the applicant;
+
+2)    data about the harmful organism, or plants, plant product or regulated object;
+
+3)    purpose of introduction of the harmful organism, or plants, plant products and regulated objects.
+
+The application referred to in paragraph 3 of this Article shall be accompanied by a document
+specifying the need to introduce harmful organisms, or import a ►M1 consignment ◄ of plants,
+plant products and regulated objects referred to in paragraph 1 of this Article.
+
+The Ministry shall keep a record of the imports referred to in paragraph 2 of this Article.
+
+►M1 The Minister shall prescribe the requirements with respect to the technical qualifications referred
+to in paragraph 1 item 2 of this Article, the application referred to in paragraph 3 of this Article and the
+import permit referred to in paragraph 1 item 3 of this article. ◄
+
+                                           Transit Exemptions
+
+                                                Article 50
+
+The provisions of Articles 46, 47 and 48 of this Law shall not apply to the transit of consignments of
+plants, plant products and regulated objects.
+
+                                    Small Quantities Exemptions
+
+                                                Article 51
+
+The provisions of Articles 47 and 48 of this Law shall not apply to small quantities of plants, plant
+products and regulated objects if they are used for non-industrial and non-commercial purposes
+or are used for consumption during travel, provided there is no threat of a spread of harmful
+organisms.
+
+       VIII CIRCULATION OF PLANTS, PLANT PRODUCTS AND REGULATED OBJECTS
+
+          Conditions for Circulation of Plants, Plant Products and Regulated Objects
+
+                                                Article 52
+
+Plants, plant products and regulated objects on List VA part I and seeds on List IVA part I and List IVA
+part II may be placed in circulation after the performance of a phytosanitary inspection only if a plant
+passport is attached to them or attached to their packaging or if it accompanies their means of
+transportation.
+
+The provisions of paragraph 1 of this Article shall not apply to circulation of small quantities of plants,
+plant products and regulated objects if they are used for non- industrial and non-commercial purposes
+or are used for consumption during travel, provided there exists no threat of a spread of harmful
+organisms.
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                 19/43
+Consignments of plants, plant products and regulated objects on List VA part I and List VA part II
+which are placed in circulation and are intended for experiments, or scientific purposes or work on
+cloning selection shall be subject to phytosanitary inspections and accompanied with a plant passport.
+
+                                  Circulation through a Protected Zone
+
+                                                   Article 53
+
+Plants, plant products or regulated objects on List V.A part II. and seeds on List V A part I and
+List IV A part II may be placed in circulation in protected zones and within that zone after the
+performance of a phytosanitary inspection only if a plant passport for the protected zone is
+attached to the consignment or accompanies the means of transportation.
+
+The provision of paragraph 1 of this Article shall not apply to the case where circulation of plants, plant
+products and regulated objects which are transiting through a protected zone and exiting from it is
+performed in a manner which prevents the introduction and spread of harmful organisms.
+
+The Minister shall prescribe the manner of placing into circulation of plants, plant products and
+regulated objects referred to in paragraphs 1 and 2 of this Article.
+
+     Phytosanitary Inspections in Production, Finishing, Processing, Storage and Circulation
+
+                                                   Article 54
+
+Plants, plant products and regulated objects shall be subject to phytosanitary inspections at the place
+of production, circulation, finishing, processing and storage.
+
+Plants, plant products and regulated objects on List VA part I intended for circulation, the packagings
+in which they are packed, and the conveyance in which they are transported shall be subject to
+phytosanitary inspection in whole or on the basis of a representative sample, for the purpose of
+establishing the following:
+
+1)      that they are not infected with harmful organisms on List IA part I, List IA part II, List IIA part I
+        and List IIA part II;
+
+2)      that they fulfill specific phytosanitary requirements on List IV.A part II.
+
+Plants, plant products and regulated objects on List VA part II which are placed in circulation in
+protected zones shall be subject to the phytosanitary inspection, for the purpose of establishing
+the following:
+
+1)      that they are not infected with harmful organisms from List IB and List IIB;
+
+2)      that they fulfill specific phytosanitary requirements on List IVB.
+
+Certain types of plants, plant products and regulated objects referred to in Article 11 paragraph 5 of
+this Law shall also be subject to phytosanitary inspection.
+
+The phytosanitary inspection referred to in paragraphs 2 and 3 of this Article must be performed
+regularly, in prescribed periods of time, at least once every year, in the prescribed manner.
+
+                                   Periodical Phytosanitary Inspections
+
+                                                   Article 55
+
+Besides the phytosanitary inspections referred to in Article 54 of this Law, for the purpose of ensuring
+health of plants periodical phytosanitary inspections of plants, plant products and regulated objects
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                     20/43
+shall also be performed, as well as taking and testing of official samples at locations where they are
+moved, cultivated, produced, processed, stored, sold or used in other manner, including buyers’
+facilities.
+
+1)    Where based on the phytosanitary inspections referred to in paragraph 1 of this Article it is
+      established that phytosanitary requirements are not fulfilled, the competent inspector may
+      order the following measures:
+
+2)    treatment of plants, plant products and regulated objects;
+
+3)    relocation to a site where industrial processing is performed;
+
+4)    destruction of plants, plant products and regulated objects.
+
+The Minister shall prescribe requirements for performing phytosanitary inspections, the manner of
+their performance, as well as of periodical phytosanitary inspections, and the timeframes for their
+performance.
+
+                     ▼M1 Requirements for the Issuance of a Plant Passport
+
+                                                 Article 56
+
+…
+
+                              ▼M1 Approval to Issue a Plant Passport
+
+                                                 Article 56a
+
+…
+
+                        ▼M1 Training for the Issuance of a Plant Passport
+
+                                                 Article 57
+
+The training of staff for the issuance of plant passports referred to in Article 56a paragraph 1 of the
+Law shall be organized and conducted by the Ministry.
+
+When training referred to in paragraph 1 of this Article is finished, a certificate on the participation in
+the training to issue a plant passport is handed over.
+
+The Minister shall prescribe the content of the training program for the issuance of palnt passport
+referred to in paragraph 1 of this Article as well as the form of the certificate of the completed traning
+for the issuance of a plant passport.
+
+                     ▼M1 Renewal of the Approval to Issue a Plant Passports
+
+                                                 Article 58
+
+The application for renewal of the approval to issue a plant passport shall be submitted by the holder
+no later than 90 days before the expiry of the validity of the approval to issue a plant passport.
+
+…
+
+                       Revocation of the Approval to Issue Plant Passports
+
+                                                 Article 59
+
+The approval to issue plant passports shall be revoked:
+
+1)    at the request of the holder of the license;
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                   21/43
+2)     ►M1 if the holder of an approval ceases to meet the cnditions prescribed by this La and the
+       regulations adopted for its implementation. ◄
+
+The Minister shall be obliged to issue a decision revoking the license for issuing plant passports,
+within eight days of the submission of the request or the date when the information on verdict
+referred to in paragraph 1 item 2 of this Article became available.
+
+                                     Records of Licenses Article 60
+
+The Ministry shall keep a record of issued, renewed and revoked licenses for issuing plant
+passports.
+
+                       ►M1 Types and manner of issuing Plant Passports◄
+
+                                                  Article 61
+
+Plant passports issued for plants, plant products and regulated objects referred to in Article 56
+paragraph 1 of this Law may be:
+
+1)     a standard plant passport;
+
+2)     a plant passport for a protected zone;
+
+3)     a replacement plant passport.
+
+For seeds on List IVA part I and List IVA part II, the label issued in conformity with regulations on
+seeds may be deemed a plant passport.
+
+…
+
+                                   ►M1 Issuance of Plant Passports
+
+                                                  Article 62
+
+Legal persons or operators referred to in Article 56 paragraph 1 may issue plant passports for their
+own production if they are registered in the Register.
+
+Service providers may issue plant passports to legal persons, operators and natural persons
+registered in the Register.
+
+Plant passports may also be issued by phytosanitary or forestry inspectors, if there is no service
+provider who employs a person holding a license for issuing plant passports on the territory of the
+local self-administration unit where production, processing, finishing, storage or circulation are
+performed.
+
+Phytosanitary inspectors may also issue plant passports for those parts of plants, plant products and
+regulated objects which are not suspected of being inspected, and if there exists no risk of spreading
+of harmful organisms, if it is established during phytosanitary inspection that a part of the plants, plant
+products and regulated objects being produced, processed, stored, finished or used is infected by
+harmful organisms on List IA part I, List IA part II, List IB, List IIA part I, List IIA part II or List IIB. ◄
+
+                                     Replacement of Plant Passport
+
+                                                  Article 63
+
+Where a consignment is being divided into several smaller consignments or where several individual
+consignments or their parts are being assembled into a single consignment, or where the health status
+
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                     22/43
+of a consignment changes, a replacement plant passport shall be issued for the new consignment, at
+the request of the legal person, operator or natural person registered in the Register.
+
+Where the health status of the consignment referred to in paragraph 1 of this Article changes, ►M1
+the phytosanitary or forestry inspector shall at the request of the person obliged to issue the plant
+passport, issue a replacement plant passport after performing a phytosanitary inspection. ◄
+
+The Minister shall prescribe the conditions under which replacement plant passports may be issued
+and the manner of issuing replacement plant passports.
+
+                ►M1 Obligations Related to the Issuance of Plant Passports ◄
+
+                                                Article 64
+
+►M1 The person obliged to issue a plant passport shall be obliged to:
+
+1)    enable the issuance of a plant passport in accordance with this Law;
+
+2)    notify the phytosanitary or forestry inspector about an intention to place in circulation plants,
+      plant products and regulated objects in a protected zone;
+
+3)    keep documents related to the issuance of a plant passport for three years;
+
+4)    report to the Ministry about all changes in connection with the issuance of plant passports;
+
+5)    use plant passports in accordance with this Law. ◄
+
+The Minister shall prescribe the manner and timeframes for notification of changes, placement in
+circulation in protected zones, as well as the manner of use of the plant passport referred to in
+paragraph 1 of this Article.
+
+             Obligations of Buyers of Plants, Plant Products and Regulated Objects
+
+                                                Article 65
+
+Legal persons, operators or natural persons shall be obliged to keep for one year plant passports for
+purchased plants, plant products and regulated objects.
+
+               IX PHYTOSANITARY CONTROL IN INTERNATIONAL CIRCULATION
+
+                                             Place of Entry
+
+                                                Article 66
+
+Plants, plant products and regulated objects shall be subject to the phytosanitary inspection on
+importation at border crossings.
+
+Importation, transit and exportation of plants, plant products and regulated objects may be performed
+through border crossings with organized phytosanitary inspection and which fulfill hygienic, technical
+and working requirements.
+
+Exceptional to the provision of paragraph 1 of this Article, importation of certain plants, plant products
+and regulated objects may also be performed through border crossings where phytosanitary
+inspection is not organized but which are temporarily opened for that purpose on the basis of a
+decision of the Minister.
+
+Consignments which are not subject to phytosanitary inspection and which are packed in wooden
+packaging may be imported through border crossings at which customs service is organized.
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                23/43
+The Minister shall designate the border crossings referred to in paragraph 2 of this Article.
+
+The Minister shall prescribe the hygienic, technical, working and other conditions which must be
+fulfilled at border crossings referred to in paragraph 2 of this Article.
+
+                             Phytosanitary Inspections on Importation
+
+                                                Article 67
+
+Consignments of plants, plant products and regulated objects on List VB part I and List VB part I.
+which are being imported, their packaging and their means of transportation shall be subject to
+customs supervision and compulsory phytosanitary inspection performed in whole or on the basis
+of a representative sample.
+
+Consignments of plants, plant products and regulated objects on List VB part I may be imported if:
+
+1)    they are not infected with harmful organisms on List IA part I, List IA part II, List IIA part I and
+      List IIA part II, ►M1 or regulated harmful organisms in accordance with this Law, as well as new
+      harmful organisms that are not on the lists specified in this Law, and for which there is a
+      reasonable suspicion that they may pose a risk to plant ehalth taking into account the alerts and
+      opinions of relevant international and regional organizations (EPPO, EFSA, IPPC); ◄
+
+2)    they have phytosanitary certificate;
+
+3)    they do not contain plants, plant products and regulated objects on List III.A;
+
+4)    they fulfill specific phytosanitary requirements on List IVA part I and List IVA part II.
+
+Consignments of plants, plant products and regulated objects on List VB part I and List VB part II
+may be imported into a protected zone if:
+
+1)    they are not infected with harmful organisms on List IB and List IIB;
+
+2)    they have phytosanitary certificate;
+
+3)    they do not contain plants, plant products or regulated objects on List IIIB;
+
+4)    they fulfill specific phytosanitary requirements on List IVB.
+
+Consignments of plants, plant products and regulated objects which are not listed in List VB part I and
+List VB part II, and may be potential hosts of regulated harmful organisms which are being imported,
+the packagings in which they are being imported and, if necessary, the vehicle in which they are being
+transported, may be imported if it is established after a phytosanitary inspection performed in whole or
+a representative sample that they fulfill requirements referred to in paragraphs 2. items 1, 3 and 4 of
+this Article.
+
+If the species or genus or origin of plants, plant products and regulated objects of consignments being
+imported cannot be determined, those consignments shall be deemed as if listed on List VB part I. and
+List VB part II.
+
+Phytosanitary measures of the exporting country, in particular those relating to the fulfillment of
+specific phytosanitary requirements on List IVA part I, List IVA part II and List IVB at importation, shall
+be deemed equivalent to phytosanitary measures prescribed in the Republic of Serbia if the exporting
+country proves objectively that that they are based on scientific evidence and that equivalent results
+are achieved by Serbia’s desire level of protection. During phytosanitary assessments the specific
+characteristics regarding agronomical and ecological conditions of the exporting country will be
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                 24/43
+taken into account, i.e. the status of pest- or disease - free zones will be accepted, if they are in
+accordance with the International Plant Protection Convention standards.
+
+The Minister shall prescribe the types of plants, plant products and regulated objects referred to in
+paragraph 4 of this Article.
+
+The Ministry shall submit lists of plants, plant products and regulated objects referred to in paragraphs
+2, 3 and 4 of this Article to the customs authorities.
+
+                      Risk Assessment and Reduced Frequency of Inspection
+
+                                                   Article 68
+
+Phytosanitary inspections of consignments of plants, plant products and regulated objects may also
+be performed at a lower frequency:
+
+1)     if on the basis of an agreement with the competent authority for the protection of plant health of
+       the exporting country, a phytosanitary inspection has already been performed in the country
+       from which the consignment is being imported, by the competent authority of the importing
+       country;
+
+2)     on the basis of a risk assessment;
+
+3)     on the basis of an agreement concluded with the country from which the consignment is being
+       imported and which is based on equivalence of phytosanitary measures and procedures in the
+       Republic of Serbia and the exporting country, or the ►M1 transit◄ country, on the prevention of
+       the introduction, spreading and suppression of harmful organisms.
+
+The Minister shall prescribe the conditions and manner of performing the risk assessment referred
+to in paragraph 1 item 2 of this Article, and shall specify the list of plants, plant products and
+regulated objects which are subject to inspections performed at a lower frequency.
+
+            Experiments, Scientific Research Work and Work on Cloning Selection
+
+                                                   Article 69
+
+Harmful organisms on List IA part I, List IA part II, List IIA part I, List IIA part II, List IB and List IIB, as
+well as plants, plant products and regulated objects on List IIIА, List IIIB, List IVА part I, List IV.А part
+II, List VB, List VA part I, List VA part II, List VB part I, List VB part II. and List VI, which are imported
+for the purpose of experimentation, scientific research work and cloning selection, shall also be
+subject to phytosanitary inspection.
+
+Consignments ►M1 of plants, plant products and other objects ◄ referred to in paragraph 1 of this
+Article must be accompanied by an import permit issued by the Ministry as well as an appropriate
+phytosanitary certificate, ►M1 and the consignment of harmful organisms referred to in paragraph 1 of
+this Article must be accompanied by a permit for the introduction of the harmful organisms. ◄
+
+                               Exemptions from Phytosanitary Inspection
+
+                                                   Article 70
+
+Phytosanitary inspections shall not be compulsory for the importation of small quantities of plants,
+plant products and regulated objects which are used for non- industrial and non-commercial purposes
+or are used for consumption during travel, provided there is no risk of a spread of harmful organisms.
+
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                        25/43
+The Minister shall prescribe the manner and conditions of importing small quantities of plants, plant
+products and regulated objects and shall determine small quantities for individual types of plants and
+plant products referred to in paragraph 1 of this Article.
+
+If there is no risk of a spread of harmful organisms the Ministry may allow natural persons with
+residence in a border zone to import plants, plant products and
+
+regulated objects on List VB part I and List VB part II, without phytosanitary certificate and
+phytosanitary inspection, if on the effective date of this Law such person is the owner of the
+agricultural or forest land in the border zone of a neighboring country, provided that the plants, plant
+products and regulated objects are used in the place of residence of the natural person.
+
+                                        Phytosanitary certificate
+
+                                                Article 71
+
+Plants, plant products and regulated objects on List VB part I and List VB part II must be accompanied
+by a phytosanitary certificate, or phytosanitary certificate for re-export.
+
+Consignments referred to in paragraph 1 of this Article which are after issuance of a phytosanitary
+certificate in the country of origin reloaded, stored, repacked or divided in another country which is not
+the country of origin, must beside their original phytosanitary certificate, or certified copy of a
+phytosanitary certificate, also have a phytosanitary certificate for re-export, or a certified copy of a
+phytosanitary certificate, of every importing country.
+
+The phytosanitary certificate and phytosanitary certificate for re-export must be issued in conformity
+with the International Plant Protection Convention, must be original, issued to a single recipient and
+certified in the prescribed manner, marked with a serial number, and must be written in the Serbian
+language and in one of the languages officially recognized in international circulation.
+
+Exceptional to the provision of paragraph 3 of this Article, phytosanitary certificates issued in exporting
+countries which are not signatories of the International Plant Protection Convention shall also be
+accepted, under conditions prescribed by the Minister.
+
+Where prescribed requirements are fulfilled, phytosanitary certificates in electronic form shall be
+accepted.
+
+In exceptional cases officially certified copies of phytosanitary certificates may also be accepted,
+under conditions prescribed by the Minister.
+
+If specific phytosanitary certificate requirements on List IVA part I, List IVA part II and List IVB are
+prescribed for plants, plant products and regulated objects for which the phytosanitary certificate is
+required, phytosanitary certificates shall be issued by the competent authority of the country of origin.
+Where specific phytosanitary requirements may also be confirmed outside the country of origin, the
+phytosanitary certificate may be issued by the exporting country.
+
+Phytosanitary certificates and phytosanitary certificates for re-export shall expire if consignments for
+which they were issued have not left the territory of the country within 14 days of the date of issue.
+
+The Minister shall prescribe the content and forms of phytosanitary certificates and phytosanitary
+certificates for re-export, as well as the conditions under which phytosanitary certificates in electronic
+form are accepted.
+
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                  26/43
+►M1 The form of the phytosanitary certificate and of the phytosanitary certificate for re-export is
+created and printed by the National Bank of Serbia – Institute for the Production of Banknote and
+Coins "Toptschider".◄
+
+                                        Importers’ Obligations
+
+                                                Article 72
+
+Importers and customs agents shall be obliged to:
+
+1)    notify phytosanitary certificate inspectors of the arrival of consignments referred to in Article 67
+      of this Law;
+
+2)    submit a request for inspection of the consignment in the prescribed time limit;
+
+3)    provide all the conditions necessary for the performance of a phytosanitary inspection;
+
+4)    implement all measures ordered by the phytosanitary inspector.
+
+Customs authorities may not perform actions prescribed by the rules of the relevant customs
+procedure, except for consignments in ►M1 transit◄, until phytosanitary inspectors have performed
+phytosanitary inspections of consignments and confirmed their health safety.
+
+If a consignment arrives at a border crossing not designated for the performance of phytosanitary
+inspections, the customs authorities shall prohibit importation and direct the consignment to the
+nearest crossing where phytosanitary inspection service is organized.
+
+If a consignment of plants, plant products and regulated objects on List IIIA or List IIIB arrives at a
+border crossing and is being imported into a protected zone, the customs authorities shall prohibit the
+importation of such a consignment and notify the competent phytosanitary inspector.
+
+Inspections of wooden materials used as packagings or supporting materials in the transportation of
+consignments not subject to phytosanitary inspection shall be performed by the customs authorities, in
+conformity with standard ISPM 15.
+
+The Minister shall prescribe the manner of notification of the arrival of consignments, the form of the
+request for inspection of a consignment, time limits for submission, and conditions which must be
+provided by importers to enable the performance of phytosanitary inspections.
+
+                                      The Importation Procedure
+
+                                                Article 73
+
+If during phytosanitary inspection of consignments of plants, plant products and regulated objects
+a phytosanitary inspector suspects the presence of harmful organisms on List IA part I, List IA part
+II, List IB, List IIA part I, List IIA part II and List IIB and whose presence is not possible to determine
+during inspection at the border crossing, the phytosanitary inspector shall take an official sample and
+forward it to the official laboratory ►M1, i. e. to the authorized ◄Reference Laboratory for laboratory
+analysis.
+
+If the conditions for phytosanitary inspection of consignments do not exist at a border crossing in
+accordance with this Law, and there is no risk of a spread of harmful organisms which threaten the
+health of plants, phytosanitary inspections of consignments may be performed at certain locations
+within the Republic of Serbia in the place where the consignment undergoes customs clearance.
+
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                 27/43
+Phytosanitary inspectors shall issue a decision on transit for consignments of plants, plant products
+and regulated objects referred to in paragraphs 1 and 2 of this Article enabling transfer to the location
+of customs clearance of consignment, where the consignment is under customs supervision until the
+completion of the inspection.
+
+It shall be prohibited to relocate or divide or take samples from consignments referred to in paragraph
+3 of this Article.
+
+The Minister shall prescribe the conditions, manner and procedures of performing phytosanitary
+inspections and the manner of sampling and forwarding samples, as well as the number and size of
+the samples.
+
+                                       ►M1 Import Clearance◄
+
+                                                Article 74
+
+►M1 After inspection of the consignments of plants, plant products or other objects, or after receiving the
+results of the laboratory analyses, if the conditions of Article 67 paragraph 2–4 of this Law allow
+the import of the consignment, the phytosanitary inspector shall take a decision on the approval of the
+importation or certify the customs ducmentation with a rectangular seal, and shall also certify the
+phytosanitary certificate or phytosanitary certificate for re-export with the seal of the phytosanitary
+inspectorate bearing the date of entry. ◄
+
+The Minister shall prescribe the content and size of the seal used to certify customs
+documentation.
+
+                                      Measures on Importation
+
+                                                Article 75
+
+Where the phytosanitary inspector establishes through the phytosanitary inspection that conditions
+referred to in Article 67 of this Law have not been fulfilled, the phytosanitary inspector shall order
+one or more of the following phytosanitary measures:
+
+1)    prohibition of the importation of the consignment or part of the consignment into the territory of
+      the Republic of Serbia;
+
+2)    estruction of the consignment or a part of the consignment;
+
+3)    treatment for the purpose of suppressing harmful organisms;
+
+4)    an alteration of the purpose for the consignment;
+
+5)    quarantine supervision of the consignment, until the results of a laboratory analysis are
+      received.
+
+If it has been established by phytosanitary inspection that a part of a consignment is infected with
+harmful organisms, importation of the rest of the consignment may be permitted if there is no reason
+to suspect the presence of harmful organisms in that part of the consignment and if there is no risk of
+a spread of harmful organisms.
+
+In case importation is being prohibited, the phytosanitary inspector shall imprint a triangular seal on
+the phytosanitary certificate or phytosanitary certificate for re-export, whereby the phytosanitary
+certificate becomes invalid.
+
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                28/43
+The phytosanitary inspector shall be obliged to notify the Ministry about all cases referred to in
+paragraph 1 of this Article on a prescribed form.
+
+The Minister shall prescribe the shape and content of the seal referred to in paragraph 3 of this Article,
+as well as the layout and content of the form referred to in paragraph 4 of this Article.
+
+                 Replacement of Plant Passport with Phytosanitary certificate
+
+                                                Article 76
+
+►M1 Upon taking the decision referred to in Article 74 paragraph 1 of this Law for plants, plant
+products and regulated objects on List VA part I and List VA part II, the phytosanitary inspector shall
+permit the movement of the consignment on the territory of the Republic of Serbia, and the
+consignment is accompanied by a certified copy of the plant passport. ◄
+
+If the consignment referred to in paragraph 1 of this Article is divided into several individual
+consignments or where several individual consignments are merged into a single consignment, a plant
+passport must be issued for each new consignment.
+
+If the health status of the consignment is changed in the procedure referred to in paragraph 2 of this
+Article, a plant passport may be issued only after a phytosanitary inspection is performed.
+
+                                              Free Zones
+
+                                               Article 77
+
+Consignments being imported into free zones or customs warehouses on the territory of the
+Republic of Serbia shall be subject to application of provisions of this Law related to imports if the
+inspections has not been performed on the border.
+
+Consignments of plants, plant products and regulated objects stored, packed, processed and
+treated in free zones or in customs warehouses shall be subject to phytosanitary inspection.
+
+                                                 Export
+
+                                                Article 78
+
+►M1 Where an importing country requires a phytosanitary certificate for consignments of plants, plant
+products and regulated objects which are to be exported, that consignment is inspected for the
+purpose of issuing a phytosanitary certificate. ◄
+
+►M1 The inspection of the consignment referred to in paragraph 1 of this Article for the purpose of
+issuing a phytosanitary certificate shall be performed by the phytosanitary inspector, ie the qualified
+staff member of the agricultural extension service for performing activities referred to in Article 17
+paragraph 1 item 2 of this Law. ◄
+
+When consignments of plants, plant products and prescribed facilities are stored, repackaged or
+divided up on the territory of the Republic of Serbia, and the importing country requires a phytosanitary
+certificate, the phytosanitary inspector shall inspect the consignment to issue a phytosanitary
+certificate for re-export.
+
+►M1 The inspection of wood used for packaging or as dunnage during transport of consignments
+which is not subject to phytosanitary inspection shall be carried out by the customs authority which
+shall decide whether the wood meets the standard ISPM 15. ◄
+
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                29/43
+                                         Duties of Exporters
+
+                                               Article 79
+
+Exporters shall be obliged to submit to the Ministry requests for the issuance of phytosanitary
+certificates no later than 24 hours before loading.
+
+The request for the issuance of a phytosanitary certificate shall contain the following in particular:
+
+1)    data about the applicant: title of the legal person, or operator, headquarters or name and
+      surname of the natural person and address;
+
+2)    data about the consignment.
+
+Exporters shall be obliged to enable insight into all available documentation, as well as provide all
+necessary conditions for the performance of a phytosanitary inspection.
+
+Plants, plant products and regulated objects, packagings, means of transport, and where necessary, if
+required by the ►M1 importing country◄, also storage places, sites and places of production where
+the plants, plant products and regulated objects originate from shall be subject to phytosanitary
+inspection.
+
+If the phytosanitary inspection referred to in paragraph 4 of this Article finds out that the specific
+phytosanitary requirements of the importing country have not been fulfilled, the phytosanitary
+inspector, ►M1 i. e. the qualified person according to Article 78 paragraph 2 of this Law◄ shall order
+measures to meet the specific phytosanitary requirements or refuse to issue a phytosanitary
+certificate.
+
+The Minister shall prescribe the manner, place and procedure of performing phytosanitary inspections
+referred to in paragraph 4 of this Article, as well as the form and content of the request for the
+issuance of phytosanitary certificate.
+
+                                                 Transit
+
+                                               Article 80
+
+Consignments of plants, plant products and regulated objects referred to in Article 67 of this Law
+which are in ►M1 transit◄ shall not be subject to phytosanitary inspection.
+
+If the consignment referred to in paragraph 1 of this Article is not packaged in a manner which
+prevents the spreading of harmful organisms, or is for any reason whatsoever unloaded, divided,
+combined with other consignments or repacked on the territory of the Republic of Serbia, the customs
+authorities shall be obliged to notify the competent phytosanitary inspector about the consignment for
+the purpose of examining it.
+
+The Minister shall prescribe the manner of handling ►M1 transit◄ consignments referred to in
+paragraph 2 of this Article, as well as the manner of performing the phytosanitary inspection.
+
+                         Importation, Exportation and Transit Expenses
+
+                                               Article 81
+
+The expenses resulting from application of phytosanitary measures in importation, exportation and
+transit of consignments of plants, plant products and regulated objects shall be borne by the
+importer or exporter.
+
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                30/43
+                      X BIOLOGICAL PROTECTION OF THE PLANT HEALTH
+
+                                                 Article 82
+
+For the purpose of biological protection of plants in protected areas or outdoors it shall be permitted to
+breed, introduce and use organisms of autochthonous and introduced species specified in the lists
+issued by the Minister, with the concurrence of the minister in charge of environmental protection.
+
+The Ministry shall issue licenses for introducing, breeding and using organisms referred to in
+paragraph 1 of this Article on the basis of an acceptability assessment determined by regulations
+governing environmental protection.
+
+Scientific research institutions may be issued licenses for introducing, breeding and using organisms
+of introduced species not specified in the list referred to in paragraph 1 of this Article, if their purpose
+is experimental, research and developmental use in biological protection of plants. The license shall
+be issued on the basis of the acceptability assessment referred to in paragraph 2 of this Article.
+
+In order to be issued the license referred to in paragraphs 2 and 3 of this Article, legal persons and
+operators must fulfill prescribed conditions in respect of facilities, equipment and professional
+qualifications.
+
+The Minister shall prescribe conditions in respect of facilities, equipment and professional
+qualifications which must be fulfilled by legal persons and operators referred to in paragraph 4 of this
+Article.
+
+The Ministry shall keep a record of the introduction, breeding and use of organisms of autochthonous
+and introduced species.
+
+The content and form of the application for obtaining licenses for the introduction, breeding and use of
+organisms referred to in paragraphs 1 and 3 of this Article shall be prescribed by the Minister with
+the concurrence of the minister in charge of environmental protection.
+
+                                     XI DATA AND INFORMATION
+
+                                       Collecting and Using Data
+
+                                                 Article 83
+
+For the purpose of analyzing and monitoring the application of plant health protection measures, the
+Ministry shall keep data bases in conformity with this Law and uses data in conformity with other
+prescribed data bases.
+
+The Ministry shall use basis topographical plans, topographical graphs, maps and digital
+orthophotographic maps.
+
+Data bases related to the protection of plant health of must be linked with the Register of Agricultural
+Holdings which is kept by the Ministry.
+
+The manner of linking data bases, as well as the manner of gathering and using data from other data
+bases shall be prescribed in a specific regulation.
+
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                   31/43
+                                         Transmission of Data
+
+                                                 Article 84
+
+The Ministry may transmit data from its registers and data bases to other state authorities and local
+self-administrations authorities, if that is necessary for the adoption of legally-defined goals, as well as
+to entities conducting activities of public interest, if the purpose is to ensure protection of plant health.
+
+The data from the data bases related to the protection of plant health may be used by legally
+interested persons in conformity with regulations on the protection of personal data, they must be used
+for the purpose for which they were provided and they may not be transmitted to other persons.
+
+                                          Information Systems
+
+                                                 Article 85
+
+The Ministry shall establish and maintain the information systems in the sphere of plant health
+protection.
+
+The Reference Laboratory, legal persons conducting activities of public interest and providers of
+services in the sphere of plant health protection shall be obliged to keep records, lists and data bases
+harmonized and linked with the information system of the Ministry and to maintain and update them.
+
+The Ministry shall enable harmonization and linking of the information system referred to in paragraph
+1 of this Article with other information systems of the Ministry, as well as with international information
+systems in the sphere of plant health.
+
+The Minister shall prescribe the manner of linking information systems, as well as the requirements for
+maintaining records, lists and data bases.
+
+                           International Exchange of Data and Information
+
+                                                 Article 86
+
+On the international level, the exchange of information and data performed by the Ministry shall
+encompass in particular the following:
+
+1)    central organization;
+
+2)    a list of border crossings where importation can be performed;
+
+3)    a list of harmful organisms which are subject to supervision;
+
+4)    occurrence or presence of harmful organisms specified in the lists prescribed by this Law, in
+      areas where their presence had not been known earlier, and measures implemented;
+
+5)    occurrence and spreading of harmful organisms which represent a potential risk;
+
+6)    any occurrence of harmful organisms in a protected zone for which it was declared as such;
+
+7)    results of systematic supervision in protected zones;
+
+8)    by-laws adopted pursuant to this Law;
+
+9)    cases in which consignments of plants, plant products and regulated objects were intercepted
+      due to non-conformity with the provisions of this Law at the request of international bodies and
+      organizations.
+
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                  32/43
+Data and information shall be transmitted in conformity with international conventions and
+agreements binding on the Republic of Serbia.
+
+      XII FUNDS FOR IMPLEMENTATION OF PLANT HEALTH PROTECTION MEASURES
+
+                                                Article 87
+
+Funds for the performance of activities of public interest, as well as funds for the implementation
+of measures for protecting plant health, shall be allocated from the Budget of the Republic of
+Serbia.
+
+                                            ▼M1 Article 88
+
+Legal persons, operators and natural persons shall pay fees for the following:
+
+1)    performed phytosanitary inspections of consignments of plants, plant products and other objects
+      on importation;
+
+2)    performed phytosanitary inspections of consignments of plants, plant products and other objects
+      meant for export;
+
+3)    performed phytosanitary inspections of consignments of plants, plant products and other objects
+      meant for export;
+
+4)    issuance of phytosanitary certificates;
+
+5)    issuance of phytosanitary certificates for re-export;
+
+6)    for the costs of health inspections on crops and facilities for the production of seeds, seedlings
+      and propagation material;
+
+7)    performed phytosanitary inspections of plants, plant products and regulated objects in
+      production, processing, handling, storing and marketing for the purpose of issuing plant
+      passports;
+
+8)    issuance of plant passports;
+
+9)    permit for issuing plant passports;
+
+10)   establishing requirements of registration in the Register of Providers of Services;
+
+11)   use of ISPM 15 mark;
+
+12)   performed phytosanitary inspections for the purpose of entry in the phytoregister;
+
+13)   training related to the issuance of plant passports and the issuance of a certicate on the
+      completed training for the issuance plant passports;
+
+Funds generated from the fees referred to in paragraph 1 shall be the revenue of the Republic of
+Serbia.
+
+►M1 The amount of the fees referred to in paragraph 1 of this Article shall be determined by the
+Government. ◄
+
+The expenses of the implementation of phytosanitary measures at plant holders shall be borne by
+them, except where prescribed otherwise by this Law.
+
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                               33/43
+                                                Article 89
+
+►M1 The applicant pays an administrative fee according to the Law on fees for the issuance of a
+permit for the following:
+
+1)    registration in the Register of Service Providers;
+
+2)    registration in the Phytoregister;
+
+3)    import permit, i. e. the introduction of consignments for experimental, scientific and cloning
+      purposes;
+
+The funds referred to in paragraph 1 of this Article shall be paid by the applicant into the relevant
+public revenue account of the Republic of Serbia Budget.
+
+The amount of expenses shall be determined in accordance with the regulations on fees in
+administrative procedure. ◄
+
+                                           XIII SUPERVISION
+
+                                        Inspectorial Supervision
+
+                                                Article 90
+
+►M1 Inspectorial supervision of the application of the provisions of this Law and regulations adopted
+on the basis of this Law shall be performed by the Ministry through phytosanitary inspectors.
+
+Notwithstand paragraph 1 of this Article inspectorial supervision related to forest plants, forest
+nurseries and propagation material meant for import, export or transit shall be performed by the
+Ministry through forestry inspectors.
+
+The activities of a phytosanitary inspector may be performed by persons who have acquired higher
+education in the scientific field…. ◄
+
+                              Official Identification and Official Apparel
+
+                                                Article 91
+
+In the performance of inspectorial supervision activities, phytosanitary inspectors must hold an
+official identification.
+
+Phytosanitary inspectors perform phytosanitary supervision activities wearing prescribed official
+apparel.
+
+The Minister shall prescribe the form and content of the identification, the form of the official apparel of
+the phytosanitary inspector, and the manner of keeping records of identifications issued.
+
+                  Rights and Duties of Phytosanitary and Forestry Inspectors
+
+                                                Article 92
+
+In the performance of phytosanitary supervision activities, phytosanitary inspectors shall have a
+right and a duty to:
+
+1)    control whether holders of plants fulfill obligations prescribed by Article 10 of this Law;
+
+2)    check whether producers, processors, finishers, keepers, importers and traders of prescribed
+      types of plants and plant products and regulated objects are registered in the ►M1
+      Phytoregister ◄;
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                   34/43
+3)    control fulfillment of requirements referred to in Article 12 paragraph 2 items 4 and 5 of this Law;
+
+4)    control whether ►M1 the person issuing plant passports ◄ fulfills the obligations according to
+      Article 14 of this Law;
+
+5)    control fulfillment of ►M1 obligations on the basis of contract work, i. e. contractual obligations
+      assigned by public bid; ◄
+
+6)    control whether service providers are registered in the Register of Providers of Services;
+
+7)    control fulfillment of requirements referred to in Article 22 paragraph 2 of this Law;
+
+8)    ►M1 control the manner and procedure of performing heat treatment and marking of wood
+      packaging material as well as the manner of keeping records and content of records according
+      to Article 25 of this Law; ◄
+
+9)    control whether service providers keep evidence of services performed for a period of five
+      years;
+
+10)   control implementation of the Program of Measures and specific programs for protection of plant
+      health;
+
+11)   take official samples of plants, plant products and regulated objects without giving
+      compensation for their value, in conformity with the provisions of this Law;
+
+12)   control implementation of measures which have been ordered in the event of the occurrence of
+      harmful organisms, as well as prevention of contacts between infected plants, plant products
+      and regulated objects to which the infection may be transmitted;
+
+13)   perform special supervision of harmful organisms, in conformity with the Program of Measures;
+
+14)   control fulfillment of conditions for introduction of harmful organisms, or the importation of
+      plants, plant products and regulated objects, for the purpose of experiments, research work or
+      cloning selection work;
+
+15)   control production, finishing, processing, storage and circulation of plants, plant products and
+      regulated objects;
+
+16)   control whether plants, plant products and regulated objects on List VA part I and List VA part II
+      are accompanied in circulation by plant passports, or seed on List IVA part I and List IVA part II
+      by the label referred to in Article 61 paragraph 2 of this Law;
+
+17)   perform phytosanitary and periodical phytosanitary inspections of plants, plant products and
+      regulated objects at the sites where they are produced, moved, processed, finished, stored,
+      sold, as well as at the buyers of plants, plant products and regulated objects;
+
+18)   control fulfillment of requirements for the issuance of plant passports;
+
+19)   control keeping of records on issued plant passports and the maintenance of those records;
+
+20)   control the manner of issuance of plant passport ►M1 according to Article 61 paragraph 4 and
+      Article 63 paragraph 2 of this Law; ◄
+
+21)   issue plant passports in conformity with Article 62 paragraphs 3 and 4 of this Law;
+
+22)   ►M1 control whether the person issuing plant passports fulfills the duties according to Article 64
+      of this Law; ◄
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                               35/43
+23)   control whether legal persons, operators or natural persons keep plant passports for one year
+      for purchased plants, plant products and regulated objects;
+
+24)   perform phytosanitary inspection of plants, plant products and regulated objects on List VB part
+      I and List VB part II, as well as of consignments of plants, plant products and regulated objects
+      not specified in List VB part I and List VB part II, but could be potential hosts of regulated
+      harmful organisms, at border crossings;
+
+25)   perform phytosanitary inspection of harmful organisms and plants, plant products and regulated
+      objects referred to in Article 69 of this Law;
+
+26)   control whether plants, plant products and regulated objects imported in conformity with the
+      provisions of Article 70 paragraph 3 of this Law are used in the place of residence of the natural
+      person who imported them;
+
+27)   issue phytosanitary certificate and phytosanitary certificate for re-export;
+
+28)   control performance of the obligations of importers, or customs agents referred to in Article 72
+      paragraph 1 of this Law;
+
+29)   control international certificates and other documents accompanying consignments in
+      importation;
+
+30)   control fulfillment of requirements for obtaining a license to breed, introduce and use organisms
+      of autochthonous and introduced species;
+
+31)   control the importation, breeding and use of organisms intended for the biological protection of
+      plants;
+
+32)   control maintenance of documentation in conformity with this Law;
+
+33)   calculate the fee for performed phytosanitary inspections of consignments in production and
+      circulation;
+
+34)   control implementation of measures under this Law.
+
+In the performance of inspectorial supervision activities, forestry inspectors shall have a right and
+duty to:
+
+1)    control production, circulation and use of forest plants, plant products and regulated objects for
+      the presence of harmful organisms which are not specified in the lists referred to in Article 34 of
+      this Law;
+
+2)    perform phytosanitary and periodical phytosanitary inspections of forest plants, plant products
+      and regulated objects for the presence of harmful organisms not specified in the lists referred to
+      in Article 34 of this Law, at the place where they are produced, finished, processed, stored and
+      sold, as well as at the buyers of forest plants, plant products and regulated objects;
+
+3)    take official samples of forest plants, plant products and regulated objects for the presence of
+      harmful organisms which are not specified in the lists referred to in Article 34 of this Law,
+      without providing compensation for their value, in accordance with the provisions of this Law;
+
+4)    control implementation of measures ordered in the event of an occurrence of harmful organisms
+      which are not specified in the lists referred to in Article 34 of this Law, as well as prevention of
+      contacts with infected forest plants, plant products and regulated objects to which the infection
+      could be transmitted;
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                               36/43
+5)    issue plant passports, in conformity with ►M1 Article 61 paragraph 4 and Article 63 pargraph 2
+      ◄ of this Law;
+
+6)    control implementation of special programs for protection of plant health in the sphere of
+      forestry which are adopted for harmful organisms not specified in the lists referred to in Article
+      34 of this Law.
+
+                 Measures Ordered by Phytosanitary and Forestry Inspectors
+
+                                                Article 93
+
+In performing tasks referred to in Article 92 paragraph 1 of this Law, the phytosanitary inspectors
+may:
+
+1)    prohibit introduction of harmful organisms from the lists prescribed by this Law and regulated
+      harmful organisms;
+
+►M1 1a)   may prohibit the introduction of harmful organisms in accordinca with Article 40
+    paragraph 5 and Article 67 paragraph 2 of this Law; ◄
+
+2)    prohibit importation and circulation of plants, plant products and regulated objects which do not
+      fulfill requirements prescribed by this Law;
+
+3)    temporarily prohibit cultivation of plant species at the place of production which are potential
+      hosts of harmful organisms;
+
+4)    order phytosanitary measures in conformity with international guidelines and recommendations
+      on plants, plant product and regulated objects, in production, finishing, circulation, processing,
+      storage, importation and exportation, in case of doubt that they are infected with harmful
+      organisms;
+
+5)    order changes of the purpose of plants, plant products and regulated objects if they determine
+      that such a procedure will not result in spreading of harmful organisms;
+
+6)    order the destruction of plants, plant products and regulated objects in production, finishing,
+      processing, storage and circulation and when there exists a risk of spreading of harmful
+      organisms or where requirements prescribed by this law have not been fulfilled;
+
+7)    order the destruction of consignments of plants, plant products and regulated objects in
+      importation when there exists a risk of spreading of harmful organisms or where requirements
+      prescribed by this law have not been fulfilled;
+
+8)    prohibit the movement, division or sampling of consignments of plants, plant products and
+      regulated objects until the completion of phytosanitary inspections;
+
+9)    temporarily prohibit production, processing of circulation in whole or in part, until it is determined
+      that there no longer exists a threat of spreading of harmful organisms;
+
+10)   prohibit the issuance of plant passports in cases where the conditions required for its issuance
+      have not been fulfilled;
+
+11)   order measures to eliminate irregularities which have been established when they determine in
+      the supervision procedure that plant health regulations have not been applied or have been
+      applied improperly;
+
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                 37/43
+12)   file a request for initiating a misdemeanor proceeding, or a complaint for an economic offence or
+      file a criminal complaint with the respect to violation of any the provisions of this Law and
+      regulations adopted under this Law;
+
+13)   order other measures and undertake other actions, in conformity with this Law.
+
+In the performance of activities referred to in Article 92 paragraph 2 of this Law, forestry
+inspectors may:
+
+1)    temporarily prohibit production, processing or circulation in whole or in part of forest plants,
+      plant products and regulated objects until they determine that there no longer exists a threat of
+      spreading of harmful organisms which are not specified in the lists referred to in Article 34 of
+      this Law;
+
+2)    order measures in the event of the occurrence of harmful organisms which are not specified in
+      the lists referred to in Article 34 of this Law;
+
+3)    file a request for initiating a misdemeanor proceedings or a complaint for an economic offence
+      with the respect to violation of any the provisions of this Law and regulations adopted under this
+      Law;
+
+4)    order other measures and undertake other actions, in conformity with this Law.
+
+The measures referred to in paragraph 1 items 1 to 11, and item 13 and measures referred to in
+paragraph 2 items 1, 2 and 4 of this Article shall be ordered by decisions issued by phytosanitary
+and forestry inspectors, respectively.
+
+                              Responsibility for Deciding the Appeals
+
+                                               Article 94
+
+Appeals against decisions issued by phytosanitary and forestry inspectors may be lodged with the
+Minister no later than eight days of the date of delivery of the decision.
+
+Appeals do not stay execution of decisions.
+
+                                      XIV PENAL PROVISIONS
+
+                                          Criminal Offences
+
+                                               Article 95
+
+Whoever introduces, or spreads harmful organisms or imports plants, plant products and
+regulated objects into the Republic of Serbia and or a protected zone in contravention of
+regulations on a ban on introduction and spreading of harmful organisms or importation of plants,
+plant products and regulated objects shall be punished for a criminal offence by imprisonment up
+to one year.
+
+                                         Economic Offences
+
+                                                Article 96
+
+Legal persons shall be fined from 300,000 to 3,000,000 dinars for the economic offence if they:
+
+1)    engage in production, processing, finishing, importation, storage and circulation of plants, plant
+      products and regulated objects specified in List VА part I, List VА part II, List VB part I and List
+      VB part II without being registered in the ►M1 Phytoregister◄ (Article 11 paragraph 1);
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                38/43
+2)    engage in production, processing, finishing, importation, storage and circulation of certain types
+      of plants, plant product and regulated objects which are not specified in List VА part I and List
+      VА part II without being registered in the ►M1 Phytoregister◄ (Article 11 paragraph 2);
+
+3)    ►M1 fail to ensure in the performance of activities of public interest conformity with uniform
+      methods, criteria and guidelines of the Reference Laboratory (Article 20 paragraph 2); ◄
+
+4)    provide services in the sphere of the protection of plant health without being registered in the
+      Register of Services Providers (Article 22 paragraph 1);
+
+5)    ►M1 have failed to ensure the provision of services referred to in Article 21 paragraph 1 item 1
+      of this Law in conformity with uniform methods, criteria and guidelines of the Reference
+      Laboratory (Article 22 paragraph 3); ◄
+
+6)    provide services in the sphere of protection of plant health in an area which they have not
+      declared as an area in which they provide services in the sphere of protection of plant health, or
+      provide those services in excess of specified limits, or provide services of a type for which they
+      are not registered (Article 23 paragraph 1 item 4);
+
+7)    disclose or publish without authorization data about the first occurrence of harmful organisms
+      specified in List IA part I, List IA part II, List IIA part I. and List IIA part II (Article 42 paragraph 1);
+
+8)    introduce harmful organisms on List IA part I, List IA part II, List IIA part I, List IIA part II, List IB
+      and List IIB, or import plants, plant products and regulated objects on List IIIА, List IIIB, List IVA
+      part I, List IVA part II and List IVB, contrary to the provisions of Article 49 paragraph 1 of this
+      Law;
+
+9)    import, export or transit consignments of plants, plant products and regulated objects outside
+      specified border crossings and without phytosanitary inspection (Article 66 paragraphs 1 and 2);
+
+10)   import consignments of plants, plant products and regulated objects on List VB part I. and List
+      VB part II, or consignments of plants, plant products and regulated objects which are not
+      specified in List VB part I. and List VB part II, contrary to the provisions of Article 66 of this Law;
+
+11)   import harmful organisms on List IA part I, List IA part II, List IIA part I, List IIA part II, List IB and
+      List IIB, or plants, plant products and regulated objects on List IIIА, List IIIB, List IVА part I, List
+      IVА part II, List VB, List VA part I, List VA part II, List VB part I, List VB part II and List VI for
+      purposes of experimentation, scientific research work and cloning selection without a
+      phytosanitary inspection, phytosanitary certificate, as well as without an import permit (Article
+      69);
+
+12)   relocate, divide or take samples of consignments of plants, plant products and regulated objects
+      for which customs supervision until the completion of the inspection has been ordered in the
+      decision on transit (Article 73 paragraph 4);
+
+13)   introduce, breed or use organisms of autochthonous and introduced species which are specified
+      in lists without holding a license or without fulfilling prescribed requirements in respect of
+      facilities, equipment and professional qualifications (Article 82 paragraphs 2 and 4);
+
+14)   introduce, breed or use organisms of introduced species which are not specified in lists and do
+      not use those species for experimental, research or developmental purposes for the needs of
+      biological protection of plants (Article 82 paragraph 3);
+
+15)   fail to act on decision issued by inspectors, in accordance with this Law.
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                       39/43
+Responsible persons in legal entities shall be fined from 50,000 to 200,000 dinars for an economic
+offence referred to in paragraph 1 of this Article.
+
+Besides the fines specified for the economic offences referred to in paragraph 1 of this Article, legal
+persons may be prohibited from performing specific economic activities and responsible persons may
+be prohibited from performing specific duties, for a period from six months to seven years.
+
+                                   Misdemeanor of Legal Persons
+
+                                                Article 97
+
+Legal persons shall be fined from 150,000 to 1,000,000 dinars for a misdemeanor if they:
+
+1)    fail to undertake actions referred to in Article 10 paragraph 1 items 2, 4, 5 and 7 of this Law;
+
+2)    fail to notify the Ministry about changes of data, or fail to report changes ►M1 within 30 days ◄
+      (Article 12 paragraph ►M1 7 ◄ and Article 23 paragraph 2);
+
+3)    do not perform at all, or do not perform in the proper manner, obligations referred to in Article 14
+      paragraph 1 of this Law;
+
+4)    fail to keep records of services provided ►M1 or fail to deliver reports to the Ministry in the
+      prescribed manner and within the prescribed time limits ◄ (Article 25 paragraphs 1 and 2);
+
+5)    fail to keep proof of services provided for five years in accordance with Article 25 paragraph
+      ►M1 2 ◄ of this Law;
+
+6)    fail to implement measures ordered by phytosanitary inspector, or fail to prevent contacts
+      between infected plants and other plants, plant products or regulated objects to which the
+      infection could be transmitted (Article 39 paragraph 2);
+
+7)    fail to implement measures ordered by phytosanitary inspectors in specially regulated zones
+      (Article 43 paragraph 4);
+
+8)    act contrary to the provisions of Article 46 paragraph 3 of this Law;
+
+9)    import or perform circulation of plants, plant products and regulated objects on List IVA part I
+      and List IVA part II which do not fulfill specific phytosanitary conditions (Article 48 paragraph 1);
+
+10)   import or perform circulation of plants, plant products and regulated objects on List IVB which
+      do not fulfill specific phytosanitary conditions into a protected zone (Article 48 paragraph 2);
+
+11)   place in circulation plants, plant products and regulated objects on List
+
+12)   V.A part I. and seed on List IVA part I and List IVA part II contrary to the provisions of Article 52
+      of this Law;
+
+13)   place in circulation plants, plant products and regulated objects on List VА part II and seed on
+      List IVА part I and List IVA part II in a protected zone and within that zone contrary to the
+      provisions of Article 53 paragraph 1 of this Law;
+
+14)   fail to implement measures ordered by phytosanitary inspector (Article 55 paragraph 2);
+
+15)   issue plant passports without having in their employment a person holding a license for issuing
+      plant passports (Article 56 paragraph 1);
+
+16)   fail to keep records on issued plant passports, or fail to maintain such records for five years
+      (Article 61 paragraph 3);
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                 40/43
+17)   issue a plant passport contrary to the provision of Article 62 paragraph 1 of this Law;
+
+18)   issue a replacement plant passport where a phytosanitary inspection of a consignment whose
+      health status has changed has not been performed (Article 63);
+
+19)   act contrary to the provisions of Article 64 paragraph 1 of this Law;
+
+20)   fail to keep for one year plant passports for purchased plants, plant products and regulated
+      objects which are subject to the issue of plant passports (Article 65);
+
+21)   act contrary to the provisions of Article 72 paragraph 1 of this Law;
+
+22)   issue a plant passport for plants, plant products and regulated objects on List VA part I and List
+      VA part II for consignments whose health status has changed but where no phytosanitary
+      inspection has been performed (Article 76 paragraph 3);
+
+23)   fail to enable insight into all available documentation, as well as fail to provide all necessary
+      conditions for the performance of phytosanitary inspections (Article 79 paragraph 3).
+
+Responsible persons in legal persons shall be fined from 10,000 to 50,000 dinars for the
+misdemeanor referred to in paragraph 1 of this Article.
+
+                                      Misdemeanor of Operators
+
+                                                Article 98
+
+Operators who perform actions referred to in Article 96 paragraph 1 items 1, 2, 4, 6, 7, 9, 10 and
+15 and Article 97 paragraph 1 items 8, 9, 10 and 14 ►M1 and 16 ◄ of this Law shall be fined from
+250,000 to 500.000 dinars for misdemeanor.
+
+                                                Article 99
+
+Operators who perform actions referred to in Article 96 paragraph 1 items 12 and 13 and Article
+97 paragraph 1 items 1, 2, 3, 5, 6, 7, 11, 12, 13, 15, 17, 18, 19, 20, 21and 22 of this Law shall be
+fined from 50,000 to 400,000 dinars for misdemeanor.
+
+                                 Misdemeanor of Natural Persons
+
+                                               Article 100
+
+Natural persons engaged in the production and circulation of plants, plant products and regulated
+objects referred to in Article 11 paragraphs ►M1 1 and ◄ 2 of this Law without being registered in the
+►M1 Phytoregister◄ (Article 11 paragraph 4) shall be fined for misdemeanor from 30,000 to 50,000
+dinars.
+
+Fines referred to in paragraph 1 of this Article shall also be applicable to natural persons performing
+actions referred to in Article 96 paragraph 1 items 9 and 15 and Article 97 paragraph 1 items 9, 10,
+11and 12 of this Law.
+
+                                               Article 101
+
+Natural persons shall be fined from 5,000 to 30,000 dinars for the following misdemeanors:
+
+1)    failing to report to the Ministry changes of data ►M1, or failing to report changes ◄ within ►M1
+      30 ◄ days (Article 12 paragraph 6);
+
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                 41/43
+2)    importing plants, plant products and regulated objects in conformity with Article 70 paragraph 3
+      of this Law, but not using those plants, plant products and regulated objects in their place of
+      residence.
+
+Fines referred to in paragraph 1 of this Article shall also be applicable to natural persons
+performing actions referred to in Article 97 paragraph 1 items 1, 3, 6, 7, 8, 13, 18, 19, and 22 of
+this Law.
+
+                           XV TRANSITIONAL AND FINAL PROVISIONS
+
+ Deadline for Harmonization of Legal Persons, Operators and Natural Persons Registered in
+                       the Register with the Provisions of this Law
+
+                                               Article 102
+
+Legal persons and operators engaged in production, processing, finishing, importing, storing and
+circulating plants, plant products and regulated objects on List VA part I, List VA part II, List VB part I
+and List VB part II, as well as certain types of plants, plant products and regulated objects which are
+not specified in List VA part I and List VA part II shall be obliged to harmonize their operations with the
+provisions of this Law no later than one year after the effective date of this Law.
+
+Natural persons engaged in production of plants, plant products and regulated objects on List VA part
+I and List VA part II, as well as certain types of plants, plant products and regulated objects which are
+not specified in List VA part I and List VA part II and which are intended for circulation shall be obliged
+to harmonize their operations with the provisions of this Law no later than two years after the effective
+date of this Law.
+
+     Deadline for Harmonization of Legal Persons and Operators Providing Services in the
+                            Sphere of Protection of Plant Health
+
+                                               Article 103
+
+Legal persons and operators providing services in the sphere of protection of plant health shall be
+obliged to harmonize their operations with the provisions of this Law no later than one year after
+the effective date of this Law.
+
+                              Linking Data in Registers in the Ministry
+
+                                               Article 104
+
+Legal persons and operators registered in the Register of Producers of Seed Materials of Fruit
+Trees, Grapes and Hops pursuant to the provisions of the Law on the Seed Materials of Fruit Trees,
+Grapes and Hops (Official Gazette of the RS, No. 18/05), or in the Register of Producers of Seed,
+Seedlings, Mycelium of Edible and Medicinal Mushrooms and the Register of Seed Finishers pursuant
+to provisions of the Law on Seed (Official Gazette of the RS, No. 45/05) shall become registered in the
+Register on the effective date of this Law.
+
+Natural persons registered in the Register of Agricultural Holdings pursuant to provisions of the
+Decree on the Register of Agricultural Holdings (Official Gazette of the RS, Nos. 119/08, 21/09 and
+36/09) shall become registered in the Register on the effective date of this Law.
+
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                42/43
+     Continuation of Performing Activities of Public Interest Until the Organization of Bid
+
+                                               Article 105
+
+Legal persons deemed on the basis of the Law on the Protection of Plants (Official Gazette of the
+FRY, No. 24/98 and 26/98-correction and Official Gazette of the RS, No. 101/05-other law) that
+fulfills requirements for performing activities with respect to the plant health shall continue
+performing health inspections of plants until the bid for performing activities of public interest in
+the sphere of harmful organisms diagnostics and protection of plant health is organized.
+
+                                        Application of By-laws
+
+                                               Article 106
+
+Until the enactment of regulations on the basis of authorization from this Law, regulations
+adopted pursuant to the Law on the Protection of Plants (Official Gazette of the FRY, Nos. 24/98
+and 26/98 and Official Gazette of the RS, No. 101/05-other law) and the Law on the Protection of
+Plants from Diseases and Pests (Official Gazette of the SRS, Nos. 14/84 and 6/89-other law,
+Official Gazette of the RS, No. 53/93-other law, 67/93-other law and 48/94-other law and Official
+Gazette of the RS, No. 101/05-other law), shall be applied, provided they do not contravene this
+Law.
+
+                                    Termination of Previous Laws
+
+                                               Article 107
+
+The following shall cease to apply from the effective date of this Law:
+
+1)    Law on the Protection of Plants from Diseases and Pests (Official Gazette of the SRS, Nos.
+      14/84 and 6/89-other law, Official Gazette of the RS, No. 53/93-other law, 67/93-other law and
+      48/94-other law and Official Gazette of the RS, No. 101/05-other law);
+
+2)    Law on the Protection of Plants (Official Gazette of the FRY, Nos. 24/98 and 26/98 and Official
+      Gazette of the RS, No. 101/05-other law), except for provisions reffered to pesticides and
+      fertilizers, while Articles 26 and 32 of that Law shall cease to apply from 1st January 2011.
+
+                                     Entry into Force of this Law
+
+                                               Article 108
+
+This Law shall enter into force on the eighth day from the date of its publication in the Official Gazette
+of the Republic of Serbia, while the provisions of Articles 52, 53, 54, 55, 60, 61, 62, 63, 64 and 65
+shall be applied from 1st January 2011.
+
+
+
+
+Institut für nationale und internationale Angelegenheiten der Pflanzengesundheit
+Serbien, Pflanzenschutzgesetz 2009/41                                                                43/43
+

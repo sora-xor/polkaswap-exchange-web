@@ -1,0 +1,50 @@
+{
+  "code": "PF",
+  "name": "French Polynesia",
+  "status": "conditional",
+  "rule": "DBS’s current private-import guidance, updated 5 August 2026 and citing Order 324 CM, expressly covers postal parcels. It waives both import permits and phytosanitary certificates for plant food that has undergone cooking, whether commercially/industrially prepared or otherwise. Camellia is absent from its listed prohibited cooked species. Applying that provision to the stated steam-manufactured sencha is an explicit processing inference. The authority’s reform notice confirms use of ISPM 32; the standard illustrates tea as Category 1. Full Annex 5 was not independently retrieved, so this finding rests on current DBS guidance, not the repealed 1996 order.",
+  "personalMailApplicability": "The current DBS page expressly includes post. Declare the tea accurately, keep it commercially sealed and labelled, and allow arrival inspection. This assessment depends on actual steaming during manufacture; it does not cover merely dried raw leaves or herbal mixtures.",
+  "quantityLimit": null,
+  "authority": "French Polynesia Direction de la biosécurité",
+  "evidenceUrls": [
+    "https://www.service-public.pf/biosecurite/accueil/particuliers/apporter-ou-faire-venir-en-pf-particulier/jarrive-en-polynesie-francaise/",
+    "https://www.service-public.pf/biosecurite/18-03-2026-nouvelle-reglementation-concernant/",
+    "https://www.ippc.int/en/publications/587/",
+    "https://assets.ippc.int/static/media/files/publications/ru/1366800159_ISPM_32_2009_Ru_2012-12-10.pdf",
+    "https://lexpol.cloud.pf/LexpolAfficheTexte.php?texte=1037079&idr=0&np=1&lang=fr",
+    "https://www.service-public.pf/biosecurite/accueil/professionnels-2/importer-en-polynesie-francaise-2/denrees-alimentaires/denrees-stockees-dorigine-vegetale-refonte/produits-transformes-dorigine-vegetale/",
+    "https://lexpol.pf/LexpolAfficheTexte.php?texte=1037079&idr=0&np=1&lang=fr",
+    "https://www.service-public.pf/biosecurite/accueil/reglementation-dbs/",
+    "https://lexpol.cloud.pf/LexpolAfficheTexte.php?texte=1037079&lang=fr"
+  ],
+  "remainingQuestion": null,
+  "researchAttempts": [
+    "Read DBS announcement identifying repeal and replacement of740CM.",
+    "Attempted the official Lexpol324CM link through browser research and direct HTTP; connection timed out.",
+    "Searched the official site and indexed gazette for324CM annex5 or a current tea exemption; not located.",
+    "Rechecked the March 2026 authority announcement and the stored/processed-food annex description.",
+    "Tried both official Lexpol hosts through browser research and direct HTTP; repeated connection timeouts prevented retrieving the full replacement order. Searched official gazette/authority mirrors without locating Annex 5.",
+    "Did not treat low-risk examples in the reform announcement or the obsolete 740 CM processed-food page as a tea-specific permission.",
+    "Final targeted source-recovery pass: the current DBS regulatory index independently lists Order 324 CM (16 March 2026) and links to Lexpol text 1037079 with a shorter query string. The index provides no separate downloadable copy or Annex 5 attachment. Both the index and the reform announcement therefore lead to the same inaccessible official text.",
+    "Tried the current Lexpol publication through web retrieval, direct public HTTP retrieval and a normal Chrome research tab. Web retrieval failed, the direct article request timed out, and the host-root lookup also returned a name-resolution failure. The browser navigation timed out without displaying the regulation. The public DBS WordPress media search returned HTTP 503. These are access failures, not a finding of prohibition.",
+    "Targeted government publication/attachment searches (DBS, service-public.pf, Lexpol, Presidency and Assembly) returned the reform summary and obsolete Order 740 material, but no current Annex 5 text. Annex 5 remains the exact missing public source; no outcome change was made.",
+    "30 September fresh official online recovery: downloaded the current private arrival/postal DBS guidance (219,665-byte HTTP200 HTML), updated5August2026 and expressly citing324CM. Read its post coverage, cooked-food exemption and cooked-species prohibitions. Independent peer review agrees that actual steam-manufactured sencha can reasonably satisfy the general cooking provision. Saved original HTML, SHA256 provenance and peer analysis; full324Annex5 remains unread. The earlier lack of a tea-specific current annex does not prevent use of this current general processing rule."
+  ],
+  "reviewedAt": "2026-09-30",
+  "permitFreeDecision": "supported",
+  "permitFreeReason": "Current postal guidance supplies a published general cooked-plant-food exemption. Actual steam-manufactured pure sencha reasonably falls within it; that is a stated inference, supported by the authority’s current ISPM 32 framework. No special permit or foreign phytosanitary certificate is required under this published route. Ordinary declaration and arrival clearance remain.",
+  "permitFreeSources": [
+    "https://www.service-public.pf/biosecurite/accueil/particuliers/apporter-ou-faire-venir-en-pf-particulier/jarrive-en-polynesie-francaise/",
+    "https://www.service-public.pf/biosecurite/18-03-2026-nouvelle-reglementation-concernant/",
+    "https://www.ippc.int/en/publications/587/",
+    "https://assets.ippc.int/static/media/files/publications/ru/1366800159_ISPM_32_2009_Ru_2012-12-10.pdf",
+    "https://lexpol.cloud.pf/LexpolAfficheTexte.php?texte=1037079&idr=0&np=1&lang=fr",
+    "https://www.service-public.pf/biosecurite/accueil/professionnels-2/importer-en-polynesie-francaise-2/denrees-alimentaires/denrees-stockees-dorigine-vegetale-refonte/produits-transformes-dorigine-vegetale/",
+    "https://lexpol.pf/LexpolAfficheTexte.php?texte=1037079&idr=0&np=1&lang=fr",
+    "https://www.service-public.pf/biosecurite/accueil/reglementation-dbs/",
+    "https://lexpol.cloud.pf/LexpolAfficheTexte.php?texte=1037079&lang=fr"
+  ],
+  "permitFreeReviewedAt": "2026-09-30",
+  "paperworkType": "Ordinary customs declaration and routine arrival inspection/clearance under the published cooked-food route.",
+  "requiredDocument": "No special permit or phytosanitary certificate under the stated cooked-plant-food route; accurate declaration and original labelled packaging."
+}

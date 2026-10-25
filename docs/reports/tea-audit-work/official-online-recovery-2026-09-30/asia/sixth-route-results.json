@@ -1,0 +1,28 @@
+[
+  {
+    "name": "pg-tariff-altlegislation",
+    "url": "https://www.customs.gov.pg/pdf/legislation/CUSTOMS-TARIFF-ACT-1990_HS%202022%20Import%20%26%20Export%20Tariff.pdf",
+    "status": "000",
+    "error": "curl: (28) Failed to connect to www.customs.gov.pg port 443 after 10002 ms: Timeout was reached\n",
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/pg-tariff-altlegislation.pdf",
+    "retrievedAt": "2026-09-30T06:35:10.833524+00:00"
+  },
+  {
+    "name": "pg-tariff-altpages",
+    "url": "https://customs.gov.pg/pdf/pages/HS%202022%20Import%20%26%20Export%20Tariff%20Act.pdf",
+    "status": "500",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/pg-tariff-altpages.pdf",
+    "retrievedAt": "2026-09-30T06:35:01.086903+00:00",
+    "bytes": 7309,
+    "sha256": "a8a284f377cb9f21c53e5553234ecb693dc4c2c38f3306b6cde4aead5e05e913"
+  },
+  {
+    "name": "af-gazette1472-archive",
+    "url": "http://old.moj.gov.af/Content/files/OfficialGazette/01401/OG_01472.pdf",
+    "status": "000",
+    "error": "curl: (28) Connection timeout after 10000 ms\n",
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/af-gazette1472-archive.pdf",
+    "retrievedAt": "2026-09-30T06:35:10.854622+00:00"
+  }
+]

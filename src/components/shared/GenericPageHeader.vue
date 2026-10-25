@@ -1,7 +1,13 @@
 <template>
   <div :class="headerClasses">
     <slot name="back">
-      <s-button v-if="hasButtonBack" type="action" icon="arrows-chevron-left-rounded-24" @click="handleBack($event)" />
+      <s-button
+        v-if="hasButtonBack"
+        type="action"
+        icon="arrows-chevron-left-rounded-24"
+        :aria-label="t('backText')"
+        @click="handleBack($event)"
+      ></s-button>
     </slot>
 
     <h3 class="page-header-title" :class="{ bold }">
@@ -10,48 +16,54 @@
       </slot>
       <s-tooltip
         v-if="tooltip"
-        class="page-header-tooltip"
+        class="page-header-tooltip s-icon-info-16"
+        wrapper-tag="i"
         popper-class="info-tooltip info-tooltip--page-header"
         border-radius="mini"
         :content="tooltip"
         :placement="tooltipPlacement"
         tabindex="-1"
-      >
-        <s-icon name="info-16" size="18px" />
-      </s-tooltip>
+      ></s-tooltip>
     </h3>
-    <slot />
+    <slot></slot>
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useTranslation } from '@/composables/useTranslation';
 
-@Component
-export default class GenericPageHeader extends Mixins(TranslationMixin) {
-  @Prop({ default: false, type: Boolean }) readonly hasButtonBack!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly bold!: boolean;
-  @Prop({ default: '', type: String }) readonly title!: string;
-  @Prop({ default: '', type: String }) readonly tooltip?: string;
-  @Prop({ default: 'right-start', type: String }) readonly tooltipPlacement?: string;
-
-  get headerClasses(): string {
-    const baseClass = 'page-header';
-    const classes = [baseClass];
-
-    if (this.hasButtonBack) {
-      classes.push(`${baseClass}--center`);
-    }
-
-    return classes.join(' ');
+const props = withDefaults(
+  defineProps<{
+    hasButtonBack?: boolean;
+    bold?: boolean;
+    title?: string;
+    tooltip?: string;
+    tooltipPlacement?: string;
+  }>(),
+  {
+    hasButtonBack: false,
+    bold: false,
+    title: '',
+    tooltip: '',
+    tooltipPlacement: 'right-start',
   }
+);
 
-  handleBack(event?: Event): void {
-    this.$emit('back', event);
-  }
-}
+const emit = defineEmits<{
+  (event: 'back', value?: Event): void;
+}>();
+const { t } = useTranslation();
+
+const headerClasses = computed(() => {
+  const baseClass = 'page-header';
+  return props.hasButtonBack ? `${baseClass} ${baseClass}--center` : baseClass;
+});
+
+const handleBack = (event?: Event): void => {
+  emit('back', event);
+};
 </script>
 
 <style lang="scss">
@@ -84,6 +96,7 @@ $title-padding: calc(#{var(--s-size-medium)} + #{$inner-spacing-small});
     }
   }
   &-title {
+    margin: 0;
     color: var(--s-color-base-content-primary);
     line-height: $tooltip-area-height;
 
@@ -96,10 +109,13 @@ $title-padding: calc(#{var(--s-size-medium)} + #{$inner-spacing-small});
       }
     }
   }
-  &-tooltip {
+  :deep(.page-header-tooltip) {
+    display: inline;
+    color: var(--s-color-base-content-tertiary);
     margin-top: auto;
     margin-bottom: auto;
     margin-left: $inner-spacing-mini;
+    font-size: 18px;
     line-height: $tooltip-area-height;
     cursor: pointer;
   }

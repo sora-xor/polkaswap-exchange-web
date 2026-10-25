@@ -1,0 +1,12 @@
+{
+  "checkedAt": "2026-09-30T03:39:01.902624+00:00",
+  "codes": [
+    "ET"
+  ],
+  "newlySupported": [],
+  "newlyExcluded": [],
+  "outcomeChanges": false,
+  "finding": "30 September legal-scope peer review: recovered the complete official English translation of Food Exporters, Importers and Wholesalers Control Directive 22/2014, hosted by USDA. Article 4 limits it to food-trade companies; article 8(1) expressly exempts personal-consumption food from the certificate of competence. Article 20(4) separately lists shipment health and origin certificates, and article 8 does not expressly waive those. This is an older directive and its present interaction with Proclamation 1112/2019 was not established. The 2025 USDA FAIRS report describes processed tea notification and commercial import documents but supplies no private-postal scope rule; its reliance on the 1992 plant regulation cannot override the new 2026 proclamation. These sources narrow the licensing issue without clearing tea or proving an unavoidable private-parcel certificate.",
+  "remainingQuestion": "The finished-tea pest-risk classification under Plant Protection and Quarantine Proclamation 1400/2026 remains missing. Separately, establish how Proclamation 1112/2019 article 3 and any current EFDA food directive apply to an own-consumption postal purchase. The recovered 2014 directive expressly exempts personal food from competence licensing, but does not establish a current waiver from shipment certificates; its company-trade scope also prevents treating article 20 as an unqualified private import duty.",
+  "override": "et-evidence-override.json"
+}

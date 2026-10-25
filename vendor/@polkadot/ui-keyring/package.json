@@ -1,0 +1,158 @@
+{
+  "author": "Jaco Greeff <jacogr@gmail.com>",
+  "bugs": "https://github.com/polkadot-js/ui/issues",
+  "contributors": [],
+  "homepage": "https://github.com/polkadot-js/ui/tree/master/packages/ui-keyring#readme",
+  "license": "Apache-2.0",
+  "maintainers": [],
+  "name": "@polkadot/ui-keyring",
+  "repository": {
+    "directory": "packages/ui-keyring",
+    "type": "git",
+    "url": "https://github.com/polkadot-js/ui.git"
+  },
+  "sideEffects": [
+    "./detectPackage.js",
+    "./cjs/detectPackage.js"
+  ],
+  "type": "module",
+  "version": "2.12.1",
+  "main": "./cjs/index.js",
+  "module": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    "./cjs/package.json": "./cjs/package.json",
+    "./cjs/*": "./cjs/*.js",
+    ".": {
+      "types": "./index.d.ts",
+      "require": "./cjs/index.js",
+      "default": "./index.js"
+    },
+    "./Base": {
+      "types": "./Base.d.ts",
+      "require": "./cjs/Base.js",
+      "default": "./Base.js"
+    },
+    "./bundle": {
+      "types": "./bundle.d.ts",
+      "require": "./cjs/bundle.js",
+      "default": "./bundle.js"
+    },
+    "./defaults": {
+      "types": "./defaults.d.ts",
+      "require": "./cjs/defaults.js",
+      "default": "./defaults.js"
+    },
+    "./detectOther": {
+      "types": "./detectOther.d.ts",
+      "require": "./cjs/detectOther.js",
+      "default": "./detectOther.js"
+    },
+    "./detectPackage": {
+      "types": "./detectPackage.d.ts",
+      "require": "./cjs/detectPackage.js",
+      "default": "./detectPackage.js"
+    },
+    "./Keyring": {
+      "types": "./Keyring.d.ts",
+      "require": "./cjs/Keyring.js",
+      "default": "./Keyring.js"
+    },
+    "./observable": {
+      "types": "./observable/index.d.ts",
+      "require": "./cjs/observable/index.js",
+      "default": "./observable/index.js"
+    },
+    "./observable/accounts": {
+      "types": "./observable/accounts.d.ts",
+      "require": "./cjs/observable/accounts.js",
+      "default": "./observable/accounts.js"
+    },
+    "./observable/addresses": {
+      "types": "./observable/addresses.d.ts",
+      "require": "./cjs/observable/addresses.js",
+      "default": "./observable/addresses.js"
+    },
+    "./observable/contracts": {
+      "types": "./observable/contracts.d.ts",
+      "require": "./cjs/observable/contracts.js",
+      "default": "./observable/contracts.js"
+    },
+    "./observable/env": {
+      "types": "./observable/env.d.ts",
+      "require": "./cjs/observable/env.js",
+      "default": "./observable/env.js"
+    },
+    "./observable/genericSubject": {
+      "types": "./observable/genericSubject.d.ts",
+      "require": "./cjs/observable/genericSubject.js",
+      "default": "./observable/genericSubject.js"
+    },
+    "./observable/types": {
+      "types": "./observable/types.d.ts",
+      "require": "./cjs/observable/types.js",
+      "default": "./observable/types.js"
+    },
+    "./options": {
+      "types": "./options/index.d.ts",
+      "require": "./cjs/options/index.js",
+      "default": "./options/index.js"
+    },
+    "./options/item": {
+      "types": "./options/item.d.ts",
+      "require": "./cjs/options/item.js",
+      "default": "./options/item.js"
+    },
+    "./options/types": {
+      "types": "./options/types.d.ts",
+      "require": "./cjs/options/types.js",
+      "default": "./options/types.js"
+    },
+    "./package.json": "./package.json",
+    "./packageInfo.js": {
+      "types": "./packageInfo.d.ts",
+      "require": "./cjs/packageInfo.js",
+      "default": "./packageInfo.js"
+    },
+    "./packageInfo": {
+      "types": "./packageInfo.d.ts",
+      "require": "./cjs/packageInfo.js",
+      "default": "./packageInfo.js"
+    },
+    "./stores": {
+      "types": "./stores/index.d.ts",
+      "require": "./cjs/stores/index.js",
+      "default": "./stores/index.js"
+    },
+    "./stores/Browser": {
+      "types": "./stores/Browser.d.ts",
+      "require": "./cjs/stores/Browser.js",
+      "default": "./stores/Browser.js"
+    },
+    "./stores/File": {
+      "types": "./stores/File.d.ts",
+      "require": "./cjs/stores/File.js",
+      "default": "./stores/File.js"
+    },
+    "./types": {
+      "types": "./types.d.ts",
+      "require": "./cjs/types.js",
+      "default": "./types.js"
+    }
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.20.13",
+    "@polkadot/keyring": "^10.4.2",
+    "@polkadot/ui-settings": "2.12.1",
+    "@polkadot/util": "^10.4.2",
+    "@polkadot/util-crypto": "^10.4.2",
+    "mkdirp": "^2.1.3",
+    "rxjs": "^7.8.0",
+    "store": "^2.0.12"
+  },
+  "peerDependencies": {
+    "@polkadot/keyring": "*",
+    "@polkadot/ui-settings": "*",
+    "@polkadot/util": "*"
+  }
+}

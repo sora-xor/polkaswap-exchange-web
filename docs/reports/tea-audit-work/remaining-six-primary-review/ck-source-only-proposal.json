@@ -1,0 +1,25 @@
+{
+  "code": "CK",
+  "outcome": "unresolved",
+  "decisionChanged": false,
+  "reviewedAt": "2026-09-30",
+  "finding": "The Act covers manufactured plant products; the narrower plant-material definition is not an exemption from the separate plant-product limb. Sections 25–26 require permits/certificates only where the applicable specification requires them. Section 27 is an affirmative advance written-application duty only for a type not already the subject of a specification. Current ministry-published PP29 (dried herbs) is no-permit/no-PC; PP23 (dried plant material) requires a permit. Those are genuinely competing general categories for finished infusion leaves, not merely absent literal tea naming.",
+  "proposedDecision": "Keep unresolved. Conservative exclusion cannot be justified merely because the researcher has not demonstrated the specification: that is a verification standard, not the statutory section 27 trigger. If the complete register demonstrates no applicable specification, section 27 would justify no-doc exclusion; if PP29 covers finished Camellia leaves, the no-document route may be supportable.",
+  "newSourceResult": "Recovered the complete 73-page Act directly from the current ministry Act-page link. Its PDF text layer uses faulty font encoding, while previously saved official IPPC text confirms the relevant provisions. Public WordPress media searches for import and tea returned 403; no alternate specification was retrieved and no access bypass attempted.",
+  "urls": [
+    "https://agriculture.gov.ck/biosecurity/bio-security-act/",
+    "https://agriculture.gov.ck/wp-content/uploads/2019/11/Biosecurity-Act-2008.pdf",
+    "https://agriculture.gov.ck/wp-content/uploads/2021/01/Update-Import-Specification-6-January-2021..pdf"
+  ],
+  "preciseRemainingEvidence": "An applicable current specification or a general published meaning/category allocation that distinguishes PP29 dried herbs from PP23 dried plant material for manufactured infusion tea; alternatively an exhaustive register showing this type has no specification. No bespoke individual ruling is intrinsically necessary.",
+  "contraryInterpretation": "A conservative operator could elect not to ship without demonstrated PP29 coverage. That is a business hold, not evidence that the law affirmatively requires every finished tea importer to make an application.",
+  "confidence": "High for conditional statutory trigger and table text; classification remains unresolved.",
+  "sourceFiles": [
+    "remaining-six-primary-review/ck-act2008-ministry.pdf",
+    "remaining-six-primary-review/ck-media-import-403.html",
+    "remaining-six-primary-review/ck-media-tea-403.html",
+    "pacific-final-source-review/ck-import-specification2021.pdf",
+    "pacific-finished-tea-definition-review/ck-act-official-web-extract.json",
+    "pacific-finished-tea-definition-review/ck-act-definitions-official-web-extract.json"
+  ]
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "file": "gn-oncq-import-control.html",
+    "url": "https://oncq-guinee.com/service/controle-des-denrees-alimentaires-a-limportation/",
+    "http": 200,
+    "bytes": 86375
+  },
+  {
+    "file": "ug-ura-restricted.html",
+    "url": "https://ura.go.ug/en/restricted-goods/",
+    "http": 200,
+    "bytes": 407573
+  },
+  {
+    "file": "cg-guot-platform.html",
+    "url": "https://guot.cg/plateformes/",
+    "http": 200,
+    "bytes": 111395
+  },
+  {
+    "file": "cg-current-index.html",
+    "url": "https://www.sgg.cg/fr/recherche.html?page=4942&row=123383",
+    "http": 200,
+    "bytes": 57538
+  }
+]

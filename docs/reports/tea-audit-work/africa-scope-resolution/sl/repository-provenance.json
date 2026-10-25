@@ -1,0 +1,39 @@
+[
+  {
+    "name": "sierralii-legislation",
+    "url": "https://sierralii.gov.sl/legislation/",
+    "status": 200,
+    "final_url": "https://sierralii.gov.sl/legislation/",
+    "bytes": 107273,
+    "text": "ter/X profile opens in new tab About SierraLII SierraLII provides free, unrestricted access to the primary and secondary legal materials of Sierra Leone. Free Access to Law supports the rule of law, access to justice and transparency. Pocket Law Use SierraLII offline with Pocket Law . Help About us Contact us Terms of Use Our partners AfricanLII Laws.Africa Justice Sector Coordination Office of Sierra Leone Other African Legal Information Institutions AfricanLII opens in new tab GhaLII opens in new tab Kenya Law opens in new tab LawLibrary ZA opens in new tab LesothoLII opens in new tab LiberLII opens in new tab MalawiLII opens in new tab MauritiusLII opens in new tab NamibLII opens in new tab NigeriaLII opens in new tab OpenbyLaws ZA opens in new tab RwandaLII opens in new tab SeyLII opens in new tab SieraLII opens in new tab eSwatiniLII opens in new tab TanzLII opens in new tab UgandaLII opens in new tab ZambiaLII opens in new tab ZanzibarLII opens in new tab ZimLII opens in new tab "
+  },
+  {
+    "name": "sierralii-search",
+    "url": "https://sierralii.gov.sl/search/?q=phytosanitary",
+    "status": 200,
+    "final_url": "https://sierralii.gov.sl/search/?q=phytosanitary",
+    "bytes": 15062,
+    "text": "ter/X profile opens in new tab About SierraLII SierraLII provides free, unrestricted access to the primary and secondary legal materials of Sierra Leone. Free Access to Law supports the rule of law, access to justice and transparency. Pocket Law Use SierraLII offline with Pocket Law . Help About us Contact us Terms of Use Our partners AfricanLII Laws.Africa Justice Sector Coordination Office of Sierra Leone Other African Legal Information Institutions AfricanLII opens in new tab GhaLII opens in new tab Kenya Law opens in new tab LawLibrary ZA opens in new tab LesothoLII opens in new tab LiberLII opens in new tab MalawiLII opens in new tab MauritiusLII opens in new tab NamibLII opens in new tab NigeriaLII opens in new tab OpenbyLaws ZA opens in new tab RwandaLII opens in new tab SeyLII opens in new tab SieraLII opens in new tab eSwatiniLII opens in new tab TanzLII opens in new tab UgandaLII opens in new tab ZambiaLII opens in new tab ZanzibarLII opens in new tab ZimLII opens in new tab "
+  },
+  {
+    "name": "ippc-obligations",
+    "url": "https://www.ippc.int/en/countries/sierra-leone/reportingobligation/",
+    "status": 404,
+    "final_url": "https://www.ippc.int/en/countries/sierra-leone/reportingobligation/",
+    "bytes": 3984,
+    "text": "cs.js', 'ga'); ga('create', 'UA-26969258-1', 'auto'); ga('send', 'pageview'); (function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML=\"window.__CF$cv$params={r:'a43192fe0f6fe38b',t:'MTc5MDc1Mzk3MA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);\";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})(); "
+  },
+  {
+    "name": "faolex-country",
+    "url": "https://www.fao.org/faolex/country-profiles/general-profile/en/?iso3=SLE",
+    "status": 403,
+    "final_url": "https://www.fao.org/faolex/country-profiles/general-profile/en/?iso3=SLE",
+    "bytes": 5765,
+    "text": "1S6harcZ67n986W.uN3ZmepyIxTFg',};var a = document.createElement('script');a.nonce = 'sQXFwliV41BS5Rgqd3LCiK';a.src = '/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1?ray=a43192fe0d35d2fd';window._cf_chl_opt.cOgUHash = location.hash === '' && location.href.indexOf('#') !== -1 ? '#' : location.hash;window._cf_chl_opt.cOgUQuery = location.search === '' && location.href.slice(0, location.href.length - window._cf_chl_opt.cOgUHash.length).indexOf('?') !== -1 ? '?' : location.search;if (window.history && window.history.replaceState) {var ogU = location.pathname + window._cf_chl_opt.cOgUQuery + window._cf_chl_opt.cOgUHash;history.replaceState(null, null,\"/faolex/country-profiles/general-profile/en/?iso3=SLE\\u0026__cf_chl_rt_tk=e1S0pYwr57DzuaqnLGp12ZiKrkFJkT8muJZi_x7aCL8-1790753970-1.0.1.1-frUJHTTpfRTXrBV.yOnAJmV8Ts3IkIGnSXoi7Rzekh8\"+ window._cf_chl_opt.cOgUHash);a.onload = function() {history.replaceState(null, null, ogU);}}document.getElementsByTagName('head')[0].appendChild(a);}()); "
+  },
+  {
+    "name": "ecolex-search",
+    "url": "https://www.ecolex.org/result/?q=phytosanitary&xcountry=Sierra%20Leone",
+    "error": "HTTPSConnectionPool(host='www.ecolex.org', port=443): Read timed out. (read timeout=35)"
+  }
+]

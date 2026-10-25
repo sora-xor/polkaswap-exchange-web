@@ -1,0 +1,35 @@
+Source: official UNBS PDF search index, read 2026-09-30.
+URL: https://www.unbs.go.ug/attachments/menus/57/THE%20UNBS%20%28INSPECTION%20%26%20CLEARANCE%29%20REGULATION%202022.pdf
+Instrument: Uganda National Bureau of Standards (Inspection and Clearance of Imports) Regulations, 2022, SI112/2022.
+Access limitation: direct full PDF returned HTTP403. These are the actual indexed primary-source passages, not a purported complete downloaded law. Formatting normalized; words preserved.
+
+7. Commodities not accompanied by certificate of conformity or certificate of road worthiness
+
+(1) Notwithstanding regulation 5, where the commodities specified in Part 1 of Schedule 1 to these Regulations are not accompanied by a certificate of conformity or a certificate of road worthiness, the commodities shall be subjected to destination inspection.
+
+(2) For purposes of subregulation (1), the importer shall pay the inspection fees and the charges prescribed in paragraph 2 of Schedule 2 to these Regulations, as applicable, a surcharge of fifteen per cent of the Cost, Insurance and Freight (CIF) value of the commodities subjected to inspection clearance and any other fee prescribed in Schedule 2, as may be applicable.
+
+(3) Where the commodities referred to in subregulation (1) comply with the compulsory standard specifications, the standards inspector shall issue an import clearance certificate in respect of the commodities.
+
+(4) Where the commodities referred to in subregulation (1) do not conform to the requirements of the compulsory standard specifications, the bureau shall issue a notice to the importer to take corrective action or to destroy or re-export the commodities, depending on the risk of the commodities to the environment and in accordance with regulation 15.
+
+8. Application for import clearance certificate
+
+(1) An importer of commodities specified in Schedule 1 to these Regulations shall apply to the bureau for clearance and issuance of an import clearance certificate by submitting an accurate customs declaration through the electronic single window, prior to or upon the arrival of the commodities at a port of entry into Uganda or at entry to the single customs territory.
+
+(2) The application in subregulation (1) shall be accompanied by—
+(a) the bill of lading or airway bill;
+(b) the packing list;
+(c) the invoice;
+(d) the customs declaration;
+(e) the customs transit document;
+(f) the certificate of conformity or certificate of road worthiness, where applicable;
+(g) a valid product certification permit for commodities that originate from a Partner State of the East African Community, or commodities to which regulation 14 applies;
+(h) an export certificate, in the case of motor vehicles;
+(i) an exemption letter from the bureau in accordance with regulation 5 (5), where applicable;
+(j) the passport bio data page and other supporting documentation for returning residents, where applicable; and
+(k) a diplomatic note endorsed by the Ministry responsible for foreign affairs, in the case of persons seeking exemption for diplomatic cargo.
+
+(3) Where commodities are accompanied by a certificate of conformity or a certificate of road worthiness, the standards inspector shall verify the commodities to confirm that the commodities match the declaration in the application and in the certificate of conformity or the certificate of road worthiness.
+
+Review consequence: regulation7 may provide a destination-inspection route without a pre-export CoC, while regulation8(1) uses a customs declaration. Regulation8(2)(i) only requires the exemption letter where applicable. Therefore the ordinary low-value exemption-letter procedure cannot prove that every lawful route requires special documentation. Whether postal processing under regulation7 needs a separate agency application/letter remains unresolved. The 2025 official UNBS e-portal notice expressly says ICC is automatically generated after inspection, reinforcing that ICC alone is not a separate applicant-obtained certificate.

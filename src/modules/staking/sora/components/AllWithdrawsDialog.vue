@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="isVisible" :title="title">
+  <DialogBase v-model:visible="isVisible" :title="title">
     <div class="all-withdraws-dialog">
       <s-scrollbar class="all-withdraws-scrollbar">
         <s-card
@@ -11,20 +11,20 @@
           size="mini"
         >
           <div class="withdraw-content">
-            <token-logo class="withdraw-logo" :token-symbol="stakingAsset?.symbol" />
-            <formatted-amount-with-fiat-value
+            <TokenLogo class="withdraw-logo" :token-symbol="stakingAsset?.symbol"></TokenLogo>
+            <FormattedAmountWithFiatValue
               class="amount"
               :asset-symbol="stakingAsset?.symbol"
               symbol-as-decimal
               value-can-be-hidden
               :value="withdraw.valueFormatted"
-              :fiat-value="withdrawableFundsFiat"
-            />
-            <era-countdown
+              :fiat-value="withdraw.valueFiat"
+            ></FormattedAmountWithFiatValue>
+            <EraCountdown
               class="countdown"
               translation-key="soraStaking.withdraw.countdownLeft"
               :target-era="withdraw.era"
-            />
+            ></EraCountdown>
           </div>
         </s-card>
       </s-scrollbar>
@@ -34,105 +34,109 @@
             {{ t('soraStaking.allWithdrawsDialog.information') }}
           </div>
           <div class="information-icon">
-            <s-icon name="notifications-alert-triangle-24" size="20px" />
+            <s-icon name="notifications-alert-triangle-24" size="20px"></s-icon>
           </div>
         </div>
       </s-card>
     </div>
-  </dialog-base>
+  </DialogBase>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import assert from 'assert';
 
 import { FPNumber } from '@sora-substrate/sdk';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { computed } from 'vue';
+import { useTranslation } from '@/composables/useTranslation';
 
-import { Components } from '@/consts';
-import { lazyComponent } from '@/router';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import EraCountdown from '@/modules/staking/sora/components/EraCountdown.vue';
 import { formatDecimalPlaces } from '@/utils';
 
-import { soraStakingLazyComponent } from '../../router';
-import { ERA_HOURS, SoraStakingComponents } from '../consts';
-import StakingMixin from '../mixins/StakingMixin';
+import { ERA_HOURS } from '../consts';
+import { useSoraStaking } from '../composables/useSoraStaking';
+
+import type { Nullable } from '@/types/common';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
+import WalletComponentFormattedAmountWithFiatValue from '@/lib/soraneo-wallet/src/components/FormattedAmountWithFiatValue.vue';
 
 type Withdraw = {
   id: number;
   era: number;
-  value: FPNumber;
   valueFormatted: string;
+  valueFiat: Nullable<string>;
 };
 
-@Component({
-  components: {
-    TokenInput: lazyComponent(Components.TokenInput),
-    ValidatorAvatar: soraStakingLazyComponent(SoraStakingComponents.ValidatorAvatar),
-    EraCountdown: soraStakingLazyComponent(SoraStakingComponents.EraCountdown),
-    DialogBase: components.DialogBase,
-    InfoLine: components.InfoLine,
-    FormattedAmount: components.FormattedAmount,
-    TokenLogo: components.TokenLogo,
-    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
-  },
-})
-export default class AllWithdrawsDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.LoadingMixin) {
-  get title(): string {
-    return this.t('soraStaking.allWithdrawsDialog.title');
-  }
+defineEmits<{
+  (event: 'close'): void;
+}>();
 
-  get allWithdraws() {
-    return this.accountLedger?.unlocking ?? null;
-  }
+const isVisible = defineModel<boolean>('visible', { default: false });
+const { t } = useTranslation();
+const { getFiatAmountByFPNumber } = useFormattedAmount();
 
-  get withdraws(): Withdraw[] {
-    if (!this.allWithdraws || !this.stakingAsset) return [];
+const { accountLedger, stakingAsset, withdrawableFunds, withdrawableFundsFiat, currentEra } = useSoraStaking();
 
-    const withdraws = this.allWithdraws.map((element) => {
-      const value = element.value;
-      const era = element.era;
+const DialogBase = WalletComponentDialogBase;
+const TokenLogo = WalletComponentTokenLogo;
+const FormattedAmountWithFiatValue = WalletComponentFormattedAmountWithFiatValue;
 
-      const hoursTotal = Math.max((element.era - this.currentEra) * ERA_HOURS, 0);
+const title = computed(() => t('soraStaking.allWithdrawsDialog.title'));
 
-      return {
-        era,
-        value: FPNumber.fromCodecValue(value),
-        countdownHours: hoursTotal,
-      };
-    });
+const allWithdraws = computed(() => accountLedger.value?.unlocking ?? null);
 
-    const pendingWithdraws = withdraws.filter((withdraw) => withdraw.countdownHours <= 0);
-    const upcomingWithdraws = withdraws.filter((withdraw) => withdraw.countdownHours > 0);
+/**
+ * Collapses pending and upcoming unlock entries into a consumable, formatted list.
+ */
+const withdraws = computed<Withdraw[]>(() => {
+  if (!allWithdraws.value || !stakingAsset.value) return [];
 
-    const pendingWithdrawsValueSum = pendingWithdraws.reduce((acc, withdraw) => acc.add(withdraw.value), FPNumber.ZERO);
+  const rawWithdraws = allWithdraws.value.map((element) => {
+    const hoursTotal = Math.max((element.era - (currentEra.value || 0)) * ERA_HOURS, 0);
 
-    const pendingWithdrawsCombined = pendingWithdraws.length
-      ? {
-          era: pendingWithdraws[0].era,
-          value: pendingWithdrawsValueSum,
-          countdownHours: 0,
-        }
-      : null;
+    return {
+      era: element.era,
+      value: FPNumber.fromCodecValue(element.value),
+      countdownHours: hoursTotal,
+    };
+  });
 
-    return [...(pendingWithdrawsCombined ? [pendingWithdrawsCombined] : []), ...upcomingWithdraws].map((withdraw) => {
-      assert(this.stakingAsset);
+  const pending = rawWithdraws.filter((withdraw) => withdraw.countdownHours <= 0);
+  const upcoming = rawWithdraws.filter((withdraw) => withdraw.countdownHours > 0);
 
-      const valueFormatted = formatDecimalPlaces(withdraw.value);
-      const valueFiat = this.getFiatAmountByFPNumber(this.withdrawableFunds, this.stakingAsset);
+  const pendingValueSum = pending.reduce((acc, withdraw) => acc.add(withdraw.value), FPNumber.ZERO);
 
-      return {
-        ...withdraw,
-        id: withdraw.era,
-        valueFormatted,
-        valueFiat,
-      };
-    });
-  }
+  const combinedPending = pending.length
+    ? {
+        era: pending[0].era,
+        value: pendingValueSum,
+        countdownHours: 0,
+      }
+    : null;
 
-  get noReward(): boolean {
-    return !this.withdraws.length;
-  }
-}
+  const normalized = [...(combinedPending ? [combinedPending] : []), ...upcoming];
+
+  return normalized.map((withdraw) => {
+    assert(stakingAsset.value);
+
+    return {
+      id: withdraw.era,
+      era: withdraw.era,
+      valueFormatted: formatDecimalPlaces(withdraw.value),
+      valueFiat:
+        withdrawableFundsFiat.value ??
+        getFiatAmountByFPNumber(withdrawableFunds.value, stakingAsset.value ?? undefined),
+    };
+  });
+});
+
+const noReward = computed(() => !withdraws.value.length);
+
+defineExpose({
+  withdraws,
+  noReward,
+});
 </script>
 
 <style lang="scss">

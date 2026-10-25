@@ -1,18 +1,18 @@
 <template>
-  <dialog-base class="validators-filter-dialog" :visible.sync="isVisible">
+  <dialog-base class="validators-filter-dialog" v-model:visible="isVisible">
     <div class="filter-container">
       <h1 class="title">
         {{ t('soraStaking.validatorsFilterDialog.title') }}
       </h1>
       <div class="filter">
-        <div v-for="(item, key) in filterData" :key="item.name" class="filter-item">
+        <div v-for="item in filterData" :key="item.key" class="filter-item">
           <div class="filter-item-header">
             <div class="filter-item-label">{{ item.name }}</div>
             <s-switch
               class="filter-item-switch"
-              :class="{ 'is-active': localFilter[key] }"
-              v-model="localFilter[key]"
-            />
+              :class="{ 'is-active': localFilter[item.key] }"
+              v-model="localFilter[item.key]"
+            ></s-switch>
           </div>
           <div class="filter-item-description">{{ item.description }}</div>
         </div>
@@ -27,51 +27,77 @@
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
+<script setup lang="ts">
+import { computed, reactive, watch } from 'vue';
+import { useTranslation } from '@/composables/useTranslation';
 
-import { Components } from '@/consts';
-import { lazyComponent } from '@/router';
+import { emptyValidatorsFilter, ValidatorsFilterType } from '@/modules/staking/sora/consts';
 
-import { DemeterStakingComponents } from '../../demeter/consts';
-import { soraStakingLazyComponent } from '../../router';
-import { emptyValidatorsFilter, ValidatorsFilterType } from '../consts';
-import StakingMixin from '../mixins/StakingMixin';
-import { ValidatorsFilter } from '../types';
+import type { ValidatorsFilter } from '@/modules/staking/sora/types';
 
-@Component({
-  components: {
-    DialogTitle: soraStakingLazyComponent(DemeterStakingComponents.DialogTitle),
-    TokenInput: lazyComponent(Components.TokenInput),
-    DialogBase: components.DialogBase,
-    InfoLine: components.InfoLine,
+type ValidatorFilterRow = {
+  key: ValidatorsFilterType;
+  name: string;
+  description: string;
+};
+
+const props = defineProps<{
+  filter: ValidatorsFilter;
+}>();
+
+const emit = defineEmits<{
+  (event: 'close'): void;
+  (event: 'save', value: ValidatorsFilter): void;
+}>();
+
+const isVisible = defineModel<boolean>('visible', { default: false });
+const { t } = useTranslation();
+
+const localFilter = reactive<ValidatorsFilter>({ ...emptyValidatorsFilter, ...props.filter });
+
+const filterKeys = Object.values(ValidatorsFilterType);
+
+/**
+ * Resolves each filter row through string translation keys so Vue I18n never
+ * returns an object fallback that can be iterated into blank switch rows.
+ */
+const filterData = computed<ValidatorFilterRow[]>(() =>
+  filterKeys.map((key) => ({
+    key,
+    name: t(`soraStaking.validatorsFilterDialog.filters.${key}.name`),
+    description: t(`soraStaking.validatorsFilterDialog.filters.${key}.description`),
+  }))
+);
+
+const syncLocalFilter = () => {
+  Object.assign(localFilter, emptyValidatorsFilter, props.filter);
+};
+
+watch(
+  isVisible,
+  (visible) => {
+    if (visible) syncLocalFilter();
   },
-})
-export default class ValidatorsFilterDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.LoadingMixin) {
-  @Prop({ type: Object, required: true }) filter!: ValidatorsFilter;
+  { immediate: true }
+);
 
-  localFilter: ValidatorsFilter = { ...emptyValidatorsFilter };
+watch(
+  () => props.filter,
+  () => {
+    if (isVisible.value) syncLocalFilter();
+  },
+  { deep: true }
+);
 
-  get filterData(): Record<ValidatorsFilterType, { name: string; description: string }> {
-    return this.t('soraStaking.validatorsFilterDialog.filters') as any;
-  }
+const save = () => {
+  emit('save', { ...localFilter });
+};
 
-  @Watch('isVisible', { deep: true })
-  onVisibleChange() {
-    if (this.isVisible) {
-      this.localFilter = { ...this.filter };
-    }
-  }
+const resetAll = () => {
+  Object.assign(localFilter, emptyValidatorsFilter);
+};
 
-  save() {
-    this.$emit('save', this.localFilter);
-  }
-
-  resetAll() {
-    this.localFilter = { ...emptyValidatorsFilter };
-  }
-}
+defineExpose({ localFilter, save, resetAll, filterData });
 </script>
 
 <style lang="scss">

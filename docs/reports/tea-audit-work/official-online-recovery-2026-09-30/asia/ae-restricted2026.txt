@@ -1,0 +1,250 @@
+Restricted and Prohibited Goods
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NZ8NQHL');
+window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'UA-214718466-11');
+.a{fill:#fffefe}
+Decision Regarding the Installment of Customs Duties and Customs Service Fees. Read More
+×
+عربي
+About Us
+About Abu Dhabi Customs
+Abu Dhabi Customs History
+Director General's Message
+Strategic Pillars
+Our Centres
+Customers Service Convention
+International Agreements
+Bilateral Customs Agreements
+Multilateral Customs Agreements
+Policies and Regulations
+Customs Services Fees Guide
+Custom Policies and procedures
+Restricted and Prohibited Goods
+GCC Unified Guide for Customs Procedures
+Abu Dhabi Customs Services
+Public Tenders
+Programs & Projects
+UAE Authorized Economic Operator
+Golden Visa Benefits
+Media Centre
+Publications
+News
+Careers
+Supplier Services
+Annual Performance Report
+Foreign Trade Statistics
+Frequently Asked Questions
+Contact Us
+Go To TAMM
+About Us
+Policies and Regulations
+Services
+MEDIA CENTER
+About Us
+Policies and Regulations
+Services
+MEDIA CENTER
+عربي
+.sidemenu ul li.submenu .expand-icon {
+    width: 55px;
+    padding: 0
+}
+
+.sidemenu ul li.submenu>.navigation-title>a {
+    pointer-events: visible !important
+}
+Back
+...
+Home
+/
+Policies and Regulations
+/
+Restricted and Prohibited Goods
+/
+Restricted and Prohibited Goods
+The UAE Government
+prohibits the import of certain goods and imposes restrictions on others.
+Prohibited goods
+are those whose import and export are banned under the Common Customs Law of the GCC States, or any other law or regulation applicable in the UAE.
+Restricted goods
+are goods whose import and export are restricted under the same law above and applicable regulations, and they need prior approval from the authorities concerned prior to import or export.
+Restricted Goods and their Regulatory Authorities
+The import and export of the following goods is restricted and requires prior approval from the designated authority.
+Category
+Regulatory Authority
+Live animals and animal products
+Ministry of Climate Change and Environment
+Pesticides, organic and chemical fertilizers
+Ministry of Climate Change and Environment
+Agricultural amendments, agricultural seedlings, seeds for cultivation
+Ministry of Climate Change and Environment
+Bees and queen bees
+Ministry of Climate Change and Environment
+Live fish
+Ministry of Climate Change and Environment
+Veterinary vaccines and serums
+Ministry of Climate Change and Environment
+Diagnostic materials, veterinary equipment and supplies
+Ministry of Climate Change and Environment
+Weapons and ammunition of all types
+Ministry of Interior
+Fireworks and explosives
+Ministry of Interior
+Food products
+Abu Dhabi Agriculture and Food Safety Authority
+Live animals and animal products
+Ministry of Climate Change and Environment
+Wired and wireless communication devices, radio and TV transmitters/receivers, radio navigation and GPS devices
+Telecommunications and Digital Government Regulatory Authority
+Air conditioning machines and equipment, refrigeration or freezing devices, weighing devices, payment/printing/loading/unloading equipment (e.g., elevators, escalators, conveyor belts, cable cars), water heaters
+Ministry of Industry and Advanced Technology
+Mechanical tools for metals, ceramics, concrete, etc.
+Ministry of Industry and Advanced Technology
+Diesel, fuel oils, lubricants, paints and varnishes
+Ministry of Industry and Advanced Technology
+Dolls, balloons, bicycles, remote-controlled aircraft
+Ministry of Industry and Advanced Technology
+Cigarettes and tobacco
+Ministry of Industry and Advanced Technology
+Vehicles
+Ministry of Industry and Advanced Technology
+New vehicle tires
+Ministry of Industry and Advanced Technology
+Cosmetic products and skincare, oral and dental care products (non-medicinal)
+Ministry of Industry and Advanced Technology
+Household electrical appliances, electrical circuit control/protection/distribution devices, electrical and telephone cables and wires
+Ministry of Industry and Advanced Technology
+Pharmaceutical preparations and medicines, including narcotics used for medical purposes; medical devices, accessories, laboratory solutions, sterilization devices
+Ministry of Health and Prevention
+Blood and its components
+Ministry of Health and Prevention
+Publications, recorded media, photographic and cinematic products, audio and video broadcasting/recording devices
+UAE Media Council
+Rough diamonds
+Kimberley Process / Dubai Multi Commodities Centre
+Chemicals used in the manufacture of chemical weapons
+Executive Office for Control and Non-Proliferation
+Radioactive chemical elements and isotopes, including fissionable and enriched materials; radioactive materials for medical use; transformers exceeding 500 KVA
+Federal Authority for Nuclear Regulation
+Radioactive materials, high-capacity electrical transformers, and heat exchangers
+Federal Authority for Nuclear Regulation
+Nuclear reactors, boilers, mechanical devices and tools and their parts
+Federal Authority for Nuclear Regulation
+Electronic cigarettes and e-shisha
+Ministry of Industry and Advanced Technology
+Prohibited Goods
+The following items are strictly prohibited from being imported or exported in the UAE:
+·
+Weed, opium, heroin, morphine, cocaine, poppy and its shells/seeds, qat, cannabis, and other narcotic substances of similar effect (all types of drugs)
+·
+Counterfeit and fake currency
+·
+Publications, photographs, paintings, drawings, cards, books, magazines, and stone sculptures that contradict Islamic teachings or public morals, or that aim to incite corruption or sedition
+·
+Three-layer nylon fishing nets
+·
+Gambling tools and machines
+·
+Goods imported from boycotted countries
+·
+Ozone-depleting substances
+·
+Radioactive-contaminated materials
+·
+Asbestos sheets and pipes
+·
+Laser pens emitting red light beams
+·
+Hazardous waste
+·
+Naswar (a form of smokeless tobacco)
+·
+Betel leaves
+·
+Used or refurbished tyres
+Identify Your Goods with the Smart HS Classification Tool:
+To ensure compliance and determine the correct Harmonised System (HS) code for your goods, including any applicable customs duties, taxes, or restrictions, use the
+Smart HS Classification Tool
+.
+This tool is a specialised search engine developed by Abu Dhabi Customs to help you quickly find the correct Harmonised System (HS) code for your import or export commodities. It also indicates any associated approvals or regulatory requirements.
+Access the Smart HS Classification Tool on TAMM
+If you are unsure about the results or cannot find what you’re looking for, you can contact our Tariff Classification Department at:
+follow-up@adcustoms.gov.ae
+About Abu Dhabi Customs
+About Us
+Customs Centers
+Customer Charter
+Policies and Regulations
+Customs Policies and Procedures
+Restricted and Prohibited Goods
+GCC Unified Guide for Customs Procedures
+Help & Support
+Contact Us
+FAQs
+Media Centre
+News
+Contrast Setting
+Color
+High Contrast
+Text Setting
+A
+-
+A
+A
++
+Follow Us
+Download TAMM apps
+POWERED BY
+Terms & Conditions
+Privacy Statement
+© 2026 Abu Dhabi Government. All rights reserved
+Feedback
+body .ui-lib-global-csat-feedback-js-open-button:hover .ui-lib-global-csat-feedback-js-open-button__wrapper {
+    background: #5b6d67;
+}
+body .ui-lib-global-csat-feedback-js-open-button {
+    background: #5b6d67;
+}
+body .ui-lib-global-csat-feedback-js-open-button .ui-lib-global-csat-feedback-js-open-button__wrapper {
+    background: #5b6d67;
+}
+body .ui-lib-global-csat-feedback-js-open-button:hover .ui-lib-global-csat-feedback-js-open-button__wrapper {
+    background: #5b6d67;
+}
+body .ui-lib-global-csat-feedback-js-open-button:nth-child(2),.ui-lib-global-csat-feedback-js-open-button:nth-child(3) {
+    display: none;
+}
+.fta .button a {
+  color: white !important;
+}
+@media screen and (max-width: 768px) {
+  .fta .ex-sxa-components ul li,
+  .fta .fta-desc {
+    text-align: start !important;
+  }
+}
+.high-contrast .benefits .card-icon {
+  filter: invert(1) !important;
+}
+.cepa_india .button a {
+  color: white !important;
+}
+@media screen and (max-width: 768px) {
+  .cepa_india .ex-sxa-components ul li,
+  .cepa_india .cepa-desc {
+    text-align: start !important;
+  }
+}
+
+.cepa .button a {
+  color: white !important;
+}
+@media screen and (max-width: 768px) {
+  .cepa .ex-sxa-components ul li,
+  .cepa .cepa-desc {
+    text-align: start !important;
+  }
+}
+X
+Abu Dhabi Customs uses cookies to enhance your browsing experience. To learn more, please see our
+Cookie Policy
+Accept & Close

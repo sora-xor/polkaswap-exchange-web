@@ -7,15 +7,15 @@
         :is-max-available="isFirstMaxButtonAvailable"
         :title="t('createPair.deposit')"
         :token="firstToken"
-        :value="firstTokenValue"
+        :model-value="firstTokenValue"
         :disabled="!areTokensSelected"
-        @input="handleTokenChange($event, setFirstTokenValue)"
+        @update:model-value="handleTokenChange($event, setFirstTokenValue)"
         @focus="setFocusedField(FocusedField.First)"
         @max="handleAddLiquidityMaxValue($event, setFirstTokenValue)"
         @select="openSelectTokenDialog(true)"
-      />
+      ></token-input>
 
-      <s-icon class="icon-divider" name="plus-16" />
+      <s-icon class="icon-divider" name="plus-16"></s-icon>
 
       <token-input
         :balance="getTokenBalance(secondToken)"
@@ -23,15 +23,15 @@
         :is-max-available="isSecondMaxButtonAvailable"
         :title="t('createPair.deposit')"
         :token="secondToken"
-        :value="secondTokenValue"
+        :model-value="secondTokenValue"
         :disabled="!areTokensSelected"
-        @input="handleTokenChange($event, setSecondTokenValue)"
+        @update:model-value="handleTokenChange($event, setSecondTokenValue)"
         @focus="setFocusedField(FocusedField.Second)"
         @max="handleAddLiquidityMaxValue($event, setSecondTokenValue)"
         @select="openSelectTokenDialog(false)"
-      />
+      ></token-input>
 
-      <slippage-tolerance class="slippage-tolerance-settings" />
+      <slippage-tolerance class="slippage-tolerance-settings"></slippage-tolerance>
 
       <s-button
         type="primary"
@@ -59,7 +59,7 @@
           <p class="info-line-container__title">{{ t('createPair.firstLiquidityProvider') }}</p>
           <info-line>
             <template #info-line-prefix>
-              <p class="info-line--first-liquidity" v-html="t('createPair.firstLiquidityProviderInfo')" />
+              <p class="info-line--first-liquidity" v-html="firstLiquidityProviderInfo"></p>
             </template>
           </info-line>
         </div>
@@ -68,24 +68,24 @@
           v-if="!emptyAssets || (liquidityInfo || {}).balance"
           :info-only="false"
           class="info-line-container"
-        />
+        ></add-liquidity-transaction-details>
       </template>
     </s-form>
 
-    <select-token
+    <SelectToken
       is-add-liquidity
       append-to-body
-      :visible.sync="showSelectTokenDialog"
+      v-model:visible="showSelectTokenDialog"
       :connected="isLoggedIn"
       :asset="isFirstTokenSelected ? secondToken : firstToken"
       :is-first-token-selected="isFirstTokenSelected"
       :disabled-custom="isFirstTokenSelected"
-      @select="selectToken"
-    />
+      @select="handleSelectToken"
+    ></SelectToken>
 
     <add-liquidity-confirm
-      :visible.sync="confirmDialogVisibility"
-      :parent-loading="parentLoading || loading"
+      v-model:visible="confirmDialogVisible"
+      :parent-loading="loading"
       :share-of-pool="shareOfPool"
       :first-token="firstToken"
       :second-token="secondToken"
@@ -96,196 +96,252 @@
       :slippage-tolerance="slippageToleranceValue"
       :insufficient-balance-token-symbol="insufficientBalanceTokenSymbol"
       @confirm="depositLiquidity"
-    />
+    ></add-liquidity-confirm>
 
     <network-fee-warning-dialog
-      :visible.sync="showWarningFeeDialog"
-      :fee="removeLiquidityFormattedFee"
+      v-model:visible="showWarningFeeDialog"
+      :fee="nextOperationFormattedFee"
       @confirm="confirmNetworkFeeWariningDialog"
-    />
+    ></network-fee-warning-dialog>
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { Operation } from '@sora-substrate/sdk';
 import { XOR, XSTUSD } from '@sora-substrate/sdk/build/assets/consts';
-import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { computed, onBeforeUnmount, ref, watch } from 'vue';
 
-import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
-import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
-import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
-import { Components } from '@/consts';
-import { PoolComponents } from '@/modules/pool/consts';
-import BaseTokenPairMixin from '@/modules/pool/mixins/BaseTokenPair';
-import { poolLazyComponent } from '@/modules/pool/router';
-import { lazyComponent } from '@/router';
-import { FocusedField } from '@/store/addLiquidity/types';
-import { getter, action, mutation, state } from '@/store/decorators';
+import NetworkFeeWarningDialog from '@/components/shared/Dialog/NetworkFeeWarning.vue';
+import TokenInput from '@/components/shared/Input/TokenInput.vue';
+import SelectToken from '@/components/shared/SelectAsset/SelectToken.vue';
+import SlippageTolerance from '@/components/shared/Settings/SlippageTolerance.vue';
+import { useTransaction } from '@/composables/useTransaction';
+import { useNetworkFeeWarning } from '@/composables/useNetworkFeeWarning';
+import { useNetworkFeeDialog } from '@/composables/useNetworkFeeDialog';
+import { useTokenSelect } from '@/composables/useTokenSelect';
+import type { NetworkFeeWarningOptions } from '@/consts';
+import { usePoolTokenPair } from '@/modules/pool/composables/usePoolTokenPair';
+import AddLiquidityConfirm from '@/modules/pool/components/AddLiquidity/Confirm.vue';
+import AddLiquidityTransactionDetails from '@/modules/pool/components/AddLiquidity/TransactionDetails.vue';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useTranslation } from '@/composables/useTranslation';
+import { useAssetsStore } from '@/stores/assets';
+import { usePoolStore } from '@/stores/pool';
+import { AddLiquidityFocusedField as FocusedField } from '@/stores/pool/types';
+import { useSettingsStore } from '@/stores/settings';
+import { useWalletStore } from '@/stores/wallet';
 import { getMaxValue, isMaxButtonAvailable, hasInsufficientBalance, getAssetBalance } from '@/utils';
+import { sanitizeHtml } from '@/utils/sanitize';
 
-import type { CodecString } from '@sora-substrate/sdk';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { CodecString } from '@sora-substrate/sdk';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
+import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 
-type SetValue = (v: string) => Promise<void>;
+const emit = defineEmits<{ (event: 'back'): void }>();
 
-@Component({
-  components: {
-    AddLiquidityConfirm: poolLazyComponent(PoolComponents.AddLiquidityConfirm),
-    AddLiquidityTransactionDetails: poolLazyComponent(PoolComponents.AddLiquidityTransactionDetails),
-    SelectToken: lazyComponent(Components.SelectToken),
-    SlippageTolerance: lazyComponent(Components.SlippageTolerance),
-    NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
-    TokenInput: lazyComponent(Components.TokenInput),
-    InfoLine: components.InfoLine,
-    DialogBase: components.DialogBase,
+const { t } = useTranslation();
+const poolTokenPair = usePoolTokenPair();
+const { formatCodecNumber, getFPNumber } = useFormattedAmount();
+const { isSelectAssetLoading, withSelectAssetLoading } = useTokenSelect();
+const { allowFeePopup, isXorSufficientForNextTx } = useNetworkFeeWarning();
+const {
+  showWarningFeeDialog,
+  isWarningFeeDialogConfirmed,
+  openWarningFeeDialog,
+  closeWarningFeeDialog,
+  confirmNetworkFeeWariningDialog,
+  waitOnFeeWarningConfirmation,
+} = useNetworkFeeDialog();
+const { loading, withNotifications } = useTransaction();
+const assetsStore = useAssetsStore();
+const poolStore = usePoolStore();
+const settingsStore = useSettingsStore();
+const walletStore = useWalletStore();
+
+const shareOfPool = computed(() => poolStore.addLiquidityShareOfPool);
+const liquidityInfo = computed(() => poolStore.addLiquidityLiquidityInfo as Nullable<AccountLiquidity>);
+const isNotFirstLiquidityProvider = computed(() => poolStore.addLiquidityIsNotFirstLiquidityProvider);
+const isLoggedIn = computed(() => walletStore.isLoggedIn);
+const xor = computed(() => assetsStore.xor as AccountAsset);
+const slippageToleranceValue = computed(() => settingsStore.slippageTolerance as string);
+const isConfirmTxDisabled = computed(() => walletStore.isConfirmTxDialogDisabled as boolean);
+const nodeIsConnected = computed(() => settingsStore.nodeIsConnected as boolean);
+
+const showSelectTokenDialog = ref(false);
+const isFirstTokenSelected = ref(false);
+const insufficientBalanceTokenSymbol = ref('');
+const confirmDialogVisible = ref(false);
+
+const InfoLine = WalletComponentInfoLine;
+
+const firstToken = poolTokenPair.firstToken;
+const secondToken = poolTokenPair.secondToken;
+const firstTokenValue = poolTokenPair.firstTokenValue;
+const secondTokenValue = poolTokenPair.secondTokenValue;
+const formattedPrice = poolTokenPair.formattedPrice;
+const formattedPriceReversed = poolTokenPair.formattedPriceReversed;
+const networkFee = poolTokenPair.networkFee;
+const emptyAssets = poolTokenPair.emptyAssets;
+const isAvailable = poolTokenPair.isAvailable;
+const price = poolTokenPair.price;
+const priceReversed = poolTokenPair.priceReversed;
+
+const areTokensSelected = computed(() => Boolean(firstToken.value && secondToken.value));
+
+const nextOperationFormattedFee = computed(() => formatCodecNumber(networkFee.value));
+
+const isXorSufficientForNextOperation = () => {
+  const params: NetworkFeeWarningOptions = {
+    type: isAvailable.value ? Operation.AddLiquidity : Operation.CreatePair,
+  };
+
+  if (firstToken.value?.address === XOR.address) {
+    params.amount = getFPNumber(firstTokenValue.value);
+    params.isXor = true;
+  }
+
+  return isXorSufficientForNextTx(params);
+};
+
+const isFirstMaxButtonAvailable = computed(() => {
+  const token = firstToken.value;
+  if (!(token && isLoggedIn.value)) return false;
+
+  return isMaxButtonAvailable(token, firstTokenValue.value, networkFee.value, xor.value);
+});
+
+const isSecondMaxButtonAvailable = computed(() => {
+  const token = secondToken.value;
+  if (!(token && isLoggedIn.value)) return false;
+
+  return isMaxButtonAvailable(token, secondTokenValue.value, networkFee.value, xor.value);
+});
+
+const isInsufficientBalance = computed(() => {
+  if (isLoggedIn.value && areTokensSelected.value) {
+    if (firstToken.value && hasInsufficientBalance(firstToken.value, firstTokenValue.value, networkFee.value)) {
+      insufficientBalanceTokenSymbol.value = firstToken.value.symbol;
+      return true;
+    }
+
+    if (secondToken.value && hasInsufficientBalance(secondToken.value, secondTokenValue.value, networkFee.value)) {
+      insufficientBalanceTokenSymbol.value = secondToken.value.symbol;
+      return true;
+    }
+  }
+
+  insufficientBalanceTokenSymbol.value = '';
+  return false;
+});
+
+const firstLiquidityProviderInfo = computed(() =>
+  sanitizeHtml(t('createPair.firstLiquidityProviderInfo'), {
+    allowedTags: ['strong', 'em', 'span', 'p', 'br'],
+    allowedAttributes: {
+      '*': ['class'],
+    },
+  })
+);
+
+const setFirstTokenAddress = (address: string) => poolStore.setAddLiquidityFirstTokenAddress(address);
+const setSecondTokenAddress = (address: string) => poolStore.setAddLiquiditySecondTokenAddress(address);
+const setFirstTokenValue = (value: string) => poolStore.setAddLiquidityFirstTokenValue(value);
+const setSecondTokenValue = (value: string) => poolStore.setAddLiquiditySecondTokenValue(value);
+const addLiquidity = () => poolStore.submitAddLiquidity();
+const updateSubscriptions = () => poolStore.updateAddLiquiditySubscriptions();
+const resetSubscriptions = () => poolStore.resetAddLiquiditySubscriptions();
+const setFocusedField = (value: FocusedField) => poolStore.setAddLiquidityFocusedField(value);
+
+// Reset account-owned balances before the new identity can render or reuse a confirmation.
+watch(
+  [nodeIsConnected, isLoggedIn, () => `${walletStore.accountSource ?? ''}:${walletStore.address ?? ''}`],
+  ([connected]) => {
+    void resetSubscriptions();
+    confirmDialogVisible.value = false;
+    closeWarningFeeDialog();
+    if (connected) void updateSubscriptions();
   },
-})
-export default class AddLiquidityForm extends Mixins(
-  mixins.TransactionMixin,
-  mixins.NetworkFeeWarningMixin,
-  BaseTokenPairMixin,
-  NetworkFeeDialogMixin,
-  ConfirmDialogMixin,
-  TokenSelectMixin
-) {
-  readonly FocusedField = FocusedField;
+  { immediate: true, flush: 'sync' }
+);
 
-  @state.settings.slippageTolerance slippageToleranceValue!: string;
+onBeforeUnmount(() => {
+  resetSubscriptions();
+});
 
-  @getter.assets.xor private xor!: AccountAsset;
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
-  @getter.addLiquidity.shareOfPool shareOfPool!: string;
-  @getter.addLiquidity.liquidityInfo liquidityInfo!: Nullable<AccountLiquidity>;
-  @getter.addLiquidity.isNotFirstLiquidityProvider isNotFirstLiquidityProvider!: boolean;
+const handleTokenChange = async (value: string, setter: (val: string) => Promise<void>) => {
+  await setter(value);
+};
 
-  @action.addLiquidity.setFirstTokenAddress private setFirstTokenAddress!: (address: string) => Promise<void>;
-  @action.addLiquidity.setSecondTokenAddress private setSecondTokenAddress!: (address: string) => Promise<void>;
-  @action.addLiquidity.addLiquidity private addLiquidity!: AsyncFnWithoutArgs;
-  @action.addLiquidity.updateSubscriptions private updateSubscriptions!: AsyncFnWithoutArgs;
-  @action.addLiquidity.resetSubscriptions private resetSubscriptions!: AsyncFnWithoutArgs;
-  @action.addLiquidity.setFirstTokenValue setFirstTokenValue!: (address: string) => Promise<void>;
-  @action.addLiquidity.setSecondTokenValue setSecondTokenValue!: (address: string) => Promise<void>;
+const handleAddLiquidityMaxValue = async (token: Nullable<AccountAsset>, setter: (val: string) => Promise<void>) => {
+  if (!token) return;
+  await handleTokenChange(getMaxValue(token, networkFee.value), setter);
+};
 
-  @mutation.addLiquidity.setFocusedField setFocusedField!: (value: FocusedField) => void;
+const handleAddLiquidity = async () => {
+  if (allowFeePopup.value && !isXorSufficientForNextOperation()) {
+    openWarningFeeDialog();
+    await waitOnFeeWarningConfirmation();
+    if (!isWarningFeeDialogConfirmed.value) {
+      return;
+    }
+    isWarningFeeDialogConfirmed.value = false;
+    closeWarningFeeDialog();
+  }
 
-  showSelectTokenDialog = false;
-  isFirstTokenSelected = false;
-  insufficientBalanceTokenSymbol = '';
+  await confirmOrExecute(depositLiquidity);
+};
 
-  @Watch('nodeIsConnected')
-  private updateConnectionSubsriptions(nodeConnected: boolean) {
-    if (nodeConnected) {
-      this.updateSubscriptions();
+const confirmOrExecute = async (handler: () => Promise<void>) => {
+  if (isConfirmTxDisabled.value) {
+    await handler();
+    return;
+  }
+  confirmDialogVisible.value = true;
+};
+
+const getTokenBalance = (token: Nullable<AccountAsset>): CodecString => getAssetBalance(token);
+
+const openSelectTokenDialog = (isFirst: boolean) => {
+  isFirstTokenSelected.value = isFirst;
+  showSelectTokenDialog.value = true;
+};
+
+const handleSelectToken = async (token: AccountAsset) => {
+  const address = token?.address;
+  if (!address) return;
+
+  await withSelectAssetLoading(async () => {
+    if (isFirstTokenSelected.value) {
+      await setFirstTokenAddress(address);
     } else {
-      this.resetSubscriptions();
-    }
-  }
-
-  get areTokensSelected(): boolean {
-    return !!(this.firstToken && this.secondToken);
-  }
-
-  get removeLiquidityFormattedFee(): string {
-    return this.formatCodecNumber(this.networkFees[Operation.RemoveLiquidity]);
-  }
-
-  get isXorSufficientForNextOperation(): boolean {
-    const params: WALLET_CONSTS.NetworkFeeWarningOptions = {
-      type: this.isAvailable ? Operation.AddLiquidity : Operation.CreatePair,
-    };
-
-    if (this.firstToken?.address === XOR.address) {
-      params.amount = this.getFPNumber(this.firstTokenValue);
-      params.isXor = true;
-    }
-    return this.isXorSufficientForNextTx(params);
-  }
-
-  get isFirstMaxButtonAvailable(): boolean {
-    if (!(this.firstToken && this.isLoggedIn)) return false;
-
-    return isMaxButtonAvailable(this.firstToken, this.firstTokenValue, this.networkFee, this.xor);
-  }
-
-  get isSecondMaxButtonAvailable(): boolean {
-    if (!(this.secondToken && this.isLoggedIn)) return false;
-
-    return isMaxButtonAvailable(this.secondToken, this.secondTokenValue, this.networkFee, this.xor);
-  }
-
-  get isInsufficientBalance(): boolean {
-    if (this.isLoggedIn && this.areTokensSelected) {
-      if (hasInsufficientBalance(this.firstToken as AccountAsset, this.firstTokenValue, this.networkFee)) {
-        this.insufficientBalanceTokenSymbol = (this.firstToken as AccountAsset).symbol;
-        return true;
-      }
-      if (hasInsufficientBalance(this.secondToken as AccountAsset, this.secondTokenValue, this.networkFee)) {
-        this.insufficientBalanceTokenSymbol = (this.secondToken as AccountAsset).symbol;
-        return true;
-      }
-    }
-    this.insufficientBalanceTokenSymbol = '';
-    return false;
-  }
-
-  async handleAddLiquidityMaxValue(token: Nullable<AccountAsset>, setValue: SetValue): Promise<void> {
-    if (!token) return;
-    await this.handleTokenChange(getMaxValue(token, this.networkFee), setValue);
-  }
-
-  async handleAddLiquidity(): Promise<void> {
-    if (this.allowFeePopup && !this.isXorSufficientForNextOperation) {
-      this.openWarningFeeDialog();
-      await this.waitOnFeeWarningConfirmation();
-      if (!this.isWarningFeeDialogConfirmed) {
-        return;
-      }
-      this.isWarningFeeDialogConfirmed = false;
+      await setSecondTokenAddress(address);
     }
 
-    this.confirmOrExecute(this.depositLiquidity);
-  }
-
-  async handleTokenChange(value: string, setValue: SetValue): Promise<void> {
-    await setValue(value);
-  }
-
-  getTokenBalance(token: any): CodecString {
-    return getAssetBalance(token);
-  }
-
-  openSelectTokenDialog(isFirstToken: boolean): void {
-    this.isFirstTokenSelected = isFirstToken;
-    this.showSelectTokenDialog = true;
-  }
-
-  async selectToken(token: AccountAsset): Promise<void> {
-    const address = token?.address;
-    if (address) {
-      await this.withSelectAssetLoading(async () => {
-        if (this.isFirstTokenSelected) {
-          await this.setFirstTokenAddress(address);
-        } else {
-          await this.setSecondTokenAddress(address);
-        }
-        if (this.firstToken?.address === XSTUSD.address && this.secondToken?.address === XOR.address) {
-          await this.setFirstTokenAddress(XOR.address);
-          await this.setSecondTokenAddress(XSTUSD.address);
-        }
-      });
+    if (firstToken.value?.address === XSTUSD.address && secondToken.value?.address === XOR.address) {
+      await setFirstTokenAddress(XOR.address);
+      await setSecondTokenAddress(XSTUSD.address);
     }
-  }
+  });
+};
 
-  async depositLiquidity(): Promise<void> {
-    await this.withNotifications(async () => {
-      await this.addLiquidity();
-      // to close dialog that contains form
-      this.$emit('back');
-    });
+const depositLiquidity = async () => {
+  const result = await withNotifications(async () => {
+    await addLiquidity();
+    emit('back');
+  });
+
+  if (result.submitted) {
+    confirmDialogVisible.value = false;
   }
-}
+};
+
+defineExpose({
+  handleAddLiquidity,
+  confirmDialogVisible,
+  showWarningFeeDialog,
+  depositLiquidity,
+});
 </script>
 
 <style lang="scss" scoped>

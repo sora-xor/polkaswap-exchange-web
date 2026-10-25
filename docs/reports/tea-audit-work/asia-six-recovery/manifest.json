@@ -1,0 +1,165 @@
+{
+  "reviewedAt": "2026-09-30",
+  "files": [
+    {
+      "file": "ae-dc-hscode.html",
+      "bytes": 103182,
+      "sha256": "6f2dd049879396f001b30b02a694ab37cd060e65dd5c1243f1ff6d95172f0174"
+    },
+    {
+      "file": "ae-integrated-guide.pdf",
+      "bytes": 6363590,
+      "sha256": "22b2e68b8a9a77e3aa073bde56ab2041a752998d0f53ec7ab7db5aeed82bff42"
+    },
+    {
+      "file": "ae-integrated-guide.pdf.txt",
+      "bytes": 12268,
+      "sha256": "2570a88d50ae75a8f8feee35a20285d8b6fe40ee951ca148bf7aa5f2ba31775a"
+    },
+    {
+      "file": "ae-jo-additional-provenance.json",
+      "bytes": 509,
+      "sha256": "eaf2c42caf2181492cc67c32475c08d94e81c42adc2cf29fe9d02f62daf458f8"
+    },
+    {
+      "file": "ae-jo-source-route-provenance.json",
+      "bytes": 375,
+      "sha256": "c53de2ce14c34b21d07168aeec8f425354237586d6fe4f6206511c6988b32828"
+    },
+    {
+      "file": "ae-mirsal-hscode.html",
+      "bytes": 432865,
+      "sha256": "6d5fe0a0f400ef45255e0ad92bdfe99d8e20132417cd0fde36fa87d55b668e1d"
+    },
+    {
+      "file": "ae-mirsal-query-provenance.json",
+      "bytes": 263,
+      "sha256": "98907cebd8e4f33ba4777a6c7524e759ff88e8c64d64b81ffca8a538d81a7dc1"
+    },
+    {
+      "file": "ae-mirsal-tea-results.html",
+      "bytes": 436362,
+      "sha256": "e05784edbd66950d8e82d1123a4536a59382f80f103074931f1c469551f0b50b"
+    },
+    {
+      "file": "ae-query-bh-enactment-provenance.json",
+      "bytes": 933,
+      "sha256": "c62a18247912275bb93c885dbb1702d27a43396b8542f083bcb8c76ed77aff60"
+    },
+    {
+      "file": "ae-tamm-classification-config.js",
+      "bytes": 51366,
+      "sha256": "8beaf8c5c7c75ed6afeb0012f849834f2ba332dc18df4ece4fd20fe264e5c790"
+    },
+    {
+      "file": "ae-tamm-tea-response.txt",
+      "bytes": 5664,
+      "sha256": "4417feb19d63c4010658a92de1e307f728e20f59f882e3bd9e9204577562f4a0"
+    },
+    {
+      "file": "ae-tamm.html",
+      "bytes": 85310,
+      "sha256": "7ce04df587612c10c9ec43a1f77116d1b485276455181b75843fd97aa383928d"
+    },
+    {
+      "file": "bh-agri-requirements.pdf",
+      "bytes": 780354,
+      "sha256": "20b5e1757239d3a71472a281d27968cfee89484c39887b5f854c4361374074e1"
+    },
+    {
+      "file": "bh-agri-requirements.pdf.txt",
+      "bytes": 17057,
+      "sha256": "8875d7c8fb2966875e8ce1b8f9570b6ae440bf21fe3213bc3d2888fe38b50a10"
+    },
+    {
+      "file": "bh-download-provenance.json",
+      "bytes": 552,
+      "sha256": "d22a021a689887111269e91c64fca5a5b1195170a45c680cd47719c45876d542"
+    },
+    {
+      "file": "bh-enactment2003-ar.pdf",
+      "bytes": 395143,
+      "sha256": "ab4abe4984e8f6f7b5692b5f94d98e76349bc2d7f9e779a3770a0c30307f38cb"
+    },
+    {
+      "file": "bh-enactment2003-ar.txt",
+      "bytes": 4944,
+      "sha256": "83ae99ed3c048ae5e950c6b9170887364ba4239480b47ad420f3a5bb99a30d78"
+    },
+    {
+      "file": "bh-food-guide2024.pdf",
+      "bytes": 1645019,
+      "sha256": "ca3ac41eb229b8806361a2135feff47f9d1e8c8a15695dbc954521fa2e603d48"
+    },
+    {
+      "file": "bh-food-guide2024.pdf.txt",
+      "bytes": 118907,
+      "sha256": "26b25084f43b279d4617b49fee00ef5f3ba610eaa186a672f5b3c000f3516e4a"
+    },
+    {
+      "file": "bh-metrology-list.pdf",
+      "bytes": 187144,
+      "sha256": "71c9cdfa8b3065d56b174b6b6f63ea37b6d0adb39a4641f2994423b7c3d95331"
+    },
+    {
+      "file": "bh-metrology-list.pdf.txt",
+      "bytes": 20307,
+      "sha256": "912ce21ce8afe9019ab6eb9d6adeab37b6534824ea3c0b63d0e144b5a3a7cf8b"
+    },
+    {
+      "file": "bh-ofoq-links.json",
+      "bytes": 9267,
+      "sha256": "ce7353b525dff8cc858475047f2bcb600ffa395880ebce9acef7991cf7f45327"
+    },
+    {
+      "file": "bh-ofoq.html",
+      "bytes": 30527,
+      "sha256": "7f4abad70c6e89f6894fe240dbe64d68996bd4c36e423105e644c3c621c2adcf"
+    },
+    {
+      "file": "bh-outcome-full-row-proposal.json",
+      "bytes": 12926,
+      "sha256": "28cab9c2ea6d45ded6347bc6f4c263b2a32a2fe022ca345c683c2c6e050db780"
+    },
+    {
+      "file": "iq-foodlaw-official-en.pdf",
+      "bytes": 588322,
+      "sha256": "822703c10e8e5b64ba1709754630e1826c6471d761c7cba16e953751fd771b72"
+    },
+    {
+      "file": "iq-foodlaw-official-en.pdf.txt",
+      "bytes": 21282,
+      "sha256": "decbb41d215f95b784ab2d045146c7337d755241f81c9614f8531974b401fda8"
+    },
+    {
+      "file": "iq-jo-provenance.json",
+      "bytes": 646,
+      "sha256": "1ed36c05fce2c8bfc9b1a386573b48e05dc2549e81e22b8db9b5595989a4b635"
+    },
+    {
+      "file": "jo-agriculture2015-faolex.pdf",
+      "bytes": 422323,
+      "sha256": "32a195eb5daad53cf3ed6f0424da8200299b7a118e44afb7b6e18b3f65e47927"
+    },
+    {
+      "file": "jo-agriculture2015-faolex.pdf.txt",
+      "bytes": 180138,
+      "sha256": "cbca1985d5a08652176eb9859a780ef23dcee12c96313531ecdfda56173302b6"
+    },
+    {
+      "file": "jo-docuware-viewer.html",
+      "bytes": 15380,
+      "sha256": "999e68f8049c285a3b8d873f77aacb36a7d5cda2c3823369c9faad5d455f1de7"
+    },
+    {
+      "file": "review.json",
+      "bytes": 1691,
+      "sha256": "c248545ac35be7cd8a8aa5248a95f50fbc255e1470df9e3d767e08da04dea3ae"
+    },
+    {
+      "file": "source-only-patches.json",
+      "bytes": 6805,
+      "sha256": "046a8629610086c4da1d46f5cd9eaa2c1d68d8900e9cd850f4a41d83f31d7776"
+    }
+  ]
+}

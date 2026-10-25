@@ -1,0 +1,86 @@
+[
+  {
+    "code": "GU",
+    "name": "Guam",
+    "status": "not_verified",
+    "rule": "Guam 8 GAR 10100(g) defines plant products as unprocessed or processed only to a minor extent. Sections 10101/10103 impose permits on covered regulated articles/plants/plant products. Section 10120 affirmatively admits stored dried human food, subject to pest freedom, but does not expressly waive a separate permit. The 10102(a) certificate categories do not include manufactured dried tea. The relevant unresolved issue is whether steamed/rolled/dried sencha exceeds the minor-processing definition, not a blanket prohibition on dried food.",
+    "personalMailApplicability": "Territorial import rule covers shipments, not just passengers. Federal mainland tea rules cannot settle Guam permit interpretation.",
+    "quantityLimit": null,
+    "authority": "Guam Department of Agriculture and Compiler of Laws",
+    "evidenceUrls": [
+      "https://www.guamcourts.org/compileroflaws/GAR/08GAR/08GAR002-10.pdf",
+      "https://doag.guam.gov/biosecurity-division/",
+      "https://doag.guam.gov/resource/",
+      "https://doag.guam.gov/wp-doag-content/uploads/2026/03/Import-Permit-Request-Plant-Products-Revised2026.03.09.pdf",
+      "https://doag.guam.gov/wp-doag-content/uploads/2024/02/DOAG-Species-listing-reference.pdf"
+    ],
+    "remainingQuestion": "Determine how the published minor-processing limit in 8 GAR 10100(g) applies to manufactured steamed/rolled/dried sencha. If it is outside plant products, 10103 does not itself impose that permit; if covered, 10120 admissibility can coexist with the permit. A published processing interpretation or commodity clarification could settle this; an individual authority ruling is not intrinsically required. The current 2026 permit form covers noncommercial post but does not answer this processing question.",
+    "researchAttempts": [
+      "Read Guam administrative regulations 10101/10103/10120 and Biosecurity Division guidance. The stored-dried-food allowance leaves the separate permit classification unresolved.",
+      "2026-09-30: Rechecked Guam biosecurity guidance alongside territorial dried-plant-food rules. FDA prior-notice exclusion for Guam does not remove territorial agriculture obligations. No current personal-post processed-sencha exemption located; did not extend CNMI passenger advice to Guam.",
+      "2026-09-30: Retrieved current DOAG plant-products import permit form revised 09-Mar-2026. It explicitly accommodates Air (Post Office) and noncommercial commodities; enumerated goods include fruits/vegetables, cut flowers, betel/piper, kava, feed, wood and other, without resolving manufactured tea under dried-food regulation 10120. The current linked species guide covers living species and fresh/propagative materials, with no Camellia finished-tea classification.",
+      "30 September independent legal-scope peer review: recovered and read the full official 8 GAR Chapter 10 PDF text via the web index after direct-host connection failure. Read 10100(f)-(g)/(k), 10101-10104, 10120 and 10122. Added the previously under-emphasized minor-processing definition; distinguished dried-food admissibility, permit scope and the narrower certificate list. The European corn-borer processing exception in 10106 is commodity-specific and was not generalized to tea. Saved sources/gu-quarantine-peer-web.txt. No decision change."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "The dried-food admission rule is affirmative, but does not expressly waive the separate plant-product permit. The definition itself excludes products processed beyond a minor extent, making the missing issue the local processing threshold for finished sencha. The narrower phytosanitary-certificate list does not itself require a tea certificate. No verified no-special-document conclusion follows until this scope interaction is settled.",
+    "permitFreeSources": [
+      "https://www.guamcourts.org/compileroflaws/GAR/08GAR/08GAR002-10.pdf",
+      "https://doag.guam.gov/biosecurity-division/",
+      "https://doag.guam.gov/resource/",
+      "https://doag.guam.gov/wp-doag-content/uploads/2026/03/Import-Permit-Request-Plant-Products-Revised2026.03.09.pdf",
+      "https://doag.guam.gov/wp-doag-content/uploads/2024/02/DOAG-Species-listing-reference.pdf"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "CK",
+    "name": "Cook Islands",
+    "status": "not_verified",
+    "rule": "The January 2021 biosecurity import specification currently linked by the official ministry Biosecurity page distinguishes PP29 dried herbs (all origins, no import permit or phytosanitary certificate, inspection) from PP23 dried plant material (all origins, import permit and fumigation/heat treatment). Other dried foods have their own separate entries; there is no blanket exemption for all dried retail foods. Tea is not named. Separately, Food Regulations 2014 regulation 18 provides a personal/family food-control exemption up to 5 kg per person for other foods; that food rule does not establish the applicable plant-biosecurity classification.",
+    "personalMailApplicability": "Both are commodity rules, but the appropriate classification for a personal mailed sencha pouch remains unconfirmed.",
+    "quantityLimit": null,
+    "authority": "Cook Islands Ministry of Agriculture Biosecurity",
+    "evidenceUrls": [
+      "https://agriculture.gov.ck/wp-content/uploads/2021/01/Update-Import-Specification-6-January-2021..pdf",
+      "https://agriculture.gov.ck/biosecurity/",
+      "https://agriculture.gov.ck/wp-content/uploads/2020/04/Update-Import-Specification-27-April-2020.pdf",
+      "https://www.mpi.govt.nz/dmsdocument/632/direct/",
+      "https://cook-islands.tradeportal.org/media/Food-Regulations-2014.pdf",
+      "https://www.health.gov.ck/wp-content/uploads/2017/05/Food-Regulations-2014.pdf",
+      "https://agriculture.gov.ck/biosecurity/register-forms/",
+      "https://agriculture.gov.ck/biosecurity/importing/",
+      "https://www.health.gov.ck/food-regulations-2014/"
+    ],
+    "remainingQuestion": "Determine whether Japan-origin manufactured steamed/dried Camellia sinensis tea belongs to PP29 dried herbs or PP23 dried plant material under the current January 2021 specification. The schedule does not define the herb category or otherwise classify tea. This biosecurity category conflict is sufficient to retain unresolved. Food regulation 18 has no express baggage-only restriction and its subsection (6) turns on consumption by the importer/family; lack of the word post alone is not treated as a separate proven document barrier.",
+    "researchAttempts": [
+      "Read the official full import specification and compared PP23 with PP29.",
+      "Searched official agriculture guidance for tea/processed-food or personal-mail exemption; no tea-specific answer found.",
+      "Reviewed current MPI guidance dated 25 July 2025 and its section 1.2 New Zealand-origin scope; did not extend it to a Japan shipment.",
+      "Searched the agriculture authority and government trade portal for Camellia, manufactured tea and personal-post specifications; the PP23/PP29 classification remains missing. The trade-portal Food Regulations download returned HTTP 403 and is not relied on for a food exemption.",
+      "30 September independent scope reread: checked the complete 2020 biosecurity schedule, including PP23, PP26–29, PP31, PP33 and PP47–49. Specific dried fruit/herb/mushroom/vegetable concessions preclude inferring that every dried plant food automatically needs PP23 permission, but none names tea. Current ministry importing and electronic-register pages supply no additional tea or general processed-food waiver.",
+      "Retrieved the previously inaccessible Food Regulations 2014 from the official Ministry of Health host and read regulation 18, PDF pp.10–11. Other personal/family foods are limited to 5 kg, and larger quantities need Director approval. This is a food-control concession under the Ministry of Health framework; it is not a plant-biosecurity specification and does not expressly mention post. Source PDF/text saved as asia-sources/ck-food2014.*.",
+      "30 September independent food-document review: reread Food Regulations 2014 regulations 16, 18–19 and 23–25. Regulation 16 advance notification concerns listed high-risk/regulatory-interest food imported for sale; regulation 18 provides the personal/family concession, and regulation 19 expressly makes general requirements subject to it. Regulations 23–25 allow product-identity checks and assessment of accompanying health/analysis certificates, but do not independently mandate a foreign certificate for every small private tea parcel. A reprocessing permit under regulation 19(4) was not applied to a finished ready-for-retail pouch. These provisions do not remove the unresolved postal scope/plant-category questions.",
+      "30 September final Pacific commodity pass: retrieved the ministry Biosecurity landing page and its January 2021 import specification, a newer current-linked document than the previously reviewed April 2020 PDF. Read the complete table and visually checked PDF page 4: PP23 dried plant material from any origin requires an import permit, no phytosanitary certificate, inspection, and pre-export fumigation/heat treatment; PP29 dried herbs from any origin requires neither permit nor phytosanitary certificate, but inspection and the prohibited-species condition apply. The document does not name tea or Camellia and has no blanket manufactured/dried-food waiver. Its processed-food entries therefore preserve the same unresolved tea-category question. PDF, extracted text and table image saved in pacific-final-source-review/ck-import-specification2021.*. The separate Ports Authority page contains only general cargo/quarantine guidance, not a tea waiver.",
+      "30 September independent legal-scope peer review: reread saved current-linked January 2021 specification PP23/PP29 and Food Regulations 2014 regulations 5, 18 and 19. PP29 is an affirmative permit-and-certificate exemption, which must not be overridden merely by calling tea dried plant material. The schedule supplies no definition placing Camellia tea within dried herbs. Regulation 18 uses personal imports and consumption by importer/family, without an express baggage-only restriction; narrowed the remaining question to the separate biosecurity category rather than demanding that the food concession explicitly mention post. No decision change."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "The specific PP29 dried-herb category expressly requires neither permit nor phytosanitary certificate; if it includes sencha, it would supply the relevant biosecurity no-document route. PP23 instead requires a permit and treatment for dried plant material. The missing point is the scope of those affirmative categories, not absence of a tea-specific quotation alone. Food regulation 18 supports a personal/family food concession up to 5 kg and does not expressly restrict it to baggage, but this does not settle biosecurity classification.",
+    "permitFreeSources": [
+      "https://agriculture.gov.ck/wp-content/uploads/2021/01/Update-Import-Specification-6-January-2021..pdf",
+      "https://agriculture.gov.ck/biosecurity/",
+      "https://agriculture.gov.ck/wp-content/uploads/2020/04/Update-Import-Specification-27-April-2020.pdf",
+      "https://www.mpi.govt.nz/dmsdocument/632/direct/",
+      "https://cook-islands.tradeportal.org/media/Food-Regulations-2014.pdf",
+      "https://www.health.gov.ck/wp-content/uploads/2017/05/Food-Regulations-2014.pdf",
+      "https://agriculture.gov.ck/biosecurity/register-forms/",
+      "https://agriculture.gov.ck/biosecurity/importing/",
+      "https://www.health.gov.ck/food-regulations-2014/"
+    ],
+    "permitFreeReviewedAt": "2026-09-30",
+    "paperworkType": "unresolved_product_classification",
+    "requiredDocument": "If PP29 applies: ordinary inspection with no permit/certificate. If PP23 applies: advance import permit and prescribed fumigation/heat treatment. Tea category remains unverified. Food regulation 18 requires Director approval above its personal-food quantity allowance.",
+    "foodImportReview": "No independent blanket special-document obligation established for the described private 100 g postal food order; this does not establish agricultural clearance."
+  }
+]

@@ -1,13 +1,14 @@
 <template>
-  <dialog-base :title="t('createToken.titleCommon')" :visible.sync="isVisible" tooltip="COMING SOON...">
+  <DialogBase :title="t('createToken.titleCommon')" v-model:visible="isVisible" tooltip="COMING SOON...">
     <div class="dashboard-create">
-      <s-tabs class="token__tab" type="rounded" :value="currentTab" @input="handleChangeTab">
-        <s-tab v-for="tab in TokenTabs" :key="tab" :label="getTabName(tab)" :name="tab" />
+      <s-tabs class="token__tab" type="rounded" :value="currentTab" @update:model-value="handleChangeTab">
+        <s-tab v-for="tab in TokenTabs" :key="tab" :label="getTabName(tab)" :name="tab"></s-tab>
       </s-tabs>
-      <component :is="currentTab" />
+      <component :is="currentTabComponent" ref="currentForm" :loading="isLoading"></component>
       <s-button
         type="primary"
         class="s-typography-button--large action-button dashboard-create__button"
+        :loading="isLoading"
         :disabled="disabled"
         @click="handleCreate"
       >
@@ -16,94 +17,131 @@
         </template>
         <template v-else>{{ title }}</template>
       </s-button>
-      <info-line
+      <InfoLine
         :label="t('networkFeeText')"
         :label-tooltip="t('networkFeeTooltipText')"
         :value="networkFeeFormatted"
         :asset-symbol="xorSymbol"
         :fiat-value="getFiatAmountByCodecString(networkFee)"
         is-formatted
-      />
+      ></InfoLine>
     </div>
-  </dialog-base>
+  </DialogBase>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { Operation } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { computed, nextTick, ref, unref, watch } from 'vue';
 
-import { Components, ZeroStringValue } from '@/consts';
-import { DashboardComponents } from '@/modules/dashboard/consts';
-import { dashboardLazyComponent } from '@/modules/dashboard/router';
-import { getter, state } from '@/store/decorators';
+import CreateNftToken from '@/modules/dashboard/components/CreateNftToken.vue';
+import CreateSimpleToken from '@/modules/dashboard/components/CreateSimpleToken.vue';
+import { TokenTabs, ZeroStringValue } from '@/consts';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useTransaction } from '@/composables/useTransaction';
+import { useTranslation } from '@/composables/useTranslation';
+import { useAssetsStore } from '@/stores/assets';
+import { useSettingsStore } from '@/stores/settings';
 
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { Component, Ref } from 'vue';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 
-@Component({
-  components: {
-    DialogBase: components.DialogBase,
-    InfoLine: components.InfoLine,
-    CreateSimpleToken: dashboardLazyComponent(DashboardComponents.CreateSimpleToken),
-    CreateNftToken: dashboardLazyComponent(DashboardComponents.CreateNftToken),
-  },
-})
-export default class BurnDialog extends Mixins(
-  mixins.TransactionMixin,
-  mixins.DialogMixin,
-  mixins.FormattedAmountMixin
-) {
-  readonly xorSymbol = XOR.symbol;
-  readonly TokenTabs = WALLET_CONSTS.TokenTabs;
+const DialogBase = WalletComponentDialogBase;
+const InfoLine = WalletComponentInfoLine;
 
-  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
-  @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
+type MaybeRef<T> = T | Ref<T>;
 
-  currentTab = WALLET_CONSTS.TokenTabs.Token;
+type CreateAssetFormExpose = {
+  isCreateDisabled?: MaybeRef<boolean>;
+  buttonTitle?: MaybeRef<string>;
+  registerAsset?: () => Promise<void>;
+  resetForm?: () => void;
+};
 
-  private get xorBalance() {
-    return this.getFPNumberFromCodec(this.accountXor?.balance?.transferable ?? ZeroStringValue);
+const { t, TranslationConsts } = useTranslation();
+const { loading, withNotifications } = useTransaction();
+const { getFPNumberFromCodec, formatCodecNumber, getFiatAmountByCodecString } = useFormattedAmount();
+const settingsStore = useSettingsStore();
+const assetsStore = useAssetsStore();
+
+const isVisible = defineModel<boolean>('visible', { default: false });
+const currentTab = ref<TokenTabs>(TokenTabs.Token);
+const currentForm = ref<CreateAssetFormExpose | null>(null);
+
+const tabComponents: Record<TokenTabs, Component> = {
+  [TokenTabs.Token]: CreateSimpleToken,
+  [TokenTabs.NonFungibleToken]: CreateNftToken,
+};
+
+const networkFees = computed(() => settingsStore.networkFees as NetworkFeesObject | undefined);
+const accountXor = computed(() => assetsStore.xor as Nullable<AccountAsset>);
+
+const xorSymbol = XOR.symbol;
+const title = computed(() => unref(currentForm.value?.buttonTitle ?? t('createTokenText')));
+const currentTabComponent = computed(() => tabComponents[currentTab.value]);
+
+const networkFee = computed<CodecString>(() => networkFees.value?.[Operation.RegisterAsset] ?? ZeroStringValue);
+const fpNetworkFee = computed(() => getFPNumberFromCodec(networkFee.value));
+const xorBalance = computed(() => getFPNumberFromCodec(accountXor.value?.balance?.transferable ?? ZeroStringValue));
+
+const networkFeeFormatted = computed(() => formatCodecNumber(networkFee.value));
+const isLoading = computed(() => Boolean(loading.value));
+const isInsufficientXorForFee = computed(() => xorBalance.value.sub(fpNetworkFee.value).isLtZero());
+const isFormDisabled = computed(() => Boolean(unref(currentForm.value?.isCreateDisabled ?? true)));
+const disabled = computed(() => isLoading.value || isInsufficientXorForFee.value || isFormDisabled.value);
+
+const getTabName = (tab: TokenTabs): string => {
+  if (tab === TokenTabs.NonFungibleToken) {
+    return TranslationConsts.NFT;
   }
+  return t(`createToken.${tab}`);
+};
 
-  get title(): string {
-    return 'Create token';
-  }
+const handleChangeTab = (value: TokenTabs) => {
+  currentTab.value = value;
+};
 
-  get networkFee(): CodecString {
-    return this.networkFees[Operation.RegisterAsset];
-  }
+/**
+ * Submits the currently selected asset form through the shared transaction notification flow.
+ */
+const handleCreate = async () => {
+  if (disabled.value || !currentForm.value?.registerAsset) return;
 
-  private get fpNetworkFee() {
-    return this.getFPNumberFromCodec(this.networkFee);
-  }
+  try {
+    const result = await withNotifications(async () => {
+      await currentForm.value?.registerAsset?.();
+    });
 
-  get networkFeeFormatted(): string {
-    return this.formatCodecNumber(this.networkFee);
-  }
-
-  get isInsufficientXorForFee(): boolean {
-    return this.xorBalance.sub(this.fpNetworkFee).isLtZero();
-  }
-
-  get disabled(): boolean {
-    return this.loading || this.isInsufficientXorForFee;
-  }
-
-  getTabName(tab: WALLET_CONSTS.TokenTabs): string {
-    if (tab === WALLET_CONSTS.TokenTabs.NonFungibleToken) {
-      return this.TranslationConsts.NFT;
+    if (result.submitted) {
+      isVisible.value = false;
     }
-    return this.t(`createToken.${tab}`);
+  } catch (error) {
+    console.error(error);
   }
+};
 
-  handleChangeTab(value: WALLET_CONSTS.TokenTabs): void {
-    this.currentTab = value;
-  }
+watch(isVisible, async (visible) => {
+  if (!visible) return;
 
-  handleCreate(): void {}
-}
+  currentTab.value = TokenTabs.Token;
+  await nextTick();
+  currentForm.value?.resetForm?.();
+});
+
+defineExpose({
+  isVisible,
+  currentTab,
+  currentTabComponent,
+  disabled,
+  isLoading,
+  isFormDisabled,
+  isInsufficientXorForFee,
+  handleChangeTab,
+  handleCreate,
+});
 </script>
 
 <style lang="scss" scoped>

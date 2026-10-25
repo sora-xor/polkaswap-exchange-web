@@ -1,0 +1,51 @@
+[
+  {
+    "file": "bs-interpretation1976.pdf",
+    "url": "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/PRINCIPAL/1976/1976-0020/1976-0020_1.pdf",
+    "status": 200,
+    "bytes": 215478,
+    "sha256": "608f558a4c722dc8823e97992124b27d7deaab73c8f70eb669d465c1c13029bd",
+    "validPDF": true
+  },
+  {
+    "file": "bs-customsamend2013.pdf",
+    "url": "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/AMENDING/2013/2013-0023/2013-0023.pdf",
+    "status": 200,
+    "bytes": 553963,
+    "sha256": "6424c31a95a06d338307409456210ab20e68899d085f802858ed264810c17a28",
+    "validPDF": true
+  },
+  {
+    "file": "bs-appeal2022.pdf",
+    "url": "https://www.courtofappeal.org.bs/download/042371500.pdf",
+    "status": 200,
+    "bytes": 532746,
+    "sha256": "94199770e1f0412631852cbd6fc82d168a3fc01f96f5fdf6276f15c396ab8e58",
+    "validPDF": true
+  },
+  {
+    "file": "ag-ippc2012act.html",
+    "url": "https://www.ippc.int/en/countries/antigua-and-barbuda/reportingobligation/2014/05/httplawsgovagacts2012a2012-1pdf/",
+    "status": 200,
+    "bytes": 75465,
+    "sha256": "0075ba24d60f95250b8112e42bcd23448462346f3b99f55e67f2f3fa739e9977",
+    "links": [
+      "/static/css/2023/timeline.16b53cc33aaa562f8f41a495bf720289.js.download",
+      "/en/accounts/login/?next=/en/countries/antigua-and-barbuda/reportingobligation/2014/05/httplawsgovagacts2012a2012-1pdf/",
+      "/en/strategic-objectives/plant-health-environmental-protection/the-impacts-of-climate-change-on-plant-health/",
+      "/en/strategic-objectives/plant-health-environmental-protection/the-impacts-of-climate-change-on-plant-health/climate-change-impacts-on-plant-pests-technical-factsheets/",
+      "/about/core-activities/standards-setting/development-standards/searchable-pdf-database"
+    ]
+  },
+  {
+    "file": "vg-fumigation.html",
+    "url": "https://laws.gov.vg/laws/fumigation-plants-act",
+    "status": 200,
+    "bytes": 29687,
+    "sha256": "d89f479753fc4a765e33db2421b2df6855136382fbf7e937bd5f33e80c2e60f1",
+    "links": [
+      "/libraries/pdf.js/web/viewer.html?file=https%3A%2F%2Flaws.gov.vg%2Fsites%2Fdefault%2Ffiles%2F2025-10%2FFumigation%2520of%2520Plants%2520Act.pdf",
+      "https://laws.gov.vg/sites/default/files/2025-10/Fumigation%20of%20Plants%20Act.pdf"
+    ]
+  }
+]

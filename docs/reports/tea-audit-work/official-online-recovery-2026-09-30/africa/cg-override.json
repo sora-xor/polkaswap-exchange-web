@@ -1,0 +1,52 @@
+{
+  "code": "CG",
+  "status": "not_verified",
+  "rule": "The WTO 2023 Congo review, using information supplied by the authorities, reports prior authorizations and sanitary/phytosanitary certificates for animal and plant products (paragraph 3.92). It identifies the applicable institutional framework but does not define the treatment of finished tea or small personal postal imports. Historical NPPO filings do not resolve that classification.",
+  "personalMailApplicability": "Law 3-2007 Articles 7(2) and 9 explicitly cover households importing for their own needs. Articles 1–2 contain no minimum amount or postal carrier exception. Applicability to this paid private postal purchase is an expressly stated general-rule inference.",
+  "quantityLimit": null,
+  "authority": "Republic of Congo NPPO / IPPC legal filings",
+  "evidenceUrls": [
+    "https://www.ippc.int/en/countries/congo/reportingobligation/4",
+    "https://www.wto.org/french/tratop_f/tpr_f/s445-03_f.pdf",
+    "https://www.cotecna.com/media/1tii4ifg/voc-congo-exporter-guide-french-translation.pdf",
+    "https://www.cotecna.com/media/pbegdzqc/voc-republic-of-congo-exporter-guide.pdf",
+    "https://www.sgg.cg/JO/2007/congo-jo-2007-04.pdf",
+    "https://www.sgg.cg/JO/2025/congo-jo-2025-19.pdf",
+    "https://www.sgg.cg/fr/recherche.html?page=4942&row=123383",
+    "https://guot.cg/plateformes/"
+  ],
+  "remainingQuestion": "Finished-tea phytosanitary classification remains unresolved, but it does not remove the independently established household special import-authorization requirement. No-document feasibility is excluded on that separate basis.",
+  "researchAttempts": [
+    "Checked NPPO legislation filings; excluded unrelated pesticide rules and an ambiguous colonial-era gazette as proof of current tea admissibility.",
+    "Read WTO 2023 Congo country report paragraphs 3.86–3.95, especially plant-product authorizations in 3.92 and implementing references. Separately searched current customs/single-window and government gazette material for tea, processed products and personal post. Did not infer agricultural permission from customs tax relief or a commercial conformity program.",
+    "30 September independent food/conformity pass: The actual ACONOQ-authorized Cotecna Congo exporter guide expressly excludes e-commerce postal parcels from PCEC/CoC certification and separately excludes complete imports below FOB 1,000,000 CFA. This is an affirmative exemption for the shipment route, not an extension of used personal effects or valueless gift exemptions. The guide says Cotecna acts on ACONOQ’s mandate. It does not resolve independent agricultural authorization/certification. Complete French authorized-programme guide downloaded and read, especially PDF pages 2–3. It is programme-operator guidance, not a retrieved national Gazette instrument. Its postal exemption is supporting operational evidence only; no national plant-health waiver is inferred.",
+    "30 September fresh official-online recovery: obtained the complete enacted Law 3-2007 directly from SGG, visually verified printed page 256 including Articles 7(2), 9 and 11, and checked the complete Article 27 context. Recovered 2025 official Gazette corroboration. Targeted later household, postal, small-consignment and ASI-exemption searches on SGG/GUOT found no applicable legislative waiver. Did not mistake the separate PCEC postal waiver for an exemption from the general import statute. Agricultural status remains not_verified."
+  ],
+  "reviewedAt": "2026-09-30",
+  "permitFreeDecision": "not_supported",
+  "permitFreeReason": "Independent import-authorization requirement: enacted Law 3-2007 Article 7(2) expressly applies the special import-authorization regime to Article 9 imports, and Article 9 expressly includes households importing for their own needs without commercial-importer status. Articles 1–2 cover goods acquired abroad for consumption, without a quantity or postal exclusion. Applying this wording to a paid private tea parcel is an inference from the general statute, not a finding that tea is phytosanitarily prohibited. Article 11 removes personal-use preshipment inspection only; the separately documented PCEC e-commerce-post exemption does not remove the statutory special import authorization. No later applicable personal-post waiver was recovered.",
+  "permitFreeSources": [
+    "https://www.ippc.int/en/countries/congo/reportingobligation/4",
+    "https://www.wto.org/french/tratop_f/tpr_f/s445-03_f.pdf",
+    "https://www.cotecna.com/media/1tii4ifg/voc-congo-exporter-guide-french-translation.pdf",
+    "https://www.cotecna.com/media/pbegdzqc/voc-republic-of-congo-exporter-guide.pdf",
+    "https://www.sgg.cg/JO/2007/congo-jo-2007-04.pdf",
+    "https://www.sgg.cg/JO/2025/congo-jo-2025-19.pdf"
+  ],
+  "independentFoodConformityRule": "The actual ACONOQ-authorized Cotecna Congo exporter guide expressly excludes e-commerce postal parcels from PCEC/CoC certification and separately excludes complete imports below FOB 1,000,000 CFA. This is an affirmative exemption for the shipment route, not an extension of used personal effects or valueless gift exemptions. The guide says Cotecna acts on ACONOQ’s mandate. It does not resolve independent agricultural authorization/certification.",
+  "foodConformitySourceFiles": [
+    "docs/reports/tea-audit-work/food-conformity-second-sources/cg-pcec-guide2026.pdf",
+    "docs/reports/tea-audit-work/food-conformity-second-sources/cg-pcec-guide2026.txt",
+    "docs/reports/tea-audit-work/food-conformity-second-sources/eight-country-food-scope-review.json"
+  ],
+  "foodConformityAccessNotes": "Complete French authorized-programme guide downloaded and read, especially PDF pages 2–3. It is programme-operator guidance, not a retrieved national Gazette instrument. Its postal exemption is supporting operational evidence only; no national plant-health waiver is inferred.",
+  "independentImportAuthorizationRule": "Republic of Congo Law 3-2007 of 24 January 2007, official Gazette 4 of 1 February 2007, printed pages 256–257: Articles 1–2 define broad scope; Article 5 creates declaration and special authorization regimes; Article 7(2) applies the latter to Article 9; Article 9 includes households importing for own needs; Article 10 separates Commerce Ministry declaration from border customs/plant/animal controls; Article 11 exempts personal-use imports only from preshipment inspection; Article 27 penalizes imports without the corresponding declaration or authorization. This is a separate ministerial authorization, not merely a CN22 declaration or ordinary arrival inspection. Article 20 concerns exports and is not used as a purported general import-origin-certificate duty.",
+  "currentLawCorroboration": "Official Gazette 19 of 8 May 2025 publishes Decree 2025-157 of 25 April 2025; its Article 9 inspection table (Commerce) still cites Law 3-2007 Articles 27, 28 and 30. The current SGG legal index lists the law, and GUOT describes a live special authorization platform. These corroborate continuing administration; the 2007 enacted text establishes household scope.",
+  "officialOnlineRecoveryFiles": [
+    "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/cg-trade-law2007.pdf",
+    "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/cg-trade-law2007.txt",
+    "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/cg-law-p256.png",
+    "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/cg-current2025.pdf",
+    "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/cg-current2025.txt"
+  ]
+}

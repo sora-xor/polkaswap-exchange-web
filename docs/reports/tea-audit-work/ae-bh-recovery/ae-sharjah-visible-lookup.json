@@ -1,0 +1,31 @@
+{
+  "reviewedAt": "2026-09-30",
+  "url": "https://portal.sharjahcustoms.gov.ae/en/tools/tariff-search",
+  "method": "Public Chrome UI through CUA; entered 090210 and submitted Search. Observed visible result before browser session reset. No raw application network or private API inspected.",
+  "query": "090210",
+  "totalRecords": 1,
+  "result": {
+    "hsCode": "090210000000",
+    "description": "Green tea (not fermented) in immediate packings of a content not exceeding 3 kg",
+    "unitOfMeasure": "-",
+    "displayedTaxColumns": {
+      "tax01": "0.00",
+      "tax02": "0.00",
+      "tax03": "0.00",
+      "tax04": "0.00",
+      "tax05": "0.00",
+      "tax06": "0.00",
+      "tax07": "0.00",
+      "tax08": "0.00",
+      "tax09": "0.00",
+      "tax10": "0.00",
+      "tax11": "0.00",
+      "tax12": "0.00",
+      "tax13": "0.00",
+      "tax14": "0.00",
+      "tax15": "0.00",
+      "tax16": "0.00"
+    }
+  },
+  "limitation": "Visible grid showed no agency, permit, phytosanitary, or restriction column. These values establish tariff classification/rate display, not agricultural clearance. The 3 kg phrase defines this HS subheading, not a personal-import allowance."
+}

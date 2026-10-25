@@ -1,0 +1,159 @@
+import { flushPromises, mount } from '@vue/test-utils';
+import { defineComponent, h, ref } from 'vue';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+import { PageNames } from '@/consts';
+
+const kensetsuEnabledRef = ref<boolean | null>(true);
+const subscriptionsDataLoadingRef = ref(false);
+
+const subscribeOnCollateralsMock = vi.fn().mockResolvedValue(undefined);
+const subscribeOnAccountVaultsMock = vi.fn().mockResolvedValue(undefined);
+const updateBalanceSubscriptionsMock = vi.fn().mockResolvedValue(undefined);
+const getLiquidationPenaltyMock = vi.fn().mockResolvedValue(undefined);
+const subscribeOnBorrowTaxesMock = vi.fn().mockResolvedValue(undefined);
+const subscribeOnDebtCalculationMock = vi.fn().mockResolvedValue(undefined);
+const resetMock = vi.fn().mockResolvedValue(undefined);
+
+const pushMock = vi.fn();
+
+const appStoreStub = {
+  dispatch: {
+    vault: {
+      subscribeOnCollaterals: subscribeOnCollateralsMock,
+      subscribeOnAccountVaults: subscribeOnAccountVaultsMock,
+      updateBalanceSubscriptions: updateBalanceSubscriptionsMock,
+      getLiquidationPenalty: getLiquidationPenaltyMock,
+      subscribeOnBorrowTaxes: subscribeOnBorrowTaxesMock,
+      subscribeOnDebtCalculation: subscribeOnDebtCalculationMock,
+      reset: resetMock,
+    },
+  },
+};
+
+const createPassthrough = (tag = 'div', className?: string) =>
+  defineComponent({
+    name: `Stub${tag}`,
+    inheritAttrs: false,
+    setup(_, { slots, attrs }) {
+      return () => h(tag, { ...attrs, class: className }, slots.default?.());
+    },
+  });
+
+const RouterViewStub = createPassthrough('router-view-stub');
+
+const SButtonStub = defineComponent({
+  name: 'SButtonStub',
+  inheritAttrs: false,
+  emits: ['click'],
+  setup(_, { slots, emit, attrs }) {
+    return () =>
+      h(
+        'button',
+        {
+          ...attrs,
+          onClick: (event: MouseEvent) => emit('click', event),
+        },
+        slots.default?.()
+      );
+  },
+});
+
+vi.mock('@/composables/useSubscriptions', () => ({
+  __esModule: true,
+  useSubscriptions: ({ startSubscriptions = [], resetSubscriptions = [] }: any = {}) => {
+    startSubscriptions.forEach((handler: any) => handler?.());
+
+    return {
+      subscriptionsDataLoading: subscriptionsDataLoadingRef,
+      resetSubscriptions,
+    };
+  },
+}));
+
+vi.mock('vue-router', async () => {
+  const actual = await vi.importActual<typeof import('vue-router')>('vue-router');
+  return {
+    ...actual,
+    useRouter: () => ({
+      push: (...args: unknown[]) => pushMock(...args),
+    }),
+  };
+});
+
+vi.mock('@/stores/settings', () => ({
+  __esModule: true,
+  useSettingsStore: () => ({
+    get kensetsuEnabled() {
+      return kensetsuEnabledRef.value;
+    },
+  }),
+}));
+
+vi.mock('@/stores/vault', () => ({
+  __esModule: true,
+  useVaultStore: () => ({
+    subscribeOnCollaterals: () => subscribeOnCollateralsMock(),
+    subscribeOnAccountVaults: () => subscribeOnAccountVaultsMock(),
+    updateBalanceSubscriptions: () => updateBalanceSubscriptionsMock(),
+    getLiquidationPenalty: () => getLiquidationPenaltyMock(),
+    subscribeOnBorrowTaxes: () => subscribeOnBorrowTaxesMock(),
+    subscribeOnDebtCalculation: () => subscribeOnDebtCalculationMock(),
+    reset: () => resetMock(),
+  }),
+}));
+
+const VaultsContainer = (await import('@/features/vault/pages/VaultsContainerPage.vue')).default;
+
+const mountContainer = () =>
+  mount(VaultsContainer, {
+    global: {
+      stubs: {
+        'router-view': RouterViewStub,
+        's-button': SButtonStub,
+        's-icon': createPassthrough('span'),
+        's-row': createPassthrough(),
+        's-col': createPassthrough(),
+        's-card': createPassthrough(),
+        's-divider': createPassthrough('hr'),
+        's-tooltip': createPassthrough('span'),
+      },
+      directives: {
+        loading: () => undefined,
+      },
+      inheritAttrs: false,
+    },
+  });
+
+describe('VaultsContainer.vue', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    kensetsuEnabledRef.value = true;
+  });
+
+  it('executes vault subscriptions on mount', async () => {
+    const wrapper = mountContainer();
+    await flushPromises();
+
+    expect(subscribeOnCollateralsMock).toHaveBeenCalledTimes(1);
+    expect(subscribeOnAccountVaultsMock).toHaveBeenCalledTimes(1);
+    expect(updateBalanceSubscriptionsMock).toHaveBeenCalledTimes(1);
+    expect(getLiquidationPenaltyMock).toHaveBeenCalledTimes(1);
+    expect(subscribeOnBorrowTaxesMock).toHaveBeenCalledTimes(1);
+    expect(subscribeOnDebtCalculationMock).toHaveBeenCalledTimes(1);
+    expect(pushMock).not.toHaveBeenCalled();
+
+    wrapper.unmount();
+  });
+
+  it('redirects to swap when Kensetsu is disabled', async () => {
+    kensetsuEnabledRef.value = false;
+
+    const wrapper = mountContainer();
+    await flushPromises();
+
+    expect(pushMock).toHaveBeenCalledWith({ name: PageNames.Swap });
+
+    wrapper.unmount();
+  });
+});

@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "../..",
+    "paths": {
+      "@/*": ["src/*"],
+      "@sora-substrate/math": ["src/lib/substrate/math/index.ts"],
+      "@sora-substrate/math/*": ["src/lib/substrate/math/*"],
+      "@sora-substrate/liquidity-proxy": ["src/lib/substrate/liquidity-proxy/index.ts"]
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import type { AppEIPProvider, EIP6963AnnounceProviderEvent } from '@/types/evm/provider';
-import { getWcEthereumProvider } from '@/utils/connection/evm/walletconnect';
+
+type ProviderAnnouncementHandler = (event: EIP6963AnnounceProviderEvent) => void;
 
 export enum PredefinedProvider {
   Fearless = 'Fearless Wallet',
@@ -7,8 +8,61 @@ export enum PredefinedProvider {
   MetaMask = 'MetaMask',
 }
 
+const loadWcEthereumProvider = async (...args: Parameters<AppEIPProvider['getProvider']>) => {
+  const { getWcEthereumProvider } = await import('@/utils/connection/evm/walletconnect');
+  return getWcEthereumProvider(...args);
+};
+
 const getInstallUrl = ({ chromeUrl, mozillaUrl }: { chromeUrl: string; mozillaUrl: string }) => {
   return navigator.userAgent.match(/firefox|fxios/i) ? mozillaUrl : chromeUrl;
+};
+
+const providerDiscoverySubscribers = new Set<ProviderAnnouncementHandler>();
+const providerAnnouncements = new Map<string, EIP6963AnnounceProviderEvent>();
+
+let providerDiscoveryListenerRegistered = false;
+let providerDiscoveryRequested = false;
+
+const getProviderAnnouncementUuid = (event: EIP6963AnnounceProviderEvent): string => {
+  return event?.detail?.info?.uuid ?? '';
+};
+
+const handleProviderAnnouncement = (event: EIP6963AnnounceProviderEvent): void => {
+  const uuid = getProviderAnnouncementUuid(event);
+
+  if (uuid) {
+    providerAnnouncements.set(uuid, event);
+  }
+
+  providerDiscoverySubscribers.forEach((subscriber) => {
+    subscriber(event);
+  });
+};
+
+const ensureProviderDiscoveryListener = (): void => {
+  if (providerDiscoveryListenerRegistered) {
+    return;
+  }
+
+  window.addEventListener('eip6963:announceProvider', handleProviderAnnouncement as EventListener);
+  providerDiscoveryListenerRegistered = true;
+};
+
+const requestProviderDiscovery = (): void => {
+  if (providerDiscoveryRequested) {
+    return;
+  }
+
+  // Notify EIP-6963 wallets once per page session. Repeated requests can make
+  // some extension content scripts re-open liveness streams.
+  providerDiscoveryRequested = true;
+  window.dispatchEvent(new Event('eip6963:requestProvider'));
+};
+
+const replayProviderAnnouncements = (subscriber: ProviderAnnouncementHandler): void => {
+  providerAnnouncements.forEach((event) => {
+    subscriber(event);
+  });
 };
 
 export const WalletConnectProvider: AppEIPProvider = {
@@ -17,7 +71,7 @@ export const WalletConnectProvider: AppEIPProvider = {
   name: PredefinedProvider.WalletConnect,
   icon: 'data:image/svg+xml;base64,PHN2ZyBmaWxsPSJub25lIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDQwMCA0MDAiIHdpZHRoPSI0MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxjbGlwUGF0aCBpZD0iYSI+PHBhdGggZD0ibTAgMGg0MDB2NDAwaC00MDB6Ii8+PC9jbGlwUGF0aD48ZyBjbGlwLXBhdGg9InVybCgjYSkiPjxjaXJjbGUgY3g9IjIwMCIgY3k9IjIwMCIgZmlsbD0iIzMzOTZmZiIgcj0iMTk5LjUiIHN0cm9rZT0iIzY2YjFmZiIvPjxwYXRoIGQ9Im0xMjIuNTE5IDE0OC45NjVjNDIuNzkxLTQxLjcyOSAxMTIuMTcxLTQxLjcyOSAxNTQuOTYyIDBsNS4xNSA1LjAyMmMyLjE0IDIuMDg2IDIuMTQgNS40NjkgMCA3LjU1NWwtMTcuNjE3IDE3LjE4Yy0xLjA3IDEuMDQzLTIuODA0IDEuMDQzLTMuODc0IDBsLTcuMDg3LTYuOTExYy0yOS44NTMtMjkuMTExLTc4LjI1My0yOS4xMTEtMTA4LjEwNiAwbC03LjU5IDcuNDAxYy0xLjA3IDEuMDQzLTIuODA0IDEuMDQzLTMuODc0IDBsLTE3LjYxNy0xNy4xOGMtMi4xNC0yLjA4Ni0yLjE0LTUuNDY5IDAtNy41NTV6bTE5MS4zOTcgMzUuNTI5IDE1LjY3OSAxNS4yOWMyLjE0IDIuMDg2IDIuMTQgNS40NjkgMCA3LjU1NWwtNzAuNyA2OC45NDRjLTIuMTM5IDIuMDg3LTUuNjA4IDIuMDg3LTcuNzQ4IDBsLTUwLjE3OC00OC45MzFjLS41MzUtLjUyMi0xLjQwMi0uNTIyLTEuOTM3IDBsLTUwLjE3OCA0OC45MzFjLTIuMTM5IDIuMDg3LTUuNjA4IDIuMDg3LTcuNzQ4IDBsLTcwLjcwMTUtNjguOTQ1Yy0yLjEzOTYtMi4wODYtMi4xMzk2LTUuNDY5IDAtNy41NTVsMTUuNjc5NS0xNS4yOWMyLjEzOTYtMi4wODYgNS42MDg1LTIuMDg2IDcuNzQ4MSAwbDUwLjE3ODkgNDguOTMyYy41MzUuNTIyIDEuNDAyLjUyMiAxLjkzNyAwbDUwLjE3Ny00OC45MzJjMi4xMzktMi4wODcgNS42MDgtMi4wODcgNy43NDggMGw1MC4xNzkgNDguOTMyYy41MzUuNTIyIDEuNDAyLjUyMiAxLjkzNyAwbDUwLjE3OS00OC45MzFjMi4xMzktMi4wODcgNS42MDgtMi4wODcgNy43NDggMHoiIGZpbGw9IiNmZmYiLz48L2c+PC9zdmc+',
   installed: true,
-  getProvider: getWcEthereumProvider,
+  getProvider: loadWcEthereumProvider,
 };
 
 export const FearlessWalletProvider: AppEIPProvider = {
@@ -50,10 +104,17 @@ export const MetamaskProvider: AppEIPProvider = {
   },
 };
 
+/**
+ * Subscribes to EIP-6963 provider announcements through a shared page-level
+ * discovery listener and replays providers already announced in this session.
+ */
 export function getProvidersList(onProviderAnnouncement: (event: EIP6963AnnounceProviderEvent) => void): VoidFunction {
-  window.addEventListener('eip6963:announceProvider', onProviderAnnouncement);
-  // Notify event listeners and other parts of the dapp that a provider is requested.
-  window.dispatchEvent(new Event('eip6963:requestProvider'));
+  providerDiscoverySubscribers.add(onProviderAnnouncement);
+  ensureProviderDiscoveryListener();
+  replayProviderAnnouncements(onProviderAnnouncement);
+  requestProviderDiscovery();
 
-  return () => window.removeEventListener('eip6963:announceProvider', onProviderAnnouncement);
+  return () => {
+    providerDiscoverySubscribers.delete(onProviderAnnouncement);
+  };
 }

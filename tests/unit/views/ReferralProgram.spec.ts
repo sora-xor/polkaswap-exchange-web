@@ -1,0 +1,440 @@
+import { flushPromises, mount } from '@vue/test-utils';
+import { FPNumber } from '@sora-substrate/sdk';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { computed, reactive, ref } from 'vue';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { PageNames } from '@/consts';
+
+const loginState = ref(false);
+const connectSpy = vi.fn();
+const shareLinkSpy = vi.fn();
+const markPendingReferralActionNavigationSpy = vi.fn();
+const routerPushMock = vi.fn();
+
+const subscribeOnInvitedUsers = vi.fn().mockResolvedValue(undefined);
+const getAccountReferralRewards = vi.fn().mockResolvedValue(undefined);
+const getReferrer = vi.fn().mockResolvedValue(undefined);
+const subscribeOnReferrer = vi.fn().mockResolvedValue(undefined);
+
+const resetReferrals = vi.fn();
+const unsubscribeFromInvitedUsers = vi.fn();
+const resetReferrerSubscription = vi.fn();
+const setStorageReferrer = vi.fn();
+
+const referralsStoreMock = {
+  referralRewards: {
+    rewards: FPNumber.ZERO,
+    invitedUserRewards: {},
+  },
+  invitedUsers: ['addr-1', 'addr-2', 'addr-3'],
+  referrer: '',
+  isReferrerApproved: false,
+  subscribeOnInvitedUsers,
+  getAccountReferralRewards,
+  getReferrer,
+  subscribeOnReferrer,
+  reset: resetReferrals,
+  unsubscribeFromInvitedUsers,
+  resetReferrerSubscription,
+  setStorageReferrer,
+};
+
+const settingsStoreMock = {
+  isTMA: false,
+  telegramBotUrl: null as string | null,
+};
+
+const walletStoreMock = reactive({
+  account: {
+    address: '5mock-account',
+  },
+  networkFees: {
+    ReferralSetInvitedUser: '1000000000000000000',
+  },
+});
+
+const assetsStoreMock = {
+  xor: {
+    address: XOR.address,
+    symbol: XOR.symbol,
+    balance: {
+      bonded: '2000000000000000000',
+    },
+  },
+};
+
+vi.mock('@/stores/referrals', () => ({
+  __esModule: true,
+  useReferralsStore: () => referralsStoreMock,
+}));
+
+vi.mock('@/stores/settings', () => ({
+  __esModule: true,
+  useSettingsStore: () => settingsStoreMock,
+}));
+
+vi.mock('@/stores/wallet', () => ({
+  __esModule: true,
+  useWalletStore: () => walletStoreMock,
+}));
+
+vi.mock('@/stores/assets', () => ({
+  __esModule: true,
+  useAssetsStore: () => assetsStoreMock,
+}));
+
+vi.mock('@tests/stubs/walletRuntime', async () => {
+  const { createWalletMock } = await import('@tests/stubs/createWalletMock');
+  return createWalletMock({
+    components: {
+      FormattedAmount: {
+        name: 'FormattedAmountStub',
+        props: ['integerOnly', 'value', 'assetSymbol'],
+        template:
+          '<div class="formatted-amount-stub" :data-integer-only="String(Boolean(integerOnly))">{{ value }}{{ assetSymbol }}<slot /><slot name="prefix" /></div>',
+      },
+      FormattedAddress: {
+        name: 'FormattedAddressStub',
+        props: ['value'],
+        template: '<span class="formatted-address-stub">{{ value }}</span>',
+      },
+      InfoLine: {
+        name: 'InfoLineStub',
+        props: ['label', 'value', 'integerOnly'],
+        template:
+          '<div class="info-line-stub" :data-integer-only="String(Boolean(integerOnly))"><slot name="info-line-prefix" />{{ label }}{{ value }}</div>',
+      },
+      WalletAvatar: {
+        name: 'WalletAvatarStub',
+        template: '<div class="wallet-avatar-stub" />',
+      },
+      TokenLogo: {
+        name: 'TokenLogoStub',
+        template: '<div class="token-logo-stub" />',
+      },
+    },
+    api: {
+      validateAddress: (value: string) => value.startsWith('5'),
+      formatAddress: (value: string) => value,
+    },
+    WALLET_CONSTS: {
+      LogoSize: {
+        BIGGER: 'bigger',
+      },
+      FontSizeRate: {
+        SMALL: 'small',
+        MEDIUM: 'medium',
+      },
+      FontWeightRate: {
+        MEDIUM: 'medium',
+      },
+    },
+    WALLET_TYPES: {
+      Operation: {},
+    },
+    storage: {
+      get: vi.fn(),
+      set: vi.fn(),
+      remove: vi.fn(),
+    },
+    settingsStorage: {
+      get: vi.fn(),
+      set: vi.fn(),
+      remove: vi.fn(),
+    },
+  });
+});
+
+vi.mock('@/lib/soraneo-wallet/src/components/FormattedAmount.vue', async () => {
+  const wallet = await import('@tests/stubs/walletRuntime');
+  return { __esModule: true, default: wallet.components.FormattedAmount };
+});
+
+vi.mock('@/lib/soraneo-wallet/src/components/shared/FormattedAddress.vue', async () => {
+  const wallet = await import('@tests/stubs/walletRuntime');
+  return { __esModule: true, default: wallet.components.FormattedAddress };
+});
+
+vi.mock('@/lib/soraneo-wallet/src/components/InfoLine.vue', async () => {
+  const wallet = await import('@tests/stubs/walletRuntime');
+  return { __esModule: true, default: wallet.components.InfoLine };
+});
+
+vi.mock('@/lib/soraneo-wallet/src/components/Account/WalletAvatar.vue', async () => {
+  const wallet = await import('@tests/stubs/walletRuntime');
+  return { __esModule: true, default: wallet.components.WalletAvatar };
+});
+
+vi.mock('@/lib/soraneo-wallet/src/components/TokenLogo.vue', async () => {
+  const wallet = await import('@tests/stubs/walletRuntime');
+  return { __esModule: true, default: wallet.components.TokenLogo };
+});
+
+vi.mock('@/utils/telegram', () => ({
+  __esModule: true,
+  tmaSdkService: {
+    shareLink: shareLinkSpy,
+  },
+}));
+
+vi.mock('@/api', () => ({
+  __esModule: true,
+  getFullBaseUrl: () => 'https://polkaswap.io/',
+  getRouterMode: () => '',
+}));
+
+vi.mock('vue-router', () => ({
+  __esModule: true,
+  useRouter: () => ({
+    push: routerPushMock,
+  }),
+}));
+
+vi.mock('@/shared/navigation/referralAction', () => ({
+  __esModule: true,
+  markPendingReferralActionNavigation: markPendingReferralActionNavigationSpy,
+  clearPendingReferralActionNavigation: vi.fn(),
+}));
+
+vi.mock('@/composables/useTranslation', () => ({
+  __esModule: true,
+  useTranslation: () => ({
+    t: (key: string, params?: Record<string, unknown>) => (params ? `${key}:${JSON.stringify(params)}` : key),
+  }),
+}));
+
+const loadingRef = ref(false);
+
+vi.mock('@/composables/useLoading', () => ({
+  __esModule: true,
+  useLoading: () => ({
+    loading: loadingRef,
+    withApi: async <T>(handler: () => Promise<T>) => handler(),
+  }),
+}));
+
+vi.mock('@/composables/useInternalConnect', () => ({
+  __esModule: true,
+  useInternalConnect: () => ({
+    connectSoraWallet: connectSpy,
+    isLoggedIn: computed(() => loginState.value),
+  }),
+}));
+
+const copySpy = vi.fn();
+
+vi.mock('@/composables/useCopyAddress', () => ({
+  __esModule: true,
+  useCopyAddress: () => ({
+    handleCopyAddress: copySpy,
+    copyTooltip: vi.fn(() => 'copy-tooltip'),
+  }),
+}));
+
+vi.mock('@/composables/useFormattedAmount', () => ({
+  __esModule: true,
+  useFormattedAmount: () => ({
+    Zero: FPNumber.ZERO,
+    formatCodecNumber: (value: string) => value,
+    getAssetFiatPrice: () => '1',
+    getFiatAmountByFPNumber: () => '10',
+    getFiatAmountByCodecString: () => '5',
+    getFPNumberFromCodec: (value: string) => FPNumber.fromCodecValue(value ?? '0'),
+  }),
+}));
+
+const ReferralProgram = (await import('@/features/rewards/pages/ReferralProgramPage.vue')).default;
+
+const buildWrapper = () =>
+  mount(ReferralProgram, {
+    global: {
+      stubs: {
+        's-button': {
+          name: 'SButtonStub',
+          inheritAttrs: false,
+          emits: ['click'],
+          template: '<button class="s-button" v-bind="$attrs" @click="$emit(\'click\')"><slot /></button>',
+        },
+        SButton: {
+          name: 'SButtonStub',
+          inheritAttrs: false,
+          emits: ['click'],
+          template: '<button class="s-button" v-bind="$attrs" @click="$emit(\'click\')"><slot /></button>',
+        },
+        's-collapse': {
+          template: '<div class="collapse-stub"><slot /></div>',
+        },
+        's-collapse-item': {
+          template: '<div class="collapse-item-stub"><slot name="title" /><slot /></div>',
+        },
+        's-pagination': {
+          template: '<div class="pagination-stub" />',
+        },
+        's-input': {
+          emits: ['update:modelValue'],
+          props: ['modelValue'],
+          template:
+            '<div class="input-stub"><input class="input-stub-native" :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" /><slot name="right" /></div>',
+        },
+        's-card': {
+          template: '<section class="card-stub"><slot /></section>',
+        },
+        's-icon': {
+          template: '<i class="icon-stub" />',
+        },
+      },
+      directives: {
+        loading: () => undefined,
+      },
+    },
+  });
+
+describe('ReferralProgram.vue', () => {
+  beforeEach(() => {
+    loginState.value = false;
+    connectSpy.mockClear();
+    copySpy.mockClear();
+    shareLinkSpy.mockClear();
+    routerPushMock.mockClear();
+    markPendingReferralActionNavigationSpy.mockClear();
+    subscribeOnInvitedUsers.mockClear();
+    getAccountReferralRewards.mockClear();
+    getReferrer.mockClear();
+    subscribeOnReferrer.mockClear();
+    resetReferrals.mockClear();
+    unsubscribeFromInvitedUsers.mockClear();
+    resetReferrerSubscription.mockClear();
+    setStorageReferrer.mockClear();
+    referralsStoreMock.referralRewards = {
+      rewards: FPNumber.ZERO,
+      invitedUserRewards: {},
+    };
+    referralsStoreMock.invitedUsers = ['addr-1', 'addr-2', 'addr-3'];
+    referralsStoreMock.referrer = '';
+    referralsStoreMock.isReferrerApproved = false;
+    settingsStoreMock.isTMA = false;
+    settingsStoreMock.telegramBotUrl = null;
+    walletStoreMock.networkFees = {
+      ReferralSetInvitedUser: '1000000000000000000',
+    };
+    walletStoreMock.account = { address: '5mock-account' };
+    assetsStoreMock.xor = {
+      address: XOR.address,
+      symbol: XOR.symbol,
+      balance: {
+        bonded: '2000000000000000000',
+      },
+    };
+  });
+
+  it('shows connect prompt when logged out and triggers wallet connect', async () => {
+    const wrapper = buildWrapper();
+    await flushPromises();
+
+    expect(wrapper.text()).toContain('connectWalletText');
+    const connectButton = wrapper
+      .findAllComponents({ name: 'SButtonStub' })
+      .find((component) => component.classes().includes('connect-button'));
+
+    expect(connectButton).toBeTruthy();
+    connectButton!.vm.$emit('click');
+    await flushPromises();
+    expect(connectSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('subscribes to referral data when logging in and unsubscribes on logout', async () => {
+    loginState.value = true;
+    const wrapper = buildWrapper();
+
+    await flushPromises();
+
+    expect(subscribeOnInvitedUsers).toHaveBeenCalled();
+    expect(getAccountReferralRewards).toHaveBeenCalled();
+    expect(getReferrer).toHaveBeenCalled();
+    expect(subscribeOnReferrer).toHaveBeenCalled();
+
+    loginState.value = false;
+    await flushPromises();
+
+    expect(unsubscribeFromInvitedUsers).toHaveBeenCalled();
+    expect(resetReferrerSubscription).toHaveBeenCalled();
+
+    expect(resetReferrals).toHaveBeenCalledTimes(1);
+    wrapper.unmount();
+    expect(resetReferrals).toHaveBeenCalledTimes(2);
+  });
+
+  it('persists referrer address when approved', async () => {
+    loginState.value = true;
+    const wrapper = buildWrapper();
+    await flushPromises();
+
+    wrapper.vm.referrerLinkOrCode = '5referrer';
+    await flushPromises();
+
+    await wrapper.vm.handleSetReferrer();
+    expect(setStorageReferrer).toHaveBeenCalledWith('5referrer');
+  });
+
+  it('marks an explicit referral action before opening the bonding screen', async () => {
+    loginState.value = true;
+    const wrapper = buildWrapper();
+    await flushPromises();
+
+    const bondButton = wrapper
+      .findAllComponents({ name: 'SButtonStub' })
+      .find((component) => component.text().includes('referralProgram.action.bondMore'));
+
+    expect(bondButton).toBeTruthy();
+    bondButton!.vm.$emit('click');
+    await flushPromises();
+
+    expect(markPendingReferralActionNavigationSpy).toHaveBeenCalledWith(PageNames.ReferralBonding);
+  });
+
+  it('uses integer-only rendering for zero-value referral amounts', async () => {
+    loginState.value = true;
+    referralsStoreMock.referralRewards = {
+      rewards: FPNumber.ZERO,
+      invitedUserRewards: {
+        'addr-1': FPNumber.ZERO,
+      },
+    };
+    assetsStoreMock.xor.balance.bonded = '0';
+
+    const wrapper = buildWrapper();
+    await flushPromises();
+
+    const formattedAmounts = wrapper.findAll('.formatted-amount-stub');
+    expect(formattedAmounts[0]?.attributes('data-integer-only')).toBe('true');
+
+    const infoLines = wrapper.findAll('.info-line-stub');
+    expect(infoLines[0]?.attributes('data-integer-only')).toBe('true');
+    expect(infoLines[1]?.attributes('data-integer-only')).toBe('true');
+  });
+  it('restarts account data on a direct account switch without resuming old initialization', async () => {
+    loginState.value = true;
+    let finishOld!: () => void;
+    getAccountReferralRewards.mockReturnValueOnce(
+      new Promise<void>((resolve) => {
+        finishOld = resolve;
+      })
+    );
+    const wrapper = buildWrapper();
+    await flushPromises();
+    expect(subscribeOnInvitedUsers).not.toHaveBeenCalled();
+
+    walletStoreMock.account = { address: '5next-account' };
+    await flushPromises();
+    expect(resetReferrals).toHaveBeenCalled();
+    expect(unsubscribeFromInvitedUsers).toHaveBeenCalled();
+    expect(getAccountReferralRewards).toHaveBeenCalledTimes(2);
+    expect(subscribeOnInvitedUsers).toHaveBeenCalledTimes(1);
+
+    finishOld();
+    await flushPromises();
+    expect(subscribeOnInvitedUsers).toHaveBeenCalledTimes(1);
+    expect(subscribeOnReferrer).toHaveBeenCalledTimes(1);
+    wrapper.unmount();
+  });
+});

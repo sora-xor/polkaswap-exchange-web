@@ -1,0 +1,2099 @@
+                TURKS AND CAICOS ISLANDS
+              PLANT HEALTH ORDINANCE 2012
+                      (Ordinance 39 of 2012)
+
+                     ARRANGEMENT OF SECTIONS
+SECTION
+
+                                PART 1
+                             PRELIMINARY
+   1.     Short title and commencement
+   2.     Interpretation
+   3.     Scope and status of the Ordinance
+
+                                PART 2
+                           ADMINISTRATION
+   4.     Turks and Caicos Islands Plant Protection Service
+   5.     Functions of the Service
+   6.     Plant inspectors
+   7.     Powers of entry, search and seizure
+   8.     Other powers
+   9.     Taking of samples
+  10.     Directions by an inspector
+  11.     Enforcement notices
+  12.     Limitation on powers
+  13.     Powers of arrest
+  14.     Powers in relation to people
+  15.     Rights and duties of plant inspectors
+  16.     Offences relating to inspection, etc.
+  17.     Authorised laboratories and analysts
+
+
+                                PART 3
+                        PLANT PEST CONTROL
+  18.     Quarantine plant pests
+  19.     Early detection system
+  20.     Declaration of plant pest emergency
+  21.     Plant pest emergency: Supplementary
+  22.     Designation of plant pest zone
+  23.     Plant pest zones: Supplementary
+  24.     Designation of other zones
+  25.     Destruction of plants for plant pest control purposes
+  26.     Compensation
+  27.     Control of movement of plants
+
+
+                                   1
+28.   Plant movement permits
+29.   Offences relating to infested plants
+
+                            PART 4
+                     PLANT QUARANTINE
+30.   Plant quarantine orders
+31.   Plant quarantine stations and areas
+32.   Management of quarantine stations and areas
+33.   Quarantine offences
+
+                            PART 5
+                PLANT IMPORTS AND EXPORTS
+34.   Importation of regulated articles
+35.   Plant import permits
+36.   Plant import conditions
+37.   International phytosanitary certificates
+38.   Prohibited plant imports
+39.   Arrival notification
+40.   Inspection of plant imports
+41.   Plant exports
+42.   Passengers and crew members
+43.   Obligations of captains and owners of vessels and aircraft
+44.   International transportation facilities
+
+                            PART 6
+                 PROSECUTION OF OFFENCES
+45.   Procedure for offences
+46.   Cancellation of licence, etc.
+47.   Offences by corporations and employees
+48.   Fixed penalties
+49.   Forfeiture
+50.   Presumptions
+51.   Documentary evidence
+52.   Seizure and detention of plants, etc.
+
+
+
+
+                               2
+                            PART 7
+MISCELLANEOUS AND SUPPLEMENTARY PROVISIONS
+53.   Plant audit and trace-back system
+54.   Duty to assist and cooperate
+55.   Right of appeal
+56.   Good faith defence
+57.   Publication and service of notices, etc.
+58.   Keeping of records
+59.   Regulations
+60.   Repeal and savings
+61.   Ordinance binds the Crown
+                      ________________
+
+
+
+
+                                3
+                                 TURKS AND CAICOS ISLANDS
+                              PLANT HEALTH ORDINANCE 2012
+                                      (Ordinance 39 of 2012)
+
+
+                  AN ORDINANCE TO PREVENT THE INTRODUCTION AND SPREAD OF
+                  PLANT PESTS, TO PROTECT AND PROMOTE PLANT HEALTH, TO
+                  CONTROL THE MOVEMENT OF REGULATED ARTICLES INTO, FROM AND
+                  WITHIN THE TURKS AND CAICOS ISLANDS; AND FOR CONNECTED
+                  PURPOSES.
+
+                  ENACTED by the Acting Governor of the Turks and Caicos
+                  Islands.
+
+                                               PART 1
+                                            PRELIMINARY
+
+
+Short title and     1. (1) This Ordinance may be cited as the Plant Health
+commencement
+                  Ordinance 2012 and comes into operation on a day the Governor
+                  appoints by notice published in the Gazette.
+                        (2) The Governor may appoint different days for the
+                  coming into force of different provisions of this Ordinance.
+
+Interpretation      2. In this Ordinance—
+                  “analyst” means a person who analyses samples taken for the
+                       purposes of this Ordinance;
+                  “approved” means officially approved by the Director as
+                      evidenced by a written record in the files of the Department
+                      and published in accordance with section 57;
+                  “authorised analyst” means a person authorised as an analyst under
+                       section 17;
+                  “authorised laboratory” means a laboratory authorised for the
+                       purposes of this Ordinance under section 17;
+                  “buffer zone” means a zone so designated under section 24;
+                  “captain”, in relation to a vessel or aircraft, means the master or
+                       chief pilot or person in charge or control of the vessel or
+                       aircraft;
+
+
+
+
+                                                  4
+“Chief Plant Protection Officer” means the person appointed as
+    such in the public service;
+“consignment” means a quantity of regulated articles being moved
+    from one country to another and covered, when required, by a
+    single phytosanitary certificate;
+“country” includes a territory;
+“CPPO” means the Chief Plant Protection Officer;
+“contained”, in relation to a plant pest risk, means eliminated or
+    reduced to an acceptable level;
+“container”, in relation to a regulated article, means a receptacle,
+    bag, package, cage or other thing capable of holding plants
+    during a journey by one or several means of transport;
+“decontaminate” means to reduce the pathogens on the surface of a
+    plant, plant product or other item, whether by irradiation or
+    any other means;
+“Department” means the Department of Agriculture;
+“detain” means to keep a consignment in official custody or
+     confinement for phytosanitary reasons, and “detention” has a
+     corresponding meaning;
+“Director” means the Director of Agriculture;
+“disinfestation” means the utilization of any approved substance or
+     process designed to prevent, eliminate or reduce any pest or
+     micro-organism with which an article or area may be infested;
+“disposal”, in relation to a regulated article, means Destruction by
+     burying or burning or any other means; “dispose of” includes
+     “destroy”;
+“enforcement action” means action to enforce phytosanitary
+     measures in order to contain a plant pest risk;
+“enforcement notice” means a notice issued by a plant inspector
+     under section 11;
+“export” as a verb, means to send an item to another country by
+    any means, and “exportation” and related terms have a
+    corresponding meaning;
+“germplasm” means a plant intended for use in breeding or
+    conservation programmes;
+“health hazard” means a biological, chemical or physical agent in,
+     or a condition of, a regulated article with the potential to
+     cause an adverse health effect in plants or humans;
+“importer” means anyone who, whether as owner, consignor,
+    consignee, agent, broker or otherwise, is in possession of or in
+    any way entitled to the custody of any plant, plant product,
+    pest, beneficial organism or other regulated article landed or
+    likely to be landed in the Islands from another country;
+“infested”, in relation to an article or area, means that a plant pest
+     is present in the article or area;
+
+
+                                  5
+“international phytosanitary certificate” has the meaning given that
+     term by section 37;
+“IPPC” means the International Plant Protection Convention;
+“IPPC Secretariat” means the Secretariat of the Commission on
+    Phytosanitary Measures established under the IPPC;
+“island” means any island comprising the Turks and Caicos
+     Islands;
+“ISPM” means the International Sanitary and Phytosanitary
+    Measures;
+“Minister” means the Minister responsible for the Department;
+“outbreak” means the occurrence of a plant pest, detected and
+     expected to survive for the immediate future;
+“phytosanitary certificate” means a certificate in the approved
+    form, or to the same effect, issued by the Service and stating
+    the plant health status of a regulated article for purposes of
+    export;
+“phytosanitary measure” means any action taken or ordered to be
+    taken in accordance with this Ordinance for the purpose of
+    plant pest control on the basis of plant pest risk assessment;
+“plant” includes a seed, germplasm and part of a plant;
+“plant establishment” means premises or an area in which plants
+     are commercially grown, kept or destroyed;
+“plant health status” means the status of a country, zone or
+     regulated article with respect to plant pests;
+“plant import conditions” means the phytosanitary requirements
+     for the importation of regulated articles published under
+     section 36;
+“plant inspector” means the CPPO, every plant protection officer
+     and any person assigned to serve as a plant inspector under
+     section 6;
+“plant movement permit” means a permit for the movement of
+     plants in, into or from a zone, issued under section 28;
+“plant pest” means any species, strain or biotype of any plant,
+     animal or pathogenic agent injurious to plants or plant
+     products;
+“plant pest control” means the elimination, or reduction to an
+     acceptable level, of a plant pest risk or health hazard resulting
+     from a plant pest;
+“plant pest emergency” means a plant pest emergency declared
+     under section 20;
+“plant pest risk” means the risk of a health hazard existing or
+     developing as a result of the presence of a plant pest in a
+     regulated article;
+
+
+
+
+                                  6
+“plant pest risk analysis” means the process of evaluating
+     biological or other scientific and economic evidence to
+     determine whether a pest should be regulated and the strength
+     of any phytosanitary measures to be taken against it;
+“plant pest risk assessment”, in relation to an activity involving a
+     regulated article, means the process of identifying and
+     estimating the plant pest risk associated with the activity and
+     evaluating the biological and economic consequences of that
+     risk in accordance with internationally accepted procedures
+     and standards;
+“plant pest zone” means a zone designated as a plant pest zone
+     under section 22;
+“plant pest-free zone” means a zone so designated under section
+     24;
+“plant product” means—
+          (a) any non-manufactured material of plant origin
+              (including grain); and
+          (b) any manufactured product which, by its nature or
+              that of its processing, may create a risk for the
+              introduction and spread of a pest;
+“plant protection officer” means a person who is appointed as a
+     plant protection officer in the public service;
+“plant-related item” includes packaging, and any container,
+     equipment, or other appliance used for or on plants, and any
+     object or material capable of harboring or spreading plant
+     pests;
+“port” means a port or airport prescribed or appointed under the
+     Customs Ordinance (Cap.19.04);
+“premises” includes a building, tent or other structure, whether
+    permanent or otherwise, the land on which it is situated and
+    any adjoining land employed in connection with it;
+“quarantine plant pest” means a plant pest declared by order under
+    section 18 to be a quarantine plant pest;
+“quarantine station or area” means a facility for the holding of
+    regulated articles for phytosanitary observation, research,
+    inspection, testing, treatment, detention or destruction;
+“regulated article” means—
+          (a) any plant, plant product, storage equipment,
+              packaging, vehicle, container or soil; and
+          (b) any other organism, object or material capable of
+              harbouring or spreading pests;
+          (c) any other article that the Director by notice in the
+              Gazette, on the advice of the CPPO, declares to be a
+              regulated article for the purposes of this Ordinance;
+
+
+
+
+                                 7
+                   “sell” means offer, advertise, keep, store, display, transmit,
+                        consign, convey or deliver for sale, or exchange or dispose of
+                        to any person in any manner whether for a consideration or
+                        otherwise, and “sold”, “selling” and “sale” have
+                        corresponding meanings;
+                   “serious plant pest” means the risk of introduction into or spread in
+                        the Islands of any quarantine plant pest that would constitute
+                        a serious threat to plant, animal, human or environmental
+                        health;
+                   “Service” means the Turks and Caicos Islands Plant Protection
+                       Service established by section 4(1);
+                   “surveillance” means an official process which collects and
+                        records data on pest occurrence or absence by survey,
+                        monitoring or other procedures;
+                   “surveillance zone” means a zone so designated under section 24;
+                   “vehicle” means any vessel, aircraft, conveyance, cart, container,
+                       animal or other thing on land or at sea or in the air that can
+                       convey a regulated article from one place to another;
+                   “vessel” includes any marine vehicle;
+                   “WTO SPS Agreement” means the World Trade Organisation
+                      Agreement on the Application of Sanitary and Phytosanitary
+                      Measures;
+                   “zone” means a plant pest zone, a plant pest-free zone, a buffer
+                       zone or a surveillance zone.
+
+Scope and status      3. (1) This Ordinance is intended to prevent the introduction
+of the Ordinance
+                   and spread of plant pests, to protect and promote plant health, to
+                   control the movement of plants and products into, from and within
+                   the Islands, and to regulate related matters.
+                           (2) This Ordinance provides for the issuance in accordance
+                   with international standards and obligations of phytosanitary
+                   certificates for all regulated articles for which a phytosanitary
+                   certificate is required.
+                        (3) This Ordinance is in addition to and does not derogate
+                   from any enactment relating to food safety, human health,
+                   immigration, customs control or plant health and movements.
+
+                                                 PART 2
+                                            ADMINISTRATION
+Turks and Caicos      4. (1) There is to be a Turks and Caicos Islands Plant
+Islands Plant
+Protection         Protection Service within the Department of Agriculture.
+Service
+                          (2) The Service is to consist of the Chief Plant Protection
+                   Officer and such other plant protection officers and other staff as
+                   are assigned to it.
+
+
+
+
+                                                    8
+       (3) The CPPO is to be the head of the Service and the
+National Plant Protection Officer for purposes of the international
+obligations of the Government in relation to plant protection
+matters.
+       (4) The CPPO may delegate any of his functions under this
+Ordinance to a plant inspector or plant protection officer, except
+for his power of delegation, and a reference to ‘the Service’
+includes a plant inspector or plant protection officer performing a
+function of the Service on the authority of the CPPO.
+      (5) The CPPO is answerable to the Director for the
+performance of his functions and those of the Service under this
+Ordinance and for the efficient operation of the Service.
+
+    5. (1) The functions of the Service include, but are not limited   Functions of the
+                                                                       Service
+to, the following—
+          (a) implement the IPPC, ISPM and the WTO SPS
+              Agreement;
+          (b) carry out surveillance of any ornamental and
+              growing plants, including areas under cultivation
+              and wild flora, and of any plant and plant product in
+              storage or in transport, for the purpose of reporting
+              the occurrence, outbreak and spread of quarantine
+              pests, and of controlling those pests;
+          (c) inspect any consignment of a plant and plant
+              product and, if appropriate, inspecting any other
+              regulated article, for the purpose of preventing the
+              introduction and spread of quarantine pests;
+          (d) disinfest consignments of any plant, plant product
+              or other regulated article;
+          (e) designate, maintain and survey pest-free areas;
+          (f) conduct plant pest risk analyses as required;
+          (g) decide on and publish the phytosanitary measures to
+              be applied in the Islands, on the basis of plant pest
+              risk assessment and by reference to applicable
+              international standards;
+          (h) provide information to other countries concerning
+              the phytosanitary measures applied in the Islands,
+              in accordance with international obligations;
+          (i) ensure the phytosanitary security of consignments
+              after certification and before export;
+          (j) establish auditing and trace-back procedures for
+              regulated articles for the purpose of phytosanitary
+              certification;
+          (k) publish information regarding quarantine pests and
+              the means of their prevention and control;
+          (l) review and enforce phytosanitary import conditions
+              and other necessary legislation;
+
+
+                                 9
+                              (m) provide information regarding import and export
+                                  regulations in force, and technical requirements for
+                                  any regulated article, on the request of any
+                                  interested international, regional or other national
+                                  plant protection organisation;
+                              (n) set up an early detection system for plant pests and
+                                  pathogen outbreaks as provided by section 19;
+                              (o) devise and publish a plant pest emergency plan in
+                                  accordance with section 22;
+                              (p) designate plant quarantine stations and areas and
+                                  manage such stations and areas in accordance with
+                                  Part 4;
+                              (q) establish and publish phytosanitary requirements
+                                  for the import, export and movement of regulated
+                                  articles, on the basis of the IPPC standards and in
+                                  consultation with other competent authorities;
+                              (r) administer the system of permits for the import of
+                                  regulated articles in accordance with section 35;
+                              (s) issue phytosanitary certificates for the export of
+                                  regulated articles in accordance with section 43;
+                              (t) represent the Islands in bilateral, regional and
+                                  international fora relating to phytosanitary matters;
+                              (u) notify the IPPC of outbreaks of plant pests and fulfil
+                                  other international reporting requirements in
+                                  relation to plant pests;
+                              (v) carry out communication, training and public
+                                  awareness campaigns on plant health matters;
+                              (w) issue permits required by or under this Ordinance;
+                              (x) collect fees as required by or under this Ordinance;
+                                  and
+                              (y) advise the Minister on the development of
+                                  regulations needed to implement this Ordinance;
+                              (z) perform other functions assigned to it by the
+                                  Director for the purposes of this Ordinance.
+                          (2) The Service must at least once a year, and more often if
+                   required in writing by the Director, give a written report to the
+                   Director on the performance of its functions under this Ordinance.
+
+Plant inspectors      6. (1) There may be assigned to the Service appropriately
+                   qualified officers in the public service to serve as plant inspectors
+                   for the purposes of this Ordinance.
+                         (2) Every plant inspector must be issued with an
+                   identification document or badge.
+                         (3) Plant inspectors are answerable to the CPPO while
+                   performing their functions under this Ordinance.
+
+
+
+                                                    10
+   7. (1) A plant inspector, with or without the assistance of a        Powers of entry,
+                                                                        search and
+police officer may—                                                     seizure
+          (a) enter any plant establishment, vehicle, port facilities
+              or other premises (other than a dwelling place)
+              where activities in relation to plants are being
+              carried out, or are suspected of being carried out;
+          (b) inspect or search any such premises, and examine
+              any plant, or open and examine any regulated
+              article, object or substance which is, or is suspected
+              of being used in activities relating to plants;
+          (c) require any person to present any plant or thing for
+              inspection in a manner and under conditions the
+              inspector considers necessary to carry out the
+              inspection;
+          (d) require the owner or person in charge of the
+              premises to provide any information or
+              documentation regarding the regulated article,
+              object or substance;
+          (e) secure or prohibit access to the premises for as long
+              as is needed to ensure that there is nothing on or in
+              the premises that might cause the spread of a
+              quarantine plant pest.
+      (2) A plant inspector may, in relation to premises as
+mentioned in subsection (1),—
+          (a) open any container on the premises that the
+              inspector believes on reasonable grounds contains
+              any plant or thing in respect of which this
+              Ordinance or the regulations apply;
+          (b) weigh, count, measure, mark and open any such
+              container, take photographs of any thing, read any
+              values of any instruments and take samples in the
+              prescribed manner of anything on the premises;
+          (c) require any person on the premises to produce for
+              inspection or copying, in whole or in part, any
+              record or document that the inspector believes on
+              reasonable grounds contains any information
+              relevant to the administration of this Ordinance or
+              the regulations;
+          (d) examine, make copies of or take extracts from any
+              book, statement or other document found at the
+              premises that the inspector believes on reasonable
+              grounds contains any information relevant to this
+              Ordinance, and demand from the owner or any
+              person in charge of the premises an explanation of
+              any entry in it;
+          (e) inspect any operation, process or system used or
+              carried out on the premises;
+
+
+
+                                11
+          (f) seize any plant, appliance, product, material, object,
+              substance, book or document on the premises which
+              appears to provide proof of a contravention of any
+              provision of this Ordinance.
+       (3) In carrying out an inspection at any place under this
+section, an inspector may—
+          (a) use or cause to be used any data processing system
+              at the place to examine any data contained in or
+              available to the system;
+          (b) reproduce any record or cause it to be reproduced
+              from the data in the form of a printout or other
+              intelligible output and take the print-out or other
+              output for examination or copying; and
+          (c) use or cause to be used any copying equipment at
+              the place to make copies of any record or other
+              document.
+      (4) In carrying out an inspection at any place or in
+performing his functions under this Ordinance a plant inspector
+may—
+          (a) in relation to any plant, make such examinations,
+              apply such tests, take such samples, use of
+              germplasm or any other genetic material and apply
+              such marks as may be reasonably necessary, or as
+              may be required or prescribed by or under this
+              Ordinance;
+          (b) enter any land or premises for the purpose of such
+              examining, testing, sampling or marking;
+          (c) require any person in charge of a plant, or the owner
+              or occupier of or a person employed on land or
+              premises so entered, to give assistance or to carry
+              out instructions as reasonably necessary for the
+              purpose of examining, testing, sampling or
+              marking, or to give information as reasonably
+              necessary in connection with the prevention or
+              eradication of any quarantine plant pest or for the
+              implementation of this Ordinance.
+      (5) A plant inspector may at any time—
+          (a) with the consent of the owner, enter and search a
+              dwelling house for purposes of this Ordinance;
+          (b) on a warrant issued under subsection (6), enter and
+              search a dwelling house for plants or plant products
+              that the inspector reasonably believes have been
+              imported in contravention of this Ordinance or pose
+              a serious plant pest risk.
+       (6) If a magistrate is satisfied on evidence on oath by a
+plant inspector or police officer that—
+
+
+
+
+                                12
+          (a) there may be in a dwelling house regulated articles
+              that have been imported in contravention of this
+              Ordinance or that pose a serious plant pest risk;
+              and.
+          (b) the consent of the owner or occupier to entry and
+              search of the dwelling house cannot be obtained,
+the magistrate may issue a warrant authorising the inspector to
+enter and search the dwelling house for such regulated articles, and
+the preceding provisions of this section apply to such a search.
+
+   8. (1) A plant inspector may submit anything taken from             Other powers
+premises under section 7 to an authorised laboratory for analysis;
+        (2) A plant inspector may issue an enforcement notice
+under section 10 ordering modifications to be made to a plant
+establishment if the structure or internal design or contents are
+likely to pose a health hazard or plant pest risk.
+       (3) A plant inspector may, in order to contain a plant pest
+risk, seize any regulated article, including food that is
+contaminated or contagious, and if necessary order the destruction
+of it.
+       (4) A plant inspector may order the destruction and
+removal of any infested plant that has died, wherever it may be
+found.
+       (5) A plant inspector may order the quarantining of any
+plant for the purpose of further testing and analysis.
+       (6) A plant inspector may decontaminate or disinfect, or
+order the decontamination or disinfection of any container,
+vehicle, premises or place.
+      (7) In relation to any regulated article, a plant inspector
+may make any examination, apply any test, take any sample, use
+of germplasm or plant genetic material and apply any mark that is
+reasonably necessary for the purposes of this Ordinance.
+       (8) A plant inspector may stop and search any vehicle or
+container upon entry into, movement within or exit from the
+Islands, if the inspector reasonably suspects that the vehicle or
+container is carrying a regulated article in contravention of this
+Ordinance and that a plant pest risk is created as a result.
+
+   9. (1) A plant inspector may, with the consent of the owner or      Taking of
+                                                                       samples
+person in charge of a regulated article, take samples from—
+          (a) any part of an incoming vessel or aircraft that has
+              on board a regulated article;
+          (b) any warehouse containing a regulated article;
+          (c) any consignment of regulated articles, wherever
+              located;
+
+
+
+
+                                13
+                              (d) any container, baggage or thing that the officer
+                                  reasonably suspects to be or include a regulated
+                                  article.
+                         (2) If an owner or person in charge refuses consent under
+                   subsection (1), the inspector may require the person to provide
+                   appropriate samples.
+                          (3) If an owner or person in charge refuses either to allow
+                   samples to be taken or to provide samples, when required to do so
+                   under this section—
+                              (a) the owner or person commits an offence;
+                   Penalty: A fine of $5,000
+                              (b) an import permit for an incoming consignment must
+                                  be refused or revoked.
+                          (4) A plant inspector may, with the consent of the owner or
+                   person in charge of the article, take samples of any outgoing
+                   regulated article if the taking of a sample is necessary for the issue
+                   of a phytosanitary certificate.
+                          (5) If the person in charge of a regulated article refuses
+                   consent under subsection (4), the inspector may require the person
+                   to provide a sample, failing which the phytosanitary certificate will
+                   not be issued.
+                         (6) A plant inspector may request the owner or person in
+                   charge of a consignment to unpack it or break it up to facilitate
+                   sampling, at the risk and expense of the owner or person.
+                          (7) When exercising powers under subsection (1) or (4), an
+                   inspector must give the owner or person in charge a written notice,
+                   identifying the quantity of the sample and the place where the
+                   sample is to be analysed.
+                         (8) In other respects, the procedure for taking and analysing
+                   samples, recording the results and disposing of the samples is as
+                   approved by the Director.
+                         (9) If, in the course of sampling, goods are destroyed or
+                   damaged, without negligence or malice, no compensation is
+                   payable to the owner of the goods.
+                         (10) The owner or person in charge of a regulated article
+                   from which samples are taken under subsection (1) or (4) must be
+                   notified in writing of the findings in respect of the samples as soon
+                   as reasonably practicable .
+                          (11) The charges for taking and analysis of samples under
+                   this section are as prescribed.
+
+Directions by an      10. (1) A plant inspector may, to contain a plant pest risk from
+inspector
+                   any regulated article, direct or prohibit the movement of the article
+                   from, to or in any place.
+                           (2) If a plant inspector is satisfied that there has been a
+                   failure on the part of the person in charge of a container or vehicle
+                   to comply with a requirement of this Ordinance or with a condition
+
+
+                                                    14
+imposed pursuant to it, and that this poses a plant pest risk, the
+inspector may, with the assistance of a police officer, detain the
+container or vehicle or direct that the docking of the vessel or
+offloading of regulated articles be stopped until the plant pest risk
+is contained.
+        (3) A plant inspector may issue a direction to stop the
+distribution, sale or use of any regulated article which the inspector
+has reason to believe is infested with or may spread a plant pest,
+until the plant pest risk is contained.
+       (4) Written notice of a direction issued under subsection
+(1), (2) or (3) must be given to the CPPO, the Commissioner of
+Police and the Collector of Customs as soon as reasonably
+practicable.
+       (5) Upon receiving a notice under this section, the CPPO
+must, without delay, take the appropriate phytosanitary measures
+to contain any plant pest risk arising from movement or sale of the
+regulated article and the direction ceases to have effect once the
+CPPO has taken such action.
+
+   11. (1) If a plant inspector has reasonable grounds for believing     Enforcement
+                                                                         notices
+that an owner or person in charge of a regulated article has failed
+to comply with any directions under section 9 or any provision of
+this Ordinance, he may serve a notice on the owner or person—
+           (a) stating the inspector’s grounds for believing that the
+               direction or any provision of this Ordinance is not
+               being complied with;
+           (b) specifying the phytosanitary or other measures
+               which the inspector considers the owner or person
+               must take in order to remedy the failures referred to
+               in paragraph (a);
+           (c) requiring the owner or person to implement those
+               measures, or measures which are at least equivalent
+               to them, within the time specified in the notice.
+        (2) If the person on whom an enforcement notice is served
+fails to take the measures specified—
+           (a) the person commits an offence;
+Penalty: A fine f $10,000
+           (b) the plant inspector must notify the CPPO and take
+               enforcement action as directed by the CPPO.
+
+   12 (1) The powers in sections 7 to 11 may only be exercised—          Limitation on
+                                                                         powers
+           (a) on the basis of plant pest risk assessment, for the
+               purpose of detecting and controlling plant pests; or
+           (b) on reasonable grounds that there has been or is
+               about to be a breach of this Ordinance or the
+               regulations.
+
+
+
+
+                                 15
+                            (2) The rights of entry conferred by section 7(1) to (4) may
+                     be exercised without a warrant, but the plant inspector must
+                     provide written justification to the owner or person in charge of
+                     any premises before exercising those rights.
+                            (3) Upon taking action under section 11(1) or (2), a plant
+                     inspector must, without delay, give to the person in charge of the
+                     container or vehicle a written and signed notice of detention,
+                     giving reasons for it.
+                           (4) A plant inspector must on request by any person
+                     produce his identification card for inspection when exercising
+                     powers under the foregoing sections.
+                             (5) A plant inspector who seizes or detains a regulated
+                     article or other thing under this Ordinance must immediately issue
+                     a written and signed notice to the owner or person in charge of the
+                     plant, product or item, giving reasons for exercising the power.
+
+Powers in               13. (1) If a plant inspector is of the opinion that any person—
+relation to people
+                                (a) seeking to enter or leave the Islands;
+                                (b) employed at a port or in a quarantine station or area;
+                                    or
+                                (c) engaged in importing or exporting regulated
+                                    articles, is in possession or control of an article that
+                                    poses a plant pest risk to the Islands, the inspector
+                                    may detain and question the person.
+                            (2) If a plant inspector suspects that there may be upon a
+                     person seeking to enter the Islands an article the importation of
+                     which would constitute an offence under this Ordinance, the
+                     officer may cause the person and the person’s baggage to be
+                     searched.
+                            (3) If a plant inspector suspects that there may be upon a
+                     person seeking to leave the Islands an article the exportation of
+                     which would constitute an offence under this Ordinance, the
+                     inspector may cause the person and the person’s baggage to be
+                     searched.
+                            (4) A search of a person under this section must be carried
+                     out by an inspector of the same sex as the person searched.
+                            (5) A person may be detained under this section only for as
+                     long as is required to question and search the person and the
+                     person’s baggage and to arrange for phytosanitary measures to be
+                     taken in respect of it.
+
+Powers of arrest         14. (1) If a plant inspector suspects that an offence under this
+                     Ordinance is being committed by any person in relation to a
+                     regulated article, and that a plant pest risk is created as a result, the
+                     inspector may, without a warrant, direct the person to stop the
+                     activity and may detain the regulated article for a period specified
+                     in the direction.
+
+
+
+
+                                                        16
+       (2) If a person as mentioned in subsection (1) refuses to
+comply with a direction or impedes or obstructs the inspector in
+the performance of his duties, the inspector may, with the
+assistance of the police, arrest the person.
+       (3) A person arrested under this section must be taken as
+soon as practicable, and in any event within 48 hours, before a
+magistrate and must not be detained without a warrant longer than
+is necessary.
+
+   15. (1) A plant inspector may require the owner or person in         Rights and duties
+                                                                        of plant
+charge of any regulated article, or premises on which an article is     inspectors
+found, to—
+           (a) give any assistance or carry out any instructions
+               reasonably necessary to facilitate the performance
+               of the inspector’s functions or to enforce the
+               provisions of this Ordinance;
+           (b) give all information reasonably necessary in
+               connection with the eradication of any plant pest or
+               the enforcement of this Ordinance.
+       (2) Plant inspectors have the right to request and receive the
+assistance of police officers in the execution of their duties.
+       (3) Every plant inspector following an inspection or issuing
+of an enforcement notice must prepare a written inspection report
+to the CPPO in a form approved by the Director.
+       (4) A plant inspector must not disclose any confidential
+information acquired in the performance of official duties relating
+to any person, firm, or business, except when required to do so by
+the CPPO or Director or by a court.
+       (5) A plant inspector who—
+           (a) in connection with his functions, directly or
+               indirectly asks for or takes any payment or other
+               reward to which he is not entitled;
+           (b) agrees to do, abstains from doing, permits, conceals
+               or
+           (c) connives at any act or omission which is contrary to
+               this Ordinance; or
+           (d) knowingly discloses any information contrary to
+               subsection (4),
+commits an offence.
+Penalty: A fine of $20,000.
+
+   16. A person who—                                                    Offences relating
+                                                                        to inspection,
+           (a) fails to provide access, samples or information to a     etc.
+               plant inspector upon request, gives false
+               information to a plant inspector, or otherwise fails
+               to comply with an order properly given under this
+               Ordinance;
+
+
+                                 17
+                             (b) refuses to submit to the lawful inspection of a plant
+                                 inspector any equipment used in connection with
+                                 the importation or movement of a regulated article;
+                             (c) attempts to improperly influence a plant inspector in
+                                 the performance of his functions under this
+                                 Ordinance;
+                             (d) tampers with any sample taken under this
+                                 Ordinance or breaks any seal or alters any marking
+                                 made by a plant inspector without permission;
+                             (e) alters, forges, defaces, or destroys any document
+                                 issued under this Ordinance or knowingly or
+                                 recklessly provides information which is false, for
+                                 the purpose of obtaining any document under this
+                                 Ordinance;
+                             (f) assaults, resists, threatens, or willfully obstructs a
+                                 plant inspector or other representative of the
+                                 Service while performing lawful functions under
+                                 this Ordinance; or
+                             (g) poses as a plant protection officer or plant inspector,
+                   commits an offence.
+                   Penalty: A fine of $10,000 or imprisonment for 12 months, or
+                   both.
+
+Authorised            17. (1) The Minister in Cabinet may, by order, specify a
+laboratories and
+analysts           laboratory, in the Islands or elsewhere, as an authorised laboratory
+                   for purposes of this Ordinance.
+                          (2) No person who has any actual or reasonably perceived
+                   interest in a matter or other action to be taken by the Service,
+                   whether such interest is direct or indirect, may act as a plant
+                   inspector of an authorised laboratory.
+                          (3) A person as mentioned in subsection (2) who becomes
+                   aware that he or she has such an interest, must notify the Director
+                   in writing within 3 days of becoming so aware, and the Director
+                   must immediately assign another plant inspector.
+                           (4) The Minister in Cabinet may, on the advice of the
+                   CPPO, by notice specify one or more appropriately qualified
+                   persons as authorised analysts to analyse samples for the purposes
+                   of this Ordinance.
+                           (5) A person duly employed in an authorised laboratory as
+                   an analyst is deemed to be an authorised analyst for the purposes
+                   of this section.
+                          (6) A laboratory that is not a Government laboratory, and
+                   an analyst who is not a public officer, may charge their usual fees
+                   for services provided under this Ordinance.
+
+
+
+
+                                                   18
+                               PART 3
+                       PLANT PEST CONTROL
+
+   18. (1) The Minister may, by order published in the Gazette,           Quarantine plant
+                                                                          pests
+declare any plant pest to be a quarantine plant pest for the purposes
+of this Ordinance.
+       (2) A declaration of a quarantine plant pest must be on the
+basis of plant risk analysis and whether the plant is of potential
+economic importance to the Islands.
+       (3) Any person in the Islands who becomes aware that a
+plant in his possession or under his control is infested with a
+quarantine plant pest must as soon as practicable notify—
+           (a) the CPPO or any member of the Service; or
+           (b) any police officer, in person or by electronic means.
+       (4) A police officer who is notified of a quarantine plant
+pest under subsection (3) must inform the CPPO as soon as
+practicable.
+      (5) A person who fails to notify or inform as required by
+subsection (3) respectively commits an offence.
+Penalty: A fine of $5,000.
+
+   19. (1) The Service must establish an early detection system           Early detection
+                                                                          system
+designed to detect plant pest risks or health hazards from regulated
+articles.
+       (2) The system established under subsection (1) must
+include at least the following characteristics—
+           (a) the legal obligation of private agriculturists to report
+               to the Service;
+           (b) a chain of command covering the whole of the
+               Islands.
+       (3) The Minister may by regulations make provisions—
+           (a) for causing or requiring notice to be given of the
+               appearance of any quarantine plant pest among
+               plants; and
+           (b) for enforcing an early detection system established
+               under this section.
+
+   20. (1) If there are reasonable grounds to believe that there is in    Declaration of
+                                                                          plant pest
+any area of the Islands an outbreak of a plant pest, or a high risk of    emergency
+such an outbreak, and that such an outbreak poses or would pose a
+serious plant pest risk, the Minister, on the advice of the Director
+acting through the responsible permanent secretary, must by order
+declare a plant pest emergency in that area.
+      (2) The advice of the Director given under subsection (1)
+must be based on—
+
+
+
+                                  19
+           (a) an inspection carried out; or
+           (b) the analysis of a sample taken, in accordance with
+               this Ordinance.
+      (3) The Director, on the advice of the CPPO, may direct the
+imposition of provisional measures to verify and control the risk of
+an outbreak before a plant pest emergency is declared under
+subsection (1).
+       (4) The measures directed by the Director under subsection
+(3) must be limited by a time specified in the direction that is
+proportional to the risk, and upon the expiration of that time, if an
+emergency has not been declared under subsection (1), the
+direction lapses.
+       (5) On the declaration of a plant pest emergency, the
+Director may do or cause to be done any of the following—
+           (a) mark the boundaries of the emergency area;
+           (b) set up roadblocks at all exits from the area;
+           (c) set up facilities for the cleansing and
+               disinfection of all persons and vehicles entering
+               or leaving the area and any other thing likely to
+               spread a plant pest;
+           (d) disinfect all vehicles, containers, regulated articles
+               or other items that are likely to carry plant pests
+               and which are being sent out of the area;
+           (e) inspect and disinfect all persons and their
+               possessions leaving the area so as to prevent any
+               pathogen from leaving the area;
+           (f) for the purposes of this subsection, detain persons,
+               regulated articles and vehicles for as long as is
+               necessary to minimise or eliminate the plant pest
+               risk presented by them;
+           (g) perform surveillance activities to ascertain the
+               extent and status of the emergency.
+       (6) A person who—
+           (a) resists, knowingly obstructs, or knowingly and
+               without reasonable excuse fails to comply with a
+               direction of the Director, a plant inspector or any
+               police officer or other person performing duties
+               under this section;
+           (b) knowingly enters or leaves a plant pest
+               emergency area except with and in accordance
+               with the permission of the Director or a plant
+               inspector; or
+           (c) knowingly moves any regulated article out of or
+               into an emergency area, or from one place within
+               the area to another place within that area, except with
+
+
+
+                                 20
+               and in accordance with the written permission of the
+               Director or a plant inspector,
+commits an offence.
+Penalty: A fine of $50,000 or 2 years imprisonment, or both.
+
+   21. (1) The Service must prepare a plant pest emergency plan,          Plant pest
+                                                                          emergency:
+based on the powers set out in section 20(5). The plan must set out       Supplementary
+the phytosanitary measures that are to be imposed during and in
+the area of a plant pest emergency, including obtaining the
+assistance of the police, fire and rescue services.
+      (2) The declaration of a plant pest emergency triggers the
+implementation of the plant pest emergency plan.
+      (3) Phytosanitary measures declared in a plant pest
+emergency must be—
+           (a) based on plant pest risk assessment;
+           (b) proportionate to the threat;
+           (c) limited to the extent and duration necessary to
+               minimize the threat; and.
+           (d) published in the Gazette.
+       (4) The Minister must revoke the plant pest emergency
+declaration when the Director (acting through the responsible
+permanent secretary), on the advice of the CPPO, determines that
+the threat has ended.
+
+   22. (1) If a plant inspector suspects that a quarantine plant pest     Designation of
+                                                                          plant pest zone
+posing a serious plant pest risk exists in any area of the Islands, the
+inspector must—
+           (a) without delay, sign a notice to that effect specifying
+               the limits of the area and provisionally designating
+               it a plant pest zone;
+           (b) serve the notice on the owner or occupier of the
+               area; and
+           (c) provide a copy of the notice to the CPPO.
+        (2) The area designated as a plant pest zone is subject to
+confirmation within 14 days by the CPPO following an
+investigation. If the designation is not confirmed in that period, or
+if the CPPO earlier decides not to confirm the designation, the area
+ceases to be a plant pest zone.
+       (3) If the CPPO confirms the finding of a plant pest zone,
+the CPPO may, by notice published in the Gazette, designate the
+plant pest zone and specify—
+           (a) the relevant quarantine pest;
+           (b) the limits of the plant pest zone;
+           (c) the phytosanitary measures to be imposed in the
+               zone; and
+
+
+                                  21
+                              (d) the resulting duties of persons in the zone and in
+                                  relation to regulated articles in the zone.
+                           (4) The CPPO may in a notice under subsection (3) also
+                    designate any other area containing, adjoining or surrounding the
+                    infested area as a plant pest zone.
+                          (5) If the CPPO considers that a plant pest zone has ceased
+                    to be infested, he must by notice in the Gazette cancel the
+                    designation of the plant pest zone.
+
+Plant pest zones:      23. (1) The Director must continuously review the plant health
+Supplementary
+                    status of any plant pest zone to verify compliance with the
+                    designation and the CPPO must revise the designation as
+                    necessary.
+                           (2) In a plant pest zone, the CPPO may in writing direct—
+                              (a) the treatment or disposal of infested plants and plant
+                                  products;
+                              (b) the movement of regulated articles into, out of, or
+                                  within the zone;
+                              (c) the movement of humans and vehicles into, out or
+                                  within the zone;
+                              (d) the inspection and treatment of regulated articles in
+                                  or entering or leaving the zone;
+                              (e) the destocking, cleaning, disinfecting or other
+                                  treatment of land, premises and vehicles;
+                              (f) any other phytosanitary measure the CPPO
+                                  considers necessary to contain the sanitary risk.
+                           (3) A regulated article that has been in a plant pest zone
+                    must not be exported until the CPPO is satisfied that it no longer
+                    presents a plant pest risk.
+                          (4) The cost of treatment or destruction under this section is
+                    to be borne by the ministry, and the owner of a plant or plant
+                    product is entitled to compensation in accordance with section 26.
+                           (5) A person who—
+                              (a) knowingly and without reasonable excuse fails to
+                                  comply with a direction of the CPPO in a plant pest
+                                  zone;
+                              (b) knowingly enters or leaves a plant pest zone
+                                  except with and in accordance with the
+                                  permission of a plant inspector; or
+                              (c) knowingly moves any regulated article out of or
+                                  into a plant pest zone without the permission of a
+                                  plant inspector,
+                    commits an offence.
+                    Penalty: A fine of $5,000 or imprisonment for 6 months, or both.
+
+
+
+                                                    22
+   24. (1) The CPPO may, by notice in the Gazette, designate any         Designation of
+                                                                         other zones
+part of the Islands as a plant pest-free zone, a buffer zone or a
+surveillance zone for the purposes of this Ordinance.
+       (2) A plant pest-free zone is a zone in which—
+           (a) no quarantine a pest is present in the area;
+           (b) phytosanitary measures have been implemented to
+               keep the area free of such pests; and
+           (c) a surveillance system has been instituted to verify
+               that the area remains free of quarantine plant pests.
+       (3) A buffer zone is a zone established to protect the health
+status of plants in a pest-free zone from those in a zone of a
+different plant health status. It must be established using measures
+such as vaccination, movement control and plant pest surveillance
+based on the epidemiology of the pest or pathogen under
+consideration, in order to prevent the spread of the causative
+pathogenic agent into a pest-free zone.
+       (4) A surveillance zone is established within, and along the
+border of, a pest-free zone separating the free zone from a plant
+pest zone.
+       (5) The CPPO must by notice specify the phytosanitary
+measures that may be imposed in order to contain a plant pest risk
+in a buffer or surveillance zone and to preserve the status of a plant
+pest-free zone.
+
+   25. (1) A plant inspector may cause any plant that has a              Destruction of
+                                                                         plants for pest
+quarantine plant pest, whether or not in a plant pest zone, to be        control purposes
+destroyed in order to prevent the spread of any plant pest, and for
+that purpose the plant inspector may give all necessary directions.
+       (2) A plant inspector may require the owner or person in
+charge of a plant to destroy the plant if the plant has been in
+contact with, or in close proximity to, another regulated article or
+an item that was, or is suspected of being (or having been) infested
+by a quarantine plant pest.
+       (3) A plant inspector may, for the purpose of observation
+and treatment, take possession of and retain any plant liable to be
+destroyed under this section and take appropriate phytosanitary
+measures.
+       (4) A plant destroyed under the provisions of this
+Ordinance or which dies as the result of a quarantine pest, must be
+disposed of as soon as possible by the owner of the plant under the
+directions of a plant inspector and in accordance with guidelines
+published by the CPPO.
+      (5) Destruction for purposes of this section includes
+burning or burying.
+       (6) The provisions of this section apply to a plant product
+or plant-related item as they apply to plants, except for the
+reference to it dying.
+
+
+
+                                 23
+Compensation      26. (1) Owners may, on the discretion of the Department, be
+               compensated for plant or plant product destroyed based on an
+               assessment done to ascertain—
+                          (a) if compensation should be granted;
+                          (b) the fair market value of the plant or plant product
+                              immediately before it is destroyed.
+                      (2) No compensation is payable in respect of a plant or
+               plant product destroyed while in a quarantine station or area if, in
+               the opinion of the CPPO, the plant or product was infested at the
+               time of importation into the Islands.
+                      (3) Compensation is not payable if the owner of the plant or
+               plant product failed to give notice of the presence of a quarantine
+               plant pest in accordance with section 18.
+                      (4) No compensation is payable to a person who commits
+               an offence under this Ordinance and claims compensation in
+               respect of any plant or plant product by means of or in relation to
+               which the offence was committed.
+                      (5) No compensation is payable under this section for—
+                          (a) the detention of a regulated article or vehicle;
+                          (b) consequential loss arising from the destruction of a
+                              plant or plant product; or
+                          (c) the destruction of any other regulated article.
+
+Control of        27. (1) The Director, on the advice of the CPPO, may in order
+movement of
+plants         to ensure control of quarantine pests and the proper handling of
+               plants which are to be moved from or to or within the Islands, by
+               notice prohibit—
+                          (a) the movement from or to or within the Islands of a
+                              specified plant; or
+                          (b) the movement from or to or within the Islands of
+                              any plant on a specified vessel or aircraft, for a
+                              period specified in the notice.
+                      (2) No import permit and no phytosanitary certificate may
+               be issued in relation to the import or export of a plant contrary to a
+               prohibition notice under subsection (1).
+                     (3) For the purposes of controlling or eradicating a
+               quarantine pest and of preventing its introduction or spread, the
+               Director, on the advice of the CPPO, may by notice—
+                          (a) control the movement of regulated articles within,
+                              into or out of a zone;
+                          (b) provide for the establishment of compartments
+                              within a zone and varying measures of control for
+                              each compartment;
+                          (c) authorise the disposal or treatment of regulated
+                              articles that are or have been in a zone; or
+
+
+
+                                                24
+          (d) impose any other disinfestation measure,
+              eradication measure or official control and
+              stamping-out program that is required, for a period
+              specified in the notice.
+       (3) The period specified in a notice under subsection (1) or
+(2) must not exceed 2 months, but the notice is renewable if the
+conditions for making it are met.
+       (4) In this section—
+“compartment” means a terrestrial plant sub-population containing
+    one or more establishments under a common plant health
+    management system and a plant sub-population with a
+    distinct health status with respect to a specific plant pest for
+    which required surveillance, control and plant health
+    measures have been applied for the purpose of international
+    trade;
+“population” means a group of plants sharing a common defined
+    characteristic.
+
+   28. (1) Any movement of plants into, from or within a zone          Movement
+                                                                       permits
+requires a movement permit issued by the Service.
+       (2) If a plant inspector has reasonable grounds to believe
+that any regulated article has been removed from or taken into a
+zone in contravention of subsection (1), the inspector may—
+          (a) seize the item, if it creates a plant pest risk;
+          (b) direct that the movement be postponed for a period
+              specified in the direction; or
+          (c) take other phytosanitary measures as necessary.
+
+  29. A person who, either personally or indirectly through an         Offences relating
+                                                                       to infested plants
+employee or agent—
+          (a) possesses, sells, offers for sale, transports, imports
+              or exports any regulated article knowing that it is
+              infested or may transmit a quarantine plant pest;
+          (b) intentionally or recklessly permits or causes the
+              introduction or spread of any quarantine plant pest;
+          (c) keeps or imports into the Islands a plant that the
+              person knows or suspects is infested with a
+              quarantine plant pest, without notifying the Service
+              immediately upon his knowledge or suspicion of
+              this circumstance;
+          (d) sells or offers or exposes for sale or barter a plant
+              which is infested with a quarantine plant pest or
+              which he suspects on reasonable grounds to be so
+              infested,
+commits an offence.
+Penalty: A fine of $10,000 or imprisonment for 6 months, or both.
+
+
+
+                                 25
+                                                   PART 4
+                                            PLANT QUARANTINE
+Plant quarantine
+orders                30. (1) If a plant inspector suspects that a plant—
+                              (a) has a plant pest;
+                              (b) may have been in contact, during its transportation,
+                                  with any plant which has or may have a plant pest
+                                  or with any plant which is not exempted from the
+                                  requirement of being placed in quarantine; or
+                              (c) has otherwise been exposed to the risk of infestation
+                                  by a plant pest, the inspector may order the plant to
+                                  be placed under quarantine in a quarantine station.
+                           (2) If it is a condition of import of a regulated article that it
+                   be placed in quarantine upon arrival in the Islands, the regulated
+                   article must be placed under quarantine in a quarantine station.
+                          (3) The period for which a regulated article must remain in
+                   a quarantine station –
+                              (a) in the circumstances mentioned in subsection (2) –
+                                  depends on the terms of the import permit;
+                              (b) in any other case – is to be determined by the
+                                  CPPO, on the basis of a plant pest risk assessment.
+                          (4) Any plant which develops a plant pest while in a
+                   quarantine station or, in the opinion of a plant inspector, presents a
+                   risk of the spread of any quarantine plant pest in the Islands may,
+                   with the approval of the CPPO, be destroyed without payment of
+                   compensation.
+
+Plant quarantine      31. (1) The Minister may, on the advice of the CPPO, establish
+stations and
+areas              or designate buildings or areas at appropriate places on any public
+                   or private land in the Islands as a quarantine station or area for
+                   regulated articles for the purposes of this Ordinance.
+                          (2) Quarantine stations or areas must be established at or
+                   near to all designated ports.
+                         (3)A quarantine station or area must be provided with such
+                   buildings and facilities as are reasonably needed—
+                              (a) to hold quarantined articles in quarantine;
+                              (b) to prevent unauthorised persons from entering the
+                                  station or area or removing items from the station
+                                  or area;
+                              (c) to enable the CPPO or a plant inspector to perform
+                                  tests, provide treatment and apply other
+                                  phytosanitary measures as required by or under this
+                                  Ordinance.
+                          (4) A quarantine station or area may be established under
+                   this section for specific plants or for the surveillance of specific
+                   diseases, or may be established for emergency purposes only.
+
+
+                                                      26
+   32. (1) A plant inspector must be assigned to each quarantine        Management of
+                                                                        quarantine
+station or area to provide necessary attention at the station or area   stations and
+while any plant is kept there.                                          areas
+
+      (2) The CPPO may issue written instructions as to the
+examination, treatment, disposal or destruction of plants or plant
+products while in a quarantine station or area or in transit to or
+from a quarantine station or area. Such instructions must conform
+to IPPC standards for the management of quarantine stations.
+      (3) The fees or charges payable for keeping articles in
+quarantine are as prescribed.
+       (4) The cost of keeping a regulated article in quarantine is
+to be borne by the importer or owner of the regulated article.
+       (5) No compensation is payable for any loss or destruction
+or consequential loss caused by a regulated article being detained
+in quarantine, unless negligence or malice is proved.
+        (6) Plants in a quarantine station or area must be kept in
+isolation, with no direct or indirect contact with other plants, to
+prevent the transmission of a plant pest or pathogen into the
+surrounding environment while the plant is undergoing
+observation and, if appropriate, testing and treatment.
+      (7) No person, other than the person in charge of the station
+or a plant inspector acting in the course of duty, may enter a
+quarantine station or area without the written permission of the
+CPPO or of the person in charge of the station or area.
+        (8) A regulated article must not be released from
+quarantine except upon the authority of a quarantine release
+certificate issued by a plant inspector.
+      (9) Before a regulated article can be released from
+quarantine—
+           (a) any treatment required as a condition of importation
+               of the regulated article must have been applied; and
+           (b) all quarantine fees must have been paid.
+      (10) Once subsection (9) has been complied with, the
+regulated article must be released from quarantine as soon as
+practicable and a quarantine release certificate in an approved form
+issued.
+
+   33. (1) A person who—                                                Quarantine
+                                                                        offences
+           (a enters a quarantine station without permission being
+              given under section 30(7); or
+           (b) damages, interferes with or in any way reduces the
+               effectiveness of measures taken to secure a
+               quarantine station, or any quarantined regulated
+               article in the station,
+commits an offence.
+Penalty: A fine of $5,000.
+
+
+                                 27
+                            (2) A person who—
+                                (a) fails to comply with directions for a plant to be or to
+                                    remain in quarantine; or
+                                (b) releases a plant from quarantine without the written
+                                    authority of a plant inspector,
+                     commits an offence.
+                     Penalty: A fine of $10,000 and imprisonment for 6 months, or
+                     both.
+
+                                                   PART 5
+                                        PLANT IMPORTS AND EXPORTS
+Importation of
+regulated articles     34. (1) A plant, plant product or other regulated article may be
+                     imported into the Islands only at a port.
+                           (2) No regulated article may be imported into the Islands
+                     unless—
+                                (a) a plant import permit has been issued under this
+                                    Part;
+                                (b) the regulated article meets the plant import
+                                    conditions of the permit and of or under this
+                                    Ordinance;
+                                (c) the regulated article is accompanied by any other
+                                    documentation required by or under this Ordinance
+                                    or any other written law to accompany imports.
+                            (3) A person who imports, or attempts to import, a
+                     regulated article in contravention of this section commits an
+                     offence.
+                     Penalty: A fine of $50,000 and imprisonment for 2 years, or both.
+                            (4) The Minister may make regulations—
+                                (a) providing for cleansing and disinfection and
+                                    subjection to quarantine of vehicles used for the
+                                    transportation of plants to the Islands;
+                                (b) regulating the examination, inspection, seizure and
+                                    detention of any regulated article prior to its being
+                                    landed in the Islands.
+                             (5) The requirements of or under this Part are in addition to
+                     any other requirements relating to the import or export of regulated
+                     articles.
+
+Plant import            35. (1) A person who wishes to import any regulated article
+permits
+                     into the Islands must apply to the Service for a plant import permit
+                     in a form approved by the CPPO and must pay the prescribed fee.
+
+
+
+
+                                                      28
+       (2) An application for a plant import permit must be
+submitted in writing to the Service before the importation and
+must include—
+           (a) the proposed date of entry;
+           (b) the port of entry;
+           (c) the country of origin and any country of transit;
+           (d) the name of the species or item to be imported and
+               the quantity;
+           (e) the means of transport;
+           (f) proof of ownership or custodianship of plants;
+           (g) the final destination in the Islands;
+           (h) evidence that an international phytosanitary
+               certificate has been issued in respect of the article in
+               the exporting country; and
+           (i) any other information prescribed or that the CPPO
+               requires in writing in any particular case.
+      (3) On receipt of an application made in accordance with
+subsection (2), the Service may issue to the applicant a plant
+import permit in a form approved by the CPPO.
+      (4) Every plant import permit is issued subject to the plant
+import conditions and if those conditions are not met, the permit is
+deemed to be cancelled.
+       (5) A plant import permit may include a requirement that a
+regulated article be placed in quarantine for a period and subject to
+conditions specified in the permit.
+
+   36. (1) The Director must, from time to time, publish the plant        Plant import
+                                                                          conditions
+import conditions for the importation of regulated articles into the
+Islands.
+       (2) Plant import conditions are the phytosanitary
+requirements that must be met before a regulated article is
+imported and it is the duty of the importer to inform himself of the
+conditions and to comply with them.
+      (3) Plant import conditions may include a requirement for
+the tagging or other identification of plants that have been
+imported.
+       (4) Plant import conditions must be based on international
+standards and science-based plant pest risk assessment conducted
+in accordance with the IPPC standards and other established
+international standards and with other requirements of or under
+this Ordinance.
+      (5) The plant import conditions must be regularly updated
+and made public.
+
+
+
+
+                                    29
+International
+phytosanitary
+                      37. (1) The import conditions in relation to any regulated
+certificates       article may include a requirement that the article be certified by an
+                   international phytosanitary certificate.
+                         (2) An international phytosanitary certificate is a
+                   phytosanitary certificate issued by the plant protection authority of
+                   the country from where a regulated article originated or was last
+                   exported, which must be a country specified under subsection (3).
+                          (3) The Director, on the advice of the CPPO, must by
+                   notice specify the countries whose phytosanitary certificates will
+                   be accepted for the purposes of this Part.
+                         (4) An international phytosanitary certificate must be in
+                   English or accompanied by an official English translation.
+
+Prohibited plant      38. (1) The Minister may, from time to time, on the advice of
+imports
+                   the Director acting through the responsible permanent secretary,
+                   and on the basis of plant pest risk assessment, by notice prohibit
+                   the importation into the Islands of—
+                              (a) a specified regulated article or species of plant or
+                                  type of product; or
+                              (b) all regulated articles from a specified country, if
+                                  such importation would result in a serious plant pest
+                                  risk to the Islands.
+                           (2) If a notice prohibiting the importation of a regulated
+                   article is issued under subsection (1), written reasons for the notice
+                   must be stated.
+                           (3) A person who imports or attempts to import a regulated
+                   article the importation of which is prohibited under this section
+                   commits an offence.
+                   Penalty: A fine of $50,000 or imprisonment for 2 years, or both.
+
+Arrival               39. (1) A customs officer or police officer who becomes aware
+notification
+                   of the arrival in the Islands of a consignment of regulated articles
+                   must—
+                              (a) notify a plant inspector as soon as practicable;
+                              (b) if so required by a plant inspector, assist in the
+                                  inspection of the articles; and
+                              (c) detain the articles in a quarantine area until a plant
+                                  inspector authorises their release.
+                           (2) A postal worker or employee of the Civil Aviation
+                   Authority or the Ports Authority who becomes aware of the arrival
+                   in the Islands of a regulated article for which no import permit has
+                   been issued, must notify a plant inspector as soon as practicable.
+                          (3) Subsection (1) and (2) do not apply to the importation
+                   of personal effects by a passenger or crew member, as provided by
+                   section 42.
+                         (4) A person who fails to comply with an obligation
+                   imposed by subsection (1) or (2) commits an offence.
+
+
+                                                    30
+Penalty: A fine of $10,000.
+
+   40. (1) All regulated articles are, upon importation into the          Inspection of
+                                                                          plant imports
+Islands, subject to inspection by a plant inspector at the port of
+entry.
+       (2) Inspections must be carried out during regular business
+hours, unless the articles to be inspected are goods in transit or are
+extremely perishable, in which case, on application by the importer
+and on payment of the prescribed fee, the inspection must be
+carried out at some other time agreed with the importer.
+       (3) Upon an inspection under this section, if the plant
+inspector determines that the imported item does not present any
+risk for the introduction and spread of a quarantine plant pest, and
+does not require quarantine, he may release the item to the
+importer.
+      (4) If upon such an inspection the inspector is satisfied that
+the import of the regulated article would result or is likely to result
+in a plant pest risk, or if the documentation accompanying the
+shipment fails to meet the requirements of this Part, the inspector
+must do one of the following—
+           (a) take samples of the regulated article for submission
+               to an authorised laboratory for analysis;
+           (b) transfer the regulated article to a quarantine station
+               or any other location specified by the Director for
+               testing or disinfection;
+           (c) return the regulated article to the country of origin;
+               arrange for the destruction of the regulated article.
+      (5)The inspector must inform the importer of the option that
+the inspector proposes to take and must give the importer the
+opportunity to appeal against the decision.
+       (6) The inspector must inform the CPPO in writing of his
+findings and of the action taken.
+      (7) Any decision taken under subsection (3) or (4) must be
+made based on plant pest risk assessment.
+       (8) If the imported articles lie unclaimed for a prescribed
+period after their entry into the Islands, or after treatment, the
+Director may take action to dispose of them.
+      (9) The cost of any action taken by the Director under
+subsection (4) or (8) must be borne by the importer.
+
+   41. (1) No regulated article may be exported from the Islands          Plant exports
+except in accordance with this Ordinance.
+       (2) A regulated article may only be exported from a port.
+        (3) A person who intends to export a regulated article from
+the Islands must submit it for examination by a plant inspector.
+      (4) In submitting a regulated article for examination under
+subsection (3) the person must complete the approved form, pay
+
+
+                                  31
+                 the prescribed fee, and provide any other document or information
+                 reasonably needed to enable the examination to take place.
+                         (5) If upon examination the inspector, taking into
+                 consideration the requirements of the importing country, is
+                 satisfied that the conditions for the issue of a phytosanitary
+                 certificate in relation to the regulated article have been met, the
+                 inspector must issue a certificate.
+                       (6) The issue of a phytosanitary certificate is dependent upon
+                 the payment of the prescribed fee.
+                         (7) If upon examination as aforesaid the inspector is not
+                 satisfied that the regulated article intended to be exported is free of
+                 any risk for the exportation and spread of a quarantine plant pest,
+                 or otherwise satisfies the requirements of this Ordinance, the
+                 inspector must—
+                            (a) subject the plant or product to appropriate treatment
+                                in order to remove the risk; or
+                            (b) refuse to issue a phytosanitary certificate.
+                       (8) For the purpose of issuing phytosanitary certificates the
+                 Service may—
+                            (a) carry out biological        tests   or   disinfestation
+                                procedures;
+                            (b) carry out inspection, approval and certification
+                                procedures of plants and plant establishments;
+                            (c) observe plants during transport to the place of
+                                shipment and at the point of departure; and
+                            (d) send advance notice to the importing country.
+                        (9) Following the issue of a phytosanitary certificate, the
+                 Service must undertake the appropriate measures to maintain the
+                 plant health status of the regulated article until it leaves the
+                 Islands.
+                        (10) A person who exports or attempts to export a regulated
+                 article in contravention of this section commits an offence.
+                 Penalty: A fine of $50,000 or imprisonment for 2 years, or both.
+
+Passengers and      42. (1) Subject to subsections (2) and (3), every passenger or
+crew members
+                 crew member who arrives in the Islands on board a vessel or
+                 aircraft must make to a plant inspector or customs officer a plant
+                 health declaration.
+                         (2) The plant health declaration must be in, or to the effect
+                 of, a form approved by the Director and must contain all required
+                 particulars relating to the person and any baggage that
+                 accompanies the person.
+                       (3) A passenger or crew member does not need to declare
+                 personal effects, that is to say—
+                            (a) articles of clothing worn on the body;
+
+
+
+                                                   32
+          (b) articles visibly attached or connected to the body or
+              clothing; or
+          (c) suitcases and other visible containers of personal
+              baggage, unless a plant inspector so requests
+              because of the phytosanitary risk posed by the item,
+              and in the absence of any such request, the article or
+              container is deemed to have plant import clearance.
+      (4) A single declaration under subsection (1) may be made
+by a person in respect of the person and the person’s spouse and
+any member of the family aged 16 years or less travelling on the
+same vessel or aircraft.
+       (5) When a declaration is tendered under this section, a
+plant inspector may—
+          (a) question the passenger or crew member;
+          (b) inspect the baggage to which it relates.
+          (c) if necessary, question a spouse or family member
+              included on the declaration.
+       (6) After taking the steps in subsection (5), a plant
+inspector may either grant plant import clearance of the persons
+and baggage to which the declaration relates, or—
+          (a) detain the passenger or crew member for further
+              questioning and search; and
+          (b) detain the baggage and other articles in the
+              possession of the passenger or crew member for
+              further inspection and application of other
+              phytosanitary measures as the inspector considers
+              appropriate;
+          (c) An arriving passenger or crew member who fails
+              to—
+              (i) make a declaration as required by subsection (1);
+                   or
+              (ii) submit baggage for inspection when so directed
+                    under subsection (5),
+commits an offence.
+Penalty: A fine of $5,000.
+       (7) Every passenger or crew member departing from the
+Islands must—
+          (a) submit for inspection on request by a plant
+              inspector any regulated article on the person or in
+              the person’s baggage;
+          (b) permit the inspector to search the person’s baggage.
+      (8) A departing passenger or crew member who fails to
+comply with subsection (7) commits an offence.
+Penalty: A fine of $5,000.
+
+
+                                33
+                        (9) Section 14 applies to the questioning, detention and
+                 searching of persons and baggage under this section.
+
+Obligations of      43. (1) If there is on board a vessel or aircraft arriving in the
+captains and
+owners of        Islands any regulated article, the captain or owner of the vessel or
+vessels and      aircraft on or before coming into a port must declare to the
+aircraft
+                 Service, in an approved form, the presence of the regulated article
+                 on board the vessel or aircraft.
+                        (2) If a plant inspector is satisfied that—
+                            (a) there has been a failure on the part of the captain or
+                                owner of a vessel or aircraft to comply with the
+                                requirement in subsection (1); or
+                            (b) there is on board the vessel or aircraft any regulated
+                                article that is being imported in contravention of
+                                this Part,
+                 the inspector may cause the vessel or aircraft or the container
+                 where the regulated article is kept to be detained until the Director
+                 otherwise directs.
+                        (3) The inspector must give the captain and owner written
+                 notice of the failure or contravention referred to in subsection (2).
+                        (4) The captain of every incoming vessel must, while the
+                 vessel is in the Islands take all necessary steps to prevent any plant
+                 or plant product from being landed unless permitted by a plant
+                 inspector, and then only as directed by the inspector.
+                        (5) A captain or owner who fails to comply with a
+                 requirement of this section commits an offence.
+                 Penalty: A fine of $20,000.
+                         (6) If a regulated article is landed from any vessel or
+                 aircraft in contravention of this Ordinance, the captain of the
+                 vessel or aircraft or the owner of the article (depending on which
+                 has possession or custody of it) commits an offence.
+                 Penalty: A fine of $20,000 or imprisonment for 12 months, or
+                 both.
+
+International       44. (1) The owner or operator of an international transportation
+transportation
+facilities       facility must, if required in writing by the Director, provide and
+                 maintain adequate areas, offices, laboratories and other facilities,
+                 including buildings, accommodation, equipment, furnishings and
+                 fixtures, for inspection or for any other purpose related to the
+                 administration of this Ordinance.
+                        (2) The Director may—
+                            (a) require the making of any improvements he
+                                considers necessary to any area, office, laboratory
+                                or other facility to meet the obligation in subsection
+                                (1);
+
+
+
+
+                                                  34
+           (b) post, on or about the area, office, laboratory or other
+               facility for as long as is required, a notice to this
+               effect.
+       (3) If the owner or operator of a facility fails to comply
+with a requirement under subsection (2)(a), the Director may cause
+the construction or repairs to be carried out , whereupon the owner
+or operator becomes liable for all reasonable costs incurred as a
+debt due to the Crown.
+       (4) The Minister may make regulations for the operation of
+any international transportation facility, including the provision of
+food, water and ventilation and protection during loading and
+unloading necessary, for different categories of plants.
+     (5) In this section, “international transportation facility”
+means—
+           (a) an airport that receives any aircraft operating on an
+               international flight;
+           (b) a port that receives any ship sailing on an
+               international voyage; or
+           (c) a warehouse or other facility that receives any
+               international air or water traffic.
+
+
+                              PART 7
+                    PROSECUTION OF OFFENCES
+
+   45. (1) If the CPPO reasonably believes, of his own knowledge         Procedure for
+                                                                         offences
+or on the information of a plant inspector, that a person has
+contravened any provision of this Ordinance, and that the person is
+not eligible for, or has not accepted, the fixed penalty procedure in
+section 48, the CPPO must notify the Police Force who may lay an
+information before a magistrate with a view to a summons being
+issued.
+       (2) The CPPO must inform the Director in writing of action
+taken under subsection (1) as soon as practicable after it is taken.
+     (3) All offences under this Ordinance are triable as
+summary offences in the Magistrate’s Court.
+
+   46. If a person is convicted of an offence under this Ordinance       Cancellation of
+                                                                         licence, etc.
+and the offence results in the spread of a quarantine plant pest or
+poses a serious plant pest risk, the court may on conviction, and on
+an application by or on behalf of the CPPO, order—
+           (a) that any plant establishment operated by the person
+               be closed; and
+           (b) that any licence the person holds to operate such an
+               establishment be suspended for a period specified
+               in the order, or cancelled.
+
+
+
+
+                                 35
+Offences by           47. (1) If a corporation commits an offence under this
+corporations and
+employees          Ordinance, any officer, director or agent of the corporation who
+                   directed, authorised, assented to or acquiesced or participated in
+                   the commission of the offence is a party to and guilty of the
+                   offence and is liable on conviction to the punishment provided for
+                   the offence, whether or not the corporation has been prosecuted or
+                   convicted.
+                          (2) In any prosecution for an offence under this Ordinance,
+                   it is sufficient proof of the offence to establish that it was
+                   committed by an employee or agent of the defendant, whether or
+                   not the employee or agent is identified or has been prosecuted for
+                   the offence, unless the defendant establishes that—
+                             (a) the offence was committed without the knowledge
+                                 or consent of the defendant; and
+                             (b) the defendant exercised all due diligence to prevent
+                                 the commission of the offence.
+
+Fixed penalties       48. (1) If a plant inspector has reasonable grounds to believe
+                   that a person is committing or has committed an offence under this
+                   Ordinance or the regulations for which the maximum penalty does
+                   not include a term of imprisonment, the inspector may
+                   immediately serve a notice in writing on the person, charging him
+                   with the commission of the offence.
+                        (2) The notice must inform the alleged offender that he
+                   must—
+                             (a) appear before a magistrate on the date specified; or
+                             (b) in accordance with the procedure in subsections (3)
+                                 and (4) of this section, pay the fixed penalty, in lieu
+                                 of appearance before a magistrate.
+                          (3) An alleged offender who chooses to pay the fixed
+                   penalty referred to in subsection (2)(b) –
+                             (a) must within 7 days of the date of the notice, sign the
+                                 notice in acknowledgement of guilt and return it,
+                                 together with the sum specified in the notice, to a
+                                 Magistrate’s Court;
+                             (b) is to be treated for all purposes in law as a person
+                                 who has not committed, been charged with,
+                                 prosecuted for, convicted of or sentenced for the
+                                 offence in respect of which payment was made.
+                          (4) The admission of guilt and the fixed penalty paid under
+                   this section must be dealt with by the magistrate in the same
+                   manner as an adjudication in court of an offence punishable on
+                   summary conviction and for which no conviction is recorded.
+                         (3) The fixed penalty is 1/10 of the maximum fine for the
+                   offence.
+
+Forfeiture            49. (1) Upon the conviction of any person for an offence under
+                   this Ordinance, the court may, in addition to any other sentence
+
+
+                                                   36
+imposed, order any regulated article in respect of which the
+offence was committed, and any object used in connection with the
+offence, to be forfeited to the Crown.
+       (2) An item declared forfeit under subsection (1) must be
+disposed of as the court directs, on the advice of the CPPO, and if
+sold, the proceeds of sale must be dealt with in accordance with
+section 42 of the Interpretation Ordinance (Cap.1.03).
+       (3) If the court does not order the forfeiture of an item, it or
+any proceeds realized from its disposal must be returned to the
+owner of the item or the person having the possession, care or
+control of it when it was seized.
+       (4) If the owner of an item or the person having possession,
+care or control of it at the time of its seizure is convicted of an
+offence under this Ordinance and a fine is imposed –
+           (a) the item may be detained until the fine is paid;
+           (b) the item may be sold under execution in satisfaction
+               of the fine.
+
+   50. (1) If the owner or person in charge of a plant is charged         Presumptions
+with an offence under this Ordinance relative to a plant pest, he is
+presumed to have known of the existence of the pest unless he
+shows to the satisfaction of the court that he had no knowledge of
+it and could not with reasonable diligence have obtained that
+knowledge.
+       (2) If a person is charged with an offence under this
+Ordinance for not having duly cleansed or disinfested any place,
+vehicle or thing belonging to him or in his charge, the burden of
+proving the due cleansing and disinfestation lies on the person.
+
+   51. (1) In a prosecution for an offence under this Ordinance, a        Documentary
+                                                                          evidence
+declaration, certificate, report or other document of the Director or
+CPPO or of an authorised analyst, plant inspector or police officer,
+made for the purposes of this Ordinance and purporting to have
+been signed on behalf of the Director or CPPO or of the analyst,
+inspector or police officer, is admissible in evidence without proof
+of the signature or office of the person appearing to have signed it
+and, in the absence of evidence to the contrary, is proof of the
+matters asserted in it.
+        (2) In a prosecution for an offence under this Ordinance, a
+copy of or an extract from any record or other document that is
+made by the Director or CPPO or by an analyst, inspector or police
+officer under this Ordinance and that appears to have been
+certified under the signature of the Director, CPPO, analyst,
+inspector or police officer as a true copy or extract is admissible in
+evidence.
+       (3) A document referred to in subsection (1) or (2) is, in the
+absence of evidence to the contrary, deemed to have been issued
+on the date shown on it.
+
+
+
+
+                                  37
+                       (4) The certificate of a qualified plant expert to the effect
+               that any plant is or was infested with a plant pest specified in the
+               certificate is for the purposes of this Ordinance prima facie
+               evidence in a court of the matter certified.
+
+Seizure and       52. (1) Without affecting any other provision of this Ordinance
+detention of
+plants, etc.   about seizure and disposal of regulated articles, a plant inspector or
+               police officer may seize and dispose of any regulated article, or
+               require its owner or any person having the possession, care or
+               control of it to dispose of it, if the plant or product—
+                          (a) is, or is suspected of being, infested by a quarantine
+                              plant pest;
+                          (b) has been in contact with or in close proximity to
+                              another regulated article that was, or is suspected of
+                              having been, infested by a quarantine plant pest at
+                              the time of contact or close proximity; or
+                          (c) is, or is suspected of being the causative agent of a
+                              quarantine plant pest.
+                      (2) A plant inspector or police officer who seizes and
+               detains a regulated article under this Ordinance may—
+                          (a) arrange for it to be stored it at the place where it
+                              was seized or removed to some other place for
+                              storage; or
+                          (b) require the owner or the person having the
+                              possession, care or control of it when it was seized
+                              to remove it to any place and to store it.
+                     (3) A person who fails to comply with a requirement under
+               subsection (2)(b) commits an offence and is liable on summary
+               conviction—
+                          (a) to a fine of $5,000;
+                          (b) to pay the Government the cost of recapturing and
+                              confining or if necessary destroying the regulated
+                              article.
+                     (4) A person who fails to comply with a requirement under
+               subsection (2)(b) is not entitled to any compensation for loss of or
+               damage to the regulated article occasioned by its being recaptured
+               and confined or if necessary destroyed in accordance with this
+               Ordinance.
+                      (5) A person who, except with the written authority of a
+               plant inspector, removes, alters or interferes in any way with a
+               regulated article seized under any provision of this Ordinance
+               commits an offence.
+               Penalty: A fine of $5,000.
+                     (6) A plant or thing seized and detained under this
+               Ordinance must not be detained after—
+
+
+
+
+                                                38
+          (a) a determination by an inspector that the plant or
+              thing is in conformity with the provisions of this
+              Ordinance; or
+          (b) the expiration of 180 days after the day of seizure,
+              unless before that time proceedings are instituted in
+              relation to the plant or thing, in which case it, or the
+              proceeds from its disposal, may be detained until
+              the proceedings are finally concluded.
+        (7) Any document or other article seized and detained as
+evidence of an offence under this Ordinance must, at the
+conclusion of any proceedings for the offence, or as soon as
+reasonably practicable after it is decided not to bring proceedings
+for the offence, be returned to the owner of the document or other
+article unless it is ordered to be forfeited under section 50.
+
+                              PART 8
+                  MISCELLANEOUS PROVISIONS
+
+   53. (1) The Service must establish a system for the audit of          Plant audit and
+                                                                         trace-back
+plants and trace-back of plant products.                                 system
+
+      (2) The system must enable the Service—
+          (a) to trace quarantine plant pest outbreaks;
+          (b) to recall plant-based food if necessary;
+          (c) to follow the movement of a plant through all stages
+              of the production chain.
+      (3) The Minister may make regulations—
+          (a) providing for the establishment and functioning of a
+              plant identification and tracing system; and
+          (b) regulating the packaging and labelling of plant
+              products for trace back to the country of origin.
+       (4) A system established under this section must be
+published in accordance with section 57(1).
+
+   54. (1) All customs, port, airport, airline, postal, shipping,        Duty to assist
+                                                                         and cooperate
+police and local authorities must assist plant inspectors in the
+performance of their functions under this Ordinance by providing
+such facilities and assistance as the Director may reasonably
+request from time to time.
+       (2) The Service must collaborate with all relevant
+ministries and departments, including the authorities responsible
+for food safety and environmental health, and must establish
+mechanisms for cooperation in this regard.
+
+    55. (1) A person aggrieved by an action or decision of a plant       Right of appeal
+inspector under this Ordinance may appeal to the CPPO in writing
+received within 7 days of the action or decision becoming known
+to the person aggrieved.
+
+
+                                 39
+                          (2) A person aggrieved by an action or decision of the
+                  CPPO under this Ordinance, including a decision on an appeal
+                  under subsection (1), may appeal in writing to the Director
+                  received within 14 days of the action or decision becoming known
+                  to the person aggrieved.
+                         (3) The decision of the Director is final on technical matters
+                  but does not prejudice the right of any aggrieved party to seek
+                  recourse in the courts on matters of law.
+                         (4) The CPPO or Director, when considering an appeal
+                  under his section, must give the plant inspector or the CPPO, as
+                  the case may be, an opportunity to make representations in writing
+                  on the subject of the appeal.
+
+Good faith           56. (1) Neither the Director, the CPPO nor any plant inspector,
+defence
+                  plant protection officer or other representative of the Service is
+                  liable to suit or to prosecution in respect of anything done or
+                  omitted, or any decision given, if the act, omission or decision was
+                  in good faith and in the performance of official functions under
+                  this Ordinance.
+                         (2) Neither the Government, the Director, the CPPO nor
+                  any other public officer has any liability for actions taken in good
+                  faith for the destruction or disposal of regulated articles in
+                  accordance with the requirements of this Ordinance.
+
+Publication and     57. (1) Any notice, approval, list or guidelines to be published
+service of
+notices, etc.     under this Ordinance must be published in the Gazette.
+                         (2) Service of documents required to be served under this
+                  Ordinance may be effected by personal service, or by electronic
+                  service in accordance with the Electronic Transactions Ordinance
+                  (Cap. 2.14).
+                         (3) If no person is in actual occupation of any premises, or
+                  if the occupier or owner cannot be located, service of any notice
+                  under this Ordinance relating to the premises must be made by
+                  affixing the notice to a conspicuous place on the premises, and
+                  such affixing is good service of the notice.
+
+Keeping of           58. (1) The CPPO must maintain a plant protection records
+records
+                  needed for the administration of this Ordinance and the
+                  performance of the functions of the Service.
+                          (2) Without limiting the matters to be recorded details of
+                  the following must be included—
+                             (a) quarantine plant pests;
+                             (b) prohibited plant imports;
+                             (c) designated ports of entry and exit;
+                             (d) international transport facilities in the Islands;
+                             (e) plant quarantine stations and areas;
+
+
+
+
+                                                    40
+          (f) the plant import conditions for each type of
+              regulated article, including the phytosanitary
+              measures appropriate to each type;
+          (g) plant import permits issued and refused under Part
+              5;
+          (h) a list of exporting countries approved under section
+              37(3);
+          (i) plant pest zones and other zones designated under
+              Part 3;
+          (j) occurrences of quarantine plant pests notified under
+              this Ordinance;
+          (k) forms approved for the purposes of this Ordinance;
+          (l) any other matter that the Director in writing
+              requires the Service to record in the register.
+       (3) The CPPO must maintain records relating to the
+functions of the Service, including, but not limited to—
+          (a) financial management records, with budgets and
+              records of expenditure;
+          (b) personnel records including the identities, duty
+              statements and terms and conditions of employment
+              of all plant inspectors;
+          (c) operational statistics relating to the Service.
+       (4) Subject to any other written law, the plant protection
+register and other records kept under this section must only be
+used for the purposes of this Ordinance.
+        (5) A copy of an entry in the plant protection records
+certified by the Director to be an accurate copy may be produced
+in court as prima facie evidence of the entry.
+       (6) The plant protection records kept under this section may
+be in electronic format, provided the information is readily
+retrievable and is protected against unintended loss and
+unauthorised alteration.
+       (7) The Director may by notice, on the advice of the CPPO,
+determine the period for which entries in the plant protection
+records under this section must be kept, consistent with any other
+written law relating to public records.
+
+   59. (1) The Minister, on the advice of the Director, may make      Regulations
+regulations for the purpose of carrying out the provisions of this
+Ordinance.
+      (2) Without limiting subsection (1), the regulations may
+provide for—
+          (a) additional requirements and procedures for permits
+              to be issued under this Ordinance and the
+              information about them that is to be kept in the
+              records;
+
+
+                                 41
+                        (b) the taking and analysis of samples;
+                        (c) the procedures to be followed by an authorised
+                            laboratory or analyst in performing functions under
+                            this Ordinance;
+                        (d) additional rules and procedures for                the
+                            implementation of phytosanitary measures;
+                        (e) the mode of cleaning and disinfestation in a port
+                            area of any item including the hands or feet, the
+                            clothing or articles in the possession of any person
+                            arriving in the Islands on a vessel used to transport
+                            plants from a country in which there is an outbreak
+                            of a quarantine pest;
+                        (f) providing for the application to plants imported into
+                            the Islands of any test for a quarantine pest or of
+                            any treatment for such a pest;
+                        (g) prohibiting or regulating the importation of any
+                            equipment which has been used in connection with
+                            regulated articles or refuse, and which is capable of
+                            transmitting a quarantine pest;
+                        (h) regulating the imposition of emergency quarantine
+                            actions due to new hazards;
+                        (i) the fees payable for services provided by or on
+                            behalf of the Service under this Ordinance,
+                            including the cost of inspections and analysis and
+                            the services of an authorised laboratory;
+                        (j) any other matter which by this Ordinance is to be
+                            prescribed, or which is necessary to implement this
+                            Ordinance.
+                  (2) Regulations made under           this   section   must   be
+             harmonized with the IPPC standards.
+                    (3) Regulations under this or any other section may create
+             offences and may prescribe a maximum penalty for such offences
+             not exceeding a fine of $10,000.
+                    (4) The Director must ensure appropriate consultation with
+             the relevant public and private entities relevant to the agricultural
+             sector before advising the Minister on the making of regulations
+             under this section.
+
+Repeal and     60. (1) The Plant Protection Ordinance (Cap.10.04) is repealed
+savings
+             and the Plant Protection Order 1996 made under it is revoked.
+                    (2) Any enforcement action commenced under the repealed
+             Ordinance, including any judicial proceedings arising out of such
+             action, may be continued until it is completed in terms of that
+             Ordinance.
+                   (3) Any permit or certificate issued under the repealed
+             Ordinance which is in force at the date of commencement of this
+             Ordinance continues in force for 6 months after that date.
+
+
+                                              42
+  61. This Ordinance binds the Crown.   Ordinance binds
+                                        the Crown
+
+                      _______________
+
+MADE this 11th day of October 2012.
+
+
+
+PATRICK BOYLE
+ACTING GOVERNOR
+
+
+
+
+                             43
+

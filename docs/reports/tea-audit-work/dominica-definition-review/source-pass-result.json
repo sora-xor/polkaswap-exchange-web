@@ -1,0 +1,11 @@
+{
+  "reviewedAt": "2026-09-30",
+  "scope": [
+    "DM"
+  ],
+  "outcomeChanges": [],
+  "sourceOnlyProposal": "source-only-full-row-proposal.json",
+  "review": "review.json",
+  "mainArraysEdited": false,
+  "conclusion": "No closure. Corrects law year premise, evaluates real ISPM32tea evidence against broader domestic scope, and removes unverified2026food text as an independent shipping blocker."
+}

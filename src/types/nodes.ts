@@ -21,4 +21,8 @@ export interface ConnectToNodeOptions {
   onReconnect?: (node: Node) => void;
   onDisconnect?: (node: Node) => void;
   currentNodeIndex?: number;
+  /** internal: reconnect attempt number for backoff */
+  attempt?: number;
+  /** Marks an explicit user choice so automatic latency probes do not override it. */
+  manualSelection?: boolean;
 }

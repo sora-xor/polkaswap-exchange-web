@@ -1,0 +1,41 @@
+[
+  {
+    "file": "er-plant2006.pdf",
+    "url": "https://faolex.fao.org/docs/pdf/eri68047.pdf",
+    "retrievedAt": "2026-09-30",
+    "status": 200,
+    "bytes": 545190,
+    "textExtracted": true
+  },
+  {
+    "file": "ug-plant2015.pdf",
+    "url": "https://faolex.fao.org/docs/pdf/uga158615.pdf",
+    "retrievedAt": "2026-09-30",
+    "status": 200,
+    "bytes": 836289,
+    "textExtracted": true
+  },
+  {
+    "file": "gn-plant1992.pdf",
+    "url": "https://assets.ippc.int/static/media/files/reportingobligation/2021/11/29/Loi_Phytosanitaire_République_de_Guinée.pdf",
+    "retrievedAt": "2026-09-30",
+    "status": 200,
+    "bytes": 2164986,
+    "textExtracted": true
+  },
+  {
+    "file": "km-plant2017.pdf",
+    "url": "https://justice.gouv.km/wp-content/uploads/2025/03/decret-n-17-103pr-du-5-octobre-2917-promulguant-la-loi-n-17-004au-portant-protection-des-vegetaux-aux-comores.pdf",
+    "retrievedAt": "2026-09-30",
+    "status": 200,
+    "bytes": 392200,
+    "textExtracted": true
+  },
+  {
+    "file": "gn-procedure2023.pdf",
+    "url": "https://magel.gov.gn/file/2023/01/PROCEDURE-DELIVRANCE-PERMIS-D-IMPORTATION.pdf",
+    "retrievedAt": "2026-09-30",
+    "status": 503,
+    "bytes": 73849
+  }
+]

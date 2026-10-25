@@ -1,0 +1,48 @@
+{
+  "reviewedAt": "2026-09-30",
+  "recoveryMethod": "Government Printing Department public WordPress posts API, followed by exact enacted Gazette and commencement pages. Fresh actual online recovery; main arrays not edited.",
+  "sources": [
+    {
+      "url": "https://governmentprintery.gov.bb/wp-json/wp/v2/posts?search=Plant%20Protection&per_page=100",
+      "file": "bb-plant-posts.json",
+      "status": 200,
+      "note": "100 returned posts ordered newest first through August 2022; exact phrase occurrences inspected in full content, including enacted Act and commencement.",
+      "bytes": 29790901,
+      "sha256": "e38b99ad24332e223d7040f40de8c7f7d4d708333597e8a8b2717bfde88e6d13"
+    },
+    {
+      "url": "https://governmentprintery.gov.bb/gazette-february-20-2023-part-a-clviii-no-19/",
+      "file": "bb-act2023-gazette.html",
+      "status": 200,
+      "publicationDate": "2023-02-20",
+      "assentDate": "2023-02-16",
+      "note": "Full enacted Act 2023–2; independently persisted public post2649 JSON/text. This is the enacted text, not the 24 January 2023 bill in FAOLEX bar220617.pdf.",
+      "bytes": 416234,
+      "sha256": "97c69588d7ca6ac2f7135d64015738af6b65d420000abd2524faca536f5d48a4"
+    },
+    {
+      "url": "https://governmentprintery.gov.bb/gazette-may-29-2024-part-a-vol-clix-no-56-with-s-is-nos-1-2/",
+      "file": "bb-post-3273.json",
+      "status": 200,
+      "publicationDate": "2024-05-29",
+      "note": "SI 2024/23 dated28 May 2024 proclaims PlantProtectionAct 2023 operative29 May 2024; adjacentSI 22 is animal law, kept distinct.",
+      "bytes": 5939,
+      "sha256": "1d85bd1d5c998e90cfa3e69433f1e239ffc57960b637c1d4f5befa49caf51b02"
+    },
+    {
+      "url": "https://barbadosparliament-laws.com/en/showdoc/cs/2023_2",
+      "status": 404,
+      "note": "Link from official proclamation is unavailable; enacted text independently available in Gazette."
+    }
+  ],
+  "operativeProvisions": {
+    "s2": "Manufactured products covered only when nature/processing may create pest-introduction/spread risk. Living plants distinguished. Regulated articles risk-qualified.",
+    "s2(2)": "Definitions shall be interpreted in accordance with IPPC ISPM 5 Glossary, as amended.",
+    "s14": "Measures must harmonise with international standards, use science/risk analysis and be proportional to risk.",
+    "s18": "Permit and required original phyto/other documents apply to defined plants/products/regulated articles. Local requirements must apply to regulated pests and rest on PRA or international standards; subsection8 allows prescribed permit-free goods.",
+    "s19": "Permit application triggers concern quarantine-pest origins, post-entry quarantine, prescribed end use/research, humanitarian emergency, traceability or determined risk.",
+    "s20": "Advance notification applies to regulated articles, not every food.",
+    "s27": "Postal/courier officers hold defined regulated articles for inspection.",
+    "s66": "Repeals Cap.268 (2007) and Cap.266A; expressly saves subsidiary Cap.266A instruments in conforming form."
+  }
+}

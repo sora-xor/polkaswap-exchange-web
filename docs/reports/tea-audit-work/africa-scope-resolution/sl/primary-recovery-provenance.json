@@ -1,0 +1,37 @@
+[
+  {
+    "name": "sl-cap185.pdf",
+    "url": "https://publications.lawreform.gov.sl/download_file/929dedee-5526-48c7-8e0e-f13f1a850535/349",
+    "status": 200,
+    "bytes": 316293,
+    "type": "application/pdf"
+  },
+  {
+    "name": "lawreform1974.html",
+    "url": "https://publications.lawreform.gov.sl/laws-sierra-leone/navigate/390/826",
+    "status": 200,
+    "bytes": 15672,
+    "type": "text/html; charset=UTF-8"
+  },
+  {
+    "name": "lawreform-instruments.html",
+    "url": "https://publications.lawreform.gov.sl/laws-sierra-leone/navigate/292/826",
+    "status": 200,
+    "bytes": 40845,
+    "type": "text/html; charset=UTF-8"
+  },
+  {
+    "name": "lawreform-vol4.html",
+    "url": "https://publications.lawreform.gov.sl/laws-sierra-leone/navigate/298/826",
+    "status": 200,
+    "bytes": 44938,
+    "type": "text/html; charset=UTF-8"
+  },
+  {
+    "name": "ippc-legislation.html",
+    "url": "https://www.ippc.int/en/countries/sierra-leone/reportingobligation/4",
+    "status": 200,
+    "bytes": 73821,
+    "type": "text/html; charset=utf-8"
+  }
+]

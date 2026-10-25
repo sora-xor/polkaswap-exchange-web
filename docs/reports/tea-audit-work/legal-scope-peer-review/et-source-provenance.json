@@ -1,0 +1,17 @@
+{
+  "checkedAt": "2026-09-30T03:38:30.196237+00:00",
+  "sources": [
+    {
+      "file": "docs/reports/tea-audit-work/legal-scope-peer-review/et-directive2014-usda.pdf",
+      "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Ethiopia%27s+Food+Importers-Exporters+and+Wholesalers+Directive_Addis+Ababa_Ethiopia_12-1-2015.pdf",
+      "sha256": "d66230e3ff0d38fe73f85194ffe491eb67712f1d9270654cf03bc61d86330dbf",
+      "bytes": 614213
+    },
+    {
+      "file": "docs/reports/tea-audit-work/legal-scope-peer-review/et-fairs2025.pdf",
+      "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=FAIRS+Country+Report+Annual_Addis+Ababa_Ethiopia_ET2025-0021.pdf",
+      "sha256": "0803f8efca8a96a28c87cf0b33498208531a609fb8918f23b119b032dbb2181c",
+      "bytes": 909993
+    }
+  ]
+}

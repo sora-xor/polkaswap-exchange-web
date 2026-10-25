@@ -1,13 +1,15 @@
 import { countryCodeEmoji } from 'country-code-emoji';
 
-import store from '@/store';
+import { useSettingsStore } from '@/stores/settings';
+import type { Nullable } from '@/types/common';
 
 export function formatLocation(code: string): Nullable<{ flag: string; name?: string }> {
   try {
     const isoCode = code.toUpperCase();
     const flag = countryCodeEmoji(isoCode);
     const location = { flag, name: '' };
-    const displayRegions = store.state.settings.displayRegions;
+    const settingsStore = useSettingsStore();
+    const displayRegions = settingsStore.displayRegions as Nullable<Intl.DisplayNames>;
     if (!displayRegions) {
       return location;
     }

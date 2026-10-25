@@ -1,0 +1,18 @@
+[
+  {
+    "file": "reg2022-ulii.pdf",
+    "url": "https://media.ulii.org/media/legislation/107267/source_file/0360de7f6a9a8b96/uganda-national-bureau-of-standards-inspection-and-clearance-of-import-regulations-2022.pdf",
+    "status": 200,
+    "bytes": 669831,
+    "pdf": true,
+    "sha256": "8f9ffc545986d3c6a48ff5afe2272a0ad1fda7571f0d98f58d6122f2e65b880f"
+  },
+  {
+    "file": "charter2022.pdf",
+    "url": "https://www.unbs.go.ug/attachments/menus/42/UNBS%20CLIENT%20SERVICE%20CHARTER%202022%20pdf.pdf",
+    "status": 403,
+    "bytes": 239,
+    "pdf": false,
+    "sha256": "ab768623070128ccef048c88def86155dbe776c3d8db423cc8fa89432673d8a8"
+  }
+]

@@ -1,21 +1,25 @@
 <template>
-  <transaction-details :info-only="infoOnly" class="info-line-container">
-    <info-line
+  <TransactionDetails :info-only="infoOnly" class="info-line-container">
+    <InfoLine
       v-if="shareOfPool"
       value-can-be-hidden
       :label="t('removeLiquidity.shareOfPool')"
       :value="`${shareOfPool}%`"
-    />
+    ></InfoLine>
     <template v-if="firstTokenSymbol && secondTokenSymbol">
-      <info-line
+      <InfoLine
         v-if="priceReversed"
         :label="t('priceText')"
         :value="`1 ${firstTokenSymbol} = ${formattedPriceReversed}`"
         :asset-symbol="secondTokenSymbol"
-      />
-      <info-line v-if="price" :value="`1 ${secondTokenSymbol} = ${formattedPrice}`" :asset-symbol="firstTokenSymbol" />
+      ></InfoLine>
+      <InfoLine
+        v-if="price"
+        :value="`1 ${secondTokenSymbol} = ${formattedPrice}`"
+        :asset-symbol="firstTokenSymbol"
+      ></InfoLine>
     </template>
-    <info-line
+    <InfoLine
       v-if="networkFee"
       :label="t('networkFeeText')"
       :label-tooltip="t('networkFeeTooltipText')"
@@ -23,65 +27,59 @@
       :asset-symbol="XOR_SYMBOL"
       :fiat-value="formattedFeeFiatValue"
       is-formatted
-    />
-  </transaction-details>
+    ></InfoLine>
+  </TransactionDetails>
 </template>
 
-<script lang="ts">
-import { CodecString, Operation, NetworkFeesObject } from '@sora-substrate/sdk';
+<script setup lang="ts">
+import { Operation, type CodecString, type NetworkFeesObject } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+import TransactionDetails from '@/components/shared/TransactionDetails.vue';
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components } from '@/consts';
-import { lazyComponent } from '@/router';
-import { state, getter } from '@/store/decorators';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { usePoolStore } from '@/stores/pool';
+import { useSettingsStore } from '@/stores/settings';
 
+import type { Nullable } from '@/types/common';
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 
-@Component({
-  components: { InfoLine: components.InfoLine, TransactionDetails: lazyComponent(Components.TransactionDetails) },
-})
-export default class RemoveLiquidityTransactionDetails extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
-  readonly XOR_SYMBOL = XOR.symbol;
-
-  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
-
-  @getter.removeLiquidity.shareOfPool shareOfPool!: string;
-  @getter.removeLiquidity.firstToken firstToken!: Nullable<Asset>;
-  @getter.removeLiquidity.secondToken secondToken!: Nullable<Asset>;
-  @getter.removeLiquidity.priceReversed priceReversed!: string;
-  @getter.removeLiquidity.price price!: string;
-
-  @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
-
-  get firstTokenSymbol(): Nullable<string> {
-    return this.firstToken?.symbol;
+const props = withDefaults(
+  defineProps<{
+    infoOnly?: boolean;
+  }>(),
+  {
+    infoOnly: true,
   }
+);
 
-  get secondTokenSymbol(): Nullable<string> {
-    return this.secondToken?.symbol;
-  }
+const { t } = useI18n();
+const formattedAmount = useFormattedAmount();
+const { formatStringValue, formatCodecNumber, getFiatAmountByCodecString } = formattedAmount;
+const poolStore = usePoolStore();
+const settingsStore = useSettingsStore();
 
-  get formattedPrice(): string {
-    return this.formatStringValue(this.price);
-  }
+const networkFees = computed(() => settingsStore.networkFees as NetworkFeesObject);
 
-  get formattedPriceReversed(): string {
-    return this.formatStringValue(this.priceReversed);
-  }
+const shareOfPool = computed(() => poolStore.removeLiquidityShareOfPool);
+const firstToken = computed<Nullable<Asset>>(() => poolStore.removeLiquidityFirstToken as Nullable<Asset>);
+const secondToken = computed<Nullable<Asset>>(() => poolStore.removeLiquiditySecondToken as Nullable<Asset>);
+const priceReversed = computed(() => poolStore.removeLiquidityPriceReversed);
+const price = computed(() => poolStore.removeLiquidityPrice);
 
-  get networkFee(): CodecString {
-    return this.networkFees[Operation.RemoveLiquidity];
-  }
+const firstTokenSymbol = computed(() => firstToken.value?.symbol ?? null);
+const secondTokenSymbol = computed(() => secondToken.value?.symbol ?? null);
 
-  get formattedFee(): string {
-    return this.formatCodecNumber(this.networkFee);
-  }
+const formattedPrice = computed(() => formatStringValue(price.value));
+const formattedPriceReversed = computed(() => formatStringValue(priceReversed.value));
 
-  get formattedFeeFiatValue(): Nullable<string> {
-    return this.getFiatAmountByCodecString(this.networkFee);
-  }
-}
+const networkFee = computed<CodecString>(() => networkFees.value?.[Operation.RemoveLiquidity] ?? '0');
+const formattedFee = computed(() => formatCodecNumber(networkFee.value));
+const formattedFeeFiatValue = computed(() => getFiatAmountByCodecString(networkFee.value));
+
+const XOR_SYMBOL = XOR.symbol;
+
+const InfoLine = WalletComponentInfoLine;
 </script>

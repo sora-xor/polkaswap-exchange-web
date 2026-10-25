@@ -1,0 +1,760 @@
+Food Safety Act 2010                                                                                                             7 MIRC Ch.19
+
+
+                    TITLE 7 – PUBLIC HEALTH, SAFETY AND WELFARE
+                               CHAPTER 19 - FOOD SAFETY
+
+
+
+
+                                                            s
+                                                Republic of the Marshall Islands
+                                                        Jepilpilin Ke Ejukaan
+
+                                        FOOD SAFETY ACT 2010
+
+Arrangement of Sections
+Section                                                                                                                                      Page
+
+PART 1 – PRELIMINARY                                                                                                                                3
+§1901.    Short Title. ............................................................................................................................. 3
+§1902.    Interpretation. ....................................................................................................................... 3
+
+PART 2 –GENERAL PROVISIONS                                                                                                                          7
+§1903.    Registration and licensing of food businesses.................................................................. 7
+§1904.    Food safety obligations. ....................................................................................................... 8
+§1905.    Training of food handlers.................................................................................................... 8
+§1906.    Health of food handlers. ...................................................................................................... 9
+§1907.    Obtaining food from closed areas. ..................................................................................... 9
+§1908.    Prohibited product. ............................................................................................................ 10
+§1909.    Food safety from farm-to-table......................................................................................... 10
+
+PART 3 – INSPECTION AND ANALYSIS                                                                                                                  11
+§1910.    Appointment of Food Inspectors. .................................................................................... 11
+§1911.    Certification of food inspectors. ....................................................................................... 11
+§1912.    Powers of entry and search. .............................................................................................. 11
+§1913.    Powers of temporary closure. ........................................................................................... 13
+§1914.    Sampling. ............................................................................................................................. 14
+§1915.    Analysis. .............................................................................................................................. 14
+
+PART 4 – SEIZURE, DESTRUCTION AND FORFEITURE                                                                                                      15
+§1916.    Seizure of articles. ............................................................................................................... 15
+§1917.    Destruction and disposal of seized food. ........................................................................ 16
+§1918.    Liability. ............................................................................................................................... 16
+
+
+l                                                                                                                                           Page 1
+7 MIRC Ch.19                                                                                                       Food Safety Act 2010
+
+
+PART 5 – OFFENCES AND PENALTIES                                                                                                                16
+§1919.   Food safety offences. ......................................................................................................... 16
+§1920.   Penalties. ............................................................................................................................. 18
+
+PART 6 – MISCELLANEOUS                                                                                                                         18
+§1921.   Regulations. ........................................................................................................................ 18
+§1922.   Effect on other Acts............................................................................................................ 19
+§1923.   Administration of the Chapter. ........................................................................................ 19
+
+
+
+
+Page 2                                                                                                                     r
+Food Safety Act 2010                                                         7 MIRC Ch.19 §1901
+
+
+               TITLE 7 – PUBLIC HEALTH, SAFETY AND WELFARE
+                          CHAPTER 19 - FOOD SAFETY
+
+
+
+
+                                        s
+                                Republic of the Marshall Islands
+                                     Jepilpilin Ke Ejukaan
+
+                             FOOD SAFETY ACT 2010
+
+AN ACT to provide for the health, safety and welfare of the people by prohibiting
+the importation, production, processing, handling, distribution, and domestic trade
+of unsafe, unwholesome and poor quality food.
+
+               Commencement:                                       March 24, 2010
+               Source:                                               P.L. 2010-37
+
+
+
+                               PART 1 – PRELIMINARY
+
+§1901. Short Title.
+         This Chapter may be cited as the Food Safety Act, 2010.
+
+§1902. Interpretation.
+         In this Chapter, unless the context otherwise requires:
+                (a)    “adulterated”, in relation to a food, means:
+                       (i)      it contains, or is mixed with, any substance which
+                                reduces its properties as compared with such food in a
+                                normal or non-deteriorated state;
+                       (ii)     a substance has been removed from it so that its
+                                properties are reduced as compared with such food in a
+                                normal or non-deteriorated state;
+                       (iii)    it contains a substance which is not permitted for use in
+                                food;
+
+
+
+l                                                                                       Page 3
+7 MIRC Ch.19 §1902                                                  Food Safety Act 2010
+
+
+                     (iv)    it contains more of a substance than is permitted;
+                     (v)     it is prepared so that the damage, deterioration, or
+                             inferiority is or may be concealed;
+                     (vi)    it is the product of an animal that died naturally of
+                             disease; or in the case of a warm-blooded animal, in any
+                             way other than by legal slaughter;
+                     (vii)   it consists wholly or in part of any diseased or putrid or
+                             rotten animal or vegetable substance whether
+                             manufactured or not;
+                     (viii) it contains a hazard or any physical, chemical or
+                            biological agent that is or is likely to be injurious to the
+                            health of the person consuming the food, whether
+                            added with intent or otherwise;
+                     (ix)    the food comes into contact with a material that
+                             contains a substance which may render the food unfit
+                             for human consumption;
+                     (x)     it contains a foreign substance;
+                     (xi)    it is in a sealed package which is damaged and can no
+                             longer protect the contents from contamination or
+                             deterioration; or
+                     (xii)   it is in a package and any contents of the package are
+                             different from what the label states the package
+                             contains.
+               (b)   “advertise” means use of words, whether written or spoken,
+                     symbolic or pictorial representation or design, or any other
+                     representation that has the effect of promoting a product
+                     for sale;
+               (c)   “article” means:
+                     (i)     any food; or
+                     (ii)    anything used to label or advertise food; or
+                     (iii)   anything or machine used for the preparation,
+                             preservation, packing, storing or displaying of any
+                             food.
+               (d)   “charity and community food business operations” refers to
+                     charitable, community based or other socially beneficial
+                     organisations that sell food to raise funds for charitable or
+
+
+Page 4                                                                   r
+Food Safety Act 2010                                                 7 MIRC Ch.19 §1902
+
+
+                       community purposes and not for personal financial gain, and
+                       shall include, but not necessarily be limited to community
+                       markets, bazaars, raffles, school fundraising activities, church
+                       fundraising activities and district stalls;
+                (e)    “date of minimum durability” (“best before”) means the date
+                       which signifies the end of the period under any stated storage
+                       conditions during which the product will remain fully
+                       marketable and will retain any specific qualities for which tacit
+                       or express claims have been made. However, beyond the date
+                       the food may still be perfectly satisfactory;
+                (f)    “food” means any substance, whether processed, semi-
+                       processed or raw, which is intended for human consumption,
+                       and includes drinks, packaged water, chewing gum and any
+                       substance which has been used in the manufacture,
+                       preparation or treatment of “food” but does not include
+                       cosmetics or tobacco or substances used only as drugs;
+                (g)    “food business” means any undertaking, whether for profit or
+                       not, and whether public or private, carrying out any of the
+                       activities related to any stage of production, processing and
+                       distribution of food for sale. While not limited to the
+                       following, food businesses include restaurants, bakeries,
+                       caterers, food wholesalers and retailers, fish vendors, food
+                       sellers, meat butcheries, food processors, food importers and
+                       food exporters;
+                (h)    “food handler” means any person who directly handles
+                       packaged or unpackaged food, food equipment and utensils,
+                       or food contact surfaces and is therefore expected to comply
+                       with food hygiene requirements;
+                (i)    “food inspector” means a person appointed under Section 10
+                       of this Chapter;
+                (j)    “label” means any tag, brand, mark, pictorial or other
+                       descriptive matter, written, printed, stencilled, marked,
+                       embossed or impressed on, or attached to, a container of food;
+                (k)    “Minister” means the Minister for Health;
+                (l)    “Premises” means:
+
+
+
+
+l                                                                                Page 5
+7 MIRC Ch.19 §1902                                                  Food Safety Act 2010
+
+
+                     (i)     any building or tent or other structure, permanent or
+                             temporary, the land on which it is situated, and any
+                             adjoining land used in connection with it;
+                     (ii)    any vehicle or vessel; and
+                     (iii)   any place, including a street, open space, or place of
+                             public resort, used in the preparation, preservation,
+                             packaging or storage of any article.
+               (m)   “operator” means any person who is in charge of, responsible
+                     for the operations of, directs or controls the production,
+                     processing, handling or sale of food for a food business
+                     premises.
+               (n)   “registered with the Ministry of Health”, in relation to food
+                     business premises, means that all food businesses other than
+                     those exempted under Part 3 of the Chapter, shall be required
+                     to inform the Ministry of Health, in writing using a form
+                     available from the Ministry of Health, of their intention to
+                     operate and shall identify the address(es) and telephone
+                     contact number of the premises to be used in handling, storage
+                     and sale of food. This registration will facilitate the inspection
+                     of the premise prior to initiating operations;
+               (o)   “reasonable evidence that public health is at immediate risk”
+                     means that the food inspector has reasonable evidence that if
+                     the business is not closed, consumers may have their health
+                     put at risk by unsafe food. While not being limited to the
+                     following conditions, this may include where the food
+                     business operations cannot effectively separate raw food and
+                     cooked food or where the food business operations cannot
+                     effectively control its cooking operations or its cold storage
+                     operations. It shall not be taken to mean that the premises
+                     have flaws in the floors, walls or ceilings; nor that the premises
+                     are not well cleaned; nor that food handlers do not have a
+                     health certificate; nor any other condition unless that flaw; lack
+                     of a certificate; or other condition, is likely to place the public
+                     health at immediate risk;
+               (p)   “Secretary” means the Secretary of Health, Ministry of Health;
+
+
+
+
+Page 6                                                                   r
+Food Safety Act 2010                                                 7 MIRC Ch.19 §1903
+
+
+                (q)    “sell” means to offer, advertise, keep, deliver, or prepare for
+                       sale or exchange, to dispose of for consideration, or to deliver
+                       in pursuance of a sale or exchange;
+                (r)    “suitably qualified person”, in relation to certified food
+                       inspectors, means for a transitional period up until 2015, those
+                       persons identified as suitably qualified by the Secretary and
+                       may include persons with no formal qualifications in an area
+                       of relevance to inspection but who have satisfactorily
+                       completed a short-course training, approved by the secretary,
+                       in the area of food safety and food inspection, After the
+                       transitional period, the term shall mean a person with formal
+                       qualifications at diploma or degree level from an accredited
+                       college or University in an area of study approved by the
+                       Secretary as being an area of relevance to food safety. The
+                       Secretary may still require the person to have also
+                       satisfactorily completed short-course training, approved by the
+                       Secretary, in an area of food safety and food inspection;
+                (s)    “unsanitary conditions” means such conditions as could
+                       cause contamination of a food with dirt or filth, or could
+                       render the food injurious or dangerous to health, whether such
+                       contamination or injury or danger actually occurs or not;
+                (t)    “use-by date” (Recommended Last Consumption Date,
+                       Expiration Date) means the date which signifies the end of the
+                       estimated period under any stated storage conditions, after
+                       which the product probably will not have the quality
+                       attributes normally expected by the consumers. After this date,
+                       the food shall not be regarded as marketable.
+
+
+                       PART 2 –GENERAL PROVISIONS
+
+§1903. Registration and licensing of food businesses.
+         (1)    All food businesses’ premises, other than those food businesses
+                engaged in primary production only, shall be registered with the
+                Ministry of Health before initiating operations.
+         (2)    No fee shall be applicable to this registration process unless
+                otherwise determined as may by necessary from time to time.
+
+
+
+
+l                                                                               Page 7
+7 MIRC Ch.19 §1904                                                   Food Safety Act 2010
+
+
+         (3)   The Ministry of Health shall maintain a register of all food business’
+               premises, registered in accordance with Subsection (1).
+         (4)   When obtaining a license from the relevant local authority, a food
+               business’ premises shall be inspected by a food inspector prior to the
+               license being provided and the business initiating operations.
+         (5)   Not withstanding a business being in possession of a license
+               provided by the relevant licensing authority, no food business shall
+               initiate operations until it meets the requirements of this Chapter and
+               its regulations and standards.
+         (6)   A license, or a true copy of it, relevant for the particular food business
+               and current for the period of operation, shall be displayed in all
+               premises covered under this Chapter.
+         (7)   Notwithstanding Subsections (1) to (5) of this Section, charity and
+               community food business operations shall be deemed to have met the
+               requirements of this section by informing the food inspector of their
+               intention to operate before starting operations and shall received a
+               written permission from the food inspector to operate for a defined
+               period.
+
+§1904. Food safety obligations.
+         (1)   Operators of food businesses have an obligation to put in place
+               procedures as prescribed in the regulations, and any additional
+               precautions necessary, to ensure the safety of food imported,
+               exported, processed, handled, stored, displayed or sold by the
+               business.
+         (2)   Food that carries a use-by date or a minimum durability date, or is
+               required by regulations under this Chapter to carry such a date, shall
+               bear the date in a manner that is easily visible and likely to be read
+               and understood by an ordinary consumer under customary
+               conditions of purchase and use.
+
+§1905. Training of food handlers.
+         (1)   All food handlers shall, prior to starting work in a food business, be
+               required to undergo training by the health authorities or by a
+               organization accredited by the health authorities for such training.
+
+
+
+
+Page 8                                                                    r
+Food Safety Act 2010                                                  7 MIRC Ch.19 §1906
+
+
+         (2)    Charity and community food business operations shall be provided a
+                food handler information sheet by the Ministry of Health when the
+                business informs the Ministry of Health of their intention to operate
+                food business subject to Section 3(6) of this Chapter .
+         (3)    For the purposes of Subsection (1), food handlers involved in charity
+                and community food business operations shall read and follow the
+                training guidance provided under Subsection (2).
+
+§1906. Health of food handlers.
+         (1)    All food handlers shall, prior to starting work in a food business, be
+                required to undergo medical screening tests prescribed by the
+                Secretary and shall be required to undertake such examinations on a
+                six monthly basis while continuing employment as a food handler.
+         (2)    No person shall be employed as a food handler, or handle food, if
+                that person has not been cleared by the medical examinations under
+                Subsection (1) and hold a health certificate.
+         (3)    A food handler employee in all premises covered under this Chapter,
+                shall displayed on a food business’ premises in a manner that is
+                easily visible to a food inspector during an inspection a health
+                certificate, or a true copy of it.
+         (4)    Not withstanding Subsection (3), where the business is a charity or
+                community business, and the premises may be mobile or non-fixed,
+                all food handlers in the business shall, while handling, transporting
+                and selling food, carry with them their health certificate and make it
+                available for inspection at the request of food inspector.
+         (5)    Health certificate shall include a recent passport style photograph of
+                the food handler to assist in confirmation that the health certificate
+                belongs to a given individual.
+
+§1907. Obtaining food from closed areas.
+         (1)    If the Secretary is of the opinion that any food handler of any
+                specified class of food if cultivated, taken, harvested or obtained in or
+                from a specific area may be dangerous or injurious to persons
+                consuming the food or the public, the Secretary may by order
+                prohibit the person from cultivating, taking, harvesting or obtaining
+                of the food in or from that area.
+
+
+
+l                                                                                 Page 9
+7 MIRC Ch.19 §1908                                                    Food Safety Act 2010
+
+
+          (2)   The Secretary shall, unless the urgency of the matter otherwise
+                requires, give five days’ notice in writing of the reasons of the
+                intended prohibition order under Subsection (1).
+          (3)   If a prohibition order made under Subsection (1) is within the
+                jurisdiction of any other department, the Secretary must consult the
+                department before making an order under Subsection (1).
+          (4)   The Minister, if it is necessary in the public interest, may exercise the
+                power conferred on the Secretary by Subsection (1).
+
+§1908. Prohibited product.
+          (1)   If in the opinion of the Secretary there is a public health concern, the
+                Secretary may, by order, declare any food a prohibited product.
+          (2)   A food declared as a prohibited product under Subsection (1) shall be
+                prohibited from being imported, produced, prepared, stored,
+                displayed or sold.
+          (3)   The Minister, if it is necessary in the public interest, may exercise the
+                power conferred on the Secretary by Subsection (1).
+
+§1909. Food safety from farm-to-table.
+          (1)   Safety of food for human consumption depends on good hygienic
+                practices in:
+                (a)    the primary production, slaughter, and butchering of animals;
+                (b)    the harvesting and handling of fish and fisheries products; and
+                (c)    on good hygienic practices in the production of plants for
+                       food.
+          (2)   Secretary may, after consultation with the appropriate Ministry or
+                Authority with responsibility for these areas of primary production:
+                (a)    establish regulations and standards to better protect human
+                       health; or
+                (b)    request the relevant Ministry or Authority to establish such
+                       regulations and standards for food safety from farm-to-table.
+
+
+
+
+Page 10                                                                    r
+Food Safety Act 2010                                                7 MIRC Ch.19 §1910
+
+
+                  PART 3 – INSPECTION AND ANALYSIS
+
+§1910. Appointment of Food Inspectors.
+         (1)    The Secretary may appoint suitably qualified persons to be certified
+                food inspectors to administer and enforce the provisions of this
+                Chapter, its regulations and standards.
+         (2)    The Secretary may, consult with other appropriate Ministries,
+                national authority or local government, to appoint personnel from
+                another Ministry, national authority or local government to a task
+                force for food inspection purposes. For the period of time in which
+                the task force is conducting an inspection under this Chapter, its
+                regulations and standards, the members of the task force will have
+                the powers, functions and responsibilities of a food inspector.
+         (3)    With respect to food being imported into the Republic of the Marshall
+                Islands, the Secretary of Health may request the support of suitably
+                qualified persons in the Ministry of Resources and Development to
+                support the work of food inspectors in protecting human health
+                through inspection of the safety of the imported food at the point of
+                entry of the food into the country.
+
+§1911. Certification of food inspectors.
+         (1)    For an individual to be certified food inspector:
+                (a)    the Secretary shall have determined that the person is worthy
+                       of public trust and confidence
+                (b)    be a suitably qualified person; and
+                (c)    the Secretary shall have appointed the person as a certified
+                       food inspector.
+         (2)    While on duty, a food inspector shall wear a badge or alternative
+                form of identification to confirm that they are a certified food
+                inspector under this Chapter .
+
+§1912. Powers of entry and search.
+         (1)    For the purposes of this Chapter, a Food Inspector may at all
+                reasonable times:
+
+
+
+
+l                                                                             Page 11
+7 MIRC Ch.19 §1912                                                  Food Safety Act 2010
+
+
+                (a)   stop and detain any vehicle or vessel the inspector knows or
+                      reasonably suspects is being used for the production,
+                      processing, handling, storage, display or sale of any food or
+                      article under this Chapter; and
+                (b)   enter any premises the inspector knows or reasonably suspects
+                      are being used for the production, processing, handling,
+                      storage, display or sale of any food or article under this
+                      Chapter .
+          (2)   Before exercising powers of entry and search under this section, the
+                Secretary of Health shall with the assistance of the Attorney General’s
+                Office or the Police Commissioner, obtain a search warrant in
+                accordance under Article II, Section 3 of the Constitution.
+          (3)   Subject to Subsections (1) and (3), a Food Inspector, accompanied by a
+                Police Officer and other members of taskforce from other government
+                agent, may:
+                (a)   search for, examine and take samples of any article subject to
+                      this Chapter;
+                (b)   open and inspect any room, place, container or package that
+                      the food inspector knows or reasonably suspects contains any
+                      article subject to this Chapter;
+                (c)   examine any documents (electronic or hardcopy) that could
+                      contain any relevant information about articles subject to this
+                      Chapter and make copies of them;
+                (d)   obtain photographic evidence of any article or condition
+                      subject to this Chapter;
+                (e)   question with respect to matters under this Chapter any
+                      person the food inspector finds thereon; and
+                (f)   make such inquiry and examination as the food inspector
+                      believes to be necessary or desirable to assist the discharge or
+                      exercise of any function or power under this Chapter to
+                      ascertain whether any contravention of any provision of this
+                      Chapter has been, is being or is likely to be committed.
+          (4)   Upon completion of an inspection, a food inspector shall prepare a
+                written inspection report for the information of the food business
+                owner and for health authorities.
+
+
+
+
+Page 12                                                                  r
+Food Safety Act 2010                                                 7 MIRC Ch.19 §1913
+
+
+         (5)    The Secretary may publish the findings of inspections in a public
+                manner so as to inform consumers to what extent food businesses
+                comply with good hygienic practice, the Act, its regulations and
+                standards.
+
+§1913. Powers of temporary closure.
+         (1)    The Secretary may order the temporary closure, for a minimum
+                period of three days, of any premises where either:
+                (a)    a food inspector has reasonable evidence that public health is
+                       at immediate risk until corrective action identified as necessary
+                       in an inspection is taken; or
+                (b)    any premises fails, after 3 re-inspections undertaken within a
+                       reasonable period, to implement a corrective action identified
+                       as necessary by a food inspector.
+         (2)    After three days temporary closure, an owner or operator of food
+                premises may request a food inspector to re-inspect the premises to
+                determine the compliance of the premises with this Chapter, its
+                regulations and standards and the food inspector shall carry out that
+                re-inspection within 72 hours of receiving the request for re-
+                inspection.
+         (3)    Where premises are found, upon re-inspection under Subsection (2)
+                to be in compliance with this Chapter, its regulations and standards,
+                the Secretary shall immediately lift the order for temporary closure of
+                the premises.
+         (4)    Where a food business:
+                (a)    fails to stop its operations and close its premises within 1 day
+                       of the Secretary ordering the temporary closure of its premises;
+                       or
+                (b)    is found on more than three occasions in a twelve month
+                       period to be subject to a temporary closure order, the Secretary
+                       shall request the authority responsible for issuing business’
+                       license to immediately revoke the license of the business
+                       regardless of the number of premises and activities covered by
+                       the license.
+         (5)    Before revoking the licence, the Secretary shall give 10 days to the
+                owner of the business to show cause, the failure of which, the
+
+
+
+l                                                                               Page 13
+7 MIRC Ch.19 §1914                                                    Food Safety Act 2010
+
+
+                authority issuing trading licenses shall be required to take action as
+                requested by the Secretary under Subsection (4) as soon as it is
+                practically possible to do so.
+          (6)   Where a food business has had its license revoked under
+                Subsection (5), the owner or operator shall not be permitted to apply
+                for a new food business license within 3 months of having the license
+                revoked.
+
+§1914. Sampling.
+          (1)   Where a food inspector reasonably believes there may be a
+                contravention of this Chapter, its regulations and standards, the food
+                inspector may demand and obtain samples of any food as required
+                for the purposes of this Chapter .
+          (2)   Samples taken under this Chapter may be forwarded under seal in
+                any convenient way to an analyst.
+          (3)   Where an analyst certifies that the seal of any sample was unbroken,
+                the certification shall be sufficient evidence of identity of the sample.
+
+§1915. Analysis.
+          (1)   The Secretary may accredit suitably qualified persons or laboratories,
+                located either within or outside the Republic of the Marshall Islands,
+                to be analysts for performing laboratory and field tests for the
+                purposes of this Chapter.
+          (2)   Any accredited analyst analysing any food submitted for the
+                purposes of this Chapter may give a certificate of the result of the
+                analysis.
+          (3)   In any legal proceeding under this Chapter, the production of a
+                certificate purporting to be signed by an analyst shall be prima facie
+                evidence of the identity of the food analysed and of the result of the
+                analysis.
+          (4)   A copy of the result of any analysis shall, on demand, be supplied to
+                the person from whom the sample was procured.
+          (5)   The court may, in case of a conviction, award the cost of analysis
+                against the defendant as part of the costs of the prosecution.
+
+
+
+
+Page 14                                                                    r
+Food Safety Act 2010                                                   7 MIRC Ch.19 §1916
+
+
+        PART 4 – SEIZURE, DESTRUCTION AND FORFEITURE
+
+§1916. Seizure of articles.
+         (1)    A food inspector accompanied by a police officer and other members
+                of the task force may seize any article which contravenes this Chapter
+                or its regulations or standards.
+         (2)    In exercising powers of seizing articles under this section, the
+                Secretary of Health shall with the assistance of the Attorney General’s
+                Office or the Police Commissioner, obtain a search warrant in
+                accordance under Article II, Section 3 of the Constitution.
+         (3)    Any food inspector seizing an article under Subsection (1) shall
+                include a statement of such seizure in a written inspection report and
+                make such written notice available to the owner or operator of the
+                premises in as short a time as practically possible.
+         (4)    If a food inspector has seized articles for the purposes of this Chapter
+                he or she may—
+                (a)    retain them for as long as necessary for those purposes, unless
+                       otherwise directed by the court; or
+                (b)    dispose of any articles as the court directs.
+         (5)    The owner of the articles seized under subsection (1) of this section
+                may, within one month from the date of seizure, make a claim in
+                court for recovery of the same. If after trial the court finds that the
+                article was used in the commission of an offence, the court shall
+                forfeit the same.
+         (6)    If no claim is presented within the time prescribed under
+                Subsection (4), articles seized, shall forfeit to the Republic.
+         (7)    If a food inspector has seized records for the purposes of this Chapter
+                and if the person otherwise entitled to possession of the records
+                requests their return, the entitled person shall be provided the
+                original records as soon as the inspector has obtained and certified a
+                copy to be a true copy of the records. Such a certified copy shall be
+                received in all courts and elsewhere as evidence of the matters
+                contained in it as if it were the original.
+
+
+
+
+l                                                                                Page 15
+7 MIRC Ch.19 §1917                                                   Food Safety Act 2010
+
+
+§1917. Destruction and disposal of seized food.
+          (1)   Any food seized by an authorized food inspector under Section 10 of
+                this Chapter, shall be destroyed and disposed by the food
+                inspector where:
+                (a)     a court has so ordered;
+                (b)     a food inspector has reasonable evidence that public health is
+                        at immediate risk if the food were not destroyed and
+                        disposed of;
+                (c)     a food inspector has reasonable evidence that the retention of
+                        the seized food would enable the food to become a public
+                        nuisance due to its possible deterioration; or
+                (d)     the owner agrees in writing to its destruction and disposal.
+          (2)   Where a food is destroyed and disposed of by the food inspector
+                under subsection (1) all reasonable costs for destruction and disposal
+                shall be borne by the owner of the article or, where a person is
+                convicted, the person so convicted.
+
+§1918. Liability.
+          No food inspector, task force member or analyst shall be liable for any
+          actions taken while executing his or her duties under this Chapter, unless he
+          or she has acted in bad faith or without reasonable care.
+
+
+                      PART 5 – OFFENCES AND PENALTIES
+
+§1919. Food safety offences.
+          (1)   It shall be an offence for a person to:
+                (a)     imports, exports, produces, processes, handles, stores, displays
+                        or sells food that is unfit for human consumption, adulterated,
+                        damaged, deteriorated, or perished;
+                (b)     imports, exports, produces, processes, handles, stores,
+                        displays, sells or advertises food that does not comply with
+                        any regulations promulgated under this Chapter or a
+                        prescribed standard for that food;
+                (c)     produces, processes, handles, stores, displays or sells food
+                        under unsanitary conditions;
+
+
+Page 16                                                                   r
+Food Safety Act 2010                                                 7 MIRC Ch.19 §1920
+
+
+                (d)    conducts a food business contrary to Sections 3 of this Chapter;
+                (e)    imports, exports, stores, displays, sells or advertises any food
+                       contrary to Section 4 of this Chapter or after its use-by-date or
+                       minimum durability date;
+                (f)    marks any article or takes any other action so as to make an
+                       use-by-date or a ‘best before” date not easily visible;
+                (g)    refuses or fails to give to a food inspector all reasonable
+                       assistance or any information which such person may
+                       reasonably be expected to possess;
+                (h)    knowingly makes a false or misleading statement, either
+                       verbally or in writing, to any food inspector in the
+                       performance of his or her functions under this Chapter, its
+                       regulations or standards;
+                (i)    shall give, pay, or offer, directly or indirectly, to any food
+                       inspector or any other officer or employee of the Republic
+                       authorized to perform any of the duties prescribed by this
+                       Chapter or its regulations and standards, any money or other
+                       thing of value, with intent to influence said food inspector or
+                       other officer or employee of the Republic in the discharge of
+                       any duty specified in this Chapter;
+                (j)    cultivates, takes, harvests or otherwise obtains food from an
+                       area declared closed for such Action under Section 7 of this
+                       Chapter;
+                (k)    imports, produces, prepares, stores, displays or sells a food
+                       prohibited under Section 8 of this Chapter;
+         (2)    Any food inspector, task force member or analyst authorized to
+                perform any of the duties prescribed by this Chapter who shall accept
+                any money, gift, or other thing of value from any person or business,
+                or officers, agents, or employees thereof, given with intent to
+                influence his official action, or who shall receive or accept from any
+                person or business engaged in export commerce any gift, money or
+                other thing of value given with any purpose or intent whatsoever, is
+                guilty of an offence and is liable to a penalty.
+
+
+
+
+l                                                                               Page 17
+7 MIRC Ch.19 §1920                                                  Food Safety Act 2010
+
+
+§1920. Penalties.
+          (1)   A person who violates this Chapter shall, upon conviction, be
+                punished as follows:
+                (a)   in the case of an individual, $1,000 for a first offence, and
+                      $2,000 or 3 years imprisonment for a second or subsequent
+                      offence; and
+                (b)   in the case of a body corporate, $5,000 for a first offence, and
+                      $10,000 for a second or subsequent offence.
+
+
+                         PART 6 – MISCELLANEOUS
+
+§1921. Regulations.
+          (1)   The Minister may make any regulations for carrying out or giving
+                effect to this Chapter in accordance with the Administrative
+                Procedures Act.
+          (2)   Without prejudice to the generality of subsection (1), the Minister
+                may make regulations:
+                (a)   on labelling and advertising;
+                (b)   on the importation and exportation of food;
+                (c)   on primary production, processing, preparation, packaging,
+                      storage, transportation, display and selling practices for all
+                      food;
+                (d)   prescribing standards;
+                (e)   regulating fortification of any food;
+                (f)   on the inspection, sampling and analysis of food and
+                      providing for fees for inspection, analysis and destruction and
+                      disposal;
+                (g)   providing for the tracing and recall of food where necessary;
+                (h)   regulating breast milk substitutes; and
+                (i) on any other matter necessary or convenient for carrying out or
+                giving effect to this Chapter .
+
+
+
+
+Page 18                                                                  r
+Food Safety Act 2010                                              7 MIRC Ch.19 §1922
+
+
+§1922. Effect on other Acts.
+         (1)    This Chapter prevails over Title 7, Chapter 1, Subsections 103, 111,
+                112 and 114 of the Public Health, Safety and Welfare Act, in those
+                aspects related to food, food premises sanitation, food safety and
+                penalties for improper practices related to food.
+         (2)    Where the requirements of this Chapter conflict with the Public
+                Water Supply Regulations 1994 and public health may be affected
+                adversely by such a conflict, the requirements under this Chapter
+                shall prevail.
+
+§1923. Administration of the Chapter.
+         The Administration and regulations promulgated under this Chapter shall
+         be administered by the Ministry of Health.
+
+
+
+
+l                                                                            Page 19
+

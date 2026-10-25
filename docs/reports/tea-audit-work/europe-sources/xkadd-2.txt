@@ -1,0 +1,92 @@
+detyrueshém fito sanitar (LO2) gjaté procedurave té importit dhe tranzitit né territorin e Republikés
+sé Kosovés.
+
+Ndryshimet dhe kodet e reja té pérfshira jané pérditésuar né sistemin ASYCUDA, ndérsa né
+TARIK do té reflektohen né njé periudhé té mévonshme. Pér kété arsye, kemi pérgatitur njé listé
+pérmbledhése me kodet tarifore dhe pérshkrimet pérkatése si mé poshté, dhe pér informimin tuaj
+nga kjo listé kérkohet kontroll apo L029 FIT ) vetém pér mallrat e pérdorura.
+
+Kodi tarifor Pérshkrimi Masa e politikes
+tregtare
+
+Import-Transit
+
+8432 1000 - Plugjet:
+
+8432100010 __|--Té reja =
+
+8432 100090 _|-- Té pérdorura FIT,
+
+8432 2100 ~- Lesat me disk:
+
+8432 210010 _|--- Téreja =
+
+8432 210090 _|-- -Té pérdorura FIT
+
+8432 29 ~- Té tjera:
+
+8432 2910, ~-- Kultivatorét dhe shkriféruesit:
+
+8432 2910 10 Té reja =
+
+8432 291090 __|----Té pérdorura FIT
+
+8432 2930 ~~ Lesat:
+
+8432 2930 10 Té reja =
+
+8432 293090 __|--- -Té pérdorura FIT,
+
+8432 2950 === Roto vatorét:
+
+8432 2950 10 Té reja =
+
+8432 295090 __|----Té pérdorura FIT
+
+8432 2990 ~-- Té tjera:
+
+8432 299010 _|---- Téreja =
+
+8432 299090 _|----Té pérdorura FIT
+
+8432 3100 ~- Mbjelléset, palétuesit dhe transplatuesit jo té drejtpérdrejt
+
+8432 310010 _|--- Téreja =
+
+8432310090 _|-- -Té pérdorura FIT
+
+8432 3911 ~ === Mbjellésit me drejtim qendror té hapésirave té caktuara :
+
+8432 3911 10 - Té reja -
+
+8432 3911 90 ~Té pérdorura FIT
+8432 3919 Té tjera:
+84323919 10 _|---- - Té reja =
+8432 391990 _|---- - Té pérdorura FIT,
+8432 3990 ~-- Plantuesit dhe transplantuesit
+8432 399010 _|---- Téreja =
+8432 399090 __|- pérdorura FIT
+8432 4100 ~- Spérkatésit e plehut shtazor :
+8432410010 _|--- Téreja =
+8432410090 _|-- -Té pérdorura FIT
+8432 4200 ~- Shpérndarésit e plehut mineral
+8432420010 _|--- Téreja =
+8432 420090 _|---Té pérdorura FIT,
+8432 8000 - Makineri té tjera:
+8432 800010 _|-- Té reja =
+8432 800090 _|-- Té pérdorura FIT
+8432 9000 - Pjesét:
+
+~~ Té reja =
+8432 9000 10
+
+~~ Té pérdorura FIT
+8432 9000 90
+8433 4000 - Presat pér ambalazhimin né dengje té kashtés apo barit té
+
+thaté, pérfshire presat ngritése
+
+Drejtoria e Doganés, Veternik 1 Zona Industriale, 10.000 Prishtiné, Kosové.
+Tel & Fax (++ 381 38) 540 350 /540 836
+
+www.dogana-ks.org

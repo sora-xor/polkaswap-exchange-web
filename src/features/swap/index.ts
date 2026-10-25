@@ -1,0 +1,1 @@
+export { swapRoutes } from './routes';

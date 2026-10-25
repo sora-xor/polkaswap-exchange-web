@@ -1,0 +1,6 @@
+Retrieved 2026-09-30; tool-extracted primary-site text or access diagnostics.
+
+Internal Error ()
+citeturn1663view0 [wordlim: 200] Source: open({"ref_id":"turn1621search0","lineno":null}); Total lines: 1
+L0: Failed to fetch https://www.moj.gov.af/dr/%D9%82%D8%A7%D9%86%D9%88%D9%86-%D8%AC%D9%84%D9%88%DA%AF%DB%8C%D8%B1%DB%8C-%D8%A7%D8%B2-%D9%82%D8%A7%DA%86%D8%A7%D9%82-%D9%85%D9%88%D8%A7%D8%AF-%D8%BA%D8%B0%D8%A7%DB%8C%DB%8C%D8%8C-%D8%A7%D8%AF%D9%88%DB%8C%D9%87-%D9%88-%D9%85%D8%AD%D8%B5%D9%88%D9%84%D8%A7%D8%AA-%D8%B5%D8%AD%DB%8C-%D8%AA%D9%88%D8%B4%DB%8C%D8%AD-%D9%88-%D8%AF%D8%B1-%D8%AC%D8%B1%DB%8C%D8%AF%D9%87-%D8%B1%D8%B3%D9%85%DB%8C-%D9%86%D8%B4%D8%B1-%DA%AF%D8%B1%D8%AF%DB%8C%D8%AF: (400) Timeout fetching
+

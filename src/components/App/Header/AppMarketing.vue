@@ -1,192 +1,115 @@
 <template>
-  <div v-if="adsArray.length" class="marketing s-flex">
-    <span v-button class="marketing-prev" @click="prev">
-      <s-icon name="arrows-chevron-left-rounded-24" />
-    </span>
-    <transition-group tag="div" class="marketing-slider" :name="transitionName">
-      <template v-for="(ad, index) in adsArray">
-        <div v-if="currentIndex === index" :key="ad.title">
-          <a
-            class="marketing-card"
-            rel="nofollow noopener"
-            :target="getTarget(ad.link)"
-            :style="getStyles(ad)"
-            :href="ad.link"
-          >
-            <span class="marketing-text">
-              {{ ad.title }}
-              <s-icon class="marketing-suffix" name="arrows-arrow-top-right-24" size="16px" />
-            </span>
-            <span class="marketing-image" />
-          </a>
-        </div>
-      </template>
-    </transition-group>
-    <span v-button class="marketing-next" @click="next">
-      <s-icon name="arrows-chevron-right-rounded-24" />
-    </span>
-  </div>
+  <nav v-if="currentAd" class="marketing s-flex" :aria-label="t('ux.announcements.label')">
+    <button
+      v-if="hasMultipleAds"
+      type="button"
+      class="marketing-prev"
+      :aria-label="t('ux.announcements.previous')"
+      @click="move(-1)"
+    >
+      <s-icon name="arrows-chevron-left-rounded-24"></s-icon>
+    </button>
+    <a
+      class="marketing-card"
+      dir="ltr"
+      rel="nofollow noopener"
+      :target="isInternalHashHref(currentAd.link) ? '_self' : '_blank'"
+      :href="normalizeHashHref(currentAd.link)"
+    >
+      <span class="marketing-text">{{ currentAd.title }}</span>
+      <s-icon name="arrows-arrow-top-right-24" size="14px"></s-icon>
+    </a>
+    <button
+      v-if="hasMultipleAds"
+      type="button"
+      class="marketing-next"
+      :aria-label="t('ux.announcements.next')"
+      @click="move(1)"
+    >
+      <s-icon name="arrows-chevron-right-rounded-24"></s-icon>
+    </button>
+  </nav>
 </template>
 
-<script lang="ts">
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { ref, computed } from 'vue';
 
-import { state } from '@/store/decorators';
-import type { Ad } from '@/store/settings/types';
+import { useTranslation } from '@/composables/useTranslation';
+import { useSettingsStore } from '@/stores/settings';
+import { isInternalHashHref, normalizeHashHref } from '@/utils/hashHref';
 
-import type { CSSProperties } from 'vue/types/jsx';
+import type { Ad } from '@/stores/settings/types';
 
-// PS. Do not call this component & css classes like ad/ads -> it'll be blocked by any blocker browser extension
-@Component
-export default class AppMarketing extends Mixins(mixins.TranslationMixin) {
-  @state.settings.adsArray adsArray!: Array<Ad>;
+/** Quiet, manually browsed announcements retain the configured destinations. */
+const settingsStore = useSettingsStore();
+const { t } = useTranslation();
+const adsArray = computed(() => (Array.isArray(settingsStore.adsArray) ? (settingsStore.adsArray as Ad[]) : []));
+const hasMultipleAds = computed(() => adsArray.value.length > 1);
+const currentIndex = ref(0);
+const currentAd = computed(() =>
+  adsArray.value.length ? adsArray.value[currentIndex.value % adsArray.value.length] : undefined
+);
 
-  private interval: Nullable<NodeJS.Timeout> = null;
-  currentIndex = 0;
-  transitionName = 'slide';
-
-  mounted(): void {
-    this.interval = setInterval(this.next, 60_000);
-  }
-
-  beforeDestroy(): void {
-    if (this.interval) {
-      clearInterval(this.interval);
-    }
-  }
-
-  getTarget(link: string) {
-    if (link.startsWith('/#/')) {
-      return '_self';
-    }
-    return '_blank';
-  }
-
-  getStyles(ad: Ad) {
-    const styles: CSSProperties = { backgroundImage: `url(${ad.img})` };
-    if (ad.backgroundColor) {
-      styles.backgroundColor = ad.backgroundColor;
-    }
-    if (ad.right) {
-      styles.backgroundPosition = `right ${ad.right} top`;
-      styles.paddingRight = '24px';
-    }
-    return styles;
-  }
-
-  prev(): void {
-    if (!this.adsArray.length) return;
-
-    this.transitionName = 'slideback';
-    if (this.currentIndex <= 0) {
-      this.currentIndex = this.adsArray.length - 1; // last item
-    } else {
-      this.currentIndex--;
-    }
-  }
-
-  next(): void {
-    if (!this.adsArray.length) return;
-
-    this.transitionName = 'slide';
-    if (this.currentIndex >= this.adsArray.length - 1) {
-      this.currentIndex = 0; // first item
-    } else {
-      this.currentIndex++;
-    }
-  }
+/** Wrap navigation without timers or changes to configured links. */
+function move(direction: number): void {
+  const count = adsArray.value.length;
+  if (!count) return;
+  currentIndex.value = (currentIndex.value + direction + count) % count;
 }
 </script>
 
 <style lang="scss" scoped>
-$ad-width: 280px;
-$max-ad-width: 330px;
 .marketing {
-  position: relative;
-  width: $ad-width;
+  width: clamp(220px, 23vw, 330px);
+  align-items: center;
+  gap: 4px;
+  color: var(--s-color-base-content-secondary);
+
   &-prev,
   &-next {
-    position: absolute;
-    z-index: 1;
+    flex: 0 0 32px;
+    height: 36px;
+    padding: 0;
+    border: 0;
+    border-radius: 12px;
+    background: transparent;
+    color: inherit;
     cursor: pointer;
-    opacity: 0.3;
-    > i {
-      line-height: 1.75;
-      color: var(--s-color-base-on-accent);
-    }
+    transition:
+      color 125ms ease,
+      background-color 125ms ease;
+
     &:hover {
-      opacity: 0.7;
+      color: var(--s-color-base-content-primary);
+      background: var(--s-color-base-background);
     }
   }
-  &-prev {
-    left: 0;
-  }
-  &-next {
-    right: 0;
-  }
-  &-slider {
-    overflow: hidden;
-    position: relative;
-    height: var(--s-size-medium);
-    width: 100%;
-    border-radius: var(--s-border-radius-medium);
-  }
+
   &-card {
     display: flex;
-    position: absolute;
-    height: var(--s-size-medium);
-    width: 100%;
-    padding-left: 24px;
-    padding-right: 0;
-    border-radius: var(--s-border-radius-medium);
-    background-repeat: no-repeat;
-    background-position: right top;
-    background-size: contain;
-    background-color: var(--s-color-theme-accent); // by default
-    text-decoration: none;
-    color: var(--s-color-base-on-accent);
-  }
-  &-text {
-    flex: 4;
-    align-self: center;
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: -0.36px;
-    text-transform: uppercase;
-    white-space: pre-line;
-  }
-  &-suffix {
-    color: var(--s-color-base-on-accent);
-    font-weight: bold;
-  }
-  &-image {
     flex: 1;
-  }
-  @media (minmax(1220px, false)) {
-    width: $max-ad-width;
-  }
-}
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 0;
+    min-height: 36px;
+    padding: 4px;
+    border-radius: 8px;
+    color: inherit;
+    text-decoration: none;
 
-.slide-leave-active,
-.slide-enter-active {
-  transition: 1s;
-}
-.slide-enter {
-  transform: translate(100%, 0);
-}
-.slide-leave-to {
-  transform: translate(-100%, 0);
-}
+    &:hover {
+      color: var(--s-color-base-content-primary);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+  }
 
-.slideback-leave-active,
-.slideback-enter-active {
-  transition: 1s;
-}
-.slideback-enter {
-  transform: translate(-100%, 0);
-}
-.slideback-leave-to {
-  transform: translate(100%, 0);
+  &-text {
+    font-size: 12px;
+    line-height: 1.5;
+    font-weight: 500;
+    overflow-wrap: anywhere;
+  }
 }
 </style>

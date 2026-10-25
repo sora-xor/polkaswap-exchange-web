@@ -1,0 +1,70 @@
+[
+  {
+    "file": "docs/reports/tea-audit-work/sources/gu-quarantine-peer-web.txt",
+    "url": "https://www.guamcourts.org/compileroflaws/GAR/08GAR/08GAR002-10.pdf",
+    "reviewedAt": "2026-09-30",
+    "source": "Existing full source independently reread; URLs re-opened except ISPM32 already visually verified",
+    "sha256": "9bf787a7bc82f0161bab1d2581987814f70e8a2901f5c3a6bed37e656d74b74c"
+  },
+  {
+    "file": "docs/reports/tea-audit-work/sources/mp.pdf",
+    "url": "https://cnmilaw.gov/docs/admincode/T85/T85-60.2.pdf",
+    "reviewedAt": "2026-09-30",
+    "source": "Existing full source independently reread; URLs re-opened except ISPM32 already visually verified",
+    "sha256": "1c43b31ac45ce192a6339fcd2fafe27bdae0ec5b9956afa3a523758ffae64096"
+  },
+  {
+    "file": "docs/reports/tea-audit-work/sources/mp.txt",
+    "url": "https://cnmilaw.gov/docs/admincode/T85/T85-60.2.pdf",
+    "reviewedAt": "2026-09-30",
+    "source": "Existing full source independently reread; URLs re-opened except ISPM32 already visually verified",
+    "sha256": "28432a717132e407b0c4d019d07e35da73f89c4016470a4b5d20a7db93415dd7"
+  },
+  {
+    "file": "docs/reports/tea-audit-work/pacific-final-source-review/ck-import-specification2021.pdf",
+    "url": "https://agriculture.gov.ck/wp-content/uploads/2021/01/Update-Import-Specification-6-January-2021..pdf",
+    "reviewedAt": "2026-09-30",
+    "source": "Existing full source independently reread; URLs re-opened except ISPM32 already visually verified",
+    "sha256": "450c79fb7cc52f7b16a18361f6ac805a0bc3c77fef32f49aaedd82f5e672601b"
+  },
+  {
+    "file": "docs/reports/tea-audit-work/pacific-final-source-review/ck-import-specification2021.txt",
+    "url": "https://agriculture.gov.ck/wp-content/uploads/2021/01/Update-Import-Specification-6-January-2021..pdf",
+    "reviewedAt": "2026-09-30",
+    "source": "Existing full source independently reread; URLs re-opened except ISPM32 already visually verified",
+    "sha256": "48b6d32f0c38a5ae8ca29a70fae9a46e9266cdd075f49273171a0fb30079f9bc"
+  },
+  {
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/americas/ispm32-slovenia-en2015.pdf",
+    "url": "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf",
+    "reviewedAt": "2026-09-30",
+    "source": "Existing full source independently reread; URLs re-opened except ISPM32 already visually verified",
+    "sha256": "3cf959befd338aaf0d40edb72207faa58b6bfe14df091fd32d244d3ca32558c5"
+  },
+  {
+    "url": "https://agriculture.gov.ck/wp-content/uploads/2019/11/Biosecurity-Act-2008.pdf",
+    "retrievedAt": "2026-09-30",
+    "status": "Web reader PDF text encoding malformed; local download403"
+  },
+  {
+    "url": "https://assets.ippc.int/static/media/files/reportingobligation/2017/08/11/Cook_Islands_Biosecurity_Act_2008.pdf",
+    "retrievedAt": "2026-09-30",
+    "status": "Full readable official NPPO-hosted PDF text via web; localdownload403",
+    "file": "ck-act-official-web-extract.json",
+    "provenance": "Linked by Cook Islands official NPPO reportingobligation page2017. Same73-page Act currently linked from national ministry."
+  },
+  {
+    "file": "docs/reports/tea-audit-work/pacific-finished-tea-definition-review/ck-act-definitions-official-web-extract.json",
+    "url": "https://assets.ippc.int/static/media/files/reportingobligation/2017/08/11/Cook_Islands_Biosecurity_Act_2008.pdf",
+    "reviewedAt": "2026-09-30",
+    "source": "Official NPPO-published Act copy, readable web extraction of section 2 processing exception and separate manufactured plant-product coverage; retrieved 30 September 2026.",
+    "sha256": "54ff792eecfcbbe0ce44509034dd817819114d19031dd29f3a0e12e746269abd"
+  },
+  {
+    "file": "docs/reports/tea-audit-work/pacific-finished-tea-definition-review/mp-operative-source-extract.txt",
+    "url": "https://cnmilaw.gov/docs/admincode/T85/T85-60.2.pdf",
+    "reviewedAt": "2026-09-30",
+    "source": "Exact source extraction from existing full official PDF text. Definitions and provisions 104–108, 116, 201–204, 238 and 501 retained for independent scope review.",
+    "sha256": "755374f06f78634157203070f3ad4308e9d04fd44c3b3a65ee7927e96de032dd"
+  }
+]

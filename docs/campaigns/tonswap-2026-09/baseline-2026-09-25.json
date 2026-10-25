@@ -1,0 +1,62 @@
+{
+  "capturedAt": "2026-09-25T05:20:53.494Z",
+  "completedAt": "2026-09-25T05:20:55.015Z",
+  "endpoint": "https://pi.soramitsu.io/graphql",
+  "operation": "TonswapBurnSnapshot",
+  "indexedThroughBlock": 27770256,
+  "fresh": true,
+  "pages": [
+    {
+      "genesisHash": "0x7e4e32d0feafd4f9c9414b0be86373f9a1efa904809b683453a9af6856d38ad5",
+      "startBlock": 27720478,
+      "indexedThroughBlock": 27770256,
+      "checkpointBlock": 27770256,
+      "checkpointTimestamp": 1790313636,
+      "fresh": true,
+      "rows": 26,
+      "hasNextPage": true
+    },
+    {
+      "genesisHash": "0x7e4e32d0feafd4f9c9414b0be86373f9a1efa904809b683453a9af6856d38ad5",
+      "startBlock": 27720478,
+      "indexedThroughBlock": 27770256,
+      "checkpointBlock": 27770256,
+      "checkpointTimestamp": 1790313636,
+      "fresh": true,
+      "rows": 4,
+      "hasNextPage": false
+    }
+  ],
+  "metrics": {
+    "rawRows": 30,
+    "uniqueFinalizedBurns": 30,
+    "duplicateRows": 0,
+    "totalValidatedXor": "11467.4",
+    "excludedTrustBurns": 0,
+    "excludedTrustXor": "0",
+    "includedBurns": 30,
+    "positiveTsAllocationBurns": 30,
+    "zeroTsAllocationBurns": 0,
+    "totalIncludedXor": "11467.4",
+    "eligibleXor": "11467.4",
+    "overCapXor": "0",
+    "tsReserved": "571682.506573333325728873",
+    "remainingEligibleXor": "1741889.6",
+    "rewardedXorCap": "1753357",
+    "currentMarginalTsPerXor": "49.705688573405187876"
+  },
+  "sourceSha256": {
+    "src/indexer/queries/tonswapBurn.ts": "26ddf2363ada682db93a0fa777d1070a1f9fb453bc8ecc5ea2223af3fa6d77c8",
+    "src/features/misc/lib/tonswapBurn.ts": "9de0888920dc84e56777a7c7a2fa7606d925916879f610859ee2edb9a608e5c9",
+    "src/features/misc/lib/burnEligibility.ts": "c3d656d1e94b33215ec26367f4e6d2fa7fe3af15918ad5f4d946ea9b4f88c486",
+    "src/lib/substrate/math/index.ts": "2c50f8636d03b2bb912566eb51c4a4ce2d608406635f73162ae78b42c2e67497"
+  },
+  "finalityCheck": {
+    "rpcUrl": "https://ws.mof.sora.org/",
+    "checkedAt": "2026-09-25T05:21:32.468Z",
+    "indexedBlockHash": "0x8dff16a8c037ab4a163ebd079e0b18580415dcf5e341dfa784c767f4d4854c1f",
+    "indexedBlockTimestampMs": "1790313636005",
+    "indexedBlockTimestamp": "2026-09-25T05:20:36.005Z",
+    "finalizedHeightAtCheck": 27770263
+  }
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "url": "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/ug_2016-6cons2023_ppact_en.pdf",
+    "file": "docs/reports/tea-audit-work/africa-scope-resolution/ug-plant-consolidated2023.pdf",
+    "status": 200,
+    "bytes": 289587
+  },
+  {
+    "url": "https://unbs.go.ug/news-highlights.php?news=339&read=",
+    "file": "docs/reports/tea-audit-work/africa-scope-resolution/ug-unbs-portal-sept2026.html",
+    "status": 403,
+    "bytes": 5490
+  }
+]

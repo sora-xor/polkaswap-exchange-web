@@ -1,8 +1,8 @@
 <template>
-  <dialog-base class="popup" :visible.sync="isVisible">
+  <dialog-base class="popup" v-model:visible="isVisible">
     <div class="popup-mobile">
       <div class="popup-info">
-        <h3 class="popup-info__headline" v-html="t('mobilePopup.header', { polkaswapHighlight })" />
+        <h3 class="popup-info__headline" v-html="headlineHtml"></h3>
         <p class="popup-info__text">
           {{ t('mobilePopup.info') }}
         </p>
@@ -24,38 +24,64 @@
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useTranslation } from '@/composables/useTranslation';
 import { StoreLinks, app } from '@/consts';
+import { escapeHtml, sanitizeHtml } from '@/utils/sanitize';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 
-@Component({
+defineOptions({
   components: {
-    DialogBase: components.DialogBase,
+    DialogBase: WalletComponentDialogBase,
   },
-})
-export default class AppMobilePopup extends Mixins(mixins.DialogMixin, TranslationMixin) {
-  @Prop({ type: String }) readonly fee!: string;
+});
 
-  StoreLinks = StoreLinks;
+const props = defineProps({
+  fee: {
+    type: String,
+    default: undefined,
+  },
+});
 
-  get polkaswapHighlight(): string {
-    return `<span class="popup-info__headline--highlight">${app.name}</span>`;
-  }
+const emit = defineEmits<{
+  (e: 'close'): void;
+}>();
 
-  handleConfirm(): void {
-    this.closeDialog();
-    this.$emit('confirm');
-  }
-}
+const isVisible = defineModel<boolean>('visible', { default: false });
+const { t } = useTranslation();
+
+const polkaswapHighlight = computed(() => {
+  const safeName = escapeHtml(app.name);
+  return `<span class="popup-info__headline--highlight">${safeName}</span>`;
+});
+
+const headlineHtml = computed(() => {
+  const headline = t('mobilePopup.header', { polkaswapHighlight: polkaswapHighlight.value });
+
+  return sanitizeHtml(headline, {
+    allowedTags: ['span', 'strong', 'em', 'br'],
+    allowedAttributes: {
+      span: ['class'],
+    },
+  });
+});
 </script>
 
 <style lang="scss">
 .popup .el-dialog {
-  max-width: 660px !important;
-  margin-top: 22vh !important;
+  width: min(660px, calc(100vw - 24px)) !important;
+  max-width: min(660px, calc(100vw - 24px)) !important;
+  max-height: calc(100vh - (#{$basic-spacing-big} * 2)) !important;
+  max-height: calc(100dvh - (#{$basic-spacing-big} * 2)) !important;
+  margin-top: clamp(16px, 22vh, 180px) !important;
+}
+
+@include tablet(true) {
+  .popup .el-dialog {
+    margin-top: 0 !important;
+  }
 }
 
 .popup-info {
@@ -79,6 +105,12 @@ export default class AppMobilePopup extends Mixins(mixins.DialogMixin, Translati
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
+  gap: $inner-spacing-medium;
+}
+
+.popup-info {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 @include mobile-app-logos;
@@ -86,22 +118,77 @@ export default class AppMobilePopup extends Mixins(mixins.DialogMixin, Translati
 .popup-app {
   display: flex;
   position: relative;
+  flex: 0 0 auto;
+  justify-content: center;
+  min-width: 260px;
+
   &__qr-code {
     width: 244px;
     height: 244px;
     position: absolute;
-    left: 20%;
+    left: 50%;
+    transform: translateX(-50%);
     border-radius: 8%;
+    top: 0;
   }
+
   &__left-image {
     height: 320px;
     width: 200px;
     margin-top: -50px;
   }
+
   &__right-image {
     height: 260px;
     width: 150px;
     margin-left: -50px;
+  }
+}
+
+@include tablet(true) {
+  .popup-mobile {
+    flex-direction: column;
+    gap: $inner-spacing-small;
+  }
+
+  .popup-app {
+    width: 100%;
+    min-width: 0;
+    padding-top: $inner-spacing-medium;
+
+    &__left-image {
+      width: auto;
+      height: 220px;
+      margin-top: 0;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    &__right-image {
+      display: none;
+    }
+
+    &__qr-code {
+      width: 156px;
+      height: 156px;
+      top: 32px;
+    }
+  }
+}
+
+@include mobile(true) {
+  .popup-app {
+    padding-top: $inner-spacing-small;
+
+    &__left-image {
+      height: 188px;
+    }
+
+    &__qr-code {
+      width: 132px;
+      height: 132px;
+      top: 28px;
+    }
   }
 }
 </style>

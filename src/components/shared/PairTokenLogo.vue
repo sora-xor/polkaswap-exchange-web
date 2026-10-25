@@ -1,41 +1,47 @@
 <template>
   <div :class="computedClasses">
-    <token-logo :token="firstToken" class="token-logo first-logo" :size="size" />
-    <token-logo :token="secondToken" class="token-logo second-logo" :size="size" />
+    <token-logo :token="firstToken" class="token-logo first-logo" :size="size"></token-logo>
+    <token-logo :token="secondToken" class="token-logo second-logo" :size="size"></token-logo>
   </div>
 </template>
 
-<script lang="ts">
-import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { ObjectInit } from '@/consts';
+import { LogoSize, ObjectInit } from '@/consts';
+import { createAsyncComponent } from '@/shared/ui/async';
 
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
 
-@Component({
-  components: {
-    TokenLogo: components.TokenLogo,
-  },
-})
-export default class PairTokenLogo extends Mixins(TranslationMixin) {
-  @Prop({ type: Object, default: ObjectInit }) readonly firstToken!: AccountAsset | Asset;
-  @Prop({ type: Object, default: ObjectInit }) readonly secondToken!: AccountAsset | Asset;
-  @Prop({ type: String, default: WALLET_CONSTS.LogoSize.MEDIUM, required: false })
-  readonly size!: WALLET_CONSTS.LogoSize;
+const TokenLogo = createAsyncComponent(() => import('@/lib/soraneo-wallet/src/components/TokenLogo.vue'));
 
-  get computedClasses(): string {
-    const componentClass = 'pair-logo';
-    const classes = [componentClass];
+defineOptions({
+  name: 'PairTokenLogo',
+});
 
-    if (this.size) {
-      classes.push(`${componentClass}--${this.size.toLowerCase()}`);
-    }
-
-    return classes.join(' ');
+const props = withDefaults(
+  defineProps<{
+    firstToken?: AccountAsset | Asset;
+    secondToken?: AccountAsset | Asset;
+    size?: LogoSize;
+  }>(),
+  {
+    firstToken: ObjectInit,
+    secondToken: ObjectInit,
+    size: LogoSize.MEDIUM,
   }
-}
+);
+
+const computedClasses = computed(() => {
+  const componentClass = 'pair-logo';
+  const classes = [componentClass];
+
+  if (props.size) {
+    classes.push(`${componentClass}--${String(props.size).toLowerCase()}`);
+  }
+
+  return classes.join(' ');
+});
 </script>
 
 <style lang="scss" scoped>

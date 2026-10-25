@@ -1,0 +1,2005 @@
+                                     SAINT LUCIA
+
+
+
+                                CHAPTER 7.12
+
+
+                  PLANT PROTECTION ACT
+
+                                        Revised Edition
+                             Showing the law as at 31 December 2005
+
+
+
+
+This is a revised edition of the law, prepared by the Law Revision Commissioner under the authority
+                                of the Revised Edition of the Laws Act.
+This edition contains a consolidation of the following laws—
+
+
+PLANT PROTECTION ACT
+       Act 21 of 1988 .. in force 30 December 1988
+
+
+PLANT PROTECTION (BANANA AERIAL SPRAYING LEVY) ORDER – Section 36
+       Statutory Instrument 71/1999 in force 18 September 1999
+               Amended by S.I.38/2000 in force 4 March 2000
+
+
+PLANT PROTECTION SERVICES (OVERTIME PAYMENT) ORDER – Section 36
+       Statutory Instrument 49/1996 in force 1 August 1996
+               Amended by S.I.172/2000 in force 9 September 2000
+
+
+PLANT PROTECTION REGULATIONS – Section 36
+       Statutory Instrument 66/1995 in force 21 October 1995
+            Amended by 71/1995 in force 28 October 1995
+
+
+PANAMA DISEASE OF THE BANANA PLANT PROTECTION ORDER – Section 37
+     Statutory Instrument 83/1942 in force 12 December 1942
+Laws of Saint Lucia                           Plant Protection Act                                 Cap.7.12                           3
+Revision Date: 31 Dec 2005
+
+
+
+
+                                              CHAPTER 7.12
+
+                              PLANT PROTECTION ACT
+
+
+
+
+Arrangement of Sections
+Section
+1.         Short title .............................................................................................................. 5
+2.         Interpretation ....................................................................................................... 5
+3.         Power to restrict importation of plant material ...................................................... 6
+4.         Mail ...................................................................................................................... 7
+5.         Importation for experimental purposes ................................................................. 7
+6.         Permit requirements ............................................................................................. 7
+7.         Emergency permits .............................................................................................. 7
+8.         Certification requirement ...................................................................................... 7
+9.         Post entry ............................................................................................................. 8
+10.        Order modifying permit......................................................................................... 8
+11.        Arrival notification ................................................................................................. 8
+12.        Safeguards........................................................................................................... 8
+13.        Export certification ............................................................................................... 9
+14.        Exclusion of liability .............................................................................................. 9
+15.        Plant quarantine services ..................................................................................... 9
+16.        Enforcement authority ........................................................................................ 10
+17.        Control of plant pests ......................................................................................... 10
+18.        Occupier responsibility ....................................................................................... 11
+19.        Pest control notice ............................................................................................. 11
+20.        Failure to comply with notice .............................................................................. 11
+21.        Reimbursement of costs .................................................................................... 11
+22.        Waiving of expenses .......................................................................................... 12
+23.        Duration of quarantine........................................................................................ 12
+24.        Removal of plants under quarantine .................................................................. 12
+25.        Determination of eradication .............................................................................. 12
+26.        Service of notice in absence of occupier ............................................................ 12
+27.        Compensation .................................................................................................... 13
+28.        Plant Protection Board ....................................................................................... 13
+29.        Appointment of alternatives................................................................................ 13
+30.        Board duties ....................................................................................................... 13
+31.        Board Meetings .................................................................................................. 14
+32.        Advisers to Board ............................................................................................... 14
+33.        Duration of appointment to Board ...................................................................... 14
+34.        Penalties ............................................................................................................ 14
+35.        Reporting obligation ........................................................................................... 15
+36.        Regulations ........................................................................................................ 15
+Laws of Saint Lucia              Plant Protection Act        Cap.7.12         5
+Revision Date: 31 Dec 2005
+
+
+
+
+                                 CHAPTER 7.12
+
+                             PLANT PROTECTION ACT
+                                    (Act 21 of 1988)
+       AN ACT to provide for the control of pests and diseases injurious to
+           plants and to prevent the introduction of exotic species of the
+           same.
+
+Commencement [30 December 1988]
+
+1.     SHORT TITLE
+       This Act may be cited as the Plant Protection Act.
+
+
+2.     INTERPRETATION
+       In this Act—
+               “carrier” includes an aircraft, a vessel, or vehicle;
+               “designated officer” means an officer of the Ministry
+                     designated under section 15;
+               “fruits and vegetables” include all edible portions of food
+                     plants in the raw or unprocessed state;
+               “internal waters” means the internal waters of Saint Lucia as
+                     defined in the Maritime Areas Act;
+               “Minister” means the Minister charged with the responsibility
+                    for Agriculture and “Ministry” shall be construed
+                    accordingly;
+               “notifiable pest” means any plant pest of substantial economic
+                     importance for which measures must be taken for its
+                     eradication, control or to prevent its further spread;
+               “occupier” in relation to any land or building means the person
+                    in actual occupation or, where there is no such person, the
+                    owner of the land or building;
+               “owner” includes the person who is entitled to receive the rent;
+                “plant pest” means any living stage of any insect, mite,
+                     nematode, slug, snail, protozoa or other invertebrate or
+6         Cap.7.12           Plant Protection Act          Laws of Saint Lucia
+                                                        Revision Date: 31 Dec 2005
+
+
+
+                vertebrate animal, bacterium, fungus, weed, parasitic
+                plant or reproductive part thereof, viruses, mycoplasms,
+                or any organism similar or allied with any of the
+                foregoing capable of causing damage to any plant or plant
+                product;
+          “plant product” means any substance, material or article of
+               vegetable origin, including pollen either processed or
+               unprocessed, which is capable of harbouring or
+               transporting plant pests;
+          “plant protection services” means those services established
+               under section 15;
+          “plant quarantine services” means those services established
+               under section 15;
+          “planting material” includes any tree, shrub, vine, cutting,
+               graft, scion, bud, bulb, root, seed, and any other plant part
+               capable of propagation;
+           “receptacle” includes any package, box, container, covering,
+                wrapper or any article in which plants are or have been
+                imported, kept or conveyed, or which is used to transport
+                plant pests;
+          “soil” means the loose surface material of the earth in which
+                plants grow, in most cases consisting of disintegrated rock
+                with an admixture of organic material and soluble salts.
+
+
+3.   POWER TO RESTRICT IMPORTATION OF PLANT MATERIAL
+     Whenever the Minister considers that the unrestricted importation
+     into or movement within Saint Lucia of any planting material, fruit,
+     vegetable, plant product, plant pests, soil, or any other non-plant
+     article may result in the entry or movement of plant pests, which may
+     threaten the agricultural resources of Saint Lucia, he or she is
+     authorised to prohibit or otherwise restrict the importation or
+     movement of such planting material, fruit, vegetable, plant product,
+     plant pest, soil or non-plant product to protect the agricultural
+     resources of Saint Lucia.
+Laws of Saint Lucia          Plant Protection Act         Cap.7.12            7
+Revision Date: 31 Dec 2005
+
+
+4.     MAIL
+       Any product or article referred to in section 3 which is handled by the
+       post office shall be subject to regulations administered jointly by the
+       postal services and the plant quarantine service.
+
+
+5.     IMPORTATION FOR EXPERIMENTAL PURPOSES
+       Any planting material, plant pests or live beneficial organisms may be
+       imported for experimental purposes by any person authorised by the
+       Minister and only under such conditions and regulations as may be
+       prescribed by the Minister.
+
+
+6.     PERMIT REQUIREMENTS
+       A person shall not import or offer for entry into Saint Lucia any
+       planting material, fruit, vegetable, plant product, plant pests,
+       predators or parasites of plant pests, or soil except under a permit
+       issued by the Minister in accordance with this Act or regulations
+       made thereunder.
+
+
+7.     EMERGENCY PERMITS
+       The Minister may issue an emergency permit for the entry of certain
+       pre-determined planting material, fruits, vegetables or plant products
+       offered for entry and for which no permit was previously granted
+       provided the planting material, fruits, vegetables or plant products are
+       found to be free of plant pests.
+
+
+8.     CERTIFICATION REQUIREMENT
+       A planting material, fruit, vegetable, plant product, plant pest, live
+       beneficial organisms, or soil shall not be imported into Saint Lucia
+       unless a phyto-sanitary certificate has been issued for that planting
+       material, fruit, vegetable, plant pest, live beneficial organism or soil
+       by the plant health authority of the exporting country which conforms
+       to the model adopted by the International Plant Protection Convention
+       of 1951 and to any amendment thereto or to any Convention in
+       substitution therefor to which Saint Lucia has adhered.
+8           Cap.7.12            Plant Protection Act           Laws of Saint Lucia
+                                                            Revision Date: 31 Dec 2005
+
+
+9.    POST ENTRY
+      The Minister may by order made by statutory instrument—
+           (a) limit the importation of any planting material, fruit,
+                 vegetable, plant product, plant pest, and soil as he or she
+                 may deem necessary;
+           (b) require that imported planting material be grown under
+                 quarantine and under the supervision of the plant
+                 quarantine service;
+           (c) prescribe remedial measures as may be necessary to
+                 prevent the establishment and spread of any plant pest.
+
+
+10.   ORDER MODIFYING PERMIT
+      When a permit has been granted for the importation of any planting
+      material, fruit, vegetable, plant product, plant pest, live beneficial
+      organism or soil, but an order affecting this permit is subsequently
+      made under this Act, the permit may be revoked or modified as may
+      be required so that the entry requirements of the material or articles
+      under consideration shall be consistent with the relevant order issued
+      by the Minister.
+
+
+11.   ARRIVAL NOTIFICATION
+      (1)   The Comptroller of Customs shall notify a designated officer of
+            the plant quarantine service of the arrival of any planting
+            material, fruit, vegetable, plant product, plant pest, soil, or other
+            articles regulated by this Act at the port of arrival.
+      (2)   The Comptroller of Customs shall not release or dispose of the
+            material or article referred to in subsection (1) unless so
+            authorised by the plant quarantine service.
+      (3)   When a designated officer receives a notification under
+            subsection (1) that officer shall inspect or cause the planting
+            material, fruit, vegetable, plant product, plant pest, soil or other
+            articles to be inspected.
+
+
+12.   SAFEGUARDS
+      (1)   Any product or article which is prohibited or restricted entry for
+            importation under this Act or any regulation made thereunder, if
+Laws of Saint Lucia            Plant Protection Act          Cap.7.12              9
+Revision Date: 31 Dec 2005
+
+
+
+               temporarily in the internal waters of Saint Lucia, shall be
+               subject to such conditions as may be deemed necessary by the
+               Minister to carry out the purposes of this Act.
+       (2)     Subsection (1) applies to carriers, their stores and furnishings.
+
+
+13.    EXPORT CERTIFICATION
+       The Minister shall issue such orders and use such means as he or she
+       deems necessary to provide for the inspection of domestic plants and
+       plant products offered for export and to certify to shippers and
+       interested parties as to the freedom of such products from injurious
+       plant pests according to the phyto-sanitary requirements indicated on
+       the model certificate adopted by the International Plant Protection
+       Convention of 1951, or as amended or replaced by a new Convention,
+       to which Saint Lucia shall have adhered.
+
+
+14.    EXCLUSION OF LIABILITY
+       (1)     The Government is not liable for—
+               (a) the destruction of material brought into the country in
+                    violation of this Act or any order issued thereunder; and
+               (b) any damage done, or delays incurred by treatments or
+                    other quarantine action deemed necessary and performed
+                    under the existing law.
+       (2)     Any destruction, treatment or action taken under the Act by a
+               designated officer in accordance with this Act shall be done at
+               the sole risk of the importer.
+
+
+15.    PLANT QUARANTINE SERVICES
+       (1)     The Minister may establish such Plant Protection and plant
+               quarantine services as may be required to protect the
+               agricultural resources of Saint Lucia.
+       (2)     The Minister may by letter, in writing, designate officers of his
+               or her Ministry to administer and enforce the provisions of this
+               Act.
+10         Cap.7.12            Plant Protection Act          Laws of Saint Lucia
+                                                          Revision Date: 31 Dec 2005
+
+
+16.   ENFORCEMENT AUTHORITY
+      Any designated officer authorised to enforce the provisions of this
+      Act and furnished with suitable identification shall—
+           (a) if he or she has cause to believe that any person,
+                 receptacle, or carrier coming into or moving within Saint
+                 Lucia possesses, contains or carries any planting material,
+                 fruit, vegetable, plant product, plant pest, soil or non-plant
+                 article that—
+                 (i) constitutes a risk to the agricultural industry of Saint
+                        Lucia, and
+                 (ii) the entry of which is prohibited or restricted by the
+                        provision of this Act or any order or regulation
+                        issued thereunder,
+                 have the power to stop, and without warrant, to search and
+                 examine the person, receptacle or carrier and seize,
+                 detain, treat, destroy or otherwise dispose of such planting
+                 material, fruit, vegetable, plant product, plant pest, soil or
+                 other article brought into or moving within Saint Lucia in
+                 violation of this Act; and
+           (b) if he or she has cause to believe that a notifiable plant pest
+                 may be present on any land have the power to enter on
+                 such land and without warrant to carry out survey and
+                 detection programmes as well as to treat, destroy or
+                 remove planting material, fruit, vegetable, plant product,
+                 plant pest and soil, but he or she shall inform the
+                 occupier, if present at the time, of the intention to enter,
+                 search, examine, treat, confiscate or destroy such planting
+                 material, vegetable, plant product, plant pest or soil.
+
+
+17.   CONTROL OF PLANT PESTS
+      The Minister may make regulations as he or she may deem necessary
+      to prevent the spread or control of plant pests in Saint Lucia and
+      therein may—
+            (a) identify the notifiable pest under consideration;
+            (b) determine the land or nursery to be placed under
+                 quarantine and advise the occupier or owner in writing
+                 accordingly;
+Laws of Saint Lucia              Plant Protection Act          Cap.7.12          11
+Revision Date: 31 Dec 2005
+
+
+
+               (c)     set out the action to be taken by Government and the
+                       occupier or owner in order to control the plant pest as
+                       well as dispose of the planting material, fruits, vegetables,
+                       and plant products on the land or nursery under
+                       quarantine; and
+               (d)     restrict, prohibit or control the cultivation and harvesting
+                       of any plant on land or nursery under quarantine.
+
+
+18.    OCCUPIER RESPONSIBILITY
+       The occupier or owner of any land or nursery on which a suspected or
+       identified notifiable pest is found shall, as soon as possible, advise the
+       Minister accordingly.
+
+
+19.    PEST CONTROL NOTICE
+       Any designated officer may, by notice in writing served upon the
+       occupier or owner of any land or nursery and which describes the
+       measures to be taken to prevent further spread, control or eradicate
+       the notifiable pest under consideration, require the occupier or owner
+       to—
+             (a) at his or her own expense and within the time specified in
+                   the notice, take such measures as may be recommended or
+                   required to prevent the further spread, control or eradicate
+                   the notifiable pest; and
+             (b) be responsible for the implementation of control or
+                   eradication measures even if they are not stipulated in the
+                   written notice.
+
+
+20.    FAILURE TO COMPLY WITH NOTICE
+       Where an occupier or owner fails to take any measure which he or
+       she is required to take by notice issued under section 19, upon
+       expiration of the time specified therein, a designated officer may
+       enter the land or nursery and have implemented the measures to be
+       taken by the occupier or owner of the land or nursery.
+
+
+21.    REIMBURSEMENT OF COSTS
+       Any expenses incurred by the designated officer in connection with
+       those measures stated in section 19, shall be reimbursed by the
+12         Cap.7.12            Plant Protection Act          Laws of Saint Lucia
+                                                          Revision Date: 31 Dec 2005
+
+
+
+      occupier or owner, and may be recovered by the Chief Plant
+      Protection Officer as a civil debt in the manner provided by the Code
+      of Civil Procedure.
+
+
+22.   WAIVING OF EXPENSES
+      The Minister may waive repayment of expenses incurred under
+      section 20—
+            (a) if the person in default is in needy circumstances and is
+                 unable to pay; or
+            (b) for any other justifiable reason as shall be determined by
+                 the Minister and based upon substantiated facts submitted
+                 to the Minister in writing.
+
+
+23.   DURATION OF QUARANTINE
+      The notice served to the occupier or owner of land or a nursery under
+      section 19(b) remains in force until the Minister issues a certificate in
+      writing to the owner or occupier declaring that the land or nursery is
+      no longer under quarantine.
+
+
+24.   REMOVAL OF PLANTS UNDER QUARANTINE
+      While the notice served under section 19(b) is in force, a person shall
+      not, remove or cause to be removed any planting material, fruit,
+      vegetable, plant product or soil from the land or nursery under
+      quarantine unless he or she is authorized in writing by the Minister to
+      remove the planting material, fruit, vegetable, plant product or soil
+      from the land under quarantine.
+
+
+25.   DETERMINATION OF ERADICATION
+      The Minister shall determine if any notifiable pest has been
+      eradicated and any inspections of land or nurseries to determine this
+      shall be carried out by an authorised officer at no cost to the occupier
+      or owner.
+
+
+26.   SERVICE OF NOTICE IN ABSENCE OF OCCUPIER
+      Where no person is in actual occupation of any land or where the
+      occupier or owner cannot be located, service of any notice under this
+Laws of Saint Lucia           Plant Protection Act       Cap.7.12          13
+Revision Date: 31 Dec 2005
+
+
+
+       Act shall be made by affixing the notice in a conspicuous place on the
+       land and such affixing shall be deemed to be good and sufficient
+       notice.
+
+
+27.    COMPENSATION
+       The Minister shall compensate, out of moneys voted for that purpose
+       by Parliament, occupiers and owners of land and nurseries whose
+       plants, planting material, fruits, vegetables and food products have
+       been destroyed in order to achieve eradication or prevent the spread
+       of an identifiable pest.
+
+
+28.    PLANT PROTECTION BOARD
+       (1)     The Minister shall appoint a Protection Board hereinafter
+               referred to as “the Board”.
+       (2)     The Board shall consist of the following members—
+               (a) the Chief Plant Protection Officer who shall serve as
+                    Chairperson of the Board;
+               (b) an entomologist and a plant pathologist attached to the
+                    Plant Protection Unit of the Ministry;
+               (c) the officer in charge of the plant quarantine service who
+                    shall serve as Board Secretary;
+               (d) a senior extension officer of the Ministry;
+               (e) a Government legal officer nominated by the Attorney
+                    General; and
+               (f) the Chief Forestry Officer.
+
+
+29.    APPOINTMENT OF ALTERNATIVES
+       Where a member of the Board is unable to serve, the Minister may
+       appoint an alternate to the Board who shall serve in his or her stead.
+
+
+30.    BOARD DUTIES
+       The duties of the Board are to advise the Minister on all matters
+       covered under this Act and in particular to advise on—
+            (a) making orders or regulations authorised under this Act;
+            (b) the declaration of any plant pest as a notifiable plant pest;
+14          Cap.7.12          Plant Protection Act         Laws of Saint Lucia
+                                                        Revision Date: 31 Dec 2005
+
+
+
+            (c)   the status of planting material, fruits, vegetables, plant
+                  products, plant pests and soil that are being offered or
+                  may be offered for importation; and
+            (d)   the management, operation and physical requirements of
+                  the plant quarantine service.
+
+
+31.   BOARD MEETINGS
+      (1)   Meetings of the Board may be convened at such times as may
+            be necessary or expedient for the efficient performance of the
+            functions of the Board and as the Chairperson may direct.
+      (2)   Five members constitute a quorum at meetings of the Board.
+      (3)   When the Chairperson or his or her alternate is unable to
+            preside, the members forming a quorum may elect a
+            Chairperson from among their number to preside over that
+            meeting.
+      (4)   The decisions of the Board are by a majority of votes of the
+            members present and in case of equality of votes the person
+            presiding has a second or casting vote.
+
+
+32.   ADVISERS TO BOARD
+      (1)   The Board may co-opt any one or more persons to attend Board
+            meetings for the purpose of assisting or advising the Board.
+      (2)   A person appointed under subsection (1) has no right to vote.
+
+
+33.   DURATION OF APPOINTMENT TO BOARD
+      A member of the Board appointed under sections 28 and 29 may—
+          (a) hold office for the period specified in his or her
+               instrument of appointment;
+          (b) be re-appointed; and
+          (c) resign from his or her office by submitting one month’s
+               notice in writing to the Secretary of the Board.
+
+
+34.   PENALTIES
+      Any person who—
+Laws of Saint Lucia              Plant Protection Act         Cap.7.12          15
+Revision Date: 31 Dec 2005
+
+
+
+               (a)     violates any provision of this Act;
+               (b)     alters, forges, counterfeits, defaces or destroys any
+                       document or certificate provided for in this Act; or
+               (c)     obstructs, impedes, assaults or causes bodily harm to any
+                       person in the execution of his or her duties under this Act,
+               commits an offence and is liable on summary conviction to a
+               fine not exceeding $5,000 or to imprisonment for a term not
+               exceeding 12 months or to both.
+
+
+35.    REPORTING OBLIGATION
+       Any designated officer is obliged to inform the Chief Plant
+       Quarantine Officer of any violation of this Act that in his or her
+       opinion may damage or destroy the flora and fauna of Saint Lucia.
+
+
+36.    REGULATIONS
+       The Minister may, by statutory instrument make rules and regulations
+       or issue any order as may be necessary for carrying out the provision
+       of this Act.
+Laws of Saint Lucia      Plant Protection (Banana Aerial Spraying     Cap.7.12   17
+                                        Levy) Order
+Revision Date: 31 Dec 2005
+
+
+
+
+  PLANT PROTECTION (BANANA AERIAL SPRAYING
+           LEVY) ORDER – SECTION 36
+                        (Statutory Instruments 71/1999 and 38/2000)
+
+Commencement [18 September 1999]
+
+1.     SHORT TITLE
+       This Order may be cited as the Plant Protection (Banana Aerial
+       Spraying Levy) Order
+
+
+2.     INTERPRETATION
+       In this Order—
+               “banana” means bananas of the variety known as robusta,
+                    peurto rique, poyo, lacatan, giant cavendish, valery or
+                    such other varieties as may be prescribed by the Minister;
+               “banana exporter” means a person who exports bananas
+                    through a company listed in Schedule 4;
+               “levy” means the banana aerial spraying levy imposed under
+                    section 3;
+               “Minister” means Minister responsible for Agriculture;
+               “regulated pests” means a pest specified in Schedule 1.
+       (Amended by S.I. 38/2000)
+
+
+3.     IMPOSITION OF LEVY
+       (1)     A levy to be known as the “banana aerial spraying levy” is
+               hereby imposed on all bananas exported outside of Saint Lucia
+               at a rate prescribed in Schedule 3.
+       (2)     The levy shall be paid, by all banana exporters through a
+               company listed in Schedule 4 to the Accountant General at such
+               time and in such a manner as the Minister directs.
+       (Amended by S.I. 38/2000)
+18    Cap.7.12     Plant Protection (Banana Aerial Spraying      Laws of Saint Lucia
+                                  Levy) Order
+                                                              Revision Date: 31 Dec 2005
+
+
+
+     (3)   The rate of the levy prescribed in Schedule 3 shall be
+           reviewable at the end of each year by a review group
+           comprising of a representative of each body listed in Schedule
+           2.
+     (4)   The levy received by the Accountant General under subsection
+           (2), forms part of the Consolidated Fund and shall be used to—
+           (a) defray the cost of the provision by the Government of
+                  aerial spraying of bananas against regulated pests; and
+           (b) establish technical competence for the purpose of pest
+                  surveillance.
+
+
+4.   AMENDMENT OF SCHEDULES
+     The Minister may, by order published in the Gazette, amend the
+     Schedules 1, 2 and 3.
+
+
+
+
+                            SCHEDULE 1
+                                                               (Sections 2 and 4)
+                             Regulated Pests
+     1.    Yellow Sigatoka—(Mycospaerella Musicola or Var Musicola).
+
+
+
+
+                            SCHEDULE 2
+                                                         (Sections 3(3) and 4)
+     1.    Plant Protection Board.
+     2.    WIBDECO (Technical Services Unit).
+     3.    Saint Lucia Banana Corporation.
+     4.    Tropical Quality Fruit Company Limited.
+Laws of Saint Lucia      Plant Protection (Banana Aerial Spraying    Cap.7.12       19
+                                        Levy) Order
+Revision Date: 31 Dec 2005
+
+
+
+
+                                    SCHEDULE 3
+                                                           (Sections 3(1), 3(3) and 4)
+                                          RATE
+               $0.03 per pound of bananas exported.
+
+
+
+
+                                    SCHEDULE 4
+                                        GEEST
+                                       WIBDECO
+               (Inserted by S.I. 38/2000)
+Laws of Saint Lucia          Plant Protection Services (Overtime   Cap.7.12   21
+                                      Payment) Order
+Revision Date: 31 Dec 2005
+
+
+
+
+        PLANT PROTECTION SERVICES (OVERTIME
+            PAYMENT) ORDER – SECTION 36
+                               (Statutory Instrument 49/1996)
+
+Commencement [1 August 1996]
+
+1.     SHORT TITLE
+       This Order may be cited as the Plant Protection Services (Overtime
+       Payment) Order.
+
+
+2.     INTERPRETATION
+       In this Order—
+               “authorised officer” means an officer appointed by the
+                    Minister under section 15 of the Plant Protection Act;
+               “overtime duties” mean duties performed by an authorised
+                    officer outside normal working hours, approved by the
+                    Minister.
+
+
+3.     OVERTIME RATES
+       There shall be paid to authorised officers by the Accountant General
+       for any duties approved by the Minister and performed by authorised
+       officers before or after the normal hours of general attendance, for
+       each hour or part thereof, the following overtime rates—
+             (a) on ordinary weekdays from 6:00 a.m. to 8:00 a.m. and
+                   from 4:30 p.m. to midnight and on Saturdays from 6:00
+                   a.m. to midnight, time and a half of the officer’s normal
+                   hourly rate;
+             (b) on ordinary weekdays and Saturdays from 12:00 midnight
+                   to 6:00 a.m. and on Sundays and Bank Holidays from
+                   6:00 a.m. to 12:00 midnight, double the officer’s normal
+                   hourly rate;
+             (c) on Sundays and Bank Holidays, from 12:00 midnight to
+                   6:00 a.m. triple the officer’s normal hourly rate.
+       (Substituted by S.I. 172/2000)
+22     Cap.7.12        Plant Protection Services (Overtime      Laws of Saint Lucia
+                                Payment) Order
+                                                             Revision Date: 31 Dec 2005
+
+
+4.   MINIMUM OVERTIME RATES
+     (1)   An authorised officer who performs overtime duties shall be
+           paid the minimum rate for 2 hours overtime.
+     (2)   An officer who is summoned for overtime duties and for whose
+           services no demand is ultimately made shall be paid for his or
+           her attendance which in any event shall not be less than the
+           minimum rate for 2 hours overtime.
+
+
+5.   ADDITIONAL RATES FOR TIME OF TRAVELLING
+     On Saturdays, Sundays, Bank Holidays, and on weekdays from 4:30
+     p.m. to 8:00 a.m., the relevant rate for one hour in excess of the actual
+     time spent in performing the service required shall be paid to each
+     officer engaged in overtime duties so as to cover the time spent in
+     travelling to and from the place where the officer’s services are
+     required.
+
+
+6.   OVERTIME RATE DURING MEAL HOURS
+     (1)   Every officer is entitled to a break of one hour for meals
+           between the hours 12:00 noon and 1:00 p.m., and 7:00 p.m. and
+           8:00 p.m.
+     (2)   Where a person requests and an officer consents to work during
+           the hour set aside for meals the rates paid on that officer’s
+           behalf is double the relevant overtime rate for the period.
+
+
+7.   PAYMENT OF OVERTIME RATES
+     (1)   The overtime rates specified in this order shall be paid by the
+           person who requires the services of an authorised officer, to the
+           Accountant General.
+     (2)   The overtime rates paid to the Accountant General under
+           subsection (1) shall be paid to the authorised officer who
+           performs the approved duty.
+
+
+8.   RATES FOR SPECIAL SERVICES
+     (1)   Where a request is made for examination of goods at any
+           private premises during or after working hours, the Minister
+Laws of Saint Lucia          Plant Protection Services (Overtime   Cap.7.12   23
+                                      Payment) Order
+Revision Date: 31 Dec 2005
+
+
+
+               may authorise officers to supervise the examination and the
+               person who requires the services shall pay to the Accountant
+               General—
+               (a) $125 in the case of a container not exceeding 20 feet;
+               (b) $225 in the case of a container exceeding 20 feet.
+       (2)     Where a request made in terms of subsection (1) is in relation to
+               general cargo, the person who requires the services shall
+               maintain a minimum balance of $200 with the Accountant
+               General.
+       (Inserted by S.I. 172/2000)
+Laws of Saint Lucia                       Plant Protection Regulations                               Cap.7.12                       25
+Revision Date: 31 Dec 2005
+
+
+
+
+                PLANT PROTECTION REGULATIONS
+
+
+
+
+ARRANGEMENT OF REGULATIONS
+Regulation
+
+1.         Short title ............................................................................................................ 27
+2.         Interpretation ...................................................................................................... 27
+3.         Ports of entry...................................................................................................... 27
+4.         Entry requirements ............................................................................................. 28
+5.         Exemption .......................................................................................................... 28
+6.         Phytosanitary certificate ..................................................................................... 28
+7.         Fruits and vegetables ......................................................................................... 28
+8.         In vivo planting material (macro-propagules) ..................................................... 29
+9.         In vitro planting material (micro-propagules) ...................................................... 29
+10.        Plant pests ......................................................................................................... 30
+11.        Soil ..................................................................................................................... 30
+12.        Mail importation .................................................................................................. 31
+13.        Packing materials ............................................................................................... 31
+14.        Safeguards......................................................................................................... 32
+15.        Export Regulations ............................................................................................. 33
+16.        Import permit ...................................................................................................... 34
+17.        List of restricted economic crops ........................................................................ 34
+
+SCHEDULE 1                                                                                                                         35
+
+SCHEDULE 2                                                                                                                         37
+
+SCHEDULE 3                                                                                                                         43
+Laws of Saint Lucia           Plant Protection Regulations    Cap.7.12        27
+Revision Date: 31 Dec 2005
+
+
+
+
+     PLANT PROTECTION REGULATIONS – SECTION 36
+                             (Statutory Instrument 66/1995)
+
+Commencement [21 October 1995]
+
+1.     SHORT TITLE
+       These Regulations may be cited as the Plant Protection Regulations.
+
+
+2.     INTERPRETATION
+       In these Regulations—
+               “designated officer” means an officer of the Ministry of
+                     Agriculture designated under section 15 of the Plant
+                     Protection Act;
+               “fruits” include all edible portions of food plants in the raw or
+                     unprocessed state;
+               “plant pest” means any living stage of any insect, mite,
+                    nematode, slug, snail, protozoa or other invertebrate or
+                    vertebrate animal, bacterium, fungus, weed, parasitic
+                    plant or reproductive part of it, virus, mycoplasma, or any
+                    organism similar or allied with any of the foregoing
+                    capable of causing damage to any plant or plant product;
+               “planting material” includes trees, shrubs, vines, cuttings,
+                    grafts, scions, buds, bulbs, roots, seeds, explants and any
+                    other plant part capable of propagation;
+               “soil” means the loose surface material of the earth in which
+                     plants grow, in most cases consisting of disintegrated rock
+                     with an admixture of organic material and soluble salts;
+                “vegetables” include all edible portions of food plants in the
+                     raw or unprocessed state.
+
+
+3.     PORTS OF ENTRY
+       (1)     The ports specified in Schedule 1 are designated ports of entry
+               for the purposes of plant quarantine.
+28         Cap.7.12       Plant Protection Regulations       Laws of Saint Lucia
+                                                          Revision Date: 31 Dec 2005
+
+
+
+     (2)    Services for plant quarantine shall be provided in these ports
+            during normal working hours.
+
+
+4.   ENTRY REQUIREMENTS
+     (1)    All fruits, vegetables, planting materials, plant products, or any
+            other plant or non-plant article, the entry of which presents a
+            pest risk to the agriculture of Saint Lucia, will be subject to
+            examination on arrival in Saint Lucia by a designated officer
+            and if necessary, to treatment for the prevention of pest entry, or
+            to destruction or return to the country of origin, as the case may
+            warrant.
+     (2)    All treatments performed under subregulation (1) are at the sole
+            risk of the importer or his or her agent.
+
+
+5.   EXEMPTION
+     (1)    Plants imported by or for the Ministry of Agriculture are
+            exempted from the prohibitions and restrictions under these
+            Regulations.
+     (2)    Despite subregulation (1), importation by or for the Ministry of
+            Agriculture shall be subject to measures prescribed by the plant
+            quarantine service to prevent pest entry and dissemination.
+
+
+6.   PHYTOSANITARY CERTIFICATE
+     All consignments of plants entering Saint Lucia shall be accompanied
+     by a phytosanitary certificate based on the International Plant
+     Protection Convention (IPPC) of 1951, a model of which is specified
+     in Form 1 of Schedule 2.
+
+
+7.   FRUITS AND VEGETABLES
+     (1)    Admissibility of fruits and vegetables for importation shall be
+            determined by the plant quarantine service at the time
+            application for permit for importation is submitted.
+     (2)    Entry status shall be determined according to the pests present
+            in the exporting country.
+     (3)    Importation of soft, fleshy fruits and vegetables is prohibited
+            from all countries where the Mediterranean, Mexican, Oriental,
+Laws of Saint Lucia          Plant Protection Regulations     Cap.7.12          29
+Revision Date: 31 Dec 2005
+
+
+
+               Queensland and other fruitflies of the family tephritidae are
+               known to occur, unless approved treatment can be performed.
+       (4)     Fruits and vegetables arriving in passenger baggage or personal
+               effects without the necessary permit shall be confiscated and
+               destroyed.
+       (5)     Dried, frozen, processed, preserved or canned fruits and
+               vegetables that have been prepared or processed in such a
+               manner as to make them innocuous as pest carriers, and are not
+               otherwise prohibited under these Regulations and in particular,
+               Schedule 3, are enterable subject to verification of their
+               condition and freedom from pests.
+
+
+8.     IN VIVO PLANTING MATERIAL (MACRO-PROPAGULES)
+       (1)     The entry of trees, shrubs, vines, cuttings, grafts, scions, buds,
+               bulbs, roots, seeds and any other plant part capable of
+               propagation for planting purposes shall be limited to the
+               smallest possible propagative unit consistent with good
+               horticultural practices.
+       (2)     Importation of plants, rooted-cuttings, or any other plant part is
+               limited to soil-free plants and plant parts.
+       (3)     An approved packing material shall be used around the roots of
+               plants after the soil has been removed.
+       (4)     Plants, rooted-cuttings and other propagative units if established
+               in a soil medium, and bulbs, tubers, roots, seed, etc if pre-potted
+               or pre-planted in trays or pots of growing media are not
+               admissible because entry of such material makes adequate
+               inspection of roots or plant parts impossible.
+       (5)     Entry for seed shall be restricted to forest trees and other plant
+               species normally grown from seed.
+       (6)     All planting material shall be subject to inspection and
+               treatment as may be necessary, as a condition for entry.
+
+
+9.     IN VITRO PLANTING MATERIAL (MICRO-PROPAGULES)
+       (1)     In vitro plantlets, containers and culture media shall be free of
+               pests, bacteria, fungi and viruses before entry into the island
+               will be permitted.
+30          Cap.7.12       Plant Protection Regulations       Laws of Saint Lucia
+                                                           Revision Date: 31 Dec 2005
+
+
+
+      (2)    Contaminated cultures and explants from stock plants that have
+             not been grown in vitro (i.e. primary explants) shall not be
+             permitted to enter the island.
+      (3)    Any material originally from a country with a pest or disease of
+             quarantine importance shall not be allowed into the island
+             unless certified and proven disease free.
+      (4)    At least one subculture is required before plantlets shall be
+             allowed entry.
+      (5)    In order to enable detection of bacterial contamination,
+             antibiotics, charcoal or any substance that would render the
+             media opaque or coloured shall not be present in culture media.
+      (6)    All in vitro propagules shall be accompanied by a phytosanitary
+             certificate from the country of origin.
+      (7)    Once in-vitro planting material has been allowed entry into the
+             island, multiplication or research in laboratory or field
+             conditions shall be conducted under observation for a time
+             period specified by the plant quarantine service.
+
+
+10.   PLANT PESTS
+      (1)    The entry of plant pests as defined in reulation 2, or beneficial
+             organisms, shall be limited to entries under permit issued to and
+             destined for recognized scientific and research institutions and
+             the entry shall be subject to conditions specified by the Minister
+             under section 5 of the Plant Protection Act.
+      (2)    Such importations shall be subject to safeguards as specified on
+             the permit for importation.
+
+
+11.   SOIL
+      (1)    The entry of soil shall be limited to entries under permit issued
+             to and destined for recognized scientific and research
+             laboratories as specified in Form 2 under Schedule 2.
+      (2)    Importation under subregulation (1) shall be subject to the
+             following—
+             (a) specific safeguards specified in the import permit;
+             (b) entry shall be limited to quantities specified in the permit;
+Laws of Saint Lucia            Plant Protection Regulations    Cap.7.12         31
+Revision Date: 31 Dec 2005
+
+
+
+               (c)     the soil shall be shipped in sturdy, tightly-sealed
+                       containers;
+               (d)     the soil shall be used only in the permittee’s laboratory;
+               (e)     the soil shall be incinerated or otherwise sterilized in an
+                       approved manner at the conclusion of the test.
+       (3)     The entry of any plant or plant product, machinery, equipment
+               or conveyance of any kind, carrying or contaminated with soil,
+               is prohibited; such articles shall be freed from soil and the pest
+               risk eliminated in a manner approved by the plant quarantine
+               service.
+       (4)     Non-plant articles contaminated with soil or infested with plant
+               pests are subject to such cleaning or treatment as may be
+               necessary to eliminate any pest risk associated with their entry
+               into Saint Lucia.
+
+
+12.    MAIL IMPORTATION
+       (1)     Any plant or plant product imported through the mail shall be
+               subject to these Regulations.
+       (2)     These Regulations shall be enforced with respect to plants
+               imported under subregulation (1) by the teamwork of the postal
+               services, Customs and Excise Department and the plant
+               quarantine service.
+
+
+13.    PACKING MATERIALS
+       (1)     The following materials are prohibited for use as packing
+               materials—
+               (a) banana plants, plant parts, and other plants of the
+                    musaceae family;
+               (b) coconut plants and plant parts;
+               (c) citrus plants and plant parts;
+               (d) coffee plants and plant parts;
+               (e) cotton plants, plant parts and unprocessed cotton
+                    products;
+               (f) forest litter;
+               (g) grass plants and plant parts;
+32          Cap.7.12       Plant Protection Regulations       Laws of Saint Lucia
+                                                           Revision Date: 31 Dec 2005
+
+
+
+             (h)   leaves, stems and roots of plants in general;
+             (i)   rice straw and hulls;
+             (j)   sugarcane plants and plant parts;
+             (k)   soil.
+      (2)    Despite subregulation (1), any plant or part of a plant for which
+             entry is prohibited in Schedule 3 shall be prohibited for use as a
+             packing material.
+      (3)    Packing materials specifically authorised include—
+             (a) sterilized peat or sphagnum moss;
+             (b) excelsior or wood’s wool;
+             (c) osmonda fiber;
+             (d) vermiculite;
+             (e) ground cork;
+             (f) treated wood shavings;
+             (g) paper pulp;
+
+
+14.   SAFEGUARDS
+      (1)    Plant materials subject to safeguard regulations are also subject
+             to permit requirements as directed by the plant quarantine
+             service.
+      (2)    Procedures employed shall be those that impose a minimum of
+             inconvenience to the shipper and carrier and are consistent with
+             proper precautions against pest entry or dissemination.
+      (3)    Plant materials subject to safeguard regulations which are not in
+             compliance with the requirements may be seized, destroyed, or
+             otherwise disposed of.
+      (4)    Inspection of plant materials covered by these regulations shall
+             be performed as soon after arrival as practical, and the
+             conditions necessary to prevent pest dissemination shall be
+             specified at that time if prior arrangements have not already
+             been made.
+      (5)    Plant material shall not be released from the custody of
+             Customs until safeguard requirements have been met and
+             approved by the designated officer.
+Laws of Saint Lucia          Plant Protection Regulations    Cap.7.12         33
+Revision Date: 31 Dec 2005
+
+
+
+       (6)     The Department of Customs and Excise shall give the plant
+               quarantine service at least 24 hours notice for any necessary
+               inspection to be done by the plant quarantine service.
+       (7)     Any treatments performed under this section are made at the
+               sole risk of the owner or his or her agent.
+       (8)     Plant material refused entry is subject to safeguards until re-
+               exported or destroyed.
+       (9)     Garbage or refuse entering the territorial waters, or temporarily
+               in the ports of Saint Lucia, is subject to such safeguards as
+               specified by the plant quarantine service in cooperation with the
+               other Governmental agencies in charge of public health, animal
+               health etc.
+       (10) The landing of garbage is prohibited except in unusual
+            circumstances and in these instances, prior approval shall be
+            obtained from the plant quarantine service or any other
+            concerned agency.
+       (11) Garbage retained on board in transit vessels and aircraft shall be
+            enclosed in tightly sealed, insect-proof containers to prevent
+            insect escape and in the case of ships in port, shall be inside the
+            ship’s rail.
+
+
+15.    EXPORT REGULATIONS
+       (1)     The plant quarantine service may issue phytosanitary
+               certificates based on inspections performed at the request of
+               exporters to aid them in meeting the entry requirements of the
+               importing country.
+       (2)     Certificates issued under subregulation (1) shall be for products
+               grown or produced in Saint Lucia only.
+       (3)     Only a re-export certificate as specified in Form 3 in Schedule 2
+               can be issued for products grown or produced in another
+               country.
+       (4)     The issuance of a phytosanitary certificate in no way releases
+               the exporter from compliance with any export regulations of the
+               Government of Saint Lucia.
+       (5)     The phytosanitary certificate issued under this regulation shall
+               be based on the model of that adopted by the International Plant
+               Protection Convention of 1951, as revised and approved.
+34          Cap.7.12       Plant Protection Regulations       Laws of Saint Lucia
+                                                           Revision Date: 31 Dec 2005
+
+
+16.   IMPORT PERMIT
+      (1)    A person shall not import or offer for entry into Saint Lucia any
+             planting material, fruit, vegetable, plant product, handicraft
+             items from plant, plant materials or plant products plant pests,
+             predators or parasites of plant pests, or soil except under a
+             permit specified in Form 4 of Schedule 2 issued by the Minister
+             in accordance with the Plant Protection Act.
+      (2)    An application for a permit to import shall be made in writing at
+             least 4 weeks prior to the importation of planting material and
+             at least 2 weeks prior to importation of plant parts (e.g. fruits,
+             vegetables and cut flowers), and addressed to the plant
+             quarantine service of Saint Lucia stating—
+             (a) full name, residence and postal address of the applicant;
+             (b) name and address of exporter or persons from whom the
+                   material will be obtained;
+             (c) the quantity and botanical names of all material applicant
+                   proposes to import;
+             (d) country of origin, including specific locality within the
+                   country, of material to be imported;
+             (e) the exact location in Saint Lucia where the material will
+                   be grown or utilized; and
+             (f) the mode of transport, the port of entry and approximate
+                   date of arrival of the shipment, as in Form 5 of Schedule
+                   2.
+
+
+17.   LIST OF RESTRICTED ECONOMIC CROPS
+      (1)    The major economic crops and other related genera of plants,
+             the unrestricted entry of which would pose a pest risk to the
+             country are specified in Schedule 3.
+      (2)    Plant genera not specified in the list shall also be subject to
+             plant import requirements contained in these Regulations.
+      (3)    Prohibitions or restrictions with respect to unlisted genera shall
+             be determined at the time of receipt of application by the plant
+             quarantine service.
+      (4)    All references to phytosanitary certificate in Schedule 3 shall be
+             reference to Form 1 in Schedule 2.
+Laws of Saint Lucia            Plant Protection Regulations   Cap.7.12        35
+Revision Date: 31 Dec 2005
+
+
+
+
+                                   SCHEDULE 1
+                                                                  (Regulation 3)
+                     DESIGNATED PORTS OF ENTRY
+                FOR THE PURPOSE OF PLANT QUARANTINE
+       1.      Port of Castries
+       2.      Cul De Sac Bay
+       3.      Hewanorra International Airport
+       4.      Vigie Airport
+       5.      Port of Vieux Fort
+       6.      Rodney Bay
+       7.      Marigot Bay
+       8.      Port of Soufriere
+Laws of Saint Lucia                      Plant Protection Regulations                      Cap.7.12                   37
+Revision Date: 31 Dec 2005
+
+
+
+
+                                              SCHEDULE 2
+                                                                     (Regulations 6,11,15,16 and 17)
+Form 1
+                           SAINT LUCIA
+         MINISTRY OF AGRICULTURE, LANDS, FORESTRY AND
+                            FISHERIES
+                       Phytosanitary Certificate
+TO: PLANT PROTECTION SERVICE
+of ...................................................... No. .......................................................
+This is to certify that the plants, parts of plants or plant products described
+below or representative samples of them were
+
+ thoroughly examined on .................................... by ...................................
+an authorised officer of the Ministry of Agriculture and Lands and were
+found to the best of his or her knowledge to be substantially free from
+injurious diseases and pests; and that the consignment is believed to
+conform with the current phytosanitary regulations of the importing country
+both as stated in the additional declaration hereon and otherwise.
+
+  Fumigation or disinfection treatment (if required by importing country)
+Date ..................................................... Treatment .........................................
+Duration of exposure ......................................... Chemical and concentration
+
+Additional declaration:                                       Date: ....................................
+(Stamp of the Service)                                        Signature: ............................
+
+                       DESCRIPTION OF THE CONSIGNMENT
+Name and address of exporter: .......................................................................
+Name and address of consignee: .....................................................................
+Number and description of packages: .............................................................
+Distinguishing marks: .....................................................................................
+Origin (if required by importing country): .....................................................
+Means of conveyance: ....................................................................................
+Point of entry: .................................................................................................
+Quantity and name of produce: ......................................................................
+.........................................................................................................................
+.........................................................................................................................
+38              Cap.7.12                 Plant Protection Regulations                          Laws of Saint Lucia
+                                                                                          Revision Date: 31 Dec 2005
+
+
+
+Botanical name: ..............................................................................................
+
+Note : No liability shall attach to ................................... or to any officer or
+representative of the Ministry with respect to this Certificate.
+
+Form 2
+                          SAINT LUCIA
+         MINISTRY OF AGRICULTURE, LANDS, FORESTRY AND
+                           FISHERIES
+         SOIL IMPORT APPLICATION AND PERMIT FORM
+                             (Fill in duplicate)
+Forward this application to:               1. Name and address of applicant
+Crop Protection and Quarantine Unit                                .....................................................
+Research and Development Division,
+Union Agricultural Station, Ministry of
+                                                                   .....................................................
+Agriculture
+2.        Intended use of Soil
+3.
+ Type of Soil             Country of            Number of             Approx.weight                  Number of
+                            origin               samples                 of each                      shipping
+                                                                                                     containers
+
+
+
+
+4.       Method of packing                     5.      Method of shipment                    6.      Shipped by:
+         soil
+        ...................................             ( ) cargo                                     ( ) air
+        ...................................             ( ) baggage                                   ( ) mail
+                                                                                                      ( ) sea
+7.        Location where soil will be used or handled
+.........................................................................................................................
+8.        Precautions used to prevent Plant Pest Dissemination
+.........................................................................................................................
+9.        Method of final disposition (Autoclave, Fumiguant, other)
+.........................................................................................................................
+10. Estimated time and proposed Port of Arrival
+Laws of Saint Lucia                      Plant Protection Regulations                      Cap.7.12                   39
+Revision Date: 31 Dec 2005
+
+
+
+.........................................................................................................................
+11. Signature of Applicant or Agent:.............................................
+12. Date:......................................................
+13. For official use only:
+
+..........................................................     .........................................................
+      Sr. Crop Protection Officer                                             Officer in-charge
+                                                                              Plant Quarantine
+Date:.................................................         Date:.................................................
+
+Form 3
+                      SAINT LUCIA
+  MINISTRY OF AGRICULTURE, LANDS, FISHERIES & FORESTRY
+                       PHYTOSANITARY CERTIFICATE FOR RE-EXPORT
+Plant Protection Organization                                                           No.__________
+of ................................................................................ (Country of re-export)
+TO: Plant Protection Organization(s)
+of ............................................................................. (Country(ies) of import)
+
+                           DESCRIPTION OF CONSIGNMENT
+Name and address of exporter:.......................................................................
+Declared name and address of consignee:......................................................
+Number and description of packages:.............................................................
+Distinguishing marks:.....................................................................................
+Place of origin:................................................................................................
+Declared means of conveyance:......................................................................
+Declared point of entry:..................................................................................
+Name of produce and quantity declared:........................................................
+Botanical name of plants:...............................................................................
+40              Cap.7.12                 Plant Protection Regulations                         Laws of Saint Lucia
+                                                                                         Revision Date: 31 Dec 2005
+
+
+
+This is to certify that the plants or plant products described above were
+imported into (country of re-export) ........................ from (country of
+origin) .................... covered by Phytosanitary Certificate No:..........,
+*original [ ] certified true copy [ ] of which is attached to this certificate;
+that they are packed [ ] repacked [ ] in original [ ] *new [ ] containers, that
+based on the original phytosanitary certificate [ ] and additional inspection [
+], they are considered to conform with the current phytosanitary regulations
+of the importing country, and that during storage in .........................
+(country of re-export) the consignment has not been subjected to the risk of
+infestation or infection.
+                                               *Insert tick in appropriate [ ] boxes
+Disinfestation and/or Disinfection Treatment
+Date:.................................... Treatment:......................................... Chemical
+(active ingredient) ...........................................................................................
+Duration and temperature:...............................................................................
+Concentration:..................................................................................................
+Additional information:...................................................................................
+Additional declaration:....................................................................................
+                                                   Place of issue: .....................................
+(Stamp of Organization) Name of authorised officer: ....................................
+       Date...............................                        .................................
+                                                                         (Signature)
+
+NOTE: No liability with shall attach ..................................... or to any officer
+      or representative of the Ministry with respect to this certificate.
+
+Form 4
+                           SAINT LUCIA
+          MINISTRY OF AGRICULTURE, LANDS, FISHERIES AND
+                            FORESTRY
+                              PLANT MATERIAL IMPORT PERMIT
+                         (Established under the Plant Protection Act)
+Date of Issue:
+                                                                      Expiry Date:.............................
+                                                                      Record No.:..............................
+The applicant...................................................................................................
+of......................................................................................................................
+Laws of Saint Lucia                      Plant Protection Regulations                      Cap.7.12                   41
+Revision Date: 31 Dec 2005
+
+
+
+is hereby permitted to import the following....................................................
+.........................................................................................................................
+.........................................................................................................................
+.........................................................................................................................
+* subject to the following conditions:
+(1) Consignment must be free from soil.
+(2) The material must be accompanied by a phytosanitary Certificate
+      from some responsible authority in the country of origin, stating that
+      the material has been inspected and found free from pests and
+      diseases.
+(3) The material shall be inspected at the port of entry by the designated
+      officer.
+(4) The material shall be disinfected or fumigated to the satisfaction of
+      the designated officer prior to its arrival.
+(5) ...............................................................................................................
+      ...............................................................................................................
+      ...............................................................................................................
+(6) ...............................................................................................................
+      ...............................................................................................................
+      ...............................................................................................................
+
+                                                      _____________________________
+(Stamp of the Service                                   Signature of designated officer
+
+* Delete the condition(s) which is/are inapplicable to the class of materials
+to be imported.
+       This Plant Import is valid for:
+       (a)    Quantity approved on this permit
+       (b)    One entry
+         Note: No liability shall attach to........................or to any officer or
+               representative of the Ministry with respect to this permit.
+
+Form 5
+                          SAINT LUCIA
+         MINISTRY OF AGRICULTURE, LANDS, FISHERIES, AND
+                           FORESTRY
+42              Cap.7.12                 Plant Protection Regulations                       Laws of Saint Lucia
+                                                                                        Revision Date: 31 Dec 2005
+
+
+
+                  PLANT IMPORT PERMIT APPLICATION FORM
+                             (Full in duplicate)
+Forward this application to:                                  1.     Name and address of applicant
+Crop Protection and Quarantine Unit                                  .................................................
+Research and Development Division,
+                                                                     .................................................
+Union Agricultural Station, Ministry                          2.     Name and address of exporter
+of Agriculture
+                                                                     .................................................
+                                                                     .................................................
+3.       Intended use of material
+4.
+Quantity of            Botanical name or                 Country of            Type of plant i.e. list
+item                   English name                      origin                whether fruit, seeds,
+                                                                               plant bulbs, cut flowers.
+
+
+
+
+5.       Exact location where material is to be grown in Saint Lucia
+
+6. Mode of transport                 7. Method of shipment                   8. Estimated date of
+                                                                             arrival
+( ) air ( ) sea                      ( ) cargo ( ) mail                             dd mm yr
+                                     ( ) baggage
+9.       Port of entry
+10. Signature of applicant or agent                                11. Date
+...........................................................        ....................................................
+Laws of Saint Lucia            Plant Protection Regulations     Cap.7.12       43
+Revision Date: 31 Dec 2005
+
+
+
+
+                                  SCHEDULE 3
+                                          (Regulation 17)
+  MAJOR ECONOMIC CROPS OF THE CARIBBEAN, GENERA OF
+PLANTS, THE UNRESTRICTED ENTRY OF WHICH WOULD POSE A
+                      PEST RISK
+
+GROUP
+
+      I.        Cereal crops
+
+    II.         Fibre crops
+
+   III.         Fruit crops
+
+   IV.          Grain and pasture legumes
+
+    V.          Oil and plantation crops
+
+   VI.          Vegetable crops
+
+  VII.          Ornamentals and cut flowers
+
+ VIII.          Forest species and products
+
+   IX.          Herbs and spices
+
+    X.          Wild plants, grasses, aquatic plants, parasitic plants, etc.
+44        Cap.7.12       Plant Protection Regulations      Laws of Saint Lucia
+                                                        Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page 1 of Plant Protection Landscape pages]
+Laws of Saint Lucia          Plant Protection Regulations   Cap.7.12   45
+Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page 2 of Plant Protection Landscape pages]
+46        Cap.7.12       Plant Protection Regulations      Laws of Saint Lucia
+                                                        Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page 3 of Plant Protection Landscape pages]
+Laws of Saint Lucia          Plant Protection Regulations   Cap.7.12   47
+Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page 4 of Plant Protection Landscape pages]
+48        Cap.7.12       Plant Protection Regulations      Laws of Saint Lucia
+                                                        Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page 5 of Plant Protection Landscape pages]
+Laws of Saint Lucia          Plant Protection Regulations   Cap.7.12   49
+Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page 6 of Plant Protection Landscape pages]
+50        Cap.7.12       Plant Protection Regulations      Laws of Saint Lucia
+                                                        Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page 7 of Plant Protection Landscape pages]
+Laws of Saint Lucia          Plant Protection Regulations   Cap.7.12   51
+Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page8 of Plant Protection Landscape pages]
+52       Cap.7.12        Plant Protection Regulations      Laws of Saint Lucia
+                                                        Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page9 of Plant Protection Landscape pages]
+Laws of Saint Lucia          Plant Protection Regulations   Cap.7.12   53
+Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page10 of Plant Protection Landscape pages]
+54       Cap.7.12        Plant Protection Regulations      Laws of Saint Lucia
+                                                        Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page11 of Plant Protection Landscape pages]
+Laws of Saint Lucia          Plant Protection Regulations   Cap.7.12   55
+Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page12 of Plant Protection Landscape pages]
+56       Cap.7.12        Plant Protection Regulations      Laws of Saint Lucia
+                                                        Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page13 of Plant Protection Landscape pages]
+Laws of Saint Lucia          Plant Protection Regulations   Cap.7.12   57
+Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page14 of Plant Protection Landscape pages]
+58       Cap.7.12        Plant Protection Regulations      Laws of Saint Lucia
+                                                        Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page15 of Plant Protection Landscape pages]
+Laws of Saint Lucia          Plant Protection Regulations   Cap.7.12   59
+Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page16 of Plant Protection Landscape pages]
+60       Cap.7.12        Plant Protection Regulations      Laws of Saint Lucia
+                                                        Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page17 of Plant Protection Landscape pages]
+Laws of Saint Lucia          Plant Protection Regulations   Cap.7.12   61
+Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page18 of Plant Protection Landscape pages]
+62       Cap.7.12        Plant Protection Regulations      Laws of Saint Lucia
+                                                        Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page19 of Plant Protection Landscape pages]
+Laws of Saint Lucia          Plant Protection Regulations   Cap.7.12   63
+Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page20 of Plant Protection Landscape pages]
+64       Cap.7.12        Plant Protection Regulations      Laws of Saint Lucia
+                                                        Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page21 of Plant Protection Landscape pages]
+Laws of Saint Lucia          Plant Protection Regulations   Cap.7.12   65
+Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page22 of Plant Protection Landscape pages]
+66       Cap.7.12        Plant Protection Regulations      Laws of Saint Lucia
+                                                        Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page23 of Plant Protection Landscape pages]
+Laws of Saint Lucia          Plant Protection Regulations   Cap.7.12   67
+Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page24 of Plant Protection Landscape pages]
+68       Cap.7.12        Plant Protection Regulations      Laws of Saint Lucia
+                                                        Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page25 of Plant Protection Landscape pages]
+Laws of Saint Lucia          Plant Protection Regulations   Cap.7.12   69
+Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page26 of Plant Protection Landscape pages]
+70       Cap.7.12        Plant Protection Regulations      Laws of Saint Lucia
+                                                        Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page27 of Plant Protection Landscape pages]
+Laws of Saint Lucia          Plant Protection Regulations   Cap.7.12   71
+Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page28 of Plant Protection Landscape pages]
+72       Cap.7.12        Plant Protection Regulations      Laws of Saint Lucia
+                                                        Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page29 of Plant Protection Landscape pages]
+Laws of Saint Lucia          Plant Protection Regulations   Cap.7.12   73
+Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page30 of Plant Protection Landscape pages]
+74       Cap.7.12        Plant Protection Regulations      Laws of Saint Lucia
+                                                        Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page31 of Plant Protection Landscape pages]
+Laws of Saint Lucia          Plant Protection Regulations   Cap.7.12   75
+Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page32 of Plant Protection Landscape pages]
+76       Cap.7.12        Plant Protection Regulations      Laws of Saint Lucia
+                                                        Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page33 of Plant Protection Landscape pages]
+Laws of Saint Lucia          Plant Protection Regulations   Cap.7.12   77
+Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page34 of Plant Protection Landscape pages]
+78       Cap.7.12        Plant Protection Regulations      Laws of Saint Lucia
+                                                        Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page35 of Plant Protection Landscape pages]
+Laws of Saint Lucia          Plant Protection Regulations   Cap.7.12   79
+Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page36 of Plant Protection Landscape pages]
+80       Cap.7.12        Plant Protection Regulations      Laws of Saint Lucia
+                                                        Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page37 of Plant Protection Landscape pages]
+Laws of Saint Lucia          Plant Protection Regulations   Cap.7.12   81
+Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page38 of Plant Protection Landscape pages]
+82       Cap.7.12        Plant Protection Regulations      Laws of Saint Lucia
+                                                        Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page39 of Plant Protection Landscape pages]
+Laws of Saint Lucia          Plant Protection Regulations   Cap.7.12   83
+Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page40 of Plant Protection Landscape pages]
+84       Cap.7.12        Plant Protection Regulations      Laws of Saint Lucia
+                                                        Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page41 of Plant Protection Landscape pages]
+Laws of Saint Lucia          Plant Protection Regulations   Cap.7.12   85
+Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page42 of Plant Protection Landscape pages]
+86       Cap.7.12        Plant Protection Regulations      Laws of Saint Lucia
+                                                        Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page43 of Plant Protection Landscape pages]
+Laws of Saint Lucia          Plant Protection Regulations   Cap.7.12   87
+Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page44 of Plant Protection Landscape pages]
+88       Cap.7.12        Plant Protection Regulations      Laws of Saint Lucia
+                                                        Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page45 of Plant Protection Landscape pages]
+Laws of Saint Lucia          Plant Protection Regulations   Cap.7.12   89
+Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page46 of Plant Protection Landscape pages]
+90       Cap.7.12        Plant Protection Regulations      Laws of Saint Lucia
+                                                        Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page47 of Plant Protection Landscape pages]
+Laws of Saint Lucia          Plant Protection Regulations   Cap.7.12   91
+Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page48 of Plant Protection Landscape pages]
+92       Cap.7.12        Plant Protection Regulations      Laws of Saint Lucia
+                                                        Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page49 of Plant Protection Landscape pages]
+Laws of Saint Lucia          Plant Protection Regulations   Cap.7.12   93
+Revision Date: 31 Dec 2005
+
+
+
+
+[Insert page50 of Plant Protection Landscape pages]
+94     Cap.7.12      Plant Protection Regulations        Laws of Saint Lucia
+                                                      Revision Date: 31 Dec 2005
+
+
+
+                  LIST OF COMMODITIES
+
+     Abaca                                     Bluggoe
+     Ackee (Jamaican)                          Bombax
+     Adansonia                                 Bouvardia*
+     Aethusa                                   Bracharia
+     Agave                                     Brassica (Cabbage)
+     Alectra                                   Breadfruit
+     Allium (Onion)                            Breadnut
+     Anacardium*                               Broad Bean
+     Ananas                                    Broccoli
+     Anemona                                   Buchnera
+     Anemonella                                Bullock’s Heart
+     Annona*                                   Bumelia*
+     Anthurium                                 Bursera*
+     Anthyllis                                 Buxus*
+     Apples                                    Cabbage
+     Apodanthes                                Cacao (Cocoa)
+     Apricot                                   Cajanus (Pigeon Pea)
+     Arachis                                   Callistepnus
+     Areca                                     Calocarpum*
+     Arceuthobium                              Camellia
+     Ardisia*                                  Campanula
+     AROIDS (Dasheen, Tannia)                  Canavalia
+     Arrowroot                                 Cannabis
+     Artocarpus (Breadfruit)                   Capsicum
+     Aster                                     Carambola (5 Fingers)
+     Avena                                     Cardaria
+     Averrhoa                                  Cardiospermum*
+     Avetra                                    Carduus
+     Avocado (Persea)                          Carex
+     Bambarra Groundnut                        Carica
+     Bamboo                                    Cassava
+     Banana (Musa)                             Cauliflower
+     Bdallophyton                              Carpenter (Grass), Chapantye
+     Beans                                     Cedar (Red)
+     Berberis                                  Cedrela*
+     Bermuda Grass (Digitaria)                 Ceiba
+     Betel Palm                                Cenchrus
+     Bilimby                                   Centaurea
+     Blighia                                   Centrosema
+     Blue Mahoe                                Cestrum*
+Laws of Saint Lucia          Plant Protection Regulations     Cap.7.12      95
+Revision Date: 31 Dec 2005
+
+
+
+          Cherry (West Indian)                         Date Palm
+          Chick Pea                                    Datura
+          Chionachne                                   Desmodium
+          Chondrilla                                   Digitaria
+          Christmas trees                              Dioscorea
+          Cicer                                        Diospyros*
+          Cineraria                                    Dried Herbarium Specimens
+          Cinnamon                                     Duravta*
+          Cinnamonum                                   Echinochloa
+          Citronella                                   Eddoes
+          Citrus*                                      Eggplant
+          Clove                                        Elaeis
+          Cnidoscolus*                                 Eleusine
+          Cocoa                                        Emelia
+          Coconut                                      Ensete
+          Cocos                                        Erythropsis
+          Cocoyam                                      Erythroxylum
+          Coffea*                                      Euchlaena
+          Coffee                                       Eugenia*
+          Coix                                         Euphorbia
+          Cola                                         Ficus
+          Colocasia                                    Fig
+          Convolvulus                                  Five Fingers
+          Corchorus                                    Forest trees
+          Coreopsis                                    Fraxinus*
+          Corn (Maize)                                 Furcraea
+          Cotton                                       Garden Egg
+          Cowpea                                       Garlic
+          Crataegus*                                   Genip (Ackee)
+          Cucurbits (cucumber, melon, squash)          Ginger
+          Cucumber                                     Ginger lilies
+          Cupressus                                    Glycine
+          Curcuma                                      Golden apple
+          Cuscuta                                      Gooseberry (Siwette)
+          Custard Apple                                Gossypium
+          Cut Flowers                                  Grapefruit (Citrus)
+          Cydonia*                                     Grapes
+          Cymobopogon                                  Groundnut (Peanut)
+          Cynodon                                      Guava
+          Cytinus                                      Guinea Corn
+          Dactyloctenium                               Herbarium Specimen
+          Dasheen                                      Herbs
+96     Cap.7.12     Plant Protection Regulations       Laws of Saint Lucia
+                                                    Revision Date: 31 Dec 2005
+
+
+
+     Heliconia                                Mahogany (Honduras)
+     Hevea                                    Mahonia
+     Hibiscus*                                Maize (Corn)
+     Holcus                                   Malphigia
+     Homeria                                  Mammea*
+     Hura*                                    Mammy Apple
+     Hyptis                                   Mangifera
+     Impatiens                                Mango
+     Indigofera                               Manihot
+     Ipomoea (Sweet Potato)                   Manilkara*
+     Ixora*                                   Maranta
+     Jack Bean                                Maydeae
+     Jack-fruit                               Melicoccus
+     Jacquemontia                             Melon
+     Jatropha*                                Millet
+     Jujube                                   MINOR FRUITS
+     Justica                                  Mint
+     Kapok                                    Miscellaneous plants rooted in
+     Kersting’s Groundnut                         approved packing material
+     Kerstingiella geocarpa                   Mitrastemon
+     Kidney Bean                              Miroxylon*
+     Kola                                     Musa (Banana, Plantain, Macambu,
+     Lablab                                        Fig Sucriere)
+     Lagerstroemia*                           Mushrooms
+     Lathyrus                                 Myristica (Nutmeg)
+     Lens                                     Myrtus*
+     Lentil                                   Nasella
+     Leucaena                                 Nelubium
+     Lianus                                   Nemesia
+     Lime (Citrus)                            Nicotiana
+     Locust Bean                              Nuphar
+     Lolium                                   Nutmeg
+     Loranthus                                Nymphae
+     Lotonis                                  Oil Palm
+     Lotus                                    Onions
+     Lucuma*                                  Onobrychis
+     Lupins                                   Opuntia
+     Lupinus                                  Orange (Citrus)
+     Lycopersicon                             Orobranche
+     Macambu (Bluggoe) Musa                   Ornamentals
+     Magnolia*                                Ornithopus
+     Mahoberberis                             Oryctanthus
+Laws of Saint Lucia          Plant Protection Regulations     Cap.7.12       97
+Revision Date: 31 Dec 2005
+
+
+
+          Oryza                                        Psidium
+          Pachyrhizus                                  Psittacanthus
+          Paeonia                                      Psophocarpus
+          Panicum                                      Pterygota
+          Papaver                                      Pueraria
+          Papaya                                       Pulsatilla
+          Parkia                                       Punica* (Pomme granate)
+          Parmentiera*                                 Pyrus*
+          Parthenium                                   Rafflesia
+          Paspalum                                     Rajania
+          Pasture Legumes                              Rhizanthes
+          Passiflora                                   Ribes
+          Passion Fruit                                Rice
+          Pea                                          Rosa
+          Peanut (Groundnut)                           Rose
+          Pears                                        Rottboellia
+          Pennisetum                                   Royal Palm
+          Peppers (Sweet, Hot)                         Roystonea
+          Peppermint                                   Rubber
+          Persea*                                      Saccharum (Sugarcane)
+          Phaseolus                                    Salvia
+          Phoenix                                      Sansevieria
+          Phoradendron                                 Sapindus*
+          Phthirusa                                    Sapodilla
+          Phytolacca                                   Sapote
+          Pigeon Pea                                   Sapria
+          Pilostyles                                   Sclerachne
+          Pimenta                                      Secale
+          Pimento                                      Senecio
+          Pine (Caribbean)                             Setaria
+          Pineapple                                    Sisal
+          Pinus                                        Siwette (Gooseberry)
+          Pisum                                        Solandra*
+          Plantain (Musa)                              Solanum
+          Pluchea                                      Solidago
+          Plumeria*                                    Sopubia
+          Plums                                        Sorghum
+          Polytoca                                     Soursop
+          Populus*                                     Soybean
+          Potato (Irish)                               Sphenostylis
+          Potato (Sweet)                               Spices
+          Poui (Yellow/Pink)                           Spinach
+98      Cap.7.12       Plant Protection Regulations       Laws of Saint Lucia
+                                                       Revision Date: 31 Dec 2005
+
+
+
+     Spondias*                                   Thoningia
+     Squash                                      Tithonia
+     Stachytarpheta                              Tobacco
+     Staphanotis                                 Tomato
+     Stenomeris                                  Trichopis
+     Stenotaphrum                                Trilobachne
+     Sterculia                                   Tropaeolum
+     Stipa                                       Tumeric
+     Stizolobium                                 Tussilago
+     Streliztia                                  Verbena
+     Striga                                      Vetch
+     Struthanthus                                Vicia
+     Stylosanthes                                Victoria
+     Sugarcane                                   Vigna
+     Sugar apple                                 Viscum
+     Sweet Pea                                   Vitis*
+     Sweet Potato (Ipomoea)                      Voandzeia
+     Swietenia                                   Wahlenbergia
+     Sword Bean                                  West Indian Cherry
+     Tabebuia*                                   Winged Bean
+     Tamarind                                    Wild Oats
+     Tamarindus                                  Wild Tobacco
+     Tamus                                       Xanthium
+     Tannia                                      Yam
+     Tea                                         Yam Bean
+     Teak                                        Zea (Corn)
+     Tectona                                     Zingiber* (Ginger)
+     Thea                                        Ziziphus
+     Theobroma (Cocoa)
+
+     *Vegetative material of these genera from countries where
+     the citrus black fly (Aleurocanthus woglumi) is known to
+     occur must be defoliated before despatch.
+Laws of Saint Lucia          Panama Disease of the Banana Plant   Cap.7.12     99
+                                     Protection Order
+Revision Date: 31 Dec 2001
+
+
+
+
+  PANAMA DISEASE OF THE BANANA PLANT ORDER
+                              (Statutory Instrument 83/1942)
+               IT IS HEREBY DECLARED that the disease known as Panama
+               Disease is not a notifiable disease within the meaning of the
+               Plant Protection Act.
+
+                             PREVENTION OF SPREAD OF
+               Every banana plant infected by Panama Disease, also called
+               Banana Wilt, shall be cut down and shall be chopped into very
+               small pieces and sprinkled with an approved gas oil (Banana
+               “Killer” Oil). The underground stem or root of the plant shall
+               not be dug up, but shall be sprinkled with a layer of oil over the
+               whole root. Suckers or offsets, not killed by the oil application,
+               shall not be removed for replanting.
+

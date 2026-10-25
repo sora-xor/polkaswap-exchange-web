@@ -1,0 +1,33 @@
+# Include only inside the approved mof.sora.org HTTPS server block.
+# Keep this service separate from IPFS and ws.mof.sora.org RPC configuration.
+location = /api/buy-xor/events {
+    access_log off;
+    error_log /dev/null;
+    client_max_body_size 256;
+    client_body_buffer_size 1k;
+    client_body_timeout 5s;
+    proxy_pass http://127.0.0.1:5188;
+    proxy_http_version 1.1;
+    proxy_set_header Host mof.sora.org;
+    proxy_set_header X-Real-IP "";
+    proxy_set_header X-Forwarded-For "";
+    proxy_set_header User-Agent "";
+    proxy_set_header Referer "";
+    proxy_set_header Connection "";
+    proxy_connect_timeout 2s;
+    proxy_read_timeout 5s;
+    proxy_send_timeout 5s;
+    proxy_cache off;
+}
+
+location = /api/buy-xor/health {
+    access_log off;
+    error_log /dev/null;
+    proxy_pass http://127.0.0.1:5188;
+    proxy_set_header Host mof.sora.org;
+    proxy_set_header X-Real-IP "";
+    proxy_set_header X-Forwarded-For "";
+    proxy_set_header User-Agent "";
+    proxy_set_header Referer "";
+    proxy_cache off;
+}

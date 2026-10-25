@@ -1,0 +1,451 @@
+Import Specification # Product Type?                  Origin?            Import       Zoosanitary/      Inspection of goods     Pre export               General Conditions
+                                                                         Permit?      Phythosanitary required?                  treatment?
+                                                                                      certification/Cle
+                                                                                      aning certificate
+                                                                                                                    Cook Islands Biosecurity Import Specification
+
+A1                    Cattle (including semen)        Australia, New     YES          YES              YES                      As per permit
+                                                      Zealand, Fiji                                                             conditions
+A2                    Cats                            Australia, New     YES          YES              YES                      As per permit
+                                                      Zealand, Fiji                                                             conditions
+A3                    Dogs                            Australia, New     YES          YES              YES                      As per permit            Require a permit from police for dangerous breeds
+                                                      Zealand, Fiji                                                             conditions
+
+A4                    Goats                           Australia, New     YES          YES              YES                      As per permit
+                                                      Zealand, Fiji                                                             conditions
+A5                    Horses                          Australia, New     YES          YES              YES                      As per permit
+                                                      Zealand, Fiji                                                             conditions
+A6                    Poultry (day old chicks         Australia, New     YES          YES              YES                      As per permit
+                      including eggs)                 Zealand, Fiji                                                             conditions
+A7                    Swine (including semen)         Australia, New     YES          YES              YES                      As per permit            Only from areas free of post weaning disease
+                                                      Zealand, Canada                                                           conditions
+A8                    Worm (Tiger/trout/red           Prohibited         Prohibited   Prohibited       Prohibited               Prohobited
+                      california/red wiggle/red
+                      worm/panfish/brandling)
+                      Eisenia foetida
+
+AP1                   Animal meal                     NZ/Aust            YES          YES              YES                      Insect found             Must be certified free of insects
+AP2                   Animal remedies                 NZ                 YES          YES              YES                      As per permit            Licence/Registered
+                                                                                                                                conditions
+AP3                   Animal manure                   Prohibited         Prohibited   Prohibited       Prohibited               Prohibited               Prohibited
+AP4                   Animal Fats                     NZ,Aust            YES          YES              Documents                As per permit            Commercial
+                                                                                                                                conditions
+AP5                   Animal skins                    NZ/Aust            YES          YES              YES                      Formalin Fumigation      Must be commercially tanned
+                                                                                                                                with certification
+AP6                   Bacon                           NZ/Aust            NO           YES              Documents                None specified           Zoosanitary Cert or NZ Export Food Standard needs to meet the following conditions: 1) Meat must be certified as reared
+                                                                                                                                                         and killed in the country of origin 2) Country of Origin must be certified as free of Aujesky's Disease 3)The meat has been
+                                                                                                                                                         inspected and is fit for human consumption 4) The pigs were killed in a plant under government supervision.
+
+AP6-1                 Bacon                           Canada, Finland    NO           YES              Documents                None specified           Zoosanitary Cert needs to meet the following conditions: 1) Meat must be certified as reared and killed in the country of origin
+                                                                                                                                                         2) Country of Origin must be certified as free of Aujesky's Disease 3)The meat has been inspected and is fit for human
+                                                                                                                                                         consumption 4) The pigs were killed in a plant under government supervision.
+AP7                   Beef                            NZ/Aust            NO           YES              Documents                None specified           Zoosanitary Cert or NZ Export Food Standard needs to meet the following conditions: 1) Meat must be certified as reared
+                                                                                                                                                         and killed in the country of origin. 2)The meat has been inspected and is fit for human consumption. 3) The meat was
+                                                                                                                                                         derived from animals which were killed in a plant under government supervision.
+AP7-1                 Beef                            Fiji               NO           YES              Documents                None specified           Zoosanitary Cert needs to meet the following conditions: 1) Meat must be certified as reared and killed in the country of
+                                                                                                                                                         origin. 2)The meat has been inspected and is fit for human consumption. 3) The meat was derived from animals which were
+                                                                                                                                                         killed in a plant under government supervision.
+AP8                   Beef jerky                      NZ/Aust            NO           NO               YES                      None specified           Commercially prepared and packaged, only from countries listed
+AP9                   Bee product                     NZ                 NO           YES              Documents                Commercially             As specified in condition
+                                                                                                                                processed
+AP10                  Bee Apiary equipment            NZ                 NO           NO               YES (Used)               Cleaned sterilised with New/Sterilised
+                                                                                                                                cert
+AP11                  Bees wax                        NZ                 NO           NO               NO                       None specified          Commercially prepared and packaged
+AP12                  Biological products             NZ                 YES          YES              Documents                As per permit           Commercially prepared and packaged
+                                                                                                                                conditions
+AP13                  Biological specimens            Any                YES          YES              Documents                As per permit            As specified on permit
+                                                                                                                                conditions
+AP14                  Blood & Bone fertiliser         NZ                 YES          YES              YES                      None specified           If insects are found the product will need to be fumigated, reshipped or destroyed
+AP15                  Bones, teeth, horns, trophies   Any                NO           YES              YES                      Formalin Fumigation      Certificate must accompany item
+                                                                                                                                with certification
+
+AP16                  Brushes, animal hair            NZ                 NO           YES              NO                       None specified           Commercial (new)
+AP17                  Butchery equipment              NZ                 NO           NO               YES                      None specified           Sterilised
+AP18                  Butter                          NZ                 NO           NO               NO                       None specified           Commercially prepared and packaged
+AP19                  Cattle (Bovine semen)           Aust/NZ/Canada     YES          YES              NO                       As per permit            As per permit conditions
+                                                                                                                                conditions
+AP20                  Cheese                          NZ                 NO           NO               NO                       None specified         Commercial
+AP21                  Chicken (Frozen/Chilled)        Aust/NZ/USA        NO           YES              NO                       None specified         Zoosanitary Cert needs to meet the following conditions: 1) Meat must be certified as reared and killed in the country of
+                                                                                                                                                       origin. 2)The meat has been inspected and is fit for human consumption. 3) The meat was derived from animals which were
+                                                                                                                                                       killed in a plant under government supervision.
+AP22                  Corned beef                     Any                NO           NO               NO                       None specified         Commercial Canned Meat
+AP23                  Dairy Products                  Any (except NZ)    NO           YES              NO                       None specified         Commercially prepared and packaged
+AP24                  Egg Cartons                     NZ                 NO           NO               NO                       None specified         New
+AP25                  Eggs (Chicken)                  Aust/NZ/Fj/Samoa   Yes          YES              Documents                As specified on Import Must be from Commercial Poulty Farms
+                                                                                                                                Health Standards
+
+04/10/2019.           Frozen Egg products,            Australia          NO           YES              Yes                                               Zoosanitary Cert needs to meet the following conditions: 1) Meat must be certified as reared and killed in the country of
+                      omeletes, fritters, poached.                                                                                                       origin. 2)The meat has been inspected and is fit for human consumption. 3) The meat was derived from animals which were
+                                                                                                                                                         killed in a plant under government supervision.
+AP26                  Endangered species              Prohibited       Prohibited   Prohibited       Prohibited               Prohibited               Prohibited
+
+AP27                  Equipment used with animals Aust/NZ/Fj           NO           YES              YES                      Fumigate with            Must be clean and free of hair Treatment certificates may be required
+                                                                                                                              formalin
+                                                                                                                  Cook Islands Biosecurity Import Specification
+
+AP28                  Fans, feathers                  Any              NO           YES              Documents                Fumigate with            Commercially prepared and packaged
+                                                                                                                              Formalin
+AP29                   Fish meat                      Any              NO           NO               YES                      None specified
+Import Specification # Product Type?                  Origin?          Import       Zoosanitary/     Inspection of goods      Pre export               General Conditions
+                                                                       Permit?      Phythosanitary   required?                treatment?
+                                                                                    certification?
+
+
+
+
+AP30                  Fish meal                       Any              NO           YES              NO                       None specified           Zoosanitary Cert needs to meet the following conditions: 1) The fish meal is entirely derived from fish and does not contain
+                                                                                                                                                       any pig, sheep, beef or any other ruminant animal. 2) During the manufacturing process the meal has been heated to at
+                                                                                                                                                       least 85 degrees centigrade for at least 15 minutes. *Certification may be made by the manager of the factory as a
+                                                                                                                                                       Manufacturer's declaration.
+
+
+AP31                  Ham                             Aust/NZ          NO           YES              Documents                None specified           Commercially prepared and packaged
+AP31-1                Ham                             Canada           NO           YES              Documents                None specified           Commercially prepared and packaged
+AP32                  Harnesses                       Aust/NZ/uk       NO           YES (used)       YES (Used)               Formalin Fumigation      Must be clean and free of hair Treatment certificates may be required
+                                                                                                                              with certification
+
+
+AP33                  Honey                           NZ               NO           NO               NO                       None specified           Commercially prepared and packaged
+AP34                  Lizard skins                    Prohibited       Prohibited   Prohibited       Prohibited               Prohibited               Prohibited
+AP35                  Lamb                            Aust/NZ          NO           YES              NO                       None specified           Zoosanitary Cert or NZ Export Food Stanadard needs to meet the following conditions: 1) Meat must be certified as reared
+                      (Frozen/Chilled/Vaccum                                                                                                           and killed in the country of origin. 2)The meat has been inspected and is fit for human consumption. 3) The meat was
+                      Packed                                                                                                                           derived from animals which were killed in a plant under government supervision.
+AP36                  Masks                           Any              NO           NO               YES                      If they have feathers    Certs for feathers
+                                                                                                                              will require formaline
+                                                                                                                              fumigation
+
+AP37                  Meat canned                     Any              NO           NO               NO                       None specified           The product must be able to be imported and stored at normal ambient temperature: Requires a manufacturer's or Packer's
+                                                                                                                                                       declaration with; 1) the name and address of Manufacturer or packer, product type and country of origin, 2) Declaration by
+                                                                                                                                                       the manufacturer or packer of the cooked meat stating that - In the course of manufacture or packing, every portion of the
+                                                                                                                                                       contents of the containers has been heated to a temperature of not less than 100 degrees celcius and held at that
+                                                                                                                                                       temperature for a minimum of 20 minutes, 3) The cooked meat is derived from animals subjected to ante-mortem and post-
+                                                                                                                                                       mortem inspection, and was passed fit for human consumption.
+AP38                  Meat cooked                     Any              NO           NO               NO                       None specified           The product must be able to be imported and stored at normal ambient temperature: Requires a manufacturer's or Packer's
+                                                                                                                                                       declaration with; 1) the name and address of Manufacturer or packer, product type and country of origin, 2) Declaration by
+                                                                                                                                                       the manufacturer or packer of the cooked meat stating that - In the course of manufacture or packing, every portion of the
+                                                                                                                                                       contents of the containers has been heated to a temperature of not less than 100 degrees celcius and held at that
+                                                                                                                                                       temperature for a minimum of 20 minutes, 3) The cooked meat is derived from animals subjected to ante-mortem and post-
+                                                                                                                                                       mortem inspection, and was passed fit for human consumption.
+AP39                  Meat salted, dried, preserved   Aust/NZ          NO           NO               YES                      None specified           The product must be able to be imported and stored at normal ambient temperature: Requires a manufacturer's or Packer's
+                                                                                                                                                       declaration with; 1) the name and address of Manufacturer or packer, product type and country of origin, 2) Declaration by
+                                                                                                                                                       the manufacturer or packer of the cooked meat stating that - In the course of manufacture or packing, every portion of the
+                                                                                                                                                       contents of the containers has been heated to a temperature of not less than 100 degrees celcius and held at that
+                                                                                                                                                       temperature for a minimum of 20 minutes, 3) The cooked meat is derived from animals subjected to ante-mortem and post-
+                                                                                                                                                       mortem inspection, and was passed fit for human consumption.
+AP40                  Meat/fresh, chilled (except     Aust/NZ          NO           YES              NO                       None specified           Zoosanitary Cert or NZ Export Food Standard needs to meet the following conditions: 1) Meat must be certified as reared
+                      pork)                                                                                                                            and killed in the country of origin. 2)The meat has been inspected and is fit for human consumption. 3) The meat was
+                                                                                                                                                       derived from animals which were killed in a plant under government supervision.
+AP40-1                Meat/fresh, chilled (except     Fj/USA/Canada    NO           YES              NO                       None specified           Zoosanitary Cert needs to meet the following conditions: 1) Meat must be certified as reared and killed in the country of
+                      pork)                                                                                                                            origin. 2)The meat has been inspected and is fit for human consumption. 3) The meat was derived from animals which were
+                                                                                                                                                       killed in a plant under government supervision.
+AP41                  Meat frozen (except pork)       Aust/NZ          NO           YES              NO                       None specified           Zoosanitary Cert or NZ Export Food Standard needs to meet the following conditions: 1) Meat must be certified as reared
+                                                                                                                                                       and killed in the country of origin. 2)The meat has been inspected and is fit for human consumption. 3) The meat was
+                                                                                                                                                       derived from animals which were killed in a plant under government supervision.
+AP41-1                Meat frozen (except pork)       Fj/USA/Canada    NO           YES              NO                       None specified           Zoosanitary Cert needs to meet the following conditions: 1) Meat must be certified as reared and killed in the country of
+                                                                                                                                                       origin. 2)The meat has been inspected and is fit for human consumption. 3) The meat was derived from animals which were
+                                                                                                                                                       killed in a plant under government supervision.
+
+AP41-2                Kangaroo Meat (Game meat) Australia                                                                                              Zoosanitary Cert needs to meet the following conditions: 1) Meat must be certified as reared and killed in the country of
+                                                                                                                                                       origin. 2)The meat has been inspected and is fit for human consumption. 3) The meat was derived from animals which were
+                                                                                                                                                       killed in a plant under government supervision.
+AP42                  Medicines/ eg. Chinese          Any              NO           NO               YES Check for CITES      None specified           Commercially prepared and packaged
+                                                                                                     and ingrediants
+
+AP43                  Milk products                   Aust/NZ          NO           NO               NO                       NO                       Commercially prepared and packaged
+AP44                  Mussels                         NZ               NO           YES              Documents                None specified           Commercially prepared and packaged
+AP45                  Oysters                         NZ               NO           YES              Documents                None specified           Commercially prepared and packaged
+AP46                  Pies                            Aust/NZ          NO           NO               NO                       None specified           Commercially prepared and packaged
+AP47                  Pig (Porcine semen)             Aust/NZ/Canada   YES          YES              YES                      None specified           As specified on permit
+AP48                  Pork meat products            Aust/NZ/Canada/US NO               YES              Documents                None specified          Zoosanitary Cert needs to meet the following conditions: 1) Meat must be certified as reared and killed in the country of origin
+                                                    A                                                                                                    2) Country of Origin must be certified as free of Aujesky's Disease 3)The meat has been inspected and is fit for human
+                                                                                                                                                         consumption 4) The pigs were killed in a plant under government supervision.
+
+AP49                  Pork /Frozen/Process Canned China & all Asian                    Prohibited       Prohibited    Cook IslandsProhibited               None specified
+                                                                                                                                   Biosecurity Import Specification
+                      Meat                        Countries,(
+                                                  Phillipines, Indonesia,
+                                                  etc), EU-
+AP50                  Poultry (Frozen)            Aust/NZ//USA            NO           YES              Documents                None specified          Zoosanitary Cert needs to meet the following conditions: 1) Meat must be certified as reared and killed in the country of
+                                                                                                                                                         origin. 2)The meat has been inspected and is fit for human consumption. 3) The meat was derived from animals which were
+                                                                                                                                                         killed in a plant under government supervision.
+AP51                  Poultry                       Other countries       YES          YES              YES                      None specified          As specified on import permit
+                      (Frozen/Chilled/Vaccum
+                      Packed
+AP52                  Rawhide                       Any                   NO           NO               Certificate         Formalin Fumigation Commercially tanned
+                                                                                                                            with certification
+AP53                  Saddlery                      Aust/NZ/UK            NO           NO               YES (Used only)     Formalin Fumigation if New - NO inspection required
+                                                                                                                            Used
+AP54                  Sausages                      Aust/NZ/Fj            NO           YES              Documents           None specified         See Pork and Meat
+AP55                  Sausage casing                Aust/NZ/Fj            NO           YES (natural)    Documents           None specified         Artificial do NOt require certification
+AP56                  Salami                        Aust/NZ/              NO           YES              YES Check packaging                        Commercially prepared and packaged
+
+AP57                  Salmon                        NZ                    NO           NO               Documents                None specified          Commercially prepared and packaged
+AP58                  Saveloy                       Aust/NZ/Fj            NO           YES              Documents                None specified          See Pork and Meat
+
+Import Specification # Product Type?                Origin?               Import       Zoosanitary/     Inspection of goods      Pre export              General Conditions
+                                                                          Permit?      Phythosanitary   required?                treatment?
+                                                                                       certification?
+AP59                  Shellfish                     Aust/NZ               NO           YES              Documents                None specified          Commercially prepared and packaged
+AP60                  Skins                         Any (except lizard)   NO           NO               Commercial -ok           Formalin Fumigation     Check treatment cert
+                                                                                                                                 with certification
+AP61                  Snail                         Prohibited            Prohibited   Prohibited       Prohibited               Prohibited              Prohibited
+AP62                  Soil                          Prohibited            Prohibited   Prohibited       Prohibited               Prohibited              Prohibited
+AP63                  Stuffed animals               Aust/NZ               NO           NO               YES                      Formalin Fumigation     Commercially prepared and packaged
+                                                                                                                                 with certification
+AP64                  Turkey                        Aust/NZ/USA           YES          YES              NO                       None specified          Zoosanitary Cert needs to meet the following conditions: 1) Meat must be certified as reared and killed in the country of
+                                                                                                                                                         origin. 2)The meat has been inspected and is fit for human consumption. 3) The meat was derived from animals which were
+                                                                                                                                                         killed in a plant under government supervision.
+AP65                  Vaccines                      Any                   YES          YES              YES                      None specified          As specified on permit
+AP66                  Veterinary Equipment          Any                   NO           NO               YES                      Used - sterilisation    New or clean
+                                                                                                                                 with certification
+AP67                  Water                         Any                   NO           NO               NO                       None specified          Commercially prepared and packaged
+AP68                  Yoghurt                       Aust/NZ               NO           NO               NO                       None specified          Commercially prepared and packaged
+AP69                  Wool                          Any                   NO           NO               NO                       None specified          Commercially prepared and packaged
+PP1                   Antiques (wood)               Any                   NO           NO               YES                      Fumigate MBr            Commercial certificate
+PP2                   Aquatic plants                Any                   YES          YES              YES                      As per permit           Will require Post Entry Quarantine as specified on permit
+                                                                                                                                 conditions
+PP3                   Bags (used)                   Prohibited            Prohibited   Prohibited       Prohibited               Prohibited              Destroy
+PP4                   Bamboo (shoot)                Any                   YES          YES              YES                      None specified          As specified on Permit
+PP5                   Bamboo (manuf)                Any                   NO           NO               YES                      Fumigation MBr
+PP6                   Banana leave products         Any                   NO           YES              YES                      Fumigation with MBr     Fumigation
+                                                                                                                                 and cetification
+PP7                   Baskets                       Any                   NO           NO               YES                      Fumigation MBr
+PP8                   Birdseeds                     Any                   Yes          NO               YES                      Destroy                 Look for any prohibited seeds
+PP9                   Bird's nest                   Prohibited            Prohibited   Prohibited       Prohibited               Prohibited              Prohibited
+PP10                  Bongo drums                   Any                   Yes          NO               YES                      Formalin Fumigation     Insects / animal skins
+                                                                                                                                 with certification
+PP11                  Bonsai plants               Prohibited              Prohibited   Prohibited       Prohibited               Prohibited              Coniferae spp Diseases
+PP12                  Budwood/Graft wood/Cuttings Any                     YES          YES              YES                      As per permit           As specified on permit
+                      for propagation                                                                                            conditions
+
+PP13                  Bulbs/tubers/corms/rhizomes   Any                   YES          YES              YES                      As per permit           As specified on permit
+                      for propagation                                                                                            conditions
+PP14                  Caraway seeds                 Any                   NO           YES              YES                      Fumigate
+PP15                  Corn cob pipes                Any                   NO           NO               YES                      None specified
+PP16                  Coconut fibre/products        Any                   YES          YES              YES                      Fumigation with MBr
+
+PP17                  Cone, Pines                   Prohibited            Prohibited   Prohibited       Prohibited               Prohibited              Prohibited
+PP18                  Conkers                       Prohibited            Prohibited   Prohibited       Prohibited               Prohibited              Prohibited
+PP19                  Chestnut Dried/cooked         Any                   NO           NO               YES                      None specified          Inspect for insect
+PP20                  Compost/Potting mix/Seed      Any                   YES          NO               YES                      Sterilise               Commercially prepared and packaged and with sterilising certificate
+                      raising mix
+PP21                  Cut flowers and foliage       New Zealand,          Yes          Yes              Yes                      None specified          Additional Phytosanitary certification: Free of Western Flower thrips (Frankliniella occidentalis) and thrips tabaci
+                      (Fresh)                       Australia
+PP22                  Dried flowers and Foliage     Any                   NO           YES              YES                      None specified      Look for Prohibit spp
+PP23                  Dried plant material          Any                   YES          NO               YES                      Fumigation MBr/Heat Additional Requirements -Fumigation, Heat Treatments
+                                                                                                                                 Treatment
+PP24                  Brustic Brushwood fences       Australia/New       YES          YES              YES                    Fumigation with MBr As specified on permit
+                                                     Zealand                                                                  and cetification
+PP25                  Fungus (dried)                 Prohibited          Prohibited   Prohibited       Prohibited             Prohibited               Prohibited
+PP26                  Fruit (dried)                  Any                 NO           NO               YES                    None specified
+PP27                  Fruit (freeze-dried)           Any                 NO           NO               YES        Cook IslandsSterilise
+                                                                                                                               Biosecurity Import Specification
+PP28                  Fruit (frozen)                 Any                 NO           NO               YES                    Sterilise
+PP29                  Herbs (dried)                  Any                 NO           NO               YES                    None specified           Prohibited Species
+PP30                  Kava sticks                    Any                 YES          Yes              YES                    Chemical dip             As specified on permit
+PP31                  Kava powder                    Any                 NO           NO               NO                     None specified           Process powder -
+PP32                  Millet brooms                  Any                 NO           NO               YES                    Clean/destroy            Seeds found refer to treatment
+PP33                  Mushroom (dried)               Any                 NO           NO               YES                     None specified
+PP34                  Mushroom (fresh)               NZ/Australia        NO           YES              YES                     Fumigation             Methyl Bromide Fumigation as specified in the Import Health Standards version 21 March 2016
+PP35                  Mushroom spawn                 NZ                  YES          YES              YES                     None specified         As specified on permit
+PP36                  Peat                           NZ                  YES          NO               YES                     None specified         Clean/Specified on Permit
+PP37                  Popcorn                        NZ                  NO           NO               YES                     None specified
+PP38                  Popcorn                        Other               NO           NO               YES                     None specified         Seize
+PP39                  Rattan (Cane)                  Any                 YES          NO               YES                     None specified
+PP40                  Seeds and Grain for sowing     Any                 Yes          NO               Yes                     As per permit          As specified on permit
+                                                                                                                               conditions
+PP41                  Seeds and Grain for            Any                 NO           YES              NO                      None specified
+                      consumption
+PP42                  Sphagnum moss                  Any                 YES          NO               YES                     Sterilise
+PP43                  Straw                          Prohibited          Prohibited   Prohibited       Prohibited              Prohibited             Prohibited
+PP44                  Soga Roofing                   Fiji                YES          YES              YES                     Fumigation with MBr    As specified on permit
+                                                                                                                               and cetification
+PP45                  Tissue culture                 Any                 YES          YES              YES                     None specified         As specified on permit
+PP46                  Tobacco                        Any                 NO           NO               YES                     None specified
+PP47                  Vegetables (dried)             Any                 NO           NO               YES                     Fumigate
+PP48                  Vegetables(freeze dried)       Any                 NO           NO               YES                     None specified
+PP49                  Vegetables (frozen)            Any                 NO           NO               YES                     None specified
+PP50                  Whole Plants                   Any                 Yes          Yes              Yes                     As per permit          As specified on permit
+                                                                                                                               conditions
+Import Specification # Product Type?                 Origin?             Import       Zoosanitary/      Inspection of goods    Pre export             General Conditions
+                                                                         Permit?      Phythosanitary required?                 treatment?
+                                                                                      certification/Re-
+                                                                                      Export
+FFV1                  Alfalfa (Medicago sativa)      New Zealand         NO           YES               YES                    None specified
+FFV2                  Apple (Malus sylvestris var.   New Zealand         NO           YES              YES                     None specified         Additional Phytosanitary certification: Free of Quadraspidiotus perniciosus
+                      pumila )
+FFV3                  Apricot (Prunus ameriaca)      New Zealand         NO           YES              YES                     None specified         Additional Phytosanitary certification: Free of Quadraspidiotus perniciosus
+FFV4                  Asparagus (Asparagus spp.)     New Zealand, United NO           YES              YES                     Fumigation             Methyl Bromide Fumigation as specified in the Import Health Standards version 21 March 2016
+                                                     States, Australia
+
+FFV5                  Avocado (Persia americana)     New Zealand         NO           YES              YES                     None specified
+
+FFV6                  Blueberry (Vaccinium            New Zealand        NO           YES              YES                     None specified
+                      corymbosum )
+FFV7                  Brassica spp including eg       New                NO           YES              YES                     Pre export treatment   Additional Phytosanitary certification: Free from Plutella xylostella and Pieris rapae (Diamond back Moth and Cabbage white
+                      B.napobrassica var.solidiflora Zealand/Australia                                                         with MBR required      butterfly). Methyl Bromide Fumigation as specified in the Import Health Standrds version 21 March 2016
+                      (swedes), B.oleracea var                                                                                 with certification-
+                      botrytis (cauliflowers),                                                                                 Fumigation.
+                      B.oleracea var italica
+                      (broccoli), B.olerecea
+                      var.capitata (cabbages),
+                      B.oleracea var.gemmifera
+                      (brussel sprouts), B.rapa
+                      var.lonifolia (turnips), B.rapa
+                      var.pekinensis (chinese
+                      cabbages), Brassica spp.
+                      (chou moellier) endives,
+
+
+
+FFV8                  Beetroot, Silverbeet (Beta     New Zealand         NO           YES              YES                     None specific
+                      vulgaris)
+FFV9                  Capsicum (Capsicum             New                 NO           YES              YES                     Fumigation             Additional Phytosanitary certification: Free of Western Flower thrips (Frankliniella occidentalis ). Methyl Bromide Fumigation
+                      annuum )                       Zealand/Australia                                                                                as specified in the Import Health Standards version 21 March 2016. Irradiation at a minmum absorbed dose of 250 Gy.
+FFV10                 Carrot (Daucus carota )        New Zealand         NO           YES              YES                     None specified
+FFV11                 Celery (Apium graveolens)      New                 NO           YES              YES                     Fumigation             Additional Phytosanitary certification: Free of Western Flower thrips (Frankliniella occidentalis) and Thrips tabaci. Methyl Bromid
+                                                     Zealand/Australia
+FFV12                 Cherry (Prunus avium)          New                 NO           YES              YES                     Fumigation             Additional Phytosanitary certification: Free of Quadraspidiotus perniciosus. Methyl Bromide Fumigation asspecified in the
+                                                     Zealand/Australia                                                                                Import Health Standards version 21 March 2016
+FFV13                 Citrus (citrus deliciosa -     New Zealand         NO           YES              YES                     None specified
+                      manadarin, citrus sinensis-
+                      oranges, citrus limon-lemon)
+
+FFV14                 Coriander (Coriandrum          New Zealand         NO           YES              YES                     None specific
+                      sativum)
+FFV15                  Courgette,Pumkin, Squash           New Zealand            NO        YES              YES                    None specified
+                       (Cucubita pepo)
+FFV16                  Eggplant (Solanum                  New Zealand            NO        YES              YES                    None specific
+                       melongena)
+                                                                                                                       Cook Islands Biosecurity Import Specification
+FFV17                  Feijoa (Feijoa sellowiana)         New Zealand            NO        YES              YES                    None specific
+
+FFV18                  Fennel (Foenicolium spp)           New Zealand            NO        YES              YES                    None specific
+
+FFV19                  Garlic (Allium sativum )           New Zealand, China, NO           YES              YES                    None specified
+
+FFV20                  Ginger (Zingiber officinale)       Thailand               NO        YES              YES                    None specified
+
+FFV21                  Grapes (Vitis vinifera)            New Zealand,           NO        YES              YES                    Cold Disnfestation
+                                                          Australia.                                                                                        1º+/- 0.6ºC for 16 days
+FFV22                  Honeydew melon (Cucumis            New Zealand            NO        YES              YES                    None specific
+                       spp)
+FFV23                  Kiwifruit (Actinidia deliciosa )   New Zealand            NO        YES              YES                    None specified
+FFV24                  Kumara (Ipomoea batatas )          New Zealand            YES       YES              YES                    None specified
+
+FFV25                  Leek (Allium porrum )              New Zealand            NO        YES              YES                    None specified           Additional Phytosanitary certification: Free of Western Flower thrips (Frankliniella occidentalis )
+FFV26                  Lettuce (Lactuca sativa)           New Zealand            NO        YES              YES                    None specificed          Additional Phytosanitary certification: Free of Western Flower thrips (Franklineella occidentalis) and thrips tabaci
+FFV27                  Melon (Cucumis melo )              New Zealand            NO        YES              YES                    None specified
+FFV28                  Mango (Mangifera indica)           Australia/Phillipine   YES       YES              YES                    As per permit            Heat or Radiation treatment
+                                                                                                                                   conditions
+FFV29                  Nashi Pear (Pyrus pyrifolia)       New Zealand            NO        YES              YES                    None specified           Additional Phytosanitary certification: Free of Quadraspidiotus perniciosus
+
+
+
+
+FFV30                  Onion, Spring onion (Allium        New Zealand            NO        YES              YES                    None specified
+                       cepa )
+FFV31                  Parsley (Petrolselinum             New Zealand            NO        YES              YES                    None specified           Additional Phytosanitary certification: Free of Western Flower thrips (Frankliniella occidentalis) and thrips tabaci
+                       crispum)
+FFV32                  Peach/Nectarine (Prunus            New Zealand, United NO           YES              YES                    None specified
+                       persica, var.nucipersia, )         States
+FFV33                  Pear (Pyrus spp.)                  New Zealand,        NO           YES              YES                                             Additional Phytosanitary certification: Free of Quadraspidiotus perniciosus
+                                                          Australia
+FFV34                  Persimmon (Diospyros spp.)         New Zealand         NO           YES              YES                    None specified
+
+FFV35                  Plum (Prunus domestica)            New Zealand, United NO           YES              YES                    None specific
+                                                          States
+FFV36                  Pineapple (Anana comosus)          New Zealand,         NO          YES              YES                    None specified
+                                                          Philippines
+FFV37                  Potato (Solanum tuberosum)         New                  NO          NO               NO                     No Certificate           Processed -deep fryed
+                       Frites/Fries                       Zealand/Australia/EU                                                     Required
+
+FFV37                  Potato (Solanum tuberosum)         New Zealand            NO        YES              YES                    None specified           Dirt contamination must be less than 25g per 600units. Additional Phytosanitary certification: Free of Globodera spp.
+
+FFV38                  Radish (Raphanus sativus)          New Zealand            NO        YES              YES                    None specific
+FFV39                  Rhubarb (Rheum                     New Zealand            NO        YES              YES                    None specific
+                       rhabarbarum)
+FFV40                  Shallot (Allium ascalonicum)       New Zealand            NO        YES              YES                    None specific
+
+FFV41                  Rocket (Eruca sativa)              New Zealand            NO        YES              YES                    None specific
+FFV42                  Snowpeas (Pisum spp)               New Zealand            NO        YES              YES                    None specific
+FFV43                  Spinach (Spinacia oleracea)        New Zealand            NO        YES              YES                    None specific
+FFV44                  Strawberry (Fragaria spp.)         New Zealand            NO        YES              YES                    None specified           Additional Phytosanitary certification: Free of Western Flower thrips (Frankliniella occidentalis )
+FFV45                  Tomato (Lycopersicon               New Zealand            NO        YES              YES                    None specified           Additional Phytosanitary certification: Free of Western Flower thrips (Frankliniella occidentalis )
+                       esculentum )
+Import Specification # Product Type?                      Origin?                Import    Zoosanitary/     Inspection of goods    Pre export               General Conditions
+                                                                                 Permit?   Phythosanitary   required?              treatment?
+                                                                                           certification?
+BNV1                   Brand new motorised vehicle        Japan                  NO        NO               YES                    None specific            Inspection on arrival for asian gypsy moth (cocoon)
+                       such as; cars,trucks,utility
+                       vehicles,vans
+
+
+
+UM1                    Agricultural, Horticultural and All Countries             NO        NO               YES                    Steam Cleaning with      Cleaning certification, Free from Biosecurity risk organisms, and from organic material and other contaminating substances
+                       Forestry equipments; logging                                                                                certification
+                       equipment,portable
+                       sawmill,plough,rollers,discers,
+                       fruit-pickers,pesticide sprayer
+                       and cranes
+UM2        Construction,Building,Producti All Countries            NO   NO    YES               Steam Cleaning with      Cleaning certification, Free from Biosecurity risk organisms, and from organic material and other contaminating substances
+           on equipment-concrete                                                                certification
+           mixers,generators,and road
+           construction equipment
+                                                                                    Cook Islands Biosecurity Import Specification
+
+UM3        Used Equipment used to            All Countries         NO   NO    YES               Steam Cleaning with      Cleaning certification, Free from Biosecurity risk organisms, and from organic material and other contaminating substances
+           house and/or process plants                                                          certification
+           and plant products-meat
+           processors,abbatoir
+           equipments,dairy
+           equipments,brewery
+           equipments
+
+UM4        Military Equipments               All Countries         NO   NO    YES               Steam Cleaning with      Cleaning certification, Free from Biosecurity risk organisms, and from organic material and other contaminating substances
+                                                                                                certification
+
+UM5        Components of                     All Countries         NO   NO    YES               Steam Cleaning with      Cleaning certification, Free from Biosecurity risk organisms, and from organic material and other contaminating substances
+           vehicles/machinery, such as                                                          certification
+           engines,chassis,suspension
+
+
+
+UV1        Motorised vehicle-                All Countries         NO   NO    YES               Steam Cleaning with      Cleaning certification, Free from Biosecurity risk organisms, and from organic material and other contaminating substances
+           buses,cars,motor                                                                     certification
+           cycles,trucks,utility
+           vehicles,vans,motorised
+           bicycles,forklifts,forestry and
+           agricultural vehicles
+           (tractor,skidders)
+
+UT1        Used Tyres                        All Countries         NO   NO    YES               Cleaning                 Tyres must be clean and free of any contaminants
+
+SCC1       Sea Container                     All Countries         NO   NO    YES               Container cleaning       Cleaning certification, Free from Biosecurity risk organisms, and from organic material and other contaminating substances
+                                                                                                with certification
+
+
+PE1(FCL)   Personnal Effect                  All Countries         NO   NO    YES               Pre export treatment     Certification
+                                                                                                with MBR required
+                                                                                                with certification
+
+
+BBPE1      Break-Bulk Personnal Effect       New                   NO   NO    YES               None specific
+                                             Zealand/Australia
+
+BBPE2      Break-Bulk Personnal Effect       All Countries         NO   NO    YES               Pre export treament      Certification
+                                                                                                with MBR required
+                                                                                                with certification
+PPF1       Wooden Furniture                  New                   NO   NO    YES               None Specified           Free from Biosecurity risk organisms
+                                             Zealand,Australia
+PPF2       Wooden Furniture                  All southeast Asian   NO   NO    YES               Pre export treatment     Certification
+                                             countries                                          with MBR required
+                                                                                                with certification
+
+WP1        Wooden Pallet                     All Countries         NO   NO    YES               Pre-Export Treatment ISPM15 marking on Pallets
+
+
+TR1        Timber (Sawn wood)                All Countries         No   Yes   Yes               Pre export treatment     Certification
+                                                                                                with MBR required
+                                                                                                with certification
+

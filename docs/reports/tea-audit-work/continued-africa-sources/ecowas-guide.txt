@@ -1,0 +1,999 @@
+                                                 1
+
+
+
+
+West Africa and Sahel Harmonised Phytosanitary
+and Inspection and Decision-Making Guide
+                                    March 2023
+
+
+
+
+    With financial support of
+                                                                               2
+
+
+
+
+West Africa and Sahel Harmonised Phytosanitary
+     and Inspection and Decision-Making Guide
+
+
+
+
+                                            Contact info:
+                                            Website: www.ecowap.ecowas.int
+                                            Email: agric_ruraldev@ecowas.int
+                                            Address: River Plaza Annex,
+                                            496 Abogo Largema Street,
+                                            Central Business District,
+                                            PMB 401 Abuja, Nigeria
+                                                                                                                                                                  3
+
+
+
+                                                Executive Summary / Résumé
+Phytosanitary certification is used to attest that consignments meet phytosanitary import/export requirements and is applied to most plants, plant products
+and other regulated articles that are traded at regional and international levels. Phytosanitary certification contributes to the protection of plants, including
+cultivated and uncultivated/unmanaged plants and wild flora (including aquatic plants), habitats and ecosystems in the importing countries. Phytosanitary
+certification also facilitates regional and international trade in plants, plant products and other regulated articles by providing a regionally or internationally
+agreed document and related procedures, in the context of boosting intra-regional safe trade contributing to the Africa Continental Free Trade Agreement
+(AfCFTA) and consistent with international standards.
+Prior to issuing the phytosanitary certificates, inspection and other related activities leading to issuance of phytosanitary certificates shall be carried out only
+by or under the authority of the official national plant protection organization (NPPO). The issuance of phytosanitary certificates shall be carried out by public
+officers who are technically qualified and duly authorized by the official national plant protection organization to act on its behalf and under its control with
+such knowledge and information available to those officers that the authorities of importing contracting parties or country may accept the phytosanitary
+certificates with confidence as dependable documents. This ECOWAS regional harmonized inspection and decision-making guide was developed to serve that
+purpose. Phytosanitary inspectors in the region have been trained on its practical use.
+
+La certification phytosanitaire est utilisée pour attester que les envois satisfont aux exigences phytosanitaires d'importation/exportation et est appliquée à la
+plupart des végétaux, produits végétaux et autres articles réglementés qui sont commercialisés aux niveaux régional et international. La certification
+phytosanitaire contribue à la protection des végétaux, y compris les plantes cultivées et non cultivées/non gérées et la flore sauvage (y compris les plantes
+aquatiques), les habitats et les écosystèmes dans les pays importateurs. La certification phytosanitaire facilite également le commerce régional et international
+des végétaux, produits végétaux et autres articles réglementés en fournissant un document convenu au niveau régional ou international et les procédures
+connexes, dans le contexte de la stimulation du commerce intra-régional sûr contribuant à l'Accord de libre-échange continental africain (ZLECAF) et conforme
+aux normes internationales.
+
+Avant la délivrance des certificats phytosanitaires, l'inspection et les autres activités connexes menant à la délivrance des certificats phytosanitaires doivent
+être effectuées uniquement par ou sous l'autorité de l'organisation nationale officielle de la protection des végétaux (ONPV). La délivrance des certificats
+phytosanitaires est effectuée par des agents publics qui sont techniquement qualifiés et dûment autorisés par l'organisation nationale officielle de la
+protection des végétaux à agir en son nom et sous son contrôle, avec des connaissances et des informations telles que ces agents disposent de telles
+connaissances et informations que les autorités des parties contractantes importatrices ou le pays peuvent accepter les certificats phytosanitaires en toute
+confiance en tant que documents fiables. Ce guide régional harmonisé d'inspection et de prise de décision de la CEDEAO a été élaboré à cette fin. Les
+inspecteurs phytosanitaires de la région ont été formés à son utilisation pratique.
+                                                                                                                                                                   4
+
+
+
+
+PHYTOSANITARY INSPECTION AND DECISION-MAKING GUIDE FOR ECONOMIC                  GUIDE POUR L’INSPECTION PHYTOSANITAIRE ET LA PRISE DE DECISIONS POUR
+      COMMUNITY OF WEST AFRICAN STATES (ECOWAS) and Sahel                          LES ETATS DE LA COMMUNAUTE ECONOMIQUE DE L’AFRIQUE DE L’OUEST
+                           ---------------                                                                 (CEDEAO) et Sahel
+                                                                                                              ---------------
+Summary                                                                          Sommaire
+
+−    Purpose of the guide                                                        −    But du guide
+−    Scope                                                                       −    Portée
+−    Regulatory Authority                                                        −    Autorité de régulation
+−    Basic requirement for inspectors                                            −    Exigence de base pour les inspecteurs
+−    Phytosanitary inspection                                                    −    Inspection Phytosanitaire
+         o Document collection and examination                                                 o Collecte et examen de documents
+         o Consignment verification                                                            o Vérification de l'envoi
+         o Sampling and Inspection methods                                                     o Méthodes d'échantillonnage et d'inspection
+         o Visual inspection                                                                   o Inspection visuelle
+         o Submission for laboratory testing                                                   o Soumission pour test de laboratoire
+         o Outcome and decisions after inspection                                              o Résultat et décisions après inspection
+
+    I.   Purpose                                                                     I.   But du guide
+
+This guide describes procedures to carry out phytosanitary inspection and to     Ce guide décrit les procédures de réalisation de l’inspection phytosanitaire et de
+make decisions on import and export of plants, plant products and other          prises de décisions dans le cadre de l’importation et de l’exportation des
+regulated articles.                                                              végétaux, produits végétaux et autres articles réglementés. Les organisations
+National Plant Protection Organizations (NPPOs) are responsible for inspecting   nationales de la protection des végétaux (ONPVs) ont la responsabilité d’inspecter
+consignments of plants, plant products and other regulated articles in           les végétaux et produits végétaux et d’autres articles réglementés qui circulent au
+international traffic to prevent the introduction and spread of pests.           niveau international pour prévenir l’introduction et la propagation des nuisibles.
+                                                                                 L’inspection phytosanitaire a pour objectif de vérifier le respect des
+The objective of the phytosanitary inspection is to verify phytosanitary         réglementations phytosanitaires en matière d’importation et d’exportation, afin
+compliance with imports and exports regulations, in order to prevent the
+                                                                                                                                                                         5
+
+
+introduction and spread of harmful organisms in plants, plant products and            de prévenir l’introduction et la propagation d’organismes nuisibles dans les
+regulated articles.                                                                   végétaux, les produits végétaux et autres articles réglementés.
+                                                                                      Les inspecteurs inspectent les envois pour vérifier leur conformité aux exigences
+Plant health officials inspect consignment(s) for compliance with imports and         d'importation et d'exportation en utilisant différentes méthodes pour détecter les
+exports requirements using different methodologies to detect regulated pests          nuisibles réglementés et les organismes dont les risques phytosanitaires n'ont pas
+and organisms for which phytosanitary risks have not yet been determined.             encore été déterminés.
+                                                                                      Ce guide vise donc à harmoniser les procédures afin de rendre l'inspection
+The objective of this guide is to harmonize the inspection procedures to make it      phytosanitaire simple mais efficace pour les inspecteurs de la sous-région
+simple but effective for phytosanitary inspectors in the West African sub-region.     d'Afrique de l'Ouest.
+
+  II.    Scope                                                                          II.    Portée
+
+The scope of the guide covers inspection procedures for consignments of plant,        Le guide couvre les procédures d'inspection des envois de végétaux, produits
+plant products and other regulated articles which are imported or exported            végétaux et autres articles réglementés importés ou exportés via les points
+through entry and exit points (seaports, airports & land border posts). It explains   d'entrée et de sortie (Ports, Aéroports & Frontières terrestres). Il explique
+how to determine compliance based on phytosanitary requirements.                      comment déterminer la conformité sur la base des exigences phytosanitaires.
+
+Phytosanitary inspection does not cover requirements related to human or              L’inspection phytosanitaire ne couvre pas les exigences liées à la santé humaine
+animal health, pesticide residues, radioactivity or quality.                          ou animale, aux résidus de pesticides, à la radioactivité ou à la qualité.
+
+The users of this guide are the phytosanitary inspectors of the NPPOs.                Les utilisateurs de ce guide sont les inspecteurs phytosanitaires des ONPVs.
+
+ III.    Regulatory Authority                                                          III.    Autorité de Régulation
+
+NPPOs are responsible for the implementation and revision of phytosanitary            Les ONPVs sont chargées de la mise en œuvre et de la révision des procédures
+inspection procedures.                                                                d’inspections phytosanitaires.
+This guide is prepared for all inspectors of NPPOs in the West African sub region     Ce guide est destiné à tous les inspecteurs des ONPV de la sous-région de l'Afrique
+in charge of its application to plants, plant products and other regulated articles   de l'Ouest qui sont chargés de son application aux végétaux, produits végétaux et
+and in cooperation with exporters, importers and all relevant border agencies and     autres articles réglementés, en collaboration avec les exportateurs et
+authorities.                                                                          importateurs et les agences et autorités frontalières compétentes.
+
+The responsibilities of NPPO include but are not limited to ‘the inspection of        Les responsabilités d'une organisation nationale de la protection des végétaux
+consignments of plants and plant products moving in international traffic and         comprennent, entre autres, « l’inspection des envois de végétaux et de produits
+where appropriate, the inspection of other regulated articles particularly with the   végétaux faisant l'objet d'un trafic international et, le cas échéant, l'inspection
+object of preventing the introduction and spread of pests (Article iv.2(c) of the     d'autres articles réglementés, notamment dans le but d'empêcher l'introduction
+IPPC), International Standards for Phytosanitary Measures 23 (ISPM23).                et la propagation d'organismes nuisibles (Article iv.2.c) de la CIPV), Norme
+                                                                                      internationale pour les mesures phytosanitaires 23 (NIMP23).
+                                                                                                                                                                               6
+
+
+Phytosanitary procedures or inspection requirements to determine compliance             Les procédures phytosanitaires ou les exigences d'inspection permettant de
+at entry and exit points include:                                                       déterminer la conformité aux points d'entrée et de sortie comprennent :
+− Documentary checks                                                                        − Le contrôle documentaire
+− Identity and integrity checks                                                             − Les contrôles d'identité et d'intégrité
+− Visual inspection                                                                         − L’Inspection visuelle
+− Physical examination                                                                      − L’examen physique
+− Scientific testing                                                                        − Les tests de laboratoire
+− Record keeping                                                                            − Archivage de tous les documents
+
+    IV.       Basic requirements for inspection                                          IV.       Exigences de base pour l'inspection
+
+The inspection area should be neat and spacious enough to allow the inspector           La zone d’inspection doit être propre et suffisamment spacieuse pour permettre
+to carry out his or her duty freely and safely.                                         à l’inspecteur/inspectrice de s’acquitter de sa tâche librement et en toute
+                                                                                        sécurité.
+Therefore, it is recommended to inspectors to observe the greatest vigilance:
+                                                                                        Il est donc recommandé aux inspecteurs d’observer la plus grande vigilance :
+•         Avoid accidents including:                                                    Eviter les accidents, notamment :
+                                                                                              − Lors du déplacement au sein des terminaux portuaires, des entrepôts,
+          −   When moving into port terminals, warehouses, roadside docks, where                  des quais où des engins lourds de manutention interviennent
+              heavy handling equipment operate.                                               − Lors de l'inspection dans des endroits inappropriés (par exemple,
+          −   When inspecting at inappropriate places (e.g control of trailers in the             contrôle des camions en l'absence de quai de déchargement).
+              absence of unloading platform).                                                 − Lors de l'inspection des conteneurs, les chutes de cartons ou l’inhalation
+          −   falls of boxes, when inspecting containers.                                         de gaz toxiques provenant de la fumigation.
+          −    Inhaling of toxic gas from containers containing fumigated articles.           − Lors d'utilisation d'outils tranchants pour l’inspection et
+          −   When using sharp tools for sampling and inspection. ...                             l'échantillonnage
+          −    When opening containers, boxes, parcels                                        − Demander de l'aide lors de l'ouverture de conteneurs, boîtes, colis
+
+•         To avoid the risk of contaminating other consignments after sampling and      Pour éviter le risque de contamination du matériel lors de l'inspection et de
+          inspection clean and disinfect any material and hands in contact with the     l'échantillonnage, nettoyer et désinfecter tout matériel et les mains en contact
+          infected or infested plants, planting materials and plant products.           avec les plantes, matériels de plantation ou produits infectées ou infestées.
+
+•         Separate the items or articles already inspected and certified from the              −   Séparer les articles déjà inspectés et certifiés des autres pour empêcher
+          uninspected commodities to prevent cross contamination and contraband.                   l’exportateur de faire passer en contrebande les marchandises non
+                                                                                                   inspectées et pour empêcher la contamination croisée.
+•         Designate a quarantine holding area (container, reefer, covering
+          consignment with tarpaulin etc) for infested, contaminated or prohibited
+          commodities
+                                                                                                                                                                           7
+
+
+•         To reduce the risk of spread of harmful organisms when sampling, handling,          −   Disposer d’une zone de quarantaine (conteneur, chambre froide, couvrir
+          packaging or transporting samples.                                                      les produits avec les bâches, etc.) pour les produits infestés, contaminés
+                                                                                                  ou prohibés
+Tools and supplies for inspection
+                                                                                              −   Réduire le risque de propagation d'organismes nuisibles lors de
+    Table with a white, clean and smooth        White paper/Black paper sheet
+                                                                                                  prélèvement, manipulation, emballage et transport des échantillons.
+    surface and/or heated                       Note pads
+    Inspection kit,                             Computer with internet connectivity
+    Camel hair brush (small/medium)             Pens                                   Liste des fournitures et équipements pour l’inspecteur
+    A good lighting system                      Polystyrene bags
+    Scissors                                    Needle                                  Table d’inspection à surface blanche,   Papier blanc / Feuille de papier noir
+    Hand Lens, Visors                           Aprons                                  propre et lisse et/ou chauffante        Blocs-notes
+    Forceps                                     Calculator                              Trousse d’inspection                    Ordinateur avec Internet
+    Microscopes (various)                       Tissue paper (Box)                      Brosse à poils de chameau               Stylos ou crayons
+    Marker pens- (red and Black)                White enameled tray                     Un bon système d'éclairage              Sac en polystyrène
+    Knives (pointed)                            Dust Bins                               Ciseaux                                 Aiguille
+    Pencil and Sharpener,                       Sweep nets                              Lentille De Main, Visières              Tabliers
+    Ruler                                       Plastic bags                            Forceps                                 Calculatrice
+    Torch light with cells                      Alcohol 70%                             Microscopes (divers)                    Mouchoir en papier (boîte)
+    Stapler with pins                           Swab                                    Marqueurs - (rouge et noir)             Plateau émaillé blanc
+    Hand Gloves (Packs)                         Ice chest                               Couteaux (pointus)                      Poubelles
+    Cello tape,                                 Camera                                  Crayon et Taille-crayon                 Balaies
+    Nose mask and eye cover                     Probes                                  Règle                                   Sacs en plastique
+    Specimen Vials                              Sampling plan                           Lampe torche à cellules                 Alcool 70%
+    Inspectors’ clothing                        A form of the inspection report         Agrafeuse avec des recharges            Écouvillon
+    Adapted shoes                               List of quarantine pests                Gants (boites)                          Glacière
+    Dropper                                                                             Ruban adhésif                           Appareil photo
+    Sieves with differentiated mesh             Etc.                                    Masques pour le nez et les yeux         Sondes
+                                                                                        Flacons de spécimens                    Plan d’échantillonnage
+                                                                                        Tenue de l’inspecteur                   Formulaire du rapport d’inspection
+                                                                                        Chaussures adaptées                     Liste des nuisibles de quarantaine
+                                                                                        Compte-gouttes
+                                                                                        Tamis à maille différenciée             Etc.
+
+     V.       Phytosanitary inspection
+
+Inspection procedures include:                                                           V.       L’inspection Phytosanitaire
+
+          −   Examination of documents associated with the consignment                 Les procédures d’inspection comprennent :
+          −   Verification of consignment identity and integrity                            − Examen des documents associés à l'envoi
+                                                                                                                                                                         8
+
+
+    −    Visual examination for pests and other phytosanitary requirements                −    Vérification de l'identité et de l’intégrité du lot
+         (such as free from soil)                                                         −    Contrôle phytosanitaire : Examen visuel des organismes nuisibles et
+    −    Laboratory testing if necessary.                                                      autres exigences phytosanitaires (telles que l'absence de terre)
+                                                                                          −    Test de laboratoire si nécessaire
+    a.   Progress of the Phytosanitary Inspection
+                                                                                          a.   Déroulement de l’inspection Phytosanitaire
+Step 1: Preparation for the inspection
+                                                                                      Etape 1 : Préparation de l’inspection
+For a good organization to facilitate the normal flow of commodity movement
+procedures, the client must give a 48-hour advance notice to the NPPO/the Plant       Pour une bonne organisation des contrôles et pour faciliter les flux du traitement
+Quarantine office prior to the arrival of the consignment. The Office registers the   des marchandises, l’opérateur doit notifier à l’ONPV (demande de contrôle) 48
+request beforehand and assigns it to an inspector.                                    heures avant l’arrivée des marchandises. Le Service enregistre la demande
+                                                                                      préalablement et l’assigne à un inspecteur.
+The officer–in-charge then assigns the request to a competent and authorized
+officer for verification and further action.                                          L’inspecteur vérifie l’exactitude de toutes les informations renseignées par
+                                                                                      l’opérateur.
+Step 2: Document collection and examination
+                                                                                      Etape 2 : Collecte et examen des documents
+The documentary controls/checks are carried out by the phytosanitary inspector
+at Approved National Entry/Exit Points to ensure it meets the technical               Le contrôle documentaire est systématique et nécessairement réalisé par
+requirement of the consignment.                                                       l’inspecteur phytosanitaire dans un Point d’Entrée Nationale (PEN) officiel pour
+                                                                                      passer en revue les exigences techniques de l'envoi.
+Check whether the consignment or lot is accompanied by the required
+certificates, other documents or alternative marks to ensure that they are:           Vérifier si l’envoi/ le lot est accompagné des certificats, documents ou marques
+     − Complete                                                                       alternatifs requis et examiner les documents pour s’assurer qu'ils sont :
+     − Consistent                                                                          − complets
+     − Accurate                                                                            − cohérents
+     − Valid and not fraudulent (ISPM 12)                                                  − précis
+                                                                                           − valide et non frauduleux (NIMP 12)
+Directory of documents that an inspector must review to verify the identity and
+integrity of the commodity:                                                           Le répertoire des documents qu'un inspecteur doit examiner pour vérifier
+                                                                                      l’identité et l’intégrité de la marchandise :
+    −    Declaration form
+    −    Import permit                                                                −   La déclaration en douane,
+    −    Certificate of origin                                                        −   l’autorisation préalable d’importation ou permis d’importation,
+    −    Laboratory report                                                            −   le certificat d’origine,
+    −    Treatment report (fumigation)                                                −   le certificat d’analyse de laboratoire
+                                                                                                                                                                                9
+
+
+    −    Phytosanitary certificate                                                    −    le certificat de traitement (fumigation)
+    −    Way bills with traceability codes where applicable / Bill of lading /Cargo   −    le certificat phytosanitaire,
+         manifest                                                                     −    la lettre de transport / connaissement avec codes de traçabilité, le cas
+    −    Invoice                                                                           échéant (BL, LTA, feuille de route)
+    −    Packing lists with traceability codes                                        −    La facture
+    −    Indications on how to review and compare documents including:                −    Listes de colisage avec codes de traçabilité
+         o The identity of the commodity (nature, packaging, brand)                   −    Indications sur la façon d'examiner et de comparer les documents :
+         o The origin of the product                                                                  o L’identité de la marchandise (nature, emballage, marque)
+         o Point of entry                                                                             o L’origine du produit ou de la provenance
+         o Suppliers/exporter                                                                         o Poste frontalier d’entrée
+         o Importer/Customer                                                                          o Fournisseurs / exportateur
+         o Means of transport                                                                         o Importateur / client
+         o Quantities                                                                                 o Moyen de transport
+         o No. of containers                                                                          o Les quantités
+                                                                                                      o N° des conteneurs.
+The client must be registered as an importer or exporter with the NPPO.
+                                                                                      L'importateur ou l’exportateur doit être enregistré auprès de l'ONPV
+Step 3: Consignment Verification
+                                                                                      Etape 3 : Contrôle de Vérification de la marchandise
+Process for determining whether the quantities and types of plant products found
+in the consignment match those described in the shipping documents and the            C’est le processus permettant de déterminer si les quantités et les types de
+phytosanitary certificate. The inspector visits the storage places and containers     produits végétaux trouvés dans l'envoi correspondent à ceux décrits dans les
+or boards ships/vessels to identify the commodity as described in the                 documents d'expédition et dans le certificat phytosanitaire. L’inspecteur se rend
+documentary package.                                                                  sur le lieu de stockage ou de livraison des conteneurs ou à bord des navires pour
+                                                                                      faire la reconnaissance des produits décrits dans la liste documentaire.
+Thus, he /she has to:
+                                                                                      Il s’agit :
+−   Inspect for identity to ensure that the consignment is accurately described
+    by its documents.                                                                 −    de vérifier l'identité pour s’assurer que l'envoi est décrit avec précision dans
+−   Do integrity check to verify if the consignment, quantity and status is as             ses documents.
+    declared in the phytosanitary certificate received or to be issued.               −    de faire un contrôle d'intégrité pour vérifier si le lot, la quantité et le statut
+−    Conduct physical examination of the consignment to confirm the identity               sont tels que déclarés dans le certificat phytosanitaire reçu ou à émettre.
+    and integrity.                                                                    −    d’effectuer un examen physique de l'envoi pour confirmer l'identité et
+                                                                                           l'intégrité.
+Action taken after inspection base on results will depend on the extent and nature
+of the problem encountered.                                                           Les mesures prises après inspection sur la base des résultats dépendront de
+                                                                                      l’ampleur et de la nature du problème rencontré.
+                                                                                                                                                                         10
+
+
+Step 4: Consignment Inspection and Sampling
+                                                                                      Etape 4 : Contrôle phytosanitaire et Echantillonnage
+The inspector carries out the identity check. The main objective of inspections of
+plants, plant products and other regulated articles moving in international traffic   L’inspecteur réalise le contrôle d’identité. Le principal objectif des inspections de
+is:                                                                                   végétaux, produits végétaux et autres articles réglementés circulant en trafic
+                                                                                      international est :
+−   to confirm compliance of consignments with imports or exports                     − de vérifier la conformité des envois aux exigences d'importation ou
+    requirements relating to quarantine pests or regulated non-quarantine pests            d'exportation relatives aux organismes de quarantaine ou aux organismes
+−   Verify effectiveness of phytosanitary measures applied to the commodity at             réglementés non de quarantaine
+    a previous time.                                                                  − de vérifier l'efficacité des mesures phytosanitaires appliquées au produit à
+                                                                                           un moment antérieur.
+AT EXPORT: ensure the commodity meets the phytosanitary requirements of
+the importing country before issuing a phytosanitary certificate                      À L'EXPORTATION : vérifier que le produit respecte les exigences phytosanitaires
+                                                                                      du pays importateur avant de délivrer un certificat phytosanitaire
+AT IMPORT: ensure the consignment meets the phytosanitary requirement of
+your country                                                                          À L'IMPORTATION : s’assurer que l'envoi satisfait aux exigences phytosanitaires
+                                                                                      de votre pays.
+Inspection procedures may include the collection of samples for further
+                                                                                      Les procédures d'inspection peuvent inclure la collecte d'échantillons pour des
+laboratory testing and/or for the identification of pests detected during
+                                                                                      tests de laboratoire et/ou pour l'identification des organismes nuisibles détectés
+inspection.
+                                                                                      lors de l'inspection.
+    b. Definition of Lot
+                                                                                          b. Définition du lot
+A number of units of a single commodity and shipment identified by its
+                                                                                      Ensemble d’unités provenant d’une même marchandise et d’un même envoi,
+homogeneity of composition such as:
+                                                                                      identifiable par son homogénéité de composition telle que :
+    −    Origin
+                                                                                          −    Origine
+    −    Grower
+                                                                                          −    Producteur
+    −    Packing facility
+    −    Species                                                                          −    Installation d'emballage
+    −    Variety                                                                          −    Espèces
+    −    Degree of maturity                                                               −    Variété
+    −    Exporter                                                                         −    Degré de maturité
+    −    Area of production                                                               −    Exportateur
+    −    Regulated pests                                                                  −    Zone de production
+    −    Treatment                                                                        −    Organismes nuisibles réglementés
+    −    Type of processing                                                               −    Traitement
+                                                                                                                                                                         11
+
+
+                                                                                          −    Type de préparation / transformation
+    c.   Routine Sampling and Inspection
+                                                                                          c.   Échantillonnage de la marchandise et Inspection de routine
+After all documentary checks, the officer proceeds to do visual examination of
+the consignment or lot. Sampling method used should be consistent with ISPM           Après toutes les vérifications documentaires, l'agent procède à un examen visuel
+31.                                                                                   de la marchandise ou du lot. La méthode d'échantillonnage utilisée doit être
+                                                                                      conforme à la NIMP 31.
+Where a consignment includes more than one lot, the inspection to determine
+compliance may consist of several separate visual examinations and sampling           Lorsqu'un envoi comprend plus d'un lot, l'inspection visant à déterminer la
+each lot separately.                                                                  conformité peut consister en plusieurs examens visuels distincts et en
+                                                                                      échantillonnant chaque lot séparément.
+Phytosanitary control shall determine whether, on the basis of a complete
+examination of one or more representative samples, including packaging and,           Le contrôle phytosanitaire permet « de déterminer si, sur la base d’un examen
+where appropriate, transport vehicles, the consignment, and/or its wooden             complet ou de l’examen d’un ou plusieurs échantillons représentatifs, y compris
+packaging material meet the requirements.                                             les emballages et, le cas échéant, des véhicules de transport, l’envoi, le lot et/ou
+                                                                                      son matériau d’emballage en bois répondent aux exigences»..
+It's about:
+− to carry out an at least visual inspection of plants, plant products or regulated   Il s’agit :
+      articles in order to investigate the possible presence of harmful organisms;    − de réaliser une inspection au moins visuelle des végétaux, produits végétaux
+− to verify the compliance of plants, plant products and regulated articles with            ou des articles réglementés, afin de rechercher la présence éventuelle
+      the requirements of the phytosanitary regulation controllable by simple               d’organismes nuisibles;
+      visual examination (for example, dormancy, the absence of flowers and           − De vérifier la conformité des végétaux et produits végétaux par rapport aux
+      fruits, the absence of leaves and peduncles, presence on the packaging of an          exigences de la réglementation phytosanitaire contrôlable par simple
+      adequate original mark).                                                              examen visuel, (par exemple, la dormance, l'absence de fleurs et de fruits,
+                                                                                            l'absence de feuilles et de pédoncules, présence sur l'emballage d'une
+                                                                                            marque d'origine adéquate).
+The inspection of an entire consignment is often not feasible, the phytosanitary      L'inspection de l'ensemble d'un envoi n'est souvent pas faisable, l'inspection
+inspection is then carried out based on a representative sample of lots covered       phytosanitaire est alors réalisée sur la base d’un échantillon représentatif des lots
+by the same phytosanitary certificate.                                                couverts par un même certificat phytosanitaire.
+
+The visual inspection is to verify compliance with regulations or permit              L’inspection visuelle vise à vérifier la conformité aux réglementations ou aux
+requirement such as:                                                                  exigences en matière d’autorisation, telles que
+    − Treatment                                                                            − Le traitement
+    − Degree of processing                                                                 − Le degré de transformation
+    − Freedom from contaminants                                                            − L’absence de contaminants
+    − Absence of unauthorized pests or plants products
+                                                                                                                                                                         12
+
+
+    −    Origin of consignments or lots.                                                  −    L’absence de parasites ou de produits végétaux non autorisés
+                                                                                          −    L’origine des envois ou des lots.
+For exports, phytosanitary controls may cover inspections in production, storage,
+packaging and processing facilities as well as phytosanitary treatment operations.    Pour les exportations, les contrôles phytosanitaires peuvent porter sur des
+These checks will be carried out according to the phytosanitary requirements of       établissements de production, de stockage, de conditionnement et de
+the importing country’s import permits.                                               transformation, et également sur la supervision des opérations de traitement
+                                                                                      phytosanitaire. Ces contrôles se font en fonction des exigences phytosanitaires du
+                                                                                      pays destinataire établie notamment dans le permis d’importation.
+Any technical and phytosanitary control batches intended for export must be
+registered. The objective is to justify the possible absence of regulated organisms   Tout contrôle technique et phytosanitaire du lot destiné à l’exportation doit être
+in case of interception.                                                              enregistré. L’objectif est de pouvoir apporter des justifications sur l’absence
+                                                                                      éventuelle d’organismes réglementés notamment en cas d’interception.
+The inspection and certification files will consist of documents needed to ensure
+the traceability of all operations that were performed during the inspection          Le dossier d’inspection et de certification est constitué de plusieurs documents
+process. These documents include:                                                     permettant d'assurer la traçabilité de l'ensemble des opérations qui ont été
+    − the application for a phytosanitary certificate,                                effectuées au cours de l'inspection. Ces documents sont entre autres :
+    − the inspection report with the statement of conformity or non-                      − la demande de certificat phytosanitaire,
+         conformity signed by the inspector and, where applicable:
+                                                                                          − le rapport d'inspection avec la mention conforme ou non conforme
+    − Copy of sampling sheets
+                                                                                               signée par l’inspecteur et le cas échéant :
+    − Copy of the import permit,
+                                                                                          − les fiches de prélèvements d’échantillons
+    − Laboratory analysis reports,
+                                                                                          − une copie du permis d'importation,
+    − Certificates of treatment,
+                                                                                          − des rapports d'analyses de laboratoire,
+    − And other relevant documentations
+                                                                                          − des attestations de traitement,
+    − Records of all laboratory reports shall be kept for reference purposes at           − Autres documents important
+         the point of exit and at the regional or national headquarters.                  − Les mémoires de tous les rapports de laboratoire doivent être conservés
+         (Electronic and manual files records)                                                 à des fins de référence au point de sortie et au siège régional ou national.
+                                                                                               (Dossiers de fichiers électroniques et manuels)
+
+                                                                                          d. Méthode d’échantillonnage
+    d. Sampling Plan
+
+Sampling of a consignment is the random selection of a representative of the          L'échantillonnage d'un envoi est la sélection aléatoire d'une partie suffisamment
+whole consignment or lot in a particular bill of lading:                              représentative de la totalité de l’envoi d’un lot :
+
+    −    Samples to inspect should be sufficiently representative of the overall          −    Les échantillons à inspecter doivent être suffisamment représentatifs de
+         lot.                                                                                  l'ensemble du lot.
+                                                                                                                                                                       13
+
+
+    −    Where the consignment consists of more than one lot, the inspection            −    Lorsque l’envoi comprend plusieurs lots, l'inspection portera sur
+         will consist of several visual examinations.                                        plusieurs examens visuels.
+    −    Where multiple commodities are covered in a single consignment each            −    Lorsque plusieurs produits sont couverts dans un même envoi, chaque
+         commodity is considered separately.                                                 produit est considéré séparément.
+    −    In case a lot is contaminated, it is rejected and the remaining lots           −    Si un lot est contaminé, il est rejeté et les lots restants sont inspectés
+         vigorously inspected.                                                               vigoureusement.
+    −    If there is no information about the part of consignment which has a           −    S'il n'existe aucune information sur la partie de l'envoi présentant la plus
+         higher probability to harbor pests, statistical methodology is used.                grande probabilité d'abriter des organismes nuisibles, la méthodologie
+                                                                                             statistique est utilisée.
+
+    e.   Sampling methodology based on high or low risk of the commodity.               e.   Méthode d'échantillonnage basée sur le risque élevé ou faible du
+                                                                                             produit.
+    Use ISPM 32 as the means for placing commodities into general risk                  Utiliser la NIMP 32 comme moyen pour classer les produits dans des
+    categories.                                                                         catégories générales de risque.
+    Categorization of plant commodities according to their pest risk:                   Catégorisation des denrées végétales selon leur risque phytosanitaire :
+
+         −   Category 1 (no risk) – fully processed plant materials that, in most       −    Catégorie 1 (aucun risque) – matières végétales entièrement
+             situations, should not be regulated                                             transformées qui, dans la plupart des cas, ne devraient pas être
+         −   Category 2 (low risk) – plant materials that have undergone some                réglementées ;
+             level of processing, but remain capable of being infested by               −    Catégorie 2 (faible risque) – matières végétales qui ont subi une
+             harmful pests                                                                   certaine transformation, mais qui restent susceptibles d'être infestées
+         −   Category 3 (moderate risk) – unprocessed plant materials that may               par des organismes nuisibles ;
+             be consumed or processed further (fruits, vegetables, cut flowers)         −    Catégorie 3 (risque moyen) – matières végétales non transformées
+         −   Category 4 (high risk) – unprocessed plant materials intended for               pouvant être consommées ou transformées ultérieurement (fruits,
+             planting (plants, seeds, etc.)                                                  légumes, fleurs coupées) ;
+                                                                                        −    Catégorie 4 (risque élévé) – matériels végétaux non transformés
+                                                                                             destinés à la plantation (végétaux, semences, etc.)
+
+
+
+    f.   The size of the samples to inspect                                             f.   La taille des échantillons à inspecter
+
+The calculation of the sample size for the visual inspection is defined in the      Le calcul de la taille des échantillons pour l’inspection visuelle est défini dans le
+sampling plan according to ISPM 31.                                                 plan d’échantillonnage selon la NIMP 31.
+
+For fruits, vegetables and cut flowers:                                             Pour les fruits, légumes et les fleurs coupées :
+              At 1% contamination detectable level with 95% confidence level.                    Taux de contamination détectable 1 %, intervalle de confiance 95 %,
+                                                                                                                                                                                                         14
+
+
+ No. of units in the                                                                     ≤14        Nb. d’unités                                                                              ≤14
+                        ≤200       ≤500      ≤1000      ≤5000     ≤7000     ≤10 000                                            ≤ 200    ≤500     ≤1000      ≤5000     ≤7000      ≤10 000
+ lot                                                                                     000        dans le lot                                                                               000
+ No. of units to                                                                                    Nb. d’unités à            Tout le
+                           all      225       257         289       291       294        298                                             225      257         289       291        294        298
+ inspect (sample)                                                                                   inspecter (échantillon)     lot
+
+For plant for plantating except seeds (If the lot is homogenous):                                  Pour les végétaux à planter à l’exception des semences (En lot homogène) :
+                 At 0.5% contamination detectable level with 99% confidence level                                 Taux de contamination détectable 0,5 % ; intervalle de confiance 99 %
+
+ No. of units in the
+                          ≤ 200    ≤500      ≤1000      ≤5000     ≤7000     ≤10 000      ≤14 000    Nbr d’unités
+ lot                                                                                                                          ≤ 200     ≤500     ≤1000       ≤5000     ≤7000     ≤10 000      ≤14 000
+                                                                                                    dans le lot
+ No. of units to
+                            all     483       745        1200      1250      1290         1310      Nbre d’unités à           Tout le
+ inspect (sample)                                                                                                                        483      745         1200      1250       1290           1310
+                                                                                                    inspecter (échantillon)     lot
+
+When a lot is contained in multiple containers (bags, parcels, boxes...) the                       Lorsqu’un lot est contenu dans de multiples contenants (sacs, colis, caisses,..)
+inspection must be carried out on a sample taken from a minimum of 5                               l’inspection devra être réalisée sur un échantillon pris sur un minimum de 5
+"containers".                                                                                      «contenants».
+For products in bulk:                                                                              Pour produits en vrac:
+                                                                                                   Le régime d'échantillonnage pour les céréales en vrac ou légumineuses et autres
+The sampling regime for bulk grain ou pulses and other grain seeds for                             graines de céréales destinées à la consummation ou à usage industriel sera le
+consumption ou industrial use will be as follows:                                                  suivant:
+
+ Size                                               No. of primary samples to be drawn              Taille                                              Nbr d’échantillons primaires à prélever
+ Up to 300,000 kg                                   30                                              Jusqu'à 300 000 kg                                  30
+ 300,001 – 1,000,000 kg                             50                                              300 001 – 1 000 000 kg                              50
+ 1,000,001 and above                                100                                             ≥ 1 000 001                                         100
+
+Similarly, for large batches (transported in several containers), the inspection will              De même, pour les lots de grande taille (transportés dans plusieurs conteneurs),
+be carried out on 1/3 of the containers. The inspector will randomly draw the                      l’inspection sera réalisée sur 1/3 des conteneurs. L’inspecteur effectuera un
+containers to be inspected.                                                                        tirage aléatoire des conteneurs à inspecter.
+
+The sample to be inspected will then be made on 2 containers taken from each                       L’échantillon à inspecter sera alors réalisé sur 2 contenants prélevés dans chaque
+selected container, insofar as the accumulation of containers taken and inspected                  conteneur sélectionné, dans la mesure ou le cumul des contenants prélevé et à
+remains greater than or equal to 5.                                                                inspecter reste supérieur ou égal à 5.
+
+
+Note:                                                                                              NB :
+                                                                                                                                                                     15
+
+
+If an NPPO lacks the resources to provide the inspection levels described above,    Si une ONPV n'a pas les ressources nécessaires pour appliquer le plan
+the NPPO should select from ISPM 31 the level of inspection it can provide,         d’échantillonnage ci-dessus décrit, l'ONPV devra choisir dans la NIMP 31 le
+ensuring that the samples drawn and inspected are representative of the lot.        niveau d'inspection qu'elle peut fournir et s'assurer que les échantillons
+                                                                                    prélevés et inspectés sont représentatifs du lot.
+
+    g.   Sample collection principle for Laboratory analyzes                            g.   Principe de prélèvements d’échantillon pour analyses de Labo
+
+The control may lead to take samples for analysis, in particular to confirm the     Le contrôle peut conduire à réaliser des prélèvements d’échantillons notamment
+presence of a pest, or to implement a monitoring or control plan established at     pour confirmer la présence d’un organisme nuisible, ou pour mettre en
+national level                                                                      application un plan de surveillance ou de contrôle établi au niveau national.
+
+    h. Physical Examination                                                             h. Inspection physique
+
+−   Random sampling of consignment is done for examination.                         - Un échantillonnage aléatoire de l'envoi est effectué pour examen.
+−   Samples are examined with inspection equipment such as hand lens, knife,        - Les échantillons sont examinés à l’aide d’équipements tels que la loupe, un
+    torchlight, probes (grains) for detection of any presence of insect pests and   couteau, une torche, des sondes (grains) pour détecter la présence éventuelle
+    / or diseases.                                                                  d’insectes nuisibles et / ou de maladies.
+
+    Note:                                                                           NB :
+    Include steps and procedures for collecting, documenting and forwarding         inclure des étapes et des procédures pour la collecte, la documentation et
+    an intercepted pest to an entomology laboratory, or other laboratory            l'envoi d'un organisme nuisible intercepté à un laboratoire d'entomologie ou un
+    (for instance, plant disease, nematode, or weed seed), refer to ISPM 27         autre laboratoire (par exemple, une maladie végétale, un nématode ou une
+    (diagnostic protocols for regulated pest)                                       graine de mauvaise herbe), se référer à la NIMP 27, relative au protocole du
+                                                                                    diagnostic des organismes nuisibles réglementés.
+
+    Handling of suspected commodities:                                              - Manipulation des produits suspects :
+−   Harmful organisms if detected shall be collected and sent to the                Les organismes nuisibles, s'ils sont détectés, doivent être collectés et envoyés au
+    entomology lab for further examination and identification.                      laboratoire pour un examen et une identification plus poussée.
+
+
+
+    i.   Outcome of Inspection                                                          i.   Résultat de L'inspection
+
+When inspections are completed, the NPPO must properly store and maintain           Lorsque les inspections sont terminées, l’ONPV doit correctement enregistrer et
+documents, samples, and specimen to:                                                conserver les documents, échantillons et spécimens pour :
+− have the capacity to track-back to the consignment or lot when needed,                − avoir la capacité de remonter à l'envoi ou au lot si nécessaire,
+− facilitate the review of inspection results, if necessary, and                        − Faciliter la révision des résultats de l'inspection, si nécessaire et
+                                                                                                                                                                    16
+
+
+−   in case of repeated non-compliance, to intensify and increase the frequency       −   En cas de non-conformité répétée, augmenter l'intensité et la fréquence
+    of inspections for consignments or lots from the non-compliance source.               des inspections pour les envois ou lots provenant de la source
+                                                                                          incriminée.
+
+                     ……………………………………………………..                                                             ……………………………………………………..
+                         ………………………………                                                                       ………………………………
+                            ………………                                                                             ………………
+
+
+
+
+                              Decisions after Inspection                                                        Décisions après L'inspection
+
+Decisions taken after inspection are in compliance with ISPM 20, section 5.1.6    Les décisions prises après l'inspection sont conformes avec la NIMP 20, section
+Depending on the outcome of the inspection you issue an inspection report that    5.1.6. Au terme de l'inspection, vous dressez un procès-verbal d'inspection
+includes one or more of the following:                                            phytosanitaire qui inclut l’une des décisions ci-dessous :
+     − Authorise the Immediate release of the consignment to the importer              −   Procéder à la remise immédiate de la marchandise à l'importateur
+     − Hold, Treat and release the consignment                                         −   Retenir, Traiter et Libérer le lot
+     − Reject the consignment                                                          −   Refuser l'envoi
+     − Re - ship to the country of origin at the expense of the importer               −   Réexpédier vers le pays d'origine aux frais de l'importateur
+     − Destroy the consignment at the expense of the import                            −   Détruire l'envoi aux frais de l'importateur
+     − To Quarantine the consignment.                                                  −   Mettre le lot en quarantaine
+                                                                                                                                                     17
+
+
+                               For Imports                                                            Pour l’Importation
+
+       IF                   AND                        THEN                     SI                     ET                       ALORS
+A Commodity is     All Import                Release the consignment      Une             Toutes les exigences       Libérer la Marchandise
+presented at the   Requirements met                                       Marchandise     d'importation respectées
+entry points for   And                                                    est présentée   Et
+importation        No Quarantine and / or                                 au poste        Aucun organisme de
+                   regulated pests Found                                  d’entrée pour   quarantaine et / ou
+                   All documents verified    Reject the consignment       importation     règlementé trouvé
+                   and are correct.          And                                          Tous les documents sont    Refuser l’entrée de la
+                   But                       a. Destroy the shipment at                   vérifiés et conformes      marchandise.
+                   If Quarantine pests       the expense of the                           Mais                       Et
+                   found                     importer                                     Si Organismes de           a. Organiser la destruction
+                                                                                          quarantaine trouvés        de l’envoi aux frais de
+                                             b. If destruction                                                       l’exportateur.
+                                             impossible, then reship
+                                             the consignment to                                                      b. Si destruction impossible,
+                                             exporting country at the                                                réexpédier la marchandise,
+                                             expenses of the importer                                                vers le pays d'origine aux
+                                                                                                                     frais de l'importateur
+                                             c. Notify the exporting
+                                             country regarding the                                                   c. Rédiger une notification
+                                             non-compliance.                                                         d’interception au pays
+                                                                                                                     exportateur
+                                                                                                                     18
+
+
+Fake and / or illegible   Refuse Entry                  Des documents non           Refuser la marchandise
+documents detected        Or                            conformes sont trouvés      Ou
+during verification       - Hold the shipment           lors de la vérification     - Détenir la marchandise,
+                          - Verify with exporting                                   - Vérifier l’origine auprès du
+                          country                                                   pays exportateur
+                          - Inspect the shipment and                                - Inspecter la marchandise
+                          if no quarantine pest                                     et si aucun organisme de
+                          found                                                     quarantaine trouvé
+                          - Then Release the                                        - Autoriser l’entrée si
+                          shipment if valid                                         documents valides produits.
+                          documents are presented.                                  − Si aucun document
+                          − if no valid document                                          valide produit, alors
+                               is presented, then                                         appliquer les
+                               take regulatory                                            dispositions
+                               actions based on                                           règlementaires en
+                               country law.                                               vigueur dans le pays.
+
+                                                        Absence de :                Refuser l'entrée
+−   No Import Permit      Refuse Entry
+                                                        − Permis                    Et
+−   No Phytosanitary      And
+                                                            d'importation           Appliquer les dispositions
+    Certificate           Take regulatory actions
+                                                        − Certificat                règlementaires en vigueur
+−   No Treatment          based on country law.
+                                                            phytosanitaire          dans le pays
+    Certificate                                         − Certificat de
+                                                            traitement
+Phytosanitary              Refuse Entry. Or             Certificat phytosanitaire    Refuser la marchandise
+Certificate Not Signed    - Hold the shipment           non signé par l’autorité    Ou
+by Competent              - Verify with exporting       compétente                  - Détenir la marchandise,
+Authority                 country                                                   - Vérifier l’origine auprès du
+                          - Inspect the shipment and                                pays exportateur
+                          if no quarantine pest                                     - Inspecter la marchandise
+                          found                                                     et si aucun organisme de
+                          - Then Release the                                        quarantaine trouvé
+                          shipment if valid                                         - Autoriser l’entrée si
+                          Phytosantary certificate is                               Certificat phytosanitaire
+                          presented and take                                        valide produit et Pénaliser
+                          regulatory actions based                                  l'importateur en fonction de
+                          on country law.                                           la législation du pays
+                                                                                                                    19
+
+
+                          - Notify the exporting                                   - Rédiger une notification
+                          country regarding the                                    d’interception au pays
+                          non-compliance                                           exportateur
+Conflicting figures and    Refuse Entry                  Contenu et déclarations   Refuser l'entrée
+statements on a           Or                             contradictoires sur un    Ou
+consignment               - Hold the shipment            envoi
+                          - Verify the proper                                      - Détenir la marchandise,
+                          designation of the                                       - Vérifier les désignations
+                          shipment and its origin                                  réelles de la totalité de la
+                          with the exporting country                               marchandise et son origine
+                          - Inspect the shipment and                               auprès du pays exportateur
+                          if no quarantine pest                                    - Inspecter la marchandise
+                          found                                                    et si aucun organisme de
+                          - Then Release the                                       quarantaine trouvé
+                          shipment if valid                                        - Autoriser l’entrée si
+                          documents are presented                                  documents valides produits
+                          and Penalize importer                                    et Pénaliser l'importateur
+                          based on country law.                                    en fonction de la législation.
+                          - Notify the exporting                                   - Rédiger une notification
+                          country regarding the                                    d’interception au pays
+                          non-compliance                                           exportateur
+
+
+All documents verified.   Hold, Treat at the expense     Tous les documents        Détenir, traiter aux frais de
+And                       of the importer.               vérifiés. Et              l’importateur. Et
+Non-quarantine            And                            Organismes réglementés    Libérer la marchandise
+regulated pests found     Release the shipment           non de quarantaine        Rédiger une notification
+                          Notify the interception        trouvés                   d’interception
+                          If no treatment is possible,                             Si le traitement est
+                          then reship or destroy the                               impossible, alors retourner
+                          consignment.                                             ou détruire la marchandise
+                                                                                                                                                                     20
+
+
+
+
+                                  For exports                                                                      Pour l’exportation
+
+When an import permit is issued by the country of destination, its copy and, if     Quand un permis d'importation est délivré par le pays destinataire, sa copie et si
+necessary, its unofficial translation must be provided to the National Plant        besoin sa traduction non officielle doit être fournie à l’organisation nationale de
+Protection Organization (NPPO).                                                     la protection des végétaux (ONPV).
+
+When a treatment is required by the country of destination, a certificate of        Quand un traitement est exigé par le pays destinataire, une attestation de
+treatment or fumigation is systematically attached. Documentary facilitation        traitement ou de fumigation est systématiquement jointe. Il doit être mis
+must be terminated immediately if it turns out that one of the obligations listed   immédiatement fin à la facilitation documentaire s'il s'avère qu'une des
+above has not been respected by the exporting company.                              obligations listée ci-dessus n'a pas été respectée par l'entreprise.
+
+
+          IF                         AND                         THEN                      SI                          ET                            ALORS
+ A Commodity is       Exporter Registered With                                       Une              Exportateur enregistré auprès
+ presented at the     NPPO                                                           Marchandise      de l'ONPV
+ exit point for       Importing Country’s                                            est présentée    Exigences du pays importateur
+ export               Requirement Met, example:                                      au poste         remplies, exemple :
+                      - Additional Declaration                                       d’entrée pour    - Déclaration supplémentaire
+                      - Import Permit                                                exportation      - Permis d'importation
+                      - Bill Of Lading                                                                - Connaissement
+                                                        Issue the
+                      - Treatment Certificate                                                         - Certificat de traitement          Etablir le Certificat
+                                                        Phytosanitary
+                      - Invoices                                                                      - Feuille de route                  Phytosanitaire
+                                                        Certificate
+                      - Way bills                                                                     - Factures
+                      - Traceability Codes,                                                           - Codes de traçabilité
+                      - …etc..                                                                        ….etc
+                      Inspection Conducted,                                                           Inspection effectuée,
+                      And                                                                             Et
+                      No Pest Found                                                                   Aucun organisme nuisible
+                                                                                                      trouvé
+                      All Importing Country’s           Reject Consignment                            Exigences du pays importateur       Rejeter l’envoi
+                      Requirements NOT Met.                                                           NON remplies.
+                      A Pest is detected during         Treat if possible or                          Organisme nuisible trouvé           Traiter si possible ou
+                      Inspection                        Reject Consignment                            après Inspection                    Rejeter l’envoi
+                                                                                                                                                                                                            21
+
+
+                                                                      - Hold the shipment
+                                                                      and ask for the                                                                                     Retenir l’envoi et
+                                                                      regularization of the                                                                               demander la
+                                                                      necessary                                                                                           régularisation des
+                                                                      documentation if                                                                                    documents nécessaires, si
+                           Content and declaration of                                                                         Contenu et déclarations
+                                                                      possible                                                                                            possible
+                           the Consignment Do Not                                                                             contradictoires sur un envoi
+                                                                                                                                                                          Et
+                           Match
+                                                                      If not possible, reject                                                                             Si impossible, Rejeter
+                                                                      the consignment and                                                                                 l’envoi et Pénaliser
+                                                                      penalize exporter                                                                                   l'exportateur en fonction
+                                                                      based on country                                                                                    de la législation du pays
+                                                                      law/exporter                                            Pas de formulaire de
+                           No Declaration Form                                                                                déclaration
+                           No Treatment Certificate                                                                           Pas de Certificat de traitement Rejeter l’envoi
+                                                     Reject Consignment
+                           No Way Bills                                                                                       Pas de Feuille de route
+                           No Traceability Codes etc                                                                          Aucun code de traçabilité, etc.
+                           ……………………………………………………..                                                                                 ……………………………………………………..
+                                  ………………………………                                                                                            ………………………………
+                                        ………………                                                                                                  ………………
+
+
+
+                                             GLOSARY
+                                                                                                                                                     GLOSSAIRE
+CONSIGNMENT - A quantity of plants, plant products and/or other articles being moved from one
+country to another and covered, when required, by a single phytosanitary certificate.                   ENVOI - Quantité de végétaux, produits végétaux et / ou autres articles transférés d'un pays à l'autre
+                                                                                                        et couverts, le cas échéant, par un seul certificat phytosanitaire.
+COMPLIANCE - Official procedure used to verify that a consignment complies with stated
+phytosanitary requirements.                                                                             CONFORMITÉ - Procédure officielle utilisée pour vérifier qu'un envoi est conforme aux exigences
+                                                                                                        phytosanitaires énoncées.
+IMPORT REQUIREMENT - Specific phytosanitary measures established by an importing country
+concerning consignments moving into that country.                                                       EXIGENCES D'IMPORTATION - Mesures phytosanitaires spécifiques établies par un pays importateur
+                                                                                                        pour les envois entrant dans ce pays.
+INTEGRITY CHECKS - Composition of a consignment as described by its phytosanitary certificate or
+other officially acceptable document, maintained without loss, addition or substitution,                VÉRIFICATION D’INTÉGRITÉ – Vérification de la Composition d’un envoi telle que décrite dans son
+                                                                                                        certificat phytosanitaire ou un autre document officiellement acceptable, conservée sans perte,
+                                                                                                        addition ou substitution,
+INSPECTOR - Person authorized by a National Plant Protection Organization to discharge its functions.
+                                                                                                        INSPECTEUR - Personne autorisée par une organisation nationale de la protection des végétaux à
+                                                                                                        exercer ses fonctions
+                                                                                                                                                                                                                 22
+
+LOT - A number of units of a single commodity, identifiable by its homogeneity of composition, origin     LOT - Un nombre d'unités d'un même produit, identifiables par son homogénéité de composition,
+etc., and forming part of a consignment                                                                   d'origine, etc., et faisant partie d'un envoi
+
+PHYTOSANITARY CERTIFICATE - Certificate patterned after the model certificates of the IPPC.               CERTIFICAT PHYTOSANITAIRE - Certificat conforme aux modèles de certificat de la CIPV
+
+REGULATED ARTICLE - Any plant, plant product, storage place, packaging, conveyance, container, soil       ARTICLE RÉGLEMENTÉ - Tout végétal, produit végétal, lieu de stockage, emballage, moyen de
+and any other organism, object or material capable of harbouring or spreading pests, deemed to            transport, contenant, sol et tout autre organisme, objet ou matériel susceptible d’héberger ou de
+require phytosanitary measures, particularly where international transportation is involved.              propager des parasites, réputé nécessiter des mesures phytosanitaires, en particulier lorsque le
+                                                                                                          transport international est impliqué.
+REGULATED PEST - A quarantine pest or a regulated non-quarantine pest
+                                                                                                          ORGANISME RÉGLEMENTÉ - Organisme de quarantaine ou organisme réglementé non de quarantaine
+REGULATED NON QUARANTINE PEST - A non-quarantine pest whose presence in plants for planting
+affects the intended use of those plants with an economically unacceptable impact and which is            ORGANISME NON QUARANTAINE RÉGLEMENTÉ - Organisme nuisible non de quarantaine dont la
+therefore regulated within the territory of the importing contracting party.                              présence dans les végétaux destinés à la plantation a une incidence sur l'utilisation prévue de ces
+                                                                                                          végétaux ayant un impact économique inacceptable et qui est donc réglementée sur le territoire de la
+                                                                                                          partie contractante importatrice.
+
+
+QUARANTINE PEST:                                                                                          ORGANISME DE QUARANTAINE :
+
+TREATMENT: Official procedure for the killing, inactivation or removal of pests, or for rendering pests   TRAITEMENT : Procédure officielle pour la mise à mort, l'inactivation ou l'élimination d'organismes
+infertile or for devitalization.                                                                          nuisibles, ou pour rendre les organismes nuisibles infertiles ou pour procéder à une dévitalisation.
+
+VISUAL EXAMINATION - The physical examination of plants, plant products, or other regulated               EXAMEN VISUEL - L’examen physique de végétaux, produits végétaux ou autres articles réglementés,
+articles using the unaided eye, lens, stereoscope or microscope to detect pests or contaminants           à l’œil nu, à la loupe, au stéréoscope ou au microscope, afin de détecter les nuisibles ou les
+without testing or processing.                                                                            contaminants sans test ni traitement.
+
+PLANTS :                                                                                                  VÉGÉTAUX :
+    −      seeds in the botanical sense of the term, other than seeds not intended for planting;              −   les semences au sens botanique du terme, autres que les graines non destinées à la
+    −      the fruits in the botanical sense of the term, vegetables                                              plantation;
+    −      tubers, corms, bulbs, rhizomes, roots, rootstocks                                                  −   les fruits au sens botanique du terme, les légumes
+    −      shoots, stems, stolons,                                                                            −   les tubercules, les cormes, les bulbes, les rhizomes, les racines, les porte-greffes
+    −      branches with or without foliage; cut trees with foliage; leaves, foliage                          −   les pousses, les tiges, les stolons, les coulants,
+    −      plant tissue cultures, including cell cultures, germplasm, meristems, chimeric clones,
+                                                                                                              −   les branches avec ou sans feuillage; les arbres coupés avec feuillage; les feuilles, le feuillage
+           micro propagative material
+                                                                                                              −   les cultures de tissus végétaux, dont les cultures cellulaires, le germoplasme, les
+     −     Live pollen and spores
+                                                                                                                  méristèmes, les clones chimériques, le matériel de micro-propagation
+     −     the buds, the cuttings, the woods of graft, the grafts, the scions
+                                                                                                              −   Le pollen vivant et les spores
+                                                                                                              −   les bourgeons, les boutures, les bois de greffe, les greffons, les scions
+PLANT PRODUCTS:
+Non-manufactured products of plant origin as well as manufactured products which, given their             PRODUITS VÉGÉTAUX :
+nature or that of their processing, may constitute a risk of dissemination of quarantine pests.           Les produits non manufacturés d'origine végétale ainsi que les produits manufacturés qui, étant donné
+                                                                                                          leur nature ou celle de leur transformation, peuvent constituer un risque de dissémination des
+                                                                                                          organismes de quarantaine.
+
+OTHER REGULATED ARTICLES:                                                                                 AUTRES ARTICLES RÉGLEMENTÉS :
+                                                                                                                                                                                                                  23
+
+All objects or materials, other than plants or plant products, that can carry or spread pests, including   Tous les objets ou matériels, autres que les végétaux ou les produits végétaux, susceptibles de porter
+soil or growing media, machinery and vehicles utilized for agriculture or forestry, imported from          ou de disséminer des organismes nuisibles, dont le sol et les milieux de culture, les engins et véhicules
+third countries.                                                                                           utilisés à des fins agricoles ou forestières importés des pays tiers.
+
+                            ……………………………………………………..                                                                                     ……………………………………………………..
+                                ………………………………                                                                                               ………………………………
+                                   ………………                                                                                                     ………………
+
+
+
+
+                                            English Edition
+                                                                                                                                                      Edition française
+ Coordinated by:                                    With the contribution of:
+ Mr Augustus Fahnbuleh (Liberia)                    Mrs Mariama S. Barrow (The Gambia)                      Coordonnée par :                                   Avec les contributions de :
+ Mr Raymond Etu (Ghana)                             Mr. Ademu Aminu Ocheje (Nigeria)                        Mme Yao Amenan Angèle (Cote d’Ivoire)              Mr Laurent Kounoutchi (Togo)
+                                                    Mr Brima Conteh (Sierra Leone)                          Mlle Safiétou Sabaly (Sénégal)                     Mr Louis Antonio Tavares (Guinea Bissau)
+ Finalized by:                                                                                                                                                 Mme Leko Hadiza (Niger)
+ Dr Gbemenou Joselin Benoit Gnonlonfin, PhD                                                                 Finalisée par :                                    Mr Karifa Yattara (Guinée)
+ (SPS Lead, ECOWAS)                                                                                         Dr Gbemenou Joselin Benoit Gnonlonfin, PhD         Mr Victor Gbogbo (Bénin)
+ Dr Cheikh Sadibou Fall (Consultant University                                                              (SPS Lead, CEDEAO)                                 Mr Pascal Damiba (Burkina Faso)
+ of Missouri)                                                                                               Dr Cheikh Sadibou Fall (Consultant University      Mr Carlos Ramon Dias (Cap Vert)
+                                                                                                            of Missouri)                                       Mr Lacine Doumbia (Mali)
+                                                                                                       24
+
+
+APPENDIX 1 / ANNEXE 1
+
+ECOWAS-UEMOA harmonized phytosanitary certificate / Certificat phytosanitaire harmonisé CEDEAO-UEMOA
+                                                                                                                                           25
+
+
+  APPENDIX 2A / ANNEXE 2A
+
+  COUNTRY
+ MINISTRY OF
+AGRICULTURE
+    NPPO                                 Phytosanitary Inspection Report                                           I.R.-No: …….…………
+                                                                        Import                        Inspection Date: ……..../....……/………..
+                                                                        Export
+                                                                        In Transit
+  A.      Phytosanitary Inspector & Border Post Identification
+               Phytosanitary Inspector Name                             Importation           Border Post
+
+  B.      Identification of the Shipment
+               Country of Origin:                                                             Transport Mode
+               Country of Destination:                                                      Sea            Vessel name
+               Importer:                                                                    Air            Flight No.
+               Exporter:                                                                    Road           Vehicle No.
+                                                                                            Railway        Train No.
+                Description of the shipment
+                                     Packaging                            Product Name
+               Sea Container No: ………………. In Cartons  In Bags            Botanical name
+                In Bulk         Others:……………………..…………………                Nb of Packages                        Total Weight
+
+
+  C.      Documentation Check
+
+               Certificate of Origin……….…         Missing  Provided           No : ………………………&  Valid             False
+               Import Permit…………………..  Missing              Provided          No : ……………………… &  Valid            False
+               Certificate of Treatment…..        Missing  Provided           No : ……………………… &  Valid            False
+                                                                                           Chemical:
+
+
+               Phytosanitary Certificate          Missing  Provided           No : …………… &  Valid         False
+               Seed Health Test                   Missing  Provided           No : …………… &  Valid         False
+               Other documents :…………………………………………………………………………………………………………………
+
+  D.      Phytosanitary Inspection
+
+                Package :          Valid         Yes       No         Findings:
+                Commodity :        Valid         Yes       No
+
+  −       Statut of the commodity after visual inspection
+
+                Compliant           Non-Compliant
+                Not Infested        Infested              Level of Infestation:  High                Average              Low
+
+  −       Pest Identification
+               Sampling      Yes             Sampling Date : ……./……/…...   Sample type: ………………………… Quantity:……….………
+                             No              Sample Coding: …………………………………Destination (Laboratoty): …………………..…
+                                              Shipping Date to Lab.:……./……/……..Tests requested:………………………………………………
+                                              Pest (s) identified:…………………………..……………….…….…………… Date : ……./……/…...
+
+  E.      Decision-Making
+
+        Free Release Date: ……./……/…...  Phytosanitary Certificate issued. Phytosanitary Certificate No: ………………
+        Detained     Reason (s) :…………………………………………………………………………….….…Date: ……./……/…....
+        Treated      Chemical (s): ….…..….….…..….….………………………………………….……………Date: ……./……/…...
+        Seised        Reason (s):…………………………………………………………… …………….…..…Date: ……./……/……
+        Rejected     Reason (s):……………………………………………..……… ………… ………….….…. Date: ……./……/….
+        Destroyed    Méthode : .….……..……………………………………………………………………… Date: ……./……/……
+
+  F.      Attachements
+          -
+          -
+          -
+                                                                                                                               Signature
+          -
+                                                                                                                                                      26
+
+
+    APPENDIX 2B / ANNEXE 2B
+
+
+     PAYS
+ MINISTERE DE
+L’AGRICULTURE                           Rapport d’Inspection Phytosanitaire                                                 R.I.-No: …….…………
+     ONPV
+                                                                        Importation               Date de l’Inspection: ……..../....……/………..
+                                                                        Exportation
+                                                                        En Transit
+    F.      Identification de l’Inspecteur & Poste Frontière
+                 Nom de l’Inspecteur                                    Importation       Poste Frontière
+
+    G.      Identification de la Marchandise
+                 Pays d’Origine                                                                   Mode de Transport
+                 Pays de Destination                                                           Mer           Bateau
+                 Importateur                                                                   Air           No. du Vol
+                 Exportateur                                                                   Route         No. Voiture
+                                                                                               Rail          No. du Train
+                  Description de la Marchandise
+                               Présentation / Emballage                 Nature
+                 No. Conteneur : ……… En Cartons  En Sacs              Nom Botanique
+                  En Vrac         Autres :…………………………                  Nbr. de Colis                                       Poids Total
+
+
+    H.      Examen de la Documentation
+
+                 Certificat d’Origine                         Absent             Présent No :………………  Valide                                  Faux
+                 Permit d’Importation                         Absent             Présent No :………………  Valide                                  Faux
+                 Certificat de Traitement Phytosanitaire      Absent             Présent No :………………  Valide                                  Faux
+                                                                                               Produit chimique utilisé :
+
+
+                 Certificat Phytosanitaire                    Absent             Présent No :………………  Valide                                  Faux
+                 Test de Santé des Semences                   Absent             Présent No :………………  Valide                                  Faux
+                 Autres documents :……………………………………………………………………………………………………………………
+
+    I.      Inspection Physique                            Vérification de l’Identité et de l’Intégrité de la Marchandise
+
+                  Emballages :          Conforme  Oui     Non         Constats :
+                  Produits :            Conforme  Oui     Non
+
+    −       Etat de la Marchandise
+
+                  Conforme                        Non Conforme
+                  Non Infestée                    Infestée                     Niveau d’Infestation :  Elevé                 Moyen          
+                 Faible
+
+    −       Identification des nuisibles
+                 Prélèvement       Oui         Date de prélèvement : ……./……/…...   Type: …………………………… Quantité:……………
+                 d’échantillons    Non         Code de l’échanitllon : …………………… Destination (Labo.): ……………………………..……..…
+                                                Date d’envoi au Labo :……./……/…….. Tests demandés : …………………………………………
+                                                Nuisible (s) identifiée (s) :………………………………………….…………… Date : ……./……/…...
+
+    J.      Issue de l’Inspection / Décision Prise
+
+          Autorisation Date: ……./……/…...  Certificat phytosanitaire délivré……….No. du Certificat phytosanitaire : ……………
+          Détention    Motif (s) :……………………………………………………………………………………………………………………………….…Date: ……./……/…....
+          Saisie       Motif (s) :……… ………………………………………………………………………………………….………………………….…Date: ……./……/….…
+          Traitement Produit (s) utilisé (s) : ….….….….….….…… ………………………………………………………………………………… Date: ……./……/…....
+          Refus       Motif (s) :……………………………………………………… ………………………………………….……………………………. Date: ……./……/….
+          Destruction Méthode : .….……..……………… ………………………………………………………………………….….……………………. Date:
+         ……./……/…….
+
+    G. Listes des pièces attachées
+            -
+            -
+            -                                                                                                                             Signature
+            -
+

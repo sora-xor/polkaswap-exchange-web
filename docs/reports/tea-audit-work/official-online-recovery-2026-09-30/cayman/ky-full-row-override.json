@@ -1,0 +1,50 @@
+{
+  "code": "KY",
+  "name": "Cayman Islands",
+  "status": "conditional",
+  "rule": "As of 30 September 2026, DoA explicitly allows commercially packaged processed tea, subject to declaration to Customs and agricultural arrival inspection. The newly published Plant Protection Act 2023 and Regulations 2026 start on 1 November 2026, not their 21 September publication date. Review the processed-tea position under the incoming regime before relying on this conclusion for imports on or after 1 November.",
+  "personalMailApplicability": "DoA places its processed-tea answer under general Import/Export, separately from its expressly baggage-only concessions. Applying this general commodity guidance to a paid private postal packet is a stated scope inference; it gives no baggage limitation or separate permit/certificate requirement for packaged processed tea. The incoming Act is also not restricted to commercial imports, but is not yet operative on the review date.",
+  "quantityLimit": null,
+  "authority": "Cayman Islands Department of Agriculture",
+  "evidenceUrls": [
+    "https://doa.gov.ky/faqs/",
+    "https://doa.gov.ky/service/agricultural-health-inspection-services/",
+    "https://legislation.gov.ky/cms/images/LEGISLATION/PRINCIPAL/1983/1983-0029/1983-0029.pdf",
+    "https://doa.gov.ky/wp-content/uploads/2023/09/FAQ-AHIS-May-24-2022.pdf",
+    "https://gov.ky/documents/35692/0/PlantProtectionAct2023%28Commencement%29Order2026_MADE.pdf/38f453eb-ffb3-c44c-a7f9-d8da8397ab7b?t=1790010790398",
+    "https://gov.ky/documents/35692/0/PlantProtectionRegulations2026_MADE.pdf/76eafe43-f892-f897-e542-cc9ed529849f?t=1790010649002",
+    "https://legislation.gov.ky/cms/images/LEGISLATION/PRINCIPAL/2023/2023-0010/2023-0010.pdf",
+    "https://doa.gov.ky/wp-content/uploads/2022/10/Conditions-to-Import-Low-Risk-Plant-Products.pdf"
+  ],
+  "remainingQuestion": "",
+  "researchAttempts": [
+    "Checked destination authority agricultural guidance, processed-tea classification and personal/postal applicability.",
+    "Recovered and read full official September 2026 commencement order, Regulations 2026 and Act 2023. Visually checked commencement page, manufactured-product definition, exemptions and regulated-article schedule. Act commences 1 November 2026; regulations immediately follow.",
+    "Recovered existing 1997 law, 2014 amendment and 2022 DoA FAQ PDF; checked currently published DoA FAQ and AHIS page. Fresh-plant low-risk conditions are expressly limited to fresh plant products, so not applied to manufactured sencha.",
+    "Incoming regime: Act2023 sections 2, 3, 15 and 16 provide a risk-qualified manufactured-product definition, permit/certificate default for covered articles and Director exemptions. Regulations Schedule1 does not list tea; omission alone is not an exemption from separate plant-product controls. No future processed-tea exemption text was found. Retain supported for current date, record dated transition rather than backdate the new regime or assert a future ban."
+  ],
+  "reviewedAt": "2026-09-30",
+  "permitFreeDecision": "supported",
+  "permitFreeReason": "Supported as of 30 September 2026 by the current DoA processed-tea guidance: sealed commercial packaging, ordinary declaration and arrival agricultural inspection. The new September Gazette does not change current operation: Commencement Order2026 paragraph2 starts Act2023 on 1 November2026; Regulations2026 regulation1(2) immediately follows. The future law has a risk-qualified manufactured-product category and Director exemption powers, so this review does not independently establish the processed-tea outcome after that transition.",
+  "permitFreeSources": [
+    "https://doa.gov.ky/faqs/",
+    "https://doa.gov.ky/service/agricultural-health-inspection-services/",
+    "https://legislation.gov.ky/cms/images/LEGISLATION/PRINCIPAL/1983/1983-0029/1983-0029.pdf",
+    "https://doa.gov.ky/wp-content/uploads/2023/09/FAQ-AHIS-May-24-2022.pdf",
+    "https://gov.ky/documents/35692/0/PlantProtectionAct2023%28Commencement%29Order2026_MADE.pdf/38f453eb-ffb3-c44c-a7f9-d8da8397ab7b?t=1790010790398",
+    "https://gov.ky/documents/35692/0/PlantProtectionRegulations2026_MADE.pdf/76eafe43-f892-f897-e542-cc9ed529849f?t=1790010649002",
+    "https://legislation.gov.ky/cms/images/LEGISLATION/PRINCIPAL/2023/2023-0010/2023-0010.pdf",
+    "https://doa.gov.ky/wp-content/uploads/2022/10/Conditions-to-Import-Low-Risk-Plant-Products.pdf"
+  ],
+  "futureRuleChange": {
+    "effectiveDate": "2026-11-01",
+    "reviewBeforeImportsOnOrAfter": "2026-11-01",
+    "decisionForFutureRegime": "unresolved",
+    "reason": "The new Act has a broader but risk-qualified manufactured-product definition and permits Director exemptions. No operative future tea classification or exemption has yet been located. Current FAQ may remain relevant guidance, but its 2022 provenance cannot by itself prove an exemption under the future Act. This is not a present-day exclusion.",
+    "sources": [
+      "https://gov.ky/documents/35692/0/PlantProtectionAct2023%28Commencement%29Order2026_MADE.pdf/38f453eb-ffb3-c44c-a7f9-d8da8397ab7b?t=1790010790398",
+      "https://gov.ky/documents/35692/0/PlantProtectionRegulations2026_MADE.pdf/76eafe43-f892-f897-e542-cc9ed529849f?t=1790010649002",
+      "https://legislation.gov.ky/cms/images/LEGISLATION/PRINCIPAL/2023/2023-0010/2023-0010.pdf"
+    ]
+  }
+}

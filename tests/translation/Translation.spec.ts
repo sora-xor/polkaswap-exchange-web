@@ -6,19 +6,29 @@ import {
 
 // import { TranslationConsts } from '@/consts';
 
+import * as arJson from '../../src/lang/ar.json';
+import * as baJson from '../../src/lang/ba.json';
 import * as csJson from '../../src/lang/cs.json';
 import * as deJson from '../../src/lang/de.json';
 import * as enJson from '../../src/lang/en.json';
 import * as esJson from '../../src/lang/es.json';
 import * as frJson from '../../src/lang/fr.json';
+import * as heJson from '../../src/lang/he.json';
 import * as idJson from '../../src/lang/id.json';
 import * as itJson from '../../src/lang/it.json';
+import * as kmJson from '../../src/lang/km.json';
+import * as myJson from '../../src/lang/my.json';
 import * as nlJson from '../../src/lang/nl.json';
+import * as pisJson from '../../src/lang/pis.json';
 import * as plJson from '../../src/lang/pl.json';
 import * as ruJson from '../../src/lang/ru.json';
 import * as srJson from '../../src/lang/sr.json';
+import * as thJson from '../../src/lang/th.json';
+import * as ukJson from '../../src/lang/uk.json';
+import * as urJson from '../../src/lang/ur.json';
 import * as viJson from '../../src/lang/vi.json';
 import * as zhCnJson from '../../src/lang/zh_CN.json';
+import * as zhTwJson from '../../src/lang/zh_TW.json';
 
 const brokenTranslation: any = {};
 
@@ -127,6 +137,173 @@ const generateErrorLog = (
 //   });
 // });
 
+const getDefault = (module: Record<string, any>) => module.default ?? module;
+const localeCatalogModules = import.meta.glob('../../src/lang/*.json', { eager: true });
+const localeCatalogEntries = Object.entries(localeCatalogModules)
+  .map(([file, module]) => ({
+    file: file.split('/').at(-1) as string,
+    data: getDefault(module as Record<string, any>),
+  }))
+  .filter(({ file }) => file !== 'en.json')
+  .sort((a, b) => a.file.localeCompare(b.file));
+
+const flattenTranslationKeys = (source: Record<string, any>, prefix: Array<string> = []): Array<string> => {
+  const keys: Array<string> = [];
+
+  Object.keys(source).forEach((key) => {
+    const value = source[key];
+    const path = [...prefix, key];
+
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
+      keys.push(...flattenTranslationKeys(value, path));
+    } else {
+      keys.push(path.join('.'));
+    }
+  });
+
+  return keys;
+};
+
+const flattenTranslationValues = (
+  source: Record<string, any>,
+  prefix: Array<string> = []
+): Array<{ key: string; value: string }> => {
+  const values: Array<{ key: string; value: string }> = [];
+
+  Object.keys(source).forEach((key) => {
+    const value = source[key];
+    const path = [...prefix, key];
+
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
+      values.push(...flattenTranslationValues(value, path));
+    } else if (typeof value === 'string') {
+      values.push({ key: path.join('.'), value });
+    }
+  });
+
+  return values;
+};
+
+const extractRuntimeTokens = (value: string): Array<string> =>
+  [
+    ...value.matchAll(/\{[^}]+\}|@:\([^)]+\)|@:[A-Za-z0-9_.-]+|@\.\w+:[A-Za-z0-9_.-]+/g),
+  ]
+    .map((match) => match[0])
+    .sort();
+
+test('Translation catalogs mirror English keys', () => {
+  const expectedKeys = flattenTranslationKeys(getDefault(enJson)).sort();
+  localeCatalogEntries.forEach(({ file, data }) => {
+    expect(flattenTranslationKeys(data).sort(), file).toEqual(expectedKeys);
+  });
+});
+
+test('Translation catalogs do not contain machine translation placeholder artifacts', () => {
+  const artifactPattern =
+    /__[\p{L}\p{N}\s_-]*?(?:ph|PH|Ph|pH|P|РН|ПХ|РХ|ޕީއެޗް)[\p{L}\p{N}\s_-]*?__|__[0-9]+__|[⟦⟧]|[\uE000-\uF8FF]|XQ\d+X/iu;
+
+  localeCatalogEntries.forEach(({ file, data }) => {
+    const artifacts = flattenTranslationValues(data).filter(({ value }) => artifactPattern.test(value));
+
+    expect(artifacts, `${file} contains machine translation placeholder artifacts`).toEqual([]);
+  });
+});
+
+test('Translation catalogs preserve runtime interpolation tokens', () => {
+  const englishValues = new Map(
+    flattenTranslationValues(getDefault(enJson)).map(({ key, value }) => [key, extractRuntimeTokens(value)])
+  );
+  const tokenCheckedCatalogs = localeCatalogEntries.filter(
+    ({ file }) => !['akk.json', 'egy.json', 'pis.json'].includes(file)
+  );
+
+  tokenCheckedCatalogs.forEach(({ file, data }) => {
+    const mismatches = flattenTranslationValues(data).filter(({ key, value }) => {
+      return JSON.stringify(extractRuntimeTokens(value)) !== JSON.stringify(englishValues.get(key) ?? []);
+    });
+
+    expect(mismatches, `${file} has runtime token mismatches`).toEqual([]);
+  });
+});
+
+test('Translation catalogs avoid excessive English fallback drift', () => {
+  const english = getDefault(enJson);
+  const englishValues = new Map(flattenTranslationValues(english).map(({ key, value }) => [key, value]));
+
+  localeCatalogEntries.forEach(({ file, data }) => {
+    const flattened = flattenTranslationValues(data);
+    const exactEnglishMatches = flattened.filter(({ key, value }) => englishValues.get(key) === value);
+    const ratio = flattened.length ? exactEnglishMatches.length / flattened.length : 0;
+
+    expect(ratio, `${file} has too much untranslated English drift`).toBeLessThanOrEqual(0.08);
+  });
+});
+
+test('Translation catalogs do not contain machine-translation placeholder artifacts', () => {
+  const artifactPattern =
+    /__[\p{L}\p{N}\s_-]*?(?:ph|PH|Ph|pH|P|РН|ПХ|РХ|ޕީއެޗް)[\p{L}\p{N}\s_-]*?__|__[0-9]+__/u;
+  const offenders: Array<string> = [];
+
+  localeCatalogEntries.forEach(({ file, data }) => {
+    flattenTranslationValues(data).forEach(({ key, value }) => {
+      if (artifactPattern.test(value)) {
+        offenders.push(`${file}:${key}`);
+      }
+    });
+  });
+
+  expect(offenders).toEqual([]);
+});
+
+test('High-risk user-facing translation keys are localized', () => {
+  const english = getDefault(enJson);
+  const keys = [
+    'burnPage.copySoraNetworkTxHash',
+    'burnPage.enterNexusRecipient',
+    'burnPage.invalidNexusRecipient',
+    'burnPage.minamotoClaimDescription',
+    'burnPage.minamotoClaimTitle',
+    'burnPage.nexusRecipientLabel',
+    'burnPage.nexusRecipientPlaceholder',
+    'burnPage.nexusRecipientWarning',
+    'burnPage.soraNetworkTxHashLabel',
+    'burnPage.soraV3XorAmountTitle',
+    'burnPage.ssTokensLabel',
+    'fiatDisclaimer',
+    'footer.statistics.indexerBlock',
+    'sccp.amountLabel',
+    'sccp.assetLabel',
+    'sccp.clearPayload',
+    'sccp.copyPayload',
+    'sccp.destinationAddressLabel',
+    'sccp.destinationNetworkLabel',
+    'sccp.emptyPayloadHelp',
+    'sccp.generatePayload',
+    'sccp.noteLabel',
+    'sccp.payloadCopied',
+    'sccp.payloadCopyFailed',
+    'sccp.payloadLabel',
+    'sccp.sourceNetworkLabel',
+    'sccp.subtitle',
+    'sccp.supportedNetworks',
+    'soraStaking.validatorsList.staked',
+    'soraStaking.validatorsList.stakedTooltip',
+  ];
+  const getPathValue = (source: Record<string, any>, key: string): string | undefined =>
+    key.split('.').reduce<any>((value, part) => value?.[part], source);
+  const offenders: Array<string> = [];
+
+  localeCatalogEntries.forEach(({ file, data }) => {
+    keys.forEach((key) => {
+      if (getPathValue(data, key) === getPathValue(english, key)) {
+        offenders.push(`${file}:${key}`);
+      }
+    });
+  });
+
+  expect(offenders).toEqual([]);
+});
+
 test('Translation Multiple Whitespaces check and fix', () => {
   let brokenWhitespacesNumber = 0;
   const checkMultipleWhitespaces = (translation: string, lang: string, translationKeys: Array<string>) => {
@@ -169,7 +346,6 @@ test('Translation Multiple Whitespaces check and fix', () => {
       }
     }
   };
-
   // [TODO] some translations have whitespaces
   // checkTranslationItem('en', enJson, enJson);
   // checkTranslationItem('ru', ruJson, ruJson);

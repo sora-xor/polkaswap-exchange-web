@@ -1,0 +1,71 @@
+{
+  "reviewedAt": "2026-09-30",
+  "scope": "Paid personal postal shipment of 100 g sealed Japanese pure Camellia sinensis sencha, manufactured by steaming, rolling and drying. Ordinary declaration, inspection and fees acceptable; special permits, certificates, registration, separate approvals and advance notice unavailable. Main arrays untouched.",
+  "sharedEvidence": {
+    "ispm32": {
+      "url": "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf",
+      "provisions": "Section 2 Category 1; Appendix 2 tea example",
+      "use": "Technical evidence that manufactured tea differs from simply dried raw plant material. Appendix 2 is illustrative, not prescriptive. ISPM32 is not itself a local import exemption."
+    },
+    "manufacture": {
+      "url": "https://www.maff.go.jp/j/pr/aff/2204/spe1_02.html",
+      "provisions": "Primary and secondary tea-manufacturing sections",
+      "use": "MAFF describes steaming to arrest enzyme activity, repeated rolling/pressing with hot air, final drying, then finishing. This is positive evidence of manufacture beyond simply collecting and drying raw leaves, not evidence of a destination-issued treatment certificate."
+    }
+  },
+  "GU": {
+    "proposedDecision": "supported",
+    "proposalOnly": true,
+    "confidence": "Reasoned application of a general legal definition; no Guam tea-specific administrative classification claimed.",
+    "primarySource": "https://www.guamcourts.org/compileroflaws/GAR/08GAR/08GAR002-10.pdf",
+    "operativeChain": [
+      "8 GAR 10100(g) limits plant products to unprocessed products or products processed only to a minor extent. Sections 10101 and 10103 require permits within their covered categories.",
+      "Section 10104 describes inspection of other plants/products in the raw or unmanufactured state. It corroborates a distinction between raw plant articles and finished manufacture; it is not a blanket exemption from inspection.",
+      "Section 10120 affirmatively admits stored dried human food, subject to pest freedom. It has no origin, baggage or commercial-only limitation. It does not by itself cancel a permit otherwise required.",
+      "Section 10102(a) gives certificate categories which do not cover nonliving manufactured tea."
+    ],
+    "interpretation": "The actual product is finished steam-manufactured sencha, not merely dried raw leaves. The multistage processing evidence and ISPM32 tea Category 1 example supply a reasonable factual basis for applying 10100(g) without inventing a numerical processing threshold. Read with the affirmative food admission in 10120 and absence from the certificate categories, the better general-rule inference supports declaration/inspection without the plant-product permit. A bespoke tea ruling should not be a mandatory precondition for this inference.",
+    "counterargumentAndResponse": "10100(f) defines plant broadly as plants and plant parts without an express living-only limit. A literal reading could include every manufactured leaf. The proposed interpretation reads (f) together with the express processing limitation in (g), so finished manufacture is assessed as a product rather than making (g) ineffective for products that retain identifiable plant anatomy. This is the material interpretation point for root peer review; neither ISPM32 nor the lack of a tea line independently overrides (f).",
+    "limits": "Only the stated sealed factory-manufactured pure tea; not raw/sun-dried leaves, seeds, botanical blends, plant material for propagation or contaminated goods. Ordinary inspections and rejection of infested food remain possible. The 2026 permit form demonstrates postal/private scope for covered products, but does not expand the statutory processing definition. No mainland exemption or traveller concession used.",
+    "proposedRowFile": "gu-proposed-supported-full-row.json"
+  },
+  "MP": {
+    "proposedDecision": "not_supported",
+    "proposalOnly": true,
+    "primarySource": "https://cnmilaw.gov/docs/admincode/T85/T85-60.2.pdf",
+    "operativeChain": [
+      "Sections 010(qq) and 010(ss): plant includes leaves and plant material includes wholly or partly manufactured plant-origin items. There is no general minor-processing exclusion.",
+      "Section 204(a): a person importing a plant, product or soil must have an import permit. Product is not separately defined, but its ordinary contextual meaning includes finished tea; uncertainty of the precise boundary does not make this obvious case indeterminate.",
+      "Section 201: permit exception for non-regulated articles. It supplies no rule reclassifying finished dried food as non-regulated when section 204 applies.",
+      "Section 238: stored dried human food is enterable subject to pest freedom. Admissibility coexists with permit conditions; section 108(b) confirms that allowed-entry plants may still need permits.",
+      "Section 202(a): the specific phytosanitary-certificate categories do not describe finished tea. The exclusion is a permit conclusion, not a newly asserted phytosanitary-certificate duty.",
+      "Section 501: entry by post is subject to the regulations. No commercial importer or baggage-only limitation is used."
+    ],
+    "assessment": "The better reading excludes a completely permit-free route. Section 204(a) expressly requires an import permit for a plant or product. In its plant-quarantine context, product reasonably includes manufactured tea without needing a separate bespoke commodity ruling or exact equivalence to the defined term plant material. Section 010(qq) includes leaves without a living/raw limit and 010(ss) expressly includes manufactured plant-origin items. Unlike Guam, these definitions supply no general processing exclusion. Section 238 permits dried food entry subject to pest freedom; it does not waive the independently imposed permit. Section 201 exempts non-regulated articles, not every admissible food. The ISPM32 tea example supports a low-risk factual classification but is not incorporated as an exemption from this affirmative local permit duty.",
+    "oralPermitQualification": "Section 010(cc) allows an import permit to be written or oral. Section 108(a) requires both oral and written permits for its specified higher-control plant shipments and describes an application route; it does not prove that this 100 g pouch necessarily requires a written permit or an advance application. Nonetheless an oral permit remains an authorization under the separate permit duty, not an automatic synonym for customs declaration or inspection. Sections 104/116/204/501 distinguish declaration, permit compliance, inspection and release. No retrieved provision makes ordinary postal inspection automatically satisfy the permit. The proposed exclusion rests on the user refusing permits at all, not on inventing a mandatory foreign certificate or claiming every permit must be written.",
+    "currentGuidance": "The Finance FAQ expressly addresses food brought as a traveler and allows processed/prepackaged foods with declaration. It does not expressly waive permits and is not a postal exemption. The import-requirements page separately lists plants as requiring permits and does not give a manufactured-tea waiver.",
+    "interpretationStatus": "Affirmative no-permit exclusion by applying ordinary product meaning and the broad local definitions to the actual manufactured tea. No specific CNMI tea determination claimed. Prior unresolved inference in this review is superseded.",
+    "proposedRowFile": "mp-proposed-not-supported-full-row.json"
+  },
+  "CK": {
+    "decision": "unresolved",
+    "primarySources": [
+      "https://agriculture.gov.ck/wp-content/uploads/2021/01/Update-Import-Specification-6-January-2021..pdf",
+      "https://agriculture.gov.ck/biosecurity/bio-security-act/",
+      "https://assets.ippc.int/static/media/files/reportingobligation/2017/08/11/Cook_Islands_Biosecurity_Act_2008.pdf",
+      "https://www.ippc.int/en/countries/cook-islands/reportingobligation/2017/08/biosecurity-act-2008/"
+    ],
+    "newUnderlyingLawFinding": "Act section 2 has a processing exception within plant material: manufacture must render the item nonviable, pest/disease-free and incapable of carrying them. But plant product separately and expressly includes any product manufactured wholly or partly from plants; regulated article includes all plant products. Consequently the former definition alone does not remove finished tea from the Act or specification system.",
+    "operativeChain": [
+      "Sections 23–25 provide arrival inspection/import clearance and require permits/certificates only where applicable. Attaching any existing certificate is not a requirement to procure one for every article. Ordinary arrival clearance is not counted as a prohibited special approval.",
+      "Section 26 specifications determine permit, certificate and other measures; 26(3)(b) requires the Director to consider international standards, not automatically adopt every ISPM example as an importer exemption.",
+      "Section 27 requires a written access application for regulated articles/origins with no applicable specification. Section 28 requires pre-shipment application where the specification requires a permit. These duties are distinct from ordinary arrival inspection.",
+      "The current-linked January 2021 schedule PP29 affirmatively requires no permit or certificate for dried herbs from any origin. PP23 dried plant material instead requires a permit and treatment. Their headings do not establish culinary, botanical, tea or ornamental boundaries. Visually checked original table page 4; no invented tea prohibition.",
+      "Manufacturing alone cannot bypass both PP23/PP29 and section 27, because the statutory plant-product definition includes manufactured products. Conversely the generic PP23 category cannot erase the specific PP29 exemption when that category applies."
+    ],
+    "assessment": "Camellia sencha is plainly a manufactured plant food and ISPM32 Category 1 tea supports low pest risk. It does not establish that the local Herbs (dried) heading uses a broad infusion-leaf meaning rather than the narrower culinary/botanical category. The Act supplies a concrete reason why low risk alone does not settle entry: specification selection remains legally relevant for manufactured plant products. No supported or excluded decision should be forced from tea being unnamed.",
+    "remainingGap": "Applicable general scope of PP29 Herbs (dried), or another published specification covering manufactured infusion tea; if no specification applies, section 27 has an actual special-application route. Food regulation 18 personal/family allowance remains favorable and does not resolve biosecurity classification.",
+    "sourceStatus": "The ministry currently labels/links the 2008 Act and the Cook Islands NPPO published the same 73-page instrument through IPPC. Its internal document title says Bill; no new enactment claim is inferred from that title alone. The currently linked ministry text layer is malformed; readable NPPO copy recovered via web, with direct downloads 403. Relevant primary text saved in ck-act-official-web-extract.json."
+  },
+  "mainArraysEdited": false
+}

@@ -1,0 +1,17 @@
+[
+  {
+    "url": "https://www.tamm.abudhabi/pub/proxy/ms-call/gateway/TammJourneyAdca-backend/1.0/adcEnhancement/smartClassification/search",
+    "request": {
+      "query": "090210",
+      "language": "en"
+    },
+    "status": 200,
+    "bytes": 5664,
+    "bodyExcerpt": "<html lang=\"en\" class=\"\">\r\n\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <meta name=\"robots\" content=\"noindex\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\r\n\r\n    <!-- Bootstrap Lib -->\r\n    <link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css\"\r\n        integrity=\"sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T\" crossorigin=\"anonymous\">\r\n\r\n    <!-- Roboto  -->\r\n    <link href=\"https://fonts.googlea"
+  },
+  {
+    "url": "https://faolex.fao.org/docs/pdf/bah72236.pdf",
+    "status": 200,
+    "bytes": 395143
+  }
+]

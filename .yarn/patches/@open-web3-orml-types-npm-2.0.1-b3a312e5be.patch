@@ -1,0 +1,13 @@
+diff --git a/package.json b/package.json
+index 278acc441a5bbdea4d8f01d4a7bd4518e0e01b10..39601dca16c5129bbb5633572679867dfde78517 100644
+--- a/package.json
++++ b/package.json
+@@ -15,7 +15,7 @@
+   },
+   "homepage": "https://github.com/open-web3-stack/open-web3.js",
+   "peerDependencies": {
+-    "@polkadot/api": "^8.12.2"
++    "@polkadot/api": ">=8.12.2"
+   },
+   "devDependencies": {
+     "@polkadot/typegen": "^8.12.2"

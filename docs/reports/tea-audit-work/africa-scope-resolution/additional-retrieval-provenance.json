@@ -1,0 +1,37 @@
+[
+  {
+    "url": "https://www.sainthelena.gov.sh/st-helena/government/legislation/laws-of-tristan-da-cunha/alphabetical-list-tristan-da-cunha/",
+    "resolvedUrl": "https://www.sainthelena.gov.sh/st-helena/government/legislation/laws-of-tristan-da-cunha/alphabetical-list-tristan-da-cunha/",
+    "file": "docs/reports/tea-audit-work/africa-scope-resolution/sh-tristan-lawindex.html",
+    "status": 200,
+    "bytes": 228160
+  },
+  {
+    "url": "https://www.sainthelena.gov.sh/documents/Biosecurity-Ordinance",
+    "resolvedUrl": "https://www.sainthelena.gov.sh/documents/biosecurity-ordinance.pdf",
+    "file": "docs/reports/tea-audit-work/africa-scope-resolution/sh-mislinked-ascension-law.pdf",
+    "status": 200,
+    "bytes": 621954
+  },
+  {
+    "url": "https://www.sainthelena.gov.sh/import-health-standards/",
+    "resolvedUrl": "https://www.sainthelena.gov.sh/st-helena/government/portfolios/safety-security-and-home-affairs/",
+    "file": "docs/reports/tea-audit-work/africa-scope-resolution/sh-import-health-standards-redirect.html",
+    "status": 200,
+    "bytes": 236436
+  },
+  {
+    "url": "https://www.bniq.gov.gn/service-inspection-entree/",
+    "resolvedUrl": "https://www.bniq.gov.gn/service-inspection-entree/",
+    "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-bniq-services.html",
+    "status": 403,
+    "bytes": 5548
+  },
+  {
+    "url": "https://www.bniq.gov.gn/category/politiques/",
+    "resolvedUrl": "https://www.bniq.gov.gn/category/politiques/",
+    "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-bniq-policies.html",
+    "status": 403,
+    "bytes": 5530
+  }
+]

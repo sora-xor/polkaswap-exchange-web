@@ -1,8 +1,10 @@
 import { Operation } from '@sora-substrate/sdk';
 import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { beforeTransactionSign } from '@soramitsu/soraneo-wallet-web';
 
-import store from '@/store';
+import pinia from '@/plugins/pinia';
+import { useAssetsStore } from '@/stores/assets';
+import { useBridgeStore } from '@/stores/bridge';
+import { useWalletStore } from '@/stores/wallet';
 import { Bridge } from '@/utils/bridge/common/classes';
 import type { IBridgeConstructorOptions } from '@/utils/bridge/common/types';
 import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
@@ -17,6 +19,9 @@ interface SubBridgeConstructorOptions extends IBridgeConstructorOptions<SubHisto
 }
 
 type SubBridge = Bridge<SubHistory, SubBridgeReducer, SubBridgeConstructorOptions>;
+
+const resolveWalletStore = () => useWalletStore(pinia);
+const resolveBridgeStore = () => useBridgeStore(pinia);
 
 const subBridge: SubBridge = new Bridge({
   reducers: {
@@ -35,21 +40,22 @@ const subBridge: SubBridge = new Bridge({
     },
   },
   // assets
-  addAsset: (assetAddress: string) => store.dispatch.wallet.account.addAsset(assetAddress),
-  getAssetByAddress: (address: string) => store.getters.assets.assetDataByAddress(address),
+  addAsset: (assetAddress: string) => resolveWalletStore().addAsset(assetAddress),
+  getAssetByAddress: (address: string) => useAssetsStore().assetDataByAddress(address),
   // transaction
-  getTransaction: (id: string) => (getTransaction(id) || store.getters.bridge.history[id]) as SubHistory,
+  getTransaction: (id: string) =>
+    getTransaction(id, resolveBridgeStore().getHistoryTransaction(id) as SubHistory | null),
   updateTransaction,
   // ui integration
-  showNotification: (tx: SubHistory) => store.commit.bridge.setNotificationData(tx),
-  updateHistory: () => store.dispatch.bridge.updateInternalHistory(),
-  getActiveTransaction: () => store.getters.bridge.historyItem as SubHistory,
-  addTransactionToProgress: (id: string) => store.commit.bridge.addTxIdInProgress(id),
-  removeTransactionFromProgress: (id: string) => store.commit.bridge.removeTxIdFromProgress(id),
+  showNotification: (tx: SubHistory) => resolveBridgeStore().setNotificationData(tx),
+  updateHistory: () => resolveBridgeStore().updateInternalHistory(),
+  getActiveTransaction: () => resolveBridgeStore().activeTransaction as SubHistory,
+  addTransactionToProgress: (id: string) => resolveBridgeStore().addTransactionToProgress(id),
+  removeTransactionFromProgress: (id: string) => resolveBridgeStore().removeTransactionFromProgress(id),
   // transaction signing
-  beforeTransactionSign: (api, ...args: any[]) => beforeTransactionSign(store.original, api, ...args),
+  beforeTransactionSign: (api, ...args: any[]) => resolveBridgeStore().beforeTransactionSign(api, ...args),
   // custom
-  getSubBridgeConnector: () => store.state.bridge.subBridgeConnector,
+  getSubBridgeConnector: () => resolveBridgeStore().subBridgeConnector,
 });
 
 export default subBridge;

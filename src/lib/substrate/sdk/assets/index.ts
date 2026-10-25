@@ -1,0 +1,1177 @@
+import { assert, stringToU8a, u8aToHex, bnToU8a } from '@polkadot/util';
+import { Subscription, Subject, combineLatest, map } from 'rxjs';
+import { keccak256AsU8a } from '@polkadot/util-crypto';
+import { CodecString, FPNumber, NumberLike } from '@sora-substrate/math';
+import type { BalanceInfo } from '@sora-substrate/types';
+import type { ApiPromise } from '@polkadot/api';
+import type { Observable } from '@polkadot/types/types';
+import type {
+  OrmlTokensAccountData,
+  PalletBalancesAccountData,
+  CommonPrimitivesAssetId32,
+} from '@polkadot/types/lookup';
+import type { Option, u128 } from '@polkadot/types-codec';
+
+import { parseStoredJson } from '@/utils/storageParsing';
+
+import { DAY_IN_BLOCKS, KnownAssets, NativeAssets, XOR } from './consts';
+import { DexId } from '../dex/consts';
+import { PoolTokens } from '../poolXyk/consts';
+import { Messages } from '../logger';
+import { Operation, History } from '../types';
+import type {
+  AccountAsset,
+  AccountBalance,
+  Asset,
+  Blacklist,
+  TransferOptions,
+  UnlockPeriodDays,
+  Whitelist,
+  WhitelistArrayItem,
+  WhitelistIdsBySymbol,
+  HistoryElementTransfer,
+  VestedTransferHistory,
+} from './types';
+import type { Api } from '../api';
+
+const ACCOUNT_BALANCE_KEYS: Array<keyof AccountBalance> = [
+  'free',
+  'reserved',
+  'frozen',
+  'bonded',
+  'locked',
+  'total',
+  'transferable',
+];
+
+const isAssetAddressList = (value: unknown): value is string[] =>
+  Array.isArray(value) && value.every((address) => typeof address === 'string');
+
+/** Parses codec balances without passing token amounts through native floating-point coercion. */
+function parseCodecBalanceValue(value: CodecString, decimals?: number): FPNumber | null {
+  if (!/^\d+$/.test(value)) {
+    return null;
+  }
+
+  try {
+    const parsed = FPNumber.fromCodecValue(value, decimals);
+
+    return parsed.isFinity() ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Parses every tracked balance component, rejecting malformed snapshots. */
+function parseAccountBalance(balance: AccountBalance, decimals?: number): FPNumber[] | null {
+  const parsed = ACCOUNT_BALANCE_KEYS.map((key) => parseCodecBalanceValue(balance[key], decimals));
+
+  return parsed.every((value): value is FPNumber => value !== null) ? parsed : null;
+}
+
+/** Returns true when every tracked balance component is a valid zero value. */
+function isAccountBalanceZero(balance: AccountBalance, decimals?: number): boolean {
+  const parsed = parseAccountBalance(balance, decimals);
+
+  return Boolean(parsed && parsed.every((value) => value.isZero()));
+}
+
+/** Returns true when a fully valid balance snapshot carries any value. */
+function hasAccountBalanceValue(balance: AccountBalance, decimals?: number): boolean {
+  const parsed = parseAccountBalance(balance, decimals);
+
+  return Boolean(parsed && parsed.some((value) => !value.isZero()));
+}
+
+/**
+ * Detects provider races where a live balance stream reports an all-zero
+ * snapshot while the wallet is still holding a non-zero balance.
+ */
+function isTransientZeroBalanceUpdate(
+  currentBalance: AccountBalance,
+  nextBalance: AccountBalance,
+  decimals?: number
+): boolean {
+  return hasAccountBalanceValue(currentBalance, decimals) && isAccountBalanceZero(nextBalance, decimals);
+}
+
+export function toAssetId(asset: CommonPrimitivesAssetId32) {
+  return asset.code.toString();
+}
+
+/**
+ * **For the external collaboration**
+ *
+ * Useful method for balance formatting
+ *
+ * @param data Account Data for ORML tokens or for PalletBalances
+ * @param assetDecimals Asset decimals, 18 is used by default
+ * @param bondedData Required only for XOR tokens in SORA network
+ * @param balanceKind Native modern Balances freezes cover free + reserved;
+ * ORML tokens and legacy native miscFrozen/feeFrozen freeze free funds only.
+ */
+export function formatBalance(
+  data: PalletBalancesAccountData | OrmlTokensAccountData,
+  assetDecimals?: number,
+  bondedData?: Option<u128>,
+  balanceKind: 'native' | 'token' = 'token'
+): AccountBalance {
+  const free = new FPNumber(data.free || 0, assetDecimals);
+  const reserved = new FPNumber(data.reserved || 0, assetDecimals);
+  // [Substrate 4: PalletBalancesAccountData]
+  const miscFrozen = new FPNumber((data as PalletBalancesAccountData).miscFrozen || 0, assetDecimals);
+  // [Substrate 4: PalletBalancesAccountData]
+  const feeFrozen = new FPNumber((data as PalletBalancesAccountData).feeFrozen || 0, assetDecimals);
+  const frozenDeprecated = miscFrozen.max(feeFrozen);
+  // [Substrate 5: PalletBalancesAccountData] & OrmlTokensAccountData
+  const frozenCurrentData = (data as OrmlTokensAccountData).frozen;
+  const frozenCurrent = new FPNumber(frozenCurrentData || 0, assetDecimals);
+  const frozen = frozenCurrent.max(frozenDeprecated);
+  // Modern Balances discounts reserved funds from its total-balance freeze;
+  // legacy freezes still apply to free funds when both field shapes are present.
+  const frozenFree =
+    balanceKind === 'native' && frozenCurrentData !== undefined
+      ? frozenCurrent.sub(reserved).max(FPNumber.ZERO).max(frozenDeprecated)
+      : frozen;
+  const transferable = free.sub(frozenFree).max(FPNumber.ZERO);
+  // [SORA] bondedData can be NaN, it can be checked by isEmpty===true
+  const bonded = new FPNumber(!bondedData || bondedData.isEmpty ? 0 : bondedData, assetDecimals);
+  // Only the owned portion of free funds can be unavailable. Counting the
+  // whole freeze threshold would inflate locked and total when frozen > free.
+  const nonTransferableFree = free.sub(transferable);
+  // [SORA] Reserved and referral-bonded funds are owned but unavailable.
+  const locked = nonTransferableFree.add(reserved).add(bonded);
+  const total = free.add(reserved).add(bonded);
+
+  return {
+    free: free.toCodecString(),
+    reserved: reserved.toCodecString(),
+    frozen: frozen.toCodecString(),
+    bonded: bonded.toCodecString(),
+    locked: locked.toCodecString(),
+    total: total.toCodecString(),
+    transferable: transferable.toCodecString(),
+  };
+}
+
+async function getAssetInfo(api: ApiPromise, assetId: string): Promise<Asset> {
+  const { symbol, name, precision, isMintable, assetType, contentSource, description } = (
+    await api.query.assets.assetInfosV2({ code: assetId })
+  ).toHuman() as any;
+
+  return {
+    address: assetId,
+    symbol,
+    name,
+    decimals: +precision,
+    isMintable: !!isMintable,
+    type: assetType,
+    content: contentSource,
+    description,
+  } as Asset;
+}
+
+/**
+ * **For the external collaboration**
+ *
+ * Returns Asset Balance.
+ *
+ * If Asset ID == XOR, referrals.referrerBalances will be included as bonded
+ *
+ * @param api Polkadot based API object
+ * @param accountAddress Account ID
+ * @param assetAddress Asset ID
+ * @param assetDecimals Asset decimals, 18 is used by default
+ */
+export async function getAssetBalance(
+  api: ApiPromise,
+  accountAddress: string,
+  assetAddress: string,
+  assetDecimals = 18
+): Promise<AccountBalance> {
+  if (assetAddress === XOR.address) {
+    const [accountInfo, bondedBalance] = await Promise.all([
+      api.query.system.account(accountAddress),
+      api.query.referrals.referrerBalances(accountAddress),
+    ]);
+    return formatBalance(accountInfo.data, assetDecimals, bondedBalance, 'native');
+  }
+  const accountData = await api.query.tokens.accounts(accountAddress, assetAddress);
+  return formatBalance(accountData, assetDecimals);
+}
+
+function isRegisteredAsset(asset: any, whitelist: Whitelist): boolean {
+  if (!asset.address) {
+    return false;
+  }
+  return !!whitelist[asset.address];
+}
+
+/**
+ * Used *ONLY* for faucet
+ */
+export function getBalance(
+  api: ApiPromise,
+  accountAddress: string,
+  assetAddress: string
+): Promise<Option<BalanceInfo>> {
+  return api.rpc.assets.usableBalance(accountAddress, assetAddress);
+}
+
+export function isNativeAsset(asset: any): boolean {
+  if (!asset.address) {
+    return false;
+  }
+  return !!NativeAssets.get(asset.address);
+}
+
+export function excludePoolXYKAssets(assets: Asset[]): Asset[] {
+  return assets.filter((asset) => asset.symbol !== PoolTokens.XYKPOOL);
+}
+
+export function isBlacklistedAssetAddress(address: string, blacklist: Blacklist): boolean {
+  return blacklist.includes(address);
+}
+
+export function getLegalAssets(allAssets: Array<Asset>, blacklist: Blacklist): Array<Asset> {
+  if (!blacklist.length) return allAssets;
+
+  return allAssets.filter(({ address }) => !isBlacklistedAssetAddress(address, blacklist));
+}
+
+const sort = (a: Asset, b: Asset, whitelist: Whitelist) => {
+  const isNativeA = isNativeAsset(a);
+  const isNativeB = isNativeAsset(b);
+  const isRegisteredA = isRegisteredAsset(a, whitelist);
+  const isRegisteredB = isRegisteredAsset(b, whitelist);
+  if ((isNativeA && !isNativeB) || (isRegisteredA && !isRegisteredB)) {
+    return -1;
+  }
+  if ((!isNativeA && isNativeB) || (!isRegisteredA && isRegisteredB)) {
+    return 1;
+  }
+  if (a.symbol < b.symbol) {
+    return -1;
+  }
+  if (a.symbol > b.symbol) {
+    return 1;
+  }
+  return 0;
+};
+
+export async function getAssets(api: ApiPromise, whitelist?: Whitelist, blacklist?: Blacklist): Promise<Array<Asset>> {
+  const getAssetEntries = api?.query?.assets?.assetInfosV2?.entries;
+
+  if (typeof getAssetEntries !== 'function') {
+    return [];
+  }
+
+  let assetEntries: Array<any> = [];
+
+  try {
+    assetEntries = await getAssetEntries();
+  } catch {
+    return [];
+  }
+
+  const allAssets = assetEntries.map<Asset>(([key, codec]) => {
+    const address = toAssetId(key.args[0]);
+
+    const { symbol, name, precision, isMintable, assetType, contentSource, description } = codec.toHuman() as any;
+
+    return {
+      address,
+      symbol,
+      name,
+      decimals: +precision,
+      isMintable: !!isMintable,
+      type: assetType,
+      content: contentSource,
+      description,
+    };
+  });
+
+  const assets = blacklist?.length ? getLegalAssets(allAssets, blacklist) : allAssets;
+
+  return !whitelist ? assets : assets.sort((a: Asset, b: Asset) => sort(a, b, whitelist));
+}
+
+export class AssetsModule<T> {
+  constructor(private readonly root: Api<T>) {}
+
+  /**
+   * Get whitelist assets object
+   * @param whitelist Whitelist array
+   */
+  getWhitelist(whitelist: Array<WhitelistArrayItem>): Whitelist {
+    return whitelist.reduce<Whitelist>((acc, asset) => {
+      const { address, name, symbol, decimals, icon } = asset;
+      acc[address] = { name, symbol, decimals, icon };
+      return acc;
+    }, {});
+  }
+
+  /**
+   * Check is whitelisted asset or not
+   * @param asset Asset object
+   * @param whitelist Whitelist assets object
+   */
+  isWhitelist(asset: Partial<Asset>, whitelist: Whitelist): boolean {
+    return isRegisteredAsset(asset, whitelist);
+  }
+
+  /**
+   * Get whitelist object by symbol as keys
+   * @param whitelist Whitelist array
+   */
+  getWhitelistIdsBySymbol(whitelist: Array<WhitelistArrayItem>) {
+    return whitelist.reduce<WhitelistIdsBySymbol>((acc, asset) => {
+      const { address, symbol } = asset;
+      acc[symbol.toUpperCase()] = address;
+      return acc;
+    }, {});
+  }
+
+  /**
+   * Check is blacklisted asset or not
+   * @param asset Asset object
+   * @param whitelistIdsBySymbol whitelist object by symbol as keys
+   */
+  isBlacklist(asset: Partial<Asset>, whitelistIdsBySymbol: WhitelistIdsBySymbol): boolean {
+    const { address, symbol } = asset;
+    if (!(address && symbol)) {
+      return false;
+    }
+    const foundAddress = whitelistIdsBySymbol[symbol];
+    if (!foundAddress) {
+      return false;
+    }
+    return foundAddress !== address;
+  }
+
+  /**
+   * Checks if asset is NFT or not.
+   *
+   * **Asset is NFT if it has content and description fields**
+   * @param asset
+   */
+  isNft(asset: Asset | AccountAsset): boolean {
+    return !!(asset.content && asset.description);
+  }
+
+  /**
+   * Checks if NFT asset is blacklisted or not.
+   * @param asset Asset object
+   * @param blacklist Blacklist assets object
+   */
+  isNftBlacklisted(asset: Partial<Asset>, blacklist: Blacklist): boolean {
+    if (!asset.address) {
+      return false;
+    }
+
+    return blacklist.includes(asset.address);
+  }
+
+  // Default assets addresses of account - list of NativeAssets addresses
+  public accountDefaultAssetsAddresses: Array<string> = NativeAssets.map((asset) => asset.address);
+
+  private _accountAssetsAddresses: Array<string> = [];
+  private accountAssetsGeneration = 0;
+  private pendingAssetLoads = new Map<string, symbol>();
+  private balanceSubscriptions: Map<string, Subscription> = new Map();
+  private zeroBalanceConfirmations: Map<string, number> = new Map();
+  private zeroBalanceConfirmationId = 0;
+  private balanceSubject = new Subject<void>();
+  public balanceUpdated = this.balanceSubject.asObservable();
+  public accountAssets: Array<AccountAsset> = [];
+
+  // # Account assets methods
+
+  /** Rejects reads and emissions belonging to a cleared list or a different account. */
+  private isAccountAssetsContextCurrent(accountAddress: string | undefined, generation: number): boolean {
+    return Boolean(
+      accountAddress &&
+      this.root.account?.pair.address === accountAddress &&
+      this.accountAssetsGeneration === generation
+    );
+  }
+
+  private applyAssetBalanceUpdate(asset: AccountAsset, accountBalance: AccountBalance): void {
+    this.zeroBalanceConfirmations.delete(asset.address);
+    asset.balance = accountBalance;
+    this.balanceSubject.next();
+  }
+
+  /**
+   * Confirms live non-zero -> zero updates with a direct chain read before the
+   * wallet UI replaces a visible balance with zero.
+   */
+  private confirmZeroBalanceUpdate(asset: AccountAsset): void {
+    if (this.zeroBalanceConfirmations.has(asset.address)) {
+      return;
+    }
+
+    const confirmationId = ++this.zeroBalanceConfirmationId;
+    const accountAddress = this.root.account?.pair.address;
+    const generation = this.accountAssetsGeneration;
+    this.zeroBalanceConfirmations.set(asset.address, confirmationId);
+
+    void this.getAccountAsset(asset.address)
+      .then((confirmedAsset) => {
+        if (this.zeroBalanceConfirmations.get(asset.address) !== confirmationId) {
+          return;
+        }
+
+        this.zeroBalanceConfirmations.delete(asset.address);
+
+        if (!this.isAccountAssetsContextCurrent(accountAddress, generation) || this.getAsset(asset.address) !== asset) {
+          return;
+        }
+
+        // A fresh direct read may also correct a stale nonzero balance. A newer
+        // live emission invalidates confirmationId before this result can apply.
+        if (
+          parseAccountBalance(confirmedAsset.balance, asset.decimals) &&
+          ACCOUNT_BALANCE_KEYS.some((key) => confirmedAsset.balance[key] !== asset.balance[key])
+        ) {
+          this.applyAssetBalanceUpdate(asset, confirmedAsset.balance);
+        }
+      })
+      .catch(() => {
+        if (this.zeroBalanceConfirmations.get(asset.address) === confirmationId) {
+          this.zeroBalanceConfirmations.delete(asset.address);
+        }
+      });
+  }
+
+  private subscribeToAssetBalance(asset: AccountAsset): void {
+    let isSubscriptionBootstrap = true;
+    const accountAddress = this.root.account?.pair.address;
+    const generation = this.accountAssetsGeneration;
+
+    const subscription = this.getAssetBalanceObservable(asset).subscribe((accountBalance: AccountBalance) => {
+      if (!this.isAccountAssetsContextCurrent(accountAddress, generation) || this.getAsset(asset.address) !== asset) {
+        return;
+      }
+
+      if (asset.balance && isTransientZeroBalanceUpdate(asset.balance, accountBalance, asset.decimals)) {
+        if (!isSubscriptionBootstrap) {
+          this.confirmZeroBalanceUpdate(asset);
+        }
+
+        return;
+      }
+
+      this.applyAssetBalanceUpdate(asset, accountBalance);
+    });
+    isSubscriptionBootstrap = false;
+    if (!this.isAccountAssetsContextCurrent(accountAddress, generation) || this.getAsset(asset.address) !== asset) {
+      subscription.unsubscribe();
+      return;
+    }
+    this.balanceSubscriptions.set(asset.address, subscription);
+  }
+
+  private unsubscribeFromAssetBalance(address: string): void {
+    this.balanceSubscriptions.get(address)?.unsubscribe();
+    this.balanceSubscriptions.delete(address);
+    this.zeroBalanceConfirmations.delete(address);
+  }
+
+  private async addToAccountAssetsList(address: string): Promise<void> {
+    if (this.getAsset(address)) return;
+    const accountAddress = this.root.account?.pair.address;
+    const generation = this.accountAssetsGeneration;
+    const loadId = Symbol();
+    this.pendingAssetLoads.set(address, loadId);
+
+    try {
+      const asset = await this.getAccountAsset(address);
+      if (
+        this.pendingAssetLoads.get(address) !== loadId ||
+        !this.isAccountAssetsContextCurrent(accountAddress, generation)
+      ) {
+        return;
+      }
+      if (!this.getAsset(address)) {
+        this.accountAssets.push(asset);
+        try {
+          this.subscribeToAssetBalance(asset);
+        } catch (error) {
+          // A retry must rebuild the failed stream instead of accepting its cached value.
+          this.accountAssets = this.accountAssets.filter((item) => item !== asset);
+          throw error;
+        }
+      }
+    } finally {
+      if (this.pendingAssetLoads.get(address) === loadId) {
+        this.pendingAssetLoads.delete(address);
+      }
+    }
+  }
+
+  private removeFromAccountAssets(address: string): void {
+    this.accountAssets = this.accountAssets.filter((item) => item.address !== address);
+  }
+
+  private removeFromAccountAssetsList(address: string): void {
+    this.pendingAssetLoads.delete(address);
+    this.unsubscribeFromAssetBalance(address);
+    this.removeFromAccountAssets(address);
+    this.balanceSubject.next();
+  }
+
+  /**
+   * Add account asset to the end of list & create balance subscription
+   * @param address asset address
+   */
+  public async addAccountAsset(address: string): Promise<void> {
+    this.addToAccountAssetsAddressesList(address);
+    await this.addToAccountAssetsList(address);
+  }
+
+  /**
+   * Remove account asset & it's balance subscription
+   * @param address asset address
+   */
+  public removeAccountAsset(address: string): void {
+    this.removeFromAccountAssetsAddressesList(address);
+    this.removeFromAccountAssetsList(address);
+  }
+
+  /**
+   * Clear account assets & their balance subscriptions
+   */
+  public clearAccountAssets() {
+    this.accountAssetsGeneration += 1;
+    this.pendingAssetLoads.clear();
+    for (const address of this.balanceSubscriptions.keys()) {
+      this.unsubscribeFromAssetBalance(address);
+    }
+    this.accountAssets = [];
+  }
+
+  /**
+   * Find account asset in account assets list
+   * @param address asset address
+   */
+  public getAsset(address: string): AccountAsset | null {
+    return this.accountAssets.find((asset) => asset.address === address) ?? null;
+  }
+
+  public getAssetBalanceObservable(asset: AccountAsset | Asset): Observable<AccountBalance> {
+    const accountAddress = this.root.account?.pair.address;
+    assert(accountAddress, Messages.connectWallet);
+    const assetAddress = asset.address;
+    if (assetAddress === XOR.address) {
+      const accountInfo = this.root.apiRx.query.system.account(accountAddress);
+      const bondedBalance = this.root.apiRx.query.referrals.referrerBalances(accountAddress);
+
+      return combineLatest([accountInfo, bondedBalance]).pipe(
+        map((result) => formatBalance(result[0].data, asset.decimals, result[1], 'native'))
+      );
+    }
+    return this.root.apiRx.query.tokens
+      .accounts(accountAddress, assetAddress)
+      .pipe(map((accountData) => formatBalance(accountData, asset.decimals)));
+  }
+
+  /**
+   * Get total XOR balance including staking
+   * and liquidity poolings
+   *
+   */
+  public getTotalXorBalanceObservable(): Observable<FPNumber> {
+    return combineLatest([
+      this.getAssetBalanceObservable(XOR),
+      this.root.demeterFarming.getAccountPoolsObservable(),
+    ]).pipe(
+      map(([xorAssetBalance, demeterFarmingPools]) => {
+        // wallet xor balance (including frozen & bonded)
+        const xorBalanceTotal = FPNumber.fromCodecValue(xorAssetBalance.total);
+
+        // staked xor in demeter farming platform
+        const xorStaked = demeterFarmingPools
+          .filter((pool) => pool.isFarm === false && pool.poolAsset === XOR.address)
+          .map((pool) => pool.pooledTokens);
+        const xorStakedTotal = xorStaked.reduce((prev, curr) => prev.add(curr), FPNumber.ZERO);
+
+        // pooled xor
+        const xorPooled = this.root.poolXyk.accountLiquidity
+          .filter((pool) => pool.firstAddress === XOR.address || pool.secondAddress === XOR.address)
+          .map((pool) => (pool.firstAddress === XOR.address ? pool.firstBalance : pool.secondBalance))
+          .map((pooledXor) => FPNumber.fromCodecValue(pooledXor));
+        const xorPooledTotal = xorPooled.reduce((prev, curr) => prev.add(curr), FPNumber.ZERO);
+
+        return xorBalanceTotal.add(xorStakedTotal).add(xorPooledTotal);
+      })
+    );
+  }
+
+  /**
+   * Sync account assets with account assets address list
+   * During update process, assets should be removed according to 'excludedAddresses'
+   * and exists in accounts assets list according to 'currentAddresses'
+   */
+  public async updateAccountAssets(): Promise<void> {
+    assert(this.root.account, Messages.connectWallet);
+    const accountAddress = this.root.account?.pair.address;
+    const generation = this.accountAssetsGeneration;
+
+    let currentAddresses = this.accountAssetsAddresses;
+    if (!currentAddresses.length) {
+      const defaultList = this.accountDefaultAssetsAddresses;
+      const accountList = await this.getAccountTokensAddressesList();
+      if (!this.isAccountAssetsContextCurrent(accountAddress, generation)) return;
+      currentAddresses = [...new Set([...defaultList, ...accountList])];
+      this.accountAssetsAddresses = currentAddresses;
+    } else {
+      const currentAddressesWithDefaults = [...new Set([...currentAddresses, ...this.accountDefaultAssetsAddresses])];
+
+      const shouldPersistAddresses = currentAddressesWithDefaults.some(
+        (address, index) => address !== currentAddresses[index]
+      );
+
+      if (shouldPersistAddresses) {
+        currentAddresses = currentAddressesWithDefaults;
+        this.accountAssetsAddresses = currentAddresses;
+      }
+    }
+
+    const excludedAddresses = this.accountAssets.reduce<string[]>(
+      (result, { address }) => (currentAddresses.includes(address) ? result : [...result, address]),
+      []
+    );
+
+    for (const assetAddress of excludedAddresses) {
+      this.removeFromAccountAssetsList(assetAddress);
+    }
+
+    if (!currentAddresses.length) return;
+
+    const addToAccountAssetsListPromises = currentAddresses.map((assetId) => this.addToAccountAssetsList(assetId));
+    const results = await Promise.allSettled(addToAccountAssetsListPromises);
+    if (!this.isAccountAssetsContextCurrent(accountAddress, generation)) return;
+    // A partial portfolio must not be reported as a successfully loaded balance.
+    const failed = results.find((result): result is PromiseRejectedResult => result.status === 'rejected');
+    if (failed) throw failed.reason;
+    // sort assets by currentAddresses list
+    this.accountAssets.sort((a, b) => {
+      return currentAddresses.indexOf(a.address) - currentAddresses.indexOf(b.address);
+    });
+  }
+
+  /**
+   * Get asset information
+   * @param address asset address
+   */
+  public async getAssetInfo(address: string): Promise<Asset> {
+    const knownAsset = KnownAssets.get(address);
+    if (knownAsset) {
+      return knownAsset;
+    }
+    const existingAsset =
+      this.getAsset(address) ?? this.root.poolXyk.accountLiquidity.find((asset) => asset.address === address);
+    if (existingAsset) {
+      return {
+        address: existingAsset.address,
+        decimals: existingAsset.decimals,
+        symbol: existingAsset.symbol,
+        name: existingAsset.name,
+        // will be empty if coming from pookXyk
+        type: (existingAsset as AccountAsset).type,
+        content: (existingAsset as AccountAsset).content,
+        description: (existingAsset as AccountAsset).description,
+      } as Asset;
+    }
+    return await getAssetInfo(this.root.api, address);
+  }
+
+  /**
+   * Get account asset information.
+   * You can just check balance of any asset
+   * @param address asset address
+   */
+  public async getAccountAsset(address: string, accountAddress?: string): Promise<AccountAsset> {
+    assert(this.root.account, Messages.connectWallet);
+    const targetAddress = accountAddress || this.root.account.pair.address;
+    const { decimals, symbol, name, type, content, description } = await this.getAssetInfo(address);
+    const asset = { address, decimals, symbol, name, type, content, description } as AccountAsset;
+    const result = await getAssetBalance(this.root.api, targetAddress, address, decimals);
+    asset.balance = result;
+
+    return asset;
+  }
+
+  /**
+   * Get account ORML tokens list with any non zero balance
+   * @param account Account ID
+   * @returns Array of asset addresses
+   */
+  public async getTokensAddressesList(account: string): Promise<string[]> {
+    const data = await this.root.api.query.tokens.accounts.entries(account);
+    const list: string[] = [];
+
+    for (const [key, { free, reserved, frozen }] of data) {
+      const assetId = toAssetId(key.args[1]);
+      const hasAssetAnyBalance = [free, reserved, frozen].some((value) => !new FPNumber(value).isZero());
+
+      if (hasAssetAnyBalance) {
+        list.push(assetId);
+      }
+    }
+
+    return list;
+  }
+
+  /**
+   * Get account ORML tokens list with any non zero balance
+   */
+  public async getAccountTokensAddressesList(): Promise<string[]> {
+    assert(this.root.account, Messages.connectWallet);
+    return this.getTokensAddressesList(this.root.account.pair.address);
+  }
+
+  // # Account assets addresses
+
+  public get accountAssetsAddresses(): Array<string> {
+    if (this.root.accountStorage) {
+      const addresses = this.root.accountStorage.get('assetsAddresses');
+      this._accountAssetsAddresses = parseStoredJson(addresses, [] as string[], isAssetAddressList);
+    }
+    return this._accountAssetsAddresses;
+  }
+
+  public set accountAssetsAddresses(assetsAddresses: Array<string>) {
+    this.root.accountStorage?.set('assetsAddresses', JSON.stringify(assetsAddresses));
+    this._accountAssetsAddresses = [...assetsAddresses];
+  }
+
+  private addToAccountAssetsAddressesList(assetAddress: string): void {
+    if (this.accountAssetsAddresses.includes(assetAddress)) return;
+    // add address to the end of list
+    this.accountAssetsAddresses = [...this.accountAssetsAddresses, assetAddress];
+  }
+
+  private removeFromAccountAssetsAddressesList(address: string): void {
+    this.accountAssetsAddresses = this.accountAssetsAddresses.filter((item) => item !== address);
+  }
+
+  /**
+   * Get all tokens list registered in the blockchain network
+   * @param withPoolTokens `false` by default
+   * @param whitelist set of whitelist tokens
+   * @param blacklist set of blacklist tokens
+   */
+  public async getAssets(withPoolTokens = false, whitelist?: Whitelist, blacklist?: Blacklist): Promise<Array<Asset>> {
+    const assets = await getAssets(this.root.connection?.api as ApiPromise, whitelist, blacklist);
+
+    return withPoolTokens ? assets : excludePoolXYKAssets(assets);
+  }
+
+  /**
+   * Get all tokens addresses list registered in the blockchain network
+   * @param blacklist set of blacklist tokens
+   */
+  public async getAssetsIds(blacklist?: Blacklist): Promise<string[]> {
+    const listAssetIds = this.root.connection?.api?.rpc?.assets?.listAssetIds;
+
+    if (typeof listAssetIds !== 'function') {
+      return [];
+    }
+
+    const ids = (await listAssetIds()).map((codec) => codec.toString());
+    const filtered = blacklist?.length ? ids.filter((id) => !isBlacklistedAssetAddress(id, blacklist)) : ids;
+
+    return filtered;
+  }
+
+  /**
+   * Get asset IDs of the asset owner (creator).
+   *
+   * @param account Account ID of the asset owner. If not set - the selected account ID is used.
+   */
+  public async getOwnedAssetIds(account?: string): Promise<Array<string>> {
+    const accountId = account ?? this.root.account?.pair.address;
+    assert(accountId, Messages.connectWallet);
+    try {
+      const assets = await this.root.api.query.assets.assetOwners.entries();
+
+      return assets.reduce<Array<string>>((buffer, item) => {
+        const accountIdItem = item[1].unwrapOr('').toString();
+        if (!accountIdItem || accountIdItem !== accountId) {
+          return buffer;
+        }
+        const newAsset: string = toAssetId(item[0].args[0]);
+        if (!newAsset) {
+          return buffer;
+        }
+        return [...buffer, newAsset];
+      }, []);
+    } catch {
+      return [];
+    }
+  }
+
+  public subscribeOnAssetTransferableBalance(assetId: string, accountId: string): Observable<string> {
+    const observable =
+      assetId === XOR.address
+        ? this.root.apiRx.query.system
+            .account(accountId)
+            .pipe(map((info) => formatBalance(info.data, undefined, undefined, 'native')))
+        : this.root.apiRx.query.tokens.accounts(accountId, assetId).pipe(map((info) => formatBalance(info)));
+
+    return observable.pipe(map((accountBalance) => accountBalance.transferable));
+  }
+
+  public subscribeOnAssetSupply(assetId: string): Observable<CodecString> {
+    let rxQuery: () => Observable<u128>;
+    if (assetId === XOR.address) {
+      rxQuery = this.root.apiRx.query.balances.totalIssuance;
+    } else {
+      rxQuery = () => this.root.apiRx.query.tokens.totalIssuance(assetId);
+    }
+    return rxQuery().pipe(map((res) => res.toString()));
+  }
+
+  public async getAssetSupply(assetId: string): Promise<CodecString> {
+    let query: () => Promise<u128>;
+    if (assetId === XOR.address) {
+      query = this.root.api.query.balances.totalIssuance;
+    } else {
+      query = () => this.root.api.query.tokens.totalIssuance(assetId);
+    }
+    const supply = await query();
+    return supply.toString();
+  }
+
+  /**
+   * Get next asset ID after registering for the selected account.
+   *
+   * This method is used for the asset ID generation.
+   *
+   * @see https://github.com/sora-xor/sora2-network/blob/3f35601d27a145d5398b8c6a96306de83c58f33b/pallets/assets/src/lib.rs#L678
+   */
+  public async getNextRegisteredAssetId(): Promise<string> {
+    assert(this.root.account, Messages.connectWallet);
+    const account = this.root.account.pair.publicKey;
+
+    const title = stringToU8a('Sora Asset Id');
+
+    const index = await this.root.api.rpc.system.accountNextIndex(account);
+    const nonce = bnToU8a(index.toBn().addn(1), { bitLength: 32 });
+
+    const output = keccak256AsU8a(new Uint8Array([...title, ...account, ...nonce]));
+    output[0] = 0;
+
+    return u8aToHex(output);
+  }
+
+  /**
+   * Register asset
+   * @param symbol string with asset symbol
+   * @param name string with asset name
+   * @param totalSupply total token supply
+   * @param extensibleSupply `true` means that token can be mintable any time by the owner of that token. `false` by default
+   * @param nonDivisible `false` by default
+   * @param nft Nft params object which contains content & description
+   * @param nft.content Nft content string
+   * @param nft.description Nft description string
+   */
+  public register(
+    symbol: string,
+    name: string,
+    totalSupply: NumberLike,
+    extensibleSupply = false,
+    nonDivisible = false,
+    nft: { content: string | null; description: string | null } = {
+      content: null,
+      description: null,
+    }
+  ): Promise<T> {
+    assert(this.root.account, Messages.connectWallet);
+    const supply = new FPNumber(totalSupply, nonDivisible ? 0 : FPNumber.DEFAULT_PRECISION);
+    const args = [symbol, name, supply.toCodecString(), extensibleSupply, nonDivisible, nft.content, nft.description];
+
+    const historyItem: History = {
+      symbol,
+      type: Operation.RegisterAsset,
+    };
+
+    return this.root.submitExtrinsic(
+      (this.root.api.tx.assets.register as any)(...args),
+      this.root.account.pair,
+      historyItem
+    );
+  }
+
+  /**
+   * **DEPRECATED** use `transfer` instead
+   *
+   * Transfer amount from account
+   * @param asset Asset object
+   * @param toAddress Account address
+   * @param amount Amount value
+   * @param historyId optional deterministic local history id for direct hash tracking
+   * @deprecated
+   */
+  public simpleTransfer(
+    asset: Asset | AccountAsset,
+    toAddress: string,
+    amount: NumberLike,
+    historyId?: string
+  ): Promise<T> {
+    assert(this.root.account, Messages.connectWallet);
+    const assetAddress = asset.address;
+    const formattedToAddress = toAddress.startsWith('cn') ? toAddress : this.root.formatAddress(toAddress);
+
+    const historyItem: History = {
+      ...(historyId ? { id: historyId } : {}),
+      type: Operation.Transfer,
+      symbol: asset.symbol,
+      to: formattedToAddress,
+      amount: `${amount}`,
+      assetAddress,
+    };
+
+    return this.root.submitExtrinsic(
+      this.root.api.tx.assets.transfer(assetAddress, toAddress, new FPNumber(amount, asset.decimals).toCodecString()),
+      this.root.account.pair,
+      historyItem
+    );
+  }
+
+  /**
+   * Transfer amount from account
+   * @param asset Asset object
+   * @param toAddress Account address
+   * @param amount Amount value
+   * @param {TransferOptions} options Options object which includes:
+   * @param options.comment Comment field (max length: 128 symbols)
+   * @param options.feeType Use 'xor' for now
+   */
+  public transfer(
+    asset: Asset | AccountAsset,
+    toAddress: string,
+    amount: NumberLike,
+    options: TransferOptions = { feeType: 'xor' }
+  ): Promise<T> {
+    assert(this.root.account, Messages.connectWallet);
+    assert(options.comment?.length ?? 0 <= 128, Messages.commentFieldIsTooLong);
+    const assetAddress = asset.address;
+    const { comment, feeType, assetFee } = options;
+    const commentStr = comment ?? null;
+    const assetFeeParam = assetFee ?? 0;
+    const formattedToAddress = toAddress.startsWith('cn') ? toAddress : this.root.formatAddress(toAddress);
+    const desiredXorAmount = feeType === 'xor' ? 0 : assetFeeParam; // Set it later to have real XOR less transfers
+    const maxAmountIn = feeType === 'xor' ? 0 : assetFeeParam; // Set it later to have real XOR less transfers
+
+    const historyItem: HistoryElementTransfer = {
+      symbol: asset.symbol,
+      to: formattedToAddress,
+      amount: `${amount}`,
+      assetAddress,
+      type: Operation.XorlessTransfer,
+      comment,
+    };
+
+    return this.root.submitExtrinsic(
+      this.root.api.tx.liquidityProxy.xorlessTransfer(
+        DexId.XOR,
+        assetAddress,
+        toAddress,
+        new FPNumber(amount, asset.decimals).toCodecString(),
+        desiredXorAmount,
+        maxAmountIn,
+        [],
+        'Disabled',
+        commentStr
+      ),
+      this.root.account.pair,
+      historyItem
+    );
+  }
+
+  /**
+   * Mint tokens for the selected account. Mint can be signed **only** by token creator.
+   * Also, the selected token should have extensible supply.
+   * @param asset Asset object
+   * @param amount Amount value
+   * @param toAddress Account address who will receive minted tokens. If not set - signer account ID will be used
+   */
+  public mint(asset: Asset | AccountAsset, amount: NumberLike, toAddress?: string): Promise<T> {
+    assert(this.root.account, Messages.connectWallet);
+    const assetAddress = asset.address;
+    const address = toAddress || this.root.account.pair.address;
+    const formattedAddress = address.startsWith('cn') ? address : this.root.formatAddress(address);
+    const historyItem: History = {
+      type: Operation.Mint,
+      to: formattedAddress,
+      amount: `${amount}`,
+      assetAddress,
+      symbol: asset.symbol,
+    };
+
+    return this.root.submitExtrinsic(
+      this.root.api.tx.assets.mint(assetAddress, address, new FPNumber(amount, asset.decimals).toCodecString()),
+      this.root.account.pair,
+      historyItem
+    );
+  }
+
+  /**
+   * Burn tokens you own.
+   * @param asset Asset object
+   * @param amount Amount value
+   */
+  public burn(asset: Asset | AccountAsset, amount: NumberLike): Promise<T> {
+    assert(this.root.account, Messages.connectWallet);
+    const assetAddress = asset.address;
+    const historyItem: History = {
+      type: Operation.Burn,
+      amount: `${amount}`,
+      assetAddress,
+      symbol: asset.symbol,
+    };
+
+    return this.root.submitExtrinsic(
+      this.root.api.tx.assets.burn(assetAddress, new FPNumber(amount, asset.decimals).toCodecString()),
+      this.root.account.pair,
+      historyItem
+    );
+  }
+
+  /**
+   * Burn tokens you own and atomically attach a public on-chain remark.
+   *
+   * Empty remarks are submitted as a plain burn to preserve the existing flow and fee shape.
+   *
+   * @param asset Asset object
+   * @param amount Amount value
+   * @param remark Public remark stored in the same signed transaction
+   */
+  public burnWithRemark(asset: Asset | AccountAsset, amount: NumberLike, remark?: string): Promise<T> {
+    const trimmedRemark = remark?.trim() ?? '';
+
+    if (!trimmedRemark) {
+      return this.burn(asset, amount);
+    }
+
+    assert(this.root.account, Messages.connectWallet);
+    const assetAddress = asset.address;
+    const codecAmount = new FPNumber(amount, asset.decimals).toCodecString();
+    const historyItem: History = {
+      type: Operation.Burn,
+      amount: `${amount}`,
+      assetAddress,
+      symbol: asset.symbol,
+      comment: trimmedRemark,
+    };
+
+    return this.root.submitExtrinsic(
+      this.root.api.tx.utility.batchAll([
+        this.root.api.tx.assets.burn(assetAddress, codecAmount),
+        this.root.api.tx.system.remark(u8aToHex(stringToU8a(trimmedRemark))),
+      ]),
+      this.root.account.pair,
+      historyItem
+    );
+  }
+
+  /**
+   * Get vesting schedule for VestedTransfer feature
+   * @param asset Asset object
+   * @param amount Amount value
+   * @param startBlockNumber Block number (from the blockchain) when the unlock period starts
+   * @param vestingPercent Vesting percent value (0-100)
+   * @param unlockPeriodInDays Unlock period in days (1, 7, 30, 60, 90)
+   */
+  private getVestingSchedule(
+    asset: Asset | AccountAsset,
+    amount: NumberLike,
+    startBlockNumber: number,
+    vestingPercent: number,
+    unlockPeriodInDays: UnlockPeriodDays
+  ) {
+    const percent = vestingPercent / 100;
+    const periodInBlocks = unlockPeriodInDays * DAY_IN_BLOCKS;
+    const amountFp = new FPNumber(amount, asset.decimals ?? FPNumber.DEFAULT_PRECISION);
+    const perPeriod = amountFp.mul(percent); // amount * percent
+    const div = amountFp.div(perPeriod);
+    const remainderAmount = amountFp.mod(perPeriod);
+    const periodCount = (remainderAmount.isZero() ? div : div.add(1)).toNumber(0); // if there is a remainder, add 1 period
+
+    return {
+      LinearVestingSchedule: {
+        start: startBlockNumber,
+        assetId: asset.address,
+        period: periodInBlocks,
+        periodCount,
+        perPeriod: perPeriod.toCodecString(),
+        remainderAmount: remainderAmount.toCodecString(),
+      },
+    };
+  }
+
+  /**
+   * Vested transfer of tokens for the selected account.
+   * @param asset Asset object
+   * @param toAddress Account address who will receive tokens
+   * @param amount Amount value
+   * @param startBlockNumber Block number (from the blockchain) when the unlock period starts
+   * @param vestingPercent Vesting percent value (0-100)
+   * @param unlockPeriodInDays Unlock period in days (1, 7, 30, 60, 90)
+   */
+  public vestedTransfer(
+    asset: Asset | AccountAsset,
+    toAddress: string,
+    amount: NumberLike,
+    startBlockNumber: number,
+    vestingPercent: number,
+    unlockPeriodInDays: UnlockPeriodDays
+  ): Promise<T> {
+    assert(this.root.account, Messages.connectWallet);
+    const assetAddress = asset.address;
+    const schedule = this.getVestingSchedule(asset, amount, startBlockNumber, vestingPercent, unlockPeriodInDays);
+    const historyItem: VestedTransferHistory = {
+      type: Operation.VestedTransfer,
+      amount: `${amount}`,
+      assetAddress,
+      symbol: asset.symbol,
+      to: toAddress,
+      period: schedule.LinearVestingSchedule.period,
+      percent: vestingPercent,
+      start: startBlockNumber,
+    };
+
+    return this.root.submitExtrinsic(
+      this.root.api.tx.vestedRewards.vestedTransfer(toAddress, schedule),
+      this.root.account.pair,
+      historyItem
+    );
+  }
+
+  /**
+   * Get vested transfer network fee for the selected account.
+   *
+   * The fee is calculated based on the vesting schedule so it cannot be calculated using the static data.
+   * @param asset Asset object
+   * @param amount Amount value
+   * @param startBlockNumber Block number (from the blockchain) when the unlock period starts
+   * @param vestingPercent Vesting percent value (0-100)
+   * @param unlockPeriodInDays Unlock period in days (1, 7, 30, 60, 90)
+   */
+  public async getVestedTransferFee(
+    asset: Asset | AccountAsset,
+    amount: NumberLike,
+    startBlockNumber: number,
+    vestingPercent: number,
+    unlockPeriodInDays: UnlockPeriodDays
+  ): Promise<FPNumber> {
+    const schedule = this.getVestingSchedule(asset, amount, startBlockNumber, vestingPercent, unlockPeriodInDays);
+
+    const fee = await this.root.getTransactionFee(this.root.api.tx.vestedRewards.vestedTransfer('', schedule));
+
+    return FPNumber.fromCodecValue(fee);
+  }
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "source": "https://www.tamm.abudhabi/wb-cfg/adc/smart-classification-system.js",
+    "file": "ae-tamm-classification-config.js",
+    "status": 200,
+    "bytes": 51366,
+    "docid": null
+  },
+  {
+    "source": "https://doc.pm.gov.jo/DWWebClient/Integration.aspx",
+    "file": "jo-docuware-viewer.html",
+    "status": 451,
+    "bytes": 15380,
+    "docid": 57362
+  }
+]

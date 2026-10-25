@@ -1,0 +1,40 @@
+import { describe, expect, it } from 'vitest';
+
+import { BotsIcon, PageNames, PolkamarktLogo, SidebarMenuGroups, StoreBagIcon } from '@/consts';
+import { PoolPageNames } from '@/modules/pool/consts';
+import { VaultPageNames } from '@/modules/vault/consts';
+
+describe('SidebarMenuGroups icons', () => {
+  it('keeps sidebar icons aligned with polkaswap menu', () => {
+    const menuEntries = SidebarMenuGroups.map(({ href, icon, iconSrc, title }) => ({
+      href,
+      icon,
+      ...(iconSrc ? { iconSrc } : {}),
+      title,
+    }));
+
+    expect(menuEntries).toEqual([
+      { href: '#/store', icon: 'shopping-bag-24', iconSrc: StoreBagIcon, title: PageNames.Store },
+      { href: '#/swap', icon: 'arrows-swap-90-24', title: PageNames.Swap },
+      { href: '#/buy-xor', icon: 'finance-wallet-24', title: PageNames.BuyXor },
+      { href: '#/trade', icon: 'music-CD-24', title: PageNames.OrderBook },
+      { href: '#/bots', icon: 'software-terminal-24', iconSrc: BotsIcon, title: PageNames.Bots },
+      {
+        href: '#/polkamarkt',
+        icon: 'various-lightbulb-24',
+        iconSrc: PolkamarktLogo,
+        title: PageNames.Polkamarkt,
+      },
+      { href: '#/points', icon: 'basic-circle-star-24', title: PageNames.Rewards },
+      { href: '#/pool', icon: 'basic-drop-24', title: PoolPageNames.Pool },
+      { href: '#/staking', icon: 'basic-layers-24', title: PageNames.StakingContainer },
+      { href: '#/bridge', icon: 'grid-block-distribute-vertically-24', title: PageNames.Bridge },
+      { href: '#/wallet', icon: 'finance-wallet-24', title: PageNames.Wallet },
+      { href: '#/burn', icon: 'basic-flame-24', title: PageNames.Burn },
+      { href: '#/kensetsu', icon: 'call-phone-16', title: VaultPageNames.VaultsContainer },
+      { href: '#/explore', icon: 'various-items-24', title: PageNames.ExploreContainer },
+      { href: '#/stats', icon: 'various-planet-24', title: PageNames.Stats },
+      { href: '#/dashboard/owner', icon: 'various-rocket-24', title: PageNames.AssetOwnerContainer },
+    ]);
+  });
+});

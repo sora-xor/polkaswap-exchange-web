@@ -1,0 +1,39 @@
+{
+  "code": "MG",
+  "status": "not_verified",
+  "rule": "Ordinance 86-013 and Decree 86-310 include products prepared by drying. Adopted Order 4736/2002 articles 3–4 require an import permit and origin phytosanitary certificate for covered plant products; article 6 repeats the certificate requirement. The complete annex provides tea conditions for propagation material/seeds, not manufactured drinking tea, and no general manufactured-tea exemption was found. Some other commodities have specific inspection-only conditions. The current Customs summary names certificate controls for chapters 6, 7, 8 and 24.01 but does not settle HS0902 tea. Whether steamed/dried sencha remains in the regulated simple-preparation category is unresolved.",
+  "personalMailApplicability": "Do not extend a passenger provision to an online postal purchase.",
+  "quantityLimit": null,
+  "authority": "Madagascar official trade portal, plant-protection legislation",
+  "evidenceUrls": [
+    "https://www.pic.commerce.mg/sites/default/files/2023-01/L86-017.pdf",
+    "https://www.douanes.gov.mg/prohibitions-et-interdictions/",
+    "https://faolex.fao.org/docs/pdf/mad159986.pdf",
+    "https://www.pic.commerce.mg/sites/default/files/2023-01/D2013-260.pdf",
+    "https://www.douanes.gov.mg/srcs/uploads/2026/01/TARIF-DES-DOUANES-2026.pdf",
+    "https://www.pic.commerce.mg/sites/default/files/2023-01/A4736-2002.pdf",
+    "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/mg3-2002-4736einfuhranforderungen_fr.pdf",
+    "https://www.pic.commerce.mg/fr/node?page=97"
+  ],
+  "remainingQuestion": "Which current commodity condition applies to manufactured steamed/dried tea, and is its private postal import exempt from the general permit/certificate pathway?",
+  "researchAttempts": [
+    "Read product scope and articles 18,20,22; searched processed-tea and personal-mail derogations.",
+    "Cross-checked current customs commodity restrictions; no explicit HS0902 entry establishing the finished-tea requirement was found.",
+    "30 September: read complete Order 4736/2002, including Annex IV Camellia sinensis entry on printed pages 43–44. It addresses propagation material and seeds, not finished drinking tea; it does not resolve the manufactured-sencha classification. Also reviewed Decree 2013-260 food-safety agency controls, articles 39–44; personal-post application remains to be established.",
+    "30 September: read the current 2026 customs tariff green-tea entry, which supplies tax rates but no dispositive plant-health exemption. ANMCC safeguard notices examined concern pasta and condensed milk rather than tea; they were not extended to this product.",
+    "Independently downloaded and compared the complete 56-page FAO and 55-page German NPPO copies of Order 4736/2002, plus the official PIC-hosted 4-page body. The search title PROJET is stale PDF metadata: all actual texts bear adopted instrument number 4736/2002, date 7 October 2002, and the minister signature attribution. PIC indexes it as a ministerial order. Read the full annex beyond tea propagation; no blanket processed/dried-food exemption was found, but specific milled-rice/grain entries show why an unlisted processed commodity must not automatically receive the propagation conditions. Preserved the unresolved tea classification rather than using the document-title artefact to dismiss the order or claiming that every processed food is exempt."
+  ],
+  "reviewedAt": "2026-09-30",
+  "permitFreeDecision": "unresolved",
+  "permitFreeReason": "The adopted order is valid evidence of general import controls, but its tea annex concerns propagation material and seeds. Neither the full annex nor the current Customs summary resolves the finished-sencha classification and private-post conditions. No no-document route is established; this is an unresolved classification, not an affirmative tea prohibition.",
+  "permitFreeSources": [
+    "https://www.pic.commerce.mg/sites/default/files/2023-01/L86-017.pdf",
+    "https://www.douanes.gov.mg/prohibitions-et-interdictions/",
+    "https://faolex.fao.org/docs/pdf/mad159986.pdf",
+    "https://www.pic.commerce.mg/sites/default/files/2023-01/D2013-260.pdf",
+    "https://www.douanes.gov.mg/srcs/uploads/2026/01/TARIF-DES-DOUANES-2026.pdf",
+    "https://www.pic.commerce.mg/sites/default/files/2023-01/A4736-2002.pdf",
+    "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/mg3-2002-4736einfuhranforderungen_fr.pdf",
+    "https://www.pic.commerce.mg/fr/node?page=97"
+  ]
+}

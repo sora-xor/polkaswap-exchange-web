@@ -1,0 +1,30 @@
+{
+  "retrievedAt": "2026-09-30",
+  "sources": [
+    {
+      "url": "https://www.bniq.gov.gn/wp-content/uploads/2026/05/Arrete-A2024920MCIPMECABSGG-%E2%80%94-Inspection-et-quarantaine-des-produits-entrants-et-sortants.pdf",
+      "localPdf": "docs/reports/tea-audit-work/africa-scope-continuation-sources/gn-inspection2024.pdf",
+      "localOcr": "docs/reports/tea-audit-work/africa-scope-continuation-sources/gn-inspection2024-ocr.txt",
+      "retrieval": "Full HTTP200 official PDF; six-page signed scan. All pages rendered, key Articles2–6 and signature visually checked.",
+      "signatureDate": "2024-06-10"
+    },
+    {
+      "url": "https://www.bniq.gov.gn/wp-content/uploads/2026/04/Inspection-et-Quarantaine-aux-entrees-et-sorties-en-Guinee-Plate-forme-de-Declaration-Manuel-dutilisation.pdf",
+      "localPdf": "docs/reports/tea-audit-work/africa-scope-continuation-sources/gn-manual2026.pdf",
+      "localText": "docs/reports/tea-audit-work/africa-scope-continuation-sources/gn-manual2026.txt",
+      "retrieval": "Full HTTP200 official PDF; text extraction."
+    },
+    {
+      "url": "https://www.bniq.gov.gn/documents/",
+      "retrieval": "Official library read in public browser; supplied both download links."
+    },
+    {
+      "url": "https://www.bniq.gov.gn/20260212-2/",
+      "retrieval": "Official current webpage read through web tool. Publication12February2026."
+    }
+  ],
+  "sha256": {
+    "gn-inspection2024.pdf": "01b19313dc36acdb9a712d35b9bd3b7328861ac04579165f6181e4ce73f8591d",
+    "gn-manual2026.pdf": "f761e53e3699da09d91d75c06e469e4c98d4adfe788c20b129d880e20838d500"
+  }
+}

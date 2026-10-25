@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "source": "Retained local output/go-history development helpers dated September20\u201321,2026; original raw evidence is not included.",
+  "files": [
+    {
+      "path": "earlier-goal-study-20260921/study-transport.mts",
+      "sourceSha256": "2f9c9b1f48f71bd541818c285e28cbce8e57d51791841c4c652a3107912ad6f4",
+      "sourceBytes": 1921,
+      "adjustments": "Repository-relative imports and pinned runtime artifact paths only."
+    },
+    {
+      "path": "partial-target-study-20260921-v3/study-transport.mts",
+      "sourceSha256": "241d5a219fdfcf4cdb8bac1e72dc5497fb7b948d5f0742f19dc3732a5d1606d1",
+      "sourceBytes": 2125,
+      "adjustments": "Repository-relative imports and pinned runtime artifact paths only."
+    },
+    {
+      "path": "goal-archive-engineering-20260920/engineering-metadata.mts",
+      "sourceSha256": "730768640099b9435b62a4503be85b180a976b0db60fefbc1b25eb637ba0509b",
+      "sourceBytes": 20921,
+      "adjustments": "Repository-relative imports and pinned runtime artifact paths only."
+    },
+    {
+      "path": "goal-archive-engineering-20260920/preflight-market.mts",
+      "sourceSha256": "3d4510ffb36123d99c7bc78f879f4412e4ac78c5bca78f2b503910a237091922",
+      "sourceBytes": 11088,
+      "adjustments": "Repository-relative imports and pinned runtime artifact paths only."
+    },
+    {
+      "path": "goal-archive-engineering-20260920/run-engineering.mts",
+      "sourceSha256": "dc103db53ecab4c59f1904ed2256bc32020e2dcccdd40af360b7615a9694b425",
+      "sourceBytes": 19115,
+      "adjustments": "Repository-relative imports and pinned runtime artifact paths only."
+    },
+    {
+      "path": "goal-archive-engineering-20260920/run-engineering-v2.mts",
+      "sourceSha256": "fcd11e3c58390d7d27c4f9cb0cdc320e44b3326c250c9e30e4dcbc6cbcc2a30b",
+      "sourceBytes": 20304,
+      "adjustments": "Repository-relative imports and pinned runtime artifact paths only."
+    },
+    {
+      "path": "goal-archive-engineering-20260920/verify-engineering-v2.mts",
+      "sourceSha256": "71d5b4e18e7509f33031915b7e115d757758e0b9a69c9fc9967e1e2ef6e8ea5a",
+      "sourceBytes": 30399,
+      "adjustments": "Repository-relative imports and pinned runtime artifact paths only."
+    },
+    {
+      "path": "goal-runtime131-fees-20260921/probe.mts",
+      "sourceSha256": "d34d15078989b7e3b6129b0ff02503ae5e5c59c85eb730747e1b90988d81c069",
+      "sourceBytes": 14075,
+      "adjustments": "Repository-relative imports and pinned runtime artifact paths only."
+    },
+    {
+      "path": "goal-runtime131-signatures-20260921/verify.mts",
+      "sourceSha256": "e75a230911bb73fc631d8871808bb43291b949787c45ff7f94dcbdad2809f328",
+      "sourceBytes": 12831,
+      "adjustments": "Repository-relative imports and pinned runtime artifact paths only."
+    },
+    {
+      "path": "partial-target-current-fees-20260921/probe.mts",
+      "sourceSha256": "5607c429a32de824328a7fb5da8e1308b8866d8acc7a21d682b9851d7828501f",
+      "sourceBytes": 25243,
+      "adjustments": "Repository-relative imports and pinned runtime artifact paths only."
+    },
+    {
+      "path": "goal-runtime-wasm-offline-20260921/runtime-host.cjs",
+      "sourceSha256": "a46a982356178f61b107ea38d9b52c14724801ed9003d5c936dd9854f3cf3b1b",
+      "sourceBytes": 7283,
+      "adjustments": "Repository-relative imports and pinned runtime artifact paths only."
+    },
+    {
+      "path": "goal-runtime-wasm-offline-20260921/runtime-synthetic.cjs",
+      "sourceSha256": "345e4825aa3c7798b3bec09e528cae4ad36cab78a1c504d290dd7c44c5fb4940",
+      "sourceBytes": 11749,
+      "adjustments": "Repository-relative imports and pinned runtime artifact paths only."
+    },
+    {
+      "path": "goal-runtime-wasm-offline-20260921/fixture.cjs",
+      "sourceSha256": "167ddbfe96cbdbdd6185473accdde1d051609e7da409bc2cdb785b53dde4cb7b",
+      "sourceBytes": 20196,
+      "adjustments": "Repository-relative imports and pinned runtime artifact paths only."
+    },
+    {
+      "path": "goal-runtime-wasm-offline-20260921/run.cjs",
+      "sourceSha256": "6321a31b2eca0287b4114abdfad9a10dd4058f14c9294607f63dae3c2213d9b6",
+      "sourceBytes": 4047,
+      "adjustments": "Repository-relative imports and pinned runtime artifact paths only."
+    },
+    {
+      "path": "goal-runtime-wasm-offline-20260921/run-synthetic.cjs",
+      "sourceSha256": "b8abba71c40eae021c473419978b85c5dd09b009bdef06f06dc5a4e3fce11bcd",
+      "sourceBytes": 8594,
+      "adjustments": "Repository-relative imports and pinned runtime artifact paths only."
+    },
+    {
+      "path": "goal-runtime-wasm-offline-20260921/network-deny.sb",
+      "sourceSha256": "5c358b8d847211333e7ba22df82d84f796b5f30a41a2682209a949d783adbd08",
+      "sourceBytes": 44,
+      "adjustments": "Repository-relative imports and pinned runtime artifact paths only."
+    },
+    {
+      "path": "goal-runtime131-signatures-20260921/fixture.cjs",
+      "sourceSha256": "c560cbb4b4057b04c75effaa83a286084891a64e71111b44772a57872f47f4de",
+      "sourceBytes": 5144,
+      "adjustments": "Repository-relative imports and pinned runtime artifact paths only."
+    },
+    {
+      "path": "goal-runtime131-signatures-20260921/run.cjs",
+      "sourceSha256": "67b1d0dc726660d1eb4f977154f14dc28152e7faaac881b475551002b934af74",
+      "sourceBytes": 10672,
+      "adjustments": "Repository-relative imports and pinned runtime artifact paths only."
+    },
+    {
+      "path": "goal-runtime131-signatures-20260921/runtime-signatures.cjs",
+      "sourceSha256": "cf6f0b9b042d7e418f9c75db653ce89c2f35bf6be4a4787f38c1d290e0c5bd41",
+      "sourceBytes": 13631,
+      "adjustments": "Repository-relative imports and pinned runtime artifact paths only."
+    }
+  ]
+}

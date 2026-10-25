@@ -1,0 +1,90 @@
+{
+  "code": "KM",
+  "status": "conditional",
+  "rule": "Combined-source legal interpretation: Plant Law 17-004/AU Article 3 limits manufactured plant products to those capable of carrying the relevant pest risk. Article 4 directs undefined terms to the IPPC/ISPMs; Article 39 requires phytosanitary measures to rest on pest-risk analysis and/or comply with current ISPMs; Article 46 applies that same standard to certificates. Read with the current-linked ISPM 32 Category 1 tea illustration and the actual industrial steaming/rolling/drying, plain manufactured sencha is inferred outside the regulated product class that triggers Article 44 permits/certificates. This is an explicit processing/classification inference, not a tea-specific Comoros ruling. Food Law 17-005/AU includes personal food but Article 63 refers plant foods to phytosanitary regulation and the examined certificate provisions do not create a separate universal private-tea certificate.",
+  "personalMailApplicability": "The manufacturing-based interpretation applies to the goods, including paid personal postal orders; it does not borrow a passenger allowance. Plant Law Article 59 expressly covers post when imported goods are regulated. Ordinary customs declaration, lawful entry, arrival inspection and food safety remain applicable. Food Law Article 6(I)(g) includes personal consumption.",
+  "quantityLimit": null,
+  "authority": "Comoros Ministry of Justice; enacted Plant Protection Law 17-004/AU and Food Law 17-005/AU; IPPC current-linked ISPM 32",
+  "evidenceUrls": [
+    "https://justice.gouv.km/wp-content/uploads/2025/03/decret-n-17-103pr-du-5-octobre-2917-promulguant-la-loi-n-17-004au-portant-protection-des-vegetaux-aux-comores.pdf",
+    "https://justice.gouv.km/texte/decret-n17-103-pr-du-5-octobre-2017-promulguant-la-loi-n17-004-au-portant-protection-des-vegetaux-aux-comores/",
+    "https://justice.gouv.km/wp-content/uploads/2025/03/loi-n-17-005au-du-10-juin-2017-portant-legislation-alimentaire-en-union-des-comores.pdf",
+    "https://douane.gov.km/produits%20interdits.php",
+    "https://www.wto.org/english/thewto_e/acc_e/com_e/WT_ACC_COM_37_LEG1.pdf",
+    "https://www.wto.org/english/thewto_e/acc_e/com_e/WT_ACC_COM_37_LEG7.pdf",
+    "https://justice.gouv.km/texte/loi-n21%E2%80%90013-au-du-29-juin-2021-sur-le-commerce-exterieur-promulguee-par-le-decret-n22%E2%80%90004-pr-du-18-janvier-2022/",
+    "https://justice.gouv.km/wp-content/uploads/2025/03/code_des_douanes_union_des_comores_2024.pdf",
+    "https://justice.gouv.km/wp-content/uploads/2025/03/loi-n-11-001au-du-26-mars-2011-portant-code-de-la-sante-2011.pdf",
+    "https://www.ippc.int/en/publications/587/",
+    "https://assets.ippc.int/static/media/files/publications/ru/1366800159_ISPM_32_2009_Ru_2012-12-10.pdf"
+  ],
+  "remainingQuestion": null,
+  "researchAttempts": [
+    "Compared the old 2006 law in FAOLEX with the newer 2017 law from the Ministry of Justice; read article 3 definition and articles 44,46,59; searched implementing tea conditions.",
+    "Read Food Law 17-005/AU article 6 personal-use scope and articles 57–73 certification provisions; did not extend animal-product certificates to plain tea. Checked customs restricted goods. Examined WTO-filed 2022 technical-control and special-authorization drafts: their instrument numbers/dates are blank, so they are not proof of enacted exemptions; the organic-product provision inspected was an export provision.",
+    "30 September independent food/conformity pass: The Ministry of Justice publishes adopted Law 21-013/AU of 29 June 2021 on foreign trade, promulgated by Decree 22-004/PR of 18 January 2022. Articles 16–19 require customs/technical controls but delegate product lists, methods and competent administrations to separate regulations. The2024 Ministry-hosted consolidated Customs Code preserves food/plant restrictions in transit provisions; it does not supply the missing private-tea import certificate rule. Previously reviewed 2022 blank-number/date drafts were not promoted to enacted law. Official Ministry source-index text read for articles 16–19 and current Customs Code excerpt. Direct full trade-law page retrieval failed; no new full adopted implementing instrument was downloaded.",
+    "30 September fresh official-online recovery: Recovered full Health Code 2011 directly from Justice Ministry. Articles 41–46 cover food hygiene; Article 43 prior authorization is specific to food additives, while Article 46 delegates standards/protection measures. Plain sencha is not thereby shown to require the additive approval. These provisions do not establish a private postal food-certificate duty.",
+    "30 September common-definition review: downloaded and read the full official 2017 plant law, including Articles 3, 4, 39, 43–47 and 59. The operative domestic IPPC/ISPM interpretation and measure/certificate clauses, together with current-linked ISPM 32 explicitly illustrating tea as Category 1, now provide the missing classification bridge for industrially steamed/rolled/dried retail sencha. Read Food Law Articles 6, 63, 71–73 and 126–129; preserved personal-use scope and actual label duties without extending business or animal certificate requirements. Reconciled previously examined health/trade laws and unadopted drafts; no hypothetical implementing duty was demanded. This supersedes the earlier unresolved classification, not the historical research record."
+  ],
+  "reviewedAt": "2026-09-30",
+  "permitFreeDecision": "supported",
+  "permitFreeReason": "Supported for the stated sealed 100 g plain Japanese industrially steamed, rolled and dried Camellia tea, by the combined national-law/ISPM 32 interpretation. No permit, phytosanitary certificate, independent food certificate, advance plant-agency notice or special registration is established for this nonregulated manufactured product. This does not apply to raw/dried-only herbs, seeds, fresh leaves, blends or contaminated packaging. Package information must satisfy Food Law Articles 126–129, including translation into at least one official language (French is a practical option), identity/composition, manufacturer, origin/processing location, durability/storage/use, lot and accurate quantity.",
+  "permitFreeSources": [
+    "https://justice.gouv.km/wp-content/uploads/2025/03/decret-n-17-103pr-du-5-octobre-2917-promulguant-la-loi-n-17-004au-portant-protection-des-vegetaux-aux-comores.pdf",
+    "https://justice.gouv.km/texte/decret-n17-103-pr-du-5-octobre-2017-promulguant-la-loi-n17-004-au-portant-protection-des-vegetaux-aux-comores/",
+    "https://justice.gouv.km/wp-content/uploads/2025/03/loi-n-17-005au-du-10-juin-2017-portant-legislation-alimentaire-en-union-des-comores.pdf",
+    "https://douane.gov.km/produits%20interdits.php",
+    "https://www.wto.org/english/thewto_e/acc_e/com_e/WT_ACC_COM_37_LEG1.pdf",
+    "https://www.wto.org/english/thewto_e/acc_e/com_e/WT_ACC_COM_37_LEG7.pdf",
+    "https://justice.gouv.km/texte/loi-n21%E2%80%90013-au-du-29-juin-2021-sur-le-commerce-exterieur-promulguee-par-le-decret-n22%E2%80%90004-pr-du-18-janvier-2022/",
+    "https://justice.gouv.km/wp-content/uploads/2025/03/code_des_douanes_union_des_comores_2024.pdf",
+    "https://justice.gouv.km/wp-content/uploads/2025/03/loi-n-11-001au-du-26-mars-2011-portant-code-de-la-sante-2011.pdf",
+    "https://www.ippc.int/en/publications/587/",
+    "https://assets.ippc.int/static/media/files/publications/ru/1366800159_ISPM_32_2009_Ru_2012-12-10.pdf"
+  ],
+  "independentFoodConformityRule": "Food Law 17-005/AU Article 6(I)(g) includes personal use, so private consumption is not a general food-law exemption. Article 63 subjects raw/processed plant foods to phytosanitary regulation; Articles 71–72 apply previously specified certificates and market/distribution conditions, while Article 73 checks certificates supplied by importing businesses. None creates an independent unqualified certificate duty for the private plain-tea buyer. Article 126 requires package identity/composition/manufacturer, origin/processing location, durability/storage/use and lot information; Articles 127–128 require truthful information and accurate quantity; Article 129 requires information in at least one official language. Health Code 2011 Article 43 approval concerns additives, not plain tea. Foreign Trade Law 21-013/AU Articles 16–19 delegate technical-control lists/methods; delegation alone is not a document duty. Blank-number/date 2022 WTO-filed drafts are not adopted regulations and cannot establish one.",
+  "foodConformitySourceFiles": [
+    "docs/reports/tea-audit-work/food-conformity-second-sources/eight-country-food-scope-review.json"
+  ],
+  "foodConformityAccessNotes": "Official Ministry source-index text read for articles 16–19 and current Customs Code excerpt. Direct full trade-law page retrieval failed; no new full adopted implementing instrument was downloaded.",
+  "officialOnlineRecovery": {
+    "code": "KM",
+    "outcome": "unresolved",
+    "outcomeChanged": false,
+    "finding": "Recovered full Health Code 2011 directly from Justice Ministry. Articles 41–46 cover food hygiene; Article 43 prior authorization is specific to food additives, while Article 46 delegates standards/protection measures. Plain sencha is not thereby shown to require the additive approval. These provisions do not establish a private postal food-certificate duty.",
+    "remainingEvidence": null,
+    "sources": [
+      "km-health2011.pdf"
+    ],
+    "supersededBy": "africa-definition-review/km-proposed-override.json: operative domestic standard bridge and private-food scope review."
+  },
+  "officialOnlineRecoveryFiles": [
+    "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/km-health2011.pdf"
+  ],
+  "manufacturingInterpretation": {
+    "basis": "Explicit combined-source inference",
+    "domesticProvisions": [
+      "Law 17-004/AU Articles 3, 4, 39, 43, 44, 46, 47, 59"
+    ],
+    "standard": {
+      "publicationPage": "https://www.ippc.int/en/publications/587/",
+      "currentLinkedVersion": "https://assets.ippc.int/static/media/files/publications/ru/1366800159_ISPM_32_2009_Ru_2012-12-10.pdf",
+      "localFile": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/french/ispm32-current-ru.pdf",
+      "provision": "ISPM 32 normative Category 1 rules, read with Appendix 2 Category 1 tea illustration (Чай), printed page 32-18.",
+      "qualification": "Appendix 2 is explicitly reference-only and non-prescriptive. This is commodity evidence interpreted through operative national law, not a directly binding international country exemption. The page dated 28 July 2025 links an older standard version; do not call this a new 2025 enactment."
+    },
+    "foodProvisions": [
+      "Law 17-005/AU Articles 6(I)(g), 63, 71–73, 126–129"
+    ],
+    "sourceFiles": [
+      "docs/reports/tea-audit-work/africa-definition-review/km-plant2017.pdf",
+      "docs/reports/tea-audit-work/africa-followup-sources/km-food.pdf",
+      "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/km-health2011.pdf"
+    ],
+    "conditions": [
+      "Only the stated factory-manufactured plain Camellia tea, uncontaminated and sealed.",
+      "Ordinary customs declaration and arrival inspection remain.",
+      "Comply with Food Law Articles 126–129 package information, including an official-language translation."
+    ]
+  }
+}

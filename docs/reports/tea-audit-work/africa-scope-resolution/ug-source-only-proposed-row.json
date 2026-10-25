@@ -1,0 +1,96 @@
+{
+  "code": "UG",
+  "status": "conditional",
+  "rule": "Explicit processing-scope inference: current consolidated Plant Protection and Health Act Chapter 39 section 1 covers manufactured products only where their nature/processing may create plant-pest or disease risk. Applying actual industrial steaming, rolling and drying with current-linked ISPM32 tea Category 1 as technical evidence supports excluding clean manufactured sencha from that definition, without claiming direct national incorporation of ISPM32. SI4/2020 regulates defined plant goods and risk-capable articles. Clean non-plant packaging and freedom from pests remain conditions; statutory arrival inspection is preserved. The independent UNBS import-clearance process remains unresolved under the no-special-registration constraint.",
+  "personalMailApplicability": "Regulation6 expressly includes personal use. The usual low-value exemption procedure calls for an authority letter, but whether the alternative regulation7 destination-inspection route operates for private post using only routine customs documents is unresolved. Returning-resident personal effects are not this online purchase.",
+  "quantityLimit": null,
+  "authority": "Uganda Plant Protection and Health Act, FAOLEX copy",
+  "evidenceUrls": [
+    "https://faolex.fao.org/docs/pdf/uga158615.pdf",
+    "https://faolex.fao.org/docs/pdf/uga238074.pdf",
+    "https://ulii.org/en/akn/ug/act/si/2020/4/eng%402020-01-24",
+    "https://www.mtic.go.ug/export-and-import-procedures/permits-and-licences/",
+    "https://www.agriculture.go.ug/online-certification/",
+    "https://webstore.unbs.go.ug/store.php?preview=&src=4027",
+    "https://www.unbs.go.ug/attachments/menus/57/THE%20UNBS%20%28INSPECTION%20%26%20CLEARANCE%29%20REGULATION%202022.pdf",
+    "https://www.unbs.go.ug/attachments/menus/14/Portal.pdf",
+    "https://verigates.bureauveritas.com/sites/verigates/files/2023-07/UGANDA%20%28PVoC%29%20Datasheet%20Rev%2011.1.pdf",
+    "https://ulii.org/en/akn/ug/act/2016/6/eng%402023-12-31",
+    "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/ug_2016-6cons2023_ppact_en.pdf",
+    "https://unbs.go.ug/news-highlights.php?news=339&read="
+  ],
+  "remainingQuestion": "Whether a one-off personal postal food shipment can receive UNBS regulation 7 destination inspection through the ordinary customs declaration under regulation 8 without separate UNBS account registration or application. The 8 September 2026 official explanation describes TIN/email e-portal accounts and automatic ICC but does not expressly determine postal-recipient scope. The clean industrial-tea plant-product interpretation is supported as an explicit application of the domestic risk definition; it no longer depends on a bespoke commodity ruling.",
+  "researchAttempts": [
+    "Read product and entry-point definitions, section 14 and exemption powers; searched tea-specific and personal import guidance.",
+    "Read actual SI 4/2020 (24 January 2020 Gazette), especially regulations 2–5; searched the national trade portal and agriculture source for tea-import and personal-food exceptions. Checked the current external-trade restricted-licence list, which does not include tea but does not displace phytosanitary law. Excluded tea-export workflows and EAC generic risk-category guidance as proof of a no-document Japanese import route.",
+    "30 September final primary-scope review: SI 4/2020 regulation 3(4) places the pest-risk analysis after receipt of the permit application for an in-scope plant product; it is not a published automatic no-document processing exemption. Neither that procedure nor the separate trade licence list identifies manufactured sencha as outside scope. No new national ISPM32 commodity adoption/list was located in this targeted review.",
+    "30 September independent food/conformity review: Checked official UNBS indexed 2022 regulation text, including personal-use regulation 6, exemption regulations 5(2) and 5(5), customs-declaration/ICC route in 8(1), supporting exemption letter in 8(2)(i), and destination inspection rules. Verified the exact compulsory green-tea standard in the current official store. Downloaded the seven-page BV July2023 Uganda programme datasheet, which includes FOB≤USD2,000 among the categories needing an authority exemption letter. Cross-checked the official 2025 e-portal notice: ICCs are generated automatically after inspection, but exemption requests use an online application. Did not treat automatic ICC issuance or ordinary inspection as the prohibited extra document.",
+    "Final scope correction: regulation7 is an express alternative for goods without pre-export conformity certificates. Did not infer a universal special-document obligation merely because the normal low-value exemption route requires a letter. Retained unresolved pending the actual private-post destination-inspection workflow and the separate plant-health classification.",
+    "30 September common-definition review: Recovered and read the complete Plant Protection and Health Act 2015. The risk-qualified manufactured-product definition is present, but the identified international guideline provision, section 5(2)(g), is specifically about new germplasm screening at post-entry quarantine stations. It is not an operative general definition adoption for food. SI4/2020 supplies covered-goods permit procedures without a manufacturing exemption. The independent UNBS alternative destination-inspection route remains separately unresolved.",
+    "30 September 2026 focused operative-scope recovery: Recovered the complete 18-page consolidated Plant Protection and Health Act, Chapter 39, revision at 31 December 2023, from the German NPPO. This is Act 6/2016, assented 11 February 2015 and commenced 30 May 2016, not a new 2023 enactment. Current sections are 1 definitions, 13 import control, 15 conveyance and 16 packaging; the previously held 2015 assent copy has older numbering. Section 1 risk-qualifies manufactured products and packaging. Applying actual industrial steaming/rolling/drying with current-linked ISPM32 tea Category 1 as technical evidence supports a clean manufactured-tea exclusion; an independent national ISPM adoption or individual commodity letter is not intrinsically necessary. SI4/2020 regulation 2 risk-qualifies other regulated articles, and regulations 3–5 govern goods in those defined classes; no contrary tea entry was recovered. Section 16 prohibits hay/straw/husks/peat/chaff or other pest-capable packing, while contamination and arrival conveyance inspection remain. Independently, re-read UNBS 2022 regulations 7–8 indexed primary text: regulation 7 allows destination inspection without CoC, and regulation 8 applies by customs declaration. Fresh official UNBS news of 8 September 2026 confirms that alternative, inspection fees/15% surcharge and automatic ICC, but describes an e-portal account using TIN/email. It does not expressly say every personal postal recipient must create a separate account; conversely, it does not establish an ordinary-post-only workflow. The customs declaration versus separate portal-registration requirement is now the material unresolved no-doc issue. This is not a blanket certificate exclusion based solely on the low-value exemption-letter route."
+  ],
+  "reviewedAt": "2026-09-30",
+  "permitFreeDecision": "unresolved",
+  "permitFreeReason": "The plant-law manufacturing interpretation is conditionally supported, but current UNBS regulation 7 destination inspection and regulation 8 customs-declaration processing have not been reconciled with the separate e-portal account described in September 2026 for an individual postal recipient. Arrival inspection and automatically generated ICC alone are allowed in this scenario; a separate mandatory account/application would not be.",
+  "permitFreeSources": [
+    "https://faolex.fao.org/docs/pdf/uga158615.pdf",
+    "https://faolex.fao.org/docs/pdf/uga238074.pdf",
+    "https://ulii.org/en/akn/ug/act/si/2020/4/eng%402020-01-24",
+    "https://www.mtic.go.ug/export-and-import-procedures/permits-and-licences/",
+    "https://www.agriculture.go.ug/online-certification/",
+    "https://webstore.unbs.go.ug/store.php?preview=&src=4027",
+    "https://www.unbs.go.ug/attachments/menus/57/THE%20UNBS%20%28INSPECTION%20%26%20CLEARANCE%29%20REGULATION%202022.pdf",
+    "https://www.unbs.go.ug/attachments/menus/14/Portal.pdf",
+    "https://verigates.bureauveritas.com/sites/verigates/files/2023-07/UGANDA%20%28PVoC%29%20Datasheet%20Rev%2011.1.pdf",
+    "https://ulii.org/en/akn/ug/act/2016/6/eng%402023-12-31",
+    "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/ug_2016-6cons2023_ppact_en.pdf",
+    "https://unbs.go.ug/news-highlights.php?news=339&read="
+  ],
+  "independentFoodConformityRule": "US EAS 921:2019 Green tea—Specification is currently marked compulsory in the official UNBS catalogue. UNBS Inspection and Clearance of Imports Regulations 2022 apply to compulsory-standard imports and regulation 6 expressly covers trade and personal use. Schedule 1 Part 2 and regulations 5(2), 5(5)(a) exempt qualifying consignments up to FOB USD2,000 from pre-export verification; regulation 8(2)(i) requires an exemption letter for the regulation 5(5) route where applicable. Bureau Veritas government-programme datasheet revision 11.1 (July 2023), pages 1–2, expressly includes the low-value category and says exempt exporters/importers need a letter directly from UNBS or the relevant authority at clearance. The official UNBS e-portal notice effective 1 July 2025 manages PVoC exemption requests through online applications. However, regulation7 independently allows Part1 goods without a CoC to undergo destination inspection with applicable fees/surcharge; regulation8(1) uses a customs declaration and 8(2)(i) requires the exemption letter only where applicable. The full set of lawful routes cannot be reduced to the ordinary low-value exemption process.",
+  "foodConformitySourceFiles": [
+    "docs/reports/tea-audit-work/food-conformity-sources/ug-pvoc2023-bv.pdf",
+    "docs/reports/tea-audit-work/food-conformity-sources/ug-pvoc2023-bv.txt",
+    "docs/reports/tea-audit-work/food-conformity-sources/ug-primary-indexed-provenance.json",
+    "docs/reports/tea-audit-work/food-conformity-sources/ug-regulations2022-indexed-extract.txt"
+  ],
+  "foodConformityAccessNotes": "Direct official UNBS 2022 PDF retrieval, including the alternate menus/16 path, returned HTTP403; the full law was not downloaded. Cited primary clauses were retrieved from the official PDF search index. The BV programme PDF was downloaded in full and corroborates the specific letter requirement, citing the 2022 rules and UNBS letter BO/PVOC/020 dated 9 March 2023. The official 2025 workflow and compulsory-standard entry were available in the search index. This limitation is recorded rather than claiming a full primary-PDF read. Regulation7 permits destination inspection of Part1 goods arriving without CoC, with fees/surcharge. Whether this supplies an alternative no-exemption-letter route for a low-value personal parcel is not expressly resolved by the retrieved provisions; the decision concerns the evidenced ordinary low-value exemption route and has been flagged for root review.",
+  "definitionReview": {
+    "code": "UG",
+    "outcome": "unresolved",
+    "finding": "Recovered and read the complete Plant Protection and Health Act 2015. The risk-qualified manufactured-product definition is present, but the identified international guideline provision, section 5(2)(g), is specifically about new germplasm screening at post-entry quarantine stations. It is not an operative general definition adoption for food. SI4/2020 supplies covered-goods permit procedures without a manufacturing exemption. The independent UNBS alternative destination-inspection route remains separately unresolved.",
+    "remainingEvidence": "A general applicable processing/classification rule or broader operative standards bridge for manufactured tea; separately, the private postal availability of UNBS regulation 7 destination inspection using ordinary customs only.",
+    "sourceFiles": [
+      "docs/reports/tea-audit-work/africa-definition-review/ug-plant2015.pdf",
+      "docs/reports/tea-audit-work/africa-definition-review/ug-plant2015.txt",
+      "docs/reports/tea-audit-work/africa-followup-sources/ug-reg2020.txt"
+    ],
+    "sources": [
+      "https://faolex.fao.org/docs/pdf/uga158615.pdf",
+      "https://faolex.fao.org/docs/pdf/uga238074.pdf",
+      "https://ulii.org/en/akn/ug/act/si/2020/4/eng%402020-01-24",
+      "https://www.mtic.go.ug/export-and-import-procedures/permits-and-licences/",
+      "https://www.agriculture.go.ug/online-certification/",
+      "https://webstore.unbs.go.ug/store.php?preview=&src=4027",
+      "https://www.unbs.go.ug/attachments/menus/57/THE%20UNBS%20%28INSPECTION%20%26%20CLEARANCE%29%20REGULATION%202022.pdf",
+      "https://www.unbs.go.ug/attachments/menus/14/Portal.pdf",
+      "https://verigates.bureauveritas.com/sites/verigates/files/2023-07/UGANDA%20%28PVoC%29%20Datasheet%20Rev%2011.1.pdf"
+    ],
+    "reviewedAt": "2026-09-30"
+  },
+  "focusedScopeReview": {
+    "reviewedAt": "2026-09-30",
+    "finding": "Recovered the complete 18-page consolidated Plant Protection and Health Act, Chapter 39, revision at 31 December 2023, from the German NPPO. This is Act 6/2016, assented 11 February 2015 and commenced 30 May 2016, not a new 2023 enactment. Current sections are 1 definitions, 13 import control, 15 conveyance and 16 packaging; the previously held 2015 assent copy has older numbering. Section 1 risk-qualifies manufactured products and packaging. Applying actual industrial steaming/rolling/drying with current-linked ISPM32 tea Category 1 as technical evidence supports a clean manufactured-tea exclusion; an independent national ISPM adoption or individual commodity letter is not intrinsically necessary. SI4/2020 regulation 2 risk-qualifies other regulated articles, and regulations 3–5 govern goods in those defined classes; no contrary tea entry was recovered. Section 16 prohibits hay/straw/husks/peat/chaff or other pest-capable packing, while contamination and arrival conveyance inspection remain. Independently, re-read UNBS 2022 regulations 7–8 indexed primary text: regulation 7 allows destination inspection without CoC, and regulation 8 applies by customs declaration. Fresh official UNBS news of 8 September 2026 confirms that alternative, inspection fees/15% surcharge and automatic ICC, but describes an e-portal account using TIN/email. It does not expressly say every personal postal recipient must create a separate account; conversely, it does not establish an ordinary-post-only workflow. The customs declaration versus separate portal-registration requirement is now the material unresolved no-doc issue. This is not a blanket certificate exclusion based solely on the low-value exemption-letter route.",
+    "sources": [
+      "https://ulii.org/en/akn/ug/act/2016/6/eng%402023-12-31",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/ug_2016-6cons2023_ppact_en.pdf",
+      "https://unbs.go.ug/news-highlights.php?news=339&read="
+    ],
+    "sourceFiles": [
+      "docs/reports/tea-audit-work/africa-scope-resolution/ug-plant-consolidated2023.pdf",
+      "docs/reports/tea-audit-work/africa-scope-resolution/ug-plant-consolidated2023.txt",
+      "docs/reports/tea-audit-work/africa-scope-resolution/ug-retrieval-provenance.json",
+      "docs/reports/tea-audit-work/food-conformity-sources/ug-regulations2022-indexed-extract.txt"
+    ],
+    "overallDecisionChanged": false
+  }
+}

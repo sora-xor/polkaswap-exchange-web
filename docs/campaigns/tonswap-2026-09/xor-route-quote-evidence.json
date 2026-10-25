@@ -1,0 +1,416 @@
+{
+  "mode": "Read-only quotes; public documentation fixture addresses; no signatures, payments or orders",
+  "endpoint": "https://api.symbiosis.finance/crosschain/v2/quote",
+  "partnerHeader": "polkaswap-route-research",
+  "slippageBps": 100,
+  "destination": {
+    "symbol": "XOR",
+    "address": "0x40FD72257597aA14C7231A7B1aaa29Fce868F677",
+    "chainId": 1,
+    "decimals": 18
+  },
+  "ethUsdQuoteBasis": "2679.6",
+  "results": [
+    {
+      "source": "USDT",
+      "sourceChainId": 85918,
+      "nominalUsdInput": 10,
+      "inputAmount": "10000000",
+      "at": "2026-09-25T05:28:31.999421+00:00",
+      "httpStatus": 200,
+      "summary": {
+        "type": "ton",
+        "kind": "crosschain-swap",
+        "tokenAmountOut": {
+          "symbol": "XOR",
+          "address": "0x40FD72257597aA14C7231A7B1aaa29Fce868F677",
+          "amount": "171744267243528463155175743873362120296",
+          "chainId": 1,
+          "decimals": 18,
+          "priceUsd": 0
+        },
+        "tokenAmountOutMin": {
+          "symbol": "XOR",
+          "address": "0x40FD72257597aA14C7231A7B1aaa29Fce868F677",
+          "amount": "170008373093633885349027070072421087538",
+          "chainId": 1,
+          "decimals": 18,
+          "priceUsd": 0
+        },
+        "fees": [
+          {
+            "provider": "symbiosis",
+            "value": {
+              "symbol": "sUSDT",
+              "icon": "https://s3.openocean.finance/token_logos/logos/1642600369413_5107823985163122.jpg",
+              "address": "0x8D8Ce7Bf0C7f7a368Bb92087Fc9D474d2DffC072",
+              "amount": "250000",
+              "chainId": 13863860,
+              "decimals": 6,
+              "attributes": {
+                "ton": "EQCxE6mUtQJKFnGfaROTKOt1lZbDiiX1kCixRv7Nw2Id_sDs"
+              },
+              "priceUsd": 1
+            },
+            "save": {
+              "symbol": "sUSDT",
+              "icon": "https://s3.openocean.finance/token_logos/logos/1642600369413_5107823985163122.jpg",
+              "address": "0x8D8Ce7Bf0C7f7a368Bb92087Fc9D474d2DffC072",
+              "amount": "0",
+              "chainId": 13863860,
+              "decimals": 6,
+              "attributes": {
+                "ton": "EQCxE6mUtQJKFnGfaROTKOt1lZbDiiX1kCixRv7Nw2Id_sDs"
+              },
+              "priceUsd": 1
+            },
+            "description": "Cross-chain fee"
+          },
+          {
+            "provider": "symbiosis",
+            "value": {
+              "symbol": "USDC",
+              "icon": "https://s2.coinmarketcap.com/static/img/coins/128x128/3408.png",
+              "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+              "amount": "500000",
+              "chainId": 1,
+              "decimals": 6,
+              "priceUsd": 1
+            },
+            "save": {
+              "symbol": "USDC",
+              "icon": "https://s2.coinmarketcap.com/static/img/coins/128x128/3408.png",
+              "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+              "amount": "0",
+              "chainId": 1,
+              "decimals": 6,
+              "priceUsd": 1
+            },
+            "description": "Cross-chain fee"
+          }
+        ],
+        "priceImpact": "99.86",
+        "labels": [
+          "octopool-swap",
+          "dst-chain-swap",
+          "mixed-value-tokens"
+        ],
+        "approveTo": "0x0000000000000000000000000000000000000000"
+      },
+      "txValue": null,
+      "tonAttachedAmounts": [
+        "200000000"
+      ]
+    },
+    {
+      "source": "USDT",
+      "sourceChainId": 85918,
+      "nominalUsdInput": 50,
+      "inputAmount": "50000000",
+      "at": "2026-09-25T05:28:31.999742+00:00",
+      "httpStatus": 200,
+      "summary": {
+        "type": "ton",
+        "kind": "crosschain-swap",
+        "tokenAmountOut": {
+          "symbol": "XOR",
+          "address": "0x40FD72257597aA14C7231A7B1aaa29Fce868F677",
+          "amount": "182896964836784321406170124735236096855",
+          "chainId": 1,
+          "decimals": 18,
+          "priceUsd": 0
+        },
+        "tokenAmountOutMin": {
+          "symbol": "XOR",
+          "address": "0x40FD72257597aA14C7231A7B1aaa29Fce868F677",
+          "amount": "181064308118267181566649778459733543724",
+          "chainId": 1,
+          "decimals": 18,
+          "priceUsd": 0
+        },
+        "fees": [
+          {
+            "provider": "symbiosis",
+            "value": {
+              "symbol": "sUSDT",
+              "icon": "https://s3.openocean.finance/token_logos/logos/1642600369413_5107823985163122.jpg",
+              "address": "0x8D8Ce7Bf0C7f7a368Bb92087Fc9D474d2DffC072",
+              "amount": "250000",
+              "chainId": 13863860,
+              "decimals": 6,
+              "attributes": {
+                "ton": "EQCxE6mUtQJKFnGfaROTKOt1lZbDiiX1kCixRv7Nw2Id_sDs"
+              },
+              "priceUsd": 1
+            },
+            "save": {
+              "symbol": "sUSDT",
+              "icon": "https://s3.openocean.finance/token_logos/logos/1642600369413_5107823985163122.jpg",
+              "address": "0x8D8Ce7Bf0C7f7a368Bb92087Fc9D474d2DffC072",
+              "amount": "0",
+              "chainId": 13863860,
+              "decimals": 6,
+              "attributes": {
+                "ton": "EQCxE6mUtQJKFnGfaROTKOt1lZbDiiX1kCixRv7Nw2Id_sDs"
+              },
+              "priceUsd": 1
+            },
+            "description": "Cross-chain fee"
+          },
+          {
+            "provider": "symbiosis",
+            "value": {
+              "symbol": "USDC",
+              "icon": "https://s2.coinmarketcap.com/static/img/coins/128x128/3408.png",
+              "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+              "amount": "500000",
+              "chainId": 1,
+              "decimals": 6,
+              "priceUsd": 1
+            },
+            "save": {
+              "symbol": "USDC",
+              "icon": "https://s2.coinmarketcap.com/static/img/coins/128x128/3408.png",
+              "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+              "amount": "0",
+              "chainId": 1,
+              "decimals": 6,
+              "priceUsd": 1
+            },
+            "description": "Cross-chain fee"
+          }
+        ],
+        "priceImpact": "99.86",
+        "labels": [
+          "octopool-swap",
+          "dst-chain-swap",
+          "mixed-value-tokens"
+        ],
+        "approveTo": "0x0000000000000000000000000000000000000000"
+      },
+      "txValue": null,
+      "tonAttachedAmounts": [
+        "200000000"
+      ]
+    },
+    {
+      "source": "USDT",
+      "sourceChainId": 85918,
+      "nominalUsdInput": 100,
+      "inputAmount": "100000000",
+      "at": "2026-09-25T05:28:31.999962+00:00",
+      "httpStatus": 400,
+      "error": "{\"code\":0,\"message\":\"Price impact is too high\",\"errors\":[{\"message\":\"Price impact is too high\"}]}"
+    },
+    {
+      "source": "USDT",
+      "sourceChainId": 1,
+      "nominalUsdInput": 10,
+      "inputAmount": "10000000",
+      "at": "2026-09-25T05:28:33.319670+00:00",
+      "httpStatus": 200,
+      "summary": {
+        "type": "evm",
+        "kind": "onchain-swap",
+        "tokenAmountOut": {
+          "symbol": "XOR",
+          "address": "0x40FD72257597aA14C7231A7B1aaa29Fce868F677",
+          "amount": "163500870066988447869874829778380142131",
+          "chainId": 1,
+          "decimals": 18,
+          "priceUsd": 0
+        },
+        "tokenAmountOutMin": {
+          "symbol": "XOR",
+          "address": "0x40FD72257597aA14C7231A7B1aaa29Fce868F677",
+          "amount": "161865861366318563391176081480596340709",
+          "chainId": 1,
+          "decimals": 18,
+          "priceUsd": 0
+        },
+        "fees": [
+          {
+            "provider": "symbiosis",
+            "value": {
+              "symbol": "ETH",
+              "icon": "https://s2.coinmarketcap.com/static/img/coins/128x128/1027.png",
+              "address": "",
+              "amount": "150000000000000",
+              "chainId": 1,
+              "decimals": 18,
+              "priceUsd": 2679.6
+            },
+            "description": "Symbiosis on-chain fee"
+          }
+        ],
+        "priceImpact": "100",
+        "labels": [],
+        "approveTo": "0xE7e68D336F90f98D22A479253eafA5f2424aCaD8"
+      },
+      "txValue": "150000000000000",
+      "tonAttachedAmounts": []
+    },
+    {
+      "source": "USDT",
+      "sourceChainId": 1,
+      "nominalUsdInput": 50,
+      "inputAmount": "50000000",
+      "at": "2026-09-25T05:28:33.320557+00:00",
+      "httpStatus": 200,
+      "summary": {
+        "type": "evm",
+        "kind": "onchain-swap",
+        "tokenAmountOut": {
+          "symbol": "XOR",
+          "address": "0x40FD72257597aA14C7231A7B1aaa29Fce868F677",
+          "amount": "163501906730744610023184064069452401821",
+          "chainId": 1,
+          "decimals": 18,
+          "priceUsd": 0
+        },
+        "tokenAmountOutMin": {
+          "symbol": "XOR",
+          "address": "0x40FD72257597aA14C7231A7B1aaa29Fce868F677",
+          "amount": "161866887663437163922952223428757877802",
+          "chainId": 1,
+          "decimals": 18,
+          "priceUsd": 0
+        },
+        "fees": [
+          {
+            "provider": "symbiosis",
+            "value": {
+              "symbol": "ETH",
+              "icon": "https://s2.coinmarketcap.com/static/img/coins/128x128/1027.png",
+              "address": "",
+              "amount": "150000000000000",
+              "chainId": 1,
+              "decimals": 18,
+              "priceUsd": 2679.6
+            },
+            "description": "Symbiosis on-chain fee"
+          }
+        ],
+        "priceImpact": "100",
+        "labels": [],
+        "approveTo": "0xE7e68D336F90f98D22A479253eafA5f2424aCaD8"
+      },
+      "txValue": "150000000000000",
+      "tonAttachedAmounts": []
+    },
+    {
+      "source": "USDT",
+      "sourceChainId": 1,
+      "nominalUsdInput": 100,
+      "inputAmount": "100000000",
+      "at": "2026-09-25T05:28:33.329392+00:00",
+      "httpStatus": 400,
+      "error": "{\"code\":0,\"message\":\"Price impact is too high\",\"errors\":[{\"message\":\"Price impact is too high\"}]}"
+    },
+    {
+      "source": "ETH",
+      "sourceChainId": 1,
+      "nominalUsdInput": 10,
+      "inputAmount": "3731900283624421",
+      "at": "2026-09-25T05:28:34.664625+00:00",
+      "httpStatus": 400,
+      "error": "{\"code\":0,\"message\":\"Price impact is too high\",\"errors\":[{\"message\":\"Price impact is too high\"}]}"
+    },
+    {
+      "source": "ETH",
+      "sourceChainId": 1,
+      "nominalUsdInput": 50,
+      "inputAmount": "18659501418122107",
+      "at": "2026-09-25T05:28:34.664964+00:00",
+      "httpStatus": 200,
+      "summary": {
+        "type": "evm",
+        "kind": "onchain-swap",
+        "tokenAmountOut": {
+          "symbol": "XOR",
+          "address": "0x40FD72257597aA14C7231A7B1aaa29Fce868F677",
+          "amount": "1861835407461010108236276468612516081245844130512803676",
+          "chainId": 1,
+          "decimals": 18,
+          "priceUsd": 0
+        },
+        "tokenAmountOutMin": {
+          "symbol": "XOR",
+          "address": "0x40FD72257597aA14C7231A7B1aaa29Fce868F677",
+          "amount": "1843217053386400007153913703926390920433385689207675639",
+          "chainId": 1,
+          "decimals": 18,
+          "priceUsd": 0
+        },
+        "fees": [
+          {
+            "provider": "symbiosis",
+            "value": {
+              "symbol": "ETH",
+              "icon": "https://s2.coinmarketcap.com/static/img/coins/128x128/1027.png",
+              "address": "",
+              "amount": "150000000000000",
+              "chainId": 1,
+              "decimals": 18,
+              "priceUsd": 2679.6
+            },
+            "description": "Symbiosis on-chain fee"
+          }
+        ],
+        "priceImpact": "0",
+        "labels": [],
+        "approveTo": "0xE7e68D336F90f98D22A479253eafA5f2424aCaD8"
+      },
+      "txValue": "18809501418122107",
+      "tonAttachedAmounts": []
+    },
+    {
+      "source": "ETH",
+      "sourceChainId": 1,
+      "nominalUsdInput": 100,
+      "inputAmount": "37319002836244215",
+      "at": "2026-09-25T05:28:34.847941+00:00",
+      "httpStatus": 200,
+      "summary": {
+        "type": "evm",
+        "kind": "onchain-swap",
+        "tokenAmountOut": {
+          "symbol": "XOR",
+          "address": "0x40FD72257597aA14C7231A7B1aaa29Fce868F677",
+          "amount": "2512307854829279455389780891446665282067175164956985802",
+          "chainId": 1,
+          "decimals": 18,
+          "priceUsd": 0
+        },
+        "tokenAmountOutMin": {
+          "symbol": "XOR",
+          "address": "0x40FD72257597aA14C7231A7B1aaa29Fce868F677",
+          "amount": "2487184776280986660835883082532198629246503413307415943",
+          "chainId": 1,
+          "decimals": 18,
+          "priceUsd": 0
+        },
+        "fees": [
+          {
+            "provider": "symbiosis",
+            "value": {
+              "symbol": "ETH",
+              "icon": "https://s2.coinmarketcap.com/static/img/coins/128x128/1027.png",
+              "address": "",
+              "amount": "150000000000000",
+              "chainId": 1,
+              "decimals": 18,
+              "priceUsd": 2679.6
+            },
+            "description": "Symbiosis on-chain fee"
+          }
+        ],
+        "priceImpact": "0",
+        "labels": [],
+        "approveTo": "0xE7e68D336F90f98D22A479253eafA5f2424aCaD8"
+      },
+      "txValue": "37469002836244215",
+      "tonAttachedAmounts": []
+    }
+  ]
+}

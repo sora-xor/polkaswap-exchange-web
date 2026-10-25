@@ -1,0 +1,1435 @@
+                             ANTIGUA AND BARBUDA
+
+
+
+
+                       THE PLANT PROTECTION ACT, 2012
+
+
+
+
+                                     No. 18 of 2012
+
+                  [ Published in the Official Gc, zette Vol. XXXIII Nb.13
+                               dated March 14th, 2013.]
+
+
+
+
+             Printed at the Government Printing Office, Antigua and Barbuda,
+                            by Ralph George, Government Printer
+                                   - by Authority, 2013.
+
+600- 03.13                                                                     [Price $12 .05 j
+' hl' P/0111 Protection Act, 2012.   2       No. 18 of 2012.
+
+
+
+
+                                                               ,.
+
+
+
+                                         j
+No. 18 of 2012           3                                      The Plant Protection Act, 2012.
+
+
+                              THE PLANT PROTECTION ACT, 2012
+                                                                       f
+                                ARRANGEMENT OF SECTIONS
+
+
+                                             PARTI
+                                          PRELIMINARY
+
+
+
+1.   Short title
+2.   Interpretation
+                                         PART II
+                                      ADMINISTRATION
+
+
+3.   Powers of the Minister
+4.   Designation of NPPO
+5.   Functions of NPPO
+6.   Appointment of inspectors
+7.   Duties of an inspector
+8.   Designation of laboratories and analysts
+9.   Establishment, composition, procedure of Plant Protection Board
+10. Disqualification of members of Plant Protection Board
+11. Resignation of members of Plant Protection Board
+12. Advisory role of Board
+13. Sub-committees of Board
+14. Phytosanitary Emergency Fund
+
+
+                                            PART ID
+                                           IMPORTS
+
+
+
+15. Restrictions on importation
+16. Import permit
+17. Declaration to be signed by captain
+18. Inspection on importation
+19. Detention or destruction of imports
+  The Plant Protection Act, 2012.                                4   No. 18 of 2012.
+
+
+
+  20. Release of imports
+  21. Minister may restrict certain imports
+  22. Plant quarantine stations
+  23. Duty to report and detain certain imports
+  24. Consignments in transit
+
+
+
+                                              PART IV
+                                              EXPORTS
+
+
+  25. Restriction on exports
+  26. Inspection of exports
+
+                                               PART V
+                              CONTAINMENT AND ERADICATION OF PESTS
+
+  27. Duty of occupier to notify NPPO
+  28. Declaration of quarantine
+  29. Procedure when quarantine pest is on premises
+  30. Service of quarantine notice in absence of occupier
+  31. Duration of quarantine notice
+  32. Declaration of phytosanitary emergency
+  33. Lifting of quarantine
+  34. Declaration of pest free or low pest prevalence area
+
+                                              PART VI
+                                            ENFORCEMENf
+
+ 35. Entry and search by an inspector                                                  •
+ 36. Seizure and notice of seizure
+ 37. Storage or removal of affected items
+ 38. Confiscation and disposal of unclaimed items
+ 39. Appeal                       •
+                                                                                       j
+- 40. Offences
+ 41. Liability of officials
+ 42. Penalty
+No. 18 of 2012           5                    The Plant Protection Act, 2012.
+
+
+
+43. Forfeiture
+                               ?
+44. Notice to offender
+45. Limitation on liability
+46. Compensation
+
+                                   PART VII
+                              MISCELLANEOUS
+
+
+47. Documents
+48. Regulations
+49. Repeal and Savings
+50. Act to bind the State
+The Plant Protection Act, 2012.                                             6         No. 18 of 2012.
+
+
+[L.S.J
+                                   •-
+
+
+
+
+                                             ~
+                                             •I Assent,
+
+
+                                                                           Dame Louise Lake-Tack,
+                                                                                Governor-General.
+
+                                                                                  28th February, 2013
+
+
+                                    ANTIGUA AND BARBUDA
+
+                            THE PLANT PROTECTION ACT, 2012
+
+                                           No. 18 of 2012
+
+AN ACT to prevent the introduction and to control the spread of plant pests; to protect plant
+resources; facilitate trade in plants and plant products; to regulate other matters connected thereto .
+
+ENACTED by the Parliament of Antigua and Barbuda as follows:
+
+                                             PART I
+                                          PRELIMINARY
+
+1. Shorttitle
+
+This Act may be cited as the Plant Protection Act, 2012.
+
+2. Interpretation
+
+   (I) In this Act, unless the context otherwise requires-
+
+      "affected" means infected or infested with a pest;
+
+      "area" includes a place or site of production;
+
+      ''area of low pest prevalence'· means an area, whether all of Antigua and Barbuda or part of
+      Antigua and Barbuda, as prescribed, in which a specific pest occurs at low levels and which is
+      subject to effe ctive survei llance , control or eradication measures;
+....
+
+
+       No. 18 of 2012          7                                            The Plant Protection Act. 2012 .
+
+
+            "beneficial organism" means any organism including fLmgi, bacteria, viruses, virns-tike organ-
+            isms anci invertebrate or other animals which is declared by the Minister in writing to be
+            beneficial to flora or agricultural production ;
+
+            "Board" means the Plant Protection Board established pursuant to section 9 of this Act;
+
+            "consignment" means a quantity of plants , plant products or other regulated articles being
+            moved from one country to another and covered, when required, by a single phytosanitary
+            certificate;
+
+            "contain" means to apply phytosanitary measures in and around an infested area to prevent
+            the spread of a pest;
+
+            "container" means a box, bag, wrapper, covering or other receptacle in which plants. plant
+            products or other reg ulated articles that may carry pests have been or are being transported;
+
+            "control" means to suppress, contain or eradicate a pest population;
+
+            "conveyance" mean s any vessel, aircraft, train, vehicle, cart, container, animal or other thing
+            that can convey plants, plant products, pests, beneficial organisms or other re g ulated articles
+            from one place to another;
+
+            "detain " means to keep a consignment in official custody or confinement for phytosanitary
+            reasons, and " detention" shall have a corresponding meaning ;
+
+            "e ndange red area" means an area where ecological factors favour the es tablishm ent of a pest
+            whose presence in the area will result in economically important loss ;
+
+            "entry" means the movement of a pest into an area where it is not yet present , or present but
+            not widely distributed and being officially controlled;
+
+            "e radicate'' means to apply phytosanitary measures to eliminate a pest from an area , and
+            "e radication " shall have a corresponding meaning:
+
+            "es tablishment" means the perpetuation, for the foreseeable future, of a pest within an area
+            after entry;
+
+            "Fund '' means the Phytosanitary Emergency Fund established under section 14;
+
+            "germplas m'' means plants intended for use in breeding or conservation prog rammes;
+
+            "import permit" means a permit issued under section 16( 1);
+
+            "importer" means anyone who, whether as owner, consignor, consignee, agent, broker or
+            otherwise, is in possession of or in any way entitled to the custody of any plant, plant product ,
+            pest, beneficial organism or other regulated article landed or likely to be landed in Antigua and
+            Barbuda from another country ;
+The Plant Protection Act, 2012                                              8        No. 18 of 2012 .
+
+
+     •'inspection" means offictal- visual examination of plants, plant pi'oducJs or other regulated
+;    articles to determine if pests are present or to determine com~liance with phytosanitary regu-
+     lation~;
+
+     ''inspector" means a plant protection officer and any person designated or appointed
+     under section 6:
+
+     "introduction" means the entry of a pest resulting 111 its establishment in Antigua and
+     Barbuda;
+
+     "IPPC" means the New Revised Text of the International Plant Protection Convention;
+
+     "IPPC Secretariat" means the Secretariat of the International Plant Protection Convention;
+
+     "Minister" means the Minister responsible for plant protection;
+
+     "Ministry" means the Ministry responsible for plant protection;
+
+     "National Plant Protection Organisation" or "NPPO" means the official unit, department or
+     office designated by the Minister under section 4;
+
+     "occupier", in relation to any land or building, means a person in actual occupation thereof;
+
+     "official" means established, authorized or performed by the NPPO;
+
+     "official control" means the enforcement of mandatory phytosanitary regulations and the
+     application of mandatory phytosanitary procedures with the objective of eradication or con-
+     tainment of quarantine pests or for the management of regulated non-quarantine pests:
+
+     ··outbreak" means an isolated pest population, recently detected and expected to survive for
+     the immediate future;
+
+     ·'owner'', in relation to any thing, includes any person having for the time being the possession,
+     custody or control thereof;
+
+     " packaging'' means any material used lo pack, contain or keep plants, plant products or other
+     regulated articles;
+
+     "pest" means any species, strain or biotype 9[ plant, animal or pathogenic agent injurious to
+     plants or plant products ;
+
+     .. pest free area" means an area in which a specific pest does not occur as demonstrated by
+     sc ientific evidence and in which, where appropriate. this condition is being officially main -
+     tain ed:
+No. 18 of 2012      9                                               The Plant Protection Act, 2012.
+
+
+     "pest risk analysis" means the process of 'evatuating biological or other scientific and economic
+     evidence to determine whether a pest should be regulated and the strength of any phytosanitary
+     measures to be taken against it;
+
+     "phytosanitary certificate" means a certificate patterned after the model certificate of the IPPC;
+
+     "phytosanitary emergency" means an emergency declared under section 21 (c) or 28;
+
+     "phytosanitary measure" means any legislation, regulation or official procedure having the
+     purpose of preventing the introduction and or spread of quarantine pests, or limiting the
+     economic impact of regulated non-quarantine pests;
+
+     "plant products" means any unmanufactured material of plant origin (including grain) and
+     those manufactured products which, by their nature or that of their processing, may create a
+     risk for the introduction and spread of pests;
+
+     "plants" means living plants and parts thereof, including seeds and germplasm;
+
+     "pre-clearance" means phytosanitary certification or clearance in the exporting country, per-
+     formed by or under the supervision of the NPPO;
+
+     "premises" means land or any building or other structure situated on land;
+
+     "prescribed" means prescribed by regulations made under this Act;
+
+     "quarantine pest" means a pest of potential economic importance to the area endangered
+     thereby, not yet present there, or present but not widely distributed and being officially con-
+     trolled, and declared as such in regulations;
+
+     "regu lar business hours" means the normal operating hours of government offices 111
+     Antigua and Barbuda;
+
+     "regulated article" means any storage place, packaging, conveyance, container, soil and any
+     other organism, object or material capable of harbouring or spreading pests, deemed to require
+     phytosanitary measures, particularly where international transportation is involved, and in-
+     cludes beneficial organisms;
+
+     "regu lated non-quarantine pest" means any pest listed in regulations made under this
+     Act, whose presence in plants for planting affects the intended use of those plants with an
+     economically unacceptable impact;
+
+     "regulated pest" means a quarantine pest or a regulated non-quarantine pest;
+The Plant Protection Act, 2012.                                             10          No.18of 2012.
+
+
+      "soil" means material wholly or partly derived from the upper layer of the earth's crust which is
+      capable of sustaining plant life and which contains solid organic substances such as parts of
+      plants, humus, peat or bark, but excluding any medium which is sterile, composed entirely of
+      unused peat or otherwise incapable of harbouring or transmitting pests;
+
+      "SPS Agreement" means the WTO Agreement on the Application of Sanitary and Phytosanitary
+      Measures to which Antigua and Barbuda is a party;
+
+      "storage place" means a place where a plant, plant product or regulated article is stored;
+
+      "suppression" means the application of phytosanitary measures in an affected area to reduce
+      a pest population;
+
+      "surveillance" means an official process which collects and records data on pest occurrence
+      or absence by survey, monitoring or other procedures;
+
+      "treatment" means an officially authorized procedure for the killing or removal of pests or
+      rendering pests infertile;
+
+      "WTO" means the World Trade Organisation established in 1995 of which Antigua and Barbuda
+      is a member.
+
+                                            PART II
+                                         ADMINISTRATION
+
+
+3. Powers of the Minister
+
+   (I) The Minister shall have primary responsibility for the administration of this Act.
+
+    (2) Notwithstanding sub-section (1), the Minister may, in writing, delegate specific functions under
+this Act to the National Plant Protection Organisation or other government officials or agencies as the
+Minister considers appropriate.
+
+4. Designation of NPPO
+
+   (l) The Minister shall designate a government unit, department or office to serve as the National
+Plant Protection Organization of Antigua and Barbuda, and shall transmit the name of such unit to
+the IPPC Secretariat.
+
+   (2) The Minister may appoint individuals from time to time to serve as members of the National
+Plant Protection Organisation.                                :i
+
+5. Functions ofNPPO
+
+The functions of the National Plant Protection Organisation shall include the following-
+No. 18 of 2012           11                                          The Plant Protection Act, 2012.
+
+
+     ( a) the implementation of the IPPC and the SPS-Agreement, and the following responsibilities-.
+
+           (i)     issuing phytosanitary certificates;
+
+           (ii)    can-ying out surveillance of an ornamental and growing plant, including areas
+                   under cultivation and wild flora, and of a plant and a plant product in storage or in
+                   transport, for the purpose of reporting the occurrence, outbreak and spread of
+                   pests, and of controlling those pests;
+
+           (iii)   inspecting any consignment of a plant and plant product and . where appropriate,
+                   inspecting any regulated article or storage place, for the purpose of preventing the
+                   introduction and spread of pests;
+
+           (iv)    conducting pre-clearance inspections where requested ;
+
+           (v)     disinfesting or disinfecting consignments of plants , plant products a nd other
+                   regulated articles;
+
+           (vi)    protecting endangered areas and plant species and designating, maintaining and
+                   surveying pest free areas and areas of low pest prevalence;
+
+           (vii) conducting pest risk analysis;
+
+          (viii) providing information to other countries concerning phytosanitary measures
+                 applied, either through pest risk analysis or by reference to applicable international
+                 standards;
+
+          (ix)     notifying trading partners of relevant instances of non-compliance with import
+                   requirements that may be prescribed ;
+
+          (x)      ensuring the phytosanitary security of consignments after certirication and before
+                   export;
+
+          (xi)     establishing auditing and trace-back procedures for plants , plant products and
+                   other regulated articles for phytosanitary certification;
+
+          (xii)    establishing any minimum qualifications for and overseeing training and
+                   development of inspectors and other NPPO staff;
+
+          (xiii) distributing information regarding regulated pests and the means of their prevention
+                 and control;
+
+          (xiv) proposing, reviewing, preparing and enforcing phytosanitary measures and other
+                necessary legislation;
+I he P/0111 Protectirm Act, 2012.                                                  12      No. 18 of 2012.
+
+
+              (xv)    notifying phytosanitary measures to the designated national enquiry point for
+                      SPS, the IPPC focal point, any local agency affected by the measures and to other
+                      countries in accordance with international obligations; and
+
+              (xvi) providing information regarding import and export regulations in force, and technical
+                    requirements for plants, plant products and other regulated articles, on request of
+                    any interested international, regional or other national plant protection
+                    organisation.
+
+      ( /J)   the enforcement or this Act, as well as any other legislation relating to plant protection
+              that the Minister may direct;
+
+      ( c)    the representation of Antigua and Barbuda in any bilateral, regional and international
+              forum relating to phytosanitary matters;
+
+      ( d)    the development and application of pest diagnostic, investigative and analytical capa-
+              bilities as well as the establishment, of laboratories, plant quarantine stations and other
+              phytosanitary facilities;
+
+      ( e)    the establishment of procedures for accreditation of any plant quarantine station. offi -
+              cial analyst, official laboratory or any other person or institution from the public or
+              private sector involved in phytosanitary matters; and
+
+      (f)     any other function that the Minister considers necessary for the purposes of this Act.
+
+6. Appointment of inspectors
+
+The Minister, acting in consultation with the Board, may appoint or designate officers of the NPPO
+to carry out the duties assigned to an inspector under this Act.
+
+7. Duties of an inspector
+
+  (I) The duties of an inspector include the following-
+
+     ( c1)    inspecting and certifying any-
+
+              (i)     any plant, plant product under cultivation, in a storage place or in transit,;
+
+                                                                                                             j
+              (ii)    any regulaled article in a storage place or in transit; or
+
+              (iii)   storage place in order to discover, prevent and report the existence, outbreak and
+                      spread of a pest; and
+No. 18 of 2012           13                                           The Plant Protection Act, 2012.
+
+
+             (iv)   consignment of any plant, plant product or regulated article destined for import or
+                    export to determine whether it is affected, and where necessary verifying the pest
+                    status of consignments by the taking of samples or otherwise;
+
+      ( b)   ensuring-
+
+             (i)    the disinfection or disinfestation of the consignment of any plant, plant product or
+                    regulated article destined for import or export, as well as its container, packaging,
+                    storage place and transport facility;
+
+             (ii)   that no threat to plant resources is caused by waste disposed from -
+
+      ( a)   any aircraft, ship, pleasure craft or any vessel arriving in Antigua and Barbuda; and
+
+      ( b)   premises which process or wash any imported plant, plant product or regulated article;
+
+      ( c)   issuing phytosanitary certificates on behalf of the NPPO;
+
+      ( d)   carrying out detection activities and maintaining up-to-date information on the pest
+             status;
+
+      ( e)   conducting surveillance and monitoring exercises in any land, premises or area as
+             required under this Act;
+
+      (f)    instituting inquiries and requesting information or documentation on reasonable
+             suspicion that the provisions of this Act are being contravened; and
+
+      ( g)   performing any other function relating to inspection or certification as the NPPO may
+             assign to the inspector.
+
+   (2) An inspector may carry out an inspection under subsection ( 1) (a) (iv)) on the territory of an
+exporting country as a pre-clearance inspection, at the invitation of the exporting country.
+
+   (3) In carrying out any duty under subsection (1) or (2), an inspector shall, identify himself as an
+inspector by showing his identification card or other proof of his or appointment or designation as
+an inspector.
+
+8. Laboratories, Analysts
+
+The NPPO shall designate one or more-
+
+      ( a)   laboratories to be official laboratories; and
+Thf Pion! Protection Act, 2012.                                                    14       No. l8 of 2012.
+
+
+
+          ( b J· analysts to be official analysts;-
+
+for the purposes of this Act.
+
+>. Establishment, composition, procedure of Plant Protection Board
+1
+
+
+
+
+    (I) The Plant Protection Board is hereby established, and shall consist of-
+
+          ( a)      three staff members of the Ministry responsible for agriculture, including -
+
+                    (i)      the head of the NPPO;
+
+                    (ii)     the Director of Agriculture; and
+
+                    (iii)    one other person nominated by the Director of Agriculture;
+
+          ( b)      one representativ e of each of the following -
+
+                    (i)      the Ministry responsible for the environ ment ;
+
+                    (ii)     the Ministry responsible for trade;
+
+                    (ii i)   the Ministry of Legal Affairs;
+
+                    (iv)     the Cus tom s Department;
+
+                    ( v)     the Antigua and Barbuda Defence Force;
+
+                    (v i)    Barbuda Council;
+
+                    (v ii)   the Ministry re spo nsible for health;
+
+                    (viii) the Royal Police Force of Antigua and Barbuda ;
+
+          ( c)     one representative appointed by the Minister from each of the following -
+
+                   (i)       importer and exporters;
+
+                   (ii)      growers and nursery owners.
+
+
+   C)    Members of the Board shall be nominated by th e ir respec tive Minister or president/c hair as
+the case may be. and appointed by the Minister responsible for plant protection.
+
+    (1)          Members s hall be paid an honorarium to be approved by the Mini ster.
+No. 18 of 2012            15                                        The Plant Protection Act, 2012.
+
+
+   (4) Members shall serve for a period,of three years and shall be eligible for reappointment.
+
+   (5) The quorum at a meeting of the Board shall be at least one half of the membership, provided
+that in the case of an emergency declared under this Act, the Board may act notwithstanding the
+absence of a quorum.
+
+   (6) The Board shall meet at least four times per year.
+
+   (7) The Board shall elect a Chairperson at its first meeting , which shall take place within three
+months from the date of commencement of this Act.
+
+    (8) Except as provided in sub-sections (1) to (7) and sections 12 and 13, the Board shall regulate
+its own procedure.
+
+   (9) Minutes of each meeting shall be kept in proper form by a public officer who shall be desig-
+nated by the Permanent Secretary of the Ministry.
+
+
+
+10. Disqualification of members of Plant Protection Board
+
+   (I) The Minister may, terminate the appointment of the Chairperson or any other member of the
+Board, if the member-
+
+      ( o)    becomes of unsound mind, as certified by a duly appointed medical board;
+
+      ( IJ)   is an un-discharged bankrupt;
+
+      ( c)    has been found to be guilty of misconduct which is related to the performance of his
+              functions pursuant to this Act;
+
+      ( cl)   has been absent, in the case of the Chairperson, without leave granted by the Minister
+              and in the case of a member, without leave granted by the Chairperson, from four con-
+              secutive meetings of the Board; or
+
+      ( e)    becomes incapable, wilfully or otherwise, of carrying out his functions pursuant to the
+              provisions of this Act.
+
+   (2) The appointment of a member of the Board shall not be terminated unless that member has
+been given a reasonable opportunity to make representations.
+
+  (3) The names of the members of the Board as first constituted and every change in the member-
+ship thereafter must be published in the Gazette.
+The Plant Protection Act, 2012.                                               16       No. 18 of 2012.
+
+
+
+'11. Resignation of members of Plarit ~rotection Board
+                                        •
+A member of the Board, other than the Chairperson, may at any time resign his office by instrument
+in writing addressed to the Minister and from the date of receipt of the instrument by the member that
+member shall cease to be a member of the Board.
+
+
+
+12Advisory role of Board
+
+The Board shall act in an advisory capacity to the Minister and the NPPO on issues of plant
+protection and shall be responsible for-
+
+        (a)    recommending changes to relevant legislation as required, and recommending regu-
+               lations, schedules, notices and orders to be made, issued or amended under this
+               Act;
+
+        ( b)   assisting in the determination of criteria for the declaration of a phytosanitary emer-
+               gency under section 21(c) or 32.
+
+13. Sub-committees of Board
+,.
+The Board may appoint such sub-committees as it may consider necessary, including members of the
+Board, to provide advice and technical input.
+
+
+
+14. Phytosanitary Emergency Fund
+
+     ( 1) There is established a Phytosanitary Emergency Fund which shall be administered by the Board.
+
+     (2) There shall be paid into the Fund-
+
+       ( a)    all monies voted by Parliament for the purposes of this Act;
+
+       ( b)    donations , grants , awards and endowments given to the Board; and
+
+       ( c)    any proceeds or fees collected under this Act, except fines imposed by a court.
+
+   (3) All monies collected or received under this Act shall be paid into the general account of the
+Fund in a bank approved by the Minister of Finance, and administered in accordance with the
+Finance Administration Act, 2006.
+
+  (4) The resources of the Fund shall be made available to the NPPO upon declaration of a
+phytosanitary emergency under section 21( c) or 3 J.
+No. 18 of 2012            17                                         The Plant Protection Act, 2012.
+
+
+                                               PART ID
+                      ?                       IMPORTS                                              .-
+
+15. Restrictions on importation
+
+   ( l) A Plant, plant product or other regulated article may be imported into Antigua and Barbuda
+only at the prescribed ports of entry.
+
+  (2) The NPPO may require that certain plants, plant products or other regulated articles not be
+imported except-
+
+      ( a)   by authority of an import permit granted under section 16(1 );
+
+      ( b)   where accompanied by-
+
+             (i)    an original phytosanitary certificate issued by the country of export that is dated
+                    not more than thirty (30) days before the entry of the plant, plant product or
+                    regulated article into Antigua and Barbuda; and
+
+             (ii)   any other documentation that may be prescribed; and
+
+      ( c)   where all prescribed requirements are satisfied.
+
+
+
+16. Import permit
+
+    (I) Where an import permit is required under section 15(2)( a), an importer shall apply to the NPPO
+in the prescribed manner and may be granted a permit on payment of the prescribed fee.
+
+   (2) In the evaluation of an application for an import permit, the NPPO shall apply existing interna-
+tional standards or conduct pest risk analysis as the case may be in order to determine the applicable
+phytosanitary requirements.
+
+17. Declaration to be signed by captain
+
+Where a plant, plant product or regulated article has been imported on a vessel or aircraft, in the
+absence of the owner, the captain shal l sign a dec~aration in the prescribed form .
+
+18. Inspection on importation
+
+   (I) A person who has imported a plant, plant product or regulated article shall present it for
+inspection by an inspector at the prescribed port of entry.
+The Plant Protection Act, 2012.                                                 18         No. 18 of 2012.
+
+
+   (2) Notwi!hstanding subsection (1 ), a ptarH, -plant product or regulated article may-be in)pected
+by an inspector at a place other than the port of entry-                               f
+
+      ( o)     on the application by an importer, and
+
+      ( h)     if the container has been sealed and marked as prescribed or in a manner required under
+               any other law.
+
+   (3) An inspection carried out under subsection (l) or (2) is subject to the payment of the pre -
+scribed fee.
+
+   (4) An inspection referred to in subsection (I) or (2) shall be carried out during regular business
+hours , except where the plant, plant product or regulated article is in tran sit or ex tre mely perishable
+or where its entry has otherwise been delayed, in which case, on application by the importer and on
+payment of the prescribed fee, the NPPO may agree to an inspection being carri ed out at any other
+time.
+
+19. Detention or destruction of imports
+
+   ( l) Jr, on an in spection that is carried out in accordance with section 18. the in specto r determines
+that the imported plant, plant product or regulated article-
+
+      ( o)     is not accompanied by any relevant documentation required by sect ion I 5(2): or
+
+      ( h)     presents any ri sk for the introduction or sp read of pests:
+
+the inspcctrn shall detain the item and im111ediately serve written notice on the iinportt.-r Lh:11 part or
+all or the i111portecl plant. plant product or regulated article may be subj ec t. wit hin the tim e period
+-, pccil"ied in the notice. to-
+
+               (i)     detention until the rece ipt of relevant documentation within a reasonable ti111e;
+
+               (ii)    approp riate treatment in order to remove the risk:
+
+               (iii)   re-exportation:
+
+               (iv)    co nl"i sca tion : or
+
+               (,·)    destruction.
+
+   (2) The inspector may !"org:o notice and carry out any of the actions listed und e r subsection (I)
+where in I hi s or her] opinion destruction of the imported plant, plant product or reg ulated article is
+urgently required or the giving of notice is impracticable .
+No. 18 of 2012           19                                            The Plant Protection Act, 2012.
+
+
+   (3) Where, after its entry or treatment, any imported plant, plant product or regulated article
+remains unclaimed for a period of time, as may be prescribed, the NPPO may take action to destroy
+the imported plant, plant product or regulated article.
+
+   ( 4) The costs and responsibility for any action taken under subsection ( 1), (2) or (3) shall be borne
+by the importer, except where in exceptional cases the NPPO determines that the State should take
+responsibility for the associated costs.]
+
+   (5) The State may assume financial responsibility under subsection (4) without prejudice to its
+right to recover costs from the importer as a debt.
+
+   (6) Where any action is taken under subsection (I), (2) or (3), the method used to calculate costs
+charged shall be in accordance with the prescribed procedure.
+
+   (7) The State shall not be liable for the confiscation. destruction or disposal of any plant. plant
+product or regulated article carried out in accordance with this sec tion.
+
+20. Release of imports
+
+If upon inspection carried out under section I 8 the inspe ctor determines that th e imported plant ,
+plant product or other regulated article do not present m1y risk for the importation and spread or
+pests, he may release the consignment to the importer.
+
+21. Minister may restrict certain imports
+
+In order to protect plant resources. human and an irnal health o r the cnvironrnent, the Minister may.
+on the advice of the Board-
+
+      ( u)   permit the entry of any plant. plant product or regulated article for scientific or experi-
+             mental purposes, subject to such terms and conditions that the Minister. on the advice
+             of the Board, considers appropriate;
+
+      (I?)   prohibit or restrict the entry of any plant. plant product or regulated article;
+
+      ( c)   declare a phytosanitary emergency; or
+
+     (cl)    take any other necessary action to prevent the introduction or spread or a quarantine
+             pest and regulated non-quarantine pest.
+
+22. Plant quarantine stations
+
+The NPPO may-
+The P!C111f Protection Act, 2012.                                              20         No. 18 of 2012.
+
+
+      ( a)    -designate certain places as plant quarant{ne st(l.tions where a, plant, plant product or
+               other regulated article may be kept fur phytosanitary observation, research. inspection ,
+               testing, treatment, detention or destruction;
+
+      ( b)    require that imported material be kept or cultivated at a plant quarantine station. or at any
+              other location identified by the NPPO , and kept under the NPPO 's supervision for such
+              time as the NPPO deems necessary.
+
+23. Duty to report and detain imports
+
+   ( 1) An employee of the postal service or an official of the Customs Department, Port Authority.
+Royal Police Force or Defence Force who has knowl edge of the arrival or importation of any plant,
+plant product or regulated article, shall. in the absence of an inspector-
+
+      (Cl)    as soon as practicable, notify the arrival or importation to the NPPO; and
+
+      (h)     detain the plant , plant product or regulated article for inspection by an in spector.
+
+   (2) A detention carried out under subsection ( l J sha l I be deem ed to be an action taken by or on
+delegation from the NPPO.
+
+   (3) The NPPO shall take custody of any item detained und er subsection (I) within three clays or its
+deten tion.
+
+24. Consignments in transit
+
+   ( 1) The movement of consignments of regulated articles which pass through Antigua and Barbuda
+without being imported and which may present a ph ytosan it ary ri sk to Anti gua and Barbuda shal l be
+subject to the appli ca tion or meas ures to redu ce or remove this ri sk. T he elements or such a transit
+system shall be as presc ribed.
+
+   (2) No twithstandin g subsec ti on ( 1) above. all cons ignments con tainin g regulated articles as
+described, shall. in no less than 48 hours prior to arrival in Antigua and Barbuda, be notifi ed in
+writing to th e NPPO and wri tten permission sought to facilitate the transit or such reg ulated articles
+thro ugh Antigua and Barbuda.
+
+                                                PART IV
+                                                EXPORTS
+
+25. Restriction on exports
+
+A person shall not export a plant. plant product or regu lated article unl ess that person-
+     No. 18 of 2012           21                                            The Plant Protection Act, 2012.
+
+
+           ( a)   appl ies to the NPP(? in the prescribed manner:
+                                      •
+           ( b)   provides to the NPPO all documentations that are prescribed:
+
+           ( c)   makes the consignment available for inspection under section 26:
+
+           (cl)   pays the prescribed fees: and
+
+     has been granted a phytosanitary certificate .
+
+     26. Inspection of exports
+
+     (I) The NPPO shall. on application by an ex porter under section 25. cause an inspection or the
+     consignment to be carried out. and:
+
+           ( o)   iss ue a phyto san itary certificate, in a form as may be prescribed. where th e consig n-
+                  ment-
+
+                  (i)    meets the documentary and other requirements for import or the country to which
+                         the consignment is to be exported: and
+
+                  (ii)   satisfies any other requirements for export speci f'ied by the NPPO or under any
+                         app li cable law: or
+
+           (h)    deny the is s ue or a phytosanitary certificate where the requirement'.-- s pecified in para-
+                  gr:i ph ( o) have not been met.
+
+        (2) The issuance of a phytosanitary certif'icate shall nol release the exporter l'rom co mpliance with
+     this Act or any other law.
+
+                                                     PART V
+
+                            CONTAINMENT AND ERADICATIONNOF PESTS
+
+     27. Duty of occupier to notify NPPO
+,.
+     The occupier or owner of any land or pre1nises , who has knowledge of or suspects the prese nce of
+     a quarantine pest thereon shall immediately notify the NPPO.
+
+     28.Dec~rationofquarantine
+
+       ( l) The Minister may. on the advice of the Board-
+n,e Plant Protection Act, 2012.                                                22         No. 18 of 20 12.
+
+
+      ( ct)    declare any land, 'Premises·or area that is affected or is suspected of being affected witlr
+                                                                          .
+               any pest to be under quarantine;                           .-
+
+      ( b)     presc ribe measures for the treatment or disposal of a plant, plant product, regulated
+               article. and the treatment of a storage place whether or not it has been found to be
+               affected, in order to limit the spread of any quarantine pest:
+
+      ( c)     prescribe the period of quarantine.
+
+   (2) For the purpose of sub- sec tion ( 1), "quarantine·· includes-
+
+
+      ( a)     prohibiting th e movement of people, conveyances. plants, plant products or other regu-
+               lated articles from or to a specified locati o n (land, premi ses or area):
+
+      ( b)     prohibiting the planting or replanting of a specified location :
+
+      ( c)     the takin g of any other measure which the Minister on the advice or the Board deems
+               necessary under the circu mstances.
+
+29. Procedure when quarantine pest is on premises
+
+   (I) 11' the NPPO believes that a quarantine pest is present on any premises. it may. subject to
+sect ion
+
+15 (2)-
+
+      ( c,)    authorize an inspector to-
+
+              (i)     en ter the premises at any reasonabl e time .
+
+              (ii)    inspect any plant, plant product. regulated article or storage place. and
+
+              (iii)   take a sample as he may consider necessary; and
+
+      ( IJ)    require, by noti ce in writing. the owner or occupier of the premises, and where the NPPO
+               deems it appropriate, the owner or occupier of any premi ses in the vicinity, to take within
+               a spec ifi ed period such measures on hjs premises that th e NPPO co nsiders appropriate
+               to eradica te. contain or res trict th e spread of the pest.
+
+   (2) If an owner or occupier of premises fa il s to comply with any term or a notice iss ued under
+subsection (I) (hJ, the NPPO may direct an in spector or othe r au th orized person to en ter th e pre-
+mises in question in order to-
+      No.18of2012              23                                            The Plant Protection Act, 2012.
+
+
+           ( a) - -carry out the requirements of the notice:-
+                                                        ?
+           (b)     where necessary, destroy the plant, plant product or regulated article:
+•                  and eradicate, contain or restrict the spread of the pest.
+
+         (3) The owner shall be liable to pay the costs for any action taken under subsection (2), except
+      where in exceptional cases the NPPO determines that the State should take responsibility for the
+      associated costs.
+
+         (4) The State may assume financial responsibility under subsection (3) without prejudice to its
+      right to recover its costs from the owner as a civil debt.
+
+         (5) Where the NPPO takes any action under subsection (2), the method used to calculate the costs
+      shall be as prescribed.
+
+         (6) The State shall not be liable for the destruction or disposal of' any plant. plant product or
+      regulated article carried out in accordance with this section.
+
+      30. Service of quarantine notice in absence of occupier
+
+      If a person is not in actual occupation of any premises. or if the occupier cannot be found, service of
+      any notice under this Act may be made by affixing the same in a conspicuous place on the premises,
+      and such affixing shall be deemed to be sufficient service or notice
+
+
+
+      J 1. Duration of quarantine notice
+
+         (I) Any notice issued under section 29 (I) (IJ) or 30 shall remain in force until an inspector gives
+      any affected owner or occupier a certificate in writing th ~1t the premises or area is free from pests.
+
+          (2) A person shall not remove, or allow or cause to be removed any plant, plant product or
+      regulated article from the premises or area under quarantine while a notice issued under section 29 (I)
+      (h) or 30 is in force.
+
+
+
+.,.   32. Declaration of phytosanitary emergency
+
+      The Minister may. on the advice of the NPPO , declare a phytosanitary emergency based on-
+
+            ( o)   an inspection carried out under this Act; or
+
+            (h)    an analysis of a sample taken under section 29 (I) (o) (iii).
+The Plant Protection Act, 2012.                                                     24          No. 18 of 2012.
+
+
+
+33. Lifting of quarantine
+
+The Minister shall, upon the advice of the Board, serve written notice on all affected owners or
+occup iers of land to lift the quarantine where-
+
+      ( a)   he determines that the relevant quarantine pest is no longer considered to be present; or
+
+      ( b)   the NPPO determines that it is no lon ger appropriate for the quarantine to be maintained
+             in respect of some or all of the affected land.
+
+34. Declaration of pest free or low pest prevalence area
+
+The Minister may, on the recommendation of the NPPO-
+
+      (et)   declare an area pest free where the NPPO is satisfied that-
+
+             (i)     a pest is not present in an area:
+
+             (ii)    phytosanitary measures have been implemented to keep the area free or the pest ;
+                     and
+
+             (iii)   a surveillance system has been instituted to verify that the area remains l rec or the
+                     pest.
+
+      ( h)   declare an area or low pest prevalence where the NPPO is satisfied that -
+
+             (i)     a pest occurs at low levels in an area
+
+             (ii)    phytos anilary me asure s have been implemented to kee p the pest IC\ cb low: and
+
+             (iii)   a s urveillance sy stem has been instit_uted to verify that the pest le ve ls re m a in lo w.
+
+                                                   PART VI
+                                               ENFORCEMENT
+
+35. Entry and search by an inspector
+
+  ( l) For the purpose of detecting a quarantine· pest or a regulated quarantine pest or e nsuring
+compliance with this Act, an inspector may-
+
+     (rt )   stop and without a warrant search a person. container or conveyance. entering or mov -
+             ing within Antigua and Barbuda that the inspector believes on reasonable grounds is
+             harbouring such pe st:
+No.18 of 2012               25                                             The Plant Protection Act, 2012.
+
+
+       ( b)    subject to subse~tions (2) and (3 ), at a reas-onable time , enter and inspect any premi ses:
+                   f                                                                                   ;
+       ( c)    open any container, receptacle or other thing that the inspector believes on reasonabl e
+               gro und s contains any thing in respect of which this Act applies;
+
+       ( d)    examine any thing in respect of which this Act applies and take a sample of it.
+
+   (2) An in spector shall not enter a dwelling house except with the co nsent of the occ upi er or under
+the authority of a warrant iss ued by a Magistrate.
+
+   (3) An in spector may, with a warrant issued by a Magistrate, enter and search any premises. where
+there is reasonable ca use to believe that an offence against this Act has taken or is tak in g place .
+
+   (4) A person shall not break a seal on a sealed container containing a plant, plant product or
+reg ulated arti cle unless an inspector is present.
+
+   (5) An in spec tor may, in the performance of his duties under thi s section. be acc o:r.pa ni cd ancl
+assis ted by a police officer.
+
+   (6) In the cou rse of an in spec tion carried out under subsect ions (I). (2) and (1 ). an in spec tor may.
+as he co nsiders necessary. seize. destro y. detain . trea t or otherwise di spose of any plant. rl,111t
+product or regulated article. or order that any such action be taken . at the expense o r the owner.
+
+36. Seizure and notice of seizure
+
+   (I) In the co urse   or an inspect ion carried ou t under thi s Act. if an inspector believes on rcas;onable
+grou nds that a provision of this Act has been or is bein g contravened. or any plant. plant product or
+regulated artic le prese nts a risk of the introduction or sp read of a pest, the in spec tor ma y se ize the
+planL plant product or reg ulated article-
+
+       ( o)    by means of or in relation to which he believ~s on reasonable grounds that the contra-
+               ve ntion has been or is being committed;
+
+       ( /J)   that he believes on reasonable grounds will afford evidence in res pec t or the co ntra ven-
+               tion of th e provi sion of this Act.
+
+   (2) An inspector who se izes and detains a plant, plant product or regulated article und er thi s
+Act-
+       (c t ) shall imm ediately iss ue to the owner of the plant, plant product or reg ulated article a
+detention certificate in the prescribed form and shall, as soon as practicable, advise the ow ner that
+part or all of the plant, plant product or regulated article may be subject within a spec ified time to any
+actio n speciCied in sec tion 37: or
+The Plant Protection Act, 2012.                                                   26         No.18of2012.
+
+
+       ( b)   may forego advising- the owner of the plant, plant product or regulc_!ted article of the
+  ;           reason for the seizure if, in the opinion of the inspector. it i! urgently required to destroy
+              the plant, plant product or regulated article or the giving of the reason for the seiz ure is
+              impractical.
+
+37. Storage or removal of affected items
+
+Where an in spector has seized and detained a plant. plant product or regulated article under this
+Act-
+
+       ( o)   the inspector, or
+
+       ( b)   any other person designated by the NPPO.
+
+may-
+
+              (iJ      store. treat, quarantine or dispose of the plant. plant product or regulated article at
+                       the place where it was se ized or move it to any other place for :-,torage. treatment.
+                       quarantine or disposal,
+
+              (ii)     require its owner to sto re , treat, dispos;e of. re-export or move it to any other
+                       place.
+
+38. Confiscation and disposal of unclaimed items
+
+   ( I J An in -,pcctnr nrny confi-,cate and dispose or-
+
+       ( o)   any plant. plant product or regulated article thaL arter its entry into Antigua and Barbuda
+              after treatment. remains unclaimed for a pre-,cribed time; or
+
+       ( b)   any thing that the inspector believes on reasonable grounds contains or harbours a
+              quarantine pest or regulated non quarantine pest.
+
+   (2) J\n in-;pcctor who confr-,catcs a plant. plant product or regulated article or a quarantine pest or
+regulated non quarantine pest-
+
+       ( o)   shall. as soon as is practicable, advise .the owne r of the reason !"or its confiscation and
+              is-,ue a confiscation certificate; or
+
+       / b)   may forego advising the owner of the plant. plant product or regulated article or pest of
+              the reason for the confiscation if the giving of the reason for the confiscation is imprac-
+              ticli.
+No. 18 of 2012            27                                              Th e Plant Prot ection Act, 20 12.
+
+
+39.Appeal
+
+    ( l) Any owner or occupier of land. owner or operator of a co nveyance or ow ner or importer of
+pl ants , plant products or other re gulated arti cles who is agg ri eved by the decision of an inspector to
+destroy. di spose of or treat such plants, plant products or other reg ulated articles may lodge an
+appeal within fourteen days in the manner prescribed under thi s Act.
+
+   ('.2) Where an appea l has been filed the Minister sha ll take reasonabl e steps to stay the destruc-
+tion. disposa l or treatment of the articles pending a determination of the appeal by the co mmittee
+appointed, exce pt where in the opinion of the Mini ster any dela y would create a significant risk or
+harm to plant resources in Antigua and Barbuda.
+
+   (3) Subject to sec tion s 19(7) and 29(5). a determination by the comm ittee under sub-sectio n (4)
+shall not prejudice the right of any aggrieved party to see k recourse in the courts.
+
+   (4) The com mitt ee. which shall hea r and determine any matter within three wo rking days. 'ihall
+com prise th ree perso ns appo inted by the Board and 'i hall reg ul ate it '-i own procedure.
+
+   (5) The commitlee may, upon hearing any appeal, confirm. vary or set aside the dec ision or the
+inspector or determine th e matter and impose additional co nditi ons.
+
+40. Offences
+
+It sha ll be an offence for any person, either personally or indirectly through an emp loyee . serv~mt or
+agent to-
+
+      ( o)   grow. possess, se ll , o ffer for sa le. tran sport or distribute in any manner any plant s, plant
+             products or other reg ulated articl es knowing that th ey are affected by a quarantin e pest:
+
+      ( h)   assault. res ist. intimidate , threate n. abu se in any manner whatsoeve r. or obst ru ct any
+             ins pec tor exercising lawful powers under this Act:
+
+      ( c)   tamper with an y samples taken pursuant to this Act:
+
+      ( d)   Cail to comply with any order or direction lawf'ully made or given under this Act;
+
+      ( e)   import any plants , plant produ cts or other reg ulated articles at a port of entry not li sted
+             in regulation s:
+
+      (!)    import any plants. plant products or other reg ulated articles contrary to any oth er re-
+             quirements prescribed under thi s Act:
+
+      (g)    in tenti o nall y permit or cause the introducti on or spread of any pest:
+The P/0111 Protection Act, 2012.                                                    28         No.       or 2012.
+
+
+       ( h)     export any plants, plant p-roduc;t s or other regulated articles except i.n accordance with
+                Part IV of this Act. ?                                                                              ..
+
+       ( i)     fail to safeguard within 48 hours the phytosanitary security of a con:-,ignment after
+                issuance of a phytosanitary cert ificate under section 26(l)(a);
+
+       (j)      fail to al low a search or inspection or the taking of any sample authorized under this Act:
+
+       ( k)     break the seal on a sealed container containing plants. plant products or other regulated
+                articles or removing detained items from a re-sealed container except in the presence of
+                an inspector:
+
+       ( 1)     knowingly or recklessly provide information which is false, for the purpose of obtaining
+                any document under this Act:
+
+       (111)    intentionally or deliberately alter, forge. deface or destroy any document issued under
+                this Act:
+
+       ( 11)    submit any wr itt en material for publication referring to the occurrence of a quarantine
+                pest in Antigua and Barbuda without prior or simultaneous communication of the ex ist-
+                ence or the pest to the N PPO:
+
+       (o)      otherwise contravene the provisions or this Act.
+
+..it. I ,iability of officials
+
+It shall be an olTenc~ for any in .'> pechi r. official analyst or other NPPO staff to-
+
+       (o)      directl y or 111directl y ask for or take any per:-onal payment or other reward in C()fl!lec tion
+                with any official duties:
+
+       (h)      agree to du . abstain from doing. jJCrmit. conceal or connive at anvJ act or thing which is
+                 L                               L                                                   L
+
+
+                contrary to the proper execution or official duties under this Act. or otherwise con I rary
+                to the Lnv s or Antigua and Barbuda:
+
+       (c)      disclose ,111y infor111a1ion acqu ired in the performance of official dutie s relating ltl any
+                person. firm or business. except when required by his supervisor in the course of official
+                duties. or where ordered to do so by any court.
+
+..i2. Penalty
+
+/\ per'>On who commits an offence under thi s Act i-., liable-
+No.       of 2012           29                                                   The Plctnt Protection Act. 2012.
+
+
+
+       ( o)   in the c"ase of a first offence. on summary conviction, to a fine or five thousand dollars.
+              or to impri~onrnent for a period of one year. or both:                           f
+
+       ( b)   in the case or a second or a subsequent offence. to a fine of ten thousand dollars. or to
+              imprisonment for a period of two years. or both.
+
+43. Forfeiture
+
+Where a person is convicted of an offence under this Act the court may. in addition to an; other
+penalty imposed. order that any thing used in the perpetration or the offence . he forfeitccl to the
+State.
+
+44. Notice to Offender
+
+   ( l J This section applic, to any offence as may be prescribed.
+
+   (2) Where an inspector has reason to believe that a person is committing or ha -. com111ittcd <111
+offence to \\ hiL·h thi..., . . cct iun applies . the in-.pector ma~ immed iat e ly . . erve th at pe1v)11 ,, itll the
+prescribed notice in writmg offering the discharge of any liability to conviction ul the ul le11cc by
+payment of a i'ixnl penalt y under this section .
+
+   (3) Where a person is served with a notice under subsection (2)-
+
+
+      (u !    tktt pcr . . u11 ...,J1itll not be liable to be cun viLtcd !'or the ollcncc if the fixcJ pen,tlt ), is paid
+              in dccordancc with this section -
+
+              (iJ    before the expiration or twenty-one days following the date or the noti l'. c 01 such
+                     longer period as may be specified therein. or
+
+              (ii)   before the elate on which proceedings ,ire begun . whichever is later:
+
+      ( h)    proceedings shall nut be taken against the person for the offence by any inspector or
+              other authorized officer until the end of the twenty-one clays following the date or the
+              notice or such longer period as may ha ve been spec ified in the notice .
+
+   (-+) Payment or a i'ixed penalty under this section shall be made to the NPPO or to such body, on
+behalf of the NPPO . as the Minister may. by order, designate and the NPPO may retain the amount
+paid. which shall be allocated to the Fund.
+
+   (:'i) In an y proceedings . a certificate that payment of a fixed penalty was or was not made to the
+NPPO, or to a bocly cle:-.ignated under subsection (4 ), by a date specified in the certificate shall. if the
+ccrti ficatc purports to be signed by the inspector or other authorized officer of the NPPO. or of that
+bocl y. he sufficient evidence of the !'acts stated. unless the contrary is proved.
+The P/0111 Protection Act, 2012.                                                    30          No. 18 or 2012.
+
+
+   (9) A n-otice~~erved under subsection (2) must-·
+    f
+      (a)      specify the offence alleged:
+
+      ( /J)    give such particulars of th e offence as are nee ,   >-ii)   .'o r gi\' ing reasonable information
+               or the allegmion: and
+
+      ( c)     state-
+
+               (i)    he period during which, by virtue of subsection (3). proceedings will not be insti-
+                      tuted against any person for the offence: and
+
+               (ii)   the amount of the fixed penalty.
+
+   (7) !n any proceedings for an offence to which this section applies. reference shall not be made
+after the conviction or the accused to the giving of any notice under this section or to the payment
+or non-pa ymen t or a fixed penalty hereunder unles s, in th e co urse or the proceedings or in some
+document which is before the Court in connection with the proceedings , referenc e has been made by
+or 011 hcllalr of the accused lo the giving of such notice or. as the case may be . to such IXl) 1uent or
+non-payment.
+
+   ( 8) In this sec tion --proceed ings" means any criminal proceedings in re spect of the act or omission
+constituting the offence specified in the notice served under subsection (2). and --co nvictecf' shall
+be com,trucd in like manner.
+
+.is. Limitation on liability
+
+   ( I J The costs for any action taken by an inspector under section 35 shall be borne by the o,vner.
+L'XCept where in exceptional cases the NPPO determines th:tt the State shall bear the cosh .
+
+   (2) Subject to scl'lion 46, the State shall not be liable for loss resulting lrom the destruction or
+disrosal of any plant. plant product or regulated article carried out under th is Act.
+
+46. Compensation
+
+   ( I J The Minister may, on the recommendation or the Board, out or money vo ted f'or that purpose
+hy Parliament, order compensation to be paid in respect of'-
+
+      ( o)     the treatment required of premises for ,the purposes or this Act: or
+
+      ( /1 !   the prohibition or restriction imposed under thi s Act on the use ol rrcmises .
+
+(2) Compensation      is not payable to a person who commits an offence under this Act and claims
+compe n'.-.ation in respect or any premises or thing by mean s or or in relation to which th e offence was
+C() llllllitted.
+No. 18 of 2012            31                                              Th e Plont Protection Act, 20 12.
+
+
+                                             - PAE.TVII
+                                         ? MISCELLANEOUS
+
+47. Documents
+
+   ( I) A docum ent required to be furni shed to the Mini ster or an inspector under this Act or any
+regulation or order made there under may be furnished in electronic form.
+
+   (2) Where a document referred to in subsection (I) is furnished in electronic form, an original hard
+copy of the document mu st be furnished to the Minister or an inspec tor within a reaso nabl e period
+after the doc ument is furnished in e lec tronic form.
+
+48. Regulations
+
+  ( I) The Minister may. on the advice of the Board. make regulations and issue orders or notices
+which he consider'> appropriate to give effect to the provisio ns o f this Act.
+
+   {2) In particular c1nd with out prejudice to the genera lit y ol" subsection (I). regulation '>. orde r'> or
+notices made under sub section! I) may provide for all or any of the following: matters-
+
+      ( u)   procedures to be fo ll owed by an in spector in the exercise of his duties under this /\et :
+
+      ( h)   cond it ions ror the import of any plant_ plant product or regulated article;
+
+      (c )   the designation of the ports of e ntry that are approp riate for th e import and export of any
+             plant. pla nt product and regulated arti c le:
+
+      (cl)   the ci rcumsta nces under which phytosanitary re4uireme nt s for import may be modil'ied
+             based on pest risk analysis:
+
+      ( c)   procedures and guide lin es for pre -c learance inspections;
+
+      (/)    the manner in whic h permits and certificates shall be issued under thi s Act and th e ir
+             form. co nt en t and langu age:
+
+      (g)    the procedures by which an importer may apply for inspection to take place at any
+             location other than th e port of en try. and or outside of reg ular bu si ness hours. and pay
+             any applicable rees:
+
+      (h )   the manner in wh ich co ntain ers must be scaled. marked and tran sported if they are to be
+             in spe cted at their final dest ination rather than at th e port of entry:
+
+      (i)    the way in which any plant. plant product and regulated article mu st be stored or trans-
+             ported in Anti gua and Barbuda:
+T/1e Plant Protection Act, 2012.                                                 32         No . 18 of 2012.
+
+
+     (j)      the procec:!Lfres to be adopted for the treatmen-t of any imported plant. plant product ot'
+              regulated artitle and the conveyance used for its importation ;                     ?
+
+     ( k)     the location , management and functioning of any plant quarantine station es tabli shed            •
+              under this Act;
+
+     (I)      the requirements for the control and care of any plant, plant product and regulated article
+              kept or maintained at a plant quarantine station;
+
+     ( m)     the manner in which an inspector shall arrange for the destruction. removal , uproot ing or
+              treatment of any plant. plant product or regulated article within an area or loc ation
+              declared as under quarantine:
+
+     ( 11 )   the period within and conditions under which it shall not be lawful lo plant or re-plant
+              any thin g in all or part of an area declared as under quarantine;
+
+     ( n)     the manner in wh ich any sample being transported or in storage must be taken. marked
+              and retained under thi:-; Act:
+
+     (I')     the ope ra ting procedures of any offic ial laboratories designated under this Act:
+
+     ( cJ)    the process or procedure by which an area may be declared pest free or an area or low
+              pest prevalence:
+
+     ( r)     conditions for the export of any plant, plant product or regulated art icle :
+
+     (s)      ope rating procedures for the inspection of any plant, plant product or regulated article,
+              ancl any physical structu re or premi ses containing such a produ ct or art icle . for purpose s
+              or export:
+     (I)      the offences subject to the fixed pe na lty procedure outlined in section -.:J.4 :
+
+     ( u)     the notice to be issued to an offender pursuant to section 44:
+
+     ( \')    criteria ror th e declaration or a phytosanitary emergency under section 2 1(c) or 32 :
+
+     (11·)    determination or sca le of fees to be c harged:
+
+     ( .r)    guide li nes. policy directives or protocols promoting cooperation between relevant dc -
+              partrncnts relating to plant protection;
+
+     (_, J    additional measures to be take n !"or the purpo se of preventing the introduction or sp read
+              or a pest.
+    No. 18of2012            33                                            The Plant Protection Act, 2012.
+
+
+    49 Repeal and Savings
+      1
+
+       (1) The Plant Protection Act, CAP. 329 is hereby repealed.
+"
+       (2) An order issued by the Minister under section 48 may revoke or modify any permit or certifi-
+    cate granted by authority of the legislation referred to in sub-section (1).
+
+      (3) All regulations in effect upon the coming into force of this Act shall continue in force as if they
+    were issued under the present Act, except where they conflict with the provisions or purposes of this
+    Act.
+
+    50. Act to bind State
+
+    This Act binds the State.
+
+
+    Passed by the House of Representatives on                        Passed by the Senate 29th November,
+    the 26th November, 2012.                                         2012.
+
+              D. Gisele Isaac-Arrindel,                                 Hazelyn M. Francis,
+                       Speaker.                                                President.
+
+
+                    Romona Small                                            Romona Small
+          Clerk to the House of Representatives.                         Clerk to the Senate.
+

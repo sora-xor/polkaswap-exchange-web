@@ -1,0 +1,1686 @@
+
+
+
+
+
+	
+
+	
+
+	
+
+	
+18/03/2026 – Nouvelle règlementation concernant l’importation des végétaux et produits végétaux – Biosécurité de la Polynésie française
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+								
+
+		
+		
+		
+				
+
+
+
+					
+
+				
+		
+
+		
+
+		
+
+		
+
+				
+
+				
+
+										
+
+							
+
+								
+
+								
+
+		
+
+		
+
+		
+
+		
+		
+
+img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
+/*# sourceURL=wp-img-auto-sizes-contain-inline-css */
+
+
+
+
+
+
+
+
+
+
+
+
+
+	img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}
+/*# sourceURL=wp-emoji-styles-inline-css */
+
+
+
+
+
+
+
+
+
+
+
+
+/* <![CDATA[ */
+var LS_Meta = {"v":"8.1.2","fixGSAP":"1"};
+//# sourceURL=layerslider-utils-js-extra
+/* ]]> */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.documentElement.className += " js";
+
+
+a[href^="#awb-close-collapsible__"][href$="__hide"]:not(.awb-collapse-link-visible),a[href^="#awb-open-collapsible__"][href$="__hide"].awb-collapse-link-hidden{display:none;}@media screen and (max-width: 640px){.fusion-no-small-visibility{display:none !important;}body .sm-text-align-center{text-align:center !important;}body .sm-text-align-left{text-align:left !important;}body .sm-text-align-right{text-align:right !important;}body .sm-text-align-justify{text-align:justify !important;}body .sm-flex-align-center{justify-content:center !important;}body .sm-flex-align-flex-start{justify-content:flex-start !important;}body .sm-flex-align-flex-end{justify-content:flex-end !important;}body .sm-mx-auto{margin-left:auto !important;margin-right:auto !important;}body .sm-ml-auto{margin-left:auto !important;}body .sm-mr-auto{margin-right:auto !important;}body .fusion-absolute-position-small{position:absolute;width:100%;}.awb-sticky.awb-sticky-small{ position: sticky; top: var(--awb-sticky-offset,0); }.fusion-layout-column.awb-collapsible:not(.awb-collapse-open) > .awb-collapsible-content,.fusion-fullwidth.awb-collapsible:not(.awb-collapse-open) > .awb-collapsible-content{max-height:var(--awb-collapsed-height-small,var(--awb-collapsed-height-medium,var(--awb-collapsed-height,200px)));}.fusion-layout-column.awb-collapsible > .awb-collapsible-content,.fusion-fullwidth.awb-collapsible{--awb-collapse-fade-height-bp:var(--awb-collapse-fade-height-small,var(--awb-collapse-fade-height-medium));}.awb-collapse-not-small.awb-collapsible > .awb-collapsible-content{max-height:none !important;overflow:visible !important;-webkit-mask-image:none !important;mask-image:none !important;}.awb-collapse-not-small.awb-collapsible{-webkit-mask-image:none !important;mask-image:none !important;}.awb-collapse-not-small.awb-collapsible::before,.awb-collapse-not-small.awb-collapsible > .awb-collapsible-content::before{display:none !important;}.awb-collapse-not-small.awb-collapsible > .awb-collapse-trigger-wrapper,.awb-collapse-not-small.awb-collapsible + .awb-collapse-trigger-wrapper{display:none !important;}.awb-collapse-link-not-small{display:none !important;}}@media screen and (min-width: 641px) and (max-width: 1024px){.fusion-no-medium-visibility{display:none !important;}body .md-text-align-center{text-align:center !important;}body .md-text-align-left{text-align:left !important;}body .md-text-align-right{text-align:right !important;}body .md-text-align-justify{text-align:justify !important;}body .md-flex-align-center{justify-content:center !important;}body .md-flex-align-flex-start{justify-content:flex-start !important;}body .md-flex-align-flex-end{justify-content:flex-end !important;}body .md-mx-auto{margin-left:auto !important;margin-right:auto !important;}body .md-ml-auto{margin-left:auto !important;}body .md-mr-auto{margin-right:auto !important;}body .fusion-absolute-position-medium{position:absolute;width:100%;}.awb-sticky.awb-sticky-medium{ position: sticky; top: var(--awb-sticky-offset,0); }.fusion-layout-column.awb-collapsible:not(.awb-collapse-open) > .awb-collapsible-content,.fusion-fullwidth.awb-collapsible:not(.awb-collapse-open) > .awb-collapsible-content{max-height:var(--awb-collapsed-height-medium,var(--awb-collapsed-height,200px));}.fusion-layout-column.awb-collapsible > .awb-collapsible-content,.fusion-fullwidth.awb-collapsible{--awb-collapse-fade-height-bp:var(--awb-collapse-fade-height-medium);}.awb-collapse-not-medium.awb-collapsible > .awb-collapsible-content{max-height:none !important;overflow:visible !important;-webkit-mask-image:none !important;mask-image:none !important;}.awb-collapse-not-medium.awb-collapsible{-webkit-mask-image:none !important;mask-image:none !important;}.awb-collapse-not-medium.awb-collapsible::before,.awb-collapse-not-medium.awb-collapsible > .awb-collapsible-content::before{display:none !important;}.awb-collapse-not-medium.awb-collapsible > .awb-collapse-trigger-wrapper,.awb-collapse-not-medium.awb-collapsible + .awb-collapse-trigger-wrapper{display:none !important;}.awb-collapse-link-not-medium{display:none !important;}}@media screen and (min-width: 1025px){.fusion-no-large-visibility{display:none !important;}body .lg-text-align-center{text-align:center !important;}body .lg-text-align-left{text-align:left !important;}body .lg-text-align-right{text-align:right !important;}body .lg-text-align-justify{text-align:justify !important;}body .lg-flex-align-center{justify-content:center !important;}body .lg-flex-align-flex-start{justify-content:flex-start !important;}body .lg-flex-align-flex-end{justify-content:flex-end !important;}body .lg-mx-auto{margin-left:auto !important;margin-right:auto !important;}body .lg-ml-auto{margin-left:auto !important;}body .lg-mr-auto{margin-right:auto !important;}body .fusion-absolute-position-large{position:absolute;width:100%;}.awb-sticky.awb-sticky-large{ position: sticky; top: var(--awb-sticky-offset,0); }.awb-collapse-not-large.awb-collapsible > .awb-collapsible-content{max-height:none !important;overflow:visible !important;-webkit-mask-image:none !important;mask-image:none !important;}.awb-collapse-not-large.awb-collapsible{-webkit-mask-image:none !important;mask-image:none !important;}.awb-collapse-not-large.awb-collapsible::before,.awb-collapse-not-large.awb-collapsible > .awb-collapsible-content::before{display:none !important;}.awb-collapse-not-large.awb-collapsible > .awb-collapse-trigger-wrapper,.awb-collapse-not-large.awb-collapsible + .awb-collapse-trigger-wrapper{display:none !important;}.awb-collapse-link-not-large{display:none !important;}}
+
+body.custom-background { background-color: #ffffff; }
+
+
+	
+
+
+
+
+
+
+
+	window._tpt			??= {};
+	window.SR7			??= {};
+	_tpt.R				??= {};
+	_tpt.R.fonts		??= {};
+	_tpt.R.fonts.customFonts??= {};
+	SR7.devMode			=  false;
+	SR7.F 				??= {};
+	SR7.G				??= {};
+	SR7.LIB				??= {};
+	SR7.E				??= {};
+	SR7.E.gAddons		??= {};
+	SR7.E.php 			??= {};
+	SR7.E.nonce			= 'faf10c1a3c';
+	SR7.E.ajaxurl		= 'https://www.service-public.pf/biosecurite/wp-admin/admin-ajax.php';
+	SR7.E.resturl		= 'https://www.service-public.pf/biosecurite/wp-json/';
+	SR7.E.slug_path		= 'revslider/revslider.php';
+	SR7.E.slug			= 'revslider';
+	SR7.E.plugin_url	= 'https://www.service-public.pf/biosecurite/wp-content/plugins/revslider/';
+	SR7.E.wp_plugin_url = 'https://www.service-public.pf/biosecurite/wp-content/plugins/';
+	SR7.E.revision		= '6.7.56';
+	SR7.E.fontBaseUrl	= '';
+	SR7.G.breakPoints 	= [1240,1024,778,480];
+	SR7.G.fSUVW 		= false;
+	SR7.E.modules 		= ['module','page','slide','layer','draw','animate','srtools','canvas','defaults','carousel','navigation','media','modifiers','migration'];
+	SR7.E.libs 			= ['WEBGL'];
+	SR7.E.css 			= ['csslp','cssbtns','cssfilters','cssnav','cssmedia'];
+	SR7.E.resources		= {};
+	SR7.E.ytnc			= false;
+	SR7.JSON			??= {};
+/*! Slider Revolution 7.0 - Page Processor */
+!function(){"use strict";window.SR7??={},window._tpt??={},SR7.version="Slider Revolution 6.7.40",_tpt.getMobileZoom=()=>_tpt.is_mobile?document.documentElement.clientWidth/window.innerWidth:1,_tpt.getWinDim=function(t){_tpt.screenHeightWithUrlBar??=window.innerHeight;let e=SR7.F?.modal?.visible&&SR7.M[SR7.F.module.getIdByAlias(SR7.F.modal.requested)];_tpt.scrollBar=window.innerWidth!==document.documentElement.clientWidth||e&&window.innerWidth!==e.c.module.clientWidth,_tpt.winW=_tpt.getMobileZoom()*window.innerWidth-(_tpt.scrollBar||"prepare"==t?_tpt.scrollBarW??_tpt.mesureScrollBar():0),_tpt.winH=_tpt.getMobileZoom()*window.innerHeight,_tpt.winWAll=document.documentElement.clientWidth},_tpt.getResponsiveLevel=function(t,e){return SR7.G.fSUVW?_tpt.closestGE(t,window.innerWidth):_tpt.closestGE(t,_tpt.winWAll)},_tpt.mesureScrollBar=function(){let t=document.createElement("div");return t.className="RSscrollbar-measure",t.style.width="100px",t.style.height="100px",t.style.overflow="scroll",t.style.position="absolute",t.style.top="-9999px",document.body.appendChild(t),_tpt.scrollBarW=t.offsetWidth-t.clientWidth,document.body.removeChild(t),_tpt.scrollBarW},_tpt.loadCSS=async function(t,e,s){return s?_tpt.R.fonts.required[e].status=1:(_tpt.R[e]??={},_tpt.R[e].status=1),new Promise((i,n)=>{if(_tpt.isStylesheetLoaded(t))s?_tpt.R.fonts.required[e].status=2:_tpt.R[e].status=2,i();else{const o=document.createElement("link");o.rel="stylesheet";let l="text",r="css";o["type"]=l+"/"+r,o.href=t,o.onload=()=>{s?_tpt.R.fonts.required[e].status=2:_tpt.R[e].status=2,i()},o.onerror=()=>{s?_tpt.R.fonts.required[e].status=3:_tpt.R[e].status=3,n(new Error(`Failed to load CSS: ${t}`))},document.head.appendChild(o)}})},_tpt.addContainer=function(t){const{tag:e="div",id:s,class:i,datas:n,textContent:o,iHTML:l}=t,r=document.createElement(e);if(s&&""!==s&&(r.id=s),i&&""!==i&&(r.className=i),n)for(const[t,e]of Object.entries(n))"style"==t?r.style.cssText=e:r.setAttribute(`data-${t}`,e);return o&&(r.textContent=o),l&&(r.innerHTML=l),r},_tpt.collector=function(){return{fragment:new DocumentFragment,add(t){var e=_tpt.addContainer(t);return this.fragment.appendChild(e),e},append(t){t.appendChild(this.fragment)}}},_tpt.isStylesheetLoaded=function(t){let e=t.split("?")[0];return Array.from(document.querySelectorAll('link[rel="stylesheet"], link[rel="preload"]')).some(t=>t.href.split("?")[0]===e)},_tpt.preloader={requests:new Map,preloaderTemplates:new Map,show:function(t,e){if(!e||!t)return;const{type:s,color:i}=e;if(s<0||"off"==s)return;const n=`preloader_${s}`;let o=this.preloaderTemplates.get(n);o||(o=this.build(s,i),this.preloaderTemplates.set(n,o)),this.requests.has(t)||this.requests.set(t,{count:0});const l=this.requests.get(t);clearTimeout(l.timer),l.count++,1===l.count&&(l.timer=setTimeout(()=>{l.preloaderClone=o.cloneNode(!0),l.anim&&l.anim.kill(),void 0!==_tpt.gsap?l.anim=_tpt.gsap.fromTo(l.preloaderClone,1,{opacity:0},{opacity:1}):l.preloaderClone.classList.add("sr7-fade-in"),t.appendChild(l.preloaderClone)},150))},hide:function(t){if(!this.requests.has(t))return;const e=this.requests.get(t);e.count--,e.count<0&&(e.count=0),e.anim&&e.anim.kill(),0===e.count&&(clearTimeout(e.timer),e.preloaderClone&&(e.preloaderClone.classList.remove("sr7-fade-in"),e.anim=_tpt.gsap.to(e.preloaderClone,.3,{opacity:0,onComplete:function(){e.preloaderClone.remove()}})))},state:function(t){if(!this.requests.has(t))return!1;return this.requests.get(t).count>0},build:(t,e="#ffffff",s="")=>{if(t<0||"off"===t)return null;const i=parseInt(t);if(t="prlt"+i,isNaN(i))return null;if(_tpt.loadCSS(SR7.E.plugin_url+"public/css/preloaders/t"+i+".css","preloader_"+t),isNaN(i)||i<6){const n=`background-color:${e}`,o=1===i||2==i?n:"",l=3===i||4==i?n:"",r=_tpt.collector();["dot1","dot2","bounce1","bounce2","bounce3"].forEach(t=>r.add({tag:"div",class:t,datas:{style:l}}));const d=_tpt.addContainer({tag:"sr7-prl",class:`${t} ${s}`,datas:{style:o}});return r.append(d),d}{let n={};if(7===i){let t;e.startsWith("#")?(t=e.replace("#",""),t=`rgba(${parseInt(t.substring(0,2),16)}, ${parseInt(t.substring(2,4),16)}, ${parseInt(t.substring(4,6),16)}, `):e.startsWith("rgb")&&(t=e.slice(e.indexOf("(")+1,e.lastIndexOf(")")).split(",").map(t=>t.trim()),t=`rgba(${t[0]}, ${t[1]}, ${t[2]}, `),t&&(n.style=`border-top-color: ${t}0.65); border-bottom-color: ${t}0.15); border-left-color: ${t}0.65); border-right-color: ${t}0.15)`)}else 12===i&&(n.style=`background:${e}`);const o=[10,0,4,2,5,9,0,4,4,2][i-6],l=_tpt.collector(),r=l.add({tag:"div",class:"sr7-prl-inner",datas:n});Array.from({length:o}).forEach(()=>r.appendChild(l.add({tag:"span",datas:{style:`background:${e}`}})));const d=_tpt.addContainer({tag:"sr7-prl",class:`${t} ${s}`});return l.append(d),d}}},SR7.preLoader={show:(t,e)=>{"off"!==(SR7.M[t]?.settings?.pLoader?.type??"off")&&_tpt.preloader.show(e||SR7.M[t].c.module,SR7.M[t]?.settings?.pLoader??{color:"#fff",type:10})},hide:(t,e)=>{"off"!==(SR7.M[t]?.settings?.pLoader?.type??"off")&&_tpt.preloader.hide(e||SR7.M[t].c.module)},state:(t,e)=>_tpt.preloader.state(e||SR7.M[t].c.module)},_tpt.prepareModuleHeight=function(t){window.SR7.M??={},window.SR7.M[t.id]??={},"ignore"==t.googleFont&&(SR7.E.ignoreGoogleFont=!0);let e=window.SR7.M[t.id];if(null==_tpt.scrollBarW&&_tpt.mesureScrollBar(),e.c??={},e.states??={},e.settings??={},e.settings.size??={},t.fixed&&(e.settings.fixed=!0),e.c.module=document.querySelector("sr7-module#"+t.id),e.c.adjuster=e.c.module.getElementsByTagName("sr7-adjuster")[0],e.c.content=e.c.module.getElementsByTagName("sr7-content")[0],"carousel"==t.type&&(e.c.carousel=e.c.content.getElementsByTagName("sr7-carousel")[0]),null==e.c.module||null==e.c.module)return;t.plType&&t.plColor&&(e.settings.pLoader={type:t.plType,color:t.plColor}),void 0===t.plType||"off"===t.plType||SR7.preLoader.state(t.id)&&SR7.preLoader.state(t.id,e.c.module)||SR7.preLoader.show(t.id,e.c.module),_tpt.winW||_tpt.getWinDim("prepare"),_tpt.getWinDim();let s=""+e.c.module.dataset?.modal;"modal"==s||"true"==s||"undefined"!==s&&"false"!==s||(e.settings.size.fullWidth=t.size.fullWidth,e.LEV??=_tpt.getResponsiveLevel(window.SR7.G.breakPoints,t.id),t.vpt=_tpt.fillArray(t.vpt,5),e.settings.vPort=t.vpt[e.LEV],void 0!==t.el&&"720"==t.el[4]&&t.gh[4]!==t.el[4]&&"960"==t.el[3]&&t.gh[3]!==t.el[3]&&"768"==t.el[2]&&t.gh[2]!==t.el[2]&&delete t.el,e.settings.size.height=null==t.el||null==t.el[e.LEV]||0==t.el[e.LEV]||"auto"==t.el[e.LEV]?_tpt.fillArray(t.gh,5,-1):_tpt.fillArray(t.el,5,-1),e.settings.size.width=_tpt.fillArray(t.gw,5,-1),e.settings.size.minHeight=_tpt.fillArray(t.mh??[0],5,-1),e.cacheSize={fullWidth:e.settings.size?.fullWidth,fullHeight:e.settings.size?.fullHeight},void 0!==t.off&&(t.off?.t&&(e.settings.size.m??={})&&(e.settings.size.m.t=t.off.t),t.off?.b&&(e.settings.size.m??={})&&(e.settings.size.m.b=t.off.b),t.off?.l&&(e.settings.size.p??={})&&(e.settings.size.p.l=t.off.l),t.off?.r&&(e.settings.size.p??={})&&(e.settings.size.p.r=t.off.r),e.offsetPrepared=!0),_tpt.updatePMHeight(t.id,t,!0))},_tpt.updatePMHeight=(t,e,s)=>{let i=SR7.M[t];var n=i.settings.size.fullWidth?_tpt.winW:i.c.module.parentNode.offsetWidth;n=0===n||isNaN(n)?_tpt.winW:n;let o=i.settings.size.width[i.LEV]||i.settings.size.width[i.LEV++]||i.settings.size.width[i.LEV--]||n,l=i.settings.size.height[i.LEV]||i.settings.size.height[i.LEV++]||i.settings.size.height[i.LEV--]||0,r=i.settings.size.minHeight[i.LEV]||i.settings.size.minHeight[i.LEV++]||i.settings.size.minHeight[i.LEV--]||0;if(l="auto"==l?0:l,l=parseInt(l),"carousel"!==e.type&&(n-=parseInt(e.onw??0)||0),i.MP=!i.settings.size.fullWidth&&n<o||_tpt.winW<o?Math.min(1,n/o):1,e.size.fullScreen||e.size.fullHeight){let t=parseInt(e.fho)||0,s=(""+e.fho).indexOf("%")>-1;e.newh=_tpt.winH-(s?_tpt.winH*t/100:t)}else e.newh=i.MP*Math.max(l,r);if(e.newh+=(parseInt(e.onh??0)||0)+(parseInt(e.carousel?.pt)||0)+(parseInt(e.carousel?.pb)||0),void 0!==e.slideduration&&(e.newh=Math.max(e.newh,parseInt(e.slideduration)/3)),e.shdw&&_tpt.buildShadow(e.id,e),i.c.adjuster.style.height=e.newh+"px",i.c.module.style.height=e.newh+"px",i.c.content.style.height=e.newh+"px",i.states.heightPrepared=!0,i.dims??={},i.dims.moduleRect=i.c.module.getBoundingClientRect(),i.c.content.style.left="-"+i.dims.moduleRect.left+"px",!i.settings.size.fullWidth)return s&&requestAnimationFrame(()=>{n!==i.c.module.parentNode.offsetWidth&&_tpt.updatePMHeight(e.id,e)}),void _tpt.bgStyle(e.id,e,window.innerWidth==_tpt.winW,!0);_tpt.bgStyle(e.id,e,window.innerWidth==_tpt.winW,!0),requestAnimationFrame(function(){s&&requestAnimationFrame(()=>{n!==i.c.module.parentNode.offsetWidth&&_tpt.updatePMHeight(e.id,e)})}),i.earlyResizerFunction||(i.earlyResizerFunction=function(){requestAnimationFrame(function(){_tpt.getWinDim(),_tpt.moduleDefaults(e.id,e),_tpt.updateSlideBg(t,!0)})},window.addEventListener("resize",i.earlyResizerFunction))},_tpt.buildShadow=function(t,e){let s=SR7.M[t];null==s.c.shadow&&(s.c.shadow=document.createElement("sr7-module-shadow"),s.c.shadow.classList.add("sr7-shdw-"+e.shdw),s.c.content.appendChild(s.c.shadow))},_tpt.bgStyle=async(t,e,s,i,n)=>{const o=SR7.M[t];if((e=e??o.settings).fixed&&!o.c.module.classList.contains("sr7-top-fixed")&&(o.c.module.classList.add("sr7-top-fixed"),o.c.module.style.position="fixed",o.c.module.style.width="100%",o.c.module.style.top="0px",o.c.module.style.left="0px",o.c.module.style.pointerEvents="none",o.c.module.style.zIndex=5e3,o.c.content.style.pointerEvents="none"),null==o.c.bgcanvas){let t=document.createElement("sr7-module-bg"),l=!1;if("string"==typeof e?.bg?.color&&e?.bg?.color.includes("{"))if(_tpt.gradient&&_tpt.gsap)e.bg.color=_tpt.gradient.convert(e.bg.color);else try{let t=JSON.parse(e.bg.color);(t?.orig||t?.string)&&(e.bg.color=JSON.parse(e.bg.color))}catch(t){return}let r="string"==typeof e?.bg?.color?e?.bg?.color||"transparent":e?.bg?.color?.string??e?.bg?.color?.orig??e?.bg?.color?.color??"transparent";if(t.style["background"+(String(r).includes("grad")?"":"Color")]=r,("transparent"!==r||n)&&(l=!0),o.offsetPrepared&&(t.style.visibility="hidden"),e?.bg?.image?.src&&(t.style.backgroundImage=`url(${e?.bg?.image.src})`,t.style.backgroundSize=""==(e.bg.image?.size??"")?"cover":e.bg.image.size,t.style.backgroundPosition=e.bg.image.position,t.style.backgroundRepeat=""==e.bg.image.repeat||null==e.bg.image.repeat?"no-repeat":e.bg.image.repeat,l=!0),!l)return;o.c.bgcanvas=t,e.size.fullWidth?t.style.width=_tpt.winW-(s&&_tpt.winH<document.body.offsetHeight?_tpt.scrollBarW:0)+"px":i&&(t.style.width=o.c.module.offsetWidth+"px"),e.sbt?.use?o.c.content.appendChild(o.c.bgcanvas):o.c.module.appendChild(o.c.bgcanvas)}o.c.bgcanvas.style.height=void 0!==e.newh?e.newh+"px":("carousel"==e.type?o.dims.module.h:o.dims.content.h)+"px",o.c.bgcanvas.style.left=!s&&e.sbt?.use||o.c.bgcanvas.closest("SR7-CONTENT")?"0px":"-"+(o?.dims?.moduleRect?.left??0)+"px"},_tpt.updateSlideBg=function(t,e){const s=SR7.M[t];let i=s.settings;s?.c?.bgcanvas&&(i.size.fullWidth?s.c.bgcanvas.style.width=_tpt.winW-(e&&_tpt.winH<document.body.offsetHeight?_tpt.scrollBarW:0)+"px":preparing&&(s.c.bgcanvas.style.width=s.c.module.offsetWidth+"px"))},_tpt.moduleDefaults=(t,e)=>{let s=SR7.M[t];null!=s&&null!=s.c&&null!=s.c.module&&(s.dims??={},s.dims.moduleRect=s.c.module.getBoundingClientRect(),s.c.content.style.left="-"+s.dims.moduleRect.left+"px",s.c.content.style.width=_tpt.winW-_tpt.scrollBarW+"px","carousel"==e.type&&(s.c.module.style.overflow="visible"),_tpt.bgStyle(t,e,window.innerWidth==_tpt.winW))},_tpt.getOffset=t=>{var e=t.getBoundingClientRect(),s=window.pageXOffset||document.documentElement.scrollLeft,i=window.pageYOffset||document.documentElement.scrollTop;return{top:e.top+i,left:e.left+s}},_tpt.fillArray=function(t,e){let s,i;t=Array.isArray(t)?t:[t];let n=Array(e),o=t.length;for(i=0;i<t.length;i++)n[i+(e-o)]=t[i],null==s&&"#"!==t[i]&&(s=t[i]);for(let t=0;t<e;t++)void 0!==n[t]&&"#"!=n[t]||(n[t]=s),s=n[t];return n},_tpt.closestGE=function(t,e){let s=Number.MAX_VALUE,i=-1;for(let n=0;n<t.length;n++)t[n]-1>=e&&t[n]-1-e<s&&(s=t[n]-1-e,i=n);return++i}}();
+
+
+	
+
+
+
+jQuery(document).ready(function($) {
+    $(document).ready(function() {
+        
+        /* IMAGES *
+        $(".page-id-20863 img").removeAttr("sizes");
+        $(".page-id-21039 img").removeAttr("sizes");
+        $(".page-id-21090 img").removeAttr("sizes");
+        $(".page-id-21111 img").removeAttr("sizes");
+        $(".page-id-21115 img").removeAttr("sizes");
+        $(".page-id-21419 img").removeAttr("sizes");
+        
+        /* LIST VIEW */
+        $(".vct_category_list").click(function(){
+            $('#vct_category_column .fusion-builder-row-inner').addClass('vct_category_row_list');
+            $('#vct_category_column .vct_column_category').addClass('fusion-column-no-min-height');
+            $('#vct_category_column .fusion-layout-column:not(.vct_column_category)').hide();
+        });
+        
+        /* GRID VIEW */
+        $(".vct_category_grid").click(function(){
+            $('#vct_category_column .fusion-builder-row-inner').removeClass('vct_category_row_list');
+            $('#vct_category_column .vct_column_category').removeClass('fusion-column-no-min-height');
+        });
+        
+        /*$(".vct_job_column .fusion-builder-row-inner").css('width','100%')*/
+        
+        /* ANCHOR */
+        setTimeout(function(){ 
+            var hash = window.location.hash.substr(1);
+            if(hash.length > 0){
+                var id = "#" + hash;
+                $(id).find('a[data-toggle=collapse]').click().addClass('active');
+        
+            };
+        }, 1500);
+    });
+});
+
+
+
+
+:root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--color--awb-color-1: #ffffff;--wp--preset--color--awb-color-2: #f6f6f6;--wp--preset--color--awb-color-3: #ebeaea;--wp--preset--color--awb-color-4: #e0dede;--wp--preset--color--awb-color-5: #747474;--wp--preset--color--awb-color-6: #1a80b6;--wp--preset--color--awb-color-7: #333333;--wp--preset--color--awb-color-8: #000000;--wp--preset--color--awb-color-custom-10: #e8e8e8;--wp--preset--color--awb-color-custom-11: #105378;--wp--preset--color--awb-color-custom-12: #2d73b9;--wp--preset--color--awb-color-custom-13: rgba(235,234,234,0.8);--wp--preset--color--awb-color-custom-14: #bebdbd;--wp--preset--color--awb-color-custom-15: #90c9e8;--wp--preset--color--awb-color-custom-16: #5aabd6;--wp--preset--color--awb-color-custom-17: #f9f9f9;--wp--preset--color--awb-color-custom-18: #bfbfbf;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgb(6,147,227) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgb(252,185,0) 0%,rgb(255,105,0) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgb(255,105,0) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 11.25px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 22.5px;--wp--preset--font-size--x-large: 42px;--wp--preset--font-size--normal: 15px;--wp--preset--font-size--xlarge: 30px;--wp--preset--font-size--huge: 45px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgb(255, 255, 255), 6px 6px rgb(0, 0, 0);--wp--preset--shadow--crisp: 6px 6px 0px rgb(0, 0, 0);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+/*# sourceURL=global-styles-inline-css */
+
+
+
+
+:root{--wp-block-synced-color:#7a00df;--wp-block-synced-color--rgb:122,0,223;--wp-bound-block-color:var(--wp-block-synced-color);--wp-editor-canvas-background:#ddd;--wp-admin-theme-color:#007cba;--wp-admin-theme-color--rgb:0,124,186;--wp-admin-theme-color-darker-10:#006ba1;--wp-admin-theme-color-darker-10--rgb:0,107,160.5;--wp-admin-theme-color-darker-20:#005a87;--wp-admin-theme-color-darker-20--rgb:0,90,135;--wp-admin-border-width-focus:2px}@media (min-resolution:192dpi){:root{--wp-admin-border-width-focus:1.5px}}.wp-element-button{cursor:pointer}:root .has-very-light-gray-background-color{background-color:#eee}:root .has-very-dark-gray-background-color{background-color:#313131}:root .has-very-light-gray-color{color:#eee}:root .has-very-dark-gray-color{color:#313131}:root .has-vivid-green-cyan-to-vivid-cyan-blue-gradient-background{background:linear-gradient(135deg,#00d084,#0693e3)}:root .has-purple-crush-gradient-background{background:linear-gradient(135deg,#34e2e4,#4721fb 50%,#ab1dfe)}:root .has-hazy-dawn-gradient-background{background:linear-gradient(135deg,#faaca8,#dad0ec)}:root .has-subdued-olive-gradient-background{background:linear-gradient(135deg,#fafae1,#67a671)}:root .has-atomic-cream-gradient-background{background:linear-gradient(135deg,#fdd79a,#004a59)}:root .has-nightshade-gradient-background{background:linear-gradient(135deg,#330968,#31cdcf)}:root .has-midnight-gradient-background{background:linear-gradient(135deg,#020381,#2874fc)}:root{--wp--preset--font-size--normal:16px;--wp--preset--font-size--huge:42px}.has-regular-font-size{font-size:1em}.has-larger-font-size{font-size:2.625em}.has-normal-font-size{font-size:var(--wp--preset--font-size--normal)}.has-huge-font-size{font-size:var(--wp--preset--font-size--huge)}.has-text-align-center{text-align:center}.has-text-align-left{text-align:left}.has-text-align-right{text-align:right}.has-fit-text{white-space:nowrap!important}#end-resizable-editor-section{display:none}.aligncenter{clear:both}.items-justified-left{justify-content:flex-start}.items-justified-center{justify-content:center}.items-justified-right{justify-content:flex-end}.items-justified-space-between{justify-content:space-between}.screen-reader-text{border:0;clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;word-wrap:normal!important}.screen-reader-text:focus{background-color:#ddd;clip-path:none;color:#444;display:block;font-size:1em;height:auto;left:5px;line-height:normal;padding:15px 23px 14px;text-decoration:none;top:5px;width:auto;z-index:100000}html :where(.has-border-color){border-style:solid}html :where([style*=border-top-color]){border-top-style:solid}html :where([style*=border-right-color]){border-right-style:solid}html :where([style*=border-bottom-color]){border-bottom-style:solid}html :where([style*=border-left-color]){border-left-style:solid}html :where([style*=border-width]){border-style:solid}html :where([style*=border-top-width]){border-top-style:solid}html :where([style*=border-right-width]){border-right-style:solid}html :where([style*=border-bottom-width]){border-bottom-style:solid}html :where([style*=border-left-width]){border-left-style:solid}html :where(img[class*=wp-image-]){height:auto;max-width:100%}:where(figure){margin:0 0 1em}html :where(.is-position-sticky){--wp-admin--admin-bar--position-offset:var(--wp-admin--admin-bar--height,0px)}@media screen and (max-width:600px){html :where(.is-position-sticky){--wp-admin--admin-bar--position-offset:0px}}
+/*wp_block_styles_on_demand_placeholder:6abcae5deab23*/
+/*# sourceURL=wp-block-library-inline-css */
+
+
+
+
+.wp-block-audio :where(figcaption){color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-audio :where(figcaption){color:#ffffffa6}.wp-block-audio{margin:0 0 1em}.wp-block-code{border:1px solid #ccc;border-radius:4px;font-family:Menlo,Consolas,monaco,monospace;padding:.8em 1em}.wp-block-embed :where(figcaption){color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-embed :where(figcaption){color:#ffffffa6}.wp-block-embed{margin:0 0 1em}.blocks-gallery-caption{color:#555;font-size:13px;text-align:center}.is-dark-theme .blocks-gallery-caption{color:#ffffffa6}:root :where(.wp-block-image figcaption){color:#555;font-size:13px;text-align:center}.is-dark-theme :root :where(.wp-block-image figcaption){color:#ffffffa6}.wp-block-image{margin:0 0 1em}.wp-block-pullquote{border-bottom:4px solid;border-top:4px solid;color:currentColor;margin-bottom:1.75em}.wp-block-pullquote :where(cite),.wp-block-pullquote :where(footer),.wp-block-pullquote__citation{color:currentColor;font-size:.8125em;font-style:normal;text-transform:uppercase}.wp-block-quote{border-left:.25em solid;margin:0 0 1.75em;padding-left:1em}.wp-block-quote cite,.wp-block-quote footer{color:currentColor;font-size:.8125em;font-style:normal;position:relative}.wp-block-quote:where(.has-text-align-right){border-left:none;border-right:.25em solid;padding-left:0;padding-right:1em}.wp-block-quote:where(.has-text-align-center){border:none;padding-left:0}.wp-block-quote.is-large,.wp-block-quote.is-style-large,.wp-block-quote:where(.is-style-plain){border:none}.wp-block-search .wp-block-search__label{font-weight:700}.wp-block-search__button{border:1px solid #ccc;padding:.375em .625em}:where(.wp-block-group.has-background){padding:1.25em 2.375em}.wp-block-separator.has-css-opacity{opacity:.4}.wp-block-separator{border:none;border-bottom:2px solid;margin-left:auto;margin-right:auto}.wp-block-separator.has-alpha-channel-opacity{opacity:1}.wp-block-separator:not(.is-style-wide):not(.is-style-dots){width:100px}.wp-block-separator.has-background:not(.is-style-dots){border-bottom:none;height:1px}.wp-block-separator.has-background:not(.is-style-wide):not(.is-style-dots){height:2px}.wp-block-table{margin:0 0 1em}.wp-block-table td,.wp-block-table th{word-break:normal}.wp-block-table :where(figcaption){color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-table :where(figcaption){color:#ffffffa6}.wp-block-video :where(figcaption){color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-video :where(figcaption){color:#ffffffa6}.wp-block-video{margin:0 0 1em}:root :where(.wp-block-template-part.has-background){margin-bottom:0;margin-top:0;padding:1.25em 2.375em}
+/*# sourceURL=/wp-includes/css/dist/block-library/theme.min.css */
+
+
+
+
+/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
+/*# sourceURL=/wp-includes/css/classic-themes.min.css */
+
+
+
+
+
+
+
+
+			
+
+			var doc = document.documentElement;
+			doc.setAttribute( 'data-useragent', navigator.userAgent );
+		
+
+			
+Passer au contenu
+
+
+	
+
+							
+		
+
+			
+
+														
+
+					
+
+				
+Toggle Navigation
+Voyageurs
+Démarches DBS
+Qui sommes-nous ?
+Réglementation
+FAQ
+Recrutement
+Supports et ressources
+		
+
+			
+
+
+				
+				
+
+					
+Rechercher:
+
+													
+
+											
+
+				
+
+				
+
+					
+
+									
+
+
+				
+			
+
+
+
+			
+		
+
+		
+
+
+							
+			
+
+	
+
+		
+
+			
+
+				
+
+
+																							
+18/03/2026 – Nouvelle règlementation concernant l’importation des végétaux et produits végétaux
+
+
+											
+																		
+
+										
+
+			
+
+
+				
+				
+
+					
+Rechercher:
+
+													
+
+											
+
+				
+
+				
+
+					
+
+									
+
+
+				
+			
+
+
+
+			
+		
+
+									
+
+											
+				
+
+
+				
+			
+
+		
+
+	
+
+
+
+
+						
+
+				
+
+
+
+
+			
+
+			
+Précédent
+			
+Suivant
+		
+
+	
+					
+
+						
+									
+															
+18/03/2026 – Nouvelle règlementation concernant l’importation des végétaux et produits végétaux
+										
+
+				
+L’arrêté n°324 CM du 16 mars 2026, le nouveau texte applicable à l’importation des produits phytosanitaires (végétaux et produits végétaux)
+
+
+Références réglementaires
+
+
+
+
+Loi du Pays n°2013-12 du 6 mai 2013 relative à la biosécurité
+
+
+Arrêté n°324 CM du 16 mars 2026 : Nouvel arrêté relatif aux conditions d’importation des végétaux et produits végétaux
+
+
+
+
+I. Une réforme majeure de la réglementation phytosanitaire
+
+
+Un nouvel arrêté, publié au Journal Officiel de la Polynésie française, abroge et remplace l’arrêté n°740 CM du 12 juillet 1996.
+
+
+Ce texte constitue une 
+refonte complète de la réglementation phytosanitaire
+, en encadrant :
+
+
+
+
+les organismes nuisibles interdits à l’importation
+
+
+les conditions d’importation des végétaux et produits végétaux
+
+
+
+
+A) Une réglementation plus lisible
+
+
+La principale évolution repose sur une 
+nouvelle organisation par type de produits
+ :
+
+
+
+
+semences
+
+
+plants destinés à la plantation
+
+
+fruits et légumes frais
+
+
+produits transformés
+
+
+bois
+
+
+fleurs
+
+
+supports de culture, etc.
+
+
+
+
+Cette approche remplace l’ancienne logique par régimes d’autorisation et permet aux usagers de 
+mieux identifier les règles applicables
+.
+
+
+B) Simplification des démarches administratives
+
+
+Le texte introduit un 
+nouveau modèle de permis d’importation préalable (annexe 11)
+ :
+
+
+
+
+plus lisible
+
+
+harmonisé
+
+
+mieux compris par les partenaires étrangers
+
+
+
+
+C) Évolution pour les produits transformés
+
+
+Sur la base de la norme internationale 
+NIMP n°32
+, certains produits végétaux transformés (confitures, jus, produits congelés, etc.) sont désormais considérés comme 
+à faible risque phytosanitaire
+.
+
+
+Conséquences :
+
+
+
+
+ces produits ne sont plus interdits à l’importation
+
+
+seules des restrictions spécifiques pourront être imposées par la DGAE
+
+
+
+
+Cette évolution :
+
+
+
+
+limite le gaspillage alimentaire
+
+
+facilite les échanges commerciaux
+
+
+maintient un haut niveau de protection de l’agriculture locale
+
+
+
+
+D) Soutien aux activités culturelles et artisanales
+
+
+Le texte facilite également :
+
+
+
+
+les déplacements des groupes culturels (notamment de danse)
+
+
+l’exportation et la circulation des produits artisanaux à base végétale
+
+
+
+
+II. Structure du nouvel arrêté
+
+
+Le nouvel arrêté comprend :
+
+
+
+
+6 chapitres
+
+
+11 annexes
+
+
+
+
+Le corps du texte fixe les 
+règles générales
+, tandis que les annexes précisent les 
+conditions spécifiques selon les produits et espèces
+.
+
+
+III. Détail des annexes
+
+
+Annexe 1 : Organismes nuisibles
+
+
+Liste des organismes (insectes, bactéries, virus, plantes envahissantes, etc.) 
+strictement interdits à l’importation
+.
+Il y a quelques ajouts, notamment d’espèces menaçant la biodiversité.
+
+
+Annexe 2 : Semences
+
+
+Encadrement des conditions d’importation des semences.
+Ces règles, déjà appliquées en pratique, sont désormais 
+officiellement inscrites dans la réglementation
+, garantissant :
+
+
+
+
+transparence
+
+
+prévisibilité pour les usagers
+
+
+
+
+Annexe 3 : Végétaux destinés à la plantation
+
+
+Conditions d’importation selon les types de plants :
+
+
+
+
+racines nues
+
+
+plants en pot
+
+
+in vitro
+
+
+boutures, bulbes
+
+
+
+
+Annexe 4 : Fruits et légumes frais
+
+
+Conditions applicables aux produits destinés à la consommation.
+Il y a peu de changements techniques, mais une 
+présentation simplifiée
+.
+
+
+Annexe 5 : Denrées stockées et produits transformés
+
+
+Produits concernés :
+
+
+
+
+céréales
+
+
+fruits secs
+
+
+épices
+
+
+produits transformés (jus, conserves, confitures…)
+
+
+
+
+Simplification importante grâce à la classification par niveau de risque (NIMP 32).
+
+
+Annexe 6 : Bois et produits en bois
+
+
+Encadrement des différents types de bois (brut, scié, transformé).
+Nouveautés :
+
+
+
+
+ajout de définitions
+
+
+liste de produits exemptés (ex : cure-dents, brosses à dents en bois)
+
+
+
+
+Annexe 7 : Fleurs et feuilles fraîches
+
+
+Conditions d’importation alignées sur les pratiques actuelles de la DBS.
+
+
+Annexe 8 : Supports de culture
+
+
+Produits concernés :
+
+
+
+
+terreaux
+
+
+bourre de coco
+Conditions désormais formalisées dans le texte.
+
+
+
+
+Annexe 9 : Végétaux séchés
+
+
+Simplification des procédures :
+
+
+
+
+suppression de certaines exigences inutiles
+Facilitation pour :
+
+
+voyageurs
+
+
+particuliers
+
+
+groupes culturels
+
+
+
+
+Annexe 10 : Minéraux
+
+
+Conditions allégées, ces produits présentant 
+un risque phytosanitaire très faible voire nul
+.
+
+
+Annexe 11 : Permis d’importation
+
+
+Il existe un nouveau modèle standardisé pour les permis d’importation préalable.
+
+
+IV. En résumé
+
+
+Ce nouveau texte permet :
+
+
+
+
+une 
+meilleure lisibilité
+ de la réglementation
+
+
+une 
+sécurisation juridique
+ des pratiques existantes
+
+
+une 
+simplification des démarches
+ pour les usagers
+
+
+une 
+facilitation des échanges économiques
+
+
+le maintien d’un 
+haut niveau de protection de la biosécurité
+
+
+
+
+Il constitue une avancée majeure pour concilier 
+protection de l’environnement
+, 
+développement économique
+ et 
+modernisation administrative
+ en Polynésie française.
+
+
+
+							
+
+
+												
+Par 
+Alexia Fougerolle
+|
+2026-08-05T13:53:17-10:00
+mars 24th, 2026
+|
+													
+
+		
+Partagez cet article, Choisissez votre Plateforme!
+
+		
+Facebook
+X
+Reddit
+LinkedIn
+Tumblr
+Pinterest
+Vk
+Email
+	
+
+														
+
+																					
+
+				
+
+					À propos de l'auteur : 						
+Alexia Fougerolle
+																
+
+			
+
+									
+
+							
+
+								
+							
+
+							
+
+															
+
+						
+
+					
+
+								
+
+				
+
+				
+
+					Articles similaires				
+
+			
+
+			
+	
+	
+	
+					
+
+		
+
+																		
+
+					
+
+						
+
+							
+
+								
+
+				
+
+							
+
+											
+
+				
+
+															
+
+					
+
+						
+
+							
+
+								
+
+				
+
+							
+
+											
+
+				
+
+															
+
+					
+
+						
+
+							
+
+								
+
+				
+
+							
+
+											
+
+				
+
+															
+
+					
+
+						
+
+							
+
+								
+
+				
+
+							
+
+											
+
+				
+
+															
+
+					
+
+						
+
+							
+
+								
+
+				
+
+							
+
+											
+
+				
+
+					
+
+				
+	
+
+
+
+
+
+																										
+
+	
+
+
+
+											
+					
+		
+
+		
+Articles récents
+
+		
+
+											
+
+					
+08/09/2026 – Rappel règlementation concernant l’importation de charcuteries provenant d’Espagne
+
+									
+
+											
+
+					
+10/07/2026 – Rappel règlementation concernant l’importation des fromages au lait cru provenant de France
+
+									
+
+											
+
+					
+18/03/2026 – Nouvelle règlementation concernant l’importation des végétaux et produits végétaux
+
+									
+
+											
+
+					
+19/12/2025 – Rappel sur l’importation de viandes de volaille en provenance de France
+
+									
+
+											
+
+					
+09/12/2025 – Comment envoyer des mangues dans les îles sans soucis !
+
+									
+
+					
+
+
+		
+Archives
+
+			
+
+					
+septembre 2026
+
+	
+juillet 2026
+
+	
+mars 2026
+
+	
+décembre 2025
+
+	
+décembre 2024
+
+	
+novembre 2024
+
+	
+octobre 2024
+
+	
+juillet 2024
+
+	
+juin 2024
+
+	
+mai 2024
+
+	
+mars 2023
+
+	
+décembre 2022
+
+			
+
+
+			
+			
+
+						
+					
+  
+
+				
+  
+
+				
+				
+								
+					
+
+/* <![CDATA[ */
+function awbMapInit() {}
+//# sourceURL=google-maps-api-js-before
+/* ]]> */
+
+
+
+
+
+
+
+
+
+La Direction de la biosécurité a pour mission l’organisation, l’intervention et l’information concernant les risques pesant sur la santé des végétaux, des animaux et des personnes à leur contact ou en contact avec leurs productions.
+
+
+
+
+ACCÈS RAPIDE
+Toggle Navigation
+Note aux importateurs
+Liste des conteneurs
+Traitement de fumigation
+Réclamation / Satisfaction
+Recrutement
+Démarches DBS
+Liens utiles
+FAQ
+HORAIRES  ET OÙ NOUS TROUVER ?
+
+
+Toggle Navigation
+Qui sommes-nous ?
+Cellule phytosanitaire
+Cellule zoosanitaire
+Antenne de Nuku-Hiva
+Antenne de Bora Bora
+Équipe cynophile
+					
+
+						var map_fusion_map_6abcae5e12f72;
+						var markers = [];
+						var counter = 0;
+																				var fusionMapNonce = 'd7e7ef096c';
+												function fusion_run_map_fusion_map_6abcae5e12f72() {
+							jQuery ('#fusion_map_6abcae5e12f72' ).fusion_maps( {
+								addresses: [{"address":"Direction de la bios\u00e9curit\u00e9, Tahiti","infobox_content":"Direction de la bios\u00e9curit\u00e9, Tahiti","coordinates":false,"cache":true,"latitude":"-17.5348062","longitude":"-149.5784171"}],
+								animations: false,
+								infobox_background_color: '',
+								infobox_styling: 'default',
+								infobox_text_color: '',
+								map_style: 'default',
+								map_type: 'satellite',
+								marker_icon: '',
+								overlay_color: '',
+								overlay_color_hsl: {"hue":0,"sat":0,"lum":100},
+								show_address: true,
+								scale_control: true,
+								scrollwheel: true,
+								zoom: 14,
+								zoom_control: true,
+							} );
+						}
+
+						google.maps.event.addDomListener(window, 'load', fusion_run_map_fusion_map_6abcae5e12f72);
+					
+
+					
+CONTACT
+Motu Uta, 98713 Papeete
+
+BP 9575 – 98716 Pirae
+
+Tahiti – Polynésie française
+
+
+secretariat.dbs@administration.gov.pf
+
+
++689 40 54 45 85
+
+
+Mentions légales
+ – 
+Gestion des cookies
+ – 
+Politique de protection des données
+
+
+
+
+
+																
+ 
+
+		
+ 
+
+					
+							
+
+							
+Page load link
+
+
+		
+
+			
+var fusionNavIsCollapsed=function(e){var t,n;window.innerWidth<=e.getAttribute("data-breakpoint")?(e.classList.add("collapse-enabled"),e.classList.remove("awb-menu_desktop"),e.classList.contains("expanded")||window.dispatchEvent(new CustomEvent("fusion-mobile-menu-collapsed",{detail:{nav:e}})),(n=e.querySelectorAll(".menu-item-has-children.expanded")).length&&n.forEach(function(e){e.querySelector(".awb-menu__open-nav-submenu_mobile").setAttribute("aria-expanded","false")})):(null!==e.querySelector(".menu-item-has-children.expanded .awb-menu__open-nav-submenu_click")&&e.querySelector(".menu-item-has-children.expanded .awb-menu__open-nav-submenu_click").click(),e.classList.remove("collapse-enabled"),e.classList.add("awb-menu_desktop"),null!==e.querySelector(".awb-menu__main-ul")&&e.querySelector(".awb-menu__main-ul").removeAttribute("style")),e.classList.add("no-wrapper-transition"),clearTimeout(t),t=setTimeout(()=>{e.classList.remove("no-wrapper-transition")},400),e.classList.remove("loading")},fusionRunNavIsCollapsed=function(){var e,t=document.querySelectorAll(".awb-menu");for(e=0;e<t.length;e++)fusionNavIsCollapsed(t[e])};function avadaGetScrollBarWidth(){var e,t,n,l=document.createElement("p");return l.style.width="100%",l.style.height="200px",(e=document.createElement("div")).style.position="absolute",e.style.top="0px",e.style.left="0px",e.style.visibility="hidden",e.style.width="200px",e.style.height="150px",e.style.overflow="hidden",e.appendChild(l),document.body.appendChild(e),t=l.offsetWidth,e.style.overflow="scroll",t==(n=l.offsetWidth)&&(n=e.clientWidth),document.body.removeChild(e),jQuery("html").hasClass("awb-scroll")&&10<t-n?10:t-n}fusionRunNavIsCollapsed(),window.addEventListener("fusion-resize-horizontal",fusionRunNavIsCollapsed);
+
+{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"/biosecurite/*"},{"not":{"href_matches":["/biosecurite/wp-*.php","/biosecurite/wp-admin/*","/biosecurite/wp-content/uploads/sites/43/*","/biosecurite/wp-content/*","/biosecurite/wp-content/plugins/*","/biosecurite/wp-content/themes/Avada/*","/biosecurite/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+
+
+
+
+/* <![CDATA[ */
+var PT_CV_PUBLIC = {"_prefix":"pt-cv-","page_to_show":"5","_nonce":"f7ff40eb6f","is_admin":"","is_mobile":"","ajaxurl":"https://www.service-public.pf/biosecurite/wp-admin/admin-ajax.php","lang":"","loading_image_src":"data:image/gif;base64,R0lGODlhDwAPALMPAMrKygwMDJOTkz09PZWVla+vr3p6euTk5M7OzuXl5TMzMwAAAJmZmWZmZszMzP///yH/C05FVFNDQVBFMi4wAwEAAAAh+QQFCgAPACwAAAAADwAPAAAEQvDJaZaZOIcV8iQK8VRX4iTYoAwZ4iCYoAjZ4RxejhVNoT+mRGP4cyF4Pp0N98sBGIBMEMOotl6YZ3S61Bmbkm4mAgAh+QQFCgAPACwAAAAADQANAAAENPDJSRSZeA418itN8QiK8BiLITVsFiyBBIoYqnoewAD4xPw9iY4XLGYSjkQR4UAUD45DLwIAIfkEBQoADwAsAAAAAA8ACQAABC/wyVlamTi3nSdgwFNdhEJgTJoNyoB9ISYoQmdjiZPcj7EYCAeCF1gEDo4Dz2eIAAAh+QQFCgAPACwCAAAADQANAAAEM/DJBxiYeLKdX3IJZT1FU0iIg2RNKx3OkZVnZ98ToRD4MyiDnkAh6BkNC0MvsAj0kMpHBAAh+QQFCgAPACwGAAAACQAPAAAEMDC59KpFDll73HkAA2wVY5KgiK5b0RRoI6MuzG6EQqCDMlSGheEhUAgqgUUAFRySIgAh+QQFCgAPACwCAAIADQANAAAEM/DJKZNLND/kkKaHc3xk+QAMYDKsiaqmZCxGVjSFFCxB1vwy2oOgIDxuucxAMTAJFAJNBAAh+QQFCgAPACwAAAYADwAJAAAEMNAs86q1yaWwwv2Ig0jUZx3OYa4XoRAfwADXoAwfo1+CIjyFRuEho60aSNYlOPxEAAAh+QQFCgAPACwAAAIADQANAAAENPA9s4y8+IUVcqaWJ4qEQozSoAzoIyhCK2NFU2SJk0hNnyEOhKR2AzAAj4Pj4GE4W0bkJQIAOw==","is_mobile_tablet":"","sf_no_post_found":"Aucune publication trouv\u00e9e.","lf__separator":","};
+var PT_CV_PAGINATION = {"first":"\u00ab","prev":"\u2039","next":"\u203a","last":"\u00bb","goto_first":"Aller \u00e0 la premi\u00e8re page","goto_prev":"Aller \u00e0 la page pr\u00e9c\u00e9dente","goto_next":"Aller \u00e0 la page suivante","goto_last":"Aller \u00e0 la derni\u00e8re page","current_page":"La page actuelle est","goto_page":"Aller \u00e0 la page"};
+//# sourceURL=pt-cv-content-views-script-js-extra
+/* ]]> */
+
+
+
+
+
+
+
+
+/* <![CDATA[ */
+"use strict";var _createClass=function(){function defineProperties(target,props){for(var i=0;i<props.length;i++){var descriptor=props[i];descriptor.enumerable=descriptor.enumerable||!1,descriptor.configurable=!0,"value"in descriptor&&(descriptor.writable=!0),Object.defineProperty(target,descriptor.key,descriptor)}}return function(Constructor,protoProps,staticProps){return protoProps&&defineProperties(Constructor.prototype,protoProps),staticProps&&defineProperties(Constructor,staticProps),Constructor}}();function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor))throw new TypeError("Cannot call a class as a function")}var RocketBrowserCompatibilityChecker=function(){function RocketBrowserCompatibilityChecker(options){_classCallCheck(this,RocketBrowserCompatibilityChecker),this.passiveSupported=!1,this._checkPassiveOption(this),this.options=!!this.passiveSupported&&options}return _createClass(RocketBrowserCompatibilityChecker,[{key:"_checkPassiveOption",value:function(self){try{var options={get passive(){return!(self.passiveSupported=!0)}};window.addEventListener("test",null,options),window.removeEventListener("test",null,options)}catch(err){self.passiveSupported=!1}}},{key:"initRequestIdleCallback",value:function(){!1 in window&&(window.requestIdleCallback=function(cb){var start=Date.now();return setTimeout(function(){cb({didTimeout:!1,timeRemaining:function(){return Math.max(0,50-(Date.now()-start))}})},1)}),!1 in window&&(window.cancelIdleCallback=function(id){return clearTimeout(id)})}},{key:"isDataSaverModeOn",value:function(){return"connection"in navigator&&!0===navigator.connection.saveData}},{key:"supportsLinkPrefetch",value:function(){var elem=document.createElement("link");return elem.relList&&elem.relList.supports&&elem.relList.supports("prefetch")&&window.IntersectionObserver&&"isIntersecting"in IntersectionObserverEntry.prototype}},{key:"isSlowConnection",value:function(){return"connection"in navigator&&"effectiveType"in navigator.connection&&("2g"===navigator.connection.effectiveType||"slow-2g"===navigator.connection.effectiveType)}}]),RocketBrowserCompatibilityChecker}();
+//# sourceURL=rocket-browser-checker-js-after
+/* ]]> */
+
+
+
+
+/* <![CDATA[ */
+var RocketPreloadLinksConfig = {"excludeUris":"/(?:.+/)?feed(?:/(?:.+/?)?)?$|/(?:.+/)?embed/|http://(/%5B/%5D+)?/(index.php/)?(.*)wp-json(/.*|$)|/refer/|/go/|/recommend/|/recommends/","usesTrailingSlash":"1","imageExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif|pdf|doc|docx|xls|xlsx|php","fileExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif|pdf|doc|docx|xls|xlsx|php|html|htm","siteUrl":"https://www.service-public.pf/biosecurite","onHoverDelay":"100","rateThrottle":"3"};
+//# sourceURL=rocket-preload-links-js-extra
+/* ]]> */
+
+
+
+
+/* <![CDATA[ */
+(function() {
+"use strict";var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},e=function(){function i(e,t){for(var n=0;n<t.length;n++){var i=t[n];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(e,i.key,i)}}return function(e,t,n){return t&&i(e.prototype,t),n&&i(e,n),e}}();function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}var t=function(){function n(e,t){i(this,n),this.browser=e,this.config=t,this.options=this.browser.options,this.prefetched=new Set,this.eventTime=null,this.threshold=1111,this.numOnHover=0}return e(n,[{key:"init",value:function(){!this.browser.supportsLinkPrefetch()||this.browser.isDataSaverModeOn()||this.browser.isSlowConnection()||(this.regex={excludeUris:RegExp(this.config.excludeUris,"i"),images:RegExp(".("+this.config.imageExt+")$","i"),fileExt:RegExp(".("+this.config.fileExt+")$","i")},this._initListeners(this))}},{key:"_initListeners",value:function(e){-1<this.config.onHoverDelay&&document.addEventListener("mouseover",e.listener.bind(e),e.listenerOptions),document.addEventListener("mousedown",e.listener.bind(e),e.listenerOptions),document.addEventListener("touchstart",e.listener.bind(e),e.listenerOptions)}},{key:"listener",value:function(e){var t=e.target.closest("a"),n=this._prepareUrl(t);if(null!==n)switch(e.type){case"mousedown":case"touchstart":this._addPrefetchLink(n);break;case"mouseover":this._earlyPrefetch(t,n,"mouseout")}}},{key:"_earlyPrefetch",value:function(t,e,n){var i=this,r=setTimeout(function(){if(r=null,0===i.numOnHover)setTimeout(function(){return i.numOnHover=0},1e3);else if(i.numOnHover>i.config.rateThrottle)return;i.numOnHover++,i._addPrefetchLink(e)},this.config.onHoverDelay);t.addEventListener(n,function e(){t.removeEventListener(n,e,{passive:!0}),null!==r&&(clearTimeout(r),r=null)},{passive:!0})}},{key:"_addPrefetchLink",value:function(i){return this.prefetched.add(i.href),new Promise(function(e,t){var n=document.createElement("link");n.rel="prefetch",n.href=i.href,n.onload=e,n.onerror=t,document.head.appendChild(n)}).catch(function(){})}},{key:"_prepareUrl",value:function(e){if(null===e||"object"!==(void 0===e?"undefined":r(e))||!1 in e||-1===["http:","https:"].indexOf(e.protocol))return null;var t=e.href.substring(0,this.config.siteUrl.length),n=this._getPathname(e.href,t),i={original:e.href,protocol:e.protocol,origin:t,pathname:n,href:t+n};return this._isLinkOk(i)?i:null}},{key:"_getPathname",value:function(e,t){var n=t?e.substring(this.config.siteUrl.length):e;return n.startsWith("/")||(n="/"+n),this._shouldAddTrailingSlash(n)?n+"/":n}},{key:"_shouldAddTrailingSlash",value:function(e){return this.config.usesTrailingSlash&&!e.endsWith("/")&&!this.regex.fileExt.test(e)}},{key:"_isLinkOk",value:function(e){return null!==e&&"object"===(void 0===e?"undefined":r(e))&&(!this.prefetched.has(e.href)&&e.origin===this.config.siteUrl&&-1===e.href.indexOf("?")&&-1===e.href.indexOf("#")&&!this.regex.excludeUris.test(e.href)&&!this.regex.images.test(e.href))}}],[{key:"run",value:function(){"undefined"!=typeof RocketPreloadLinksConfig&&new n(new RocketBrowserCompatibilityChecker({capture:!0,passive:!0}),RocketPreloadLinksConfig).init()}}]),n}();t.run();
+}());
+
+//# sourceURL=rocket-preload-links-js-after
+/* ]]> */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* <![CDATA[ */
+var fusionJSVars = {"visibility_small":"640","visibility_medium":"1024"};
+//# sourceURL=fusion-js-extra
+/* ]]> */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* <![CDATA[ */
+var fusionMapsVars = {"admin_ajax":"https://www.service-public.pf/biosecurite/wp-admin/admin-ajax.php"};
+//# sourceURL=jquery-fusion-maps-js-extra
+/* ]]> */
+
+
+
+
+
+
+/* <![CDATA[ */
+var fusionLightboxVideoVars = {"lightbox_video_width":"1280","lightbox_video_height":"720"};
+//# sourceURL=jquery-lightbox-js-extra
+/* ]]> */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* <![CDATA[ */
+var fusionVideoGeneralVars = {"status_vimeo":"1","status_yt":"1"};
+//# sourceURL=fusion-video-general-js-extra
+/* ]]> */
+
+
+
+
+
+
+/* <![CDATA[ */
+var fusionVideoBgVars = {"status_vimeo":"1","status_yt":"1"};
+//# sourceURL=fusion-video-bg-js-extra
+/* ]]> */
+
+
+
+
+
+
+/* <![CDATA[ */
+var fusionLightboxVars = {"status_lightbox":"1","lightbox_gallery":"1","lightbox_skin":"metro-white","lightbox_title":"1","lightbox_zoom":"1","lightbox_arrows":"1","lightbox_slideshow_speed":"5000","lightbox_loop":"0","lightbox_autoplay":"","lightbox_opacity":"0.90","lightbox_desc":"1","lightbox_social":"1","lightbox_social_links":{"facebook":{"source":"https://www.facebook.com/sharer.php?u={URL}","text":"Partager sur Facebook"},"twitter":{"source":"https://x.com/intent/post?url={URL}","text":"Partager sur X"},"reddit":{"source":"https://reddit.com/submit?url={URL}","text":"Partager sur Reddit"},"linkedin":{"source":"https://www.linkedin.com/shareArticle?mini=true&url={URL}","text":"Partager sur LinkedIn"},"tumblr":{"source":"https://www.tumblr.com/share/link?url={URL}","text":"Partager sur Tumblr"},"pinterest":{"source":"https://pinterest.com/pin/create/button/?url={URL}","text":"Partager sur Pinterest"},"vk":{"source":"https://vk.com/share.php?url={URL}","text":"Partager sur Vk"},"mail":{"source":"mailto:?body={URL}","text":"Partage par Email"}},"lightbox_deeplinking":"1","lightbox_path":"vertical","lightbox_post_images":"1","lightbox_animation_speed":"normal","l10n":{"close":"Appuyez sur Esc pour fermer","enterFullscreen":"Passer en mode plein \u00e9cran (Maj + Entr\u00e9e)","exitFullscreen":"Quitter le plein \u00e9cran (Maj+Entr\u00e9e)","slideShow":"Diaporama","next":"Suivant","previous":"Pr\u00e9c\u00e9dent"}};
+//# sourceURL=fusion-lightbox-js-extra
+/* ]]> */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* <![CDATA[ */
+var avadaRevVars = {"avada_rev_styles":"1"};
+//# sourceURL=avada-rev-styles-js-extra
+/* ]]> */
+
+
+
+
+
+
+
+
+/* <![CDATA[ */
+var avadaLiveSearchVars = {"live_search":"1","ajaxurl":"https://www.service-public.pf/biosecurite/wp-admin/admin-ajax.php","no_search_results":"Aucun r\u00e9sultat de recherche ne correspond \u00e0 votre requ\u00eate. Veuillez r\u00e9essayer","min_char_count":"4","per_page":"100","show_feat_img":"1","display_post_type":"1"};
+//# sourceURL=avada-live-search-js-extra
+/* ]]> */
+
+
+
+
+
+
+
+
+/* <![CDATA[ */
+var fusionAnimationsVars = {"status_css_animations":"desktop"};
+//# sourceURL=fusion-animations-js-extra
+/* ]]> */
+
+
+
+
+
+
+/* <![CDATA[ */
+var fusionMenuVars = {"mobile_submenu_open":"Ouvrez le sous-menu de %s"};
+//# sourceURL=fusion-menu-js-extra
+/* ]]> */
+
+
+
+
+
+
+
+
+
+
+/* <![CDATA[ */
+var fusionFlexSliderVars = {"status_vimeo":"1","slideshow_autoplay":"1","slideshow_speed":"7000","pagination_video_slide":"","status_yt":"1","flex_smoothHeight":"false"};
+//# sourceURL=fusion-flexslider-js-extra
+/* ]]> */
+
+
+
+
+
+
+/* <![CDATA[ */
+var awbCarouselVars = {"related_posts_speed":"2500","carousel_speed":"2500"};
+//# sourceURL=awb-carousel-js-extra
+/* ]]> */
+
+
+
+
+
+
+
+
+
+
+
+
+/* <![CDATA[ */
+var fusionContainerVars = {"content_break_point":"800","container_hundred_percent_height_mobile":"0","is_sticky_header_transparent":"0"};
+//# sourceURL=fusion-container-js-extra
+/* ]]> */
+
+
+
+
+
+
+
+
+/* <![CDATA[ */
+var avadaSidebarsVars = {"header_position":"top","header_layout":"v4","header_sticky":"","header_sticky_type2_layout":"menu_only","side_header_break_point":"800","header_sticky_tablet":"","sticky_header_shrinkage":"","nav_height":"40","sidebar_break_point":"800"};
+//# sourceURL=awb-widget-areas-js-extra
+/* ]]> */
+
+
+
+
+
+
+
+
+/* <![CDATA[ */
+var avadaElasticSliderVars = {"tfes_autoplay":"1","tfes_animation":"sides","tfes_interval":"3000","tfes_speed":"800","tfes_width":"150"};
+//# sourceURL=avada-elastic-slider-js-extra
+/* ]]> */
+
+
+
+
+
+
+
+
+/* <![CDATA[ */
+var avadaSelectVars = {"avada_drop_down":"1"};
+//# sourceURL=avada-drop-down-js-extra
+/* ]]> */
+
+
+
+
+
+
+/* <![CDATA[ */
+var avadaToTopVars = {"status_totop":"desktop","totop_position":"right","totop_scroll_down_only":"0"};
+//# sourceURL=avada-to-top-js-extra
+/* ]]> */
+
+
+
+
+
+
+
+
+
+
+
+
+/* <![CDATA[ */
+var fusionTypographyVars = {"site_width":"1100px","typography_sensitivity":"0.00","typography_factor":"1.50","elements":"h1, h2, h3, h4, h5, h6"};
+//# sourceURL=fusion-responsive-typography-js-extra
+/* ]]> */
+
+
+
+
+
+
+/* <![CDATA[ */
+var fusionScrollToAnchorVars = {"content_break_point":"800","container_hundred_percent_height_mobile":"0"};
+//# sourceURL=fusion-scroll-to-anchor-js-extra
+/* ]]> */
+
+
+
+
+
+
+/* <![CDATA[ */
+var fusionVideoVars = {"status_vimeo":"1"};
+//# sourceURL=fusion-video-js-extra
+/* ]]> */
+
+
+
+
+
+
+				
+
+				jQuery( document ).ready( function() {
+					var ajaxurl = 'https://www.service-public.pf/biosecurite/wp-admin/admin-ajax.php';
+					if ( 0 < jQuery( '.fusion-login-nonce' ).length ) {
+						jQuery.get( ajaxurl, { 'action': 'fusion_login_nonce' }, function( response ) {
+							jQuery( '.fusion-login-nonce' ).html( response );
+						});
+					}
+				});
+				
+
+				
+    
+
+    /* ── Isolation totale vis-à-vis d'Avada / Fusion Builder ── */
+    #ta-bandeau-legal {
+        all: unset !important;
+        display: block !important;
+        width: 100% !important;
+        background: #f7f7f7 !important;
+        border-top: 1px solid #e0e0e0 !important;
+        padding: 18px 10px !important;
+        text-align: center !important;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+        font-size: 13px !important;
+        line-height: 1.5 !important;
+        box-sizing: border-box !important;
+        position: relative !important;
+        z-index: 10 !important;
+        clear: both !important;
+    }
+    #ta-bandeau-legal a {
+        all: unset !important;
+        color: #555 !important;
+        text-decoration: none !important;
+        cursor: pointer !important;
+        padding: 4px 20px !important;
+        font-size: 13px !important;
+        font-family: inherit !important;
+        display: inline-block !important;
+        transition: color 0.2s ease, text-decoration 0.2s ease !important;
+    }
+    #ta-bandeau-legal a:hover,
+    #ta-bandeau-legal a:focus {
+        color: #0073aa !important;
+        text-decoration: underline !important;
+        text-underline-offset: 3px !important;
+    }
+    #ta-bandeau-legal .ta-sep {
+        display: inline-block !important;
+        width: 1px !important;
+        height: 12px !important;
+        background: #ccc !important;
+        vertical-align: middle !important;
+        margin: 0 4px !important;
+    }
+    /* ── Responsive mobile ── */
+    @media (max-width: 600px) {
+        #ta-bandeau-legal {
+            padding: 14px 10px !important;
+        }
+        #ta-bandeau-legal a {
+            display: block !important;
+            padding: 8px 0 !important;
+        }
+        #ta-bandeau-legal .ta-sep {
+            display: none !important;
+        }
+    }
+    
+
+
+    
+
+    
+Mentions légales
+
+    
+
+    
+Données personnelles
+
+    
+
+    
+Politique de cookies (UE)
+
+	
+
+
+    
+
+  /* Widget Conexia au premier plan */
+  #conexia-chat-host {
+    position: fixed;
+    z-index: 2147483647;
+  }
+
+
+
+
+
+
+
+
+  window.ConexiaChatConfig = {
+    "webhookUrl": "https://chat.conexia-agency.com/chat/dbs",
+    "transport": "ws",
+    "mode": "bubble",
+    "style": "classic",
+    "theme": {
+      "primaryColor": "#1b2a56",
+      "position": "bottom-right",
+      "borderRadius": 12,
+      "botAvatarUrl": "https://demo.conexia-agency.com/assets/dbs-avatar.webp",
+      "fabIconUrl": "https://demo.conexia-agency.com/assets/dbs-avatar.webp"
+    },
+    "customTexts": {
+      "headerTitle": "Aide en ligne DBS",
+      "placeholder": "Posez votre question sur la biosécurité (import, interinsulaire, démarches)...",
+      "companyName": "Direction de la Biosécurité (DBS)"
+    },
+    "initialMessages": [
+      "'Ia Ora Na. Vous êtes en relation avec l'aide en ligne de la Direction de la Biosécurité (DBS).",
+      "Je peux vous renseigner sur l'import et l'export d'animaux, de végétaux et de denrées, le transport entre les îles, vos démarches et les alertes sanitaires en cours.",
+      "Ce service vient d'être mis en ligne. Mes réponses vous orientent et ne remplacent pas la décision de nos services sur un dossier. Comment puis-je vous aider ?"
+    ],
+    "enableStreaming": true,
+    "persistHistory": true,
+    "timeout": 60000,
+    "debug": false
+  };
+
+
+
+		
+
+
+			
+
+		
+
+			
+Aller en haut
+
+
+					
+
+	
+
+		
+
+
+
+

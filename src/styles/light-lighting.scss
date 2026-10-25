@@ -1,0 +1,95 @@
+// Light-theme lighting for the parts of the page that the `--s-shadow-*` tokens cannot reach: the ground
+// the app sits on, the lines and ledges of the shell, and primary actions.
+//
+// Raised and sunken surfaces get their depth from the tokens in `soramitsu-variables.scss`, which is also
+// where the lighting rig (`--lm-*`) is defined. Every rule here is scoped to the light theme, so Noir keeps
+// its own look. See docs/light-theme-lighting.md before adding a rule.
+
+:root:not([data-theme='dark']) {
+  // The ground. Beyond the key-light pool it only ever gets darker than `--s-color-utility-body`: pills and
+  // wells fill themselves with that colour, so a lighter ground would show them as flat patches. The pool
+  // stays inside the sidebar column, where nothing is filled with the body colour.
+  #app {
+    background-color: var(--s-color-utility-body);
+    background-image:
+      // key light pooling over the sidebar
+      radial-gradient(ellipse 560px 700px at 0% 0%, rgb(var(--lm-key) / 0.7), rgb(var(--lm-key) / 0) 100%),
+      // brand pink bounced back from the lower right
+      radial-gradient(ellipse 70% 60% at 100% 100%, rgb(var(--lm-bounce) / 0.03), transparent 70%),
+      // cool fill light from the upper right
+      radial-gradient(ellipse 60% 50% at 100% 0%, rgb(var(--lm-fill) / 0.045), transparent 70%),
+      // falloff: the farther from the key light, the dimmer
+      radial-gradient(ellipse 130% 120% at 0% 0%, transparent 25%, rgb(var(--lm-ink) / 0.04) 100%);
+  }
+
+  // The sidebar belongs to the ground, so the light has to reach it. Below 528px it is a drawer that paints
+  // its own scrim and panel, and below 768px a collapsed rail has no hover overlay to protect.
+  @include large-mobile {
+    .app-menu:not(.collapsed),
+    .app-menu.collapsed:not(:hover) {
+      background: transparent;
+    }
+  }
+
+  // An icon socket is only a visible disc where it is selected; a body-coloured disc would show on the lit ground.
+  .menu.el-menu .el-menu-item:not(.is-active) .icon-container {
+    background-color: transparent;
+  }
+
+  // The selected item glows like a lit bulb under glass.
+  .menu.el-menu .el-menu-item.is-active:not(.menu-item--small) .icon-container {
+    box-shadow:
+      var(--s-shadow-element),
+      0 0 22px -4px rgb(var(--lm-bounce) / 0.4);
+  }
+
+  // Engraved lines: the upper wall of a groove is in shade and the lower wall catches the key light.
+  header.header::after {
+    background-color: rgb(var(--lm-ink) / 0.1);
+    box-shadow: 0 1px 0 rgb(var(--lm-key) / 0.95);
+  }
+
+  .menu-section-title {
+    border-top-color: rgb(var(--lm-ink) / 0.1);
+    box-shadow: inset 0 1px 0 rgb(var(--lm-key) / 0.95);
+  }
+
+  // The status bar is a ledge lit from above.
+  .app-status {
+    box-shadow:
+      0 -10px 24px -14px rgb(var(--lm-ink) / 0.25),
+      inset 0 1px 0 rgb(var(--lm-key) / 0.9);
+  }
+
+  // Primary actions: the brand colour bounces off the button onto the surface under it. Several features pin
+  // a white glow with `!important` on their own primary buttons, so these rules need it as well.
+  button.el-button.neumorphic.s-primary,
+  button.s-button_type_primary {
+    &:not(:disabled):not(.is-disabled):not(.s-button_disabled) {
+      background-image: linear-gradient(180deg, rgb(var(--lm-key) / 0.16), rgb(var(--lm-key) / 0) 55%);
+      box-shadow: var(--lm-glow-accent) !important;
+
+      &:hover,
+      &:focus {
+        box-shadow: var(--lm-glow-accent-hover) !important;
+      }
+
+      &:active {
+        box-shadow: var(--lm-glow-accent-pressed) !important;
+      }
+
+      // Small buttons keep the bounce light close in every state; the extra class also outranks the rules above.
+      &:is(.s-button_size_sm, .s-button_size_xs, .s-button_size_mini) {
+        &,
+        &:hover,
+        &:focus {
+          box-shadow: var(--lm-glow-accent-compact) !important;
+        }
+
+        &:active {
+          box-shadow: var(--lm-glow-accent-pressed) !important;
+        }
+      }
+    }
+  }
+}

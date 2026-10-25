@@ -4,25 +4,21 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useTranslation } from '@/composables/useTranslation';
 import { VaultStatuses } from '@/modules/vault/consts';
 import type { VaultStatus } from '@/modules/vault/types';
 
-@Component
-export default class PositionStatus extends Mixins(TranslationMixin) {
-  @Prop({ default: VaultStatuses.Opened, type: String, required: true }) readonly status!: VaultStatus;
+const props = withDefaults(defineProps<{ status?: VaultStatus }>(), {
+  status: VaultStatuses.Opened,
+});
 
-  get statusClass(): string {
-    return this.status.toLowerCase();
-  }
+const { t } = useTranslation();
 
-  get statusLabel(): string {
-    return this.t(`kensetsu.status.${this.status}`);
-  }
-}
+const statusClass = computed(() => props.status.toLowerCase());
+const statusLabel = computed(() => t(`kensetsu.status.${props.status}`));
 </script>
 
 <style lang="scss" scoped>

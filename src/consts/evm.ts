@@ -7,6 +7,12 @@ import type { NetworkData } from '@/types/bridge';
 
 import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
 
+// Temporary extension until SDK exposes Arbitrum Sepolia id
+// TODO: Replace with SDK-provided enum when available
+export const EvmNetworkIdExt = Object.freeze({
+  ArbitrumSepoliaTestnet: 421614,
+});
+
 export enum EvmLinkType {
   Account = 'Account',
   Transaction = 'Transaction',
@@ -43,57 +49,9 @@ export const EVM_NETWORKS: Record<EvmNetwork, NetworkData> = {
       symbol: 'ETH',
       decimals: 18,
     },
-    endpointUrls: ['https://mainnet.infura.io/v3/'],
+    endpointUrls: ['https://mainnet.infura.io/v3/', 'https://rpc.ankr.com/eth'],
     blockExplorerUrls: ['https://etherscan.io'],
     shortName: 'Ethereum',
-  },
-  [EvmNetworkId.EthereumRopsten]: {
-    id: EvmNetworkId.EthereumRopsten,
-    name: 'Ethereum Ropsten Testnet',
-    nativeCurrency: {
-      name: 'RopstenETH',
-      symbol: 'ETH',
-      decimals: 18,
-    },
-    endpointUrls: ['https://ropsten.infura.io/v3/'],
-    blockExplorerUrls: ['https://ropsten.etherscan.io'],
-    shortName: 'Ropsten',
-  },
-  [EvmNetworkId.EthereumRinkeby]: {
-    id: EvmNetworkId.EthereumRinkeby,
-    name: 'Ethereum Rinkeby Testnet',
-    nativeCurrency: {
-      name: 'RinkebyETH',
-      symbol: 'ETH',
-      decimals: 18,
-    },
-    endpointUrls: ['https://rinkeby.infura.io/v3/'],
-    blockExplorerUrls: ['https://rinkeby.etherscan.io'],
-    shortName: 'Rinkeby',
-  },
-  [EvmNetworkId.EthereumGoerli]: {
-    id: EvmNetworkId.EthereumGoerli,
-    name: 'Ethereum Goerli Testnet',
-    nativeCurrency: {
-      name: 'GoerliETH',
-      symbol: 'ETH',
-      decimals: 18,
-    },
-    endpointUrls: ['https://goerli.infura.io/v3/'],
-    blockExplorerUrls: ['https://goerli.etherscan.io'],
-    shortName: 'Goerli',
-  },
-  [EvmNetworkId.EthereumKovan]: {
-    id: EvmNetworkId.EthereumKovan,
-    name: 'Ethereum Kovan Testnet',
-    nativeCurrency: {
-      name: 'KovanETH',
-      symbol: 'ETH',
-      decimals: 18,
-    },
-    endpointUrls: ['https://kovan.infura.io/v3/'],
-    blockExplorerUrls: ['https://kovan.etherscan.io'],
-    shortName: 'Kovan',
   },
   [EvmNetworkId.EthereumSepolia]: {
     id: EvmNetworkId.EthereumSepolia,
@@ -103,7 +61,7 @@ export const EVM_NETWORKS: Record<EvmNetwork, NetworkData> = {
       symbol: 'ETH',
       decimals: 18,
     },
-    endpointUrls: ['https://sepolia.infura.io/v3/'],
+    endpointUrls: ['https://sepolia.infura.io/v3/', 'https://rpc.sepolia.org'],
     blockExplorerUrls: ['https://sepolia.etherscan.io'],
     shortName: 'Sepolia',
   },
@@ -239,17 +197,21 @@ export const EVM_NETWORKS: Record<EvmNetwork, NetworkData> = {
     blockExplorerUrls: ['https://arbiscan.io'],
     shortName: 'Arbitrum',
   },
-  [EvmNetworkId.ArbitrumGoerliTestnet]: {
-    id: EvmNetworkId.ArbitrumGoerliTestnet,
-    name: 'Arbitrum Goerli Testnet',
+  // Arbitrum Sepolia Testnet (temporary local id until SDK exposes it)
+  // TODO: Deploy bridge contracts on Arbitrum Sepolia and update ETH_BRIDGE addresses in env.json when ready
+  // @ts-expect-error: temporary numeric key until SDK provides enum
+  [EvmNetworkIdExt.ArbitrumSepoliaTestnet as unknown as EvmNetwork]: {
+    // @ts-expect-error: see above comment
+    id: EvmNetworkIdExt.ArbitrumSepoliaTestnet,
+    name: 'Arbitrum Sepolia Testnet',
     nativeCurrency: {
       name: 'ETH',
       symbol: 'ETH',
       decimals: 18,
     },
-    endpointUrls: ['https://goerli-rollup.arbitrum.io/rpc'],
-    blockExplorerUrls: ['https://goerli.arbiscan.io'],
-    shortName: 'Goerli',
+    endpointUrls: ['https://sepolia-rollup.arbitrum.io/rpc'],
+    blockExplorerUrls: ['https://sepolia.arbiscan.io'],
+    shortName: 'Arb Sepolia',
   },
   [EvmNetworkId.FantomMainnet]: {
     id: EvmNetworkId.FantomMainnet,

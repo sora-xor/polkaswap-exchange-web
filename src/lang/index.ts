@@ -1,34 +1,140 @@
-import dayjs from 'dayjs';
-import first from 'lodash/fp/first';
-import Vue from 'vue';
-import VueI18n from 'vue-i18n';
+import dayjs from 'dayjs/esm';
+import type { ComponentInternalInstance } from 'vue';
+import { createI18n, type MissingHandler } from 'vue-i18n';
 
-import { Language } from '@/consts';
+import { TranslationConsts } from '@/consts/app';
+import { Language } from '@/consts/language';
+import { getLocaleDirection } from '@/lang/direction';
+import { getBuildVariant, trackEvent } from '@/utils/telemetry';
 import { settingsStorage } from '@/utils/storage';
 
-import enCard from './card/en.json';
-import en from './en.json';
+export const TRANSLATION_MISSING_THROTTLE_MS = 30_000;
 
-Vue.use(VueI18n);
+const recentMissingTranslations = new Map<string, number>();
 
-const i18n = new VueI18n({
+/**
+ * Clears the duplicate-suppression cache for translation missing events (primarily for tests).
+ */
+export const resetTranslationMissingThrottle = (): void => {
+  recentMissingTranslations.clear();
+};
+
+const getComponentName = (instance?: ComponentInternalInstance | null): string => {
+  const type = instance?.type as Record<string, unknown> | undefined;
+  const name = (type?.name ?? (type as Record<string, unknown> | undefined)?.__name) as string | undefined;
+  return typeof name === 'string' && name.length > 0 ? name : 'unknown';
+};
+
+/**
+ * Handles missing translation keys by emitting a telemetry event with minimal, non-PII context.
+ */
+export const translationMissingHandler: MissingHandler = (locale, key, instance) => {
+  const cacheKey = `${locale}:${key}`;
+  const now = Date.now();
+  const lastSeenAt = recentMissingTranslations.get(cacheKey) ?? 0;
+
+  if (now - lastSeenAt < TRANSLATION_MISSING_THROTTLE_MS) {
+    return;
+  }
+
+  recentMissingTranslations.set(cacheKey, now);
+
+  trackEvent('translation_missing', {
+    key,
+    locale,
+    component: getComponentName(instance),
+    buildVariant: getBuildVariant(),
+  });
+};
+
+const i18n = createI18n({
+  legacy: false,
+  globalInjection: true,
   locale: Language.EN,
   fallbackLocale: Language.EN,
-  messages: {
-    [Language.EN]: { ...en, ...enCard },
-  },
-  silentTranslationWarn: process.env.NODE_ENV === 'production',
+  messages: {},
+  warnHtmlMessage: false,
+  missing: translationMissingHandler,
 });
 
-const loadedLanguages: Array<string> = [Language.EN];
+const i18nGlobal = i18n.global;
+const loadedLanguages: Array<string> = [];
+applyDocumentLocaleAttributes(Language.EN);
+
+const LOCALIZED_TRANSLATION_CONST_DEFAULTS = {
+  AppName: TranslationConsts.AppName,
+  Sora: TranslationConsts.Sora,
+  VAL: TranslationConsts.VAL,
+} as const;
+
+const AKK_TRANSLATION_CONST_OVERRIDES = {
+  AppName: '𒊹𒂵𒆜',
+  Sora: '𒀭',
+  VAL: '𒋾',
+} as const;
+
+type LocalizedTranslationConstKey = keyof typeof LOCALIZED_TRANSLATION_CONST_DEFAULTS;
+type MutableLocalizedTranslationConsts = Record<LocalizedTranslationConstKey, string>;
+
+/**
+ * Applies document-level locale attributes used by browser text shaping,
+ * accessibility, RTL layout, and locale-specific typography rules.
+ */
+function applyDocumentLocaleAttributes(locale: string): void {
+  try {
+    if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('lang', locale);
+      document.documentElement.setAttribute('dir', getLocaleDirection(locale));
+    }
+  } catch (e) {
+    // noop: environment may not have document (tests)
+  }
+}
+
+/**
+ * Keeps mutable i18n interpolation constants in sync with the active locale.
+ * They are merged into every translation call, so locale-specific overrides must
+ * be reset before applying overrides for the newly selected locale.
+ */
+function applyTranslationConstLocaleOverrides(locale: Language): void {
+  const mutableConsts = TranslationConsts as unknown as MutableLocalizedTranslationConsts;
+
+  Object.assign(mutableConsts, LOCALIZED_TRANSLATION_CONST_DEFAULTS);
+
+  if (locale === Language.AKK) {
+    Object.assign(mutableConsts, AKK_TRANSLATION_CONST_OVERRIDES);
+  }
+}
 
 const hasLocale = (locale: string) => Object.values(Language).includes(locale as any);
 
-export const getSupportedLocale = (locale: Language): string => {
-  if (hasLocale(locale)) return locale;
+/**
+ * Normalizes browser and persisted locale codes before matching app catalogs.
+ */
+const normalizeLocaleCode = (locale: string): string => {
+  const normalizedLocale = locale.trim().replace(/_/g, '-');
+  const [languageCode, regionCode, ...rest] = normalizedLocale.split('-');
 
-  if (locale.includes('-')) {
-    return getSupportedLocale(first(locale.split('-')) as Language);
+  if (!languageCode) return '';
+
+  const normalizedLanguage = languageCode.toLowerCase();
+
+  if (normalizedLanguage === 'zh' && regionCode) {
+    return [normalizedLanguage, regionCode.toUpperCase(), ...rest].join('-');
+  }
+
+  return [normalizedLanguage, regionCode, ...rest].filter(Boolean).join('-');
+};
+
+const getBaseLocale = (locale: string): string => normalizeLocaleCode(locale).split('-')[0] ?? locale;
+
+export const getSupportedLocale = (locale: Language | string): string => {
+  const normalizedLocale = normalizeLocaleCode(locale);
+
+  if (hasLocale(normalizedLocale)) return normalizedLocale;
+
+  if (normalizedLocale.includes('-')) {
+    return getSupportedLocale(getBaseLocale(normalizedLocale) as Language);
   }
 
   return Language.EN;
@@ -42,17 +148,25 @@ export function getLocale(): string {
 
 export async function setDayJsLocale(lang: Language): Promise<void> {
   const locale = getSupportedLocale(lang);
-  let code = first(locale.split('-')) as string;
-  // There is no "no" lang, let's keep it for now, "en" will be used by default
+  let code: string = locale;
+
+  if (locale !== Language.ZH_CN && locale !== Language.ZH_TW && locale.includes('-')) {
+    code = getBaseLocale(locale);
+  }
+
   if (code === 'zh') {
     code = Language.ZH_CN;
   }
 
+  if (locale === Language.ZH_CN || locale === Language.ZH_TW) {
+    code = locale;
+  }
+
+  const dayjsLocale = code.toLowerCase();
+
   try {
-    const { default: preset } = code !== Language.EN ? await import(`dayjs/esm/locale/${code}.js`) : {};
-    // [TODO] check after wallet transfer
-    // wallet compability: cjs dayjs in wallet
-    dayjs.locale(code, preset, false);
+    const { default: preset } = dayjsLocale !== Language.EN ? await import(`dayjs/esm/locale/${dayjsLocale}.js`) : {};
+    dayjs.locale(dayjsLocale, preset, false);
   } catch (error) {
     console.warn(`[dayjs]: unsupported locale "${code}"`, error);
   }
@@ -65,13 +179,18 @@ export async function setI18nLocale(lang: Language): Promise<void> {
     // transform locale string 'eu-ES' to filename 'eu_ES' like in localise
     const filename = locale.replace('-', '_');
     const messagesModule = await import(`@/lang/${filename}.json`);
-    const cardMessagesModule = await import(`@/lang/card/${filename}.json`);
 
-    i18n.setLocaleMessage(locale, { ...messagesModule.default, ...cardMessagesModule.default });
+    i18nGlobal.setLocaleMessage(locale, { ...messagesModule.default });
     loadedLanguages.push(locale);
   }
 
-  i18n.locale = locale;
+  applyTranslationConstLocaleOverrides(locale);
+  i18nGlobal.locale.value = locale;
+  applyDocumentLocaleAttributes(locale);
+}
+const globalComposer = i18n.global as Record<string, unknown>;
+if (typeof globalComposer.rt !== 'function') {
+  globalComposer.rt = (...args: unknown[]) => (i18n.global as any).t(...(args as [unknown]));
 }
 
 export default i18n;

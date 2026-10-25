@@ -1,0 +1,7 @@
+/* Minimal fallback stylesheet used when the Soraneo wallet bundle isn't available.
+ * The real project should consume the compiled CSS from the wallet library.
+ */
+
+.sora-theme-provider {
+  color-scheme: inherit;
+}

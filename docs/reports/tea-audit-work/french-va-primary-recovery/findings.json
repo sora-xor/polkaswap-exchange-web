@@ -1,0 +1,93 @@
+{
+  "reviewedAt": "2026-09-30",
+  "scope": [
+    "BL",
+    "GF",
+    "GP",
+    "MF",
+    "MQ",
+    "PM",
+    "WF",
+    "YT",
+    "VA"
+  ],
+  "outcomeChanges": [],
+  "mainArraysEdited": false,
+  "product": "100 g sealed pure Japan-manufactured steamed, rolled/hot-air dried and finished sencha, paid private postal import; no special certificates, permits, registration, approval or notices; ordinary declarations/inspection allowed.",
+  "substantiveRecoveries": [
+    {
+      "code": "VA",
+      "files": [
+        "va-protocol2007.pdf",
+        "va-protocol2007.txt",
+        "va-protocol2007-01.png",
+        "va-protocol2007-02.png",
+        "va-protocol2007-03.png",
+        "va-protocol2025.pdf",
+        "va-protocol2025-1.png",
+        "va-protocol2025-2.png"
+      ],
+      "finding": "Full signed 2007 implementation protocol and its service instructions recovered; full signed 2025 protocol and two annexes recovered. These close an actual source gap but contain no plant-law reception or finished-tea permission. The 2025 protocol explicitly preserves separate legislation and disclaims binding international duties."
+    },
+    {
+      "code": "MQ",
+      "finding": "The official newsletter describes the 2004 private-import restriction as prohibiting covered plants/products without an official origin sanitary certificate, including mainland France/EU. The current DAAF page describes a personal-import prohibition using the 1990 definitions. Neither gives an express finished manufactured tea exception. This adds historical administrative interpretation, not the unrecovered full 2004 order, and does not establish tea coverage or an unconditional prohibition.",
+      "source": "https://daaf.martinique.agriculture.gouv.fr/IMG/pdf/PHYTOVOTRE2014-11-20141_cle85efe1.pdf"
+    }
+  ],
+  "territoryFindings": [
+    {
+      "codes": [
+        "GP",
+        "BL",
+        "MF"
+      ],
+      "result": "Unchanged unresolved. National exhaustive certificate schedules do not list finished tea for these territories, and the modern risk-qualified definition favors finished sencha. Neither fact proves that retained Order96-323 (16April1996, with inconsistent10April citation in customs guidance) does not apply to a paid private postal consignment. The actual local order is not recovered. BL/MF continuity chain remains material; no silent repeal inferred."
+    },
+    {
+      "codes": [
+        "GF"
+      ],
+      "result": "Unchanged unresolved. Local2021 OrderR03-2021-04-26-00003 expressly uses1990Article1 definitions for personal imports. Neither an authoritative interpretation of simple-preparation coverage for manufactured tea nor a settled supersession chain was recovered. No repeat of earlier failed direct gazette downloads."
+    },
+    {
+      "codes": [
+        "MQ"
+      ],
+      "result": "Historical official2014 newsletter recovered in indexed text; original2004order still unavailable. Certificate-conditioned description and current ban summary differ in detail, so do not invent exact enacted conditions from either summary alone."
+    },
+    {
+      "codes": [
+        "PM"
+      ],
+      "result": "Official2009gazette indexedArticle1 expressly covers private post/express, and Article2 living plants definition is visible. Direct PDF failed502. An INPN-linked nonofficial flora locator reproduced only the order title, not a new official PDF; lead exhausted. Current risk-qualified code vs retained older simple-preparation definition remains material. The old July2001gazette returned by search was identified as historical and not substituted for the2009order."
+    },
+    {
+      "codes": [
+        "WF"
+      ],
+      "result": "No actual93-275/95-245 consolidated order recovered. Current AIP goods/mail coverage and explicit loose/bulk-tea permit-only exemption remain contrary scope evidence against inferring an automatic certificate waiver solely from generic manufactured status. SPREP2022 reform proposals are not enacted law. No outcome change."
+    },
+    {
+      "codes": [
+        "YT"
+      ],
+      "result": "No repetition of timed-out DAAF/prefecture paths. Consolidated2025-230 as amended2026-236 and its exact interaction with2019-1092postal scope remain unavailable. Earlier Chido processed-food statement is not a current postal exemption."
+    },
+    {
+      "codes": [
+        "VA"
+      ],
+      "result": "Customs-source lead materially completed; SPS reception gap remains. Do not count Governorate-to-customs communications as a separate exporter certificate duty. No prohibition or permission for tea is established."
+    }
+  ],
+  "sourceAssessment": "A general applicable manufacturing definition could suffice. Remaining uncertainty is specific contrary/local rule or actual reception/implementation scope, not a requirement for a bespoke tea ruling. ISPM32 is technical evidence, not a freestanding national waiver.",
+  "priorFilesRead": [
+    "wf-pm-definition-review/review-notes.json",
+    "french-territory-sources/peer-review-notes.json",
+    "official-online-recovery-2026-09-30/mayotte/findings.json",
+    "impasse-review/europe-africa.json",
+    "remaining-scope-review/va-source-law2008.txt"
+  ],
+  "additionalSourceCaution": "Search engine dates for scanned official documents are not their enactment dates. Exact dated originals govern."
+}

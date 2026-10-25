@@ -1,0 +1,20 @@
+[
+  {
+    "url": "https://faolex.fao.org/docs/pdf/jor149617.pdf",
+    "file": "jo-agriculture2015-faolex.pdf",
+    "status": 200,
+    "bytes": 422323
+  },
+  {
+    "url": "https://www.tamm.abudhabi/wb/adc/smart-classification-system?lang=en",
+    "file": "ae-tamm.html",
+    "status": 200,
+    "bytes": 85310
+  },
+  {
+    "url": "https://www.dubaicustoms.gov.ae/en/PoliciesAndNotices/Documents/IntegratedCustomsTariffv4.pdf",
+    "file": "ae-integrated-guide.pdf",
+    "status": 200,
+    "bytes": 6363590
+  }
+]

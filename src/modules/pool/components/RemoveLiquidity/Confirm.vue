@@ -1,18 +1,18 @@
 <template>
-  <dialog-base :visible.sync="isVisible" :title="t('removeLiquidity.confirmTitle')" append-to-body>
+  <DialogBase v-model:visible="isVisible" :title="t('removeLiquidity.confirmTitle')" append-to-body>
     <div class="tokens">
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedFromValue }}</span>
-        <s-icon class="icon-divider" name="plus-16" />
+        <s-icon class="icon-divider" name="plus-16"></s-icon>
         <span class="token-value">{{ formattedToValue }}</span>
       </div>
       <div class="tokens-info-container">
         <div v-if="firstToken" class="token">
-          <token-logo class="token-logo" :token="firstToken" />
+          <TokenLogo class="token-logo" :token="firstToken"></TokenLogo>
           {{ firstToken.symbol }}
         </div>
         <div v-if="secondToken" class="token">
-          <token-logo class="token-logo" :token="secondToken" />
+          <TokenLogo class="token-logo" :token="secondToken"></TokenLogo>
           {{ secondToken.symbol }}
         </div>
       </div>
@@ -20,73 +20,78 @@
     <p class="transaction-message">
       {{ t('removeLiquidity.outputMessage', { slippageTolerance: formatStringValue(slippageTolerance) }) }}
     </p>
-    <s-divider />
-    <remove-liquidity-transaction-details />
+    <s-divider></s-divider>
+    <RemoveLiquidityTransactionDetails></RemoveLiquidityTransactionDetails>
     <template #footer>
-      <account-confirmation-option with-hint class="confirmation-option" />
+      <AccountConfirmationOption with-hint class="confirmation-option"></AccountConfirmationOption>
       <s-button
         type="primary"
         class="s-typography-button--large"
-        :loading="parentLoading"
+        :loading="props.parentLoading"
         @click="handleConfirmRemoveLiquidity"
       >
         {{ t('confirmText') }}
       </s-button>
     </template>
-  </dialog-base>
+  </DialogBase>
 </template>
 
-<script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script setup lang="ts">
+import RemoveLiquidityTransactionDetails from '@/modules/pool/components/RemoveLiquidity/TransactionDetails.vue';
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { PoolComponents } from '@/modules/pool/consts';
-import { poolLazyComponent } from '@/modules/pool/router';
-import { state, getter } from '@/store/decorators';
+import { useNumberFormatter } from '@/composables/useNumberFormatter';
+import { usePoolStore } from '@/stores/pool';
+import { useSettingsStore } from '@/stores/settings';
 
+import type { Nullable } from '@/types/common';
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
+import WalletComponentAccountConfirmationOption from '@/lib/soraneo-wallet/src/components/Account/Settings/ConfirmationOption.vue';
 
-@Component({
-  components: {
-    RemoveLiquidityTransactionDetails: poolLazyComponent(PoolComponents.RemoveLiquidityTransactionDetails),
-    DialogBase: components.DialogBase,
-    TokenLogo: components.TokenLogo,
-    AccountConfirmationOption: components.AccountConfirmationOption,
-  },
-})
-export default class RemoveLiquidityConfirm extends Mixins(
-  TranslationMixin,
-  mixins.NumberFormatterMixin,
-  mixins.DialogMixin,
-  mixins.LoadingMixin
-) {
-  @state.removeLiquidity.liquidityAmount private liquidityAmount!: string;
-  @state.removeLiquidity.firstTokenAmount private firstTokenAmount!: string;
-  @state.removeLiquidity.secondTokenAmount private secondTokenAmount!: string;
-
-  @getter.removeLiquidity.firstToken firstToken!: Asset;
-  @getter.removeLiquidity.secondToken secondToken!: Asset;
-
-  @state.settings.slippageTolerance slippageTolerance!: string;
-
-  get formattedFromValue(): string {
-    return this.formatStringValue(this.firstTokenAmount);
+const props = withDefaults(
+  defineProps<{
+    parentLoading?: boolean;
+  }>(),
+  {
+    parentLoading: false,
   }
+);
 
-  get formattedToValue(): string {
-    return this.formatStringValue(this.secondTokenAmount);
-  }
+const emit = defineEmits<{
+  (event: 'close'): void;
+  (event: 'confirm'): void;
+}>();
 
-  get formattedLiquidityValue(): string {
-    return this.formatStringValue(this.liquidityAmount);
-  }
+const isVisible = defineModel<boolean>('visible', { default: false });
+const { t } = useI18n();
+const { formatStringValue } = useNumberFormatter();
+const poolStore = usePoolStore();
+const settingsStore = useSettingsStore();
 
-  handleConfirmRemoveLiquidity(): void {
-    this.$emit('confirm');
-    this.closeDialog();
-  }
-}
+const firstTokenAmount = computed(() => poolStore.removeLiquidityFirstTokenAmount);
+const secondTokenAmount = computed(() => poolStore.removeLiquiditySecondTokenAmount);
+const slippageTolerance = computed(() => settingsStore.slippageTolerance as string);
+
+const firstToken = computed<Nullable<Asset>>(() => poolStore.removeLiquidityFirstToken as Nullable<Asset>);
+const secondToken = computed<Nullable<Asset>>(() => poolStore.removeLiquiditySecondToken as Nullable<Asset>);
+
+const formattedFromValue = computed(() => formatStringValue(firstTokenAmount.value));
+const formattedToValue = computed(() => formatStringValue(secondTokenAmount.value));
+const closeDialog = (): void => {
+  emit('close');
+  isVisible.value = false;
+};
+const handleConfirmRemoveLiquidity = () => {
+  emit('confirm');
+  closeDialog();
+};
+
+const DialogBase = WalletComponentDialogBase;
+const TokenLogo = WalletComponentTokenLogo;
+const AccountConfirmationOption = WalletComponentAccountConfirmationOption;
 </script>
 
 <style lang="scss" scoped>

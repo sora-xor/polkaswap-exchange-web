@@ -1,0 +1,105 @@
+{
+  "code": "GN",
+  "status": "not_verified",
+  "rule": "The NPPO’s published PR01-23 import-permit procedure requires an application, risk analysis and origin phytosanitary or disinsection certification for goods within its plant/plant-product scope. It expressly cites ISPM/NIMP 5 and 32. Neither it nor Law L/92/027 assigns manufactured steamed tea to a risk category; the law limits manufactured-product coverage by pest risk.",
+  "personalMailApplicability": "No tea-specific personal postal allowance located.",
+  "quantityLimit": null,
+  "authority": "Guinea NPPO law filed with IPPC",
+  "evidenceUrls": [
+    "https://assets.ippc.int/static/media/files/reportingobligation/2021/11/29/Loi_Phytosanitaire_République_de_Guinée.pdf",
+    "https://agriculture.gov.gn/wp-content/uploads/2023/01/PROCEDURE-DELIVRANCE-PERMIS-D-IMPORTATION.pdf",
+    "https://magel.gov.gn/file/2023/01/PROCEDURE-DELIVRANCE-PERMIS-D-IMPORTATION.pdf",
+    "https://service-public.gov.gn/ova_sev/delivrance-dun-permis-dimportation/",
+    "https://oncq-guinee.com/service/controle-des-denrees-alimentaires-a-limportation/",
+    "https://service-public.gov.gn/ova_sev/demande-dautorisation-dimportation-de-bien-ou-marchandise/",
+    "https://guineelex.com/lois/loi-l-2021-033-an",
+    "https://guineelex.com/decrets-arretes/decret-d-2021-237-prg-sgg",
+    "https://www.bniq.gov.gn/wp-content/uploads/2026/05/Arrete-A2024920MCIPMECABSGG-%E2%80%94-Inspection-et-quarantaine-des-produits-entrants-et-sortants.pdf",
+    "https://www.bniq.gov.gn/wp-content/uploads/2026/04/Inspection-et-Quarantaine-aux-entrees-et-sorties-en-Guinee-Plate-forme-de-Declaration-Manuel-dutilisation.pdf",
+    "https://www.bniq.gov.gn/documents/",
+    "https://www.bniq.gov.gn/20260212-2/",
+    "https://www.bniq.gov.gn/wp-content/uploads/2026/03/Arrete-A20241102PMCABSGG-%E2%80%94-Creation-et-organisation-du-BNIQ.pdf",
+    "https://www.bniq.gov.gn/wp-content/uploads/2026/03/Arrete-conjoint-AC20251274MCMBMEFSGG-%E2%80%94-Tarifs-des-prestations-des-activites-dinspection-et-de-mise-en-quarantaine-.pdf",
+    "https://www.bniq.gov.gn/service-inspection-entree/",
+    "https://www.bniq.gov.gn/category/politiques/"
+  ],
+  "remainingQuestion": "For BNIQ inspection Order A/2024/920, whether Article 3 containers/trucks/other rolling international transport covers this air-post parcel, and whether Article 4 non-sale/noncommercial exemption operates automatically through Article 5 or needs BNIQ approval in light of organization Order A/2024/1102 Article 3. Article 6 foreign documents apply if the parcel remains covered. The December 2025 tea inspection tariff does not resolve either issue; plant manufacturing interpretation alone cannot waive this independent route.",
+  "researchAttempts": [
+    "OCR-read articles 2 and 7 of the law; searched tea and small-consignment implementing rules.",
+    "Read the complete two-page national procedure PR01-23, including its risk-analysis step, origin documentation and references to NIMP 5/32. Checked the government services portal and agriculture procedures index. No tea-specific category or personal-post waiver located.",
+    "30 September final primary-scope review: National procedure PR01-23 section 4 lists NIMP 5 and NIMP 32 as reference documents. It contains no operative clause adopting a particular low-risk category as a permit/certificate exemption. Section 3.2 compares origin pests with the national quarantine list after the application; section 3.3 still specifies origin phytosanitary or disinsection documentation. No new national classification settling steamed sencha was located.",
+    "30 September independent food/conformity pass: The current ONCQ official food-import page describes documentary checks at commercial port/container and airport entry points including origin, quality and fumigation certificates. Government import-authorization service says natural/legal persons but requires company register, merchant card, tax identifier and ONCQ quality certificate. Neither describes a private postal order. A newly located legal-database text of Law L/2021/033/AN contains broad import scope and article 40 industrial-food control before release authorization, but a complete authenticated Gazette copy and personal implementation were not recovered. Official ONCQ and government services pages read through their current search index. GuineeLex direct retrieval returned403; indexed provisions were read as a legislative lead, not treated as complete authenticated primary text. Its reported promulgation is Decree D/2021/237/PRG/SGG of 21 July 2021.",
+    "30 September bounded independent scope continuation: Recovered the complete six-page signed BNIQ Order A/2024/920 from the official document library and the complete platform manual. Rendered all order pages, OCR-read all provisions, and visually checked Articles 2–6 plus the stamped 10 June 2024 signature date. Read manual printed pages 5, 8 and 44–46 on company registration/import declarations. The order is effective on signature under Article 13; BNIQ's 12 February 2026 news describes continuing coordination and planned pilot rollout, so full national operational implementation is not inferred from publication alone. Checked the operative exceptions rather than treating paid sale or final-consumer use as determinative in isolation. No outcome change.",
+    "30 September common-definition review: Recovered the complete four-page Law L/92/027/CTRN from the official IPPC reporting file, visually read all pages and OCRed them. Article 2 risk-qualifies manufactured plant products; no default ISPM interpretation provision appears in the full law. Published NPPO procedure PR01-23 section 4 expressly cites NIMP 5 and 32, and section 5 directs officers to apply the procedure: an actual operational standards reference, stronger than membership. This materially supports a Category 1 processing interpretation; it still does not remove the independently unresolved 2024 BNIQ transport/private-use scope.",
+    "30 September 2026 focused operative-scope recovery: Recovered both remaining enactments linked by the current BNIQ document library through the browser-visible links, downloaded complete six-page signed PDFs, rendered/OCRed all pages, and visually verified organization Article 3 and the 20 August 2024 signature, plus the 15 December 2025 tariff signature. Order A/2024/1102 Article 3 gives BNIQ the role of examining and approving exemptions of goods; this organizational power alone does not impose an application on every private recipient, but it is relevant context for the ambiguous may-be-exempt wording in inspection Order A/2024/920 Article 4. Joint Order AC/2025/1274 Article 2 expressly charges coffee/tea/mate/spices 0.50% for entry and exit inspection/quarantine. This is an inspection tariff, not itself a permit or origin-certificate duty or an amendment explicitly deciding the private exception. Current service guidance lists generic import documents, while the policies category contains no operative exemption text. The signed 920 transport scope and automatic/discretionary exemption remain actual legal questions. No separate tea ruling is intrinsically necessary; a general operative private-post interpretation would suffice."
+  ],
+  "reviewedAt": "2026-09-30",
+  "permitFreeDecision": "unresolved",
+  "permitFreeReason": "The new signed 2024 BNIQ order establishes a special declaration/origin-document route for covered goods, but Article 3 transport scope and the Article 4 non-sale/noncommercial exception leave applicability to this paid private postal order unresolved. Independent plant-law pest-risk classification remains missing. Do not infer a private certificate duty from the company-only platform manual, or infer a plant-health waiver from an inspection exception.",
+  "permitFreeSources": [
+    "https://assets.ippc.int/static/media/files/reportingobligation/2021/11/29/Loi_Phytosanitaire_République_de_Guinée.pdf",
+    "https://agriculture.gov.gn/wp-content/uploads/2023/01/PROCEDURE-DELIVRANCE-PERMIS-D-IMPORTATION.pdf",
+    "https://magel.gov.gn/file/2023/01/PROCEDURE-DELIVRANCE-PERMIS-D-IMPORTATION.pdf",
+    "https://service-public.gov.gn/ova_sev/delivrance-dun-permis-dimportation/",
+    "https://oncq-guinee.com/service/controle-des-denrees-alimentaires-a-limportation/",
+    "https://service-public.gov.gn/ova_sev/demande-dautorisation-dimportation-de-bien-ou-marchandise/",
+    "https://guineelex.com/lois/loi-l-2021-033-an",
+    "https://guineelex.com/decrets-arretes/decret-d-2021-237-prg-sgg",
+    "https://www.bniq.gov.gn/wp-content/uploads/2026/05/Arrete-A2024920MCIPMECABSGG-%E2%80%94-Inspection-et-quarantaine-des-produits-entrants-et-sortants.pdf",
+    "https://www.bniq.gov.gn/wp-content/uploads/2026/04/Inspection-et-Quarantaine-aux-entrees-et-sorties-en-Guinee-Plate-forme-de-Declaration-Manuel-dutilisation.pdf",
+    "https://www.bniq.gov.gn/documents/",
+    "https://www.bniq.gov.gn/20260212-2/",
+    "https://www.bniq.gov.gn/wp-content/uploads/2026/03/Arrete-A20241102PMCABSGG-%E2%80%94-Creation-et-organisation-du-BNIQ.pdf",
+    "https://www.bniq.gov.gn/wp-content/uploads/2026/03/Arrete-conjoint-AC20251274MCMBMEFSGG-%E2%80%94-Tarifs-des-prestations-des-activites-dinspection-et-de-mise-en-quarantaine-.pdf",
+    "https://www.bniq.gov.gn/service-inspection-entree/",
+    "https://www.bniq.gov.gn/category/politiques/"
+  ],
+  "independentFoodConformityRule": "The current ONCQ official food-import page describes documentary checks at commercial port/container and airport entry points including origin, quality and fumigation certificates. Government import-authorization service says natural/legal persons but requires company register, merchant card, tax identifier and ONCQ quality certificate. Neither describes a private postal order. A newly located legal-database text of Law L/2021/033/AN contains broad import scope and article 40 industrial-food control before release authorization, but a complete authenticated Gazette copy and personal implementation were not recovered. The signed Order A/2024/920/MCIPME/CAB/SGG of 10 June 2024 is now recovered from the official BNIQ library. Article 2 includes imports for final-consumer use; Article 3 limits its stated scope to merchandise transported in containers, trucks and other international rolling transport. Article 4 begins with an exemption statement, then says samples, gifts, objects not intended for sale and other noncommercial articles may be exempt. Article 5 excludes Article 4 goods from its separate electronic inspection declaration. For covered imports Article 6 requires foreign quality or quality-assurance certificates and, for plants and their products, origin official quarantine certificates. These are independent origin-document duties, unlike the positive arrival inspection report issued under Articles 10–12. The order does not expressly settle its Article 3 transport scope or Article 4 exception for a paid private air-post tea parcel. Its own plant-product provision also does not define manufactured tea. The BNIQ manual describes company registration with RCCM and NIF, not a private-post procedure.",
+  "foodConformitySourceFiles": [
+    "docs/reports/tea-audit-work/food-conformity-second-sources/eight-country-food-scope-review.json",
+    "docs/reports/tea-audit-work/africa-scope-continuation-sources/gn-inspection2024.pdf",
+    "docs/reports/tea-audit-work/africa-scope-continuation-sources/gn-inspection2024-ocr.txt",
+    "docs/reports/tea-audit-work/africa-scope-continuation-sources/gn-manual2026.pdf",
+    "docs/reports/tea-audit-work/africa-scope-continuation-sources/gn-manual2026.txt",
+    "docs/reports/tea-audit-work/africa-scope-continuation-sources/review-notes.json",
+    "docs/reports/tea-audit-work/africa-scope-continuation-sources/source-provenance.json"
+  ],
+  "foodConformityAccessNotes": "Official ONCQ and government services pages read through their current search index. GuineeLex direct retrieval returned403; indexed provisions were read as a legislative lead, not treated as complete authenticated primary text. Its reported promulgation is Decree D/2021/237/PRG/SGG of 21 July 2021. The new 2024 order and BNIQ platform manual were retrieved in full as PDFs from official gov.gn publication links, despite some BNIQ HTML routes returning403. The order is a signed scan; OCR was visually checked on relevant pages. Company workflow and rollout context do not establish private postal scope.",
+  "definitionReview": {
+    "code": "GN",
+    "outcome": "unresolved",
+    "finding": "Recovered the complete four-page Law L/92/027/CTRN from the official IPPC reporting file, visually read all pages and OCRed them. Article 2 risk-qualifies manufactured plant products; no default ISPM interpretation provision appears in the full law. Published NPPO procedure PR01-23 section 4 expressly cites NIMP 5 and 32, and section 5 directs officers to apply the procedure: an actual operational standards reference, stronger than membership. This materially supports a Category 1 processing interpretation; it still does not remove the independently unresolved 2024 BNIQ transport/private-use scope.",
+    "remainingEvidence": "The signed BNIQ Order A/2024/920 Articles 3–4 leave actual air-post transport coverage and automatic versus discretionary non-sale/noncommercial exemption unsettled. Article 6 origin documents apply if that route covers the parcel. The common plant standard alone cannot answer this independent duty.",
+    "sourceFiles": [
+      "docs/reports/tea-audit-work/africa-definition-review/gn-plant1992.pdf",
+      "docs/reports/tea-audit-work/africa-definition-review/gn-plant1992-ocr.txt",
+      "docs/reports/tea-audit-work/africa-scope-continuation-sources/gn-inspection2024-ocr.txt"
+    ],
+    "sources": [
+      "https://assets.ippc.int/static/media/files/reportingobligation/2021/11/29/Loi_Phytosanitaire_République_de_Guinée.pdf",
+      "https://agriculture.gov.gn/wp-content/uploads/2023/01/PROCEDURE-DELIVRANCE-PERMIS-D-IMPORTATION.pdf",
+      "https://magel.gov.gn/file/2023/01/PROCEDURE-DELIVRANCE-PERMIS-D-IMPORTATION.pdf",
+      "https://www.bniq.gov.gn/wp-content/uploads/2026/05/Arrete-A2024920MCIPMECABSGG-%E2%80%94-Inspection-et-quarantaine-des-produits-entrants-et-sortants.pdf"
+    ],
+    "accessNote": "The NPPO procedure was read in the web indexed full-text reader (66 lines, reference turn2061view0); direct downloads from the two Ministry hosts returned 503 and 429 error bodies and are not source PDFs.",
+    "reviewedAt": "2026-09-30"
+  },
+  "focusedScopeReview": {
+    "reviewedAt": "2026-09-30",
+    "finding": "Recovered both remaining enactments linked by the current BNIQ document library through the browser-visible links, downloaded complete six-page signed PDFs, rendered/OCRed all pages, and visually verified organization Article 3 and the 20 August 2024 signature, plus the 15 December 2025 tariff signature. Order A/2024/1102 Article 3 gives BNIQ the role of examining and approving exemptions of goods; this organizational power alone does not impose an application on every private recipient, but it is relevant context for the ambiguous may-be-exempt wording in inspection Order A/2024/920 Article 4. Joint Order AC/2025/1274 Article 2 expressly charges coffee/tea/mate/spices 0.50% for entry and exit inspection/quarantine. This is an inspection tariff, not itself a permit or origin-certificate duty or an amendment explicitly deciding the private exception. Current service guidance lists generic import documents, while the policies category contains no operative exemption text. The signed 920 transport scope and automatic/discretionary exemption remain actual legal questions. No separate tea ruling is intrinsically necessary; a general operative private-post interpretation would suffice.",
+    "sources": [
+      "https://www.bniq.gov.gn/wp-content/uploads/2026/03/Arrete-A20241102PMCABSGG-%E2%80%94-Creation-et-organisation-du-BNIQ.pdf",
+      "https://www.bniq.gov.gn/wp-content/uploads/2026/03/Arrete-conjoint-AC20251274MCMBMEFSGG-%E2%80%94-Tarifs-des-prestations-des-activites-dinspection-et-de-mise-en-quarantaine-.pdf",
+      "https://www.bniq.gov.gn/service-inspection-entree/",
+      "https://www.bniq.gov.gn/category/politiques/"
+    ],
+    "sourceFiles": [
+      "docs/reports/tea-audit-work/africa-scope-resolution/gn-organization2024.pdf",
+      "docs/reports/tea-audit-work/africa-scope-resolution/gn-organization2024-ocr.txt",
+      "docs/reports/tea-audit-work/africa-scope-resolution/gn-tariff2025.pdf",
+      "docs/reports/tea-audit-work/africa-scope-resolution/gn-tariff2025-ocr.txt",
+      "docs/reports/tea-audit-work/africa-scope-resolution/gn-retrieval-provenance.json"
+    ],
+    "overallDecisionChanged": false
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "reviewedAt": "2026-09-30",
+  "scope": "Bounded independent legal-scope peer review: purchased personal Japan-posted 100 g factory-sealed manufactured steamed/rolled/dried Camellia sinensis sencha; no permits, certificates, special registration or agency advance notice. Ordinary customs declarations and arrival inspection allowed.",
+  "decisionChanges": 0,
+  "mainArraysEdited": false,
+  "findings": [
+    {
+      "code": "BQ",
+      "exactProvisions": [
+        "Invoeringswet openbare lichamen Bonaire, Sint Eustatius en Saba 18.2.4a–b",
+        "Warenwet BES articles 2(1), 3(1)(j)–(k), 3(4)"
+      ],
+      "reasoning": "The plant-product definition and delegated power do not themselves publish the operative commodity conditions for all three islands. The food-law household exception concerns food manufactured within the private household, not purchased imported food. Its powers to regulate imports and registration are not an unqualified certificate duty. Bonaire’s dried-herb allowance in the Venezuela reopening notice has both an origin and an island limit.",
+      "remainingConflict": "The applicable island-specific delegated import rules and their processing scope for Japan-origin manufactured sencha are not established; neither a country-code-wide exemption nor an enacted universal certificate requirement follows.",
+      "localEvidence": [
+        "sources/bq-warenwet.pdf.txt",
+        "sources/bq-cw-sx-food-pass.json"
+      ],
+      "targetedNewLeadResult": "A narrow search for the operative BES plant-disease rules did not yield the missing instrument; results concerned unrelated pesticides or other laws. Government law-site access also encountered robots restrictions. These negative results were not treated as proof of exemption.",
+      "recommendedDecision": "unresolved",
+      "sourceUrls": [
+        "https://bonairegov.com/en/nieuwsoverzicht/artikel/import-uit-venezuela-versoepeld",
+        "https://wetten.overheid.nl/BWBR0028063/2024-01-01/",
+        "https://wetten.overheid.nl/BWBR0028619/",
+        "https://faolex.fao.org/docs/pdf/net214082.pdf"
+      ]
+    },
+    {
+      "code": "BS",
+      "exactProvisions": [
+        "Food Safety and Quality Act 2016 sections 1(2), 2, 4, 35(1)–(2), 54",
+        "2024 Click2Clear plant-permit commodity list"
+      ],
+      "reasoning": "The plant-permit HS list omits 0902, but cannot by itself waive a separate food duty. Section 35 is broad in isolation; section 4 expressly applies the Act to food businesses. Broad food-business/importer definitions and the foreign store’s sale do not settle application to a private consignee. Section 35(2) is a discretionary relaxation, not an automatic personal-post exemption. Ordinary sealed packaging is not necessarily aseptic sealing.",
+      "remainingConflict": "Commencement and actual application of the food-import provisions to purchased personal post remain unestablished. It would be unsound either to exclude solely by section 35 while ignoring section 4, or to infer a universal private-import exemption.",
+      "localEvidence": [
+        "sources/bs-foodact2016.pdf.txt"
+      ],
+      "targetedNewLeadResult": "Re-read full saved Act definitions and operative sections. Exact official personal-tea query yielded no material new rule; direct food-conditions page access failed. Prior current-law and schedule searches were not repeated.",
+      "recommendedDecision": "unresolved",
+      "sourceUrls": [
+        "https://bahfsabahamas.com/sectors/plants/faqs",
+        "https://bahfsabahamas.com/sectors/international/guidelines-for-the-importation-of-plants-and-plant-products",
+        "https://bahfsabahamas.com/downloads/documents/legislation/Food-Import-Conditions-Appendix.pdf",
+        "https://bahfsabahamas.com/uploads/General-Import-Stepsv2_2024-10-04-140708_iqzg.pdf",
+        "https://faolex.fao.org/docs/pdf/bha158350.pdf",
+        "https://bahfsabahamas.com/sectors/international/food-import-conditions"
+      ]
+    },
+    {
+      "code": "CW",
+      "exactProvisions": [
+        "Warenlandsverordening articles 2(1), 3"
+      ],
+      "reasoning": "Household food manufacture is exempted, but that does not itself cover purchased imports. The general food statute empowers implementing import rules rather than imposing an immediate foreign certificate. Customs plants/flowers controls and traveler guidance do not classify manufactured sencha.",
+      "remainingConflict": "No operative LVV commodity or processing rule has been established for finished Japan-origin personal postal tea.",
+      "localEvidence": [
+        "sources/cw-warenlandsverordening.txt",
+        "sources/bq-cw-sx-food-pass.json"
+      ],
+      "targetedNewLeadResult": "The specific plant-disease implementing-law lead returned the Pesticides Ordinance and unrelated local rules, not a commodity import rule. Exact NVWA tea lead did not resolve scope. These were rejected as irrelevant, not used as negative legal proof.",
+      "recommendedDecision": "unresolved",
+      "sourceUrls": [
+        "https://douane.cw/particulier/reizigersbagage/verboden-in-en-uit-te-voeren/",
+        "https://douane.cw/zakelijk/inklaring-en-invoer/",
+        "https://lokaleregelgeving.overheid.nl/CVDR143880/1",
+        "https://lokaleregelgeving.overheid.nl/CVDR143880/1?show-wti=true"
+      ]
+    },
+    {
+      "code": "SX",
+      "exactProvisions": [
+        "Landsbesluit publieke gezondheid AB 2017 no. 33 article 4(2)–(3), explanatory notes"
+      ],
+      "reasoning": "The food notification duty is expressly commercial-use-only; the health certificate categories do not include plain tea. Quantity/presentation, rather than the fact that a purchase was paid, governs the personal/commercial distinction in the official notes. This closes the independent food-document issue for the proposed personal quantity but not the separate agricultural one.",
+      "remainingConflict": "The outstanding issue is the actual LVV plant-product classification or import conditions for manufactured tea; an individual ruling is not intrinsically necessary if a published rule can settle it.",
+      "localEvidence": [
+        "sources/sx-publichealth2017.pdf.txt",
+        "sources/bq-cw-sx-food-pass.json"
+      ],
+      "targetedNewLeadResult": "A precise primary-law search returned conservation/CITES law and the underlying Public Health Act. Neither supplies the missing finished-food agricultural processing rule; no speculative conservation prohibition was applied.",
+      "recommendedDecision": "unresolved",
+      "sourceUrls": [
+        "https://www.sintmaartengov.org/Ministries/Departments/Pages/Agriculture-Livestock-and-Fisheries.aspx",
+        "https://www.newgmc.com/index.php?download=466%3Aproduce-and-plant-produce-import-form&id=35%3Asops-a-ssops&option=com_phocadownload&view=category",
+        "https://lokaleregelgeving.overheid.nl/CVDR475613",
+        "https://www.sintmaartengov.org/Documents/Official%20Publications/AB%202017%2C%20no.%2033%20Landsbesluit%20publieke%20gezondheid.pdf"
+      ]
+    },
+    {
+      "code": "VG",
+      "exactProvisions": [
+        "Official law index as at 1 January 2026: Plant Protection Ordinance Cap. 93, Plant Protection Regulations amended SI 35/2002, Prohibition of Importation of Plants Regulations SI 13/1996 as amended",
+        "Virgin Islands Food Security and Sustainability Act 2/2022: indexed not in force"
+      ],
+      "reasoning": "The current official index identifies operative older plant instruments and amendments. The newer 2022 law is expressly not in force, so cannot replace their missing conditions. Nursery-oriented import guidance cannot safely classify dried retail tea.",
+      "remainingConflict": "The full operative older regulations/commodity annexes and amendments remain unavailable in the examined official online law collection. A missing text is the impediment, not a substantive conclusion that tea requires individual permission.",
+      "localEvidence": [
+        "sources/vg-index2026.pdf.txt"
+      ],
+      "targetedNewLeadResult": "Re-read the exact 2026 current-law entries and preserved the prior five-page official revised-law collection search. No fresh generic query was made after that specific primary-source lead was exhausted.",
+      "recommendedDecision": "unresolved",
+      "sourceUrls": [
+        "https://bvi.gov.vg/sites/default/files/CONDITIONS%20FOR%20PLANT%20IMPORTATION.pdf",
+        "https://www.bvi.gov.vg/tags/agriculture?page=17",
+        "https://laws.gov.vg/inf-alpha/v",
+        "https://www.gov.vg/sites/default/files/2026-02/final_consolidated_index_with_user_guide_as_at_january_1%2C_2026.pdf",
+        "https://laws.gov.vg/revised-laws"
+      ]
+    },
+    {
+      "code": "SH",
+      "exactProvisions": [
+        "Tristan Island Council Ordinance section 15(1), 15(5), Schedule 3(f)",
+        "Tristan Biosecurity Ordinance 2021: government consolidated headnote not yet in force",
+        "St Helena Food Hygiene Regulations regulation 4(4) as potentially applied locally"
+      ],
+      "reasoning": "St Helena and Ascension have separate favourable findings, but the country code also covers Tristan. Schedule 3(f) lists possible by-law subjects concerning potentially diseased living/dead plants and animals; section 15(1) authorizes making such by-laws. It is not itself an operative import prohibition or certificate requirement. Section 15(5) permits by-laws to commence through publication on the Administrator’s local notice board. The saved current online materials do not resolve a manufactured-tea rule or the 2021 ordinance commencement. Food-business notice rules were not transferred to a private consumer.",
+      "remainingConflict": "An operative Tristan rule or published scope interpretation covering the current live/dead-plant warning and manufactured tea remains missing. Local notice-board commencement means an online search alone cannot prove absence of applicable by-laws. Country-wide approval remains unsupported, without asserting a blanket tea prohibition.",
+      "localEvidence": [
+        "tristan-source-review/tristan-island-council-bylaws.txt",
+        "tristan-source-review/review-result.json",
+        "tristan-source-review/provenance.json"
+      ],
+      "targetedNewLeadResult": "Re-read the full saved local law, specifically section 15 and Schedule 3. This narrowed the significance of broad plant-control language to an enabling power and identified the local publication mechanism; it did not supply the missing operative tea condition.",
+      "recommendedDecision": "unresolved",
+      "sourceUrls": [
+        "https://sthelenapublicservicejobs.sh/wp-content/uploads/2023/06/General-guidelines-for-food-importations-Updated-Oct-2021.pdf",
+        "https://www.ascension.gov.ac/travel-and-shipping/biosecurity",
+        "https://www.sainthelena.gov.sh/app/uploads/gazette/Ordinance-2-Biosecurity-Ordinance-2021-TDC.pdf",
+        "https://www.tristandc.com/visitsships.php",
+        "https://www.tristandc.com/wildlife/biosecurityrules-2025-10-02.php",
+        "https://www.sainthelena.gov.sh/wp-content/uploads/2022/01/Biosecurity-Ordinance.pdf",
+        "https://www.sainthelena.gov.sh/st-helena/government/legislation/laws-of-tristan-da-cunha/alphabetical-list-tristan-da-cunha/",
+        "https://www.sainthelena.gov.sh/gazette/",
+        "https://www.sainthelena.gov.sh/documents/Export-Import-Control-TdC-Ordinance",
+        "https://www.sainthelena.gov.sh/documents/Conservation-etc.-TdaC-Ordinance",
+        "https://www.sainthelena.gov.sh/documents/Island-Council-TdaC-Ordinance",
+        "https://www.sainthelena.gov.sh/documents/Tristan-da-Cunha-Applied-SH-Laws-List-Updated-010418",
+        "https://www.sainthelena.gov.sh/documents/app-of-sh-law-to-tdc-ord-updated-180620/",
+        "https://www.sainthelena.gov.sh/documents/food-safety-ordinance-corrected-2.pdf"
+      ]
+    }
+  ],
+  "conclusion": "All six decisions remain unresolved. The persistent barriers are missing operative rules/text or a genuine scope conflict, not an assumption that every finished tea needs an individual authority ruling. No contacts made; no absence-of-search-result exemptions inferred."
+}

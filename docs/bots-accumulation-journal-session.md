@@ -1,0 +1,15 @@
+# Isolated replay and durable research records
+
+`AccumulationJournalSession` connects the fixed Python journal replay worker to `AccumulationJournalStore` through the real bounded subprocess helper. It operates on an externally registered local episode, not on a wallet. All raw requests and child transport receipts are retained before a proposed record can be appended.
+
+Create the store using its independently expected registration/head, then call `AccumulationJournalSession.create(store, runtime)`. The runtime contains a canonical repository root, resolved Python executable and independently trusted registration/executable/source digests. Do not derive production expected pins from the files or worker being checked. Tests deliberately use fresh pins around invented inputs and never acquire market observations.
+
+`transition({kind,input,evidence})` snapshots the complete prefix and invokes the isolated worker once. It checks source identities, exit/close state, exact input/output hashes, the worker's base prefix, complete proposed record bytes and proposed whole-prefix hash. A second store snapshot rejects intervening records. The exact proposal is then durably appended. An explicit rejected reducer transition is retained with its reproduced error state; it is not replaced with the older peak or loss latch.
+
+`inspect()` reconstructs the entire journal without appending an accounting event. Supplying an actual same-process evidence-bridge result adds the worker's complete block hash/height/time/price/original-receipt join. Cloned JSON cannot supply bridge ownership. A returned mathematical episode projection remains diagnostic: source authentication for opening/risk/terminal marks and complete registered schedule coverage are still absent. The session never calls the admission policy, reads a trained model, freezes an order from a policy result, signs or sends a transaction.
+
+Unresolved worker, protocol or persistence failures retain their available raw evidence and quarantine the store. A new session cannot silently omit that failure and continue from the preceding favorable prefix. The recovery marker and writer lock remain, with no automatic retry, trimming, recovery or new funding. This is local reconstruction under a trusted parent, not independent consensus or authenticated external data.
+
+The future admission owner must distinguish the request's replayed base head from the subsequently persisted admission-start head, retain actual process-completion time, and recheck original expiry and deadline after computation. It must verify all required native evidence and coverage before granting any admission capability. These responsibilities are not implied by storage consistency or a worker `eligible` string.
+
+Synthetic integration tests launch the actual fixed Python replay worker, with no model-file or network access, and exercise opening, loss latching, retained failures, source/result mismatches and immutable storage. `forTesting` is an explicit local dependency seam; production construction always uses the real subprocess helper.

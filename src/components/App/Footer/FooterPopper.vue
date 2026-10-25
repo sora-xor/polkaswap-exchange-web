@@ -1,102 +1,127 @@
 <template>
-  <el-popover
+  <s-popover-panel
     ref="popover"
     placement="top"
     trigger="click"
     :popper-class="computedPopperClass"
-    :tabindex="tabindex"
+    :tabindex="tabIndex"
     @show="handleShow"
   >
-    <div
-      v-button
-      slot="reference"
-      class="app-status__item s-flex"
-      :class="computedClass"
-      @keypress.enter="handleEnterClick"
-      @blur="handleBlur"
-    >
-      <span v-if="loading" class="app-status__loading" />
-      <s-icon v-else :name="icon" size="16" />
-      <span class="app-status__text">{{ panelText }}</span>
-    </div>
+    <template #reference>
+      <div
+        v-button
+        class="app-status__item s-flex"
+        :class="computedClass"
+        :aria-label="panelText"
+        :title="panelText"
+        @keypress.enter="handleEnterClick"
+        @blur="handleBlur"
+      >
+        <span v-if="isLoading" class="app-status__loading"></span>
+        <s-icon v-else :name="icon" size="16"></s-icon>
+        <span class="app-status__text">{{ panelText }}</span>
+      </div>
+    </template>
     <div class="item s-flex">
       <div class="item__title s-flex">
         <div class="item__label s-flex">
-          <slot name="label" />
+          <slot name="label"></slot>
         </div>
         <s-button v-if="actionText" class="item__action" size="small" type="secondary" @click="handleActionClick">
           {{ actionText }}
         </s-button>
       </div>
       <div class="item__desc s-flex">
-        <slot />
+        <slot></slot>
       </div>
     </div>
-  </el-popover>
+  </s-popover-panel>
 </template>
 
-<script lang="ts">
-import { Status } from '@soramitsu-ui/ui-vue2/lib/types';
-import { Component, Prop, Vue, Ref } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed, ref, watch } from 'vue';
 
+import { Status } from '@soramitsu-ui/ui/types';
+import { BreakpointClass } from '@/consts/layout';
+import { useSettingsStore } from '@/stores/settings';
 import { delay } from '@/utils';
+import { resolvePopoverLeft, shouldClosePopoverOnBreakpointChange } from './footerPopover.utils';
 
 const cssPopperClass = 'app-status__tooltip';
 
-@Component
-export default class FooterPopper extends Vue {
-  @Prop({ required: true, type: String }) readonly status!: Status;
-  @Prop({ required: true, type: String }) readonly icon!: string;
-  @Prop({ type: String, default: '' }) readonly panelClass!: Nullable<string>;
-  @Prop({ type: String, default: '' }) readonly actionText!: Nullable<string>;
-  @Prop({ required: true, type: String }) readonly panelText!: string;
+const props = defineProps({
+  status: {
+    type: String as () => Status,
+    required: true,
+  },
+  icon: {
+    type: String,
+    required: true,
+  },
+  panelClass: {
+    type: String,
+    default: '',
+  },
+  actionText: {
+    type: String,
+    default: '',
+  },
+  panelText: {
+    type: String,
+    required: true,
+  },
+});
 
-  @Ref('popover') popover!: any;
+const emit = defineEmits<{
+  (e: 'action'): void;
+}>();
 
-  /** Fix issue with negative left values */
-  async handleShow(): Promise<void> {
-    await delay(100);
-    const left = (this.popover?.popperElm as Nullable<HTMLElement>)?.style?.getPropertyValue('left');
-    if (!left) return;
-    if (left.includes('-')) {
-      (this.popover?.popperElm as HTMLElement).style.setProperty('left', '0');
-    }
+const popover = ref<any>();
+const settingsStore = useSettingsStore();
+
+const computedPopperClass = computed(() => [cssPopperClass, props.status].filter(Boolean).join(' '));
+const computedClass = computed(() => [props.panelClass, props.status].filter(Boolean).join(' '));
+const isLoading = computed(() => props.status === Status.INFO);
+const tabIndex = computed(() => (isLoading.value ? -1 : 0));
+const screenBreakpointClass = computed(() => settingsStore.screenBreakpointClass as BreakpointClass);
+
+watch(screenBreakpointClass, (next, prev) => {
+  if (shouldClosePopoverOnBreakpointChange(prev, next)) {
+    popover.value?.doClose();
   }
+});
 
-  get computedPopperClass(): string {
-    const css = [cssPopperClass, this.status].filter((item) => !!item);
-    return css.join(' ');
-  }
+async function handleShow(): Promise<void> {
+  await delay(100);
+  const popperEl: Nullable<HTMLElement> = popover.value?.popperElm;
+  if (!popperEl) return;
 
-  get computedClass(): string {
-    const css = [this.panelClass, this.status].filter((item) => !!item);
-    return css.join(' ');
-  }
+  const rect = popperEl.getBoundingClientRect();
+  const currentLeft = popperEl.style.getPropertyValue('left');
+  const nextLeft = resolvePopoverLeft({
+    currentLeft,
+    popoverLeft: rect.left,
+    popoverRight: rect.right,
+    popoverWidth: rect.width,
+    viewportWidth: window.innerWidth,
+  });
+  popperEl.style.setProperty('left', `${nextLeft}px`);
+}
 
-  get loading(): boolean {
-    return this.status === Status.INFO;
-  }
+function handleActionClick(): void {
+  emit('action');
+}
 
-  get tabindex(): number {
-    return this.loading ? -1 : 0;
-  }
+function handleEnterClick(): void {
+  popover.value?.doToggle();
+}
 
-  handleActionClick(): void {
-    this.$emit('action');
-  }
-
-  handleEnterClick(): void {
-    this.popover?.doToggle();
-  }
-
-  /** Click outside or tab event on another popper */
-  handleBlur(event: FocusEvent): void {
-    const el: Nullable<HTMLElement> = this.popover.popperElm;
-    const eventEl = event.relatedTarget as Nullable<HTMLElement>;
-    if (!(el && eventEl)) return;
-    if (!(el === eventEl || el.contains(eventEl))) {
-      this.popover?.doClose();
-    }
+function handleBlur(event: FocusEvent): void {
+  const popperEl: Nullable<HTMLElement> = popover.value?.popperElm;
+  const related = event.relatedTarget as Nullable<HTMLElement>;
+  if (!popperEl || !related) return;
+  if (!(popperEl === related || popperEl.contains(related))) {
+    popover.value?.doClose();
   }
 }
 </script>
@@ -114,6 +139,11 @@ $footer-action-background-color: #f7f3f4;
   box-shadow: var(--s-shadow-tooltip);
   padding: $inner-spacing-mini $inner-spacing-small;
   color: var(--s-color-base-on-accent);
+  max-width: min(380px, calc(100vw - 16px));
+  max-height: calc(100dvh - 16px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 
   @each $status in $status-classes {
     &.#{$status} {
@@ -134,6 +164,8 @@ $footer-action-background-color: #f7f3f4;
     &__title {
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: $inner-spacing-mini;
     }
     &__label {
       flex-direction: column;
@@ -166,7 +198,7 @@ $footer-action-background-color: #f7f3f4;
       }
     }
     &__action {
-      margin-left: 30px;
+      margin-left: auto;
       &,
       &:hover,
       &:focus,
@@ -200,7 +232,25 @@ $status-classes: 'error', 'warning', 'success';
     @include loading;
   }
   &__text {
-    margin-left: 6px;
+    margin-left: $inner-spacing-mini;
+  }
+}
+
+@include large-mobile(true) {
+  .app-status {
+    &__item {
+      flex: 1 1 0;
+      justify-content: center;
+      min-width: 0;
+      margin-left: 0;
+      margin-right: 0;
+      padding-left: $inner-spacing-tiny;
+      padding-right: $inner-spacing-tiny;
+    }
+
+    &__text {
+      display: none;
+    }
   }
 }
 </style>

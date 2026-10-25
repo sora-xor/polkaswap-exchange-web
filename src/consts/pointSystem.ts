@@ -2,7 +2,8 @@ import { KUSD, XOR, VXOR } from '@sora-substrate/sdk/build/assets/consts';
 import { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 import messages from '@/lang/messages';
-import store from '@/store';
+import pinia from '@/plugins/pinia';
+import { useAssetsStore } from '@/stores/assets';
 import { Category } from '@/types/pointSystem';
 
 export const MAX_LEVEL = 6;
@@ -34,8 +35,8 @@ const getAsset = (imageName: string): AccountAsset | null => {
   if (!isTokenImage(imageName)) {
     return null;
   }
-  const getAssetFromStore = store.getters.assets.assetDataByAddress;
-  const asset = getAssetFromStore(imageName);
+  const assetsStore = useAssetsStore(pinia);
+  const asset = assetsStore.assetDataByAddress(imageName);
   return asset ?? null;
 };
 

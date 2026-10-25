@@ -1,0 +1,402 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+const appMocks = vi.hoisted(() => {
+  const app = {
+    use: vi.fn(),
+    mount: vi.fn(),
+  };
+
+  return {
+    app,
+    createApp: vi.fn(() => app),
+  };
+});
+
+const pluginMocks = vi.hoisted(() => ({
+  pinia: { name: 'pinia-plugin' },
+  i18n: { name: 'i18n-plugin' },
+  getLocale: vi.fn(() => 'en'),
+  setI18nLocale: vi.fn(() => Promise.resolve()),
+  installRuntimePlugins: vi.fn(() => Promise.resolve()),
+  installStartupPlugins: vi.fn(),
+}));
+
+const envMocks = vi.hoisted(() => ({
+  shouldRenderOfflineShell: vi.fn(() => false),
+  renderOfflineShell: vi.fn(() => false),
+}));
+
+const agentTradingMocks = vi.hoisted(() => ({
+  agent: { version: 'v1' },
+  installPolkaswapAgentApi: vi.fn(),
+  registerPolkaswapWebMcpTools: vi.fn(() => Promise.resolve(async () => undefined)),
+}));
+
+const securityMocks = vi.hoisted(() => ({
+  registerW3mMessageGuard: vi.fn(),
+}));
+
+const telemetryMocks = vi.hoisted(() => ({
+  APP_BUILD_VARIANT: 'vue3-native',
+  registerPilotFeedbackBridge: vi.fn(),
+  registerTelemetryStub: vi.fn(),
+  trackEvent: vi.fn(),
+}));
+
+const consoleFilterMocks = vi.hoisted(() => ({
+  installConsoleWarningFilter: vi.fn(),
+}));
+
+const errorHandlerMocks = vi.hoisted(() => ({
+  installVueErrorHandler: vi.fn(),
+}));
+
+const documentTitleMocks = vi.hoisted(() => ({
+  updateDocumentTitle: vi.fn(() => Promise.resolve()),
+}));
+
+const chromeMocks = vi.hoisted(() => ({
+  preloadAppShellChrome: vi.fn(() => Promise.resolve()),
+}));
+
+const fontMocks = vi.hoisted(() => ({
+  warmFirstPaintFonts: vi.fn(),
+}));
+
+const routerMocks = vi.hoisted(() => {
+  const currentRoute = { value: { name: 'Swap' as string | undefined } };
+
+  return {
+    currentRoute,
+    router: {
+      currentRoute,
+      isReady: vi.fn(() => Promise.resolve()),
+    },
+  };
+});
+
+const shellMocks = vi.hoisted(() => {
+  const AppShell = { name: 'AsyncAppShellStub' };
+
+  return {
+    AppShell,
+    createAsyncComponent: vi.fn(() => AppShell),
+    installViteCssPreloadErrorHandler: vi.fn(),
+    loadAsyncImportWithRetry: vi.fn((loader: () => Promise<unknown>) => loader()),
+  };
+});
+
+vi.mock('vue', () => ({
+  createApp: appMocks.createApp,
+}));
+
+vi.mock('@/plugins/pinia', () => ({
+  default: pluginMocks.pinia,
+}));
+
+vi.mock('@/lang', () => ({
+  getLocale: pluginMocks.getLocale,
+  setI18nLocale: pluginMocks.setI18nLocale,
+  default: pluginMocks.i18n,
+}));
+
+vi.mock('@/plugins', () => ({
+  installRuntimePlugins: pluginMocks.installRuntimePlugins,
+  installStartupPlugins: pluginMocks.installStartupPlugins,
+}));
+
+vi.mock('@/utils/env', () => ({
+  shouldRenderOfflineShell: envMocks.shouldRenderOfflineShell,
+}));
+
+vi.mock('@/utils/offlineShell', () => ({
+  renderOfflineShell: envMocks.renderOfflineShell,
+}));
+
+vi.mock('@/features/agent-trading', () => ({
+  installPolkaswapAgentApi: agentTradingMocks.installPolkaswapAgentApi,
+  registerPolkaswapWebMcpTools: agentTradingMocks.registerPolkaswapWebMcpTools,
+}));
+
+vi.mock('@/security/w3mMessageGuard', () => ({
+  registerW3mMessageGuard: securityMocks.registerW3mMessageGuard,
+}));
+
+vi.mock('@/utils/telemetry', () => ({
+  APP_BUILD_VARIANT: telemetryMocks.APP_BUILD_VARIANT,
+  registerPilotFeedbackBridge: telemetryMocks.registerPilotFeedbackBridge,
+  registerTelemetryStub: telemetryMocks.registerTelemetryStub,
+  trackEvent: telemetryMocks.trackEvent,
+}));
+
+vi.mock('@/utils/consoleWarnings', () => ({
+  installConsoleWarningFilter: consoleFilterMocks.installConsoleWarningFilter,
+}));
+
+vi.mock('@/utils/vueErrorHandler', () => ({
+  installVueErrorHandler: errorHandlerMocks.installVueErrorHandler,
+}));
+
+vi.mock('@/utils/documentTitle', () => ({
+  updateDocumentTitle: documentTitleMocks.updateDocumentTitle,
+}));
+
+vi.mock('@/app/shell/chrome', () => ({
+  preloadAppShellChrome: chromeMocks.preloadAppShellChrome,
+}));
+
+vi.mock('@/utils/fonts', () => ({
+  warmFirstPaintFonts: fontMocks.warmFirstPaintFonts,
+}));
+
+vi.mock('@/shared/ui/async', () => ({
+  createAsyncComponent: shellMocks.createAsyncComponent,
+  installViteCssPreloadErrorHandler: shellMocks.installViteCssPreloadErrorHandler,
+  loadAsyncImportWithRetry: shellMocks.loadAsyncImportWithRetry,
+}));
+
+vi.mock('@/app/shell/AppShell.vue', () => ({
+  default: shellMocks.AppShell,
+}));
+
+vi.mock('@/app/router', () => ({
+  default: routerMocks.router,
+}));
+
+import { bootstrapApp, mountApp, prepareAppRuntime } from '@/app/bootstrap';
+
+describe('app bootstrap', () => {
+  const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+  const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+
+    appMocks.app.use.mockReturnThis();
+    appMocks.createApp.mockReturnValue(appMocks.app);
+    envMocks.shouldRenderOfflineShell.mockReturnValue(false);
+    envMocks.renderOfflineShell.mockReturnValue(false);
+    routerMocks.router.isReady.mockReturnValue(Promise.resolve());
+    routerMocks.currentRoute.value = { name: 'Swap' };
+    documentTitleMocks.updateDocumentTitle.mockImplementation(() => Promise.resolve());
+    agentTradingMocks.installPolkaswapAgentApi.mockReturnValue(agentTradingMocks.agent);
+    agentTradingMocks.registerPolkaswapWebMcpTools.mockResolvedValue(async () => undefined);
+
+    window.history.replaceState({}, '', '/');
+    delete (window as Window & typeof globalThis & { __PS_BUILD_VARIANT__?: string }).__PS_BUILD_VARIANT__;
+    delete (window as Window & typeof globalThis & { __PS_IPFS_CHECK__?: boolean }).__PS_IPFS_CHECK__;
+  });
+
+  afterEach(() => {
+    window.history.replaceState({}, '', '/');
+  });
+
+  it('creates the app shell and installs global providers', () => {
+    const app = bootstrapApp();
+
+    expect(app).toBe(appMocks.app);
+    expect(appMocks.createApp).toHaveBeenCalledWith(shellMocks.AppShell);
+    expect(errorHandlerMocks.installVueErrorHandler).toHaveBeenCalledWith(appMocks.app);
+    expect(appMocks.app.use).not.toHaveBeenCalled();
+    expect(pluginMocks.installStartupPlugins).toHaveBeenCalledTimes(1);
+    expect(pluginMocks.installRuntimePlugins).not.toHaveBeenCalled();
+  });
+
+  it('loads runtime plugins and preloads the app shell before mounting', async () => {
+    await prepareAppRuntime(appMocks.app as any);
+
+    expect(appMocks.app.use).toHaveBeenCalledWith(pluginMocks.pinia);
+    expect(appMocks.app.use).toHaveBeenCalledWith(routerMocks.router);
+    expect(appMocks.app.use).toHaveBeenCalledWith(pluginMocks.i18n);
+    expect(pluginMocks.installRuntimePlugins).toHaveBeenCalledWith(appMocks.app, { pinia: pluginMocks.pinia });
+    expect(pluginMocks.setI18nLocale).toHaveBeenCalledWith('en');
+    expect(chromeMocks.preloadAppShellChrome).toHaveBeenCalledTimes(1);
+    expect(agentTradingMocks.installPolkaswapAgentApi).toHaveBeenCalledWith({ pinia: pluginMocks.pinia });
+    expect(agentTradingMocks.registerPolkaswapWebMcpTools).toHaveBeenCalledWith(agentTradingMocks.agent);
+  });
+
+  it('waits for the shell chrome before mounting so the first paint has the final layout', async () => {
+    let resolveChrome!: () => void;
+    chromeMocks.preloadAppShellChrome.mockReturnValueOnce(
+      new Promise<void>((resolve) => {
+        resolveChrome = resolve;
+      })
+    );
+
+    const mounted = mountApp();
+    await vi.waitFor(() => expect(chromeMocks.preloadAppShellChrome).toHaveBeenCalledTimes(1));
+    await Promise.resolve();
+
+    expect(appMocks.app.mount).not.toHaveBeenCalled();
+
+    resolveChrome();
+    await mounted;
+
+    expect(appMocks.app.mount).toHaveBeenCalledWith('#app');
+  });
+
+  it('requests the optional agent API while the runtime loads but installs it only after', async () => {
+    // Fresh module state: bootstrap memoizes its lazy imports.
+    vi.resetModules();
+    const { prepareAppRuntime: prepareFreshAppRuntime } = await import('@/app/bootstrap');
+    let resolvePlugins!: () => void;
+    pluginMocks.installRuntimePlugins.mockReturnValueOnce(
+      new Promise<void>((resolve) => {
+        resolvePlugins = resolve;
+      })
+    );
+
+    const prepared = prepareFreshAppRuntime(appMocks.app as any);
+    await vi.waitFor(() => expect(pluginMocks.installRuntimePlugins).toHaveBeenCalledTimes(1));
+
+    const requestedModules = shellMocks.loadAsyncImportWithRetry.mock.calls.map(([loader]) => String(loader));
+    expect(requestedModules.some((source) => source.includes('agent-trading'))).toBe(true);
+    expect(agentTradingMocks.installPolkaswapAgentApi).not.toHaveBeenCalled();
+
+    resolvePlugins();
+    await prepared;
+
+    expect(agentTradingMocks.installPolkaswapAgentApi).toHaveBeenCalledWith({ pinia: pluginMocks.pinia });
+  });
+
+  it('warms the first-paint fonts when the app mounts', async () => {
+    await mountApp();
+
+    expect(fontMocks.warmFirstPaintFonts).toHaveBeenCalledTimes(1);
+    expect(fontMocks.warmFirstPaintFonts.mock.invocationCallOrder[0]).toBeLessThan(
+      appMocks.app.mount.mock.invocationCallOrder[0]
+    );
+  });
+
+  it('does not block the application runtime on an optional pending WebMCP registrar', async () => {
+    agentTradingMocks.registerPolkaswapWebMcpTools.mockReturnValue(new Promise(() => undefined));
+
+    await expect(prepareAppRuntime(appMocks.app as any)).resolves.toMatchObject({ router: routerMocks.router });
+
+    expect(agentTradingMocks.installPolkaswapAgentApi).toHaveBeenCalledTimes(1);
+    expect(agentTradingMocks.registerPolkaswapWebMcpTools).toHaveBeenCalledTimes(1);
+  });
+
+  it('emits sanitized diagnostics when optional agent installation fails', async () => {
+    const details: unknown[] = [];
+    const listener = (event: Event) => details.push((event as CustomEvent).detail);
+    window.addEventListener('polkaswap-agent-install-failed', listener);
+    agentTradingMocks.registerPolkaswapWebMcpTools.mockRejectedValueOnce(
+      new Error('private endpoint wss://node.invalid and wallet address')
+    );
+
+    await prepareAppRuntime(appMocks.app as any);
+    await vi.waitFor(() => expect(details).toHaveLength(1));
+    window.removeEventListener('polkaswap-agent-install-failed', listener);
+
+    expect(details).toEqual([{ stage: 'webmcp', code: 'WEBMCP_INSTALL_FAILED' }]);
+    expect(JSON.stringify(details)).not.toContain('node.invalid');
+  });
+
+  it('distinguishes API installation failures without exposing error details', async () => {
+    const details: unknown[] = [];
+    const listener = (event: Event) => details.push((event as CustomEvent).detail);
+    window.addEventListener('polkaswap-agent-install-failed', listener);
+    agentTradingMocks.installPolkaswapAgentApi.mockImplementationOnce(() => {
+      throw new Error('secret signer details');
+    });
+
+    await expect(prepareAppRuntime(appMocks.app as any)).resolves.toMatchObject({ router: routerMocks.router });
+    window.removeEventListener('polkaswap-agent-install-failed', listener);
+
+    expect(details).toEqual([{ stage: 'agent-api', code: 'AGENT_API_INSTALL_FAILED' }]);
+    expect(JSON.stringify(details)).not.toContain('secret signer');
+  });
+
+  it('refreshes the routed title after initial navigation is ready', async () => {
+    let resolveRouter!: () => void;
+    routerMocks.currentRoute.value = { name: undefined };
+    documentTitleMocks.updateDocumentTitle.mockImplementation(async () => {
+      const routeName = routerMocks.currentRoute.value.name;
+
+      document.title = routeName ? `${routeName} - Polkaswap` : 'Polkaswap generic title';
+    });
+    routerMocks.router.isReady.mockReturnValue(
+      new Promise<void>((resolve) => {
+        resolveRouter = resolve;
+      })
+    );
+
+    await mountApp();
+
+    expect(appMocks.app.mount).toHaveBeenCalledWith('#app');
+    expect(documentTitleMocks.updateDocumentTitle).toHaveBeenCalledTimes(1);
+    expect(document.title).toBe('Polkaswap generic title');
+
+    routerMocks.currentRoute.value = { name: 'Swap' };
+    resolveRouter();
+    await vi.waitFor(() => expect(documentTitleMocks.updateDocumentTitle).toHaveBeenCalledTimes(2));
+
+    expect(documentTitleMocks.updateDocumentTitle).toHaveBeenNthCalledWith(2);
+    expect(document.title).toBe('Swap - Polkaswap');
+    expect(appMocks.app.mount.mock.invocationCallOrder[0]).toBeLessThan(
+      documentTitleMocks.updateDocumentTitle.mock.invocationCallOrder[1]
+    );
+  });
+
+  it('renders the offline shell and skips mounting when the runtime is offline', async () => {
+    envMocks.shouldRenderOfflineShell.mockReturnValue(true);
+    envMocks.renderOfflineShell.mockReturnValue(true);
+    window.history.replaceState({}, '', '/?ipfs-check=1');
+
+    await mountApp();
+
+    expect(securityMocks.registerW3mMessageGuard).toHaveBeenCalledTimes(1);
+    expect(consoleFilterMocks.installConsoleWarningFilter).toHaveBeenCalledTimes(1);
+    expect(shellMocks.installViteCssPreloadErrorHandler).toHaveBeenCalledTimes(1);
+    expect(telemetryMocks.registerTelemetryStub).toHaveBeenCalledWith('?ipfs-check=1');
+    expect(telemetryMocks.registerPilotFeedbackBridge).toHaveBeenCalledTimes(1);
+    expect(telemetryMocks.trackEvent).toHaveBeenCalledWith(
+      'build_variant_selected',
+      expect.objectContaining({
+        variant: telemetryMocks.APP_BUILD_VARIANT,
+        environment: expect.any(String),
+        timestamp: expect.any(Number),
+      })
+    );
+    expect(window.__PS_BUILD_VARIANT__).toBe(telemetryMocks.APP_BUILD_VARIANT);
+    expect(window.__PS_IPFS_CHECK__).toBe(true);
+    expect(appMocks.createApp).not.toHaveBeenCalled();
+    expect(fontMocks.warmFirstPaintFonts).not.toHaveBeenCalled();
+    expect(warnSpy).toHaveBeenCalledWith('[OfflineShell] active');
+  });
+
+  it('warns when offline shell rendering is requested but the app container is missing', async () => {
+    envMocks.shouldRenderOfflineShell.mockReturnValue(true);
+    envMocks.renderOfflineShell.mockReturnValue(false);
+
+    await mountApp();
+
+    expect(appMocks.createApp).not.toHaveBeenCalled();
+    expect(warnSpy).toHaveBeenCalledWith('[OfflineShell] skipped: #app container missing');
+  });
+
+  it('mounts the app and reports router readiness failures', async () => {
+    const routerError = new Error('router not ready');
+    routerMocks.router.isReady.mockReturnValue(Promise.reject(routerError));
+
+    await mountApp();
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(pluginMocks.installRuntimePlugins).toHaveBeenCalledWith(appMocks.app, { pinia: pluginMocks.pinia });
+    expect(appMocks.app.mount).toHaveBeenCalledWith('#app');
+    expect(errorSpy).toHaveBeenCalledWith('[bootstrap] Failed during router readiness', routerError);
+  });
+
+  it('catches app mounting failures', async () => {
+    const mountError = new Error('mount failed');
+    appMocks.app.mount.mockImplementationOnce(() => {
+      throw mountError;
+    });
+
+    await mountApp();
+
+    expect(errorSpy).toHaveBeenCalledWith('[bootstrap] Failed to mount application', mountError);
+  });
+});

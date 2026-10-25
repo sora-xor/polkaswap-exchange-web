@@ -1,0 +1,84 @@
+{
+  "code": "MZ",
+  "status": "conditional",
+  "rule": "Combined-source legal interpretation: Decree 5/2009 Article 1(29), (30) and (38) distinguishes living plants and pest-capable controlled/manufactured products. Article 9(c) requires inspectors to ensure compliance with international phytosanitary standards. Current-linked ISPM 32 explicitly illustrates tea in Category 1; the stated industrially steamed/rolled/dried sencha is consequently inferred outside the pest-risk-qualified controlled category. Articles 12(1–2) require permits/certificates for controlled goods, including unlisted controlled goods; mere omission from Annex 1 is not the exemption. The Annex tea entry concerns rooted plants, propagation and seeds, not finished tea. PAC Diploma Ministerial 98/2023 Article 4 separately exempts postal parcels from conformity assessment.",
+  "personalMailApplicability": "The plant classification is product-based and applies to personal post without borrowing a traveler allowance. Article 18 permits inspection at postal centres. The independent PAC Article 4 exception expressly covers postal parcels separately from personal gifts, so a purchased Japan Post parcel qualifies without a gift declaration. Ordinary customs and arrival inspection remain.",
+  "quantityLimit": null,
+  "authority": "Mozambique agriculture ministry, Decree 5/2009; enacted PAC Diploma Ministerial 98/2023; IPPC current-linked ISPM 32",
+  "evidenceUrls": [
+    "https://geoportal.agricultura.gov.mz/en/imp_req.html",
+    "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/mz_2009-5cons2019_pqreg_en.pdf",
+    "https://faolex.fao.org/docs/pdf/moz221794.pdf",
+    "https://www.innoq.gov.mz/?download_id=1435&sdm_process_download=1",
+    "https://www.innoq.gov.mz/wp-content/uploads/2024/07/BROCHURA-PERGUNTAS-MAIS-FREQUENTE-PAC-MAR%C3%87O-2024.pdf",
+    "https://www.masa.gov.mz/wp-content/uploads/2018/01/Decreto_5_2009_regulamento_fitosanitario.pdf",
+    "https://www.ippc.int/en/publications/587/",
+    "https://assets.ippc.int/static/media/files/publications/ru/1366800159_ISPM_32_2009_Ru_2012-12-10.pdf"
+  ],
+  "remainingQuestion": null,
+  "researchAttempts": [
+    "Read decree and tea propagation entries; queried the public portal for Japan and both consumption categories on 2026-09-29.",
+    "30 September: read the public commodity catalogue (140 products) and found Camelia sinensis, product 6949, labelled Tea tree. Direct Japan/consumption queries for this commodity returned no available form under either consumption purpose (21 and 27). The catalogue flag isImportValid is not a country-specific permission and was not treated as one.",
+    "30 September independent food/conformity review: Downloaded and read the actual two-page Gazette Diploma Ministerial 98/2023 (not 97/2023), including article 4 postal, gift, sample and low-value exemptions. Checked the official INNOQ March2024 FAQ as context. Kept the separate manufactured-plant pest-risk classification unresolved.",
+    "30 September fresh official-online recovery: Recovered complete Decree 5/2009 plant-health regulation and Annex 1 from the Ministry host. Article 12(2) requires prior authorization after risk analysis for controlled products not specified in Annex 1. Thus absence of a finished-tea entry is not an exhaustive-schedule exemption. Article 1 manufactured-product coverage still depends on pest risk. Independent 2023 conformity-programme postal exemption from prior review remains valid but does not waive plant-health rules.",
+    "30 September common-definition review: read the complete Ministry-hosted Portuguese Gazette Decree 5/2009, cross-checked the JKI-hosted English file named consolidated2019, and isolated the operative Article 9(c) international-standards compliance duty. Read Articles 1(29/30/37/38), 12, 15–18 and the tea annex. Verified Portuguese Article 17 visually on Gazette page 112-(49): its additional-goods phrase is limited to goods specified in Annex 1, while the English rendering adds an overbroad including. Read Article 16 against the defined controlled consignments. Current-linked ISPM 32 tea Category 1 and actual industrial processing now provide a combined-source classification; this is not Annex-omission reasoning. Rechecked enacted PAC 98/2023 Article 4 postal exception. The original Gazette is dated 1 June 2009; the translation header says July and the filename suggests a 2019 consolidation without visible amendment metadata, so no new 2019 enactment is asserted."
+  ],
+  "reviewedAt": "2026-09-30",
+  "permitFreeDecision": "supported",
+  "permitFreeReason": "Supported for the stated sealed 100 g industrially steam-manufactured plain Camellia tea by Article 9(c), the domestic risk-qualified definitions and current-linked ISPM 32 tea Category 1 evidence. This explicit combined-source inference removes the controlled-goods permit/certificate route; it is not a bespoke Mozambique tea ruling or an approval inferred from an empty portal. Portuguese Article 16 refers to produto consignado (defined in Article 1(37) as controlled goods); Article 17(1) concerns controlled products/growing media and other products specified in Annex 1, so its 14-day inspection application is not extended to every nonregulated food. PAC Article 4 directly exempts postal parcels without a special application. Ordinary customs/arrival inspection and general food safety remain.",
+  "permitFreeSources": [
+    "https://geoportal.agricultura.gov.mz/en/imp_req.html",
+    "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/mz_2009-5cons2019_pqreg_en.pdf",
+    "https://faolex.fao.org/docs/pdf/moz221794.pdf",
+    "https://www.innoq.gov.mz/?download_id=1435&sdm_process_download=1",
+    "https://www.innoq.gov.mz/wp-content/uploads/2024/07/BROCHURA-PERGUNTAS-MAIS-FREQUENTE-PAC-MAR%C3%87O-2024.pdf",
+    "https://www.masa.gov.mz/wp-content/uploads/2018/01/Decreto_5_2009_regulamento_fitosanitario.pdf",
+    "https://www.ippc.int/en/publications/587/",
+    "https://assets.ippc.int/static/media/files/publications/ru/1366800159_ISPM_32_2009_Ru_2012-12-10.pdf"
+  ],
+  "independentFoodConformityRule": "Diploma Ministerial 98/2023, published in the official Gazette on 14 July 2023, article 4 explicitly excludes postal parcels from the PAC conformity-assessment programme. It separately excludes personal gifts, commercial samples and products with FOB value up to USD2,000. This instrument does not impose an application for its postal exception.",
+  "foodConformitySourceFiles": [
+    "docs/reports/tea-audit-work/food-conformity-sources/mz-pac98-2023.pdf",
+    "docs/reports/tea-audit-work/food-conformity-sources/mz-pac98-2023.txt"
+  ],
+  "foodConformityAccessNotes": "The enacted Gazette PDF was downloaded from FAOLEX. The official INNOQ document link confirms provenance but direct INNOQ attempts returned access/security pages; those pages are not treated as retrieved document content.",
+  "officialOnlineRecovery": {
+    "code": "MZ",
+    "outcome": "unresolved",
+    "outcomeChanged": false,
+    "finding": "Recovered complete Decree 5/2009 plant-health regulation and Annex 1 from the Ministry host. Article 12(2) requires prior authorization after risk analysis for controlled products not specified in Annex 1. Thus absence of a finished-tea entry is not an exhaustive-schedule exemption. Article 1 manufactured-product coverage still depends on pest risk. Independent 2023 conformity-programme postal exemption from prior review remains valid but does not waive plant-health rules.",
+    "remainingEvidence": null,
+    "sources": [
+      "mz-phytoreg2009.pdf"
+    ],
+    "supersededBy": "africa-definition-review/mz-proposed-override.json: domestic Article 9(c) standard bridge and current PAC postal exception."
+  },
+  "officialOnlineRecoveryFiles": [
+    "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/mz-phytoreg2009.pdf"
+  ],
+  "manufacturingInterpretation": {
+    "basis": "Explicit combined-source inference",
+    "domesticProvisions": [
+      "Decree 5/2009 Article 1(29), (30), (37), (38), Article 9(c), Articles 12 and 15–18"
+    ],
+    "standard": {
+      "publicationPage": "https://www.ippc.int/en/publications/587/",
+      "currentLinkedVersion": "https://assets.ippc.int/static/media/files/publications/ru/1366800159_ISPM_32_2009_Ru_2012-12-10.pdf",
+      "localFile": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/french/ispm32-current-ru.pdf",
+      "provision": "ISPM 32 normative Category 1 rules, read with Appendix 2 Category 1 tea illustration (Чай), printed page 32-18.",
+      "qualification": "Appendix 2 is explicitly reference-only and non-prescriptive. This is commodity evidence interpreted through operative national law, not a directly binding international country exemption. The page dated 28 July 2025 links an older standard version; do not call this a new 2025 enactment."
+    },
+    "sourceFiles": [
+      "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/mz-phytoreg2009.pdf",
+      "docs/reports/tea-audit-work/africa-definition-review/mz-consolidated2019-en.pdf",
+      "docs/reports/tea-audit-work/africa-definition-review/mz-gazette-art17.png",
+      "docs/reports/tea-audit-work/food-conformity-sources/mz-pac98-2023.pdf"
+    ],
+    "conditions": [
+      "Only uncontaminated, sealed, industrially steamed/rolled/dried plain Camellia tea; no raw plant material, seeds, soil or blends.",
+      "Send through ordinary postal parcels to rely on the express PAC postal exception.",
+      "Ordinary customs, food safety and lawful arrival inspection remain."
+    ],
+    "translationCaution": "The Ministry-hosted Portuguese original controls. JKI file is named cons2019, but no visible consolidation amendment metadata was established. Original Gazette date is 1 June 2009."
+  }
+}

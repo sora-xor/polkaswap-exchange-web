@@ -1,0 +1,89 @@
+{
+  "reviewedAt": "2026-09-30",
+  "scope": "Paid private post, Japan-origin factory-sealed 100g plain industrially steamed/rolled/dried Camellia sencha. No permits, origin certificates, separate registration or advance agency notices; ordinary customs and arrival inspection allowed.",
+  "mainArraysEdited": false,
+  "authorityContacts": false,
+  "findings": [
+    {
+      "code": "ER",
+      "outcome": "supported",
+      "proposedRow": "docs/reports/tea-audit-work/africa-scope-resolution/er-proposed-override.json",
+      "newMaterial": "Operative domestic definition/processing and independent food-law analysis; peer-merged by root.",
+      "remainingQuestion": null
+    },
+    {
+      "code": "ET",
+      "outcome": "unresolved",
+      "newMaterial": "Root recovered current2026full law; completedsaved1992/old1971continuityreview.",
+      "proposedRow": "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/et-agricultural-proposed-row.json",
+      "remainingQuestion": "Independent private-food documentary scope under Proclamation1112/2019 and current implementing EFDA rules. The current plant-law full text has been recovered; no longer claim it is unavailable. Agricultural interpretation is proposed as conditional support and preserves the1992continuity counterargument.",
+      "agriculturalScope": "conditional support proposed; parent reviewingindependentfood"
+    },
+    {
+      "code": "GN",
+      "outcome": "unresolved",
+      "newMaterial": "Two full signed BNIQ enactments, including explicit tea inspection fee and organizational exemption-approval power.",
+      "proposedRow": "docs/reports/tea-audit-work/africa-scope-resolution/gn-source-only-proposed-row.json",
+      "remainingQuestion": "For BNIQ inspection Order A/2024/920, whether Article 3 containers/trucks/other rolling international transport covers this air-post parcel, and whether Article 4 non-sale/noncommercial exemption operates automatically through Article 5 or needs BNIQ approval in light of organization Order A/2024/1102 Article 3. Article 6 foreign documents apply if the parcel remains covered. The December 2025 tea inspection tariff does not resolve either issue; plant manufacturing interpretation alone cannot waive this independent route."
+    },
+    {
+      "code": "GQ",
+      "outcome": "unresolved",
+      "newMaterial": false,
+      "reasonNoRepeat": "Existing focused source review identifies no concrete untried official source in this continuation; no repeat generic searches were run.",
+      "remainingQuestion": "An operative national plant law/commodity rule defining manufactured plant products and the applicable private postal route; neither regional border measures nor a postal prohibited-items list supplies that missing scope.",
+      "previousReview": "docs/reports/tea-audit-work/africa-definition-review/peer-conclusions.json"
+    },
+    {
+      "code": "GW",
+      "outcome": "supported",
+      "proposedRow": "docs/reports/tea-audit-work/africa-scope-resolution/gw-proposed-override.json",
+      "newMaterial": "Operative domestic definition/processing and independent food-law analysis; peer-merged by root.",
+      "remainingQuestion": null
+    },
+    {
+      "code": "SH",
+      "outcome": "unresolved",
+      "newMaterial": "Confirmed current index mislinks Ascension, preserving the separate Tristan legal-text gap.",
+      "proposedRow": "docs/reports/tea-audit-work/africa-scope-resolution/sh-source-only-proposed-row.json",
+      "remainingQuestion": "Operative Tristan by-laws/commencement and general scope of the live/dead-plants import warning for factory-manufactured tea; the whole SH destination code cannot be cleared from two islands alone."
+    },
+    {
+      "code": "SL",
+      "outcome": "unresolved",
+      "newMaterial": "Complete official Cap185 parent Act recovered; exact1974 parent rules unavailable from checked archives.",
+      "proposedRow": "docs/reports/tea-audit-work/africa-scope-resolution/sl/sl-source-only-proposed-row.json",
+      "remainingQuestion": "Recover the complete operative P.N.66/1974, especially definitions, Rule 2 exceptions and Rule 9 scope, or an authoritative general rule that determines how the 1976 cooked-food exclusion affects the parent import duty. Then apply the cooking clause to industrial steaming and its container qualification. No bespoke tea ruling is required if those generic rules decide the question."
+    },
+    {
+      "code": "TG",
+      "outcome": "unresolved",
+      "newMaterial": false,
+      "reasonNoRepeat": "Existing focused source review identifies no concrete untried official source in this continuation; no repeat generic searches were run.",
+      "remainingQuestion": "The operative documentary prescription applicable to a one-off private postal tea parcel, and whether the prior-declaration/annual economic-operator procedure has a personal scope or exception.",
+      "previousReview": "docs/reports/tea-audit-work/africa-definition-review/peer-conclusions.json"
+    },
+    {
+      "code": "UG",
+      "outcome": "unresolved",
+      "agriculturalScope": "conditional support by domestic definition and manufacturing inference",
+      "newMaterial": "Full current consolidated Act plus September 2026 UNBS operational account.",
+      "proposedRow": "docs/reports/tea-audit-work/africa-scope-resolution/ug-source-only-proposed-row.json",
+      "remainingQuestion": "Whether a one-off personal postal food shipment can receive UNBS regulation 7 destination inspection through the ordinary customs declaration under regulation 8 without separate UNBS account registration or application. The 8 September 2026 official explanation describes TIN/email e-portal accounts and automatic ICC but does not expressly determine postal-recipient scope. The clean industrial-tea plant-product interpretation is supported as an explicit application of the domestic risk definition; it no longer depends on a bespoke commodity ruling."
+    }
+  ],
+  "newOverallSupport": [
+    "ER",
+    "GW"
+  ],
+  "unresolved": [
+    "ET",
+    "GN",
+    "GQ",
+    "SH",
+    "SL",
+    "TG",
+    "UG"
+  ],
+  "qualification": "Source exhaustion is limited to specifically documented public retrieval routes; no claim that unpublished rules do not exist."
+}

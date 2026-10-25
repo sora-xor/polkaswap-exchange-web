@@ -1,0 +1,568 @@
+STATUTORY INSTRUMENTS
+SUPPLEMENT No. 41                                            7th October, 2022
+
+                STATUTORY INSTRUMENTS SUPPLEMENT
+        to The Uganda Gazette No. 62, Volume CXV, dated 7th October, 2022
+             Printed by UPPC, Entebbe, by Order of the Government.
+
+
+  S T A T U T O R Y                   I N S T R U M E N T S
+
+                                2022 No. 108.
+
+         THE UGANDA NATIONAL BUREAU OF STANDARDS
+        (CERTIFICATION) (AMENDMENT) REGULATIONS, 2022
+
+                   ARRANGEMENT OF REGULATIONS
+
+Regulation
+   1.     Title
+   2.     Amendment of S.I. No. 68 of 2021
+   3. Amendment of regulation 4 of principal Regulations
+   4. Amendment of regulation 5 of principal Regulations
+   5. Amendment of regulation 6 of principal Regulations
+   6. Amendment of regulation 8 of principal Regulations
+   7. Amendment of regulation 11 of principal Regulations
+   8. Amendment of regulation 12 of principal Regulations
+   9. Amendment of regulation 16 of principal Regulations
+  10. Amendment of regulation 23 of principal Regulations
+  11.     Insertion of regulation 23A in principal Regulations
+  12.     Amendment of Schedule 2 to principal Regulations
+  13.     Amendment of Schedule 3 to principal Regulations
+                                     6043
+  S T A T U T O R Y               I N S T R U M E N T S
+
+                            2022 No. 108.
+
+    The Uganda National Bureau of Standards (Certification)
+               (Amendment) Regulations, 2022
+
+     (Under sections 16, 18 and 43 of the Uganda National Bureau of
+                        Standards Act, Cap. 327)
+
+IN EXERCISE of the powers conferred upon the Minister responsible
+for commerce by section 43 of the Uganda National Bureau of Standards
+Act, and in consultation with the National Standards Council, these
+Regulations are made this 20th day of September, 2022.
+
+1.   Title
+These Regulations may be cited as the Uganda National Bureau of
+Standards (Certification) (Amendment) Regulations, 2022.
+
+2.   Amendment of S.I. No. 68 of 2021
+The Uganda National Bureau of Standards (Certification) Regulations,
+2021 in these Regulations referred to as the principal Regulations are
+amended in regulation 3 by substituting for the definition of “digital
+conformity mark” the following—
+
+     “digital conformity mark” means the distinctive mark in
+           device-readable or app-readable mark or code affixed
+           or imprinted on a unit of a commodity of the category
+           specified in Part II of Schedule 3 to these Regulations,
+           embedding conformity-related data pertaining to the unit
+           of the commodity on which it is affixed or imprinted;.
+
+3.    Amendment of regulation 4 of principal Regulations
+Regulation 4 of the principal Regulations is amended in subregulation
+(4) by substituting for the words “a company” the words “a person”.
+
+
+                                 6044
+4.      Amendment of regulation 5 of principal Regulations
+Regulation 5 of the principal Regulations are amended in subregulation
+(2) by inserting immediately after the words “set out in”, the words
+“Part II”.
+5.   Amendment of regulation 6 of principal Regulations
+Regulation 6 of the principal Regulations is amended by deleting the
+words “in respect of two samples for each commodity”.
+
+6.    Amendment of regulation 8 of principal Regulations
+The principal Regulations are amended by substituting for regulation
+8 the following—
+     “8. Onsite and recommendation report
+     The audit team shall, on completion of the audit, prepare and
+     submit to the director an onsite and recommendation report of
+     the applicant in the format specified in Form 2 set out in Schedule
+     2 to these Regulations.”
+
+7.    Amendment of regulation 11 of principal Regulations
+Regulation 11 of the principal Regulations is amended in subregulation
+(1) by inserting immediately after paragraph (b), the following—
+     “(c) where the permit holder has demonstrated conformance to
+          the requirements within the certification year as verified
+          through surveillance audits or sampling and testing.”
+
+8.    Amendment of regulation 12 of principal Regulations
+Regulation 12 of the principal Regulations is amended by substituting
+for subregulation (4) the following—
+           “(4) The cost of any other expense incurred in
+     connection with the commodity evaluation shall be borne by
+     the applicant.”
+
+9.     Amendment of regulation 16 of principal Regulations
+Regulation 16 of the principal Regulations is amended in subregulation
+(1)—
+                                 6045
+     (a)   by substituting for paragraph (a) the following—
+
+           “(a) the commodity in respect of which an application
+                has been made does not conform to the product
+                standard specifications, other relevant standards and
+                normative references;”; and
+
+     (b)   by substituting for paragraph (b) the following—
+
+           “(b) other certification requirements have not been
+                complied with; or”.
+
+10. Amendment of regulation 23 of principal Regulations
+Regulation 23 of the principal Regulations is amended by inserting
+immediately after subregulation (3) the following—
+
+            “(4) For the categories of commodities under Part I of
+     Schedule 3 to these Regulations, the certification mark set out
+     in Schedule 4 to these Regualations shall be printed on the label
+     or affixed on the commodity in a visible, legible, and indelible
+     manner.
+
+           (5) For the categories of commodities under Part II of
+     Schedule 3 to these Regulations, the commodities shall be so
+     marked in a visible place, as appropriate for the type of product
+     or package, by placement of the digital conformity mark, before
+     the commodity is placed on the market.
+
+           (6) For avoidance of doubt, the application of the digital
+     conformity mark is for the purpose of enabling the authentication,
+     tracking and tracing of commodities.”
+
+11. Insertion of regulation 23A in principal Regulations
+The principal Regulations are amended by inserting immediately after
+regulation 23 the following—
+
+
+                                6046
+       “23A.Commodities to bear digital conformity mark
+              (1) No person shall import, distribute, manufacture,
+       sell or have in his or her possession or control for sale or
+       distribution, any commodity for which a compulsory standard
+       specification has been declared unless the commodity conforms
+       to the compulsory standard specification.
+
+              (2) No person shall distribute, sale or control for
+       distribution or sale, any locally manufactured commodity for
+       which a compulsory standard specification has been declared and
+       which is specified in Part II of Schedule 3 to these Regulations,
+       unless the commodity bears the digital conformity mark.”
+
+12. Amendment of Schedule 2 to principal Regulations
+The principal Regulations are amended in Schedule 2 by substituting
+for Forms 1, 2 and 3 the following—
+
+                                      “SCHEDULE 2
+                                                                                Regulations 4(2)
+                                            FORMS
+                                                                                          FORM 1
+
+                                                                          Document No: CERT/
+                     UGANDA NATIONAL BUREAU OF                            PC/F02
+                             STANDARDS
+                        CERTIFICATION SCHEME                              Effective Date:
+
+         Document Title: APPLICATION FOR UNBS
+                                                                          Issue No:       Rev.
+                CERTIFICATION MARK
+
+
+  PART 1: APPLICATION FORM FOR PERMIT TO USE THE UNBS CERTIFICATION MARK
+        To be completed by all certification applicants for grant, renewal or scope extension
+                               1.   APPLICANT’S INFORMATION
+ Organisation name
+ Tax Identification Number (TIN)
+ Business       /        Organization          Please attach Certificate of Registration of
+ Registration                                           Business / Organization
+
+
+                                              6047
+                                                                    Manufacturing facility
+ORGANISATION ADDRESS                   Office Address               / Physical address (if
+                                                                    different)
+District
+Postal address
+Email address
+Tel. contact(s)
+Personnel details
+                                                                    Quality Control In-
+                                       Chief Executive
+                                                                    charge
+Name
+Designation/Title
+Mobile number
+Email address
+Number of employees                    Male               Female         Total
+Business owner (Tick)                  Male               Female         Disabled?
+                                       Below
+Age of business owner                                     25-35          Above 35
+                                       25
+                                       Installed       production   Actual       production
+Production information
+                                       capacity:                    capacity:
+                                                                    Production      quantity
+Estimated annual production            No. of Units:
+                                                                    (volume / weight):
+                                       Stock Keeping        Unit
+                                       (SKU):
+                                                                    Value of Exports (USD)
+Annual turnover:
+                                                                    per year:
+                              2: PRODUCT INFORMATION
+
+                                        Product Standard
+The applicant is required to declare    Product Name
+proof of ownership of the trademark     Brand Name (s)
+/brand name or provide a letter
+of consent from the owner of the        Estimated       annual
+trademark/ brand name.                  production (to be
+                                        declared per product /
+                                        brand)
+     3: LIST OF RAW MATERIALS (List of all Raw Materials or Ingredients Used)
+                                        Name of raw material        Where do you buy the
+#
+                                        or ingredient               raw material from?
+
+
+
+
+                                           6048
+4:    QUALITY CONTROL CHECKS (List the quality checks you carry out in the table
+      below – from raw material reception to finished product dispatch)
+
+           Material or stage of                                 Quality      check      /
+#                                   What do you check?
+           Checking                                             inspection record?
+
+
+
+
+                              5: Application Attachments
+
+#                                   Attachment                  Remarks
+
+                                                                List or draw the main
+                                                                production       process
+                                    Process flow chart and
+                                                                steps and provide a
+                                    process description
+                                                                brief production process
+                                                                description
+
+                                                                Attach current labels
+                                    Product labels         or
+                                                                in use/artwork for each
+                                    markings
+                                                                commodity
+
+                                    Most recent product         Attach    test    reports
+                                    test reports (Within last   from UNBS or UNBS
+                                    one year)                   recognised laboratory
+
+I hereby declare that all information given in this application form is correct to my
+knowledge.
+                      Signature
+A u t h o r i s e d
+representative   of   Name
+the applicant         Designation
+                      Date
+FOR OFFICIAL USE ONLY
+Sector:                                                         UNBS     RECEIVED
+Case Officer Allocation                                         NOTIFICATION
+
+
+
+
+                                       6049
+RECEIVED APPLICATION NOTIFICATION:
+Please note that this application for product certification is valid for 9 months
+after which time (if certification has not been granted), the application shall
+be disabled.
+
+The application shall also be disabled:
+1.    If it remains redundant for a period of 3 months;
+2.    If no payment is received (paid PRNs in the system) within 3 months;
+3.    In case of deferral of certification, the application shall only be valid
+      for an additional 3 months to allow for resolution of any outstanding
+      issues.
+4.    The client may apply to have the application disabled with justification
+      through email on certification@unbs.go.ug
+
+Once disabled, the client is advised to re-apply for certification and pay the
+applicable fees accordingly
+
+Correspondences regarding this application can be channelled through:
+certification@unbs.go.ug
+
+
+
+
+                                     6050
+                                                             Document No: CERT/PC/F02
+                  UGANDA NATIONAL BUREAU OF
+                          STANDARDS
+                     CERTIFICATION SCHEME                    Effective Date:
+
+                                                                                Rev.
+     Document Title: APPLICATION FOR UNBS
+                                                             Issue No:
+            CERTIFICATION MARK
+
+
+
+      PART 2: APPLICATION FORM FOR UNBS CERTIFICATION MARK
+  To be completed by an applicant with a valid certification permit that requires digital
+                                  conformity marks
+                           1.     APPLICANT’S INFORMATION
+Email address
+Permit number
+Organisation name
+Tax Identification Number (TIN)
+Office address
+Manufacturing facility / Physical address    Address:
+(if different)                               Select Site:
+           2.     DIGITAL CONFORMITY MARKS ORDER INFORMATION
+Permit Number
+Permit status (Validity & Expiry Date)
+Certified product
+Brand
+Standard
+Product category
+Type of order                                Initial/additional digital conformity marks order
+No. of digital conformity marks
+Credit (UGX)
+Total amount (UGX)
+Stock Keeping Unit (SKU)                     Select SKU or Create SKU:
+Production quantity (volume / weight)
+Packaging units
+Packaging type
+SKU Image
+Barcode
+
+                                            6051
+                                        Domestic:
+Market type
+                                        Available for export:
+Reference
+Comments
+Desired delivery date
+                                        Name:
+Recipient data                          Surname:
+                                        NIN / Passport Number:
+3.     ACTIVATION AND DECLARATION                   OF    USAGE       OF     DIGITAL
+       CONFORMITY MARKS
+Permit Number
+Site
+Used SKU
+Packaging unit
+Lot / Batch number
+                                        1.    Date of manufacture:
+Product date coding                     2.    Best before / expiry / sell by date (select
+                                              applicable)
+                                        1.    All unused marks
+Digital conformity marks to activate
+                                        2.    Selected range
+Application date
+Operator
+
+
+
+
+                                       6052
+                                     FORM 2
+                                                                             Regulation 8
+
+                 UGANDA NATIONAL BUREAU OF                 Document No:
+                        STANDARDS
+                       CERTIFICATION SCHEME                Effective Date:
+
+Document Title: ON-SITE AND RECOMMENDATION
+                                                                Issue No:          Rev.
+REPORT
+
+                                                                              Application
+Date of visit
+                                                                              No.
+Organisation name &                                        Permit No.
+physical address                                                              PC/……….
+
+Auditors
+
+Nature of assessment
+
+Commodity / Product
+
+Previous corrective actions where applicable
+
+Cleared / Not cleared? Comments
+
+Outcome of the audit
+
+Audit Findings
+No. of major non-                              No. of minor non-
+conformances                                   conformances
+Recommendation
+Sign / Initial                                 Sign / Initial
+
+                                               Management
+Lead auditor
+                                               representative
+
+
+
+
+                                       6053
+                                                                       FORM 3
+                                                                                                                       Regulations 10(3)
+                              UGANDA NATIONAL BUREAU OF STANDARDS                           Document No:
+
+                                            CERTIFICATION SCHEME                            Effective Date:
+       Document Title:    EVALUATION / AUDIT REPORT FOR PRODUCT
+                                                                                            Issue No:                Rev.
+                          CERTIFICATION
+       1        General Information
+                                                                          Date of Assessment:
+       1.1      Applicant’s name                                                                                      Application No.
+       1.2      Applicant’s address                                                                                   PC/…..……
+       1.3      Persons met                                                                               (Attach attendance list CERT/F06)
+6054                                                                      Lead Auditor:
+       1.4      Audit team
+                                                                          Auditor(s):
+       1.5      Name of product(s) and brand(s)
+       1.6      Standard number and title
+                Confirm whether the organisation has copy of relevant
+       1.7
+                standard(s)
+       1.8      Is product same as that declared in the application?
+                Is production facility the same as that declared in the
+       1.9
+                application?
+
+                Audit objectives
+                For scope extension and automatic renewals (Scheme
+                B), provide justification
+                                                                                          Findings – Provide evidence of conformity
+                                                                                  Y   N
+                                                                                          or non-conformity
+           Verification of purchased inputs/raw materials
+           Are the raw materials the same as those declared in the application?
+           If not, write additional raw materials and/or additives not declared
+           in the application.
+           Are the raw materials confirmed the same as those declared on the
+           product label (as applicable)?
+           What records are maintained for incoming raw materials? (As a
+           minimum, the list of raw materials, source and quantities)
+           Is the storage of raw materials suitable and adequate?
+       1
+       2
+           Production and manufacturing process control
+6055   3
+
+           Was the commodity in production on the day of the audit?
+           Briefly outline the key production process steps
+           Outline the production process controls (steps where monitoring
+           is done, what is checked and the limits)
+           What records are maintained for the production process controls?
+       4   Measuring equipment and testing facilities
+           What measuring and testing equipment is being used?
+           Is test and measuring equipment used calibrated or verified?
+           Product assessment                                                             Fill out product and/or process checklist(s)
+                                                                                                                           and attach
+           Specify the key parameters being tested for the finished product
+           What records are kept in relation to finished product assessment?
+           Specify whether the test results from in-house analysis of product
+           conform to national standards
+           Summarise results within past one year in table
+           Attach copies of Test certificates
+           Are non-conforming products clearly identified and segregated?
+           Specify how the non-conforming products are handled?
+           Is the finished products storage suitable and adequate?
+           Product presentation
+           Product Packaging
+           Describe the nature of packaging
+           Is product packaging appropriate for the intended use e.g. food grade
+6056       material for food products, and proper storage and handling?
+           Are the quantities declared that same as those verified on-site?
+
+           Marking and Labeling
+
+           Do the product labels and marks comply with requirements of
+           relevant standards?
+           (Attach filled labeling checklist)
+           If non-conforming, verify stock and specify quantity
+       5
+       6   Production facilities and GMPs
+                  Housekeeping
+                  Are the floors, walls and ceiling maintained clean? What cleaning
+                  chemicals are used for cleaning the premises?
+                  Is the equipment suitable and maintained clean? What cleaning
+                  chemicals are used for cleaning the equipment?
+                  Is there an established routine for cleaning both the equipment and
+                  premises?
+                  Personnel Hygiene
+                  Are valid medical certificates maintained for personnel accessing
+                  production line? (where applicable)
+                  Are personnel routinely inspected for personal hygiene?
+                  Is appropriate protective wear provided and being used?
+6057              Are toilets facilities provided and maintained clean?
+                  Are hand washing facilities provided?
+                  Pest prevention and control
+                  Specify how pest prevention and control is handled.
+                  Waste and waste disposal
+                  Specify how solid and liquid waste management is done.
+
+
+       8.   Summary of Independent Test results
+            <Provide a summary of results within the certification cycle>
+             Product and brand name         Submission date          Certificate number   Pass/Fail   Testing lab
+       Were samples obtained for independent testing?
+       Indicate sample numbers. Specify samples that were not picked, reason and follow up actions.
+
+       9.    Non-Conformances Raised (where applicable)
+             Confirm whether non-conformances arising out of the previous audit were satisfactorily closed
+
+             <Specify number of Non-conformances raised, complete the table below and attach the CAR forms>
+
+              Nonconformity                         Corrective action                   Adequacy of the corrective actions
+
+
+
+
+6058
+       10. Audit Conclusion
+
+       11.   Recommendation
+             Is product(s) recommended for certification? If no, specify reasons
+
+       12. Authentication:
+              Audit Team                               Name                                Signature / Initial
+
+              Lead Auditor
+
+              Auditor
+                                                                                                                             ”
+13. Amendment of Schedule 3 to principal Regulations
+The principal Regulations are amended in Part II of Schedule 3 by substituting
+for the words “Shs. 18 per unit of commodity”, the words “Shs. 21 per unit
+of commodity”.
+
+
+
+
+                                   6059
+       HON. FRANCIS MWEBESA,
+        Minister of Trade, Industries
+                  and Cooperatives.
+
+
+
+6060
+6061
+6062
+

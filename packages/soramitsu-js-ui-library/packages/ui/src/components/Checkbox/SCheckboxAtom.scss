@@ -1,0 +1,87 @@
+@use 'sass:map';
+@use '@/theme';
+
+$sizes: (
+  xl: 20px,
+  lg: 16px,
+  md: 12px,
+);
+
+$border-radius: 3px;
+$color-disabled: theme.token-as-var('sys.color.disabled');
+$color-on-disabled: theme.token-as-var('sys.color.on-disabled');
+$color-primary: theme.token-as-var('sys.color.primary');
+$color-border-primary: theme.token-as-var('sys.color.border-primary');
+$color-border-secondary: theme.token-as-var('sys.color.border-secondary');
+$color-on-accent: theme.token-as-var('sys.color.content-on-background-inverted');
+
+.s-checkbox-atom {
+  @apply flex items-center justify-center;
+
+  border: 2px solid $color-border-primary;
+  border-radius: $border-radius;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+
+  $root: &;
+
+  &_disabled {
+    border-color: $color-border-secondary;
+  }
+
+  &[data-checked='true'],
+  &[data-checked='mixed'] {
+    &#{$root}_disabled {
+      border-color: $color-disabled;
+      background: $color-disabled;
+
+      svg {
+        color: $color-on-disabled;
+      }
+    }
+
+    &:not(#{$root}_disabled) {
+      border-color: $color-primary;
+      background: $color-primary;
+    }
+  }
+
+  &_hover,
+  &:hover {
+    &:not(#{$root}_disabled) {
+      border-color: $color-primary;
+    }
+  }
+
+  // default icon styles
+  svg {
+    fill: none;
+    stroke: currentColor;
+    color: transparent;
+    width: 100%;
+    transition: color 0.2s ease;
+  }
+
+  &[data-checked='true'] svg {
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2px;
+    color: $color-on-accent;
+  }
+
+  &[data-checked='mixed'] svg {
+    color: $color-on-accent;
+    stroke-width: 2px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  @each $size in md, lg, xl {
+    &[data-size='#{$size}'] {
+      $val: map.get($sizes, $size);
+      width: $val;
+      height: $val;
+    }
+  }
+}

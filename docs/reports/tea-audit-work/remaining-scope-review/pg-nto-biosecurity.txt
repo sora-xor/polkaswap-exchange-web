@@ -1,0 +1,1680 @@
+
+
+
+
+
+
+
+
+
+
+
+
+Papua New Guinea Biosecurity Authority – PNG Trade Facilitation
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* <![CDATA[ */
+window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/facilitation.nto.gov.pg\/wp-includes\/js\/wp-emoji-release.min.js?ver=6.7"}};
+/*! This file is auto-generated */
+!function(i,n){var o,s,e;function c(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(o,JSON.stringify(t))}catch(e){}}function p(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data),r=(e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0),new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data));return t.every(function(e,t){return e===r[t]})}function u(e,t,n){switch(t){case"flag":return n(e,"\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f","\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f")?!1:!n(e,"\ud83c\uddfa\ud83c\uddf3","\ud83c\uddfa\u200b\ud83c\uddf3")&&!n(e,"\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f","\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f");case"emoji":return!n(e,"\ud83d\udc26\u200d\u2b1b","\ud83d\udc26\u200b\u2b1b")}return!1}function f(e,t,n){var r="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):i.createElement("canvas"),a=r.getContext("2d",{willReadFrequently:!0}),o=(a.textBaseline="top",a.font="600 32px Arial",{});return e.forEach(function(e){o[e]=t(a,e,n)}),o}function t(e){var t=i.createElement("script");t.src=e,t.defer=!0,i.head.appendChild(t)}"undefined"!=typeof Promise&&(o="wpEmojiSettingsSupports",s=["flag","emoji"],n.supports={everything:!0,everythingExceptFlag:!0},e=new Promise(function(e){i.addEventListener("DOMContentLoaded",e,{once:!0})}),new Promise(function(t){var n=function(){try{var e=JSON.parse(sessionStorage.getItem(o));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(s),u.toString(),p.toString()].join(",")+"));",r=new Blob([e],{type:"text/javascript"}),a=new Worker(URL.createObjectURL(r),{name:"wpTestEmojiSupports"});return void(a.onmessage=function(e){c(n=e.data),a.terminate(),t(n)})}catch(e){}c(n=f(s,u,p))}t(n)}).then(function(e){for(var t in e)n.supports[t]=e[t],n.supports.everything=n.supports.everything&&n.supports[t],"flag"!==t&&(n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&n.supports[t]);n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&!n.supports.flag,n.DOMReady=!1,n.readyCallback=function(){n.DOMReady=!0}}).then(function(){return e}).then(function(){var e;n.supports.everything||(n.readyCallback(),(e=n.source||{}).concatemoji?t(e.concatemoji):e.wpemoji&&e.twemoji&&(t(e.twemoji),t(e.wpemoji)))}))}((window,document),window._wpemojiSettings);
+/* ]]> */
+
+
+
+
+
+
+
+
+
+
+
+	img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}
+
+
+
+
+
+
+.wp-block-audio :where(figcaption){color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-audio :where(figcaption){color:#ffffffa6}.wp-block-audio{margin:0 0 1em}.wp-block-code{border:1px solid #ccc;border-radius:4px;font-family:Menlo,Consolas,monaco,monospace;padding:.8em 1em}.wp-block-embed :where(figcaption){color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-embed :where(figcaption){color:#ffffffa6}.wp-block-embed{margin:0 0 1em}.blocks-gallery-caption{color:#555;font-size:13px;text-align:center}.is-dark-theme .blocks-gallery-caption{color:#ffffffa6}:root :where(.wp-block-image figcaption){color:#555;font-size:13px;text-align:center}.is-dark-theme :root :where(.wp-block-image figcaption){color:#ffffffa6}.wp-block-image{margin:0 0 1em}.wp-block-pullquote{border-bottom:4px solid;border-top:4px solid;color:currentColor;margin-bottom:1.75em}.wp-block-pullquote cite,.wp-block-pullquote footer,.wp-block-pullquote__citation{color:currentColor;font-size:.8125em;font-style:normal;text-transform:uppercase}.wp-block-quote{border-left:.25em solid;margin:0 0 1.75em;padding-left:1em}.wp-block-quote cite,.wp-block-quote footer{color:currentColor;font-size:.8125em;font-style:normal;position:relative}.wp-block-quote:where(.has-text-align-right){border-left:none;border-right:.25em solid;padding-left:0;padding-right:1em}.wp-block-quote:where(.has-text-align-center){border:none;padding-left:0}.wp-block-quote.is-large,.wp-block-quote.is-style-large,.wp-block-quote:where(.is-style-plain){border:none}.wp-block-search .wp-block-search__label{font-weight:700}.wp-block-search__button{border:1px solid #ccc;padding:.375em .625em}:where(.wp-block-group.has-background){padding:1.25em 2.375em}.wp-block-separator.has-css-opacity{opacity:.4}.wp-block-separator{border:none;border-bottom:2px solid;margin-left:auto;margin-right:auto}.wp-block-separator.has-alpha-channel-opacity{opacity:1}.wp-block-separator:not(.is-style-wide):not(.is-style-dots){width:100px}.wp-block-separator.has-background:not(.is-style-dots){border-bottom:none;height:1px}.wp-block-separator.has-background:not(.is-style-wide):not(.is-style-dots){height:2px}.wp-block-table{margin:0 0 1em}.wp-block-table td,.wp-block-table th{word-break:normal}.wp-block-table :where(figcaption){color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-table :where(figcaption){color:#ffffffa6}.wp-block-video :where(figcaption){color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-video :where(figcaption){color:#ffffffa6}.wp-block-video{margin:0 0 1em}:root :where(.wp-block-template-part.has-background){margin-bottom:0;margin-top:0;padding:1.25em 2.375em}
+
+
+
+
+
+
+
+
+/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
+
+
+
+
+:root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #FFF;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--color--dark-gray: #111;--wp--preset--color--light-gray: #767676;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);--wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}
+:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}
+:root :where(.wp-block-pullquote){font-size: 1.5em;line-height: 1.6;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.woocommerce form .form-row .required { visibility: visible; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+body{color:#383838;font-family:Roboto;font-weight:400;font-size:16px;letter-spacing:0}h1{font-family:Poppins;font-weight:700;font-size:45px;line-height:55px}h2{font-family:Poppins;font-weight:700;font-size:40px;line-height:50px}h3{font-family:Poppins;font-weight:700;font-size:35px;line-height:38px}h4{font-family:Poppins;font-weight:700;font-size:27px;line-height:31px}h5{font-family:Poppins;font-weight:700;font-size:20px;line-height:30px}h6{font-family:Poppins;font-weight:700;font-size:16px;line-height:22px}a{color:#383838}a:hover{color:#c1282a}a:active{color:#c1282a}.widget{color:#101f40}.widget .widget-title{font-size:21px}.page-loader{background:url('https://facilitation.nto.gov.pg/wp-content/uploads/2020/02/page_loader-1.gif') 50% 50% no-repeat rgb(249,249,249)}.container,.boxed-container,.boxed-container .site-footer.footer-fixed,.custom-container{width:1240px}body .elementor-section.elementor-section-boxed>.elementor-container{max-width:1240px}.egovenz-content > .egovenz-content-inner{}.header-inner .main-logo img{max-height:95px}.header-inner .sticky-logo img{max-height:55px}.mobile-header-inner .mobile-logo img{max-height:45px}header.egovenz-header{}.topbar{color:#ffffff;font-family:Poppins;font-weight:400;font-size:14px;line-height:24px;background:#383838}.topbar a,.mobile-topbar-wrap a{color:#ffffff}.topbar a:hover,.mobile-topbar-wrap a:hover{color:#b21f41}.topbar a:active,.topbar a:focus,.mobile-topbar-wrap a:focus,.mobile-topbar-wrap a:active{color:#b21f41}.mobile-topbar-wrap{color:#ffffff;font-family:Poppins;font-weight:400;font-size:14px;line-height:24px;background:#383838}.topbar-items > li{height:50px ;line-height:50px }.header-sticky .topbar-items > li,.sticky-scroll.show-menu .topbar-items > li{height:40px ;line-height:40px }.topbar-items > li img{max-height:50px }.logobar{font-family:Poppins;background:#ffffff}.logobar a{color:#000000}.logobar a:hover{color:#000000}.logobar a:active,.logobar a:focus,.logobar .egovenz-main-menu > li.current-menu-item > a,.logobar .egovenz-main-menu > li.current-menu-ancestor > a,.logobar a.active{}	.logobar-items > li{height:100px ;line-height:100px }.header-sticky .logobar-items > li,.sticky-scroll.show-menu .logobar-items > li{height:80px ;line-height:80px }.logobar-items > li img{max-height:100px }.header-sticky .logobar,.sticky-scroll.show-menu .logobar{}.header-sticky .logobar a,.sticky-scroll.show-menu .logobar a{}.header-sticky .logobar a:hover,.sticky-scroll.show-menu .logobar a:hover{}.header-sticky .logobar a:active,.sticky-scroll.show-menu .logobar a:active,.header-sticky .logobar .egovenz-main-menu .current-menu-item > a,.header-sticky .logobar .egovenz-main-menu .current-menu-ancestor > a,.sticky-scroll.show-menu .logobar .egovenz-main-menu .current-menu-item > a,.sticky-scroll.show-menu .logobar .egovenz-main-menu .current-menu-ancestor > a,.header-sticky .logobar a.active,.sticky-scroll.show-menu .logobar a.active{}	.header-sticky .logobar img.custom-logo,.sticky-scroll.show-menu .logobar img.custom-logo{max-height:80px }.navbar{color:#000000;font-family:Poppins;background:#c1282a}.navbar a{color:#ffffff}.navbar a:hover{color:#ffdc00}.navbar a:active,.navbar a:focus,.navbar .egovenz-main-menu > .current-menu-item > a,.navbar .egovenz-main-menu > .current-menu-ancestor > a,.navbar a.active{color:#000000}.navbar-items > li{height:80px ;line-height:80px }.header-sticky .navbar-items > li,.sticky-scroll.show-menu .navbar-items > li{height:70px ;line-height:70px }.navbar-items > li img{max-height:80px }.header-sticky .navbar,.sticky-scroll.show-menu .navbar{color:#ffffff;background:#ffffff}.header-sticky .navbar a,.sticky-scroll.show-menu .navbar a{color:#000000}.header-sticky .navbar a:hover,.sticky-scroll.show-menu .navbar a:hover{color:#c1282a}.header-sticky .navbar a:active,.sticky-scroll.show-menu .navbar a:active,.header-sticky .navbar .egovenz-main-menu .current-menu-item > a,.header-sticky .navbar .egovenz-main-menu .current-menu-ancestor > a,.sticky-scroll.show-menu .navbar .egovenz-main-menu .current-menu-item > a,.sticky-scroll.show-menu .navbar .egovenz-main-menu .current-menu-ancestor > a,.header-sticky .navbar a.active,.sticky-scroll.show-menu .navbar a.active{color:#c1282a}.sticky-scroll.show-menu .navbar img.custom-logo{max-height:70px }.secondary-menu-area{width:350px }.secondary-menu-area{left:-350px}.secondary-menu-area.left-overlay,.secondary-menu-area.left-push{left:-350px}.secondary-menu-area.right-overlay,.secondary-menu-area.right-push{}.secondary-menu-area .secondary-menu-area-inner{}.secondary-menu-area a{}.secondary-menu-area a:hover{}.secondary-menu-area a:active{}.sticky-header-space{}.sticky-header-space li a{}.sticky-header-space li a:hover{}.sticky-header-space li a:active{}	.mobile-header-items > li{height:60px ;line-height:60px }.mobile-header{background:#ffffff}.mobile-header-items li a{color:#000000}.mobile-header-items li a:hover{color:#b21f41}.mobile-header-items li a:active{color:#b21f41}.header-sticky .mobile-header-items > li,.show-menu .mobile-header-items > li{height:60px;line-height:60px}.mobile-header .header-sticky,.mobile-header .show-menu{background:#ffffff}.header-sticky .mobile-header-items li a,.show-menu .mobile-header-items li a{color:#000000}.header-sticky .mobile-header-items li a:hover,.show-menu .mobile-header-items li a:hover{color:#b21f41}.header-sticky .mobile-header-items li a:hover,.show-menu .mobile-header-items li a:hover{color:#b21f41}.mobile-bar{}.mobile-bar li a{}.mobile-bar li a:hover{}.mobile-bar li a:active,ul > li.current-menu-item > a,ul > li.current-menu-parent > a,ul > li.current-menu-ancestor > a,.egovenz-mobile-menu li.menu-item a.active{}ul.egovenz-main-menu > li > a,ul.egovenz-main-menu > li > .main-logo{color:#ffffff;font-family:Poppins;font-weight:600;font-size:16px}ul.dropdown-menu{background:#ffffff}ul.dropdown-menu > li{}ul.dropdown-menu > li a,ul.mega-child-dropdown-menu > li a,.header-sticky ul.dropdown-menu > li a,.sticky-scroll.show-menu ul.dropdown-menu > li a,.header-sticky ul.mega-child-dropdown-menu > li a,.sticky-scroll.show-menu ul.mega-child-dropdown-menu > li a{color:#000000}ul.dropdown-menu > li a:hover,ul.mega-child-dropdown-menu > li a:hover,.header-sticky ul.dropdown-menu > li a:hover,.sticky-scroll.show-menu ul.dropdown-menu > li a:hover,.header-sticky ul.mega-child-dropdown-menu > li a:hover,.sticky-scroll.show-menu ul.mega-child-dropdown-menu > li a:hover{color:#c1282a}ul.dropdown-menu > li a:active,ul.mega-child-dropdown-menu > li a:active,.header-sticky ul.dropdown-menu > li a:active,.sticky-scroll.show-menu ul.dropdown-menu > li a:active,.header-sticky ul.mega-child-dropdown-menu > li a:active,.sticky-scroll.show-menu ul.mega-child-dropdown-menu > li a:active,ul.dropdown-menu > li.current-menu-item > a,ul.dropdown-menu > li.current-menu-parent > a,ul.dropdown-menu > li.current-menu-ancestor > a,ul.mega-child-dropdown-menu > li.current-menu-item > a{color:#c1282a}.egovenz-single-post .page-title-wrap-inner{color:#ffffff;background-image:url(https://facilitation.nto.gov.pg/wp-content/uploads/2019/10/bg-info-1.jpg);padding-top:70px;padding-bottom:70px}.egovenz-single-post .page-title-wrap a{color:#ffffff}.egovenz-single-post .page-title-wrap a:hover{color:#ffffff}.egovenz-single-post .page-title-wrap a:active{color:#ffffff}.egovenz-single-post .page-title-wrap-inner > .page-title-overlay{background:rgba(12,24,49,0.9)}.egovenz-blog .page-title-wrap-inner{color:#ffffff;background-image:url(https://facilitation.nto.gov.pg/wp-content/uploads/2019/10/bg-info-1.jpg);background-repeat:no-repeat;background-position:center center;background-size:cover;padding-top:70px;padding-bottom:70px}.egovenz-blog .page-title-wrap a{color:#ffffff}.egovenz-blog .page-title-wrap a:hover{color:#ffffff}.egovenz-blog .page-title-wrap a:active{color:#ffffff}.egovenz-blog .page-title-wrap-inner > .page-title-overlay{background:rgba(12,24,49,0.9)}.egovenz-page .page-title-wrap-inner{color:#ffffff;background-image:url(https://facilitation.nto.gov.pg/wp-content/uploads/2022/12/5.jpg);background-repeat:no-repeat;background-position:center center;background-size:cover;background-attachment:inherit;padding-top:50px;padding-bottom:70px}.egovenz-page .page-title-wrap a{color:#ffffff}.egovenz-page .page-title-wrap a:hover{color:#ffffff}.egovenz-page .page-title-wrap a:active{color:#ffffff}.egovenz-page .page-title-wrap-inner > .page-title-overlay{background:rgba(12,24,49,0.79)}.egovenz-woo .page-title-wrap-inner{color:#ffffff;padding-top:90px;padding-bottom:0}.egovenz-woo .page-title-wrap a{color:#ffffff}.egovenz-woo .page-title-wrap a:hover{color:#e9204f}.egovenz-woo .page-title-wrap a:active{color:#e9204f}.egovenz-woo .page-title-wrap-inner > .page-title-overlay{}.egovenz-single-product .page-title-wrap-inner{}.egovenz-single-product .page-title-wrap a{}.egovenz-single-product .page-title-wrap a:hover{}.egovenz-single-product .page-title-wrap a:active{}.egovenz-single-product .page-title-wrap-inner > .page-title-overlay{}.single-post-template .post-format-wrap{}.single-post-template .post-quote-wrap > .blockquote,.single-post-template .post-link-inner,.single-post-template .post-format-wrap .post-audio-wrap{}.blog-template .post-format-wrap{}.blog-template .post-quote-wrap > .blockquote,.blog-template .post-link-inner,.blog-template .post-format-wrap .post-audio-wrap{}.archive-template .post-format-wrap{}.archive-template .post-quote-wrap > .blockquote,.archive-template .post-link-inner,.archive-template .post-format-wrap .post-audio-wrap{}.post-quote-wrap > .blockquote{border-left-color:#c1282a}.single-post-template .post-quote-wrap > .blockquote{background-color:rgba(0,0,0,0.7)}.blog-template .post-quote-wrap > .blockquote{background-color:rgba(0,0,0,0.7)}.archive-template .post-quote-wrap > .blockquote{background-color:rgba(0,0,0,0.7)}.single-post-template .post-link-inner{background-color:rgba(0,0,0,0.7)}.blog-template .post-link-inner{background-color:rgba(0,0,0,0.7)}.archive-template .post-link-inner{background-color:rgba(0,0,0,0.7)}.post-overlay-items{}.post-overlay-items a{}.post-overlay-items a:hover{}.post-overlay-items a:hover{}.site-footer{font-family:Poppins;background-color:#0e0e0e;background-repeat:no-repeat;background-position:center center;background-size:cover}.site-footer .widget{font-family:Poppins}.site-footer a{color:#9d9d9d}.site-footer a:hover{}.site-footer a:hover{}.footer-top-wrap{color:#ffffff;text-align:center;border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#191919;padding-top:40px;padding-right:15px;padding-bottom:40px;padding-left:15px}.footer-top-wrap .widget{color:#ffffff;text-align:center}.footer-top-wrap a{}.footer-top-wrap a:hover{}.footer-top-wrap a:hover{}.footer-top-wrap .widget .widget-title{color:#ffffff}.footer-middle-wrap{color:#ffffff;font-size:15px;background-color:transparent;padding-top:95px;padding-bottom:95px}.footer-middle-wrap .widget{color:#ffffff;font-size:15px}.footer-middle-wrap a{color:#eaeaea}.footer-middle-wrap a:hover{color:#ffffff}.footer-middle-wrap a:active{color:#ffffff}.footer-middle-wrap .widget .widget-title{color:#ffffff}.footer-bottom{color:#ffffff;font-size:12px;background-color:transparent;background-color:#dd3333}.footer-bottom .widget{color:#ffffff;font-size:12px}.footer-bottom a{color:#ffffff}.footer-bottom a:hover{color:#ffffff}.footer-bottom a:active{color:#ffffff}.theme-color{color:#c1282a}.gradient-bg{background:-webkit-linear-gradient(-155deg,#c1282a 0,#0c1831 100%);background:linear-gradient(-155deg,#c1282a 0,#0c1831 100%)}.theme-color-bg{background-color:#c1282a}.theme-color-hbg:hover{background-color:#c1282a !important}.secondary-color{color:#0c1831}.default-color{color:#c1282a !important}::selection{background:#c1282a}b{color:#c1282a}b{color:#c1282a}.error-404 .page-title{text-shadow:-1px -1px 0 #c1282a,1px -1px 0 #c1282a,-1px 1px 0 #000,1px 1px 0 #000}.top-sliding-toggle.fa-minus{border-top-color:#c1282a}.owl-dot.active span{background:#c1282a;border-color:#c1282a}.owl-prev,.owl-next{color:#c1282a}.owl-prev:hover,.owl-next:hover{color:#c1282a}.typo-a-white a:hover{color:#c1282a}.header-button a,.sticky-head.header-sticky .nav-item-inner a.egovenz-popup-trigger.btn{background-color:#c1282a}.classic-navbar .egovenz-main-menu{background:#c1282a}.classic-navbar .egovenz-main-menu:before{border-bottom-color:#c1282a}ul.mobile-topbar-items.nav li span{color:#c1282a}.header-inner .logobar-inner .media i{color:#c1282a}.header-inner .logobar-inner .media i:after{background:#c1282a}.dropdown:hover > .dropdown-menu{border-color:#c1282a}.egovenz-main-menu li.menu-item.dropdown .dropdown-menu a:before{background:#c1282a}.navbar ul ul ul.dropdown-menu li .nav-link:focus,ul.nav ul ul.dropdown-menu li .nav-link:focus{color:#c1282a}.navbar ul ul li.menu-btn a{color:#c1282a}.widget .widget-title::before{background:#c1282a}.search-form .input-group input.form-control::-webkit-input-placeholder,.search-form .input-group input.form-control::-moz-placeholder,.search-form .input-group input.form-control::-ms-input-placeholder,.search-form .input-group input.form-control:-moz-placeholder{color:#c1282a !important}input[type="submit"]{background:#c1282a}.btn,button,.btn.bordered:hover,a.button.logout-link{background:#c1282a}.btn.classic:hover{background:#c1282a}.btn.link{color:#c1282a}.btn.bordered,a.btn.btn-link{color:#c1282a}.btn.inverse:hover{background-color:#c1282a}.btn.btn-default.theme-color{background:#c1282a}.btn.secondary-color{background:#0c1831}.rev_slider_wrapper .btn.btn-outline:hover{background-color:#c1282a;border-color:#c1282a}.rev_slider .btn.btn-default{border-color:#c1282a !important}select:focus{border-color:#c1282a}.close:before,.close:after{background:#c1282a}.nav-link:focus,.nav-link:hover{color:#c1282a}.zmm-dropdown-toggle{color:#c1282a}ul li.theme-color a{color:#c1282a !important}.top-meta ul li a.read-more,.bottom-meta ul li a.read-more{color:#c1282a}.single-post-template blockquote{border-color:#c1282a}.single-post .post-meta li i.before-icon::before{color:#c1282a}.single-post .entry-meta ul li a:hover{color:#c1282a}.post-comments-wrapper p.form-submit input{background-color:#c1282a;border-color:#c1282a !important}.single-post .author-info{border-color:#c1282a}.grid-layout .article-inner header.entry-header:after,.grid-layout .post .post-more a.read-more,.blog-wrapper .post-overlay-items> .post-more a.read-more,.blog-style-default .entry-title:after,.blog-wrapper.blog-style-default a.read-more{background-color:#c1282a}.post-navigation .nav-links .nav-next a,.post-navigation .nav-links .nav-previous a{border-color:#c1282a}.post-navigation .nav-links .nav-next a:hover,.post-navigation .nav-links .nav-previous a:hover,.single-post .post-navigation-wrapper .nav-links.custom-post-nav>div>i,.single-post-template article .article-inner> .top-meta li.nav-item:after,.light-menu.elementor-widget-wp-widget-nav_menu .menu li:before,.post-meta>ul>li.nav-item .post-tags a:hover,.single-post-template article .article-inner> .top-meta li.nav-item .post-date::before,.post-navigation-wrapper .nav-links.custom-post-nav .prev-nav-link a.prev::before,.post-navigation-wrapper .nav-links.custom-post-nav .next-nav-link a.next::before,.egovenz_latest_post_widget .side-item-text a::before,.egovenz_latest_post_widget .side-item-text a::after{background-color:#c1282a}.custom-post-nav > .prev-nav-link > a:hover,.custom-post-nav > .next-nav-link > a:hover,.single-post-template blockquote:before,.zozo-horizontal-slider-wrap .jctkr-wrapper ul li:before,.light-menu.elementor-widget-wp-widget-nav_menu .menu li a:hover,.single-post-template article .article-inner> .top-meta li.nav-item .post-date a,.single-post-template article .article-inner> .top-meta li.nav-item a:hover{color:#c1282a}.calendar_wrap th,tfoot td,.wp-block-calendar table th{background:#c1282a}.widget_calendar caption{border-color:#c1282a}.widget_archive li:before{color:#c1282a}.site-footer .widget_archive li:before{color:#c1282a}.widget.widget_tag_cloud a.tag-cloud-link:hover{background:#c1282a;border-color:#c1282a}.null-instagram-feed p a{background:#c1282a}.widget .menu-item-object-egovenz-services a{background:#0c1831}.site-footer .widget .menu-item-object-egovenz-services.current-menu-item a:hover{color:#c1282a}.widget .menu-item-object-egovenz-services.current-menu-item a,.widget .menu-item-object-egovenz-services a:hover{background:#c1282a}.widget-area .widget .menu-item-object-egovenz-services.current-menu-item a,.widget-area .widget .menu-item-object-egovenz-services a:hover{border-left-color:#c1282a}.widget .menu-item-object-egovenz-service a{border-color:#c1282a}.zozo-horizontal-slider-title{background:#c1282a}.grid-layout .article-inner .top-meta a.read-more::before,.grid-layout .article-inner .entry-footer .bottom-meta a.read-more::before,.egovenz-single-post .post-comments .comment-reply-link:before,.comment-meta .comment-reply-link:before{color:#c1282a}.zozo_advance_tab_post_widget .nav-tabs .nav-item.show .nav-link,.widget .nav-tabs .nav-link.active{background:#c1282a}.back-to-top > i{color:#c1282a}.page-title-inner .page-title,.list-fullwidth-active .feature-box-title,.contact-info-style-modern .contact-info-title,.team-info .team-title h2{background-image:-webkit-linear-gradient(120deg,#c1282a 0,#0c1831 100%);background-image:linear-gradient(120deg,#c1282a 0,#0c1831 100%)}.entry-title a:hover{color:#c1282a}.title-separator.separator-border{background-color:#c1282a}.section-title-wrapper .title-wrap > .sub-title::before{background-color:#c1282a}.twitter-3 .tweet-info{border-color:#c1282a}.twitter-wrapper.twitter-dark a{color:#c1282a}.price-text{color:#c1282a}.pricing-style-1.pricing-list-active .pricing-inner-wrapper,.pricing-style-1 .btn-default:hover{background-color:#c1282a}.pricing-style-1 .pricing-table-info .price-text,.pricing-style-1 .pricing-table-info > .price-before{color:#c1282a}.pricing-style-3 .pricing-inner-wrapper,.pricing-style-1 .btn-default:hover{border-color:#c1282a}.pricing-style-2 .price-text p{color:#c1282a}.pricing-style-3 .pricing-title::before,.pricing-style-3 .pricing-title::after,.pricing-style-2 .pricing-table-info:after,.pricing-style-3 ul.pricing-features-list li:before{background-color:#c1282a}.theme-gradient-bg{background:-webkit-linear-gradient(-150deg,#0c1831 35%,#c1282a 65%) !important;background:linear-gradient(-150deg,#0c1831 35%,#c1282a 65%) !important}.compare-pricing-wrapper .pricing-table-head,.compare-features-wrap{background:#c1282a}.zozo-horizontal-slider-title:after{background:#0c1831}.compare-pricing-style-3.compare-pricing-wrapper .btn:hover{background:#c1282a}.counter-wrapper.dashed-secondary-color.counter-style-1{border-color:#c1282a}.counter-wrapper.dashed-theme-color.counter-style-1{border-color:#c1282a}.counter-value span.counter-suffix{color:#c1282a}.counter-wrapper.counter-style-2 .counter-value h3{background:#c1282a;-webkit-background-clip:text;-webkit-text-fill-color:transparent}.day-counter-modern .day-counter > *:after{background:rgba(193,40,42,0.1)}span.typing-text,.typed-cursor{color:#c1282a}.testimonial-light .client-name:hover{color:#c1282a}.testimonial-wrapper.testimonial-1 a.client-name:hover,.testimonial-wrapper.testimonial-1 .client-designation{color:#c1282a}.testimonial-wrapper.testimonial-1 .testimonial-inner::after,.testimonial-wrapper.testimonial-modern .testimonial-inner:after,.testimonial-wrapper.testimonial-default .owl-item .testimonial-inner,.testimonial-list .testimonial-list-item .testimonial-thumb:before,.single-egovenz-testimonial .testimonial-info .testimonial-img:before{background-color:#c1282a}.egovenz-content .testimonial-2 .testimonial-inner:hover,.egovenz-content .testimonial-2 .testimonial-inner:hover .testimonial-thumb img{border-color:#c1282a}.testimonial-wrapper.testimonial-3 .testimonial-inner .testimonial-info .client-name,.testimonial-wrapper.testimonial-3 .testimonial-inner .testimonial-excerpt .testimonial-excerpt-icon i,.testimonial-wrapper.testimonial-default .testimonial-inner > *.testimonial-excerpt:before{color:#c1282a !important}.events-date{border-color:#c1282a}.event-inner .event-schedule-inner .tab-content i{color:#c1282a}.event-details-wrap ul li:before{background:#c1282a}.media.event-list-item:before{background:#c1282a}.event-details-wrap ul li:after{border-color:#c1282a}.media.event-list-item span.event-time,.media.event-list-item .post-more a.read-more{background:#c1282a}.events-date{border-color:#c1282a}.event-inner .event-schedule-inner .tab-content i,.event-inner .post-more > a,.event-date,.event-wrapper.event-dark .event-inner .post-title-head > a:hover,.media.event-list-item .read-more{color:#c1282a}.event-info h4,.event-venue h4,.event-contact-title h4,.event-contact h4,.event-map h4,.event-wrapper.event-modern .event-date:after,.event-wrapper.event-default .event-inner .event-date,.media.event-list-item .event-date:after,.event-list-item .event-date:before,.event-classic .event-inner .event-date,.event-wrapper.event-modern .event-inner:after{background:#c1282a}.event-details-wrap ul li:before{background:#c1282a}.event-details-wrap ul li:after{border-color:#c1282a}.nav.pagination > li.nav-item.active a,.nav.pagination > li.nav-item span,.nav.pagination > li.nav-item a,.nav.pagination > li.nav-item:focus a{background:#c1282a;border-color:#c1282a}.egovenz-sticky-wrapper.text_trigger a,a.egovenz-sticky-trigger{background:#c1282a}.team-wrapper.team-default .team-inner .team-designation h6,.team-default .client-name{color:#c1282a}.team-wrapper.team-default .team-inner:after{background:#c1282a}.team-wrapper.team-default .team-inner:before{background:#0c1831}.team-modern .team-name a::after,span.animate-bubble-box:before{background:#c1282a;filter:drop-shadow(0 1px 2px rgba(193,40,42,0.5))}span.animate-bubble-box:after{background:#c1282a;filter:drop-shadow(0 1px 2px rgba(193,40,42,0.5))}span.animate-bubble-box{box-shadow:0 0 1px 0 rgba(193,40,42,0.1),0 0 1px 0 rgba(193,40,42,0.1) inset}.team-wrapper.team-modern .team-inner > .team-thumb{border-color:#c1282a}.team-wrapper.team-modern .team-inner:hover > .team-designation h6{color:#c1282a}.timeline-style-2 .timeline > li > .timeline-panel{border-color:#c1282a}.timeline-sep-title{color:#c1282a}.timeline-style-2 .timeline > li > .timeline-panel:before{border-left-color:#c1282a;border-right-color:#c1282a}.timeline-style-2 .timeline > li > .timeline-panel:after{border-left-color:#c1282a;border-right-color:#c1282a}.timeline-style-3 .timeline > li > .timeline-sep-title{background:#c1282a}.cd-horizontal-timeline .events{background:#c1282a}.cd-horizontal-timeline .events a.selected::after{background-color:#c1282a;border-color:#c1282a}.cd-timeline-navigation a{border-color:#c1282a}.cd-horizontal-timeline .events-content em{color:#c1282a}.cd-horizontal-timeline .events-content li{border-color:#c1282a}.cd-horizontal-timeline .events-content li .tl-triangle{border-bottom-color:#c1282a}.cd-horizontal-timeline .events-content li > h2{color:#c1282a}.portfolio-wrapper ul.nav.m-auto.d-block > li.active a{background:#c1282a}.portfolio-wrapper ul.nav.m-auto.d-block > li a{background:#0c1831}.portfolio-style-modern a.read-more:before{background:#0c1831}.portfolio-style-modern a.read-more:after{background:#c1282a}.portfolio-wrapper.portfolio-style-modern .post-overlay-items a:hover,.portfolio-meta-list>li a:hover{color:#c1282a !important}.portfolio-masonry-layout .portfolio-angle .portfolio-title h4:after{background-color:#c1282a}.portfolio-style-classic .post-overlay-items > .portfolio-popup-icon a,.portfolio-style-classic .post-overlay-items > .portfolio-link-icon a,.portfolio-style-modern .post-overlay-items> .portfolio-link-icon a,.portfolio-style-modern .post-overlay-items> .portfolio-popup-icon a{background-color:#c1282a}.portfolio-default .portfolio-wrap .portfolio-content-wrap{background-color:#c1282a}.portfolio-default .portfolio-overlay .portfolio-title a:after{background-color:rgba(193,40,42,0.5)}.portfolio-style-default .portfolio-link-icon a,.portfolio-style-default .portfolio-popup-icon a{background-color:#c1282a}.portfolio-classic .portfolio-wrap .portfolio-content-wrap .portfolio-read-more a,.portfolio-angle .portfolio-wrap .portfolio-content-wrap .portfolio-read-more a{color:#c1282a}.portfolio-classic .portfolio-wrap .portfolio-content-wrap .portfolio-read-more a:hover,.portfolio-angle .portfolio-wrap .portfolio-content-wrap .portfolio-read-more a:hover{background-color:#c1282a}.portfolio-single.portfolio-model-2 .portfolio-details .portfolio-meta-wrap{background:#c1282a}.portfolio-model-4 .portfolio-info .portfolio-meta .portfolio-meta-list > li ul.portfolio-categories a:hover{color:#c1282a}.single-egovenz-portfolio .portfolio-title h3::after,.single-egovenz-portfolio .portfolio-related-slider h4::after,.portfolio-related-slider .related-title{background-color:#c1282a}.portfolio-creative .portfolio-wrap:hover .portfolio-content-wrap{background-color:#c1282a}span.portfolio-meta-icon{color:#c1282a}.portfolio-filter.filter-1 ul > li.active > a,.portfolio-filter.filter-1 ul > li > a:hover{background-color:#c1282a}.portfolio-filter.filter-1 ul > li > a,.portfolio-filter.filter-1 ul > li > a:hover{border:solid 1px #c1282a}.portfolio-filter.filter-1 ul > li > a{border-color:#c1282a}.portfolio-filter.filter-1 a.portfolio-filter-item{color:#c1282a}.portfolio-masonry-layout .portfolio-classic .portfolio-content-wrap{background:#c1282a}.portfolio-filter.filter-2 .active a.portfolio-filter-item{color:#c1282a}.portfolio-filter.filter-2 li a:after{background-color:#c1282a}.portfolio-slide .portfolio-content-wrap{background:#c1282a}.portfolio-minimal .portfolio-overlay-wrap:before,.portfolio-minimal .portfolio-overlay-wrap:after{border-color:#c1282a}.portfolio-classic .portfolio-overlay-wrap:before{border-color:#c1282a}.portfolio-archive-title a:hover{color:#c1282a}.portfolio-filter.filter-3 a.portfolio-filter-item{color:#c1282a}.portfolio-filter.filter-3 li.active a.portfolio-filter-item{background:#c1282a}.icon-theme-color{color:#c1282a}.feature-box-wrapper .feature-box-title > a:hover{color:#c1282a !important}.feature-box-wrapper .btn.bordered:hover{border-color:#c1282a}.feature-box-wrapper.feature-ser:hover .feature-box-btn .btn.link,.feature-box-wrapper.feature-ser:hover .feature-box-btn .btn.link:after{color:#c1282a}.feature-ser:hover .feature-box-btn .btn.link::after,.feature-box-wrapper.feature-box-modern:after{background:#c1282a}.feature-box-wrapper.border-hover-color:hover{border-bottom-color:#c1282a !important}.feature-box-wrapper > .feature-box-title .section-title .title-bottom-line,.section-title-wrapper .title-separator.separator-border:before,.section-title-wrapper .title-separator.separator-border:after,.feature-box-wrapper.feature-box-modern:before{background-color:#0c1831}.hover-bottom .feature-box-inner:after{background-color:#c1282a;background-image:-webkit-linear-gradient(to left,#c1282a,#0c1831 );background-image:-moz-linear-gradient(to left,#c1282a,#0c1831 );background-image:-ms-linear-gradient(to left,#c1282a,#0c1831 );background-image:-o-linear-gradient(to left,#c1282a,#0c1831 );background-image:linear-gradient(to left,#c1282a,#0c1831 )}.feature-box-btn .btn.link{color:#c1282a}.feature-box-btn .btn.link::after{color:#c1282a}.feature-box-wrapper.radius-design:hover,.feature-box-wrapper.radius-design.section-active{background-color:#c1282a !important;border-color:#c1282a !important}.feature-box-wrapper.radius-design .invisible-number{color:#c1282a}.feature-box-style-1 .feature-box-btn .btn.link:hover,.feature-box-style-1 .feature-box-btn .btn.link:hover::after{color:#c1282a}.feature-box-style-2:hover,.feature-box-wrapper.contact-box.feature-box-classic:hover{background-color:#c1282a !important}.feature-box-style-3 .invisible-number{color:#c1282a}.feature-box-style-3::after{background-color:#c1282a}.feature-box-wrapper:hover .feature-box-icon span.theme-color-hbg{background-color:#c1282a}[class^='imghvr-shutter-out-']:before,[class*=' imghvr-shutter-out-']:before,[class^='imghvr-shutter-in-']:after,[class^='imghvr-shutter-in-']:before,[class*=' imghvr-shutter-in-']:after,[class*=' imghvr-shutter-in-']:before,[class^='imghvr-reveal-']:before,[class*=' imghvr-reveal-']:before{background-color:#c1282a}.image-grid-inner:after{background:#c1282a}.service-wrapper.service-default .service-inner > .service-title a,.service-wrapper a.read-more.btn,.service-wrapper.service-default a.read-more.btn:hover,.service-wrapper.service-default a.read-more.btn:focus{color:#c1282a}.service-wrapper.service-default .service-icon-img-wrap:nth-child(2)::before,.service-wrapper.service-default a.read-more.btn:hover::after,.service-wrapper.service-default a.read-more.btn:focus::after,.service-wrapper.service-default a.read-more.btn::before,.service-wrapper.service-default a.read-more.btn::after{background:#c1282a}.service-modern .service-icon-img-wrap:after{background:rgba(193,40,42,0.15)}.service-modern .service-inner:after{background:#c1282a}.service-modern .service-inner:before{background:#0c1831}.active .round-tab-head{background-image:-webkit-linear-gradient(0deg,#c1282a 0,rgba(193,40,42,0.4) 100%)}.top-meta ul li i,.bottom-meta ul li i{color:#c1282a}.blog-style-3 .post-thumb,.single-post-template blockquote,.wp-block-quote.has-text-align-right{border-color:#c1282a}.blog-wrapper .blog-inner .top-meta a.read-more::before,.blog-wrapper .blog-inner .bottom-meta a.read-more::before,article.post .bottom-meta a.read-more::before,.services-read-more .read-more::before,.post-overlay-items .post-category a{background:#c1282a}.blog-wrapper .blog-inner .top-meta a.read-more::after,.blog-wrapper .blog-inner .bottom-meta a.read-more::after,.services-read-more .read-more::after{background:-webkit-linear-gradient(to left,#c1282a 0,rgba(237,66,102,0) 100%);background:linear-gradient(to right,#c1282a 0,rgba(237,66,102,0) 100%);background:-moz-linear-gradient(to left,#c1282a 0,rgba(237,66,102,0) 100%)}.blog-wrapper .post-thumb.post-overlay-active:before{background-image:-webkit-linear-gradient(120deg,rgba(193,40,42,0.80) 0,rgba(12,24,49,0.85) 100%);background-image:linear-gradient(120deg,rgba(193,40,42,0.80) 0,rgba(12,24,49,0.85) 100%)}.sticky-date .post-date,.egovenz-toggle-post-wrap .switch input:checked + .slider,.comment-reply-title:after,.post-comments .post-box-title:after{background-color:#c1282a}.egovenz-toggle-post-wrap .switch input:focus + .slider{box-shadow:0 0 1px #c1282a}.blog-style-classic-pro .post-date a,.blog-style-list .post-date a{color:#0c1831}cite.quote-author{color:#c1282a}.single-post-template article .article-inner .entry-content span.dropcap-bg{box-shadow:4px 5px 16px rgba(193,40,42,0.4);background-color:#c1282a}.contact-info-wrapper.contact-info-style-2 .contact-mail a:hover{color:#c1282a}.contact-info-wrapper.contact-info-style-modern:after{background-image:-webkit-linear-gradient(120deg,#c1282a 0,#0c1831 100%);background-image:linear-gradient(120deg,#c1282a 0,#0c1831 100%)}.contact-form-wrapper .wpcf7 input[type="submit"],.wpcf7 input[type="submit"]{background:#c1282a}.contact-form-grey .wpcf7 input.wpcf7-submit,.contact-form-classic .wpcf7 input[type="submit"]{background:#c1282a}.content-carousel-wrapper .owl-nav > *:hover{color:#c1282a}.shape-arrow .wpb_column:nth-child(2) .feature-box-wrapper,.shape-arrow .wpb_column:last-child .feature-box-wrapper{background:#c1282a}.shape-arrow .wpb_column:first-child .feature-box-wrapper::before,.shape-arrow .wpb_column:nth-child(3) .feature-box-wrapper::before{border-top-color:#c1282a;border-bottom-color:#c1282a}.shape-arrow .wpb_column .feature-box-wrapper::before,.shape-arrow .wpb_column .feature-box-wrapper::after,.shape-arrow .wpb_column:nth-child(2) .feature-box-wrapper::before,.shape-arrow .wpb_column:nth-child(2) .feature-box-wrapper::after,.shape-arrow .wpb_column:last-child .feature-box-wrapper::before,.shape-arrow .wpb_column:last-child .feature-box-wrapper::after{border-left-color:#c1282a}.wpbc_booking_form_structure .wpbc_structure_form .form-group .btn-default{background:-webkit-linear-gradient(-144deg,#0c1831 15%,#c1282a 85%);background:linear-gradient(-144deg,#0c1831 15%,#c1282a 85%)}.widget_search .search-form .input-group .btn,.nav.pagination > li.nav-item.active a,.nav.pagination > li.nav-item span,.nav.pagination > li.nav-item a,.nav.pagination > li.nav-item:focus a,.egovenz_mailchimp_widget input.zozo-mc.btn,.egovenz_mailchimp_widget button.zozo-mc.btn,.wpdm-download-link.btn.btn-primary.btn-sm,.media.event-list-item span.event-time,.media.event-list-item .post-more a.read-more,.btn,button,.btn.bordered:hover,a.button.logout-link,.contact-form-wrapper .wpcf7 input[type="submit"],.wpcf7 input[type="submit"],.post-comments-wrapper p.form-submit input{background-color:#c1282a}.woocommerce p.stars a{color:#c1282a}.woocommerce .product .onsale{background-color:#c1282a}.woocommerce ul.products li.product .price,.woocommerce .product .price,.woocommerce .product .price ins,.woocommerce.single .product .price ins{color:#c1282a}.woocommerce div.product .product_title{color:#c1282a}.woocommerce .product .button,.woocommerce.single .product .button,.woocommerce #review_form #respond .form-submit input,.woocommerce button.button,.woocommerce button.button.disabled,.woocommerce button.button.alt.disabled,.woocommerce ul.products li.product .woo-thumb-wrap .button:hover,.woocommerce ul.products li.product .woo-thumb-wrap .added_to_cart,.woocommerce ul.products li.product .woo-thumb-wrap .added_to_cart:hover{background:#c1282a}.woocommerce .widget_price_filter .ui-slider .ui-slider-range{background-color:#c1282a}.dropdown-menu.cart-dropdown-menu .mini-view-cart a,.egovenz-sticky-cart .mini-view-cart a,.dropdown-menu.wishlist-dropdown-menu .mini-view-wishlist a,.egovenz-sticky-wishlist .mini-view-wishlist a{background:#c1282a}.woocommerce #content input.button,.woocommerce #respond input#submit,.woocommerce a.button,.woocommerce button.button,.woocommerce input.button,.woocommerce-page #content input.button,.woocommerce-page #respond input#submit,.woocommerce-page a.button,.woocommerce-page button.button,.woocommerce-page input.button,.woocommerce input.button.alt,.woocommerce input.button.disabled,.woocommerce input.button:disabled[disabled],.cart_totals .wc-proceed-to-checkout a.checkout-button,.woocommerce button.button.alt{background:#c1282a}.woocommerce-info,.woocommerce-message{border-top-color:#c1282a}.woocommerce-info::before,.woocommerce-message::before{color:#c1282a}.form-control:focus{border-color:#c1282a !important}.woocommerce nav.woocommerce-pagination ul li,.woocommerce nav.woocommerce-pagination ul li a:active,.woocommerce nav.woocommerce-pagination ul li a:focus{background-color:#c1282a;border-color:#c1282a}.woo-top-meta select{background-image:url(https://facilitation.nto.gov.pg/wp-content/themes/egovenz/assets/images/icon-select.png)}.widget-area .widget-title::after{background-color:#c1282a}.widget_categories ul li a:before,.widget_meta ul li a:before{color:#c1282a}.widget_categories ul li a:hover,.widget_meta ul li a:hover,.widget_archive ul li a:hover,.widget_recent_entries ul li a:hover,.widget-area .widget_pages li a:hover,.widget_recent_entries ul li > .post-date{color:#c1282a}.egovenz_latest_post_widget li a:hover,.egovenz_popular_post_widget li a:hover{color:#c1282a}.anim .popup-video-post.popup-trigger-icon:after,.anim .popup-video-post.popup-trigger-icon:before,.anim .popup-video-post.popup-trigger-icon,span.popup-modal-dismiss.ti-close,.egovenz-popup-dismiss span.ti-close,.contact-info-wrapper .contact-info-title:after{background-color:#c1282a}.anim .popup-video-post.popup-trigger-icon{color:#c1282a}a.modal-box-trigger.modal-trigger-icon{color:#c1282a}.round-tab-wrapper,.elementor-widget-container.round-tab-wrapper:after,.elementor-widget-container.round-tab-wrapper:before{border-color:#c1282a}.egovenz_mailchimp_widget input.zozo-mc.btn,.egovenz_mailchimp_widget button.zozo-mc.btn{background-color:#c1282a}.mailchimp-wrapper.mailchimp-light .input-group .input-group-btn .mc-submit-btn{background-color:#c1282a}.widget .footer-info .media::before{color:#c1282a}.custom-top-footer .primary-bg{background-color:#c1282a}.custom-top-footer .secondary-bg{background-color:#0c1831}.current_page_item a{color:#c1282a}.mptt-shortcode-wrapper ul.mptt-menu.mptt-navigation-tabs li.active a,.mptt-shortcode-wrapper ul.mptt-menu.mptt-navigation-tabs li:hover a{border-color:#c1282a}.booking_form .datepick-inline .calendar-links,.booking_form .datepick-inline td.datepick-days-cell.date2approve{background:#c1282a}ul.social-icons.social-hbg-theme > li a:hover{background:#c1282a}.woo-icon-count,.widget ul li.menu-item a:before{background:#c1282a}footer .widget .btn.link.before-icon,a.theme-color{color:#c1282a}.related-slider-content-wrap:hover .related-slider-content{background:rgba(193,40,42,0.8)}.error-404-area .page-title-default .breadcrumb a:hover{color:#c1282a}@media only screen and (max-width:991px){.bg-after-991{background:#c1282a}}.page-links > span.page-number,a span.page-number:hover,a span.page-number:active,a span.page-number:focus{border-color:#c1282a}a span.page-number:hover,.page-links .post-page-numbers{background:#c1282a}#bbpress-forums li.bbp-header,#bbpress-forums li.bbp-footer{background:#0c1831}.bbp-breadcrumb{background:#c1282a}.w3eden .list-group .badge{color:#0c1831}body .w3eden .list-group-item:nth-child(2){background:#0c1831}.wp-block-button__link,.wp-block-file .wp-block-file__button,.single-post-template blockquote .quote-author::before,.single-post-template blockquote cite::before{background:#c1282a}blockquote,.single-post-template blockquote,.wp-block-quote,.wp-block-quote.is-large,blockquote.wp-block-quote.is-style-large{border-left-color:#c1282a}.wp-block-quote.has-text-align-right{border-right-color:#c1282a}.wp-block-quote[style*="text-align:right"],.wp-block-quote[style*="text-align: right"]{border-color:#c1282a}.is-style-outline,.is-style-outline>.wp-block-button__link:not(.has-text-color),.wp-block-button__link.is-style-outline:not(.has-text-color){color:#c1282a !important}.single-post-template blockquote .quote-author,.single-post-template blockquote cite,.single-post-template blockquote> cite,.single-post-template .wp-block-quote.is-style-large cite,.single-post-template blockquote:before,blockquote:before,.wp-block-quote:before,.wp-block-quote.is-large:before{color:#c1282a}	body{}.egovenz-content > .egovenz-content-inner{padding-bottom:20px}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* <![CDATA[ */
+var wpdm_url = {"home":"https:\/\/facilitation.nto.gov.pg\/","site":"https:\/\/facilitation.nto.gov.pg\/","ajax":"https:\/\/facilitation.nto.gov.pg\/wp-admin\/admin-ajax.php"};
+var wpdm_js = {"spinner":"<i class=\"fas fa-sun fa-spin\"><\/i>"};
+/* ]]> */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+.woocommerce-product-gallery{ opacity: 1 !important; }
+
+	
+
+
+
+
+
+
+
+
+
+
+function setREVStartSize(e){
+			//window.requestAnimationFrame(function() {
+				window.RSIW = window.RSIW===undefined ? window.innerWidth : window.RSIW;
+				window.RSIH = window.RSIH===undefined ? window.innerHeight : window.RSIH;
+				try {
+					var pw = document.getElementById(e.c).parentNode.offsetWidth,
+						newh;
+					pw = pw===0 || isNaN(pw) || (e.l=="fullwidth" || e.layout=="fullwidth") ? window.RSIW : pw;
+					e.tabw = e.tabw===undefined ? 0 : parseInt(e.tabw);
+					e.thumbw = e.thumbw===undefined ? 0 : parseInt(e.thumbw);
+					e.tabh = e.tabh===undefined ? 0 : parseInt(e.tabh);
+					e.thumbh = e.thumbh===undefined ? 0 : parseInt(e.thumbh);
+					e.tabhide = e.tabhide===undefined ? 0 : parseInt(e.tabhide);
+					e.thumbhide = e.thumbhide===undefined ? 0 : parseInt(e.thumbhide);
+					e.mh = e.mh===undefined || e.mh=="" || e.mh==="auto" ? 0 : parseInt(e.mh,0);
+					if(e.layout==="fullscreen" || e.l==="fullscreen")
+						newh = Math.max(e.mh,window.RSIH);
+					else{
+						e.gw = Array.isArray(e.gw) ? e.gw : [e.gw];
+						for (var i in e.rl) if (e.gw[i]===undefined || e.gw[i]===0) e.gw[i] = e.gw[i-1];
+						e.gh = e.el===undefined || e.el==="" || (Array.isArray(e.el) && e.el.length==0)? e.gh : e.el;
+						e.gh = Array.isArray(e.gh) ? e.gh : [e.gh];
+						for (var i in e.rl) if (e.gh[i]===undefined || e.gh[i]===0) e.gh[i] = e.gh[i-1];
+											
+						var nl = new Array(e.rl.length),
+							ix = 0,
+							sl;
+						e.tabw = e.tabhide>=pw ? 0 : e.tabw;
+						e.thumbw = e.thumbhide>=pw ? 0 : e.thumbw;
+						e.tabh = e.tabhide>=pw ? 0 : e.tabh;
+						e.thumbh = e.thumbhide>=pw ? 0 : e.thumbh;
+						for (var i in e.rl) nl[i] = e.rl[i]<window.RSIW ? 0 : e.rl[i];
+						sl = nl[0];
+						for (var i in nl) if (sl>nl[i] && nl[i]>0) { sl = nl[i]; ix=i;}
+						var m = pw>(e.gw[ix]+e.tabw+e.thumbw) ? 1 : (pw-(e.tabw+e.thumbw)) / (e.gw[ix]);
+						newh =  (e.gh[ix] * m) + (e.tabh + e.thumbh);
+					}
+					var el = document.getElementById(e.c);
+					if (el!==null && el) el.style.height = newh+"px";
+					el = document.getElementById(e.c+"_wrapper");
+					if (el!==null && el) {
+						el.style.height = newh+"px";
+						el.style.display = "block";
+					}
+				} catch(e){
+					console.log("Failure at Presize of Slider:" + e)
+				}
+			//});
+		  };
+
+
+
+                
+
+        
+
+            .w3eden .fetfont,
+            .w3eden .btn,
+            .w3eden .btn.wpdm-front h3.title,
+            .w3eden .wpdm-social-lock-box .IN-widget a span:last-child,
+            .w3eden #xfilelist .panel-heading,
+            .w3eden .wpdm-frontend-tabs a,
+            .w3eden .alert:before,
+            .w3eden .panel .panel-heading,
+            .w3eden .discount-msg,
+            .w3eden .panel.dashboard-panel h3,
+            .w3eden #wpdm-dashboard-sidebar .list-group-item,
+            .w3eden #package-description .wp-switch-editor,
+            .w3eden .w3eden.author-dashbboard .nav.nav-tabs li a,
+            .w3eden .wpdm_cart thead th,
+            .w3eden #csp .list-group-item,
+            .w3eden .modal-title {
+                font-family: Rubik, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+                text-transform: uppercase;
+                font-weight: 700;
+            }
+            .w3eden #csp .list-group-item {
+                text-transform: unset;
+            }
+
+
+        
+
+            
+
+        /* WPDM Link Template Styles */        
+
+                
+
+
+            :root {
+                --color-primary: #4a8eff;
+                --color-primary-rgb: 74, 142, 255;
+                --color-primary-hover: #5998ff;
+                --color-primary-active: #3281ff;
+                --color-secondary: #6c757d;
+                --color-secondary-rgb: 108, 117, 125;
+                --color-secondary-hover: #6c757d;
+                --color-secondary-active: #6c757d;
+                --color-success: #018e11;
+                --color-success-rgb: 1, 142, 17;
+                --color-success-hover: #0aad01;
+                --color-success-active: #0c8c01;
+                --color-info: #2CA8FF;
+                --color-info-rgb: 44, 168, 255;
+                --color-info-hover: #2CA8FF;
+                --color-info-active: #2CA8FF;
+                --color-warning: #FFB236;
+                --color-warning-rgb: 255, 178, 54;
+                --color-warning-hover: #FFB236;
+                --color-warning-active: #FFB236;
+                --color-danger: #ff5062;
+                --color-danger-rgb: 255, 80, 98;
+                --color-danger-hover: #ff5062;
+                --color-danger-active: #ff5062;
+                --color-green: #30b570;
+                --color-blue: #0073ff;
+                --color-purple: #8557D3;
+                --color-red: #ff5062;
+                --color-muted: rgba(69, 89, 122, 0.6);
+                --wpdm-font: "Rubik", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            }
+
+            .wpdm-download-link.btn.btn-primary {
+                border-radius: 4px;
+            }
+
+
+        
+
+        
+
+
+
+	
+
+		
+
+			
+
+				
+						
+
+						
+
+								
+
+						
+
+					
+						
+
+					
+
+							
+
+							
+
+								
+
+						
+
+					
+						
+
+					
+
+							
+
+							
+
+								
+
+						
+
+					
+						
+
+					
+
+							
+
+									
+
+				
+			
+
+		
+
+				
+
+			
+
+			
+
+				
+
+							
+
+										
+
+							
+
+						
+							
+
+						
+
+									
+
+									
+
+										
+
+							
+
+						
+							
+
+						
+
+									
+
+									
+
+										
+
+							
+
+						
+		
+
+			
+
+				
+
+				
+
+					
+
+				
+
+			
+
+		
+							
+
+						
+
+									
+
+								
+
+			
+
+		
+
+		
+
+
+		
+
+		
+					
+
+							
+
+							
+
+										
+
+					
+
+				
+
+			
+Trade Facilitation Agencies & Information Centre
+				
+
+			
+
+				
+
+			
+
+					
+
+				
+
+			Wednesday, September 30, 2026				
+
+			
+
+					
+
+				
+
+			
+ 
+help-desk@nto.gov.pg
+				
+
+			
+
+				
+
+								
+
+													
+
+											
+
+							
+
+															
+
+													
+
+					 
+  
+ 						
+
+							
+
+										
+
+					
+
+				
+
+			
+Trade Facilitation
+
+
+PNG Commodities
+
+
+Back to Main Portal
+
+
+Contact
+
+
+				
+
+			
+
+				
+
+			
+
+					
+
+				
+
+			
+Complaints
+				
+
+			
+
+				
+
+								
+
+													
+
+					 
+ 
+				
+ 		
+
+			
+	
+
+	
+
+		
+				
+				
+
+			
+
+				
+				
+
+					
+
+						
+
+							
+
+																
+
+																				
+Papua New Guinea Biosecurity Authority
+
+																				
+
+															
+
+						
+
+					
+
+				
+
+			
+ 
+
+		
+
+			
+
+			
+
+	
+				
+
+					
+					
+
+					
+												
+													
+							
+
+								
+
+		
+
+									
+
+						
+
+					
+
+			
+
+								
+
+						
+
+					
+
+			
+
+								
+
+				
+
+			
+About PNGBA
+		
+
+				
+
+				
+
+				
+
+			
+/*! elementor - v3.10.0 - 09-01-2023 */
+.elementor-widget-text-editor.elementor-drop-cap-view-stacked .elementor-drop-cap{background-color:#818a91;color:#fff}.elementor-widget-text-editor.elementor-drop-cap-view-framed .elementor-drop-cap{color:#818a91;border:3px solid;background-color:transparent}.elementor-widget-text-editor:not(.elementor-drop-cap-view-default) .elementor-drop-cap{margin-top:8px}.elementor-widget-text-editor:not(.elementor-drop-cap-view-default) .elementor-drop-cap-letter{width:1em;height:1em}.elementor-widget-text-editor .elementor-drop-cap{float:left;text-align:center;line-height:1;font-size:50px}.elementor-widget-text-editor .elementor-drop-cap-letter{display:inline-block}
+				
+The Papua New Guinea Biosecurity Authority (PNGBA) formerly known as the National Agriculture & Quarantine Inspection Authority (NAQIA) is a government agency responsible for regulating the import and export of agricultural products in Papua New Guinea. The NAQIA was established in 1994, following the adoption of the Quarantine Act 1994.
+The PNGBA plays a number of key roles in the agriculture sector, including:
+						
+
+				
+
+				
+
+				
+
+							
+Administering the Quarantine Act 1994 and other relevant legislation
+Inspecting and testing agricultural products to ensure that they meet quarantine and health standards
+Regulating the import and export of agricultural products to and from Papua New Guinea
+Providing technical advice and assistance to the government and industry stakeholders
+Collaborating with other agencies and organizations to support the sustainable development of the agriculture sector in Papua New Guinea.
+The PNGBA works to ensure that the import and export of agricultural products in Papua New Guinea is carried out in a safe and responsible manner, to protect the health of humans, animals, and plants. The PNGBA also plays a key role in supporting the development of the agriculture sector in Papua New Guinea.
+						
+
+				
+
+				
+
+				
+
+			
+/*! elementor - v3.10.0 - 09-01-2023 */
+.elementor-column .elementor-spacer-inner{height:var(--spacer-size)}.e-con{--container-widget-width:100%}.e-con-inner>.elementor-widget-spacer,.e-con>.elementor-widget-spacer{width:var(--container-widget-width,var(--spacer-size));--align-self:var(--container-widget-align-self,initial);--flex-shrink:0}.e-con-inner>.elementor-widget-spacer>.elementor-widget-container,.e-con-inner>.elementor-widget-spacer>.elementor-widget-container>.elementor-spacer,.e-con>.elementor-widget-spacer>.elementor-widget-container,.e-con>.elementor-widget-spacer>.elementor-widget-container>.elementor-spacer{height:100%}.e-con-inner>.elementor-widget-spacer>.elementor-widget-container>.elementor-spacer>.elementor-spacer-inner,.e-con>.elementor-widget-spacer>.elementor-widget-container>.elementor-spacer>.elementor-spacer-inner{height:var(--container-widget-height,var(--spacer-size))}
+		
+
+			
+
+		
+
+				
+
+				
+
+					
+
+		
+
+							
+
+		
+
+					
+
+		
+
+							
+
+		
+
+				
+
+						
+
+					
+
+			
+
+								
+
+				
+
+			
+/*! elementor - v3.10.0 - 09-01-2023 */
+.elementor-widget-image-carousel .swiper-container{position:static}.elementor-widget-image-carousel .swiper-container .swiper-slide figure{line-height:inherit}.elementor-widget-image-carousel .swiper-slide{text-align:center}.elementor-image-carousel-wrapper:not(.swiper-container-initialized) .swiper-slide{max-width:calc(100% / var(--e-image-carousel-slides-to-show, 3))}
+		
+
+			
+
+								
+			
+
+												
+
+													
+
+						
+						
+Previous
+
+					
+
+					
+
+						
+						
+Next
+
+					
+
+									
+
+				
+
+				
+
+					
+
+		
+
+							
+
+		
+
+				
+
+					
+
+			
+
+  
+
+
+
+		
+
+					
+
+					
+
+			
+
+								
+
+				
+
+			
+PNGBA Fact Sheet
+		
+
+				
+
+				
+
+				
+
+							
+The Papua New Guinea Biosecurity Authority (PNGBA) formerly known as the National Agriculture & Quarantine Inspection Authority (NAQIA) is a government agency that regulates the import and export of agricultural products in Papua New Guinea.
+Established in 1994, following the adoption of the Quarantine Act 1994.
+PNGBA is headquartered in Port Moresby and plays key roles in the agriculture sector such as inspecting, testing and regulating import and export of agricultural products, providing technical advice and assistance
+PNGBA ensures import and export of agricultural products in PNG is done safely and responsibly to protect health of humans, animals and plants.
+PNGBA supports the development of agriculture sector in PNG and collaborates with other agencies and organizations for sustainable development of the sector.
+Agriculture sector is a significant contributor to the economy of PNG, and PNGBA plays a key role in regulating and promoting its growth.
+						
+
+				
+
+					
+
+		
+
+				
+
+			
+
+								
+
+				
+
+			
+Policy & Regulation
+		
+
+				
+
+				
+
+				
+
+			
+/*! elementor - v3.10.0 - 09-01-2023 */
+.elementor-toggle{text-align:left}.elementor-toggle .elementor-tab-title{font-weight:700;line-height:1;margin:0;padding:15px;border-bottom:1px solid #d4d4d4;cursor:pointer;outline:none}.elementor-toggle .elementor-tab-title .elementor-toggle-icon{display:inline-block;width:1em}.elementor-toggle .elementor-tab-title .elementor-toggle-icon svg{-webkit-margin-start:-5px;margin-inline-start:-5px;width:1em;height:1em}.elementor-toggle .elementor-tab-title .elementor-toggle-icon.elementor-toggle-icon-right{float:right;text-align:right}.elementor-toggle .elementor-tab-title .elementor-toggle-icon.elementor-toggle-icon-left{float:left;text-align:left}.elementor-toggle .elementor-tab-title .elementor-toggle-icon .elementor-toggle-icon-closed{display:block}.elementor-toggle .elementor-tab-title .elementor-toggle-icon .elementor-toggle-icon-opened{display:none}.elementor-toggle .elementor-tab-title.elementor-active{border-bottom:none}.elementor-toggle .elementor-tab-title.elementor-active .elementor-toggle-icon-closed{display:none}.elementor-toggle .elementor-tab-title.elementor-active .elementor-toggle-icon-opened{display:block}.elementor-toggle .elementor-tab-content{padding:15px;border-bottom:1px solid #d4d4d4;display:none}@media (max-width:767px){.elementor-toggle .elementor-tab-title{padding:12px}.elementor-toggle .elementor-tab-content{padding:12px 10px}}.e-con-inner>.elementor-widget-toggle,.e-con>.elementor-widget-toggle{width:var(--container-widget-width);--flex-grow:var(--container-widget-flex-grow)}
+		
+
+							
+
+					
+
+												
+
+															
+
+								
+
+													
+
+												
+The Quarantine Act 1994
+
+					
+
+
+					
+This act establishes the National Agriculture & Quarantine Inspection Authority (NAQIA) and sets out the powers and responsibilities of the agency. It also sets out the rules and regulations related to the import and export of agricultural products in Papua New Guinea.
+
+
+
+
+    
+
+        
+
+            
+
+            
+
+                
+National Agriculture Quarantine and Inspection Authority Act 1997
+
+                
+ 1 file(s) 
+ 254.64 KB
+
+            
+
+            
+
+                
+Download
+
+            
+
+        
+
+    
+
+
+
+
+
+
+				
+
+							
+
+					
+
+												
+
+															
+
+								
+
+													
+
+												
+The Plant Protection Act 1997
+
+					
+
+
+					
+This act establishes the Plant Protection Committee and sets out the rules and regulations related to the import and export of plant products in Papua New Guinea. It also provides for the inspection, testing, and certification of plant products to ensure that they meet quarantine and health standards.
+
+				
+
+							
+
+					
+
+												
+
+															
+
+								
+
+													
+
+												
+The Animal Health and Production Act 2002
+
+					
+
+
+					
+This act establishes the Animal Health and Production Committee and sets out the rules and regulations related to the import and export of animal products in Papua New Guinea. It also provides for the inspection, testing, and certification of animal products to ensure that they meet quarantine and health standards.
+
+				
+
+							
+
+					
+
+												
+
+															
+
+								
+
+													
+
+												
+The Food Safety Act 2013
+
+					
+
+
+					
+This act establishes the Food Safety Authority of Papua New Guinea and sets out the rules and regulations related to the safety and quality of food products in Papua New Guinea. It also provides for the inspection, testing, and certification of food products to ensure that they meet health and safety standards.
+
+				
+
+							
+
+					
+
+												
+
+															
+
+								
+
+													
+
+												
+The Trade and Industry Development Act 2015
+
+					
+
+
+					
+This act establishes the Trade and Industry Development Authority of Papua New Guinea and sets out the rules and regulations related to the trade and industry sectors in Papua New Guinea. It also provides for the regulation of the import and export of goods and services in the country.
+
+				
+
+								
+
+				
+
+				
+
+				
+
+				
+
+					
+
+			
+
+		
+
+				
+
+				
+
+				
+
+				
+
+					
+
+			
+
+						
+
+						
+Visit NAQIA Website
+
+		
+
+					
+
+		
+
+				
+
+				
+
+				
+
+				
+
+					
+
+			
+
+		
+
+				
+
+				
+
+					
+
+		
+
+							
+
+		
+
+				
+
+						
+
+					
+
+			
+
+								
+
+				
+
+			
+When & How to Contact PNGBA
+
+
+		
+
+				
+
+				
+
+				
+
+							
+The Papua New Guinea Biosecurity Authority (PNGBA) formerly known as the National Agriculture & Quarantine Inspection Authority (NAQIA) is a trade facilitation agency in Papua New Guinea that provides information and assistance related to quarantine and health standards, import and export regulations, and other issues related to the agriculture sector.
+They provide support for farmers, businesses, government and industry stakeholders, and members of the public who have questions or concerns related to the import or export of agricultural products.
+They can be contacted by visiting their website, emailing them at 
+info@naqia.gov.pg
+, or calling them at +675 303 5888.
+						
+
+				
+
+					
+
+		
+
+				
+
+			
+
+								
+
+				
+
+					
+
+			
+
+		
+
+				
+
+				
+
+				
+
+				
+
+			
+/*! elementor - v3.10.0 - 09-01-2023 */
+.elementor-widget-video .elementor-widget-container{overflow:hidden;transform:translateZ(0)}.elementor-widget-video .elementor-open-inline .elementor-custom-embed-image-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background-size:cover;background-position:50%}.elementor-widget-video .elementor-custom-embed-image-overlay{cursor:pointer;text-align:center}.elementor-widget-video .elementor-custom-embed-image-overlay:hover .elementor-custom-embed-play i{opacity:1}.elementor-widget-video .elementor-custom-embed-image-overlay img{display:block;width:100%}.elementor-widget-video .e-hosted-video .elementor-video{-o-object-fit:cover;object-fit:cover}.e-con-inner>.elementor-widget-video,.e-con>.elementor-widget-video{width:var(--container-widget-width);--flex-grow:var(--container-widget-flex-grow)}
+		
+
+					
+
+				
+
+				
+
+				
+
+					
+
+		
+
+							
+
+		
+
+							
+
+		
+							
+
+							
+																			
+					
+
+					
+										
+										
+				
+
+			
+		
+
+	
+
+
+
+	
+
+	
+
+
+					
+
+				
+
+					
+	
+						
+
+				
+
+					
+Contact Info
+			
+			
+
+			
+					
+				
+								
+
+					
+										
+
+					
+						
+Visit The Office
+
+					National Trade Office
+
+Enchi Haus, Level 1
+
+Hohola, NCD
+
+
+						
+					
+					
+										
+
+					
+
+					
+Phone
+	
+					
+(675) 301-6600
+
+						
+					
+					
+										
+
+					
+
+					
+Email
+	
+					
+help-desk@nto.gov.pg
+
+						
+				
+
+					
+				
+							
+			
+
+			
+		
+				
+
+			
+
+								
+
+				
+
+					
+Phone Numbers
+
+					
+Executive Division
+
+					
+(675) 301-6600 / 301-6602
+
+					
+Corporate Services Division
+
+					
+(675) 301-6600 / 301-6645
+
+					
+Trade Policy Coordination & Facilitation Division
+
+					
+(675) 301-6600 / 301-6608
+
+					
+Trade Development & Compliance Division
+
+					
+(675) 301-6600 / 301-6618
+
+					
+Market Access & Trade Agreements Division
+
+					
+(675) 301-6600 / 301-6625
+
+					
+			
+				
+
+			
+
+								
+
+				
+
+									
+
+			
+
+								
+
+				
+
+					
+Newsletter
+	
+		
+
+			
+
+					
+				
+Join our newsletter to instantly receive news about our National Trade Portal.
+
+								
+
+					
+
+				
+
+								
+
+				
+				
+
+					
+
+											
+
+									
+
+					
+				
+
+				
+
+			
+							
+
+					
+
+				
+
+			
+
+			
+			
+				
+
+			
+					
+
+				
+
+			
+
+			
+
+			
+
+				
+
+					
+
+					
+
+								
+
+						
+
+					
+
+								
+
+									
+
+								
+
+							
+
+								
+
+									
+
+								
+
+							
+
+								
+
+									
+
+								
+
+							
+						
+
+					
+
+							
+
+							
+
+								
+
+						
+
+					
+Copyright © 2025 National Trade Office. All rights reserved.
+						
+
+					
+
+							
+
+							
+					
+
+				
+
+			
+
+		
+
+			
+					
+
+			
+
+
+
+		
+
+			
+
+			
+		
+
+			
+
+				
+
+				
+
+					
+
+				
+
+			
+
+		
+		
+
+			
+
+			/* You can add more configuration options to webfontloader by previously defining the WebFontConfig with your options */
+			if ( typeof WebFontConfig === "undefined" ) {
+				WebFontConfig = new Object();
+			}
+			WebFontConfig['google'] = {families: ['Roboto:400','Poppins:700,400,,600&amp;subset=']};
+	
+			(function() {
+				var wf = document.createElement( 'script' );
+				wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.5.3/webfont.js';
+				wf.type = 'text/javascript';
+				wf.async = 'true';
+				var s = document.getElementsByTagName( 'script' )[0];
+				s.parentNode.insertBefore( wf, s );
+			})();
+		
+
+		
+
+
+		
+
+			window.RS_MODULES = window.RS_MODULES || {};
+			window.RS_MODULES.modules = window.RS_MODULES.modules || {};
+			window.RS_MODULES.waiting = window.RS_MODULES.waiting || [];
+			window.RS_MODULES.defered = true;
+			window.RS_MODULES.moduleWaiting = window.RS_MODULES.moduleWaiting || {};
+			window.RS_MODULES.type = 'compiled';
+		
+
+		            
+
+                jQuery(function($){
+
+                    
+                });
+            
+
+            
+
+            	
+
+		(function () {
+			var c = document.body.className;
+			c = c.replace(/woocommerce-no-js/, 'woocommerce-js');
+			document.body.className = c;
+		})();
+	
+
+	
+				
+
+					
+
+					
+Complaints
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				
+
+
+
+
+
+#rs-demo-id {}
+
+
+
+
+
+
+
+
+/* <![CDATA[ */
+var wpcf7 = {"api":{"root":"https:\/\/facilitation.nto.gov.pg\/wp-json\/","namespace":"contact-form-7\/v1"}};
+/* ]]> */
+
+
+
+
+
+
+
+
+
+
+/* <![CDATA[ */
+wp.i18n.setLocaleData( { 'text direction\u0004ltr': [ 'ltr' ] } );
+/* ]]> */
+
+
+
+
+
+
+
+
+
+
+
+
+/* <![CDATA[ */
+var wc_add_to_cart_params = {"ajax_url":"\/wp-admin\/admin-ajax.php","wc_ajax_url":"\/?wc-ajax=%%endpoint%%&elementor_page_id=12437","i18n_view_cart":"View cart","cart_url":"https:\/\/facilitation.nto.gov.pg\/cart\/","is_cart":"","cart_redirect_after_add":"no"};
+/* ]]> */
+
+
+
+
+
+
+
+
+/* <![CDATA[ */
+var woocommerce_params = {"ajax_url":"\/wp-admin\/admin-ajax.php","wc_ajax_url":"\/?wc-ajax=%%endpoint%%&elementor_page_id=12437"};
+/* ]]> */
+
+
+
+
+
+
+/* <![CDATA[ */
+var wc_cart_fragments_params = {"ajax_url":"\/wp-admin\/admin-ajax.php","wc_ajax_url":"\/?wc-ajax=%%endpoint%%&elementor_page_id=12437","cart_hash_key":"wc_cart_hash_e32639b55f6f6787ad4a747e2d505134","fragment_name":"wc_fragments_e32639b55f6f6787ad4a747e2d505134","request_timeout":"5000"};
+/* ]]> */
+
+
+
+
+
+
+
+
+
+
+/* <![CDATA[ */
+var egovenz_ajax_var = {"admin_ajax_url":"https:\/\/facilitation.nto.gov.pg\/wp-admin\/admin-ajax.php","like_nonce":"4150503781","fav_nonce":"60c182b121","wishlist_remove":"602175e95d","product_view":"ec9a785134","infinite_loader":{"id":"","url":""},"load_posts":"Loading next set of posts.","no_posts":"No more posts to load.","cmt_nonce":"7a55982309","mc_nounce":"5c3b313ea1","wait":"Wait..","must_fill":"Must Fill Required Details.","valid_email":"Enter Valid Email ID.","cart_update_pbm":"Cart Update Problem.","gmap_stat":"1","user_logged":"0","add_to_cart":"310795833f","remove_from_cart":"4b8916ec32","body_atts":{"scroll_time":"","scroll_dist":"","res_width":1025,"core_stat":false,"menu_offset":60,"mobile_menu_offset":60}};
+/* ]]> */
+
+
+
+
+
+
+
+
+
+
+/* <![CDATA[ */
+var mejsL10n = {"language":"en","strings":{"mejs.download-file":"Download File","mejs.install-flash":"You are using a browser that does not have Flash player enabled or installed. Please turn on your Flash player plugin or download the latest version from https:\/\/get.adobe.com\/flashplayer\/","mejs.fullscreen":"Fullscreen","mejs.play":"Play","mejs.pause":"Pause","mejs.time-slider":"Time Slider","mejs.time-help-text":"Use Left\/Right Arrow keys to advance one second, Up\/Down arrows to advance ten seconds.","mejs.live-broadcast":"Live Broadcast","mejs.volume-help-text":"Use Up\/Down Arrow keys to increase or decrease volume.","mejs.unmute":"Unmute","mejs.mute":"Mute","mejs.volume-slider":"Volume Slider","mejs.video-player":"Video Player","mejs.audio-player":"Audio Player","mejs.captions-subtitles":"Captions\/Subtitles","mejs.captions-chapters":"Chapters","mejs.none":"None","mejs.afrikaans":"Afrikaans","mejs.albanian":"Albanian","mejs.arabic":"Arabic","mejs.belarusian":"Belarusian","mejs.bulgarian":"Bulgarian","mejs.catalan":"Catalan","mejs.chinese":"Chinese","mejs.chinese-simplified":"Chinese (Simplified)","mejs.chinese-traditional":"Chinese (Traditional)","mejs.croatian":"Croatian","mejs.czech":"Czech","mejs.danish":"Danish","mejs.dutch":"Dutch","mejs.english":"English","mejs.estonian":"Estonian","mejs.filipino":"Filipino","mejs.finnish":"Finnish","mejs.french":"French","mejs.galician":"Galician","mejs.german":"German","mejs.greek":"Greek","mejs.haitian-creole":"Haitian Creole","mejs.hebrew":"Hebrew","mejs.hindi":"Hindi","mejs.hungarian":"Hungarian","mejs.icelandic":"Icelandic","mejs.indonesian":"Indonesian","mejs.irish":"Irish","mejs.italian":"Italian","mejs.japanese":"Japanese","mejs.korean":"Korean","mejs.latvian":"Latvian","mejs.lithuanian":"Lithuanian","mejs.macedonian":"Macedonian","mejs.malay":"Malay","mejs.maltese":"Maltese","mejs.norwegian":"Norwegian","mejs.persian":"Persian","mejs.polish":"Polish","mejs.portuguese":"Portuguese","mejs.romanian":"Romanian","mejs.russian":"Russian","mejs.serbian":"Serbian","mejs.slovak":"Slovak","mejs.slovenian":"Slovenian","mejs.spanish":"Spanish","mejs.swahili":"Swahili","mejs.swedish":"Swedish","mejs.tagalog":"Tagalog","mejs.thai":"Thai","mejs.turkish":"Turkish","mejs.ukrainian":"Ukrainian","mejs.vietnamese":"Vietnamese","mejs.welsh":"Welsh","mejs.yiddish":"Yiddish"}};
+/* ]]> */
+
+
+
+
+
+
+
+
+/* <![CDATA[ */
+var _wpmejsSettings = {"pluginPath":"\/wp-includes\/js\/mediaelement\/","classPrefix":"mejs-","stretching":"responsive","audioShortcodeLibrary":"mediaelement","videoShortcodeLibrary":"mediaelement"};
+/* ]]> */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* <![CDATA[ */
+var ElementorProFrontendConfig = {"ajaxurl":"https:\/\/facilitation.nto.gov.pg\/wp-admin\/admin-ajax.php","nonce":"f25c2651df","urls":{"assets":"https:\/\/facilitation.nto.gov.pg\/wp-content\/plugins\/elementor-pro\/assets\/","rest":"https:\/\/facilitation.nto.gov.pg\/wp-json\/"},"shareButtonsNetworks":{"facebook":{"title":"Facebook","has_counter":true},"twitter":{"title":"Twitter"},"linkedin":{"title":"LinkedIn","has_counter":true},"pinterest":{"title":"Pinterest","has_counter":true},"reddit":{"title":"Reddit","has_counter":true},"vk":{"title":"VK","has_counter":true},"odnoklassniki":{"title":"OK","has_counter":true},"tumblr":{"title":"Tumblr"},"digg":{"title":"Digg"},"skype":{"title":"Skype"},"stumbleupon":{"title":"StumbleUpon","has_counter":true},"mix":{"title":"Mix"},"telegram":{"title":"Telegram"},"pocket":{"title":"Pocket","has_counter":true},"xing":{"title":"XING","has_counter":true},"whatsapp":{"title":"WhatsApp"},"email":{"title":"Email"},"print":{"title":"Print"}},"woocommerce":{"menu_cart":{"cart_page_url":"https:\/\/facilitation.nto.gov.pg\/cart\/","checkout_page_url":"https:\/\/facilitation.nto.gov.pg\/checkout\/","fragments_nonce":"6ed97aa3fa"}},"facebook_sdk":{"lang":"en_US","app_id":""},"lottie":{"defaultAnimationUrl":"https:\/\/facilitation.nto.gov.pg\/wp-content\/plugins\/elementor-pro\/modules\/lottie\/assets\/animations\/default.json"}};
+/* ]]> */
+
+
+
+
+
+
+
+
+
+
+/* <![CDATA[ */
+var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false,"isScriptDebug":false},"i18n":{"shareOnFacebook":"Share on Facebook","shareOnTwitter":"Share on Twitter","pinIt":"Pin it","download":"Download","downloadImage":"Download image","fullscreen":"Fullscreen","zoom":"Zoom","share":"Share","playVideo":"Play Video","previous":"Previous","next":"Next","close":"Close"},"is_rtl":false,"breakpoints":{"xs":0,"sm":480,"md":768,"lg":1025,"xl":1440,"xxl":1600},"responsive":{"breakpoints":{"mobile":{"label":"Mobile","value":767,"default_value":767,"direction":"max","is_enabled":true},"mobile_extra":{"label":"Mobile Extra","value":880,"default_value":880,"direction":"max","is_enabled":false},"tablet":{"label":"Tablet","value":1024,"default_value":1024,"direction":"max","is_enabled":true},"tablet_extra":{"label":"Tablet Extra","value":1200,"default_value":1200,"direction":"max","is_enabled":false},"laptop":{"label":"Laptop","value":1366,"default_value":1366,"direction":"max","is_enabled":false},"widescreen":{"label":"Widescreen","value":2400,"default_value":2400,"direction":"min","is_enabled":false}}},"version":"3.10.0","is_static":false,"experimentalFeatures":{"e_dom_optimization":true,"e_optimized_assets_loading":true,"e_optimized_css_loading":true,"a11y_improvements":true,"additional_custom_breakpoints":true,"e_hidden_wordpress_widgets":true,"theme_builder_v2":true,"landing-pages":true,"kit-elements-defaults":true,"page-transitions":true,"notes":true,"loop":true,"form-submissions":true,"e_scroll_snap":true},"urls":{"assets":"https:\/\/facilitation.nto.gov.pg\/wp-content\/plugins\/elementor\/assets\/"},"settings":{"page":[],"editorPreferences":[]},"kit":{"active_breakpoints":["viewport_mobile","viewport_tablet"],"global_image_lightbox":"yes","lightbox_enable_counter":"yes","lightbox_enable_fullscreen":"yes","lightbox_enable_zoom":"yes","lightbox_enable_share":"yes","lightbox_title_src":"title","lightbox_description_src":"description","woocommerce_notices_elements":[]},"post":{"id":12437,"title":"Papua%20New%20Guinea%20Biosecurity%20Authority%20%E2%80%93%20PNG%20Trade%20Facilitation","excerpt":"","featuredImage":false}};
+/* ]]> */
+
+
+
+
+
+
+
+
+
+
+

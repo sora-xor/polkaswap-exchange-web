@@ -1,0 +1,36 @@
+# Polkaswap Agent Discovery
+
+This static app supports browser-native automation through `window.PolkaswapAgent` and top-level WebMCP site tools.
+
+Start here:
+
+- `.well-known/polkaswap-agent.json`
+
+The manifest links the v1 API docs, TypeScript declarations, JSON schema, error catalog, runnable examples, and optional same-page helper client.
+
+For manual inspection from a deployed build, open `agent-playground.html`.
+
+For generic local MCP clients, the source repository ships a user-run Node 26 stdio bridge:
+
+- `yarn agent:mcp --profile-dir /absolute/path/to/a/dedicated/profile`
+
+Important constraints:
+
+- Same-page JavaScript only.
+- No hosted API, centralized middleware, or hosted MCP server.
+- The WebMCP and local MCP catalogues expose exactly nine account-redacted, read-only public-data tools, including polkaswap_plan_swap.
+- No URL command mode.
+- No `postMessage` command bridge.
+- No private-key custody in the page.
+- Wallet signing must come from the runner's chosen injected wallet or signer.
+- MCP arguments never accept private keys, wallet identity, or balance opt-ins; executable preparation and execution tools remain disabled.
+- Call planSwap (polkaswap_plan_swap over MCP) to resolve assets, quote, and get unsigned SDK-call metadata without a wallet or prior quote. Plans are nonauthorizing, not SCALE transactions, and persist no intent.
+
+Minimum flow:
+
+1. Open the app in a browser with `?polkaswap-agent=1` before the hash route.
+2. Wait for `window.PolkaswapAgent` or `polkaswap-agent-ready`.
+3. Call `ready({ requireNode: true })`.
+4. Use `prepare*` methods before `execute*` methods.
+5. Pass `intentId` and `clientOrderId` to execution calls.
+6. Recover uncertain submissions before retrying.

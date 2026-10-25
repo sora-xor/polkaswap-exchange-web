@@ -1,0 +1,39 @@
+Retrieved 2026-09-30; tool-extracted primary-site text or access diagnostics.
+
+دليل برنامج التفتيش والفحص المسبق قبل التوريد (https://www.cosqc.gov.iq/files/Guide_files/9.pdf)
+citeturn1648search0 [wordlim: 200] Published: 5.5 years ago; دليل برنامج التفتيش والفحص المسبق قبل التوريد ... <th>الوصف الإنجليزي</th> ... <tr><td>15-7-1</td><td>زيتون المائدة</td><td>Table olives</td><td>1348</td><td>7112000</td></tr>
+دليل برنامج التفتيش والفحص المسبق قبل التوريد  
+وزارة التخطيط  
+الجهاز المركزي للتقييس والسيطرة النوعية
+
+<table id="e1">
+<tr>
+<th>الرقم</th>
+<th>الوصف العربي</th>
+<th>الوصف الإنجليزي</th>
+<th>الرمز</th>
+<th>الرقم</th>
+</tr>
+<tr><td>4-7-1</td><td>الدبس</td><td>Dibis ( date syrup)</td><td>1041</td><td>17031000</td></tr>
+<tr><td>5-7-1</td><td>عسل النحل</td><td>Honey</td><td>1061</td><td>4090000</td></tr>
+<tr><td>6-7-1</td><td>صاص الفواكه والخضر</td><td>Fruit and vegetable sauce</td><td>1064</td><td>21039090</td></tr>
+<tr><td>7-7-1</td><td>المخللات</td><td>Pickles</td><td>1128</td><td>20019014</td></tr>
+<tr><td>8-7-1</td><td>مستخلص تمر الهند المركز</td><td>Tamarind concentrate</td><td>1151</td><td>20019014</td></tr>
+<tr><td>9-7-1</td><td>الطحينية (الراشي)</td><td>Tehynia</td><td>1176</td><td>13021930</td></tr>
+<tr><td>10-7-1</td><td>الحلاوة الطحينية (الحلاوة السكرية)</td><td>Halawa- Tehina</td><td>1177</td><td>17049060</td></tr>
+<tr><td>12-7-1</td><td>المربيات والهلام والميرمالاد</td><td>Jams, jellies and marmalade</td><td>1188</td><td>20079919</td></tr>
+<tr><td>13-7-1</td><td>صلصة الخردل</td><td>Mustard sauce</td><td>1189</td><td>21039090</td></tr>
+<tr><td>14-7-1</td><td>الشكله</td><td>Chocolate</td><td>1345</td><td>18061010</td></tr>
+<tr><td>15-7-1</td><td>زيتون المائدة</td><td>Table olives</td><td>1348</td><td>7112000</td></tr>
+<tr><td>16-7-1</td><td>علك المضغ</td><td>Chewing gum</td><td>1374</td><td>17041000</td></tr>
+<tr><td>17-7-1</td><td>قمر الدين</td><td>Kamar al-din</td><td>1376</td><td>20079920</td></tr>
+<tr><td>18-7-1</td><td>البسكوت والويفر</td><td>Biscuit and wafer</td><td>1389</td><td>19053100</td></tr>
+<tr><td>19-7-1</td><td>شيرة الكلوكوز</td><td>Glucose syrup</td><td>1418</td><td>17023000</td></tr>
+<tr><td>20-7-1</td><td>رقائق الذرة (الكرون فليكس)</td><td>Corn flakes</td><td>1482</td><td>19041091</td></tr>
+<tr><td>21-7-1</td><td>المايونيز</td><td>Mayonnaise</td><td>1517</td><td>21039010</td></tr>
+<tr><td>22-7-1</td><td>البازلاء المجمدة</td><td>Quick – frozen peas</td><td>1534</td><td>20049020</td></tr>
+<tr><td>23-7-1</td><td>الجزر المجمد</td><td>Quick – frozen Carrot</td><td>1535</td><td>20049010</td></tr>
+<tr><td>24-7-1</td><td>القرنابيط المجمد</td><td>Quick – frozen Cauliflower</td><td>1536</td><td>7041000</td></tr>
+</table>
+
+63

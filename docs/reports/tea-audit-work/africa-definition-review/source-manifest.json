@@ -1,0 +1,175 @@
+{
+  "reviewedAt": "2026-09-30",
+  "files": [
+    {
+      "file": "additional-retrieval-provenance.json",
+      "bytes": 490,
+      "sha256": "87b2eb038e5470b281f73ae5582cbc2d3f1fcb677eb1fb55a6ad5dfc8836441a",
+      "pdfContentValid": null
+    },
+    {
+      "file": "er-plant2006.pdf",
+      "bytes": 545190,
+      "sha256": "0344a742bd7c3ca228de31358da8911c0022aa03e407530a3803d711aeefee59",
+      "pdfContentValid": true
+    },
+    {
+      "file": "er-plant2006.txt",
+      "bytes": 41305,
+      "sha256": "577917f1e82af07a0e9eda8841eee648a0f30cdeb6df791e043eadff162e2615",
+      "pdfContentValid": null
+    },
+    {
+      "file": "evidence-only-patches.json",
+      "bytes": 23758,
+      "sha256": "ee1440040a975982cb272a67cb32118cb65869bf5ea33b944694397a5e317640",
+      "pdfContentValid": null
+    },
+    {
+      "file": "gn-page-1.png",
+      "bytes": 2032243,
+      "sha256": "2376dd846d961062002684c83bbd9c2b26063e5e997a3613536edaa76ac7cf17",
+      "pdfContentValid": null
+    },
+    {
+      "file": "gn-page-2.png",
+      "bytes": 2127631,
+      "sha256": "6b0da3b769e97d03a2b1baddfb074a72e73099c2a3275be7f1fe2d7f519df111",
+      "pdfContentValid": null
+    },
+    {
+      "file": "gn-page-3.png",
+      "bytes": 2030308,
+      "sha256": "41bac245bfc1d879c649753e1b34a6c97e00cb1e3e3e3d1c330368e50997cb7d",
+      "pdfContentValid": null
+    },
+    {
+      "file": "gn-page-4.png",
+      "bytes": 1277141,
+      "sha256": "baf8549e3a4abdf719c210cca48e10f932ac5ff4926f0886af9aa74dfb548b0d",
+      "pdfContentValid": null
+    },
+    {
+      "file": "gn-plant1992-ocr.txt",
+      "bytes": 6936,
+      "sha256": "7ffeabc770a71a13ff82dfbd9404ce636f12c188f5ee3b5414b471728657ee53",
+      "pdfContentValid": null
+    },
+    {
+      "file": "gn-plant1992.pdf",
+      "bytes": 2164986,
+      "sha256": "f30ae8eca10f1ec2fc566ba0cdea53e90ad695b806db33bfd790f80b402d49c5",
+      "pdfContentValid": true
+    },
+    {
+      "file": "gn-plant1992.txt",
+      "bytes": 4,
+      "sha256": "009391559b2777d7003b4a8f2ac076416b66eee634361c208c85dae6d174cda0",
+      "pdfContentValid": null
+    },
+    {
+      "file": "gn-procedure2023-old.pdf",
+      "bytes": 593,
+      "sha256": "5bdc63221730abf0d2a3fe77289a1b2c0d64821c66568a3d147a5071b362c715",
+      "pdfContentValid": false
+    },
+    {
+      "file": "gn-procedure2023.pdf",
+      "bytes": 73849,
+      "sha256": "35ecc4ed14e84a422921ac5a2702c2e75a4810e13e354b986dfed463e20eef73",
+      "pdfContentValid": false
+    },
+    {
+      "file": "km-plant2017.pdf",
+      "bytes": 392200,
+      "sha256": "4435ac89c16f81c7228a2735ad20ca3bda26ef15f1687f2609b39aedc142c3ce",
+      "pdfContentValid": true
+    },
+    {
+      "file": "km-plant2017.txt",
+      "bytes": 49019,
+      "sha256": "17f9c4fed037966621b710dd41e90631a8806167cf8f25b6dd162819659f35b6",
+      "pdfContentValid": null
+    },
+    {
+      "file": "km-proposed-override.json",
+      "bytes": 11431,
+      "sha256": "6666263ca7af2b9f48f23ee26815c385b01ec613543cc5b26f81a1d2b753a26c",
+      "pdfContentValid": null
+    },
+    {
+      "file": "law-excerpts.json",
+      "bytes": 25290,
+      "sha256": "555586c8c38949a4dc6912594a6cd35b0144b6c5c12250c7892d35f7995f97c9",
+      "pdfContentValid": null
+    },
+    {
+      "file": "mz-consolidated2019-en.pdf",
+      "bytes": 744632,
+      "sha256": "f14728c00eecd74dd32ca0c49888c74ebbf21165e4e841eadcd92e6d16bec89c",
+      "pdfContentValid": true
+    },
+    {
+      "file": "mz-consolidated2019-en.txt",
+      "bytes": 271356,
+      "sha256": "a40590d27eb675038ca6abd2101238c162e06bc84f0e85e69aac16b033f0afce",
+      "pdfContentValid": null
+    },
+    {
+      "file": "mz-gazette-art17.png",
+      "bytes": 227357,
+      "sha256": "aeff227ab6bf854445396a7671cad6ff7a36fbd514a48ebb97a137c2e5420193",
+      "pdfContentValid": null
+    },
+    {
+      "file": "mz-proposed-override.json",
+      "bytes": 9843,
+      "sha256": "6d3fad218d02b6fad10bb3d98ba34d8905092eb05a675899dfdd379d7dea70b0",
+      "pdfContentValid": null
+    },
+    {
+      "file": "peer-conclusions.json",
+      "bytes": 20941,
+      "sha256": "c4af41a14de802f2114cd50bfc93df9eb5b3a93537d40abbfd2756591c806dfc",
+      "pdfContentValid": null
+    },
+    {
+      "file": "retrieval-provenance.json",
+      "bytes": 1206,
+      "sha256": "c9a6fe2796e16ffda4f088ee42abfb27b8fb6de019b9a435fab807dbc4236b28",
+      "pdfContentValid": null
+    },
+    {
+      "file": "rows-reviewed-snapshot.json",
+      "bytes": 81036,
+      "sha256": "6bd6ff5f4a5c20be7c985629700b0c59eada8664f50786cb8eaebc3902779079",
+      "pdfContentValid": null
+    },
+    {
+      "file": "ug-plant2015.pdf",
+      "bytes": 836289,
+      "sha256": "374c602f19e658586a8fa29bbb390915fbd4fb58669eb7e9e1ba6b2c241648bd",
+      "pdfContentValid": true
+    },
+    {
+      "file": "ug-plant2015.txt",
+      "bytes": 65031,
+      "sha256": "5b5c8746d5d56239e6b2f2c1166a8dabc30896be7d3c9be07a3bc14d50ebe963",
+      "pdfContentValid": null
+    }
+  ],
+  "failedDownloads": [
+    "gn-procedure2023.pdf: HTTP503 error body, not PDF",
+    "gn-procedure2023-old.pdf: HTTP429 error body, not PDF"
+  ],
+  "recheckAccessNotes": [
+    "Final web-reader reopening of IPPC publication page timed out; prior successfully recovered current page and current-linked PDF remain in the central source collection.",
+    "Final web-reader reopening of KM index page was inaccessible; full official plant-law PDF was successfully fetched in this pass."
+  ],
+  "reviewOutputs": [
+    "peer-conclusions.json",
+    "km-proposed-override.json",
+    "mz-proposed-override.json",
+    "evidence-only-patches.json"
+  ]
+}

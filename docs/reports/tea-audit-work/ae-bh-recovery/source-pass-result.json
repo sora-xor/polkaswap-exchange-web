@@ -1,0 +1,48 @@
+{
+  "reviewedAt": "2026-09-30",
+  "scope": [
+    "AE",
+    "BH"
+  ],
+  "shipment": "100 g factory-sealed plain Japanese steamed/rolled/dried Camellia sinensis sencha, purchased for private consumption and posted from Japan. Ordinary customs/arrival declarations allowed; no special permits, certificates, agency registration or advance notice.",
+  "mainArraysEdited": false,
+  "outcomeChanges": [],
+  "sourceClarifications": [
+    "Exact Sharjah tea HS result, but no control-agency columns.",
+    "Bahrain2025 tariff gazette obtained in full; blank action cell does not prove no permit.",
+    "Full current UAE law recovered from JKI and Dubai Municipality; correct title Federal Law7/2025.",
+    "AE Article4 and BH Article31 are standards-alignment provisions, not demonstrated automatic ISPM32 Category1 adoption.",
+    "Specific UAE2024 official prohibited/restricted annex located, but official download403. Secondary-host full facsimile saved solely for discovery, not as sufficient authority."
+  ],
+  "proposalsFile": "source-only-proposals.json",
+  "publicAccessBarriers": [
+    {
+      "url": "https://www.bahraincustoms.gov.bh/ar/tariff-finder",
+      "result": "HTTPS/HTTP connect timeout; government-notified lookup supplies permit-agency information."
+    },
+    {
+      "url": "https://www.customs.gov.bh/en/tariff-finder",
+      "result": "403; Chrome navigation timeout."
+    },
+    {
+      "url": "https://uaelegislation.gov.ae/en/legislations/2710/regulations",
+      "result": "403; Arabic equivalent also403; browser unavailable during recovery attempt."
+    },
+    {
+      "url": "https://uaelegislation.gov.ae/en/legislations/2710/download",
+      "result": "403; Arabic equivalent also403. Saved response has HTML error content despite .pdf filename."
+    },
+    {
+      "url": "https://www.dubaicustoms.gov.ae/en/eServices/ServicesForIndividuals/ViewCustomsInformation/Pages/Prohibited-and-Restricted-Goods.aspx",
+      "result": "404; official guide points to this retired route."
+    }
+  ],
+  "secondaryLocator": {
+    "url": "https://lexaidxb.com/api/legislations/c49c2c04-0ec4-437c-88f7-09cc3f8b60f2/download",
+    "file": "ae-cabinet123-secondary-mirror.pdf",
+    "officialCanonical": "https://uaelegislation.gov.ae/en/legislations/2710/download",
+    "finding": "45-page apparent official-style facsimile. Common restricted pp4–31; common prohibited pp32–36; special-nature country table pp37–40; single-country prohibited pp41–45. No HS0902 row; no control-agency column. This absent row does not establish exemption from current national phytosanitary laws.",
+    "corroboratingLocator": "https://www.uaelaw.ai/ur/laws/approval-of-the-lists-of-prohibited-and-restricted-goods-in-the-states-of-the-gc-cabinet-123-2024",
+    "corroboratingLocatorResult": "Only links back to canonical official download; no alternate official asset URL."
+  }
+}

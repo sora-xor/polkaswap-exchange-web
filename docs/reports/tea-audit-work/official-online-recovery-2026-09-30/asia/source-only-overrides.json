@@ -1,0 +1,157 @@
+[
+  {
+    "code": "CK",
+    "urls": [
+      "https://agriculture.gov.ck/biosecurity/",
+      "https://agriculture.gov.ck/biosecurity/register-forms/",
+      "https://agriculture.gov.ck/wp-content/uploads/2021/01/Update-Import-Specification-6-January-2021..pdf"
+    ],
+    "files": [
+      "ck-biosecurity.html",
+      "ck-register.html"
+    ],
+    "finding": "Fully recovered current biosecurity page still serves January 2021 PP23 dried plant product permit route and PP29 dried-herb no-permit route. Registration page contains forms, no additional food specification.",
+    "remainingGap": "A current specification or general processing rule resolving processed Camellia tea’s placement in PP23/PP29.",
+    "reviewedAt": "2026-09-30",
+    "outcome": "unresolved",
+    "decisionChanged": false
+  },
+  {
+    "code": "KI",
+    "urls": [
+      "https://agriculture.melad.gov.ki/",
+      "https://www.melad.gov.ki/index.php?Itemid=380&id=43&option=com_quix&view=page",
+      "https://kiribati.tradeportal.org/procedure/119/step/141",
+      "https://kiribati.tradeportal.org/objective/1?l=en"
+    ],
+    "files": [
+      "ki-agriculture.html",
+      "ki-tradefood.html"
+    ],
+    "finding": "Agriculture subdomain returned 406. Older official MELAD page remains readable in web index but gives mail inspection/permit services, not the actual specification. Fully recovered current trade portal procedure concerns meat; its catalogue lists meat/vehicles/phones. No applicable general tea or food specification there.",
+    "remainingGap": "Operative specification or general manufactured-food allowance under Biosecurity Act section 26. A physical statutory register and preserved legacy rules mean absence online cannot establish that no standard exists.",
+    "reviewedAt": "2026-09-30",
+    "outcome": "unresolved",
+    "decisionChanged": false
+  },
+  {
+    "code": "MV",
+    "urls": [
+      "https://agriculture.gov.mv/dv/publications/dhivehiraaajeah-gasgahaagehsaai-gahugebaithakaai-dhireythakethi-etherekurumugai-samaalukandheynvee-kanthahthah",
+      "https://agriculture.gov.mv/en/announcements/important-notice-for-plant-importers",
+      "https://agriculture.gov.mv/storage/24YEn3qe/bujmhspe.pdf"
+    ],
+    "files": [
+      "mv-guidance2026.html",
+      "mv-guidance2026.txt",
+      "mv-dec2025-notice.pdf"
+    ],
+    "finding": "Recovered full Dhivehi-only 4 March 2026 guidance through local-language catalogue and downloaded signed two-page 1 December 2025 notice. March guidance expressly covers agricultural/personal/commercial/other plant imports except exemptions under Act 12/2011, with at least 24-hour notification and permit/PC/shipment-document requirements for covered consignments. It does not classify finished sencha. Signed notice saved; full Dhivehi PDF not independently translated into English in this pass.",
+    "remainingGap": "Finished-tea placement under the Act’s regulated/exempt scope. Personal use does not by itself waive the requirements, but plant classification is still unresolved.",
+    "reviewedAt": "2026-09-30",
+    "outcome": "unresolved",
+    "decisionChanged": false
+  },
+  {
+    "code": "TO",
+    "urls": [
+      "https://maff.gov.to/qqmd/"
+    ],
+    "files": [
+      "to-quarantine.html",
+      "to-quarantine-www.html"
+    ],
+    "finding": "Fresh official index displays resource labels for permits/import guidelines/approved countries but no usable commodity specification link. Direct bare/www routes returned 403.",
+    "remainingGap": "Actual current commodity conditions or automatic processed-food/mail waiver. Discretionary manufactured-product treatment in the existing regulation does not itself decide tea.",
+    "reviewedAt": "2026-09-30",
+    "outcome": "unresolved",
+    "decisionChanged": false
+  },
+  {
+    "code": "PG",
+    "urls": [
+      "https://www.customs.gov.pg/pdf/legislation/HS%202022%20Import%20%26%20Export%20Tariff%20Act.pdf",
+      "https://customs.gov.pg/uploads/HS%202022%20Import%20%26%20Export%20Tariff%20Act.pdf",
+      "https://customs.gov.pg/pdf/pages/customs_prohibited_import_regulations.pdf",
+      "https://customs.gov.pg/resources/legislations",
+      "https://customs.gov.pg/trade/prohibited_imports"
+    ],
+    "files": [
+      "pg-tariff-currentupload.pdf",
+      "pg-prohibited-reg1973.pdf"
+    ],
+    "finding": "New official indexed tariff lead marks retail green tea 0902.10.00 P&R, with separate legend Qr for quarantine. Indexed 1973 Customs Prohibited Imports Regulation item 211 specifies tea purity/soluble-extract/ash standards, not a permit. Full documents remain unavailable: www timed out, bare/current upload returned 500 with 509-bandwidth HTML. Web opening old PDF URL produced new homepage; its actual tariff/legislation/prohibitions links also failed 500. Current applicability and exhaustive meaning of Qr omission are unverified.",
+    "remainingGap": "Full operative current commodity-control schedule and 2025 Biosecurity transition text sufficient to assess finished tea. No approval inferred from an unverified missing Qr marker.",
+    "fileWarning": "Named PDF-extension files contain logged error HTML, not operative PDFs; see route-results provenance.",
+    "reviewedAt": "2026-09-30",
+    "outcome": "unresolved",
+    "decisionChanged": false
+  },
+  {
+    "code": "AE",
+    "urls": [
+      "https://www.adcustoms.gov.ae/en/Policies-and-Regulations/Restricted-Banned-Commodities"
+    ],
+    "files": [
+      "ae-restricted2026.html",
+      "ae-restricted2026.txt"
+    ],
+    "finding": "Recovered current Abu Dhabi restricted/banned-commodities page. Food products go to Abu Dhabi Agriculture and Food Safety Authority; plants/seeds/fertilisers/animals to MOCCAE. These broad categories do not provide Qatar-style exact tea agency allocation or a complete processing exemption.",
+    "remainingGap": "Operative processing/commodity exemption under 2025 plant law and precise personal-post route. Generic prior-approval wording and commercial guides do not establish private-parcel duties.",
+    "reviewedAt": "2026-09-30",
+    "outcome": "unresolved",
+    "decisionChanged": false
+  },
+  {
+    "code": "BH",
+    "urls": [
+      "https://www.mun.gov.bh/newportal/newportal/ar",
+      "https://s3.eu-west-1.amazonaws.com/staticbh.mun.gov.bh-ire/2026/50/docs/Municipal_Services_Guide_2024.pdf",
+      "https://lloc.gov.bh/Legislation/HTM/K3418"
+    ],
+    "files": [
+      "bh-services2024.pdf",
+      "bh-services2024.txt",
+      "bh-food-law2018.html"
+    ],
+    "finding": "Recovered complete current ministry-linked 2024 service guide and complete 2018 Public Health Law HTML (direct 200 despite web 403). Guide supplies pesticide/veterinary/bird procedures, no tea-processing exception. Law Article 21 licensing wording does not erase the documented personal-food undertaking route or independently prove an origin certificate for private parcels.",
+    "remainingGap": "Agricultural manufactured-product risk classification/commodity waiver. The routine recipient undertaking and label conditions remain permissible ordinary clearance, not the blocker.",
+    "reviewedAt": "2026-09-30",
+    "outcome": "unresolved",
+    "decisionChanged": false
+  },
+  {
+    "code": "JO",
+    "urls": [
+      "https://www.moa.gov.jo/ebv4.0/root_storage/ar/eb_list_page/%D8%AF%D9%84%D9%8A%D9%84_%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA_2025.pdf",
+      "https://services.customs.gov.jo/jccits/search_tariffcode.aspx?parent=090210"
+    ],
+    "files": [
+      "jo-operations2025-full.pdf",
+      "jo-operations2025-full.txt",
+      "jo-customs-tea.html"
+    ],
+    "finding": "Recovered complete Agriculture 2025 operations manual on second download: 11,840,698 bytes; extracted full text. Printed 39–40 committee process checks prior commodity/origin conditions and risk assessment if none. Printed 436 business import licence process names fresh fruit/vegetables, nursery/seeds/raw timber; it is not a complete exemption for everything omitted. Exact customs tea page gives taxes, not quarantine exemption. Tradeportal tea results concern export.",
+    "remainingGap": "Current processed-tea/personal-post designation or ministerial exemption under 2021 instructions.",
+    "reviewedAt": "2026-09-30",
+    "outcome": "unresolved",
+    "decisionChanged": false
+  },
+  {
+    "code": "IQ",
+    "urls": [
+      "https://www.cosqc.gov.iq/service/goods-department/2YLYs9mFINmF2LfYp9io2YLYqSDYp9mE2LPZhNi5INin2YTZhdiz2KrZiNix2K/YqQ%3D%3D",
+      "https://www.cosqc.gov.iq/service/service-completion/imported-products-requirements"
+    ],
+    "files": [
+      "iq-cosqc-current.html",
+      "iq-import-requirements.html",
+      "iq-import-requirements.txt"
+    ],
+    "finding": "Recovered current COSQC imported-goods department and followed actual technical-requirements link. It returned a phone/password login form, not specifications. No login attempted. Old guide routes remain 404. Commercial attestation procedures are not imposed on private recipients.",
+    "remainingGap": "Public operative processed-tea condition/exemption. Technical schedule requires account access; existing small-post certificate waiver does not waive a permit if the commodity is regulated.",
+    "reviewedAt": "2026-09-30",
+    "outcome": "unresolved",
+    "decisionChanged": false
+  }
+]

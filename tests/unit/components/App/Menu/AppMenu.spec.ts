@@ -1,0 +1,416 @@
+import { mount } from '@vue/test-utils';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { defineComponent, h, nextTick } from 'vue';
+
+import { BotsIcon, PageNames, PolkamarktLogo, StoreBagIcon } from '@/consts';
+
+const {
+  routeMock,
+  settingsStore,
+  routerLoading,
+  burnCampaign,
+  setMenuCollapsedMock,
+  resizeObserverObserveMock,
+  resizeObserverDisconnectMock,
+} = vi.hoisted(() => ({
+  routeMock: {
+    name: 'Swap',
+  },
+  settingsStore: {
+    menuCollapsed: false,
+    faucetUrl: '',
+    language: 'en',
+    libraryTheme: 'light',
+    orderBookEnabled: true,
+    debugEnabled: false,
+    kensetsuEnabled: true,
+    assetOwnerEnabled: true,
+    setMenuCollapsed: vi.fn(),
+  },
+  routerLoading: { value: false },
+  burnCampaign: { isLive: { value: false }, rateLabel: { value: '' } },
+  setMenuCollapsedMock: vi.fn(),
+  resizeObserverObserveMock: vi.fn(),
+  resizeObserverDisconnectMock: vi.fn(),
+}));
+
+vi.mock('vue-router', () => ({
+  useRoute: () => routeMock,
+}));
+
+vi.mock('@/composables/useTranslation', () => ({
+  useTranslation: () => ({
+    t: (key: string) => key,
+  }),
+}));
+
+vi.mock('@/stores/settings', () => ({
+  useSettingsStore: () => settingsStore,
+}));
+
+vi.mock('@/app/navigation/loading', () => ({
+  appRouterLoading: routerLoading,
+}));
+
+vi.mock('@/features/misc/composables/useTonswapCampaignStatus', () => ({
+  useTonswapCampaignStatus: () => burnCampaign,
+}));
+
+import AppMenu from '@/components/App/Menu/AppMenu.vue';
+
+const SidebarItemContentStub = defineComponent({
+  name: 'AppSidebarItemContentStub',
+  props: {
+    icon: {
+      type: String,
+      default: '',
+    },
+    iconSrc: {
+      type: String,
+      default: '',
+    },
+    title: {
+      type: String,
+      default: '',
+    },
+    href: {
+      type: String,
+      default: '',
+    },
+    badge: {
+      type: String,
+      default: '',
+    },
+    caption: {
+      type: String,
+      default: '',
+    },
+    tag: {
+      type: String,
+      default: 'div',
+    },
+  },
+  setup(props, { attrs }) {
+    return () =>
+      h('div', {
+        class: ['sidebar-item-content-stub', attrs.class],
+        'data-icon': props.icon || undefined,
+        'data-icon-src': props.iconSrc || undefined,
+        'data-title': props.title || undefined,
+        'data-href': props.href || undefined,
+        'data-badge': props.badge || undefined,
+        'data-caption': props.caption || undefined,
+        'data-tag': props.tag || undefined,
+      });
+  },
+});
+
+class ResizeObserverMock {
+  private readonly callback: ResizeObserverCallback;
+  constructor(callback: ResizeObserverCallback) {
+    this.callback = callback;
+  }
+  observe(target: Element): void {
+    resizeObserverObserveMock(target);
+    this.callback([], this as unknown as ResizeObserver);
+  }
+  disconnect(): void {
+    resizeObserverDisconnectMock();
+  }
+  unobserve(): void {}
+}
+
+describe('AppMenu', () => {
+  beforeEach(() => {
+    routerLoading.value = false;
+    burnCampaign.isLive.value = false;
+    burnCampaign.rateLabel.value = '';
+    settingsStore.menuCollapsed = false;
+    settingsStore.faucetUrl = '';
+    settingsStore.language = 'en';
+    routeMock.name = PageNames.Swap;
+    settingsStore.orderBookEnabled = true;
+    settingsStore.debugEnabled = false;
+    settingsStore.kensetsuEnabled = true;
+    settingsStore.assetOwnerEnabled = true;
+    settingsStore.setMenuCollapsed = setMenuCollapsedMock;
+    setMenuCollapsedMock.mockReset();
+    resizeObserverObserveMock.mockReset();
+    resizeObserverDisconnectMock.mockReset();
+
+    vi.clearAllMocks();
+    vi.stubGlobal('ResizeObserver', ResizeObserverMock as unknown as ResizeObserver);
+  });
+
+  function mountComponent(
+    visible = true,
+    appInfoPopperStub: { template: string; emits?: string[] } = {
+      template: '<div class="app-info-popper-stub"><slot /></div>',
+    }
+  ) {
+    return mount(AppMenu, {
+      props: {
+        visible,
+        onSelect: vi.fn(),
+      },
+      global: {
+        stubs: {
+          's-button': {
+            props: ['icon'],
+            emits: ['click'],
+            template:
+              '<button class="s-button-stub" :data-icon="icon" @click="$emit(\'click\')"><slot name="icon" /><slot /></button>',
+          },
+          SButton: {
+            props: ['icon'],
+            emits: ['click'],
+            template:
+              '<button class="s-button-stub" :data-icon="icon" @click="$emit(\'click\')"><slot name="icon" /><slot /></button>',
+          },
+          's-scrollbar': { template: '<div class="s-scrollbar-stub"><slot /></div>' },
+          SScrollbar: { template: '<div class="s-scrollbar-stub"><slot /></div>' },
+          's-menu': { template: '<div class="s-menu-stub"><slot /></div>' },
+          SMenu: { template: '<div class="s-menu-stub"><slot /></div>' },
+          's-menu-item-group': { template: '<div class="s-menu-item-group-stub"><slot /></div>' },
+          SMenuItemGroup: { template: '<div class="s-menu-item-group-stub"><slot /></div>' },
+          's-menu-item': { template: '<div class="s-menu-item-stub"><slot /></div>' },
+          SMenuItem: { template: '<div class="s-menu-item-stub"><slot /></div>' },
+          AppInfoPopper: appInfoPopperStub,
+          'app-info-popper': appInfoPopperStub,
+          AppSidebarItemContent: SidebarItemContentStub,
+          'app-sidebar-item-content': SidebarItemContentStub,
+        },
+        directives: {
+          button: {},
+        },
+      },
+    });
+  }
+
+  it('renders production sidebar icons by default', () => {
+    const wrapper = mountComponent();
+
+    const renderedRouteItems = wrapper
+      .findAll('.sidebar-item-content-stub')
+      .map((item) => {
+        const iconSrc = item.attributes('data-icon-src');
+        return {
+          href: item.attributes('data-href'),
+          icon: item.attributes('data-icon'),
+          ...(iconSrc ? { iconSrc } : {}),
+        };
+      })
+      .filter((item) => item.href?.startsWith('#/'));
+
+    const expectedRouteItems = [
+      { href: '#/swap', icon: 'arrows-swap-90-24' },
+      { href: '#/buy-xor', icon: 'finance-wallet-24' },
+      { href: '#/trade', icon: 'music-CD-24' },
+      { href: '#/bots', icon: 'software-terminal-24', iconSrc: BotsIcon },
+      { href: '#/polkamarkt', icon: 'various-lightbulb-24', iconSrc: PolkamarktLogo },
+      { href: '#/bridge', icon: 'grid-block-distribute-vertically-24' },
+      { href: '#/store', icon: 'shopping-bag-24', iconSrc: StoreBagIcon },
+      { href: '#/wallet', icon: 'finance-wallet-24' },
+      { href: '#/burn', icon: 'basic-flame-24' },
+      { href: '#/dashboard/owner', icon: 'various-rocket-24' },
+      { href: '#/pool', icon: 'basic-drop-24' },
+      { href: '#/staking', icon: 'basic-layers-24' },
+      { href: '#/points', icon: 'basic-circle-star-24' },
+      { href: '#/kensetsu', icon: 'call-phone-16' },
+      { href: '#/explore', icon: 'various-items-24' },
+      { href: '#/stats', icon: 'various-planet-24' },
+    ];
+
+    expect(renderedRouteItems).toEqual(expectedRouteItems);
+  });
+
+  it('groups all destinations in visible sections and leaves Swap first when features are disabled', () => {
+    settingsStore.orderBookEnabled = false;
+    settingsStore.kensetsuEnabled = false;
+    settingsStore.assetOwnerEnabled = false;
+    const wrapper = mountComponent();
+    expect(wrapper.findAll('.menu-section-title').map((title) => title.text())).toEqual([
+      'ux.navigation.account',
+      'ux.navigation.earn',
+      'ux.navigation.explore',
+    ]);
+    const links = wrapper.findAll('.sidebar-item-content-stub').map((item) => item.attributes('data-href'));
+    expect(links[0]).toBe('#/swap');
+    expect(links).not.toContain('#/trade');
+    expect(links).not.toContain('#/kensetsu');
+    expect(links).not.toContain('#/dashboard/owner');
+    expect(links).toContain('https://about.polkaswap.io');
+  });
+
+  it('renders the general Buy XOR link in the primary section without campaign tags', () => {
+    const wrapper = mountComponent();
+    const link = wrapper.get('[data-section="primary"] [data-href="#/buy-xor"]');
+    expect(link.attributes('data-title')).toBe('mainMenu.BuyXor');
+    expect(link.attributes('data-tag')).toBe('a');
+    expect(link.attributes('data-href')).not.toContain('campaign');
+  });
+
+  it('keeps the Burn item visible outside the Burn route', () => {
+    routeMock.name = PageNames.Swap;
+    const wrapper = mountComponent();
+
+    const renderedRouteItems = wrapper
+      .findAll('.sidebar-item-content-stub')
+      .map((item) => ({
+        href: item.attributes('data-href'),
+        icon: item.attributes('data-icon'),
+      }))
+      .filter((item) => item.href?.startsWith('#/'));
+
+    expect(renderedRouteItems).toContainEqual({ href: '#/burn', icon: 'basic-flame-24' });
+  });
+
+  it('marks only the Burn item as live, with the current rate, while the TONSWAP burn is open', () => {
+    burnCampaign.isLive.value = true;
+    burnCampaign.rateLabel.value = '49.70';
+    const wrapper = mountComponent();
+
+    const burn = wrapper.get('[data-href="#/burn"]');
+    expect(burn.attributes('data-badge')).toBe('mainMenu.burnLive');
+    expect(burn.attributes('data-caption')).toBe('49.70 TS / XOR');
+    const marked = wrapper
+      .findAll('.sidebar-item-content-stub')
+      .filter((item) => item.attributes('data-badge') || item.attributes('data-caption'));
+    expect(marked).toHaveLength(1);
+  });
+
+  it('shows no live mark unless the campaign is verified open', () => {
+    burnCampaign.rateLabel.value = '49.70';
+    const wrapper = mountComponent();
+
+    const burn = wrapper.get('[data-href="#/burn"]');
+    expect(burn.attributes('data-badge')).toBeUndefined();
+    expect(burn.attributes('data-caption')).toBeUndefined();
+  });
+
+  it('shows the live mark without a caption while the rate is unknown', () => {
+    burnCampaign.isLive.value = true;
+    const wrapper = mountComponent();
+
+    const burn = wrapper.get('[data-href="#/burn"]');
+    expect(burn.attributes('data-badge')).toBe('mainMenu.burnLive');
+    expect(burn.attributes('data-caption')).toBeUndefined();
+  });
+
+  it('keeps SCCP hidden from the sidebar even when debug flag is enabled', () => {
+    settingsStore.debugEnabled = true;
+    const wrapper = mountComponent();
+
+    const renderedRouteItems = wrapper
+      .findAll('.sidebar-item-content-stub')
+      .map((item) => ({
+        href: item.attributes('data-href'),
+        icon: item.attributes('data-icon'),
+      }))
+      .filter((item) => item.href?.startsWith('#/'));
+
+    expect(renderedRouteItems).not.toContainEqual({ href: '#/bridge/sccp', icon: 'various-planet-24' });
+  });
+
+  it('uses production icons for about and info footer entries', () => {
+    const wrapper = mountComponent();
+    const items = wrapper.findAll('.sidebar-item-content-stub');
+
+    const about = items.find((item) => item.attributes('data-href') === 'https://about.polkaswap.io');
+    const info = items.find((item) => item.attributes('data-title') === 'footerMenu.info');
+
+    expect(about?.attributes('data-icon')).toBe('finance-PSWAP-24');
+    expect(info?.attributes('data-icon')).toBe('info-16');
+  });
+
+  it('toggles visible class based on menu visibility', async () => {
+    const wrapper = mountComponent(true);
+
+    expect(wrapper.classes()).toContain('visible');
+
+    await wrapper.setProps({ visible: false });
+
+    expect(wrapper.classes()).not.toContain('visible');
+  });
+
+  it('applies the loading class from the app-owned router loading state', () => {
+    routerLoading.value = true;
+
+    const wrapper = mountComponent();
+
+    expect(wrapper.classes()).toContain('app-menu__loading');
+  });
+
+  it('toggles the collapsed state from the sidebar collapse button', async () => {
+    settingsStore.menuCollapsed = false;
+    const wrapper = mountComponent();
+
+    await wrapper.get('.collapse-button').trigger('click');
+
+    expect(setMenuCollapsedMock).toHaveBeenCalledWith(true);
+  });
+
+  it.each(['ar', 'he', 'ur', 'dv'])('mirrors the sidebar collapse icon for RTL locale "%s"', (locale) => {
+    settingsStore.language = locale;
+    settingsStore.menuCollapsed = false;
+
+    const expandedWrapper = mountComponent();
+
+    expect(expandedWrapper.get('.collapse-button').attributes('data-icon')).toBe('arrows-chevron-right-24');
+
+    expandedWrapper.unmount();
+    settingsStore.menuCollapsed = true;
+
+    const collapsedWrapper = mountComponent();
+
+    expect(collapsedWrapper.get('.collapse-button').attributes('data-icon')).toBe('arrows-chevron-left-24');
+  });
+
+  it('tracks sidebar width and clears observer-driven sidebar styles on unmount', () => {
+    const clientWidthSpy = vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockImplementation(function () {
+      return this.classList?.contains('app-sidebar') ? 280 : 0;
+    });
+
+    const wrapper = mountComponent();
+
+    expect(resizeObserverObserveMock).toHaveBeenCalledTimes(1);
+    expect(document.documentElement.style.getPropertyValue('--sidebar-width')).toBe('280px');
+
+    wrapper.unmount();
+
+    expect(resizeObserverDisconnectMock).toHaveBeenCalledTimes(1);
+    expect(document.documentElement.style.getPropertyValue('--sidebar-width')).toBe('');
+
+    clientWidthSpy.mockRestore();
+  });
+
+  it('resets the sidebar scrollbar when the menu is reopened', async () => {
+    const wrapper = mountComponent(false);
+    const scrollbar = wrapper.get('.app-sidebar-scrollbar').element as HTMLElement;
+    const wrap = document.createElement('div');
+    wrap.className = 'el-scrollbar__wrap';
+    scrollbar.appendChild(wrap);
+
+    scrollbar.scrollTop = 120;
+    wrap.scrollTop = 240;
+
+    await wrapper.setProps({ visible: true });
+    await nextTick();
+
+    expect(scrollbar.scrollTop).toBe(0);
+    expect(wrap.scrollTop).toBe(0);
+  });
+
+  it('forwards product popup requests from the info popper', async () => {
+    const wrapper = mountComponent(true, {
+      emits: ['open-product-dialog'],
+      template:
+        '<button class="app-info-popper-trigger" @click="$emit(\'open-product-dialog\', \'soraMobile\')"><slot /></button>',
+    });
+
+    await wrapper.get('.app-info-popper-trigger').trigger('click');
+
+    expect(wrapper.emitted('open-product-dialog')).toHaveLength(1);
+    expect(wrapper.emitted('open-product-dialog')?.[0]).toEqual(['soraMobile']);
+  });
+});

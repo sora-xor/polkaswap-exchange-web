@@ -1,0 +1,434 @@
+الجهاز المركزي للتقييس والسيطرة النوعية
+body {
+        font-family: 'Cairo', sans-serif !important;
+    }
+
+    .bi::before,
+    [class^="bi-"]::before,
+    [class*=" bi-"]::before {
+        font-family: "bootstrap-icons" !important;
+        font-style: normal !important;
+        font-weight: normal !important;
+        font-variant: normal !important;
+        text-transform: none !important;
+        line-height: 1 !important;
+        display: inline-block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    .stats .stats-item i.bi {
+        font-family: "bootstrap-icons" !important;
+        font-style: normal !important;
+        font-size: 44px !important;
+        line-height: 1 !important;
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 62px;
+        height: 62px;
+        visibility: visible !important;
+        opacity: 1 !important;
+        flex-shrink: 0;
+    }
+
+    .stats .color-blue {
+        color: #0d6efd !important;
+    }
+
+    .stats .color-orange {
+        color: #ee6c20 !important;
+    }
+
+    .stats .color-green {
+        color: #15be56 !important;
+    }
+
+    .stats .color-pink {
+        color: #bb0852 !important;
+    }
+/* === WHITE HEADER === */
+    #header {
+        background-color: #ffffff !important;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.15) !important;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .top-header .btn.text-light {
+        color: #333333 !important;
+    }
+
+    .mobile-nav-toggle {
+        color: #062146 !important;
+    }
+
+    .sitename {
+        color: #062146 !important;
+    }
+
+    #navmenu>div {
+        background-color: #ffffff !important;
+    }
+
+    #navmenu>div>ul {
+        background-color: #ffffff !important;
+    }
+
+    #navmenu>div>ul>li>a {
+        color: #062146 !important;
+    }
+
+    #navmenu>div>ul>li>a:hover {
+        color: #1a8ccc !important;
+    }
+
+    #navmenu .dropdown>ul {
+        background-color: #ffffff !important;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        max-height: 430px;
+        overflow-y: auto;
+        min-width: 260px;
+    }
+
+    #navmenu .dropdown>ul a {
+        color: #062146 !important;
+        background-color: transparent !important;
+        display: block;
+        padding: 10px 15px;
+        text-align: right;
+        white-space: nowrap;
+    }
+
+    #navmenu .dropdown>ul a:hover {
+        background-color: #062146 !important;
+        color: #ffffff !important;
+    }
+
+    .index-page .header .navmenu .dropdown ul li a,
+    .index-page .header .navmenu .listing-dropdown ul li a {
+        color: #062146 !important;
+    }
+
+    .index-page .header .navmenu .dropdown ul li a:hover,
+    .index-page .header .navmenu .listing-dropdown ul li a:hover {
+        background-color: #062146 !important;
+        color: #ffffff !important;
+    }
+
+    .navmenu a,
+    .navmenu a:focus {
+        color: #062146 !important;
+    }
+
+    .navmenu a:hover,
+    .navmenu .active,
+    .navmenu .active:focus {
+        color: #ffffff !important;
+    }
+
+    .navmenu .dropdown ul {
+        background-color: #ffffff !important;
+    }
+
+    .navmenu .dropdown ul a {
+        color: #062146 !important;
+    }
+
+    .navmenu .dropdown>.dropdown-active {
+        background-color: #ffffff !important;
+        color: #062146 !important;
+    }
+
+    #navmenu>div>ul>li.active>a,
+    #navmenu>div>ul>li>a.active,
+    #navmenu>div>ul>li.dropdown-active>a,
+    #navmenu>div>ul>li>a:focus,
+    #navmenu>div>ul>li.dropdown>a.dropdown-active,
+    #navmenu .nav-menu-list>li>a.dropdown-active,
+    #navmenu a[aria-expanded="true"],
+    #navmenu li.show>a,
+    #navmenu li.show>a:focus,
+    #navmenu .dropdown.show>a,
+    #navmenu .dropdown-toggle.show {
+        background-color: #ffffff !important;
+        color: #062146 !important;
+        border-radius: 4px;
+    }
+
+    #navmenu .dropdown>a::after,
+    #navmenu .dropdown>a i,
+    #navmenu>div>ul>li.dropdown>a i.bi-chevron-down,
+    #navmenu>div>ul>li.dropdown>a .dropdown-indicator {
+        color: #062146 !important;
+        border-top-color: #062146 !important;
+    }
+
+    #navmenu>div>ul>li.dropdown>a {
+        color: #062146 !important;
+    }
+
+    .toggle-dropdown {
+        fill: #062146 !important;
+    }
+
+    .toggle-dropdown path {
+        stroke: #062146 !important;
+        fill: none !important;
+    }
+
+    @media (max-width: 767px) {
+        .ministry-title-center {
+            display: none !important;
+        }
+
+        #navmenu .dropdown>ul {
+            max-height: none;
+            overflow-y: visible;
+            min-width: auto;
+        }
+
+        #navmenu .dropdown>ul a {
+            color: #ffffff !important;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .top-header-adaptive {
+            min-height: 85px !important;
+        }
+    }
+En
+تحت الإنشاء
+الجهاز المركزي للتقييس والسيطرة النوعية
+الجهاز المركزي للتقييس والسيطرة النوعية
+اتصل بنا
+لارسال شكوى او استفسار
+بريد الاقسام
+الحكومة الالكترونية
+اصدارات ومطبوعات
+المقالات
+الدراسات والبحوث
+خدمات الجهاز
+خدمات المركبات
+البحث عن براءات الاختراع
+تقييم المطابقة للمركبات
+منح الشهادات
+الخدمات الإلكترونية لبراءات الاختراع
+الدورات التدريبية
+طلب براءة اختراع محلية
+طلب براءة اختراع أجنبية PCT
+نقل ملكية براءة اختراع
+التجديد السنوي لبراءة الاختراع
+ترجمة وختم شهادة براءة الاختراع
+صورة طبق الأصل لشهادة براءة الاختراع
+منح براءة اختراع للطلب
+نشر النموذج الصناعي
+تجديد الرسم السنوي للنموذج الصناعي
+صورة طبق الأصل للنموذج الصناعي
+نقل ملكية نموذج صناعي
+طلب تسجيل نموذج صناعي
+طلب معايرة إلكترونية
+استمارة طلب منح شهادة
+طلب الحصول على علامة الجودة للمنتجات المستوردة
+طلب الحصول على علامة الجودة للمنتجات المحلية
+منح الاستثناءات من المواصفة القياسية العراقية
+بيع المواصفات القياسية العراقية
+المتطلبات الفنية للمنتجات المستوردة
+المواصفات المعملية للمصانع المحلية
+الاستشارات والاستفسارات في مجال المواصفات
+جميع الخدمات
+القوانين والانظمة
+الادلة
+القوانين
+التعليمات
+المنظمة العالمية للملكية الفكريةWIPO
+كتب الشكر
+المكافآت
+المشتريات
+عن الجهاز
+نبذة عن الجهاز
+سياسة الجودة
+التقرير السنوي
+الهيكل التنظيمي
+رسالتنا و قيمنا و رؤيتنا
+السير الذاتية
+ايفادات السادة المسؤولين
+المواصفات
+منح شهادات انظمة الجودة
+مديرية براءات الاختراع والنماذج الصناعية
+الفحوصات المختبرية
+المعايرات الصناعية
+المصوغات
+المركز الإعلامي
+الخطة التدريبية
+نوعية المستهلك
+ايفادات السادة المسؤولين
+مكتبة الصور
+مكتبة الفيديو
+بروشور
+COSQCاضف تطبيق
+ارشيف الاخبار
+تسجيل الدخول
+الصفحة الرئيسية
+تسجيل الدخول
+رقم التليفون
+الرمز السري
+ارسال
+ليس لديك حساب؟ سجل الآن
+.footer-map-section {
+            margin-top: 30px;
+        }
+
+        .footer-map-card {
+            position: relative;
+            background: #ffffff;
+            border-radius: 22px;
+            padding: 16px;
+            box-shadow: 0 18px 45px rgba(15, 61, 115, 0.16);
+            border: 1px solid rgba(15, 61, 115, 0.10);
+            overflow: hidden;
+        }
+
+        .footer-map-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 14px;
+            direction: rtl;
+        }
+
+        .footer-map-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-map-icon {
+            width: 46px;
+            height: 46px;
+            min-width: 46px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #0f3d73, #0d6efd);
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(13, 110, 253, 0.25);
+            font-size: 21px;
+        }
+
+        .footer-map-title {
+            margin: 0;
+            color: #0f3d73;
+            font-size: 18px;
+            font-weight: 800;
+            line-height: 1.5;
+        }
+
+        .footer-map-subtitle {
+            margin: 2px 0 0;
+            color: #6c757d;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .footer-map-open {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            background: #0f3d73;
+            color: #ffffff !important;
+            padding: 9px 18px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+            transition: 0.3s ease;
+        }
+
+        .footer-map-open:hover {
+            background: #0d6efd;
+            color: #ffffff !important;
+            transform: translateY(-2px);
+        }
+
+        .footer-map-frame-wrap {
+            position: relative;
+            width: 100%;
+            height: 320px;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid rgba(15, 61, 115, 0.12);
+            background: #eef4fb;
+        }
+
+        .footer-map-frame-wrap iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+            filter: saturate(1.05) contrast(1.02);
+        }
+
+        .footer-map-badge {
+            position: absolute;
+            right: 16px;
+            bottom: 16px;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.94);
+            color: #0f3d73;
+            border-radius: 50px;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 700;
+            box-shadow: 0 10px 28px rgba(15, 61, 115, 0.16);
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        @media (max-width: 767px) {
+            .footer-map-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .footer-map-open {
+                width: 100%;
+            }
+
+            .footer-map-frame-wrap {
+                height: 260px;
+            }
+        }
+تابعنا على المواقع التالية
+عنوان 1
+عنوان 2
+عنوان 3
+:الهاتف
++123
+:البريد
+info@cosqc.com
+بعض خدمات الجهاز
+المواصفات
+مديرية براءات الاختراع و النماذج الصناعية
+المقاييس
+الموصغات
+من نحن
+نبذة عن الجهاز
+سياسة الجودة
+رسالتنا و قيمنا و رؤيتنا
+التقرير السنوي
+الهيكل التنظيمي
+الجهاز المركزي للتقييس والسيطرة النوعية
+الجهاز المركزي للتقييس والسيطرة النوعية
+التواصل الاجتماعي
+موقع الجهاز المركزي للتقييس والسيطرة النوعية
+فتح الموقع في Google Maps
+الجهاز المركزي للتقييس والسيطرة النوعية
+2026
+جميع الحقوق © محفوظة للجهاز المركزي للتقييس والسيطرة النوعية

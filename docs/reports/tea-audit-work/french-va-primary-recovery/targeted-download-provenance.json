@@ -1,0 +1,16 @@
+[
+  {
+    "file": "va-protocol2007.pdf",
+    "url": "https://www.adm.gov.it/portale/documents/20182/6907210/Accordo+Italia+Vaticano.pdf/7809007b-38be-4201-85fb-43852a3e9664",
+    "status": 200,
+    "bytes": 200602,
+    "type": "application/pdf"
+  },
+  {
+    "file": "pm-inpn-locator.html",
+    "url": "https://www.garrigue-gourmande.fr/index.php?Itemid=100&catid=10&filtre=protege_reglemente_only&id=101%3Aplantes&list=protege&option=com_content&page=2&quoi=&tri=nom_latin&view=article",
+    "status": 200,
+    "bytes": 260769,
+    "type": "text/html; charset=utf-8"
+  }
+]

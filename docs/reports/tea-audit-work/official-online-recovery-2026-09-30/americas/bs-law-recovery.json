@@ -1,0 +1,32 @@
+[
+  {
+    "file": "bs-customs2011.pdf",
+    "url": "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/PRINCIPAL/2011/2011-0030/2011-0030.pdf",
+    "status": 200,
+    "bytes": 4531012,
+    "sha256": "11d9135e41d77427cf4a12d56aeb9650f6d5bf9c1e9adab716542c6aef3cd47f",
+    "savedText": "bs-customs2011.pdf.txt"
+  },
+  {
+    "file": "bs-importcontrol1972-fao.pdf",
+    "url": "https://faolex.fao.org/docs/pdf/bha112362.pdf",
+    "status": 200,
+    "bytes": 130448,
+    "sha256": "00153375bc51de55a14d70dffb50d5d9959074d36dc94d36dc62b341b0fbde2f",
+    "savedText": "bs-importcontrol1972-fao.pdf.txt"
+  },
+  {
+    "file": "bs-importgeneral1957.pdf",
+    "url": "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/SUBORDINATE/1957/1957-0197/1957-0197.pdf",
+    "status": 503,
+    "bytes": 79,
+    "sha256": "f0e17b87c0d02b3e9119e52384479a45f4028fd147777e93c70d5f21163842f9"
+  },
+  {
+    "file": "bs-food1985.pdf",
+    "url": "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/PRINCIPAL/1985/1985-0001/1985-0001_1.pdf",
+    "status": 503,
+    "bytes": 79,
+    "sha256": "f0e17b87c0d02b3e9119e52384479a45f4028fd147777e93c70d5f21163842f9"
+  }
+]

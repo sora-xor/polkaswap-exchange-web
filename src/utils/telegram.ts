@@ -1,6 +1,10 @@
-import { api } from '@soramitsu/soraneo-wallet-web';
+import { api } from '@/lib/soraneo-wallet/src/api';
 
-import store from '@/store';
+import pinia from '@/plugins/pinia';
+import { useReferralsStore } from '@/stores/referrals';
+import { useSettingsStore } from '@/stores/settings';
+import { useWalletStore } from '@/stores/wallet';
+import { loadTelegramWebAppScript } from './telegramLaunch';
 
 enum HapticStatusValue {
   success = 'success',
@@ -22,7 +26,8 @@ function isNotification(value: HapticFeedbackBinding): value is HapticFeedbackSt
 }
 
 function useHaptic(type: HapticFeedbackBinding): void {
-  const HapticFeedback = Telegram?.WebApp?.HapticFeedback;
+  const telegram = window.Telegram as any;
+  const HapticFeedback = telegram?.WebApp?.HapticFeedback;
   if (!HapticFeedback) {
     return;
   }
@@ -37,14 +42,20 @@ function useHaptic(type: HapticFeedbackBinding): void {
   }
 }
 
+const resolveSettingsStore = () => useSettingsStore(pinia);
+const resolveWalletStore = () => useWalletStore(pinia);
+const resolveReferralsStore = () => useReferralsStore(pinia);
+
 class TmaSdk {
   private deviceOrientationHandler: ((event: DeviceOrientationEvent) => void) | null = null;
   private themeChangeListener: ((eventType: string, eventData: any) => void) | null = null;
 
   public async init(botUrl?: string): Promise<void> {
     try {
+      await loadTelegramWebAppScript();
       // Check if the current platform is Telegram Mini App
-      const WebApp = Telegram?.WebApp;
+      const telegram = window.Telegram as any;
+      const WebApp = telegram?.WebApp;
       if (!WebApp?.initData) {
         console.info('[TMA]: Not a Telegram Mini App, skipping initialization');
         return;
@@ -53,8 +64,10 @@ class TmaSdk {
       WebApp?.expand?.();
       // Disable vertical swipe if possible
       WebApp?.disableVerticalSwipes?.();
-      store.commit.settings.enableTMA();
-      store.commit.wallet.account.setIsDesktop(true);
+      const settingsStore = resolveSettingsStore();
+      const walletStore = resolveWalletStore();
+      settingsStore.enableTMA();
+      walletStore.setIsDesktop(true);
       console.info('[TMA]: Mini app was initialized');
       // Set theme
       this.updateTheme();
@@ -62,32 +75,26 @@ class TmaSdk {
       this.setReferrer(WebApp?.initDataUnsafe?.start_param);
       // Set the Telegram bot URL
       if (botUrl) {
-        store.commit.settings.setTelegramBotUrl(botUrl);
+        settingsStore.setTelegramBotUrl(botUrl);
       }
       // Init haptic feedback
       this.addHapticListener();
 
-      if (
-        store.state.settings.isRotatePhoneHideBalanceFeatureEnabled &&
-        store.state.settings.isAccessRotationListener
-      ) {
+      if (settingsStore.isRotatePhoneHideBalanceFeatureEnabled && settingsStore.isAccessRotationListener) {
         this.listenForDeviceRotation();
-      } else if (
-        !store.state.settings.isAccessRotationListener &&
-        store.state.settings.isAccessAccelerometrEventDeclined
-      ) {
+      } else if (!settingsStore.isAccessRotationListener && settingsStore.isAccessAccelerometrEventDeclined) {
         const accessGranted = await this.checkAccelerometerAccess();
         if (accessGranted) {
           this.listenForDeviceRotation();
-          store.commit.settings.setIsRotatePhoneHideBalanceFeatureEnabled(true);
-          store.commit.settings.setAccessGranted(true);
-          store.commit.settings.setIsAccessAccelerometrEventDeclined(false);
+          settingsStore.setIsRotatePhoneHideBalanceFeatureEnabled(true);
+          settingsStore.setAccessGranted(true);
+          settingsStore.setIsAccessAccelerometrEventDeclined(false);
         }
       }
     } catch (error) {
       console.warn('[TMA]: disabling TMA mode because of the error:', error);
-      store.commit.settings.disableTMA();
-      store.commit.wallet.account.setIsDesktop(false);
+      resolveSettingsStore().disableTMA();
+      resolveWalletStore().setIsDesktop(false);
     }
   }
 
@@ -122,7 +129,8 @@ class TmaSdk {
       const colorUtilityBody =
         (getComputedStyle(document.documentElement).getPropertyValue('--s-color-utility-body') as `#${string}`) ||
         '#f7f3f4'; // Default color
-      const WebApp = Telegram?.WebApp;
+      const telegram = window.Telegram as any;
+      const WebApp = telegram?.WebApp;
       WebApp?.setHeaderColor(colorUtilityBody);
       WebApp?.setBackgroundColor(colorUtilityBody);
     } catch (error) {
@@ -133,7 +141,8 @@ class TmaSdk {
   public shareLink(url: string, text?: string): void {
     try {
       const desc = text ? encodeURIComponent(text) : text;
-      Telegram?.WebApp?.openLink(`https://t.me/share/url?url=${url}&text=${desc}`);
+      const telegram = window.Telegram as any;
+      telegram?.WebApp?.openLink(`https://t.me/share/url?url=${url}&text=${desc}`);
     } catch (error) {
       console.warn('[TMA]: shareLink', error);
     }
@@ -160,8 +169,9 @@ class TmaSdk {
 
         if (wasRotatedTo180 && Math.abs(beta) < 30) {
           useHaptic('soft');
-          store.commit.wallet.settings.toggleHideBalance();
-          store.commit.wallet.account.syncWithStorage();
+          const walletStore = resolveWalletStore();
+          walletStore.toggleHideBalance();
+          walletStore.syncAccountWithStorage();
           wasRotatedTo180 = false;
         }
       }
@@ -245,7 +255,7 @@ class TmaSdk {
 
   private setReferrer(referrerAddress?: string): void {
     if (referrerAddress && api.validateAddress(referrerAddress)) {
-      store.commit.referrals.setStorageReferrer(referrerAddress);
+      resolveReferralsStore().setStorageReferrer(referrerAddress);
       console.info('[TMA]: Referrer was set', referrerAddress);
     }
   }

@@ -1,0 +1,68 @@
+import { describe, expect, it } from 'vitest';
+
+import appMenuSource from '@/components/App/Menu/AppMenu.vue?raw';
+
+describe('AppMenu source', () => {
+  it('keeps the collapse button aligned with the live sidebar lower edge', () => {
+    expect(appMenuSource).toContain('border-style: none;');
+    expect(appMenuSource).toContain(':aria-label="collapseTooltip"');
+    expect(appMenuSource).toContain(':title="collapseTooltip"');
+    expect(appMenuSource).toContain('.collapse-button {');
+    expect(appMenuSource).toContain('top: 50%;');
+    expect(appMenuSource).toContain('bottom: auto;');
+    expect(appMenuSource).toContain('margin: auto;');
+    expect(appMenuSource).toContain('transform: translateY(-50%);');
+    expect(appMenuSource).toContain('display: block !important;');
+    expect(appMenuSource).toContain('font-size: 12px !important;');
+    expect(appMenuSource).toContain('line-height: 12px !important;');
+    expect(appMenuSource).toContain('@include large-mobile(true) {');
+    expect(appMenuSource).toContain('display: none !important;');
+    expect(appMenuSource).not.toContain('left: calc(100% - var(--s-size-small));');
+  });
+
+  it('keeps the sidebar collapse button hidden until the sidebar is hovered', () => {
+    expect(appMenuSource).toMatch(
+      /\.collapse-button\s*\{[\s\S]*opacity:\s*0;[\s\S]*pointer-events:\s*none;[\s\S]*transition-property:\s*opacity, background-color, border-color, box-shadow, color;/s
+    );
+    expect(appMenuSource).toMatch(/&:focus-visible\s*\{[\s\S]*opacity:\s*1;[\s\S]*pointer-events:\s*all;/s);
+    expect(appMenuSource).toMatch(
+      /@include tablet\s*\{[\s\S]*&:hover\s*\{[\s\S]*\.collapse-button\s*\{[\s\S]*opacity:\s*1;[\s\S]*pointer-events:\s*all;/s
+    );
+  });
+
+  it('uses the app-owned loading state instead of the legacy router store mirror', () => {
+    expect(appMenuSource).toContain("from '@/app/navigation/loading'");
+    expect(appMenuSource).toContain("import { getLocaleDirection } from '@/lang/direction';");
+    expect(appMenuSource).not.toContain("from '@/stores/router'");
+    expect(appMenuSource).not.toContain("from '@/router'");
+    expect(appMenuSource).not.toContain('lazyComponent(');
+    expect(appMenuSource).not.toContain('Components.');
+  });
+
+  it('uses the live active menu color in both light and noir themes', () => {
+    expect(appMenuSource).toContain("const mainMenuActiveColor = computed(() => 'var(--s-color-action-text)');");
+    expect(appMenuSource).not.toContain(
+      "libraryTheme.value === Theme.LIGHT ? 'var(--s-color-theme-accent)' : 'var(--s-color-theme-accent-focused)'"
+    );
+  });
+
+  it('swaps the live pill for a dot on the icon whenever the sidebar label is hidden', () => {
+    expect(appMenuSource).toContain(
+      "import { useTonswapCampaignStatus } from '@/features/misc/composables/useTonswapCampaignStatus';"
+    );
+    expect(appMenuSource).toMatch(
+      /\.app-menu\.collapsed\s*\{[\s\S]*?\.sidebar-item-content__live-dot\s*\{\s*display:\s*block;/
+    );
+    expect(appMenuSource).toMatch(/&:hover\s*\{[\s\S]*?\.sidebar-item-content__live-dot\s*\{\s*display:\s*none;/);
+  });
+
+  it('mirrors sidebar placement and slide-in direction for RTL documents', () => {
+    expect(appMenuSource).toContain("html[dir='rtl'] &");
+    expect(appMenuSource).toContain("html[dir='rtl'] & .app-sidebar");
+    expect(appMenuSource).toContain("html[dir='rtl'] &.visible .app-sidebar");
+    expect(appMenuSource).toContain('right: calc(100% - var(--s-size-small) / 2);');
+    expect(appMenuSource).toContain('transform: translateX(100%);');
+    expect(appMenuSource).toContain('filter: drop-shadow(-32px 0px 64px rgba(0, 0, 0, 0.1));');
+    expect(appMenuSource).toContain('padding-left: $inner-spacing-mini; // for shadow');
+  });
+});

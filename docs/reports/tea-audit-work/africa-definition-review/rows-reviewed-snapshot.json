@@ -1,0 +1,606 @@
+[
+  {
+    "code": "ER",
+    "status": "not_verified",
+    "rule": "The Ministry of Information’s 13 May 2026 report expressly confirms Plant Quarantine Proclamation 156/2006 remains in force and inspections operate at entry points. The proclamation’s manufactured-product definition depends on pest risk, and no official implementing exemption or classification for manufactured tea was located.",
+    "personalMailApplicability": "No personal-post or tea-specific exemption verified.",
+    "quantityLimit": null,
+    "authority": "Eritrea plant-quarantine legislation, FAOLEX copy",
+    "evidenceUrls": [
+      "https://faolex.fao.org/docs/pdf/eri68047.pdf",
+      "https://shabait.com/2026/05/13/international-day-of-plant-health-observed-at-national-and-international-levels/",
+      "https://shabait.com/2025/05/29/encouraging-results-in-ensuring-health-of-agricultural-production/",
+      "https://www.ippc.int/en/countries/eritrea/reportingobligation/4",
+      "https://shabait.com/2026/07/12/workshop-on-developing-national-food-control-policy/",
+      "https://shabait.com/2010/03/26/maintaining-a-standard-of-products-to-secure-national-interests/",
+      "https://tile.loc.gov/storage-services/service/ll/lleritrea/eritrean-notice-78-2003/eritrean-notice-78-2003.pdf",
+      "https://faolex.fao.org/docs/pdf/eri42427E.pdf",
+      "https://mojeritrea.net/wp-content/uploads/2023/05/Thematic-Categorization-of-Domestic-Legislations-of-the-State-of-Eritrea.pdf",
+      "https://tile.loc.gov/storage-services/service/ll/lleritrea/eritrean-notice-76-2003/eritrean-notice-76-2003.pdf",
+      "https://tile.loc.gov/storage-services/service/ll/lleritrea/eritrean-proc-125-2002/eritrean-proc-125-2002.pdf",
+      "https://tile.loc.gov/storage-services/service/ll/lleritrea/eritrean-notice-100-2005/eritrean-notice-100-2005.pdf"
+    ],
+    "remainingQuestion": "A currently operative food/conformity rule imposing or waiving special documents for private postal tea was not found. Ordinary arrival inspection and certificates issued by inspectors are not independently disqualifying; existing plant-risk classification remains open.",
+    "researchAttempts": [
+      "Read statutory definition and articles 14–15; searched implementing exemptions and tea import requirements.",
+      "Checked current 2026 Ministry of Information plant-health report, 2025 regulatory-service update and NPPO legislation filings for implementing exemptions. The 2026 report confirms Proclamation 156/2006 remains in force but supplies no manufactured-tea or personal-post determination.",
+      "30 September independent food/conformity pass: Current Ministry of Information report of 12 July 2026 describes an inception workshop for drafting a National Food Control Policy, intended to guide a future national food law. This is not enacted mandatory certificate legislation. An older official standards-institution interview describes inspecting imports upon arrival and assigning quality certificates, without a separate pre-shipment document/application requirement. Official Ministry of Information indexed reports read. The 2026 policy-drafting report is current but not a law; the 2010 interview is historical operational context only.",
+      "30 September fresh official-online recovery: Recovered original L.N.78/2003: Article 3 requires a separate permit for each commercial-goods consignment; Article 5 lists tea as a price-controlled article. Recovered parent Proclamation 125/2002: Article 3(b) defines dealer by commercial activity and 3(c) defines importer as a dealer. Recovered L.N.100/2005 (1 January 2005): it removes the franco-valuta definition and replaces Article 4(2) with banks checking import permits before import services, and 4(3) with ministry permission for development/basic-consumer/other important goods after case-by-case examination, payment per Bank regulations. It leaves Article 3 commercial-goods language unchanged. Read parent definition visually on PDF page 8 (printed 18) and amendment entire page. These linked commercial/banking provisions are not automatically applied to a private recipient. Original L.N.76/2003 Articles 3–4 remit customs duty/tax on mail up to 200 Nakfa subject to exclusions; that is not an SPS/permit waiver."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "A currently operative food/conformity rule imposing or waiving special documents for private postal tea was not found. Ordinary arrival inspection and certificates issued by inspectors are not independently disqualifying; existing plant-risk classification remains open.",
+    "permitFreeSources": [
+      "https://faolex.fao.org/docs/pdf/eri68047.pdf",
+      "https://shabait.com/2026/05/13/international-day-of-plant-health-observed-at-national-and-international-levels/",
+      "https://shabait.com/2025/05/29/encouraging-results-in-ensuring-health-of-agricultural-production/",
+      "https://www.ippc.int/en/countries/eritrea/reportingobligation/4",
+      "https://shabait.com/2026/07/12/workshop-on-developing-national-food-control-policy/",
+      "https://shabait.com/2010/03/26/maintaining-a-standard-of-products-to-secure-national-interests/",
+      "https://tile.loc.gov/storage-services/service/ll/lleritrea/eritrean-notice-78-2003/eritrean-notice-78-2003.pdf",
+      "https://faolex.fao.org/docs/pdf/eri42427E.pdf",
+      "https://mojeritrea.net/wp-content/uploads/2023/05/Thematic-Categorization-of-Domestic-Legislations-of-the-State-of-Eritrea.pdf",
+      "https://tile.loc.gov/storage-services/service/ll/lleritrea/eritrean-notice-76-2003/eritrean-notice-76-2003.pdf",
+      "https://tile.loc.gov/storage-services/service/ll/lleritrea/eritrean-proc-125-2002/eritrean-proc-125-2002.pdf",
+      "https://tile.loc.gov/storage-services/service/ll/lleritrea/eritrean-notice-100-2005/eritrean-notice-100-2005.pdf"
+    ],
+    "independentFoodConformityRule": "Current Ministry of Information report of 12 July 2026 describes an inception workshop for drafting a National Food Control Policy, intended to guide a future national food law. This is not enacted mandatory certificate legislation. An older official standards-institution interview describes inspecting imports upon arrival and assigning quality certificates, without a separate pre-shipment document/application requirement.",
+    "foodConformitySourceFiles": [
+      "docs/reports/tea-audit-work/food-conformity-second-sources/eight-country-food-scope-review.json"
+    ],
+    "foodConformityAccessNotes": "Official Ministry of Information indexed reports read. The 2026 policy-drafting report is current but not a law; the 2010 interview is historical operational context only.",
+    "officialOnlineRecovery": {
+      "code": "ER",
+      "outcome": "unresolved",
+      "outcomeChanged": false,
+      "finding": "Recovered original L.N.78/2003: Article 3 requires a separate permit for each commercial-goods consignment; Article 5 lists tea as a price-controlled article. Recovered parent Proclamation 125/2002: Article 3(b) defines dealer by commercial activity and 3(c) defines importer as a dealer. Recovered L.N.100/2005 (1 January 2005): it removes the franco-valuta definition and replaces Article 4(2) with banks checking import permits before import services, and 4(3) with ministry permission for development/basic-consumer/other important goods after case-by-case examination, payment per Bank regulations. It leaves Article 3 commercial-goods language unchanged. Read parent definition visually on PDF page 8 (printed 18) and amendment entire page. These linked commercial/banking provisions are not automatically applied to a private recipient. Original L.N.76/2003 Articles 3–4 remit customs duty/tax on mail up to 200 Nakfa subject to exclusions; that is not an SPS/permit waiver.",
+      "remainingEvidence": "Whether this paid private postal purchase falls within the amended trade-permit/banking route despite the commercial-goods/dealer framework; independently, operative finished-tea plant-health coverage. Actual amendment text is now available, not an access gap.",
+      "sources": [
+        "er-importnotice2003.pdf",
+        "er-importnotice2003-fao.pdf",
+        "er-lawindex2023.pdf",
+        "eritrean-notice-76-2003.pdf",
+        "eritrean-proc-125-2002.pdf",
+        "eritrean-proc-125-2002-ocr.txt",
+        "eritrean-notice-100-2005.pdf",
+        "er-amendment2005-p1.png"
+      ]
+    },
+    "officialOnlineRecoveryFiles": [
+      "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/er-importnotice2003.pdf",
+      "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/er-importnotice2003-fao.pdf",
+      "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/er-lawindex2023.pdf",
+      "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/eritrean-notice-76-2003.pdf",
+      "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/eritrean-proc-125-2002.pdf",
+      "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/eritrean-proc-125-2002-ocr.txt",
+      "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/eritrean-notice-100-2005.pdf",
+      "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/er-amendment2005-p1.png"
+    ]
+  },
+  {
+    "code": "ET",
+    "status": "not_verified",
+    "rule": "Plant Protection and Quarantine Proclamation 1400/2026 is the current starting point, replacing reliance on the 1992 law. Processed products are covered where pest risk remains, and article 4 provides import controls; a current list resolving finished tea was not located.",
+    "personalMailApplicability": "No personal postal tea exemption established under the new law.",
+    "quantityLimit": null,
+    "authority": "Ethiopia Ministry of Justice",
+    "evidenceUrls": [
+      "https://justice.gov.et/en/law/plant-protection-and-quarantine-proclamation-no-1400-2026/",
+      "https://justice.gov.et/wp-content/uploads/2026/08/አዋጅ-ቁጥር-1400-2018.pdf",
+      "https://faolex.fao.org/docs/pdf/eth208821.pdf",
+      "https://justice.gov.et/en/law/food-and-medicine-administration-proclamation/",
+      "https://faolex.fao.org/docs/pdf/eth216290.pdf",
+      "https://eris.efda.gov.et/",
+      "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Ethiopia%27s+Food+Importers-Exporters+and+Wholesalers+Directive_Addis+Ababa_Ethiopia_12-1-2015.pdf",
+      "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=FAIRS+Country+Report+Annual_Addis+Ababa_Ethiopia_ET2025-0021.pdf",
+      "https://justice.gov.et/en/entity/ethiopian-coffee-and-tea-authority/"
+    ],
+    "remainingQuestion": "The finished-tea pest-risk classification under Plant Protection and Quarantine Proclamation 1400/2026 remains missing. Separately, establish how Proclamation 1112/2019 article 3 and any current EFDA food directive apply to an own-consumption postal purchase. The recovered 2014 directive expressly exempts personal food from competence licensing, but does not establish a current waiver from shipment certificates; its company-trade scope also prevents treating article 20 as an unqualified private import duty.",
+    "researchAttempts": [
+      "Located and read the new 2026 proclamation rather than carrying forward the superseded law; searched commodity schedules and personal-use exceptions.",
+      "Reconfirmed on 30 September 2026 that the Ministry of Justice lists Proclamation 1400/2026 as in force from 7 May 2026. Re-attempted the official PDF and searched current commodity schedules and exact-title mirrors; official PDF retrieval returned 403 in this follow-up. No new tea-specific implementing classification or private-post exception was established, so the earlier unresolved finding is preserved rather than falling back to the repealed 1992 law.",
+      "30 September independent food/conformity pass: Recovered actual Gazette Proclamation 1112/2019 and visually verified article 10(1), PDF page 20: food imports require safety compliance and an executive-organ permit. However article 3, PDF page 13, limits the law’s scope to products intended for market placement or otherwise offered for public use. Article2(1) defines food to include processed human-consumption substances. Regulation 531/2023 defines the agency and its powers, not a new unqualified private import duty. The current eRIS portal describes special import applications but in an importer/vendor/licensing chain; it does not settle private personal food parcels. Complete FAO-hosted Gazette law and 2023 agency regulation downloaded; article 10 visually verified because PDF OCR is poor. Ministry of Justice labels 1112/2019 in force. Personal medical/supplement exceptions and customs tax allowances were not extended to ordinary tea.",
+      "30 September legal-scope peer review: recovered the complete official English translation of Food Exporters, Importers and Wholesalers Control Directive 22/2014, hosted by USDA. Article 4 limits it to food-trade companies; article 8(1) expressly exempts personal-consumption food from the certificate of competence. Article 20(4) separately lists shipment health and origin certificates, and article 8 does not expressly waive those. This is an older directive and its present interaction with Proclamation 1112/2019 was not established. The 2025 USDA FAIRS report describes processed tea notification and commercial import documents but supplies no private-postal scope rule; its reliance on the 1992 plant regulation cannot override the new 2026 proclamation. These sources narrow the licensing issue without clearing tea or proving an unavoidable private-parcel certificate.",
+      "30 September fresh official-online recovery: Read current Ministry of Justice Coffee and Tea Authority registered-directive index, including 2026 entries. The available directive titles concern coffee marketing/quality control or spices, not an operative private tea import rule. An EFDA 2023–2026 implementation plan describes future regulatory work rather than an enacted private-food exception."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "The finished-tea pest-risk classification under Plant Protection and Quarantine Proclamation 1400/2026 remains missing. Separately, establish how Proclamation 1112/2019 article 3 and any current EFDA food directive apply to an own-consumption postal purchase. The recovered 2014 directive expressly exempts personal food from competence licensing, but does not establish a current waiver from shipment certificates; its company-trade scope also prevents treating article 20 as an unqualified private import duty.",
+    "permitFreeSources": [
+      "https://justice.gov.et/en/law/plant-protection-and-quarantine-proclamation-no-1400-2026/",
+      "https://justice.gov.et/wp-content/uploads/2026/08/አዋጅ-ቁጥር-1400-2018.pdf",
+      "https://faolex.fao.org/docs/pdf/eth208821.pdf",
+      "https://justice.gov.et/en/law/food-and-medicine-administration-proclamation/",
+      "https://faolex.fao.org/docs/pdf/eth216290.pdf",
+      "https://eris.efda.gov.et/",
+      "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Ethiopia%27s+Food+Importers-Exporters+and+Wholesalers+Directive_Addis+Ababa_Ethiopia_12-1-2015.pdf",
+      "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=FAIRS+Country+Report+Annual_Addis+Ababa_Ethiopia_ET2025-0021.pdf",
+      "https://justice.gov.et/en/entity/ethiopian-coffee-and-tea-authority/"
+    ],
+    "independentFoodConformityRule": "Recovered actual Gazette Proclamation 1112/2019 and visually verified article 10(1), PDF page 20: food imports require safety compliance and an executive-organ permit. However article 3, PDF page 13, limits the law’s scope to products intended for market placement or otherwise offered for public use. Article2(1) defines food to include processed human-consumption substances. Regulation 531/2023 defines the agency and its powers, not a new unqualified private import duty. The current eRIS portal describes special import applications but in an importer/vendor/licensing chain; it does not settle private personal food parcels. 30 September legal-scope peer review: recovered the complete official English translation of Food Exporters, Importers and Wholesalers Control Directive 22/2014, hosted by USDA. Article 4 limits it to food-trade companies; article 8(1) expressly exempts personal-consumption food from the certificate of competence. Article 20(4) separately lists shipment health and origin certificates, and article 8 does not expressly waive those. This is an older directive and its present interaction with Proclamation 1112/2019 was not established. The 2025 USDA FAIRS report describes processed tea notification and commercial import documents but supplies no private-postal scope rule; its reliance on the 1992 plant regulation cannot override the new 2026 proclamation. These sources narrow the licensing issue without clearing tea or proving an unavoidable private-parcel certificate.",
+    "foodConformitySourceFiles": [
+      "docs/reports/tea-audit-work/food-conformity-second-sources/et-food2019.pdf",
+      "docs/reports/tea-audit-work/food-conformity-second-sources/et-food2019.txt",
+      "docs/reports/tea-audit-work/food-conformity-second-sources/et-food2019-page-20.png",
+      "docs/reports/tea-audit-work/food-conformity-second-sources/et-food2019-page-21.png",
+      "docs/reports/tea-audit-work/food-conformity-second-sources/et-foodreg2023.pdf",
+      "docs/reports/tea-audit-work/food-conformity-second-sources/et-foodreg2023.txt",
+      "docs/reports/tea-audit-work/food-conformity-second-sources/eight-country-food-scope-review.json",
+      "docs/reports/tea-audit-work/food-conformity-second-sources/et-food2019-scope-13.png",
+      "docs/reports/tea-audit-work/legal-scope-peer-review/et-directive2014-usda.pdf",
+      "docs/reports/tea-audit-work/legal-scope-peer-review/et-directive2014-usda.txt",
+      "docs/reports/tea-audit-work/legal-scope-peer-review/et-fairs2025.pdf",
+      "docs/reports/tea-audit-work/legal-scope-peer-review/et-fairs2025.txt",
+      "docs/reports/tea-audit-work/legal-scope-peer-review/et-source-provenance.json"
+    ],
+    "foodConformityAccessNotes": "Complete FAO-hosted Gazette law and 2023 agency regulation downloaded; article 10 visually verified because PDF OCR is poor. Ministry of Justice labels 1112/2019 in force. Personal medical/supplement exceptions and customs tax allowances were not extended to ordinary tea.",
+    "officialOnlineRecovery": {
+      "code": "ET",
+      "outcome": "unresolved",
+      "outcomeChanged": false,
+      "finding": "Read current Ministry of Justice Coffee and Tea Authority registered-directive index, including 2026 entries. The available directive titles concern coffee marketing/quality control or spices, not an operative private tea import rule. An EFDA 2023–2026 implementation plan describes future regulatory work rather than an enacted private-food exception.",
+      "remainingEvidence": "Current implementing risk category or sufficient-processing rule under Plant Protection Proclamation 1400/2026; no automatic private postal exemption established.",
+      "sources": [
+        "et-teaauthority-directives.html"
+      ]
+    },
+    "officialOnlineRecoveryFiles": [
+      "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/et-teaauthority-directives.html"
+    ]
+  },
+  {
+    "code": "GN",
+    "status": "not_verified",
+    "rule": "The NPPO’s published PR01-23 import-permit procedure requires an application, risk analysis and origin phytosanitary or disinsection certification for goods within its plant/plant-product scope. It expressly cites ISPM/NIMP 5 and 32. Neither it nor Law L/92/027 assigns manufactured steamed tea to a risk category; the law limits manufactured-product coverage by pest risk.",
+    "personalMailApplicability": "No tea-specific personal postal allowance located.",
+    "quantityLimit": null,
+    "authority": "Guinea NPPO law filed with IPPC",
+    "evidenceUrls": [
+      "https://assets.ippc.int/static/media/files/reportingobligation/2021/11/29/Loi_Phytosanitaire_République_de_Guinée.pdf",
+      "https://agriculture.gov.gn/wp-content/uploads/2023/01/PROCEDURE-DELIVRANCE-PERMIS-D-IMPORTATION.pdf",
+      "https://magel.gov.gn/file/2023/01/PROCEDURE-DELIVRANCE-PERMIS-D-IMPORTATION.pdf",
+      "https://service-public.gov.gn/ova_sev/delivrance-dun-permis-dimportation/",
+      "https://oncq-guinee.com/service/controle-des-denrees-alimentaires-a-limportation/",
+      "https://service-public.gov.gn/ova_sev/demande-dautorisation-dimportation-de-bien-ou-marchandise/",
+      "https://guineelex.com/lois/loi-l-2021-033-an",
+      "https://guineelex.com/decrets-arretes/decret-d-2021-237-prg-sgg",
+      "https://www.bniq.gov.gn/wp-content/uploads/2026/05/Arrete-A2024920MCIPMECABSGG-%E2%80%94-Inspection-et-quarantaine-des-produits-entrants-et-sortants.pdf",
+      "https://www.bniq.gov.gn/wp-content/uploads/2026/04/Inspection-et-Quarantaine-aux-entrees-et-sorties-en-Guinee-Plate-forme-de-Declaration-Manuel-dutilisation.pdf",
+      "https://www.bniq.gov.gn/documents/",
+      "https://www.bniq.gov.gn/20260212-2/"
+    ],
+    "remainingQuestion": "The new signed 2024 BNIQ order establishes a special declaration/origin-document route for covered goods, but Article 3 transport scope and the Article 4 non-sale/noncommercial exception leave applicability to this paid private postal order unresolved. Independent plant-law pest-risk classification remains missing. Do not infer a private certificate duty from the company-only platform manual, or infer a plant-health waiver from an inspection exception.",
+    "researchAttempts": [
+      "OCR-read articles 2 and 7 of the law; searched tea and small-consignment implementing rules.",
+      "Read the complete two-page national procedure PR01-23, including its risk-analysis step, origin documentation and references to NIMP 5/32. Checked the government services portal and agriculture procedures index. No tea-specific category or personal-post waiver located.",
+      "30 September final primary-scope review: National procedure PR01-23 section 4 lists NIMP 5 and NIMP 32 as reference documents. It contains no operative clause adopting a particular low-risk category as a permit/certificate exemption. Section 3.2 compares origin pests with the national quarantine list after the application; section 3.3 still specifies origin phytosanitary or disinsection documentation. No new national classification settling steamed sencha was located.",
+      "30 September independent food/conformity pass: The current ONCQ official food-import page describes documentary checks at commercial port/container and airport entry points including origin, quality and fumigation certificates. Government import-authorization service says natural/legal persons but requires company register, merchant card, tax identifier and ONCQ quality certificate. Neither describes a private postal order. A newly located legal-database text of Law L/2021/033/AN contains broad import scope and article 40 industrial-food control before release authorization, but a complete authenticated Gazette copy and personal implementation were not recovered. Official ONCQ and government services pages read through their current search index. GuineeLex direct retrieval returned403; indexed provisions were read as a legislative lead, not treated as complete authenticated primary text. Its reported promulgation is Decree D/2021/237/PRG/SGG of 21 July 2021.",
+      "30 September bounded independent scope continuation: Recovered the complete six-page signed BNIQ Order A/2024/920 from the official document library and the complete platform manual. Rendered all order pages, OCR-read all provisions, and visually checked Articles 2–6 plus the stamped 10 June 2024 signature date. Read manual printed pages 5, 8 and 44–46 on company registration/import declarations. The order is effective on signature under Article 13; BNIQ's 12 February 2026 news describes continuing coordination and planned pilot rollout, so full national operational implementation is not inferred from publication alone. Checked the operative exceptions rather than treating paid sale or final-consumer use as determinative in isolation. No outcome change."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "The new signed 2024 BNIQ order establishes a special declaration/origin-document route for covered goods, but Article 3 transport scope and the Article 4 non-sale/noncommercial exception leave applicability to this paid private postal order unresolved. Independent plant-law pest-risk classification remains missing. Do not infer a private certificate duty from the company-only platform manual, or infer a plant-health waiver from an inspection exception.",
+    "permitFreeSources": [
+      "https://assets.ippc.int/static/media/files/reportingobligation/2021/11/29/Loi_Phytosanitaire_République_de_Guinée.pdf",
+      "https://agriculture.gov.gn/wp-content/uploads/2023/01/PROCEDURE-DELIVRANCE-PERMIS-D-IMPORTATION.pdf",
+      "https://magel.gov.gn/file/2023/01/PROCEDURE-DELIVRANCE-PERMIS-D-IMPORTATION.pdf",
+      "https://service-public.gov.gn/ova_sev/delivrance-dun-permis-dimportation/",
+      "https://oncq-guinee.com/service/controle-des-denrees-alimentaires-a-limportation/",
+      "https://service-public.gov.gn/ova_sev/demande-dautorisation-dimportation-de-bien-ou-marchandise/",
+      "https://guineelex.com/lois/loi-l-2021-033-an",
+      "https://guineelex.com/decrets-arretes/decret-d-2021-237-prg-sgg",
+      "https://www.bniq.gov.gn/wp-content/uploads/2026/05/Arrete-A2024920MCIPMECABSGG-%E2%80%94-Inspection-et-quarantaine-des-produits-entrants-et-sortants.pdf",
+      "https://www.bniq.gov.gn/wp-content/uploads/2026/04/Inspection-et-Quarantaine-aux-entrees-et-sorties-en-Guinee-Plate-forme-de-Declaration-Manuel-dutilisation.pdf",
+      "https://www.bniq.gov.gn/documents/",
+      "https://www.bniq.gov.gn/20260212-2/"
+    ],
+    "independentFoodConformityRule": "The current ONCQ official food-import page describes documentary checks at commercial port/container and airport entry points including origin, quality and fumigation certificates. Government import-authorization service says natural/legal persons but requires company register, merchant card, tax identifier and ONCQ quality certificate. Neither describes a private postal order. A newly located legal-database text of Law L/2021/033/AN contains broad import scope and article 40 industrial-food control before release authorization, but a complete authenticated Gazette copy and personal implementation were not recovered. The signed Order A/2024/920/MCIPME/CAB/SGG of 10 June 2024 is now recovered from the official BNIQ library. Article 2 includes imports for final-consumer use; Article 3 limits its stated scope to merchandise transported in containers, trucks and other international rolling transport. Article 4 begins with an exemption statement, then says samples, gifts, objects not intended for sale and other noncommercial articles may be exempt. Article 5 excludes Article 4 goods from its separate electronic inspection declaration. For covered imports Article 6 requires foreign quality or quality-assurance certificates and, for plants and their products, origin official quarantine certificates. These are independent origin-document duties, unlike the positive arrival inspection report issued under Articles 10–12. The order does not expressly settle its Article 3 transport scope or Article 4 exception for a paid private air-post tea parcel. Its own plant-product provision also does not define manufactured tea. The BNIQ manual describes company registration with RCCM and NIF, not a private-post procedure.",
+    "foodConformitySourceFiles": [
+      "docs/reports/tea-audit-work/food-conformity-second-sources/eight-country-food-scope-review.json",
+      "docs/reports/tea-audit-work/africa-scope-continuation-sources/gn-inspection2024.pdf",
+      "docs/reports/tea-audit-work/africa-scope-continuation-sources/gn-inspection2024-ocr.txt",
+      "docs/reports/tea-audit-work/africa-scope-continuation-sources/gn-manual2026.pdf",
+      "docs/reports/tea-audit-work/africa-scope-continuation-sources/gn-manual2026.txt",
+      "docs/reports/tea-audit-work/africa-scope-continuation-sources/review-notes.json",
+      "docs/reports/tea-audit-work/africa-scope-continuation-sources/source-provenance.json"
+    ],
+    "foodConformityAccessNotes": "Official ONCQ and government services pages read through their current search index. GuineeLex direct retrieval returned403; indexed provisions were read as a legislative lead, not treated as complete authenticated primary text. Its reported promulgation is Decree D/2021/237/PRG/SGG of 21 July 2021. The new 2024 order and BNIQ platform manual were retrieved in full as PDFs from official gov.gn publication links, despite some BNIQ HTML routes returning403. The order is a signed scan; OCR was visually checked on relevant pages. Company workflow and rollout context do not establish private postal scope."
+  },
+  {
+    "code": "GQ",
+    "status": "not_verified",
+    "rule": "No destination authority's current commodity rule was located that establishes the agricultural admissibility of a sealed personal tea parcel.",
+    "personalMailApplicability": "A tariff heading or postal service alone does not establish agricultural clearance.",
+    "quantityLimit": null,
+    "authority": "Equatorial Guinea NPPO / IPPC country file",
+    "evidenceUrls": [
+      "https://www.ippc.int/en/countries/equatorial-guinea/",
+      "https://www.guineaecuatorialpress.com/index.php/noticias/decreto_por_el_que_se_adoptan_medidas_de_regulacion_comercial_en_las_fronteras_terrestres_entre_guinea_ecuatorial_camerun_y_gabon",
+      "https://www.guineaecuatorialpress.com/noticias/orden_por_la_que_se_aprueba_sistema_aduanero_automatizado_para_la_tramitacion_de_los_procedimientos_relativos_a_la_entrada_y_salida_de_mercancias",
+      "https://slpost.gov.lk/documents/ListOfProhibitedArticles2025-09-25.pdf"
+    ],
+    "remainingQuestion": "A current published plant-health rule classifying manufactured tea and specifying personal postal conditions was not located.",
+    "researchAttempts": [
+      "Searched official and IPPC sources in Spanish, French and English for tea, manufactured plant products, phytosanitary requirements and personal parcels; found no dispositive rule.",
+      "Checked current NPPO country file and searched Spanish/French official legislation and government information. Read the official regional land-border decree: livestock certificate clauses and CEMAC tax concessions cannot be applied to Japanese tea by post. Checked the country’s February 2024 postal return in the UPU compilation: it excludes unauthorized restricted items but offers no tea or processed-food exemption."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "No affirmative destination-specific no-document rule was located. Official regional land-border and customs measures do not determine the rules for a Japanese personal postal tea parcel, and the postal list preserves all underlying restrictions.",
+    "permitFreeSources": [
+      "https://www.ippc.int/en/countries/equatorial-guinea/",
+      "https://www.guineaecuatorialpress.com/index.php/noticias/decreto_por_el_que_se_adoptan_medidas_de_regulacion_comercial_en_las_fronteras_terrestres_entre_guinea_ecuatorial_camerun_y_gabon",
+      "https://www.guineaecuatorialpress.com/noticias/orden_por_la_que_se_aprueba_sistema_aduanero_automatizado_para_la_tramitacion_de_los_procedimientos_relativos_a_la_entrada_y_salida_de_mercancias",
+      "https://slpost.gov.lk/documents/ListOfProhibitedArticles2025-09-25.pdf"
+    ]
+  },
+  {
+    "code": "GW",
+    "status": "not_verified",
+    "rule": "Decree-Law 4/99 article 2(b) covers unprocessed plant products or products subjected to simple preparation. Articles 7–8 establish inspection and a prior import licence for covered goods. Unlike the explicit drying examples in several neighbouring laws, this definition does not specify the processing category that covers steamed/dried manufactured tea; no national commodity annex resolving it was located.",
+    "personalMailApplicability": "No private-post exemption was found, but the commodity scope of the licensing rule for manufactured tea remains unverified.",
+    "quantityLimit": null,
+    "authority": "Guinea-Bissau legislation, FAOLEX copy",
+    "evidenceUrls": [
+      "https://faolex.fao.org/docs/pdf/gbs23411.pdf",
+      "https://www.fao.org/faolex/country-profiles/general-profile/en/?iso3=GNB",
+      "https://www.wto.org/french/tratop_f/tpr_f/s362-04_f.pdf",
+      "https://faolex.fao.org/docs/pdf/gbs117287.pdf",
+      "https://faolex.fao.org/docs/pdf/gbs118159.pdf"
+    ],
+    "remainingQuestion": "An operative implementing provision requiring or exempting special documents for this private postal food import remains missing; the independent food law does not close the plant-law simple-preparation classification.",
+    "researchAttempts": [
+      "Read articles 2,7,8 and searched processed-tea and postal exceptions.",
+      "Independently reread article 2(b) and articles 7–8; checked the current FAO country-profile listing and searched tea-specific rules in Portuguese and English. No operative tea classification or postal waiver was located; did not treat commercial export documentation or other countries' quarantine rules as Guinea-Bissau import rules.",
+      "30 September final primary-scope review: The 2017 WTO review Table 3.5 expressly associates the general plants/plant-products category with prior agricultural authorization and origin phytosanitary certification. Its stated exceptions concern active substances in phytopharmaceutical products, not processed food. Section 3.38 likewise gives a general SPS-certificate account. These corroborate the controlled pathway but do not classify sencha under the national simple-preparation definition or supply a personal-post exemption. No new current national commodity list was found.",
+      "30 September independent food/conformity pass: Downloaded Gazette Decree 62-E/1992 of 30 December 1992, Regime do Controlo Sanitário dos Géneros Alimentícios. Article 1 includes food imports; article 2 includes treated/processed foods. Articles 10–11 delegate inspection methods, administrative documents and import conditions to implementing regulation. Article 14 likewise leaves food-quality certification to a specific regulation. These enabling provisions do not themselves prove a mandatory private-import certificate. Complete Gazette extract downloaded from FAOLEX and text read. The file also contains tail material from a preceding tourism law, which was kept separate. No newer implementing certificate rule for private tea located.",
+      "30 September fresh official-online recovery: New actual Gazette recovery: Decree-Law 8/2011 of 10 May, Article 10(1)(a) abolishes BRPI/BRPE prior import/export forms; 10(2) replaces them with a written declaration lodged with Customs. Article 10(3) preserves special regulated-activity requirements. This defeats relying on the repealed general prior form as a separate-doc barrier, but does not override Decree-Law 4/99 plant-health conditions or settle steamed-tea simple-preparation scope."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "An operative implementing provision requiring or exempting special documents for this private postal food import remains missing; the independent food law does not close the plant-law simple-preparation classification.",
+    "permitFreeSources": [
+      "https://faolex.fao.org/docs/pdf/gbs23411.pdf",
+      "https://www.fao.org/faolex/country-profiles/general-profile/en/?iso3=GNB",
+      "https://faolex.fao.org/docs/pdf/gbs117287.pdf",
+      "https://faolex.fao.org/docs/pdf/gbs118159.pdf"
+    ],
+    "independentFoodConformityRule": "Downloaded Gazette Decree 62-E/1992 of 30 December 1992, Regime do Controlo Sanitário dos Géneros Alimentícios. Article 1 includes food imports; article 2 includes treated/processed foods. Articles 10–11 delegate inspection methods, administrative documents and import conditions to implementing regulation. Article 14 likewise leaves food-quality certification to a specific regulation. These enabling provisions do not themselves prove a mandatory private-import certificate.",
+    "foodConformitySourceFiles": [
+      "docs/reports/tea-audit-work/food-conformity-second-sources/gw-foodcontrol.pdf",
+      "docs/reports/tea-audit-work/food-conformity-second-sources/gw-foodcontrol.txt",
+      "docs/reports/tea-audit-work/food-conformity-second-sources/eight-country-food-scope-review.json"
+    ],
+    "foodConformityAccessNotes": "Complete Gazette extract downloaded from FAOLEX and text read. The file also contains tail material from a preceding tourism law, which was kept separate. No newer implementing certificate rule for private tea located.",
+    "officialOnlineRecovery": {
+      "code": "GW",
+      "outcome": "unresolved",
+      "outcomeChanged": false,
+      "finding": "New actual Gazette recovery: Decree-Law 8/2011 of 10 May, Article 10(1)(a) abolishes BRPI/BRPE prior import/export forms; 10(2) replaces them with a written declaration lodged with Customs. Article 10(3) preserves special regulated-activity requirements. This defeats relying on the repealed general prior form as a separate-doc barrier, but does not override Decree-Law 4/99 plant-health conditions or settle steamed-tea simple-preparation scope.",
+      "remainingEvidence": "Whether steamed/dried sencha is covered by the plant-law definition of unprocessed or simply prepared plant products, and any operative personal-food documents beyond ordinary customs.",
+      "sources": [
+        "gw-tradesimplification2011.pdf"
+      ]
+    },
+    "officialOnlineRecoveryFiles": [
+      "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/gw-tradesimplification2011.pdf"
+    ]
+  },
+  {
+    "code": "KM",
+    "status": "not_verified",
+    "rule": "Law 17-004/AU of 2017 imposes permission/certification requirements for regulated plant goods, including post, with manufactured products defined by pest risk. Food Law 17-005/AU expressly includes personal-use food (article 6(I)(g)), but its examined certificate provisions concern specific animal products and import businesses; it does not resolve a certificate requirement for plain manufactured tea.",
+    "personalMailApplicability": "Post is expressly covered under Plant Law article 59 when goods are regulated. Food Law article 6 includes personal use, so private consumption cannot be treated as a blanket exemption from food rules; manufactured-tea classification remains unsettled.",
+    "quantityLimit": null,
+    "authority": "Comoros Ministry of Justice; Plant Protection Law 2017",
+    "evidenceUrls": [
+      "https://justice.gouv.km/wp-content/uploads/2025/03/decret-n-17-103pr-du-5-octobre-2917-promulguant-la-loi-n-17-004au-portant-protection-des-vegetaux-aux-comores.pdf",
+      "https://justice.gouv.km/texte/decret-n17-103-pr-du-5-octobre-2017-promulguant-la-loi-n17-004-au-portant-protection-des-vegetaux-aux-comores/",
+      "https://justice.gouv.km/wp-content/uploads/2025/03/loi-n-17-005au-du-10-juin-2017-portant-legislation-alimentaire-en-union-des-comores.pdf",
+      "https://douane.gov.km/produits%20interdits.php",
+      "https://www.wto.org/english/thewto_e/acc_e/com_e/WT_ACC_COM_37_LEG1.pdf",
+      "https://www.wto.org/english/thewto_e/acc_e/com_e/WT_ACC_COM_37_LEG7.pdf",
+      "https://justice.gouv.km/texte/loi-n21%E2%80%90013-au-du-29-juin-2021-sur-le-commerce-exterieur-promulguee-par-le-decret-n22%E2%80%90004-pr-du-18-janvier-2022/",
+      "https://justice.gouv.km/wp-content/uploads/2025/03/code_des_douanes_union_des_comores_2024.pdf",
+      "https://justice.gouv.km/wp-content/uploads/2025/03/loi-n-11-001au-du-26-mars-2011-portant-code-de-la-sante-2011.pdf"
+    ],
+    "remainingQuestion": "An adopted operative control list/method establishing the specific document duty or exemption for manufactured tea in private post remains missing. General technical-control powers do not establish an extra certificate obligation.",
+    "researchAttempts": [
+      "Compared the old 2006 law in FAOLEX with the newer 2017 law from the Ministry of Justice; read article 3 definition and articles 44,46,59; searched implementing tea conditions.",
+      "Read Food Law 17-005/AU article 6 personal-use scope and articles 57–73 certification provisions; did not extend animal-product certificates to plain tea. Checked customs restricted goods. Examined WTO-filed 2022 technical-control and special-authorization drafts: their instrument numbers/dates are blank, so they are not proof of enacted exemptions; the organic-product provision inspected was an export provision.",
+      "30 September independent food/conformity pass: The Ministry of Justice publishes adopted Law 21-013/AU of 29 June 2021 on foreign trade, promulgated by Decree 22-004/PR of 18 January 2022. Articles 16–19 require customs/technical controls but delegate product lists, methods and competent administrations to separate regulations. The2024 Ministry-hosted consolidated Customs Code preserves food/plant restrictions in transit provisions; it does not supply the missing private-tea import certificate rule. Previously reviewed 2022 blank-number/date drafts were not promoted to enacted law. Official Ministry source-index text read for articles 16–19 and current Customs Code excerpt. Direct full trade-law page retrieval failed; no new full adopted implementing instrument was downloaded.",
+      "30 September fresh official-online recovery: Recovered full Health Code 2011 directly from Justice Ministry. Articles 41–46 cover food hygiene; Article 43 prior authorization is specific to food additives, while Article 46 delegates standards/protection measures. Plain sencha is not thereby shown to require the additive approval. These provisions do not establish a private postal food-certificate duty."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "An adopted operative control list/method establishing the specific document duty or exemption for manufactured tea in private post remains missing. General technical-control powers do not establish an extra certificate obligation.",
+    "permitFreeSources": [
+      "https://justice.gouv.km/wp-content/uploads/2025/03/decret-n-17-103pr-du-5-octobre-2917-promulguant-la-loi-n-17-004au-portant-protection-des-vegetaux-aux-comores.pdf",
+      "https://justice.gouv.km/texte/decret-n17-103-pr-du-5-octobre-2017-promulguant-la-loi-n17-004-au-portant-protection-des-vegetaux-aux-comores/",
+      "https://justice.gouv.km/wp-content/uploads/2025/03/loi-n-17-005au-du-10-juin-2017-portant-legislation-alimentaire-en-union-des-comores.pdf",
+      "https://douane.gov.km/produits%20interdits.php",
+      "https://www.wto.org/english/thewto_e/acc_e/com_e/WT_ACC_COM_37_LEG1.pdf",
+      "https://www.wto.org/english/thewto_e/acc_e/com_e/WT_ACC_COM_37_LEG7.pdf",
+      "https://justice.gouv.km/texte/loi-n21%E2%80%90013-au-du-29-juin-2021-sur-le-commerce-exterieur-promulguee-par-le-decret-n22%E2%80%90004-pr-du-18-janvier-2022/",
+      "https://justice.gouv.km/wp-content/uploads/2025/03/code_des_douanes_union_des_comores_2024.pdf",
+      "https://justice.gouv.km/wp-content/uploads/2025/03/loi-n-11-001au-du-26-mars-2011-portant-code-de-la-sante-2011.pdf"
+    ],
+    "independentFoodConformityRule": "The Ministry of Justice publishes adopted Law 21-013/AU of 29 June 2021 on foreign trade, promulgated by Decree 22-004/PR of 18 January 2022. Articles 16–19 require customs/technical controls but delegate product lists, methods and competent administrations to separate regulations. The2024 Ministry-hosted consolidated Customs Code preserves food/plant restrictions in transit provisions; it does not supply the missing private-tea import certificate rule. Previously reviewed 2022 blank-number/date drafts were not promoted to enacted law.",
+    "foodConformitySourceFiles": [
+      "docs/reports/tea-audit-work/food-conformity-second-sources/eight-country-food-scope-review.json"
+    ],
+    "foodConformityAccessNotes": "Official Ministry source-index text read for articles 16–19 and current Customs Code excerpt. Direct full trade-law page retrieval failed; no new full adopted implementing instrument was downloaded.",
+    "officialOnlineRecovery": {
+      "code": "KM",
+      "outcome": "unresolved",
+      "outcomeChanged": false,
+      "finding": "Recovered full Health Code 2011 directly from Justice Ministry. Articles 41–46 cover food hygiene; Article 43 prior authorization is specific to food additives, while Article 46 delegates standards/protection measures. Plain sencha is not thereby shown to require the additive approval. These provisions do not establish a private postal food-certificate duty.",
+      "remainingEvidence": "Operative 2017 plant/food law implementation and controlled-commodity/private-post scope; fresh general hygiene clauses do not decide it.",
+      "sources": [
+        "km-health2011.pdf"
+      ]
+    },
+    "officialOnlineRecoveryFiles": [
+      "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/km-health2011.pdf"
+    ]
+  },
+  {
+    "code": "MZ",
+    "status": "not_verified",
+    "rule": "Decree 5/2009 regulates manufactured plant products where pest risk remains. Tea entries concerning rooted plants or propagation do not resolve finished tea. The ministry's public import-requirement search returned no Japan/consumption products in either consumption category; an empty result is not approval.",
+    "personalMailApplicability": "A direct Japan Post parcel is within the express postal-parcel PAC exception. No passenger/gift-only rule was extended to this sale. Separate plant-health treatment remains unresolved.",
+    "quantityLimit": null,
+    "authority": "Mozambique Ministry of Agriculture import-requirement portal; phytosanitary decree",
+    "evidenceUrls": [
+      "https://geoportal.agricultura.gov.mz/en/imp_req.html",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/mz_2009-5cons2019_pqreg_en.pdf",
+      "https://faolex.fao.org/docs/pdf/moz221794.pdf",
+      "https://www.innoq.gov.mz/?download_id=1435&sdm_process_download=1",
+      "https://www.innoq.gov.mz/wp-content/uploads/2024/07/BROCHURA-PERGUNTAS-MAIS-FREQUENTE-PAC-MAR%C3%87O-2024.pdf",
+      "https://www.masa.gov.mz/wp-content/uploads/2018/01/Decreto_5_2009_regulamento_fitosanitario.pdf"
+    ],
+    "remainingQuestion": "A published current Japan-origin manufactured-green-tea plant-health classification or personal postal exemption is still missing; the PAC postal exemption does not resolve that separate question.",
+    "researchAttempts": [
+      "Read decree and tea propagation entries; queried the public portal for Japan and both consumption categories on 2026-09-29.",
+      "30 September: read the public commodity catalogue (140 products) and found Camelia sinensis, product 6949, labelled Tea tree. Direct Japan/consumption queries for this commodity returned no available form under either consumption purpose (21 and 27). The catalogue flag isImportValid is not a country-specific permission and was not treated as one.",
+      "30 September independent food/conformity review: Downloaded and read the actual two-page Gazette Diploma Ministerial 98/2023 (not 97/2023), including article 4 postal, gift, sample and low-value exemptions. Checked the official INNOQ March2024 FAQ as context. Kept the separate manufactured-plant pest-risk classification unresolved.",
+      "30 September fresh official-online recovery: Recovered complete Decree 5/2009 plant-health regulation and Annex 1 from the Ministry host. Article 12(2) requires prior authorization after risk analysis for controlled products not specified in Annex 1. Thus absence of a finished-tea entry is not an exhaustive-schedule exemption. Article 1 manufactured-product coverage still depends on pest risk. Independent 2023 conformity-programme postal exemption from prior review remains valid but does not waive plant-health rules."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "The independent conformity route does not justify exclusion: the actual enacted PAC rule expressly exempts postal parcels. That exemption does not decide whether steamed/dried tea is a regulated manufactured plant product under Decree 5/2009. The phytosanitary classification remains unresolved; conformity exemption alone is not overall shipment approval.",
+    "permitFreeSources": [
+      "https://geoportal.agricultura.gov.mz/en/imp_req.html",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/mz_2009-5cons2019_pqreg_en.pdf",
+      "https://faolex.fao.org/docs/pdf/moz221794.pdf",
+      "https://www.innoq.gov.mz/?download_id=1435&sdm_process_download=1",
+      "https://www.innoq.gov.mz/wp-content/uploads/2024/07/BROCHURA-PERGUNTAS-MAIS-FREQUENTE-PAC-MAR%C3%87O-2024.pdf",
+      "https://www.masa.gov.mz/wp-content/uploads/2018/01/Decreto_5_2009_regulamento_fitosanitario.pdf"
+    ],
+    "independentFoodConformityRule": "Diploma Ministerial 98/2023, published in the official Gazette on 14 July 2023, article 4 explicitly excludes postal parcels from the PAC conformity-assessment programme. It separately excludes personal gifts, commercial samples and products with FOB value up to USD2,000. This instrument does not impose an application for its postal exception.",
+    "foodConformitySourceFiles": [
+      "docs/reports/tea-audit-work/food-conformity-sources/mz-pac98-2023.pdf",
+      "docs/reports/tea-audit-work/food-conformity-sources/mz-pac98-2023.txt"
+    ],
+    "foodConformityAccessNotes": "The enacted Gazette PDF was downloaded from FAOLEX. The official INNOQ document link confirms provenance but direct INNOQ attempts returned access/security pages; those pages are not treated as retrieved document content.",
+    "officialOnlineRecovery": {
+      "code": "MZ",
+      "outcome": "unresolved",
+      "outcomeChanged": false,
+      "finding": "Recovered complete Decree 5/2009 plant-health regulation and Annex 1 from the Ministry host. Article 12(2) requires prior authorization after risk analysis for controlled products not specified in Annex 1. Thus absence of a finished-tea entry is not an exhaustive-schedule exemption. Article 1 manufactured-product coverage still depends on pest risk. Independent 2023 conformity-programme postal exemption from prior review remains valid but does not waive plant-health rules.",
+      "remainingEvidence": "National manufactured-tea risk classification or sufficient-processing rule; generic list omission cannot close it.",
+      "sources": [
+        "mz-phytoreg2009.pdf"
+      ]
+    },
+    "officialOnlineRecoveryFiles": [
+      "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/mz-phytoreg2009.pdf"
+    ]
+  },
+  {
+    "code": "SL",
+    "status": "not_verified",
+    "rule": "The 1976 Plant Phytosanitary (Import Restriction) Notice expressly extends vegetative material, seeds and fruit to dried, frozen and chilled goods, but excludes goods described as cooked, or pickled and imported in bottles or cans. The actual printed item 64 contains the awkward wording \"and mentioned herein\" and requires certificates; it must not be silently rewritten as \"not mentioned\". The tea entry names vegetative material and seeds, not finished retail sencha. For this steamed product, whether the cooking exception applies and how the container qualification operates remain unresolved. The 2025 WTO review confirms the 1974 rules as amended in 1976 remain the operative starting point.",
+    "personalMailApplicability": "The retrieved business-registration/for-sale food-import provisions were not extended to the private end consumer. Final enacted operative wording and a personal-post implementation rule were not recovered.",
+    "quantityLimit": null,
+    "authority": "Sierra Leone gazetted plant-import regulations",
+    "evidenceUrls": [
+      "https://archive.gazettes.africa/archive/sl/1976/sl-government-gazette-dated-1976-02-19-no-14.pdf",
+      "https://www.wto.org/english/tratop_e/tpr_e/s470_e.pdf",
+      "https://archive.gazettes.africa/archive/sl/1976/sl-government-gazette-dated-1976-02-12-no-13.pdf",
+      "https://faolex.fao.org/docs/pdf/sie216530.pdf",
+      "https://www.parliament.gov.sl/uploads/bill_files/The%20Food%20and%20Feed%20Safety%20Authority%20Act%2C%202017.pdf",
+      "https://slsb.gov.sl/inspectorate-overview/",
+      "https://slsb.gov.sl/product-certification/",
+      "https://faolex.fao.org/docs/pdf/sie216504.pdf"
+    ],
+    "remainingQuestion": "Does manufactured steamed/dried sencha qualify as cooked material excluded from the Notice, and does the bottle/can qualification attach to cooked goods as well as pickled goods? What rule is applied to sealed retail pouches in private post?",
+    "researchAttempts": [
+      "Reviewed the gazetted tea entry and searched newer plant-quarantine legislation and processed-tea/personal-post guidance.",
+      "30 September: read WTO 2025 report paragraphs 3.88–3.94, distinguishing current rules from a proposed replacement. Retrieved indexed primary notice text including its dried-material/cooked-bottled-or-canned distinction and catch-all item 64; the original PDF download was unavailable (403), so ambiguous OCR of item 64 was not used as a conclusive new rule. The full 1974 rules and an authoritative manufactured-tea interpretation were not retrieved.",
+      "Downloaded the 19 February 1976 Gazette directly and visually verified printed pages 252 and 254 (PDF pages 12 and 14), after browser retrieval failures. Item 64 literally prints \"and mentioned herein\"; the unusual wording is not an OCR error. Verified the cooking/pickling/container exception in the introductory paragraph. Because sencha is steamed before drying, did not collapse the analysis to the explicit dried category or assume that every cooked product must be bottled. Rechecked 2025 WTO review sections 3.88–3.94 for current legal context.",
+      "30 September independent food/conformity review: Read the complete public Food and Feed Safety bill, separating section30 business registration and section33 imports for domestic sale from a private postal order. Checked current SLSB inspection/product-certification descriptions, WTO2025 implementation context and the later enacted Breast-Milk Substitutes Act reference to food-safety legislation. Did not treat the bill’s blank adoption metadata as proof that the food law never took effect, or extend commercial product-mark certification to every private shipment."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "Neither the available food-law text nor official conformity guidance establishes an additional certificate/registration duty for this private postal purchase. The retrieved bill’s business and for-sale clauses cannot be applied as if the recipient resells the tea. The separate 1976 plant-rule ambiguity over steamed/cooked goods remains unresolved; ordinary arrival inspection is not itself disqualifying.",
+    "permitFreeSources": [
+      "https://archive.gazettes.africa/archive/sl/1976/sl-government-gazette-dated-1976-02-19-no-14.pdf",
+      "https://www.wto.org/english/tratop_e/tpr_e/s470_e.pdf",
+      "https://archive.gazettes.africa/archive/sl/1976/sl-government-gazette-dated-1976-02-12-no-13.pdf",
+      "https://faolex.fao.org/docs/pdf/sie216530.pdf",
+      "https://www.parliament.gov.sl/uploads/bill_files/The%20Food%20and%20Feed%20Safety%20Authority%20Act%2C%202017.pdf",
+      "https://slsb.gov.sl/inspectorate-overview/",
+      "https://slsb.gov.sl/product-certification/",
+      "https://faolex.fao.org/docs/pdf/sie216504.pdf"
+    ],
+    "independentFoodConformityRule": "The publicly retrievable Food and Feed Safety Act 2017 text labels itself a Bill, with unfilled enactment metadata. Its section 30 importer registration is expressly for import/export businesses, and section 33 food-import requirements are framed around imports for sale within Sierra Leone. The text therefore does not establish a special certificate duty for this private purchaser. WTO2025 reports adoption and later enacted legislation references the food-safety Act, so an unavailable final copy must not be described as proof that no law was enacted. Current SLSB material describes arrival inspection/testing, not a verified separate pre-import certificate duty for private tea parcels.",
+    "foodConformitySourceFiles": [
+      "docs/reports/tea-audit-work/food-conformity-sources/sl-food2017.pdf",
+      "docs/reports/tea-audit-work/food-conformity-sources/sl-food2017.txt"
+    ],
+    "foodConformityAccessNotes": "The downloadable FAO/Parliament 2017 text is explicitly a Bill, not a verified final promulgated version. WTO2025 and the 2021 enacted cross-reference demonstrate that food-safety legislation exists, but do not establish an unqualified private-import document duty in the unavailable final text."
+  },
+  {
+    "code": "TG",
+    "status": "not_verified",
+    "rule": "Law 96-007 includes dried plant products, but articles 28–29 leave permits and accompanying documents subject to implementing prescriptions. Decree 98-099 articles 27–28 likewise defer the commodity conditions to ministerial orders. The operative Ministry-hosted fee order of 2 August 2011 expressly lists imported tea among foodstuffs subject to inspection, so processed tea cannot be assumed outside plant-health controls. That fee list does not itself establish which special document a 100 g private postal parcel needs. The official permit application accommodates postal entry, but a form alone does not prove that every inspected food needs a permit.",
+    "personalMailApplicability": "The official permit form expressly accommodates postal imports; no general postal exemption is established. Whether that permit is required for the scoped tea has not been resolved by the published fee schedule or general law.",
+    "quantityLimit": null,
+    "authority": "Togo official trade portal; phytosanitary law",
+    "evidenceUrls": [
+      "https://togotrade.gouv.tg/media/LOI%20N%C2%B0%2096%20-%20007-%20PR%20relative%20%C3%A0%20la%20protection%20des%20v%C3%A9g%C3%A9taux.pdf",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/tg3-1998-099pqreg_fr.pdf",
+      "https://agriculture.gouv.tg/wp-content/uploads/2020/08/ARRETE-INTERMINISTERIEL-PORTANT-TARIFICATION-DES-PRESTATIONS-PAYANTES-A-LA-DIRECTION-DE-LA-PROTECTION-DES-VEGETAUX.pdf",
+      "https://agriculture.gouv.tg/wp-content/uploads/2020/08/FICHE-DE-DEMANDE-DU-PERMIS-DIMPORTATION-DES-VEGETAUX-ET-PRODUITS-VEGETAUX.pdf",
+      "https://faolex.fao.org/docs/pdf/tog238369.pdf",
+      "https://jo.gouv.tg/sites/default/files/JO/JOS_24_07_2020-65E%20ANNEE%2025TER.pdf",
+      "https://commerce.gouv.tg/wp-content/uploads/2025/02/Rapport_pays_SC_version_validee.pdf",
+      "https://togotrade.gouv.tg/menu/38",
+      "https://togotrade.gouv.tg/media/ETAPES%20A%20SUIVRE%20POUR%20SE%20LANCER%20DANS%20LE%20COMMERCE%20ELECTRONIQUE%20TRANSFRONTALIER.pdf"
+    ],
+    "remainingQuestion": "Whether the order’s prior declaration applies to personal postal food purchases, with a non-business procedure or exemption, remains unverified. Do not extend annual business-import authorization to private recipients solely because tea is plant food.",
+    "researchAttempts": [
+      "Read articles 2,28,29 and searched tea/coffee import procedures and personal-use exemptions.",
+      "Downloaded and read Decree 98-099, OCRed the 2011 fee order naming tea and the official postal-capable permit form. Read the 9 February 2024 pest-list order: it updates regulated organisms and interception measures, not a tea-document exemption or requirement. Generic ECOWAS inspection guidance and industrial-port procedures do not settle the private-post scope.",
+      "30 September independent food/conformity pass: Downloaded official Gazette of 24 July 2020, Order 031/MCIDSPPCL/MEF/MAPAH of 17 July 2020. Annex includes foodstuffs of plant origin. Articles 2–7 create a prior declaration/approval process; article 3 asks for annual quantities, three-year imports, a valid company-creation card, economic-operator ID and tax clearance, and article 7 fixes an annual quantity authorization. This is a real special procedure, but its economic-operator context does not establish application to a one-off private postal buyer. Actual Gazette downloaded and articles/annex read, printed pages 9–11. The later government trade-policy report link returned403; it is a current-context locator only, not proof of full text inspected.",
+      "30 September fresh official-online recovery: Recovered newly published official cross-border e-commerce guide linked from Togo Trade Portal. It addresses establishing an online business, NIF/company registration, logistics and compliance with destination rules. It creates neither a retail-customer permit duty nor a private parcel exemption. The portal commodity procedures remain business workflows; no tea procedure was located."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "Whether the order’s prior declaration applies to personal postal food purchases, with a non-business procedure or exemption, remains unverified. Do not extend annual business-import authorization to private recipients solely because tea is plant food.",
+    "permitFreeSources": [
+      "https://togotrade.gouv.tg/media/LOI%20N%C2%B0%2096%20-%20007-%20PR%20relative%20%C3%A0%20la%20protection%20des%20v%C3%A9g%C3%A9taux.pdf",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/tg3-1998-099pqreg_fr.pdf",
+      "https://agriculture.gouv.tg/wp-content/uploads/2020/08/ARRETE-INTERMINISTERIEL-PORTANT-TARIFICATION-DES-PRESTATIONS-PAYANTES-A-LA-DIRECTION-DE-LA-PROTECTION-DES-VEGETAUX.pdf",
+      "https://agriculture.gouv.tg/wp-content/uploads/2020/08/FICHE-DE-DEMANDE-DU-PERMIS-DIMPORTATION-DES-VEGETAUX-ET-PRODUITS-VEGETAUX.pdf",
+      "https://faolex.fao.org/docs/pdf/tog238369.pdf",
+      "https://jo.gouv.tg/sites/default/files/JO/JOS_24_07_2020-65E%20ANNEE%2025TER.pdf",
+      "https://commerce.gouv.tg/wp-content/uploads/2025/02/Rapport_pays_SC_version_validee.pdf",
+      "https://togotrade.gouv.tg/menu/38",
+      "https://togotrade.gouv.tg/media/ETAPES%20A%20SUIVRE%20POUR%20SE%20LANCER%20DANS%20LE%20COMMERCE%20ELECTRONIQUE%20TRANSFRONTALIER.pdf"
+    ],
+    "independentFoodConformityRule": "Downloaded official Gazette of 24 July 2020, Order 031/MCIDSPPCL/MEF/MAPAH of 17 July 2020. Annex includes foodstuffs of plant origin. Articles 2–7 create a prior declaration/approval process; article 3 asks for annual quantities, three-year imports, a valid company-creation card, economic-operator ID and tax clearance, and article 7 fixes an annual quantity authorization. This is a real special procedure, but its economic-operator context does not establish application to a one-off private postal buyer.",
+    "foodConformitySourceFiles": [
+      "docs/reports/tea-audit-work/food-conformity-second-sources/tg-sensitive2020.pdf",
+      "docs/reports/tea-audit-work/food-conformity-second-sources/tg-sensitive2020.txt",
+      "docs/reports/tea-audit-work/food-conformity-second-sources/eight-country-food-scope-review.json"
+    ],
+    "foodConformityAccessNotes": "Actual Gazette downloaded and articles/annex read, printed pages 9–11. The later government trade-policy report link returned403; it is a current-context locator only, not proof of full text inspected.",
+    "officialOnlineRecovery": {
+      "code": "TG",
+      "outcome": "unresolved",
+      "outcomeChanged": false,
+      "finding": "Recovered newly published official cross-border e-commerce guide linked from Togo Trade Portal. It addresses establishing an online business, NIF/company registration, logistics and compliance with destination rules. It creates neither a retail-customer permit duty nor a private parcel exemption. The portal commodity procedures remain business workflows; no tea procedure was located.",
+      "remainingEvidence": "Applicable personal-post food approval scope and the national plant-law classification of processed tea.",
+      "sources": [
+        "tg-ecommerce.html",
+        "tg-ecommerce-guide.pdf"
+      ]
+    },
+    "officialOnlineRecoveryFiles": [
+      "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/tg-ecommerce.html",
+      "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/tg-ecommerce-guide.pdf"
+    ]
+  },
+  {
+    "code": "UG",
+    "status": "not_verified",
+    "rule": "Plant Protection and Health Act manufactured-product coverage depends on pest risk. Implementing SI 4/2020 regulations 3–5 specify application, permit and import procedures, but contain no tea or personal-post exemption. The trade ministry’s separate restricted-import licence list does not name tea; that does not waive plant-health controls.",
+    "personalMailApplicability": "Regulation6 expressly includes personal use. The usual low-value exemption procedure calls for an authority letter, but whether the alternative regulation7 destination-inspection route operates for private post using only routine customs documents is unresolved. Returning-resident personal effects are not this online purchase.",
+    "quantityLimit": null,
+    "authority": "Uganda Plant Protection and Health Act, FAOLEX copy",
+    "evidenceUrls": [
+      "https://faolex.fao.org/docs/pdf/uga158615.pdf",
+      "https://faolex.fao.org/docs/pdf/uga238074.pdf",
+      "https://ulii.org/en/akn/ug/act/si/2020/4/eng%402020-01-24",
+      "https://www.mtic.go.ug/export-and-import-procedures/permits-and-licences/",
+      "https://www.agriculture.go.ug/online-certification/",
+      "https://webstore.unbs.go.ug/store.php?preview=&src=4027",
+      "https://www.unbs.go.ug/attachments/menus/57/THE%20UNBS%20%28INSPECTION%20%26%20CLEARANCE%29%20REGULATION%202022.pdf",
+      "https://www.unbs.go.ug/attachments/menus/14/Portal.pdf",
+      "https://verigates.bureauveritas.com/sites/verigates/files/2023-07/UGANDA%20%28PVoC%29%20Datasheet%20Rev%2011.1.pdf"
+    ],
+    "remainingQuestion": "Whether a personal postal parcel can use the regulation7 destination-inspection route with ordinary customs documents and without a separate agency exemption/application; independently, whether the NPPO classifies this sealed heat-processed Japanese tea as a regulated plant product.",
+    "researchAttempts": [
+      "Read product and entry-point definitions, section 14 and exemption powers; searched tea-specific and personal import guidance.",
+      "Read actual SI 4/2020 (24 January 2020 Gazette), especially regulations 2–5; searched the national trade portal and agriculture source for tea-import and personal-food exceptions. Checked the current external-trade restricted-licence list, which does not include tea but does not displace phytosanitary law. Excluded tea-export workflows and EAC generic risk-category guidance as proof of a no-document Japanese import route.",
+      "30 September final primary-scope review: SI 4/2020 regulation 3(4) places the pest-risk analysis after receipt of the permit application for an in-scope plant product; it is not a published automatic no-document processing exemption. Neither that procedure nor the separate trade licence list identifies manufactured sencha as outside scope. No new national ISPM32 commodity adoption/list was located in this targeted review.",
+      "30 September independent food/conformity review: Checked official UNBS indexed 2022 regulation text, including personal-use regulation 6, exemption regulations 5(2) and 5(5), customs-declaration/ICC route in 8(1), supporting exemption letter in 8(2)(i), and destination inspection rules. Verified the exact compulsory green-tea standard in the current official store. Downloaded the seven-page BV July2023 Uganda programme datasheet, which includes FOB≤USD2,000 among the categories needing an authority exemption letter. Cross-checked the official 2025 e-portal notice: ICCs are generated automatically after inspection, but exemption requests use an online application. Did not treat automatic ICC issuance or ordinary inspection as the prohibited extra document.",
+      "Final scope correction: regulation7 is an express alternative for goods without pre-export conformity certificates. Did not infer a universal special-document obligation merely because the normal low-value exemption route requires a letter. Retained unresolved pending the actual private-post destination-inspection workflow and the separate plant-health classification."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "The ordinary low-value PVoC exemption route requires an authority letter/application, but regulation7 separately allows destination inspection when a CoC is absent, and regulation8(1) uses an ordinary ESW customs declaration. The retrieved law does not conclusively establish that this alternative requires a special letter or application for this personal postal parcel. Automatic ICC issuance and arrival inspection are not themselves excluded by the user constraint. The independent conformity review therefore narrows the question but does not establish no-document exclusion; the separate manufactured-tea phytosanitary classification also remains unresolved.",
+    "permitFreeSources": [
+      "https://faolex.fao.org/docs/pdf/uga158615.pdf",
+      "https://faolex.fao.org/docs/pdf/uga238074.pdf",
+      "https://ulii.org/en/akn/ug/act/si/2020/4/eng%402020-01-24",
+      "https://www.mtic.go.ug/export-and-import-procedures/permits-and-licences/",
+      "https://www.agriculture.go.ug/online-certification/",
+      "https://webstore.unbs.go.ug/store.php?preview=&src=4027",
+      "https://www.unbs.go.ug/attachments/menus/57/THE%20UNBS%20%28INSPECTION%20%26%20CLEARANCE%29%20REGULATION%202022.pdf",
+      "https://www.unbs.go.ug/attachments/menus/14/Portal.pdf",
+      "https://verigates.bureauveritas.com/sites/verigates/files/2023-07/UGANDA%20%28PVoC%29%20Datasheet%20Rev%2011.1.pdf"
+    ],
+    "independentFoodConformityRule": "US EAS 921:2019 Green tea—Specification is currently marked compulsory in the official UNBS catalogue. UNBS Inspection and Clearance of Imports Regulations 2022 apply to compulsory-standard imports and regulation 6 expressly covers trade and personal use. Schedule 1 Part 2 and regulations 5(2), 5(5)(a) exempt qualifying consignments up to FOB USD2,000 from pre-export verification; regulation 8(2)(i) requires an exemption letter for the regulation 5(5) route where applicable. Bureau Veritas government-programme datasheet revision 11.1 (July 2023), pages 1–2, expressly includes the low-value category and says exempt exporters/importers need a letter directly from UNBS or the relevant authority at clearance. The official UNBS e-portal notice effective 1 July 2025 manages PVoC exemption requests through online applications. However, regulation7 independently allows Part1 goods without a CoC to undergo destination inspection with applicable fees/surcharge; regulation8(1) uses a customs declaration and 8(2)(i) requires the exemption letter only where applicable. The full set of lawful routes cannot be reduced to the ordinary low-value exemption process.",
+    "foodConformitySourceFiles": [
+      "docs/reports/tea-audit-work/food-conformity-sources/ug-pvoc2023-bv.pdf",
+      "docs/reports/tea-audit-work/food-conformity-sources/ug-pvoc2023-bv.txt",
+      "docs/reports/tea-audit-work/food-conformity-sources/ug-primary-indexed-provenance.json",
+      "docs/reports/tea-audit-work/food-conformity-sources/ug-regulations2022-indexed-extract.txt"
+    ],
+    "foodConformityAccessNotes": "Direct official UNBS 2022 PDF retrieval, including the alternate menus/16 path, returned HTTP403; the full law was not downloaded. Cited primary clauses were retrieved from the official PDF search index. The BV programme PDF was downloaded in full and corroborates the specific letter requirement, citing the 2022 rules and UNBS letter BO/PVOC/020 dated 9 March 2023. The official 2025 workflow and compulsory-standard entry were available in the search index. This limitation is recorded rather than claiming a full primary-PDF read. Regulation7 permits destination inspection of Part1 goods arriving without CoC, with fees/surcharge. Whether this supplies an alternative no-exemption-letter route for a low-value personal parcel is not expressly resolved by the retrieved provisions; the decision concerns the evidenced ordinary low-value exemption route and has been flagged for root review."
+  },
+  {
+    "code": "SH",
+    "status": "conditional",
+    "rule": "For St Helena island, government food-import guidance allows commercially preserved, sealed and labelled foods without an import licence unless a specific health standard applies. Ascension's guidance limits extra requirements to listed controlled articles; dried retail tea does not match those categories. Tristan da Cunha has separate biosecurity controls and is not cleared by those findings. The government-hosted consolidated 2021 Biosecurity Ordinance is marked not yet in force; its commencement order was not located, so its specification/licence regime is not asserted to be operative.",
+    "personalMailApplicability": "Destination code SH spans separate island jurisdictions. Use the St Helena/Ascension conclusion only after checking the delivery island; hold Tristan addresses pending its conditions.",
+    "quantityLimit": null,
+    "authority": "St Helena Government; Ascension Island Government; Tristan da Cunha Government",
+    "evidenceUrls": [
+      "https://sthelenapublicservicejobs.sh/wp-content/uploads/2023/06/General-guidelines-for-food-importations-Updated-Oct-2021.pdf",
+      "https://www.ascension.gov.ac/travel-and-shipping/biosecurity",
+      "https://www.sainthelena.gov.sh/app/uploads/gazette/Ordinance-2-Biosecurity-Ordinance-2021-TDC.pdf",
+      "https://www.tristandc.com/visitsships.php",
+      "https://www.tristandc.com/wildlife/biosecurityrules-2025-10-02.php",
+      "https://www.sainthelena.gov.sh/wp-content/uploads/2022/01/Biosecurity-Ordinance.pdf",
+      "https://www.sainthelena.gov.sh/st-helena/government/legislation/laws-of-tristan-da-cunha/alphabetical-list-tristan-da-cunha/",
+      "https://www.sainthelena.gov.sh/gazette/",
+      "https://www.sainthelena.gov.sh/documents/Export-Import-Control-TdC-Ordinance",
+      "https://www.sainthelena.gov.sh/documents/Conservation-etc.-TdaC-Ordinance",
+      "https://www.sainthelena.gov.sh/documents/Island-Council-TdaC-Ordinance",
+      "https://www.sainthelena.gov.sh/documents/Tristan-da-Cunha-Applied-SH-Laws-List-Updated-010418",
+      "https://www.sainthelena.gov.sh/documents/app-of-sh-law-to-tdc-ord-updated-180620/",
+      "https://www.sainthelena.gov.sh/documents/food-safety-ordinance-corrected-2.pdf"
+    ],
+    "remainingQuestion": "Establish operative Tristan biosecurity rules and the published scope of the current live/dead-plants import warning for factory-sealed steamed/dried tea sent by post. The 2021 ordinance commencement and a manufactured-tea condition were not established; Island Council section 15/Schedule 3(f) are enabling powers, with by-laws able to commence by local notice-board publication. Food-business duties cannot be automatically transferred to a private consumer. A published applicable rule could resolve this without a bespoke individual ruling. Do not approve every SH address by country code alone.",
+    "researchAttempts": [
+      "Read St Helena preserved-food guidance, Ascension controlled-article and package guidance, and Tristan's separate ordinance and import warning.",
+      "30 September: checked the government’s 2 October 2025 visiting-vessel biosecurity measures, which address cargo cleanliness, declarations and inspection but do not publish an automatic manufactured-tea import specification under the 2021 ordinance. No country-wide clearance inferred.",
+      "30 September final public-source check: read the consolidated 2021 Biosecurity Ordinance and identified its not-yet-in-force headnote. Checked current official legislation indexes and Gazette listings; no commencement order was established. Sections 8–9 would distinguish existing specifications from licence applications if operative, but must not be treated as current law merely because the text was enacted. The 1976 Export and Import Control Ordinance concerns separately designated/CITES goods; the 2006 conservation law concerns living non-native organisms. Neither supplies a specific current retail-tea condition. The remaining gap is the operative regime as well as any applicable specification.",
+      "2026-09-30: Recovered the current Tristan law and Gazette indexes, local Island Council by-laws, law-application statute and government applied-law guide. The guide excludes St Helena’s Plants Protection Ordinance and lists Food Safety law subject to local suitability. Agriculture by-laws concern land/livestock; Public Health by-law 12 authorizes food inspection. Food Hygiene regulation 4(4) requires notice from food business operators, which does not establish an unqualified private-recipient duty. No 2021 Biosecurity commencement or manufactured-tea specification recovered. The current Biosecurity index link wrongly downloads Ascension’s 2020 law; that document was not substituted for Tristan law.",
+      "2026-09-30 independent scope peer review: Island Council Ordinance section 15(1) and Schedule 3(f) authorize making by-laws controlling potentially diseased living/dead plant and animal imports; they do not themselves enact a blanket import ban or certificate. Section 15(5) allows by-laws to commence by posting on the Administrator’s local public notice board, so the online source record cannot establish that no other operative rule exists. This narrows the significance of the broad plant wording but does not resolve manufactured personal postal tea. St Helena/Ascension findings and unresolved country-wide decision are unchanged."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "Establish operative Tristan biosecurity rules and the published scope of the current live/dead-plants import warning for factory-sealed steamed/dried tea sent by post. The 2021 ordinance commencement and a manufactured-tea condition were not established; Island Council section 15/Schedule 3(f) are enabling powers, with by-laws able to commence by local notice-board publication. Food-business duties cannot be automatically transferred to a private consumer. A published applicable rule could resolve this without a bespoke individual ruling. Do not approve every SH address by country code alone.",
+    "permitFreeSources": [
+      "https://sthelenapublicservicejobs.sh/wp-content/uploads/2023/06/General-guidelines-for-food-importations-Updated-Oct-2021.pdf",
+      "https://www.ascension.gov.ac/travel-and-shipping/biosecurity",
+      "https://www.sainthelena.gov.sh/app/uploads/gazette/Ordinance-2-Biosecurity-Ordinance-2021-TDC.pdf",
+      "https://www.tristandc.com/visitsships.php",
+      "https://www.sainthelena.gov.sh/wp-content/uploads/2022/01/Biosecurity-Ordinance.pdf",
+      "https://www.sainthelena.gov.sh/st-helena/government/legislation/laws-of-tristan-da-cunha/alphabetical-list-tristan-da-cunha/",
+      "https://www.sainthelena.gov.sh/gazette/",
+      "https://www.sainthelena.gov.sh/documents/Export-Import-Control-TdC-Ordinance",
+      "https://www.sainthelena.gov.sh/documents/Conservation-etc.-TdaC-Ordinance",
+      "https://www.sainthelena.gov.sh/documents/Island-Council-TdaC-Ordinance",
+      "https://www.sainthelena.gov.sh/documents/Tristan-da-Cunha-Applied-SH-Laws-List-Updated-010418",
+      "https://www.sainthelena.gov.sh/documents/app-of-sh-law-to-tdc-ord-updated-180620/",
+      "https://www.sainthelena.gov.sh/documents/food-safety-ordinance-corrected-2.pdf",
+      "https://www.tristandc.com/wildlife/biosecurityrules-2025-10-02.php"
+    ]
+  }
+]

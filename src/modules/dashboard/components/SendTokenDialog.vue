@@ -1,14 +1,14 @@
 <template>
-  <dialog-base :title="title" :visible.sync="isVisible" tooltip="COMING SOON...">
+  <DialogBase :title="title" v-model:visible="isVisible" tooltip="COMING SOON..." @after-open="handleAfterOpen">
     <div class="dashboard-send">
-      <address-book-input
+      <AddressBookInput
         class="dashboard-send__address"
         exclude-connected
         v-model="address"
         :is-valid="validAddress"
         :disabled="loading"
-      />
-      <token-input
+      ></AddressBookInput>
+      <TokenInput
         ref="tokenInput"
         class="dashboard-send__token-input"
         with-slider
@@ -22,7 +22,7 @@
         :disabled="loading"
         @max="handleMaxValue"
         @slide="handlePercentChange"
-      />
+      ></TokenInput>
       <s-input
         class="dashboard-send__comment"
         type="textarea"
@@ -31,8 +31,8 @@
         :rows="4"
         :maxlength="128"
         :disabled="loading"
-        @keypress.native="handleCommentInput($event)"
-      />
+        @keypress="handleCommentInput"
+      ></s-input>
       <s-button
         type="primary"
         class="s-typography-button--large action-button dashboard-send__button"
@@ -48,7 +48,7 @@
         <template v-else-if="!validAddress">
           {{ t('walletSend.badAddress') }}
         </template>
-        <template v-else-if="emptyValue">
+        <template v-else-if="invalidValue">
           {{ t('buttons.enterAmount') }}
         </template>
         <template v-else-if="isInsufficientBalance">
@@ -56,185 +56,228 @@
         </template>
         <template v-else>{{ title }}</template>
       </s-button>
-      <info-line
+      <InfoLine
         :label="t('networkFeeText')"
         :label-tooltip="t('networkFeeTooltipText')"
         :value="networkFeeFormatted"
         :asset-symbol="xorSymbol"
         :fiat-value="getFiatAmountByCodecString(networkFee)"
         is-formatted
-      />
+      ></InfoLine>
     </div>
-  </dialog-base>
+  </DialogBase>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { Operation } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { mixins, components, api } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch, Ref, Prop } from 'vue-property-decorator';
+import { api } from '@/lib/soraneo-wallet/src/api';
+import { computed, getCurrentInstance, nextTick, ref, watch } from 'vue';
 
-import type TokenInput from '@/components/shared/Input/TokenInput.vue';
-import { Components, ZeroStringValue, HundredNumber, ObjectInit } from '@/consts';
+import TokenInput from '@/components/shared/Input/TokenInput.vue';
+import { HundredNumber, ObjectInit, ZeroStringValue } from '@/consts';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useTransaction } from '@/composables/useTransaction';
+import { useTranslation } from '@/composables/useTranslation';
 import type { OwnedAsset } from '@/modules/dashboard/types';
-import { lazyComponent } from '@/router';
-import { getter, state } from '@/store/decorators';
-import { isMaxButtonAvailable } from '@/utils';
+import { useAssetsStore } from '@/stores/assets';
+import { useSettingsStore } from '@/stores/settings';
+import { getMaxValue, hasInsufficientBalance, isMaxButtonAvailable } from '@/utils';
 
+import type TokenInputComponent from '@/components/shared/Input/TokenInput.vue';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
+import WalletComponentAddressBookInput from '@/lib/soraneo-wallet/src/components/AddressBook/Input.vue';
 
-@Component({
-  components: {
-    DialogBase: components.DialogBase,
-    InfoLine: components.InfoLine,
-    AddressBookInput: components.AddressBookInput,
-    TokenInput: lazyComponent(Components.TokenInput),
-  },
-})
-export default class SendTokenDialog extends Mixins(
-  mixins.TransactionMixin,
-  mixins.DialogMixin,
-  mixins.FormattedAmountMixin
-) {
-  readonly xorSymbol = XOR.symbol;
+const DialogBase = WalletComponentDialogBase;
+const InfoLine = WalletComponentInfoLine;
+const AddressBookInput = WalletComponentAddressBookInput;
 
-  @Ref('tokenInput') tokenInput!: Nullable<TokenInput>;
+const props = withDefaults(
+  defineProps<{
+    balance?: CodecString;
+    editableFiat?: boolean;
+    asset?: OwnedAsset;
+  }>(),
+  {
+    balance: ZeroStringValue,
+    editableFiat: false,
+    asset: () => ObjectInit as OwnedAsset,
+  }
+);
 
-  @Prop({ default: ZeroStringValue, type: String }) readonly balance!: CodecString;
-  @Prop({ default: false, type: Boolean }) readonly editableFiat!: boolean;
-  @Prop({ default: ObjectInit, type: Object }) readonly asset!: OwnedAsset;
+const { t } = useTranslation();
+const { loading, withNotifications } = useTransaction();
+const { getFPNumber, getFPNumberFromCodec, formatCodecNumber, getFiatAmountByCodecString } = useFormattedAmount();
+const settingsStore = useSettingsStore();
+const assetsStore = useAssetsStore();
 
-  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
-  @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
+const isVisible = defineModel<boolean>('visible', { default: false });
+const value = ref('');
+const address = ref('');
+const comment = ref('');
+const tokenInput = ref<InstanceType<typeof TokenInputComponent> | null>(null);
 
-  value = '';
-  address = '';
-  comment = '';
+const xorSymbol = XOR.symbol;
+const asset = computed(() => props.asset);
+const balance = computed(() => props.balance ?? ZeroStringValue);
+const editableFiat = computed(() => props.editableFiat);
+const tokenDecimals = computed(() => asset.value?.decimals);
 
-  @Watch('visible')
-  private async handleDialogVisibility(value: boolean): Promise<void> {
-    await this.$nextTick();
-    this.value = '';
-    this.address = '';
-    this.comment = '';
-    this.tokenInput?.focus();
+const networkFees = computed(() => settingsStore.networkFees as NetworkFeesObject | undefined);
+const accountXor = computed(() => assetsStore.xor as Nullable<AccountAsset>);
+
+const networkFee = computed<CodecString>(() => networkFees.value?.[Operation.XorlessTransfer] ?? ZeroStringValue);
+const fpNetworkFee = computed(() => getFPNumberFromCodec(networkFee.value));
+const xorBalance = computed(() => getFPNumberFromCodec(accountXor.value?.balance?.transferable ?? ZeroStringValue));
+
+const tokenSymbol = computed(() => asset.value?.symbol ?? '');
+const title = computed(() => `Send ${tokenSymbol.value}`);
+const networkFeeFormatted = computed(() => formatCodecNumber(networkFee.value));
+
+const assetWithBalance = computed<Nullable<AccountAsset>>(() => {
+  if (!asset.value) return null;
+  return { ...asset.value, balance: { transferable: balance.value } } as unknown as AccountAsset;
+});
+/** Fee-adjusted maximum users can enter; XOR sends reserve the XOR network fee. */
+const maxSendValue = computed(() => {
+  if (!assetWithBalance.value) return ZeroStringValue;
+  return getMaxValue(assetWithBalance.value, networkFee.value);
+});
+const fpMaxSendValue = computed(() => getFPNumber(maxSendValue.value, tokenDecimals.value));
+
+const trimmedAddress = computed(() => address.value.trim());
+const emptyAddress = computed(() => trimmedAddress.value.length === 0);
+const validAddress = computed(() => !emptyAddress.value && api.validateAddress(trimmedAddress.value));
+const invalidValue = computed(() => {
+  if (!value.value) return true;
+
+  try {
+    const amount = getFPNumber(value.value, tokenDecimals.value);
+    return !amount.isFinity() || amount.isZero() || amount.isLtZero();
+  } catch {
+    return true;
+  }
+});
+const isInsufficientBalance = computed(() => {
+  if (!value.value || !assetWithBalance.value) return false;
+  return hasInsufficientBalance(assetWithBalance.value, value.value, networkFee.value);
+});
+const isInsufficientXorForFee = computed(() => xorBalance.value.sub(fpNetworkFee.value).isLtZero());
+
+const isMaxAvailable = computed(() => {
+  if (!assetWithBalance.value || !accountXor.value) return false;
+  return isMaxButtonAvailable(assetWithBalance.value, value.value ?? '', networkFee.value, accountXor.value);
+});
+
+const valuePercent = computed(() => {
+  if (!value.value) return 0;
+  if (fpMaxSendValue.value.isZero()) return 0;
+  const percent = getFPNumber(value.value, tokenDecimals.value)
+    .div(fpMaxSendValue.value)
+    .mul(HundredNumber)
+    .toNumber(0);
+  return percent > HundredNumber ? HundredNumber : percent;
+});
+
+const disabled = computed(
+  () =>
+    loading.value ||
+    isInsufficientXorForFee.value ||
+    invalidValue.value ||
+    !validAddress.value ||
+    isInsufficientBalance.value
+);
+
+const instance = getCurrentInstance();
+const showAlert = (message: string) => {
+  const proxy = instance?.proxy as { $alert?: (msg: string, options?: Record<string, unknown>) => void } | null;
+  proxy?.$alert?.(message, { title: t('errorText') });
+};
+
+const resetForm = () => {
+  value.value = '';
+  address.value = '';
+  comment.value = '';
+};
+
+/** Restores amount focus after the modal focus trap finishes opening. */
+const focusTokenInput = async () => {
+  await nextTick();
+  tokenInput.value?.focus?.();
+};
+
+const handleAfterOpen = () => {
+  void focusTokenInput();
+};
+
+const handlePercentChange = (percent: number) => {
+  const amount = fpMaxSendValue.value.mul(percent / HundredNumber);
+  value.value = amount.toString();
+};
+
+const handleMaxValue = () => {
+  value.value = maxSendValue.value;
+};
+
+const handleCommentInput = (event: KeyboardEvent) => {
+  if (!/^[A-Za-z0-9 _',.#]+$/.test(event.key)) {
+    event.preventDefault();
+  }
+};
+
+const handleSend = async () => {
+  const trimmedComment = comment.value.trim() || undefined;
+  const trimmedAddressValue = trimmedAddress.value;
+
+  if (isInsufficientBalance.value) {
+    showAlert(t('insufficientBalanceText', { tokenSymbol: tokenSymbol.value }));
+    return;
   }
 
-  private get fpBalance() {
-    return this.getFPNumberFromCodec(this.balance, this.asset.decimals);
+  if (!asset.value || disabled.value) return;
+
+  const result = await withNotifications(async () => {
+    await api.assets.transfer(asset.value, trimmedAddressValue, value.value, {
+      feeType: 'xor',
+      comment: trimmedComment,
+    });
+  });
+
+  if (result.submitted) {
+    isVisible.value = false;
   }
+};
 
-  private get xorBalance() {
-    return this.getFPNumberFromCodec(this.accountXor?.balance?.transferable ?? ZeroStringValue, this.asset.decimals);
-  }
-
-  private get assetWithBalance(): AccountAsset {
-    return { ...this.asset, balance: { transferable: this.balance } } as unknown as AccountAsset;
-  }
-
-  get tokenSymbol(): string {
-    return this.asset.symbol;
-  }
-
-  get title(): string {
-    return `Send ${this.tokenSymbol}`;
-  }
-
-  get networkFee(): CodecString {
-    return this.networkFees[Operation.XorlessTransfer];
-  }
-
-  private get fpNetworkFee() {
-    return this.getFPNumberFromCodec(this.networkFee);
-  }
-
-  get networkFeeFormatted(): string {
-    return this.formatCodecNumber(this.networkFee);
-  }
-
-  get emptyValue(): boolean {
-    return !+this.value;
-  }
-
-  get isMaxAvailable(): boolean {
-    return isMaxButtonAvailable(
-      this.assetWithBalance,
-      this.value ?? 0,
-      this.networkFee,
-      this.accountXor as AccountAsset
-    );
-  }
-
-  get isInsufficientBalance(): boolean {
-    return this.fpBalance.sub(this.value || 0).isLtZero();
-  }
-
-  get isInsufficientXorForFee(): boolean {
-    return this.xorBalance.sub(this.fpNetworkFee).isLtZero();
-  }
-
-  get emptyAddress(): boolean {
-    return !this.address.trim();
-  }
-
-  get validAddress(): boolean {
-    return !this.emptyAddress && api.validateAddress(this.address);
-  }
-
-  get disabled(): boolean {
-    return (
-      this.loading ||
-      this.isInsufficientXorForFee ||
-      this.emptyValue ||
-      !this.validAddress ||
-      this.isInsufficientBalance
-    );
-  }
-
-  get valuePercent(): number {
-    if (!this.value) return 0;
-
-    const percent = this.getFPNumber(this.value, this.asset.decimals)
-      .div(this.fpBalance)
-      .mul(HundredNumber)
-      .toNumber(0);
-    return percent > HundredNumber ? HundredNumber : percent;
-  }
-
-  handlePercentChange(percent: number): void {
-    this.value = this.fpBalance.mul(percent / HundredNumber).toString();
-  }
-
-  handleMaxValue(): void {
-    this.value = this.fpBalance.toString();
-  }
-
-  handleCommentInput(e: KeyboardEvent): boolean | void {
-    if (/^[A-Za-z0-9 _',.#]+$/.test(e.key)) return true;
-    e.preventDefault();
-  }
-
-  async handleSend(): Promise<void> {
-    const comment = this.comment.trim() || undefined;
-    const address = this.address.trim();
-
-    if (this.isInsufficientBalance) {
-      this.$alert(this.t('insufficientBalanceText', { tokenSymbol: this.tokenSymbol }), {
-        title: this.t('errorText'),
-      });
-    } else {
-      try {
-        await this.withNotifications(async () => {
-          await api.assets.transfer(this.asset, address, this.value, { feeType: 'xor', comment });
-        });
-      } catch (error) {
-        console.error(error);
-      }
+watch(
+  isVisible,
+  async (visible) => {
+    if (visible) {
+      resetForm();
+      await focusTokenInput();
     }
-    this.isVisible = false;
-  }
-}
+  },
+  { immediate: true }
+);
+
+defineExpose({
+  isVisible,
+  value,
+  address,
+  comment,
+  disabled,
+  invalidValue,
+  isInsufficientBalance,
+  isInsufficientXorForFee,
+  handleSend,
+  handleMaxValue,
+  handlePercentChange,
+  handleCommentInput,
+  handleAfterOpen,
+  resetForm,
+});
 </script>
 
 <style lang="scss">

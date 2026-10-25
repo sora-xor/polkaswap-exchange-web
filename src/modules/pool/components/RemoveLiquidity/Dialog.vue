@@ -1,36 +1,39 @@
 <template>
-  <dialog-base
-    :visible.sync="isVisible"
+  <DialogBase
+    v-model:visible="isVisible"
     :title="t('removeLiquidity.title')"
     :tooltip="t('removeLiquidity.description')"
   >
-    <remove-liquidity-form @back="closeDialog" />
-  </dialog-base>
+    <RemoveLiquidityForm @back="closeDialog"></RemoveLiquidityForm>
+  </DialogBase>
 </template>
 
-<script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+<script setup lang="ts">
+import RemoveLiquidityForm from '@/modules/pool/components/RemoveLiquidity/Form.vue';
+import { watch } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { PoolComponents } from '@/modules/pool/consts';
-import { poolLazyComponent } from '@/modules/pool/router';
-import { action } from '@/store/decorators';
+import { useTranslation } from '@/composables/useTranslation';
+import { usePoolStore } from '@/stores/pool';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 
-@Component({
-  components: {
-    RemoveLiquidityForm: poolLazyComponent(PoolComponents.RemoveLiquidityForm),
-    DialogBase: components.DialogBase,
-  },
-})
-export default class AddLiquidityDialog extends Mixins(mixins.DialogMixin, TranslationMixin) {
-  @action.removeLiquidity.resetData private resetData!: AsyncFnWithoutArgs;
+const emit = defineEmits<{
+  (event: 'close'): void;
+}>();
 
-  @Watch('visible')
-  private async handleDialogVisibility(value: boolean): Promise<void> {
-    if (!value) {
-      this.resetData();
-    }
+const { t } = useTranslation();
+const DialogBase = WalletComponentDialogBase;
+const poolStore = usePoolStore();
+
+const isVisible = defineModel<boolean>('visible', { required: true });
+
+const closeDialog = () => {
+  emit('close');
+  isVisible.value = false;
+};
+
+watch(isVisible, (value) => {
+  if (!value) {
+    void poolStore.resetRemoveLiquidityData();
   }
-}
+});
 </script>

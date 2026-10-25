@@ -1,75 +1,183 @@
 <template>
-  <dialog-base :visible.sync="visibility" :show-close-button="false" class="account-select-dialog">
+  <dialog-base
+    v-model:visible="visible"
+    :show-close-button="false"
+    class="account-select-dialog"
+    wrapper-class="account-select-dialog"
+  >
     <connection-view
+      v-if="visible"
+      :initial-wallet="preferredSoraWallet"
       :chain-api="chainApi"
       :account="soraAccount"
       :login-account="login"
       :logout-account="logout"
       :rename-account="rename"
       :close-view="closeView"
-      :show-close="!soraAccount.address"
-      shadow="never"
-    />
+      :show-close="!soraAccount?.address"
+    ></connection-view>
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { api, components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script setup lang="ts">
+import { api } from '@/lib/soraneo-wallet/src/api';
+import { computed } from 'vue';
+import { preferredSoraWallet } from '@/composables/useInternalConnect';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { action, getter, state, mutation } from '@/store/decorators';
+import type { PolkadotJsAccount } from '@/lib/soraneo-wallet/src/types/common';
+import { useWalletStore } from '@/stores/wallet';
+import { useWeb3Store } from '@/stores/web3';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentConnectionView from '@/lib/soraneo-wallet/src/components/Connection/ConnectionView.vue';
 
-@Component({
+defineOptions({
   components: {
-    DialogBase: components.DialogBase,
-    ConnectionView: components.ConnectionView,
+    DialogBase: WalletComponentDialogBase,
+    ConnectionView: WalletComponentConnectionView,
   },
-})
-export default class SelectSoraAccountDialog extends Mixins(TranslationMixin) {
-  @state.web3.soraAccountDialogVisibility private soraAccountDialogVisibility!: boolean;
-  @mutation.web3.setSoraAccountDialogVisibility private setSoraAccountDialogVisibility!: (flag: boolean) => void;
+});
 
-  @getter.wallet.account.account public soraAccount!: Nullable<WALLET_TYPES.PolkadotJsAccount>;
+const web3Store = useWeb3Store();
 
-  @action.wallet.account.loginAccount public loginAccount!: (account: WALLET_TYPES.PolkadotJsAccount) => Promise<void>;
-  @action.wallet.account.logout public logout!: () => Promise<void>;
-  @action.wallet.account.renameAccount public rename!: (data: { address: string; name: string }) => Promise<void>;
+const visible = computed({
+  get: () => Boolean(web3Store.soraAccountDialogVisibility),
+  set: (flag: boolean) => {
+    web3Store.setSoraAccountDialogVisibility(flag);
+  },
+});
 
-  get chainApi() {
-    return api;
-  }
+const walletStore = useWalletStore();
 
-  get visibility(): boolean {
-    return this.soraAccountDialogVisibility;
-  }
+const soraAccount = computed(() => walletStore.account as Nullable<PolkadotJsAccount>);
 
-  set visibility(flag: boolean) {
-    this.setSoraAccountDialogVisibility(flag);
-  }
+const chainApi = api;
 
-  async login(account: WALLET_TYPES.PolkadotJsAccount): Promise<void> {
-    await this.loginAccount(account);
-    this.closeView();
-  }
+const loginAccount = walletStore.loginAccount;
+const logout = () => walletStore.logout();
+const rename = (data: { address: string; name: string }) => walletStore.renameAccount(data);
 
-  closeView(): void {
-    this.visibility = false;
-  }
+async function login(account: PolkadotJsAccount): Promise<void> {
+  await loginAccount(account);
+  closeView();
+}
+
+function closeView(): void {
+  visible.value = false;
 }
 </script>
 
 <style lang="scss">
 .account-select-dialog.dialog-wrapper {
+  font-family: var(--s-font-family-default, 'Sora, sans-serif');
+
+  .dialog-card {
+    // Long provider lists must scroll inside the viewport instead of centering the close button above it.
+    max-height: calc(100vh - 48px);
+    max-height: calc(100dvh - 48px);
+    background: transparent;
+    box-shadow: none !important;
+    border-radius: 0;
+    overflow: hidden;
+  }
+
+  .dialog-card__header {
+    display: none;
+  }
+
+  .dialog-card__content {
+    padding: 0;
+    min-height: 0;
+    max-height: none;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .dialog-card__content > .el-card.base {
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+    box-shadow: none !important;
+    padding: 24px 24px 32px;
+    font-family: inherit;
+
+    > .el-card__body {
+      padding: 0;
+    }
+  }
+
+  .wallet-connection,
+  .wallet-connection * {
+    font-family: inherit;
+  }
+
+  .dialog-card .base-title.base-title--center {
+    padding-left: calc(var(--s-size-medium) + 8px);
+    padding-right: calc(var(--s-size-medium) + 8px);
+  }
+
+  .dialog-card .base-title.base-title--actions.base-title--center {
+    padding-left: calc(var(--s-size-medium) + 8px);
+    padding-right: calc(var(--s-size-medium) + 8px);
+  }
+
+  .dialog-card .base-title_text {
+    min-width: 0;
+  }
+
+  @media (max-width: 480px) {
+    .dialog-card .base-title {
+      height: auto;
+      min-height: var(--s-size-medium);
+      align-items: flex-start;
+    }
+
+    .dialog-card .base-title_text {
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+      font-size: var(--s-font-size-medium);
+      line-height: var(--s-line-height-small);
+    }
+  }
+
+  .dialog-card__content .connection-items.el-scrollbar > .el-scrollbar__wrap {
+    overflow-y: auto !important;
+  }
+
+  .dialog-card .base-title_close.el-button {
+    width: 42px;
+    min-width: 42px;
+    height: 42px;
+    border-radius: 50% !important;
+    background-color: var(--s-color-utility-body);
+    color: #d5cdd0;
+    box-shadow: var(--s-shadow-element) !important;
+  }
+
+  .dialog-card .base-title_close.el-button .s-button__icon > i {
+    color: #d5cdd0 !important;
+    opacity: 1 !important;
+  }
+
   .el-dialog > {
     .el-dialog__header {
       display: none;
     }
+
     .el-dialog__body {
       padding: 0;
 
       .el-card.base {
-        max-width: 100%;
+        width: 100%;
+        max-width: none;
+        box-sizing: border-box;
+        box-shadow: none !important;
+        padding: 24px 24px 32px;
+
+        > .el-card__body {
+          padding: 0;
+        }
       }
     }
   }

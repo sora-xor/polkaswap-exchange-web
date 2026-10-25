@@ -1,0 +1,214 @@
+@use './tokens';
+@use './util';
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:meta';
+
+$vars-prefix: '--sora_';
+$typography-prefix: 'sora-tpg-';
+
+$tokens-compiled: util.tree-flatten(tokens.$tokens);
+$tokens-compiled: util.map-filter-non-null-values($tokens-compiled);
+$tokens-compiled: util.give-names-to-tokens($tokens-compiled, $vars-prefix);
+
+@function token($id) {
+  @if not map.has-key($tokens-compiled, $id) {
+    @error "Cannot resolve token with id #{meta.inspect($id)}";
+  }
+
+  @return map.get($tokens-compiled, $id);
+}
+
+@function token-as-var($id) {
+  $value: token($id);
+  @return var($value);
+}
+
+@mixin eval-tokens($values-map) {
+  @include util.eval-tokens($tokens-compiled, $values-map);
+}
+
+@mixin eval-tokens-partial($partial-values-map) {
+  @include util.eval-tokens($tokens-compiled, $partial-values-map, true);
+}
+
+@mixin tokens-preset-light() {
+  @include eval-tokens(
+    (
+      sys: (
+        'color': (
+          'primary': #d0021b,
+          'primary-hover': #c6021a,
+          'primary-pressed': #bb0218,
+          'primary-focused': #b10217,
+          'primary-background': #fae6e8,
+          'primary-hover-background': #f6ccd1,
+          'primary-pressed-background': #f1b3bb,
+          'primary-focused-background': #ec9aa4,
+          'content-primary': #2d2926,
+          'content-secondary': #53565a,
+          'content-tertiary': #75787b,
+          'content-quaternary': #a3a4a8,
+          'content-on-background-inverted': #fff,
+          'background': #f5f7f8,
+          'background-hover': #eceff0,
+          'background-inverted': #4e4e4e,
+          'border-primary': #dde0e1,
+          'border-secondary': #eceff0,
+          'disabled': #f5f7f8,
+          'on-disabled': #a3a4a8,
+          'util': (
+            'body': #fff,
+            'surface': #fff,
+            'surface-overlay': rgba(255, 255, 255, 0.7),
+            'overlay': rgba(0, 0, 0, 0.45),
+          ),
+          'status': (
+            'success': #009900,
+            'success-background': #ddf4dd,
+            'success-background-hover': #b2f1b2,
+            'warning': #ff9900,
+            'warning-background': #fff2df,
+            'warning-background-hover': #ffe3ba,
+            'error': #ff0000,
+            'error-background': #fff9fa,
+            'error-background-hover': #ffd9df,
+            'info': #1070ca,
+            'info-background': #f3f6ff,
+            'info-background-hover': #dbe4ff,
+            'debug': #aa0e42,
+            'debug-background': #ffeef4,
+            'debug-background-hover': #f3d3de,
+          ),
+        ),
+        'shadow': (
+          'page-header': (
+            0px 24px 80px rgba(10, 2, 34, 0.07),
+            0px 10.0266px 33.4221px rgba(10, 2, 34, 0.0558697),
+            0px 5.36071px 17.869px rgba(10, 2, 34, 0.05437),
+            0px 3.00517px 10.0172px rgba(10, 2, 34, 0.0484701),
+            0px 1.59602px 5.32008px rgba(10, 2, 34, 0.0371562),
+            0px 0.664142px 2.21381px rgba(10, 2, 34, 0.0208172),
+          ),
+          'page-header-light': (
+            0px 6px 30px rgba(10, 2, 34, 0.03),
+            0px 3px 9px rgba(10, 2, 34, 0.02),
+            0px 5.36071px 6px rgba(10, 2, 34, 0.04),
+            0px 3.00517px 7px rgba(10, 2, 34, 0.03),
+            0px 1.59602px 5.32008px rgba(10, 2, 34, 0.0371562),
+          ),
+          'modal-window-header': (
+            0px -8px 80px rgba(10, 2, 34, 0.07),
+            0px 1px 33.4221px rgba(10, 2, 34, 0.0558697),
+            0px 0px 17.869px rgba(10, 2, 34, 0.05437),
+            0px 2px 10.0172px rgba(10, 2, 34, 0.0484701),
+            0px 1.59602px 5.32008px rgba(10, 2, 34, 0.0371562),
+            0px 0.664142px 2.21381px rgba(10, 2, 34, 0.0208172),
+          ),
+          'floating-notification': (
+            0px 68px 80px rgba(24, 24, 29, 0.09),
+            0px 30.1471px 24.1177px rgba(24, 24, 29, 0.058643),
+            0px 12.5216px 10.0172px rgba(24, 24, 29, 0.045),
+            0px 4.5288px 3.62304px rgba(24, 24, 29, 0.031357),
+          ),
+          'dropdown': (
+            0px 0px 4px rgba(45, 41, 38, 0.08),
+            0px 4px 16px rgba(45, 41, 38, 0.08),
+          ),
+          'active-tab': 0px 1px 1px rgba(83, 86, 90, 0.1),
+        ),
+      ),
+    )
+  );
+}
+
+@mixin typography($id) {
+  @if list.index(tokens.$typography-tokens, $id) == null {
+    @error "Wrong typography token: #{meta.inspect($id)}";
+  }
+
+  .#{$typography-prefix}#{$id} {
+    @content;
+  }
+}
+
+@mixin typography-preset-default() {
+  @include typography('d1') {
+    @include util.typography-factory($size: 40px, $height: 120%, $spacing: -0.02em, $weight: bold);
+  }
+
+  @include typography('d2') {
+    @include util.typography-factory($size: 30px, $height: 130%, $spacing: -0.04em, $weight: bold);
+  }
+
+  @include typography('h1') {
+    @include util.typography-factory($size: 36px, $height: 120%, $spacing: -0.04em);
+  }
+
+  @include typography('h2') {
+    @include util.typography-factory($size: 30px, $height: 130%, $spacing: -0.04em);
+  }
+
+  @include typography('h3') {
+    @include util.typography-factory($size: 24px, $height: 130%, $spacing: -0.02em);
+  }
+
+  @include typography('h4') {
+    @include util.typography-factory($size: 18px, $height: 150%, $spacing: -0.02em);
+  }
+
+  @include typography('h4-bold') {
+    @include util.typography-factory($size: 18px, $height: 150%, $spacing: 0, $weight: bold);
+  }
+
+  @include typography('h5') {
+    @include util.typography-factory($size: 16px, $height: 150%, $spacing: 0.01em, $weight: bold);
+  }
+
+  @include typography('h6') {
+    @include util.typography-factory($size: 14px, $height: 150%, $weight: bold);
+  }
+
+  @include typography('h7') {
+    @include util.typography-factory($size: 12px, $height: 150%, $weight: bold);
+  }
+
+  @include typography('ch1') {
+    @include util.typography-factory($size: 14px, $height: 130%, $spacing: 0.01em, $weight: bold);
+    text-transform: uppercase;
+  }
+
+  @include typography('ch2') {
+    @include util.typography-factory($size: 12px, $height: 130%, $spacing: 0.03em, $weight: bold);
+    text-transform: uppercase;
+  }
+
+  @include typography('ch3') {
+    @include util.typography-factory($size: 10px, $height: 140%, $spacing: 0.06em, $weight: bold);
+    text-transform: uppercase;
+  }
+
+  @include typography('p1') {
+    @include util.typography-factory($size: 16px, $height: 170%);
+  }
+
+  @include typography('p2') {
+    @include util.typography-factory($size: 14px, $height: 180%, $weight: 600);
+  }
+
+  @include typography('p3') {
+    @include util.typography-factory($size: 14px, $height: 180%);
+  }
+
+  @include typography('p4') {
+    @include util.typography-factory($size: 12px, $height: 180%);
+  }
+
+  @include typography('p5') {
+    @include util.typography-factory($size: 10px, $height: 160%);
+  }
+
+  @include typography('s1') {
+    @include util.typography-factory($size: 15px, $height: 16px);
+  }
+}

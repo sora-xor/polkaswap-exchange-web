@@ -1,0 +1,57 @@
+{
+  "reviewedAt": "2026-09-30",
+  "scope": "Japan-origin 100g sealed plain manufactured steamed/dried sencha, private postal purchase, no permits/certificates/special agency applications; ordinary declarations and arrival inspection allowed.",
+  "retrievalLimit": "The complete official UNBS 2022 law PDF could not be downloaded: both menus/57 and alternate menus/16 paths returned HTTP403. Official source-index passages were read. This file records paraphrased findings and provenance, not a purported downloaded law.",
+  "sources": [
+    {
+      "url": "https://www.unbs.go.ug/attachments/menus/57/THE%20UNBS%20%28INSPECTION%20%26%20CLEARANCE%29%20REGULATION%202022.pdf",
+      "retrieval": "Official PDF search index",
+      "findings": [
+        {
+          "provision": "Regulation 5(2), 5(5)(a)",
+          "finding": "Part2 categories are exempt from PVoC; Part1 commodities qualifying as Part2 shall receive that exemption."
+        },
+        {
+          "provision": "Regulation 6",
+          "finding": "Conformity assessment applies whether commodities are for trade or personal use."
+        },
+        {
+          "provision": "Regulation 7",
+          "finding": "Part1 commodities without CoC or roadworthiness certificate undergo destination inspection notwithstanding regulation5; fees and a 15 percent CIF surcharge apply as applicable, and compliant goods receive ICC. This route must be considered separately from the standard exemption-letter route."
+        },
+        {
+          "provision": "Regulation 8(1)",
+          "finding": "Clearance/ICC application is made by an accurate customs declaration through ESW before or upon arrival. This wording alone is not evidence of an extra prohibited application beyond ordinary customs."
+        },
+        {
+          "provision": "Regulation 8(2)",
+          "finding": "Documents include bill of lading/airwaybill, packing list, invoice, customs declaration and transit document, and applicable CoC, EAC certification, vehicle certificate, regulation5(5) exemption letter, returning-resident documents or diplomatic note. Subparagraph(i) is the material separate exemption-letter duty."
+        }
+      ]
+    },
+    {
+      "url": "https://webstore.unbs.go.ug/store.php?preview=&src=4027",
+      "retrieval": "Current official webstore search index",
+      "finding": "US EAS921:2019 Green tea—Specification is Compulsory. Scope is Camellia sinensis green tea, excluding further roasting/decaffeination/flavouring; plain sencha matches."
+    },
+    {
+      "url": "https://www.unbs.go.ug/attachments/menus/14/Portal.pdf",
+      "retrieval": "Official PDF search index",
+      "finding": "Effective1July2025 e-portal integration automatically generates ICC after completed inspection. PVoC exemption requests are managed through online applications. Automatic ICC generation is not itself treated as disqualifying."
+    },
+    {
+      "url": "https://verigates.bureauveritas.com/sites/verigates/files/2023-07/UGANDA%20%28PVoC%29%20Datasheet%20Rev%2011.1.pdf",
+      "retrieval": "Downloaded complete PDF via direct HTTPS; pdftotext extraction",
+      "localFiles": [
+        "ug-pvoc2023-bv.pdf",
+        "ug-pvoc2023-bv.txt"
+      ],
+      "pages": [
+        1,
+        2
+      ],
+      "finding": "Exempt list expressly includes consignments FOB≤USD2,000 (except used motor vehicles). The following instruction says these exempt exporters/importers need an exemption letter directly from UNBS or the relevant governmental authority at clearance. Datasheet cites the 2022 regulation and UNBS letter BO/PVOC/020 of9March2023. This is operational corroboration by an authorized programme operator, not a substitute for legislation."
+    }
+  ],
+  "caveat": "Regulation7 expressly describes destination inspection when CoC is absent; the retrieved text does not conclusively show that a low-value personal parcel cannot use this alternative without an exemption letter. Because ordinary customs declaration, automatically issued ICC and arrival inspection are allowed by the scenario, Uganda remains unresolved, including its separate phytosanitary classification. Exact regulations7 and8 are saved in ug-regulations2022-indexed-extract.txt."
+}

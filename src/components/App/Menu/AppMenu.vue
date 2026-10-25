@@ -1,5 +1,5 @@
 <template>
-  <div :class="['app-menu', { visible, collapsed, 'app-menu__loading': pageLoading }]">
+  <div :class="['app-menu', { visible, collapsed, 'app-menu__loading': pageLoading }]" @click="emit('click', $event)">
     <s-button
       class="collapse-button"
       id="collapse-button"
@@ -7,10 +7,12 @@
       size="small"
       :icon="collapseIcon"
       :tooltip="collapseTooltip"
+      :aria-label="collapseTooltip"
+      :title="collapseTooltip"
       @click="collapseMenu"
-    />
+    ></s-button>
     <s-scrollbar class="app-sidebar-scrollbar">
-      <aside class="app-sidebar">
+      <aside ref="menuElement" class="app-sidebar">
         <slot name="head"></slot>
         <div class="app-sidebar-menu">
           <s-menu
@@ -23,10 +25,12 @@
             :active-text-color="mainMenuActiveColor"
             active-hover-color="transparent"
             :default-active="currentPath"
-            @select="onSelect"
+            @select="handleSelect"
           >
-            <s-menu-item-group v-for="item in sidebarMenuItems" :key="item.index || item.title">
+            <s-menu-item-group v-for="section in sidebarMenuSections" :key="section.id" :data-section="section.id">
+              <li v-if="section.titleKey" class="menu-section-title" role="presentation">{{ t(section.titleKey) }}</li>
               <s-menu-item
+                v-for="item in section.items"
                 v-button
                 :key="item.title"
                 :index="item.index || item.title"
@@ -40,13 +44,15 @@
                   tabindex="-1"
                   :href="item.href"
                   :icon="item.icon"
-                  :title="t(`mainMenu.${item.title}`)"
-                  @click.native="preventAnchorNavigation"
-                />
+                  :icon-src="item.iconSrc"
+                  :title="getMenuTitle(item)"
+                  :badge="getMenuBadge(item)"
+                  :caption="getMenuCaption(item)"
+                  @click.prevent="preventAnchorNavigation"
+                ></app-sidebar-item-content>
               </s-menu-item>
-            </s-menu-item-group>
-            <s-menu-item-group>
               <app-sidebar-item-content
+                v-if="section.id === 'explore'"
                 v-button
                 class="menu-item menu-item--bottom el-menu-item s-flex"
                 icon="finance-PSWAP-24"
@@ -55,7 +61,7 @@
                 target="_blank"
                 rel="nofollow noopener"
                 :title="t('mainMenu.About')"
-              />
+              ></app-sidebar-item-content>
             </s-menu-item-group>
           </s-menu>
 
@@ -69,17 +75,6 @@
             active-text-color="var(--s-color-base-content-tertiary)"
             active-hover-color="transparent"
           >
-            <app-sidebar-item-content
-              v-if="false"
-              v-button
-              icon="star-16"
-              title="Vote on Survey!"
-              href="https://form.typeform.com/to/Mb6p2Kpy"
-              tag="a"
-              target="_blank"
-              rel="nofollow noopener"
-              class="el-menu-item menu-item--small marketing"
-            />
             <app-info-popper @open-product-dialog="openProductDialog">
               <app-sidebar-item-content
                 v-button
@@ -87,7 +82,7 @@
                 :title="t('footerMenu.info')"
                 class="el-menu-item menu-item--small"
                 tabindex="0"
-              />
+              ></app-sidebar-item-content>
             </app-info-popper>
             <app-sidebar-item-content
               v-if="faucetUrl"
@@ -98,7 +93,7 @@
               target="_blank"
               rel="nofollow noopener"
               class="el-menu-item menu-item--small"
-            />
+            ></app-sidebar-item-content>
           </s-menu>
         </div>
       </aside>
@@ -106,11 +101,12 @@
   </div>
 </template>
 
-<script lang="ts">
-import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script setup lang="ts">
+import { computed, nextTick, onMounted, onBeforeUnmount, ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { appRouterLoading } from '@/app/navigation/loading';
+import { useTranslation } from '@/composables/useTranslation';
 import {
   PageNames,
   PoolChildPages,
@@ -118,9 +114,12 @@ import {
   RewardsChildPages,
   ExploreChildPages,
   SidebarMenuGroups,
+  SidebarMenuSections,
   SidebarMenuItemLink,
   FaucetLink,
 } from '@/consts';
+import { useTonswapCampaignStatus } from '@/features/misc/composables/useTonswapCampaignStatus';
+import { getLocaleDirection } from '@/lang/direction';
 import { DashboardPageNames } from '@/modules/dashboard/consts';
 import { isDashboardPage } from '@/modules/dashboard/router';
 import { PoolPageNames } from '@/modules/pool/consts';
@@ -128,122 +127,186 @@ import { StakingPageNames } from '@/modules/staking/consts';
 import { isStakingPage } from '@/modules/staking/router';
 import { VaultPageNames } from '@/modules/vault/consts';
 import { isVaultPage } from '@/modules/vault/router';
-import { getter, mutation, state } from '@/store/decorators';
+import { useSettingsStore } from '@/stores/settings';
+import type { Nullable } from '@/types/common';
 
 import AppInfoPopper from './AppInfoPopper.vue';
 import AppSidebarItemContent from './SidebarItemContent.vue';
 
-@Component({
-  components: {
-    AppInfoPopper,
-    AppSidebarItemContent,
-  },
-})
-export default class AppMenu extends Mixins(TranslationMixin) {
-  @Prop({ default: false, type: Boolean }) readonly visible!: boolean;
-  @Prop({ default: () => {}, type: Function }) readonly onSelect!: (item: any) => void;
+const props = defineProps<{
+  visible: boolean;
+  onSelect: (item: any) => void;
+}>();
 
-  @state.settings.faucetUrl faucetUrl!: string;
-  @state.router.loading pageLoading!: boolean;
-  @state.settings.menuCollapsed collapsed!: boolean;
+const emit = defineEmits<{
+  (e: 'click', event: Event): void;
+  (e: 'open-product-dialog', product: string): void;
+}>();
 
-  @getter.settings.orderBookEnabled private orderBookEnabled!: boolean;
-  @getter.settings.kensetsuEnabled private kensetsuEnabled!: boolean;
-  @getter.settings.assetOwnerEnabled private assetOwnerEnabled!: boolean;
-  @getter.libraryTheme private libraryTheme!: Theme;
+const route = useRoute();
+const { t } = useTranslation();
+const settingsStore = useSettingsStore();
 
-  @mutation.settings.setMenuCollapsed private setMenuCollapsed!: (collapsed: boolean) => void;
+const pageLoading = computed(() => Boolean(appRouterLoading.value));
+const collapsed = computed(() => Boolean(settingsStore.menuCollapsed));
+const faucetUrl = computed(() => settingsStore.faucetUrl ?? '');
+const orderBookEnabled = computed(() => (settingsStore.orderBookEnabled as Nullable<boolean>) ?? true);
+const kensetsuEnabled = computed(() => (settingsStore.kensetsuEnabled as Nullable<boolean>) ?? true);
+const assetOwnerEnabled = computed(() => Boolean(settingsStore.assetOwnerEnabled));
+const isRtl = computed(() => getLocaleDirection(settingsStore.language as string) === 'rtl');
+/** Drives the "Live" mark on the Burn item while the TONSWAP burn can still earn TS. */
+const { isLive: tonswapBurnLive, rateLabel: tonswapBurnRate } = useTonswapCampaignStatus();
 
-  readonly FaucetLink = FaucetLink;
+const menuElement = ref<HTMLElement | null>(null);
+const resizeObserver = ref<ResizeObserver | null>(null);
 
-  private resizeObserver: Nullable<ResizeObserver> = null;
+const currentPath = computed(() => {
+  const currentName = route.name as PageNames;
 
-  private onMenuWidthChange(): void {
-    const width = this.$el?.clientWidth ?? 0;
-    if (!width) return;
-
-    document.documentElement.style.setProperty('--sidebar-width', `${width}px`);
+  if (!currentName) {
+    return '';
   }
 
-  async mounted(): Promise<void> {
-    await this.$nextTick();
-    if (!(this.$el && window.ResizeObserver)) return;
-    this.resizeObserver = new ResizeObserver(this.onMenuWidthChange);
-    this.resizeObserver.observe(this.$el);
+  if (PoolChildPages.includes(currentName)) {
+    return PoolPageNames.Pool;
+  }
+  if (BridgeChildPages.includes(currentName)) {
+    return PageNames.Bridge;
+  }
+  if (RewardsChildPages.includes(currentName)) {
+    return PageNames.Rewards;
+  }
+  if (isStakingPage(currentName)) {
+    return StakingPageNames.Staking;
+  }
+  if (ExploreChildPages.includes(currentName)) {
+    return PageNames.ExploreTokens;
+  }
+  if (isDashboardPage(currentName)) {
+    return DashboardPageNames.AssetOwner;
+  }
+  if (isVaultPage(currentName)) {
+    return VaultPageNames.Vaults;
   }
 
-  beforeDestroy(): void {
-    this.resizeObserver?.disconnect();
+  return currentName;
+});
+
+const sidebarMenuItems = computed(() => {
+  let menuItems: SidebarMenuItemLink[] = SidebarMenuGroups.slice();
+  if (!orderBookEnabled.value) {
+    menuItems = menuItems.filter(({ title }) => title !== PageNames.OrderBook);
+  }
+  if (!kensetsuEnabled.value) {
+    menuItems = menuItems.filter(({ title }) => title !== VaultPageNames.VaultsContainer);
+  }
+  if (!assetOwnerEnabled.value) {
+    menuItems = menuItems.filter(({ title }) => title !== PageNames.AssetOwnerContainer);
   }
 
-  get collapseIcon(): string {
-    return this.collapsed ? 'arrows-chevron-right-24' : 'arrows-chevron-left-24';
+  return menuItems;
+});
+
+/** Group visible destinations without changing route identifiers or feature gates. */
+const sidebarMenuSections = computed(() =>
+  SidebarMenuSections.map((section) => ({
+    ...section,
+    items: section.pages.flatMap((page) => sidebarMenuItems.value.filter((item) => item.title === page)),
+  })).filter((section) => section.items.length || section.id === 'explore')
+);
+
+const collapseIcon = computed(() => {
+  if (isRtl.value) {
+    return collapsed.value ? 'arrows-chevron-left-24' : 'arrows-chevron-right-24';
   }
 
-  get collapseTooltip(): string {
-    return this.collapsed ? 'Expand' : 'Collapse';
-  }
+  return collapsed.value ? 'arrows-chevron-right-24' : 'arrows-chevron-left-24';
+});
+const collapseTooltip = computed(() => t(collapsed.value ? 'ux.navigation.expand' : 'ux.navigation.collapse'));
+const mainMenuActiveColor = computed(() => 'var(--s-color-action-text)');
 
-  get mainMenuActiveColor(): string {
-    return this.libraryTheme === Theme.LIGHT ? 'var(--s-color-theme-accent)' : 'var(--s-color-theme-accent-focused)';
-  }
-
-  get sidebarMenuItems(): Array<SidebarMenuItemLink> {
-    let menuItems = SidebarMenuGroups;
-
-    if (!this.orderBookEnabled) {
-      menuItems = menuItems.filter(({ title }) => title !== PageNames.OrderBook);
-    }
-    if (!this.kensetsuEnabled) {
-      menuItems = menuItems.filter(({ title }) => title !== VaultPageNames.VaultsContainer);
-    }
-    if (!this.assetOwnerEnabled) {
-      menuItems = menuItems.filter(({ title }) => title !== PageNames.AssetOwnerContainer);
-    }
-
-    return menuItems;
-  }
-
-  get currentPath(): string {
-    const currentName = this.$route.name as PageNames;
-    if (PoolChildPages.includes(currentName)) {
-      return PoolPageNames.Pool;
-    }
-    if (BridgeChildPages.includes(currentName)) {
-      return PageNames.Bridge;
-    }
-    if (RewardsChildPages.includes(currentName)) {
-      return PageNames.Rewards;
-    }
-    if (isStakingPage(currentName)) {
-      return StakingPageNames.Staking;
-    }
-    if (ExploreChildPages.includes(currentName)) {
-      return PageNames.ExploreTokens;
-    }
-    if (isDashboardPage(currentName)) {
-      return DashboardPageNames.AssetOwner;
-    }
-    if (isVaultPage(currentName)) {
-      return VaultPageNames.Vaults;
-    }
-    return currentName;
-  }
-
-  openProductDialog(product: string): void {
-    this.$emit('open-product-dialog', product);
-  }
-
-  /** To ignore left click */
-  preventAnchorNavigation(e?: Event): void {
-    e?.preventDefault();
-  }
-
-  collapseMenu(e?: PointerEvent) {
-    ((e?.target as HTMLElement | null)?.closest?.('#collapse-button') as HTMLElement | null)?.blur();
-    this.setMenuCollapsed(!this.collapsed);
-  }
+function collapseMenu(): void {
+  settingsStore.setMenuCollapsed(!collapsed.value);
 }
+
+function preventAnchorNavigation(event: Event): void {
+  event.preventDefault();
+}
+
+function openProductDialog(product = 'soraMobile'): void {
+  emit('open-product-dialog', product);
+}
+
+function handleSelect(item: any): void {
+  props.onSelect(item);
+}
+
+function getMenuTitle(item: SidebarMenuItemLink): string {
+  return t(`mainMenu.${item.title}`);
+}
+
+/** Only the Burn item carries a live mark, and only while the campaign is verified open. */
+function getMenuBadge(item: SidebarMenuItemLink): string {
+  return item.title === PageNames.Burn && tonswapBurnLive.value ? t('mainMenu.burnLive') : '';
+}
+
+/** The current reward rate, in the same "TS / XOR" form the Burn page uses. */
+function getMenuCaption(item: SidebarMenuItemLink): string {
+  return getMenuBadge(item) && tonswapBurnRate.value ? `${tonswapBurnRate.value} TS / XOR` : '';
+}
+
+function resetSidebarScroll(): void {
+  const scrollbar = menuElement.value?.closest<HTMLElement>('.app-sidebar-scrollbar');
+
+  if (!scrollbar) return;
+
+  const scrollTargets = [
+    scrollbar,
+    ...Array.from(scrollbar.querySelectorAll<HTMLElement>('.el-scrollbar__wrap, .s-scrollbar__wrap')),
+  ];
+
+  scrollTargets.forEach((target) => {
+    target.scrollTop = 0;
+  });
+}
+
+onMounted(() => {
+  if (!menuElement.value) return;
+
+  const updateSidebarWidth = (): void => {
+    const width = menuElement.value?.clientWidth ?? 0;
+    if (width) {
+      document.documentElement.style.setProperty('--sidebar-width', `${width}px`);
+    }
+  };
+
+  resizeObserver.value = new ResizeObserver(updateSidebarWidth);
+  resizeObserver.value.observe(menuElement.value);
+  updateSidebarWidth();
+  nextTick(resetSidebarScroll);
+});
+
+watch(
+  () => route.fullPath,
+  () => {
+    nextTick(resetSidebarScroll);
+  }
+);
+
+watch(
+  () => props.visible,
+  (visible) => {
+    if (visible) {
+      nextTick(resetSidebarScroll);
+    }
+  }
+);
+
+onBeforeUnmount(() => {
+  resizeObserver.value?.disconnect();
+  resizeObserver.value = null;
+  document.documentElement.style.removeProperty('--sidebar-width');
+});
 </script>
 
 <style lang="scss">
@@ -253,6 +316,8 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 
 .app-menu {
   background: var(--s-color-utility-body);
+  border-color: var(--s-color-base-content-primary);
+  border-style: none;
 }
 
 .app-menu.collapsed {
@@ -265,12 +330,12 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       }
     }
 
-    .collapse-button {
-      pointer-events: none;
+    // The label is hidden here, so the live mark moves from the pill to a dot on the icon.
+    .sidebar-item-content__live-dot {
+      display: block;
     }
 
-    &:hover,
-    &:focus {
+    &:hover {
       background: var(--s-color-utility-body);
       box-shadow: 20px 20px 60px 0px #0000001a;
 
@@ -280,11 +345,40 @@ export default class AppMenu extends Mixins(TranslationMixin) {
         }
       }
 
+      .sidebar-item-content__live-dot {
+        display: none;
+      }
+
       .collapse-button {
         pointer-events: all;
       }
     }
   }
+
+  html[dir='rtl'] & {
+    @include tablet {
+      &:hover {
+        box-shadow: -20px 20px 60px 0px #0000001a;
+      }
+    }
+  }
+}
+
+.menu-section-title {
+  padding: 14px 16px 6px;
+  margin-top: 8px;
+  border-top: 1px solid var(--s-color-base-border-secondary);
+  font-size: 11px;
+  line-height: 1.5;
+  font-weight: 600;
+  color: var(--s-color-base-content-secondary);
+  overflow-wrap: anywhere;
+  list-style: none;
+}
+
+.app-menu.collapsed:not(:hover):not(:focus-within) .menu-section-title {
+  font-size: 0;
+  padding-block: 6px;
 }
 
 .menu.el-menu {
@@ -298,7 +392,12 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 
   .el-menu-item {
     .icon-container {
-      box-shadow: var(--s-shadow-element-pressed);
+      box-shadow: none;
+
+      > i[class*='s-icon-'] {
+        font-size: 28px !important;
+        line-height: 28px !important;
+      }
     }
 
     &.menu-item--small {
@@ -314,7 +413,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     }
 
     &.marketing .icon-container > i {
-      color: var(--s-color-theme-accent);
+      color: var(--s-color-action-text);
     }
 
     &.is-disabled {
@@ -332,7 +431,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
           color: var(--s-color-base-content-secondary) !important;
         }
         &.marketing i {
-          color: var(--s-color-theme-accent-focused) !important;
+          color: var(--s-color-action-text) !important;
         }
       }
     }
@@ -347,7 +446,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     }
     &.is-active {
       i {
-        color: var(--s-color-theme-accent) !important;
+        color: var(--s-color-action-text) !important;
       }
       span {
         font-weight: 400;
@@ -363,19 +462,77 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 <style lang="scss" scoped>
 .collapse-button {
   position: absolute;
-  top: 100%;
+  top: 50%;
+  bottom: auto;
   left: calc(100% - var(--s-size-small) / 2);
-  bottom: 0;
   margin: auto;
-  transition-duration: 0.2s;
+  transform: translateY(-50%);
+  opacity: 0;
+  pointer-events: none;
+  transition-property: opacity, background-color, border-color, box-shadow, color;
+  transition-duration: 0.25s;
   z-index: #{$app-sidebar-layer} + 1;
+  background: var(--s-color-utility-body) !important;
+  border-color: transparent !important;
+  display: block !important;
+  font-size: 12px !important;
+  line-height: 12px !important;
+  box-shadow: var(--s-shadow-element-pressed) !important;
+  color: var(--s-color-base-content-tertiary) !important;
+
+  :deep(.s-button__icon) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+
+  :deep(i[class*='s-icon-']) {
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 24px !important;
+    line-height: 24px !important;
+    color: currentColor !important;
+  }
 
   &:hover,
   &:focus,
   &.focusing {
     background: var(--s-color-theme-accent-hover) !important;
     border-color: var(--s-color-utility-surface) !important;
+    box-shadow: var(--s-shadow-element-pressed) !important;
     color: var(--s-color-base-on-accent) !important;
+  }
+
+  &:focus-visible {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  html[dir='rtl'] & {
+    right: calc(100% - var(--s-size-small) / 2);
+    left: auto;
+  }
+}
+
+.app-menu.collapsed {
+  .collapse-button {
+    box-shadow: var(--s-shadow-element) !important;
+  }
+
+  .collapse-button:hover,
+  .collapse-button:focus,
+  .collapse-button.focusing {
+    box-shadow: var(--s-shadow-element-pressed) !important;
+  }
+
+  &:hover {
+    .collapse-button:not(:hover) {
+      background: var(--s-color-utility-body) !important;
+      border-color: transparent !important;
+      box-shadow: var(--s-shadow-element-pressed) !important;
+      color: var(--s-color-base-content-tertiary) !important;
+    }
   }
 }
 .app {
@@ -391,22 +548,21 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     z-index: $app-sidebar-layer;
     visibility: hidden;
 
+    html[dir='rtl'] & {
+      right: 0;
+      left: auto;
+    }
+
     .collapse-button {
       opacity: 0;
-
-      @include tablet {
-        &:not(.collapsed) {
-          opacity: 0;
-        }
-      }
+      pointer-events: none;
     }
 
     @include tablet {
-      &:hover,
-      &:focus,
-      &:focus-within {
+      &:hover {
         .collapse-button {
           opacity: 1;
+          pointer-events: all;
         }
       }
     }
@@ -415,6 +571,14 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       position: fixed;
       right: 0;
       z-index: $app-above-loader-layer;
+
+      html[dir='rtl'] & {
+        left: 0;
+      }
+
+      .collapse-button {
+        display: none !important;
+      }
 
       &.visible {
         visibility: visible;
@@ -434,6 +598,16 @@ export default class AppMenu extends Mixins(TranslationMixin) {
         padding: $inner-spacing-mini $inner-spacing-medium;
         filter: drop-shadow(32px 0px 64px rgba(0, 0, 0, 0.1));
         transform: translateX(-100%);
+      }
+
+      html[dir='rtl'] & .app-sidebar {
+        margin-left: auto;
+        filter: drop-shadow(-32px 0px 64px rgba(0, 0, 0, 0.1));
+        transform: translateX(100%);
+      }
+
+      html[dir='rtl'] &.visible .app-sidebar {
+        transform: translateX(0);
       }
     }
 
@@ -468,6 +642,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     flex-flow: column nowrap;
     padding: $inner-spacing-mini 0;
     border-right: none;
+    border-color: var(--s-color-base-content-primary);
 
     &-menu {
       display: flex;
@@ -476,6 +651,11 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       justify-content: space-between;
       max-width: $sidebar-max-width;
       padding-right: $inner-spacing-mini; // for shadow
+
+      html[dir='rtl'] & {
+        padding-right: 0;
+        padding-left: $inner-spacing-mini; // for shadow
+      }
     }
   }
 }
@@ -483,6 +663,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 .menu {
   padding: 0;
   border-right: none;
+  border-color: var(--s-color-base-content-primary);
 
   & + .menu {
     margin-top: $inner-spacing-small;
@@ -490,16 +671,25 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 
   &.s-menu {
     border-bottom: none;
+    border-color: var(--s-color-base-content-primary);
 
     .el-menu-item {
       margin-right: 0;
       margin-bottom: 0;
       border: none;
       border-radius: 0;
+      border-color: inherit;
     }
   }
 
   .el-menu-item {
+    &,
+    span,
+    .icon-container,
+    .icon-container :deep(i[class*='s-icon-']) {
+      border-color: currentColor !important;
+    }
+
     padding-top: $inner-spacing-mini;
     padding-bottom: $inner-spacing-mini;
 
@@ -539,9 +729,9 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     }
 
     &.marketing {
-      color: var(--s-color-theme-accent);
+      color: var(--s-color-action-text);
       &:hover {
-        color: var(--s-color-theme-accent-focused);
+        color: var(--s-color-action-text);
       }
     }
   }

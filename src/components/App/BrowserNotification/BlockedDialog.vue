@@ -1,5 +1,5 @@
 <template>
-  <dialog-base class="browser-notification" :title="t('browserNotificationDialog.title')" :visible.sync="isVisible">
+  <dialog-base class="browser-notification" :title="t('browserNotificationDialog.title')" v-model:visible="isVisible">
     <div class="browser-notification-dialog">
       <p class="browser-notification-dialog__info">
         {{ t('browserNotificationDialog.notificationBlocked') }}
@@ -16,25 +16,33 @@
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { mixins, components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { ref } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useTranslation } from '@/composables/useTranslation';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 
-@Component({
+defineOptions({
   components: {
-    DialogBase: components.DialogBase,
+    DialogBase: WalletComponentDialogBase,
   },
-})
-export default class AppBrowserNotifsBlockedDialog extends Mixins(
-  TranslationMixin,
-  mixins.DialogMixin,
-  mixins.LoadingMixin
-) {
-  agree(): void {
-    this.closeDialog();
-  }
+});
+
+const emit = defineEmits<{
+  (e: 'close'): void;
+}>();
+
+const isVisible = defineModel<boolean>('visible', { default: false });
+const { t } = useTranslation();
+const loading = ref(false);
+
+const closeDialog = (): void => {
+  emit('close');
+  isVisible.value = false;
+};
+
+function agree(): void {
+  closeDialog();
 }
 </script>
 

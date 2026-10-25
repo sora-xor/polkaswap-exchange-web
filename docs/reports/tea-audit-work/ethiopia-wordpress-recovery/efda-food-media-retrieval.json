@@ -1,0 +1,8 @@
+{
+  "url": "https://www.efda.gov.et/wp-json/wp/v2/media?search=food&per_page=100&_fields=id,date,title,source_url,mime_type",
+  "checkedAt": "2026-09-30T08:00:12.833949+00:00",
+  "status": 401,
+  "contentType": "application/json; charset=UTF-8",
+  "bytes": 212,
+  "sha256": "b0a830be698e02fc34f3c7a312ccc260689d4840950ad1444f8c49834819f83a"
+}

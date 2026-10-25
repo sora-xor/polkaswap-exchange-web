@@ -1,0 +1,62 @@
+[
+  {
+    "code": "BS",
+    "name": "Bahamas",
+    "status": "not_verified",
+    "rule": "The 2024 plant-permit HS list omits 0902 tea, leaving the phytosanitary classification unverified. A separate recovered instrument, Import Control (Foods, Plants and Animals) Regulations 1993 (SI 50/1972 as amended SI 35/1993), regulation 4(1), requires a written agriculture-authority licence for any food import, without a business-only or personal-post limitation. Legal-scope inference: the subsidiary regulation remains operative after replacement of its parent Act under Interpretation and General Clauses Act section 33(1), consistent with its current official indexing under Customs Management Act 2011 and that Act’s import-restriction powers. No automatic exemption applicable to the stated ordinary sealed sencha packet was established. This conclusion relies on the separate food-import licence, not a phytosanitary certificate or section 35 of the business-scoped 2016 Food Act.",
+    "personalMailApplicability": "Inference from an unqualified any-person/any-food import licence duty, independent of the 2016 Food Act business scope. Customs Management Act section 344 also applies customs law to postal articles. No passenger or gift exception is transferred to this paid private postal purchase.",
+    "quantityLimit": null,
+    "authority": "Bahamas Agricultural Health and Food Safety Authority",
+    "evidenceUrls": [
+      "https://bahfsabahamas.com/sectors/plants/faqs",
+      "https://bahfsabahamas.com/sectors/international/guidelines-for-the-importation-of-plants-and-plant-products",
+      "https://bahfsabahamas.com/downloads/documents/legislation/Food-Import-Conditions-Appendix.pdf",
+      "https://bahfsabahamas.com/uploads/General-Import-Stepsv2_2024-10-04-140708_iqzg.pdf",
+      "https://faolex.fao.org/docs/pdf/bha158350.pdf",
+      "https://bahfsabahamas.com/sectors/international/food-import-conditions",
+      "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/SUBORDINATE/1972/1972-0050/1972-0050.pdf",
+      "https://faolex.fao.org/docs/pdf/bha112362.pdf",
+      "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/PRINCIPAL/1976/1976-0020/1976-0020_1.pdf",
+      "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/PRINCIPAL/2011/2011-0030/2011-0030.pdf",
+      "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/AMENDING/2013/2013-0023/2013-0023.pdf",
+      "https://laws.bahamas.gov.bs/cms/legislation/index/by-category.html",
+      "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/PRINCIPAL/1985/1985-0001/1985-0001_1.pdf",
+      "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/PRINCIPAL/1955/1955-0001/1955-0001_R.pdf"
+    ],
+    "remainingQuestion": "Agricultural classification remains unverified. The operational exclusion is based on the separate food-import licence and an explicit continuation/scope inference, not a tea-specific ruling. Reconsider if an operative general licence, repeal or personal-post exemption under this instrument is published, or if an applicable BAHFSA exemption is established for the actual product; none was recovered.",
+    "researchAttempts": [
+      "Read BAHFSA tea declaration FAQ, all-channel plant-import rules and food-conditions appendix. Confirmed mail/courier scope but could not classify manufactured sencha under processed-product exceptions.",
+      "2026-09-30: Reviewed current BAHFSA e-permitting and FAQ material. September 2024 Click 2 Clear plant-permit instructions and a referenced HS schedule are current leads, but schedule content could not be retrieved (HTTP 403). Traveler declarations of teas and all-plant permit language do not settle processed retail sencha classification.",
+      "2026-09-30: Read indexed full September 2024 BAHFSA Click 2 Clear HS permit schedule, described as all commodities requiring permits. It omits HS 0902 while listing selected raw spices; this supports exclusion from the listed plant permit scope, but not independently food-document exemption. Retrieved Food Safety and Quality Act 2016: section 35(1) applies import-permit/certificate-of-origin rules to food generally; section 35(2) permits Director discretion. Published food-conditions appendix does not clarify a personal retail-tea waiver, so the schedule and food-document framework remain unreconciled.",
+      "2026-09-30: Re-read Act sections 1, 2, 4 and 35 in full. Corrected the earlier suggestion that section 35 alone applies to all private food imports: section 4(1) limits the Act to food businesses, defined to include nonprofit operations; importer is separately broadly defined. Current BAHFSA Food Import Conditions webpage provides the previously inaccessible appendix text: points 5/8/9 distinguish aseptically sealed permit exemption from health/origin certificates, without private-post scope. Current law index lists the Act but no commencement notice was found. Retain unresolved, not an invented waiver or automatic exclusion.",
+      "Fresh official online recovery 30 September 2026: obtained the two-page SI 50/1972 as amended SI 35/1993 from the official national legal repository and a complete FAO mirror. Regulation 2 adopts Food Act’s food definition; regulation 4(1) applies to any person importing any food and regulation 4(2) allows licence terms. No food-business scope or automatic small postal exception occurs in this instrument. Food Act 1985 section 2 includes articles used for drink and ingredients used to prepare human food.",
+      "Checked repeal before relying on the old regulation. Official parent 1955 Act PDF is marked repealed by Act 30/2011. Interpretation and General Clauses Act section 33(1) continues subsidiary legislation when an Act is repealed and substituted, insofar as consistent. Customs Management Act 2011 section 354(1)(q) and section 208 provide replacement import-restriction powers; the current official legislation-by-category index explicitly places the food regulation and the separate 1957 general import rules under this Act. Section 344 preserves application to postal articles. This is a stated continuation/scope inference, not a claim that the 1955 parent remains in force.",
+      "Read Customs Management Amendment Act 23/2013 section 31: only changes section 358(a) repeal wording from other existing Customs legislation to Customs Regulations 1976. The Court of Appeal 2022 Jones judgment confirms the 2011 Act commenced 1 July 2013 and old Customs Act was repealed; it does not decide this food regulation. Current consolidated section 358 is marked Repealed (spent repeal clause), so did not infer parent revival.",
+      "Read separate 1957 Import Control Regulations regulations 6–7. Their general/class-licence power is not an actual published waiver. Their personal-baggage, bona fide gift, UK-manufacture and limited low-value noncommercial exceptions are expressly exceptions to these Regulations, not a universal exemption from the separate 1972/1993 food instrument. No such exception was expanded to the stated paid Japanese postal tea.",
+      "Rechecked current BAHFSA Food Import Conditions points 1–5,8–9 and 2024 HS schedule. Aseptically packaged and hermetically/vacuum-sealed foods have a stated permit exemption; ordinary retail sealing does not establish aseptic packaging. The food guidance still includes certificates and risk assessment, but its business/private scope is not used to decide this exclusion. Tea omission from the plant-permit schedule is preserved as narrower evidence, not a food-licence waiver."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "not_supported",
+    "permitFreeReason": "No-document shipping is not supported on an explicit legal-scope inference: regulation 4(1) independently requires a written licence for imported food, and Interpretation Act section 33 continues compatible subsidiary rules when their parent law is replaced. Current official legal indexing places this regulation under Customs Management Act 2011. The stated product is ordinary sealed manufactured tea; BAHFSA’s published exemption for aseptically packaged and hermetically or vacuum-sealed food is not established by ordinary retail sealing alone. Neither tea’s omission from the plant-permit HS list nor the private recipient’s absence of a food business waives this separate licence duty.",
+    "permitFreeSources": [
+      "https://bahfsabahamas.com/sectors/plants/faqs",
+      "https://bahfsabahamas.com/sectors/international/guidelines-for-the-importation-of-plants-and-plant-products",
+      "https://bahfsabahamas.com/downloads/documents/legislation/Food-Import-Conditions-Appendix.pdf",
+      "https://bahfsabahamas.com/services/epermitting-for-imports",
+      "https://bahfsabahamas.com/uploads/General-Import-Stepsv2_2024-10-04-140708_iqzg.pdf",
+      "https://faolex.fao.org/docs/pdf/bha158350.pdf",
+      "https://bahfsabahamas.com/sectors/international/food-import-conditions",
+      "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/SUBORDINATE/1972/1972-0050/1972-0050.pdf",
+      "https://faolex.fao.org/docs/pdf/bha112362.pdf",
+      "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/PRINCIPAL/1976/1976-0020/1976-0020_1.pdf",
+      "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/PRINCIPAL/2011/2011-0030/2011-0030.pdf",
+      "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/AMENDING/2013/2013-0023/2013-0023.pdf",
+      "https://laws.bahamas.gov.bs/cms/legislation/index/by-category.html",
+      "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/PRINCIPAL/1985/1985-0001/1985-0001_1.pdf",
+      "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/PRINCIPAL/1955/1955-0001/1955-0001_R.pdf"
+    ],
+    "paperworkType": "Food import licence (separate Import Control Regulations); phytosanitary classification unresolved.",
+    "requiredDocument": "Written licence issued by the competent agriculture authority under Import Control (Foods, Plants and Animals) Regulations regulation 4(1).",
+    "permitFreeReviewedAt": "2026-09-30"
+  }
+]

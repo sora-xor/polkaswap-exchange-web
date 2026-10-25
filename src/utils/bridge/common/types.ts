@@ -2,17 +2,40 @@ import type { IBridgeTransaction } from '@sora-substrate/sdk';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { TransactionResponse } from 'ethers';
 
+export const BridgeTransactionSignDialogMode = {
+  Wallet: 'wallet',
+  Bridge: 'bridge',
+} as const;
+
+export type BridgeTransactionSignDialogMode =
+  (typeof BridgeTransactionSignDialogMode)[keyof typeof BridgeTransactionSignDialogMode];
+
 export type AddAsset = (address: string) => Promise<void>;
 export type GetAssetByAddress = (address: string) => Nullable<RegisteredAccountAsset>;
 export type GetActiveTransaction<T> = () => Nullable<T>;
 export type AddTransactionToProgress = (id: string) => void;
 export type RemoveTransactionFromProgress = (id: string) => void;
+export type IsTransactionInProgress = (id: string) => boolean;
 export type GetBridgeHistoryInstance<T> = () => Promise<T>;
 export type GetTransaction<T> = (id: string) => T;
 export type UpdateTransaction<T> = (id: string, params: Partial<T>) => void;
 export type ShowNotification<T> = (tx: T) => void;
-export type BeforeTransactionSign = (...args: any[]) => Promise<void>;
-export type SignExternal = (id: string) => Promise<TransactionResponse>;
+export type BeforeTransactionSign = (signerApi: unknown, dialogMode?: BridgeTransactionSignDialogMode) => Promise<void>;
+/**
+ * Durable evidence recorded before an EVM wallet is allowed to broadcast.
+ * The explicit nonce and exact request let a restarted tracker discover the
+ * transaction without asking the wallet to submit the same transfer again.
+ */
+export type EvmSubmissionEvidence = {
+  from: string;
+  to: string;
+  nonce: number;
+  data: string;
+  value: string;
+  startTimestamp: number;
+};
+export type RecordEvmSubmission = (evidence: EvmSubmissionEvidence) => void;
+export type SignExternal = (id: string, recordSubmission?: RecordEvmSubmission) => Promise<TransactionResponse>;
 export type TransactionBoundaryStates<T extends IBridgeTransaction> = Partial<
   Record<
     T['type'],
@@ -48,6 +71,8 @@ export interface IBridgeOptions<T extends IBridgeTransaction> {
   getActiveTransaction: GetActiveTransaction<T>;
   addTransactionToProgress: AddTransactionToProgress;
   removeTransactionFromProgress: RemoveTransactionFromProgress;
+  /** Returns whether the transaction was already being processed before the current reducer step. */
+  isTransactionInProgress?: IsTransactionInProgress;
   // transaction signing
   beforeTransactionSign: BeforeTransactionSign;
   // boundary states ("failed", "done")
@@ -57,12 +82,12 @@ export interface IBridgeOptions<T extends IBridgeTransaction> {
 export type IBridgeReducerOptions<T extends IBridgeTransaction> = IBridgeOptions<T>;
 
 export interface IBridgeReducer<T extends IBridgeTransaction> {
-  process: (transaction: T) => Promise<void>;
-  changeState: (transaction: T) => Promise<void>;
+  process: (transaction: T, signal?: AbortSignal) => Promise<void>;
+  changeState: (transaction: T, signal?: AbortSignal) => Promise<void>;
   handleState: (id: string, payload: TransactionHandlerPayload<T>) => Promise<void>;
   updateTransactionParams: (id: string, params: Partial<T>) => void;
   beforeSubmit: (id: string) => void;
-  beforeSign: (id: string, ...args: any[]) => void;
+  beforeSign: (id: string, ...args: Parameters<BeforeTransactionSign>) => void;
   onComplete: (id: string) => Promise<void>;
   waitForTransactionStatus: (id: string) => Promise<void>;
   waitForTransactionBlockId: (id: string) => Promise<void>;

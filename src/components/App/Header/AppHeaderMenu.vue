@@ -1,90 +1,113 @@
 <template>
   <div class="app-header-menu">
-    <s-button
+    <SButton
       type="action"
-      class="settings-control s-pressed"
+      :class="['settings-control', 's-pressed', { 'settings-control--open': isDropdownVisible }]"
       :tooltip="isDropdownVisible ? '' : t('headerMenu.settings')"
-      @click="handleClickHeaderMenu"
+      :aria-label="t('headerMenu.settings')"
     >
-      <s-dropdown
-        ref="headerMenu"
-        :popper-class="`header-menu ${!isDropdownVisible ? 'slide-in' : ''} custom-z-index`"
-        class="header-menu__button"
-        icon="grid-block-align-left-24"
-        type="ellipsis"
-        placement="bottom-start"
-        :hide-on-click="false"
-        @visible-change="handleDropdownVisibilityChange"
-      >
-        <template #menu>
-          <div class="header-menu__settings">
-            <p>{{ t('settingsText') }}</p>
-            <s-button class="s-pressed" type="action" icon="x-16" @click="handleClickHeaderMenu" />
-          </div>
-          <s-divider />
-          <div v-for="section in dropdownHeaderMenuItems" :key="section.title">
-            <p class="dropdown-section-title">{{ section.title.toUpperCase() }}</p>
-            <div v-for="(item, index) in section.items" :key="item.value" @click="handleSelectHeaderMenu(item.value)">
-              <s-dropdown-item
-                class="header-menu__item"
-                :data-test-name="item.value"
-                :icon="item.isTextInsteadIcon ? null : item.icon"
-                :value="item.value"
-                :disabled="item.disabled"
-              >
-                <span v-if="item.isTextInsteadIcon" class="current-currency">
-                  {{ getCurrenyOrLanguage(item.value).toUpperCase() }}
-                </span>
-
-                <p>{{ item.text }}</p>
-                <template v-if="item.isThemeItem">
-                  <div class="check" :class="{ selected: selectedTheme === item.value }">
-                    <s-icon name="basic-check-mark-24" size="12px" />
-                  </div>
-                </template>
-                <template v-else-if="item.value === HeaderMenuType.HideBalances">
-                  <s-switch class="icontype" :value="shouldBalanceBeHidden" />
-                </template>
-                <template v-else-if="item.value === HeaderMenuType.TurnPhoneHide">
-                  <s-switch
-                    v-if="isAccessRotationListener && !isAccessAccelerometrEventDeclined"
-                    class="icontype"
-                    :value="isRotatePhoneHideBalanceFeatureEnabled"
-                  />
-                  <s-icon v-else :name="item.iconType" size="14px" class="icontype" />
-                </template>
-                <template v-else>
-                  <s-icon :name="item.iconType" size="14px" class="icontype" />
-                </template>
-              </s-dropdown-item>
-              <s-divider class="divider-between-items" v-if="index < section.items.length - 1" />
+      <template #icon>
+        <SDropdown
+          ref="headerMenu"
+          :popper-class="`header-menu el-dropdown-menu--medium ellipsis s-border-radius-small custom-z-index`"
+          class="header-menu__button"
+          :icon="headerMenuIcon"
+          type="ellipsis"
+          placement="bottom-start"
+          :hide-on-click="false"
+          @update:show="handleDropdownVisibilityChange"
+        >
+          <template #menu>
+            <div class="header-menu__settings">
+              <p>{{ t('settingsText') }}</p>
+              <SButton
+                class="header-menu__settings-close s-pressed"
+                type="action"
+                icon="x-16"
+                :aria-label="t('closeText')"
+                @click="handleClickHeaderMenu"
+              ></SButton>
             </div>
-          </div>
-        </template>
-      </s-dropdown>
-    </s-button>
+            <div class="el-divider el-divider--horizontal s-divider-secondary"></div>
+            <div v-for="section in dropdownHeaderMenuItems" :key="section.title">
+              <p class="dropdown-section-title">{{ section.title.toUpperCase() }}</p>
+              <div v-for="(item, index) in section.items" :key="item.value">
+                <SDropdownItem
+                  class="header-menu__item"
+                  :data-test-name="item.value"
+                  :icon="item.isTextInsteadIcon ? null : item.icon"
+                  :value="item.value"
+                  :disabled="item.disabled"
+                  :tabindex="item.disabled ? -1 : 0"
+                  role="button"
+                  @click.stop="handleSelectHeaderMenu(item.value)"
+                  @keydown.enter.prevent.stop="handleSelectHeaderMenu(item.value)"
+                  @keydown.space.prevent.stop="handleSelectHeaderMenu(item.value)"
+                >
+                  <span v-if="item.isTextInsteadIcon" class="current-currency">
+                    {{ getCurrencyOrLanguage(item.value).toUpperCase() }}
+                  </span>
+
+                  <p>{{ item.text }}</p>
+                  <template v-if="item.isThemeItem">
+                    <div class="check" :class="{ selected: selectedTheme === item.value }">
+                      <SIcon name="basic-check-mark-24" size="12px"></SIcon>
+                    </div>
+                  </template>
+                  <template v-else-if="item.value === HeaderMenuType.HideBalances">
+                    <SSwitch class="icontype" :value="shouldBalanceBeHidden"></SSwitch>
+                  </template>
+                  <template v-else-if="item.value === HeaderMenuType.TurnPhoneHide">
+                    <SSwitch
+                      v-if="isAccessRotationListener && !isAccessAccelerometrEventDeclined"
+                      class="icontype"
+                      :value="isRotatePhoneHideBalanceFeatureEnabled"
+                    ></SSwitch>
+                    <SIcon v-else :name="item.iconType" size="14px" class="icontype"></SIcon>
+                  </template>
+                  <template v-else>
+                    <SIcon :name="item.iconType" size="14px" class="icontype"></SIcon>
+                  </template>
+                </SDropdownItem>
+                <div
+                  v-if="index < section.items.length - 1"
+                  class="el-divider el-divider--horizontal divider-between-items s-divider-secondary"
+                ></div>
+              </div>
+            </div>
+          </template>
+        </SDropdown>
+      </template>
+    </SButton>
   </div>
 </template>
 
-<script lang="ts">
-import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed, ref, watch } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useTranslation } from '@/composables/useTranslation';
 import { Language, Languages } from '@/consts';
 import { BreakpointClass } from '@/consts/layout';
-import { getter, mutation, state } from '@/store/decorators';
+import { Theme } from '@/consts/theme';
+import { getLocaleDirection } from '@/lang/direction';
+import SButton from '@/lib/soramitsu-ui/components/Button/SButton.vue';
+import SIcon from '@/lib/soramitsu-ui/components/Icon/SIcon.vue';
+import SDropdown from '@/lib/soramitsu-ui/components/Select/SDropdown.vue';
+import SDropdownItem from '@/lib/soramitsu-ui/components/Select/SDropdownItem.vue';
+import SSwitch from '@/lib/soramitsu-ui/components/Switch/SSwitch.vue';
+import { useSettingsStore } from '@/stores/settings';
+import { useWalletStore } from '@/stores/wallet';
 import { applyTheme } from '@/utils/switchTheme';
 import { tmaSdkService } from '@/utils/telegram';
 
-import type { Currency } from '@soramitsu/soraneo-wallet-web/lib/types/currency';
+import type { Currency } from '@/lib/soraneo-wallet/src/types/currency';
 
 enum HeaderMenuType {
   HideBalances = 'hide-balances',
   TurnPhoneHide = 'turn-phone-hide',
+  Theme = 'theme',
   LightMode = 'light',
   NoirMode = 'noir',
-  Theme = 'theme',
   Language = 'language',
   Currency = 'currency',
   Notification = 'notification',
@@ -106,266 +129,231 @@ type MenuSection = {
   items: Array<MenuItem>;
 };
 
-const BREAKPOINT = 1440;
+const { t } = useTranslation();
+const settingsStore = useSettingsStore();
+const walletStore = useWalletStore();
+const headerMenu = ref();
+const isDropdownVisible = ref(false);
+const selectedTheme = ref<HeaderMenuType | null>(null);
 
-@Component
-export default class AppHeaderMenu extends Mixins(TranslationMixin) {
-  readonly iconSize = 28;
-  readonly HeaderMenuType = HeaderMenuType;
-  selectedTheme: HeaderMenuType | null = null;
-  isDropdownVisible = false;
+const disclaimerVisibility = computed(() => settingsStore.disclaimerVisibility);
+const userDisclaimerApprove = computed(() => settingsStore.userDisclaimerApprove);
+const isThemePreference = computed(() => settingsStore.isThemePreference);
+const isRotatePhoneHideBalanceFeatureEnabled = computed(() => settingsStore.isRotatePhoneHideBalanceFeatureEnabled);
+const isAccessRotationListener = computed(() => settingsStore.isAccessRotationListener);
+const isAccessAccelerometrEventDeclined = computed(() => settingsStore.isAccessAccelerometrEventDeclined);
+const isTMA = computed(() => settingsStore.isTMA);
+const screenBreakpointClass = computed(() => settingsStore.screenBreakpointClass as BreakpointClass);
 
-  @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
-  @state.settings.userDisclaimerApprove userDisclaimerApprove!: boolean;
-  @state.settings.isRotatePhoneHideBalanceFeatureEnabled private isRotatePhoneHideBalanceFeatureEnabled!: boolean;
-  @state.settings.isAccessRotationListener private isAccessRotationListener!: boolean;
-  @state.settings.isAccessAccelerometrEventDeclined private isAccessAccelerometrEventDeclined!: boolean;
-  @state.settings.language currentLanguage!: Language;
-  @state.settings.isTMA isTMA!: boolean;
-  @state.settings.screenBreakpointClass private screenBreakpointClass!: BreakpointClass;
-  @state.settings.isThemePreference isThemePreference!: boolean;
-  @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
-  @state.wallet.settings.currency currency!: Currency;
+const locale = computed(() => settingsStore.language as Language);
+const currentCurrency = computed(() => settingsStore.currency as Currency);
+const shouldBalanceBeHidden = computed(() => walletStore.shouldBalanceBeHidden);
+const walletTheme = computed(() => walletStore.theme as Theme | null);
+const isMobile = computed(() => screenBreakpointClass.value === BreakpointClass.Mobile);
+const disclaimerDisabled = computed(() => disclaimerVisibility.value && !userDisclaimerApprove.value);
+const disclaimerMenuText = computed(() =>
+  t(`headerMenu.${disclaimerVisibility.value ? 'hideDisclaimer' : 'showDisclaimer'}`)
+);
+const lightThemeText = computed(() => t('headerMenu.switchTheme', { theme: t('light') }));
+const noirThemeText = computed(() => t('headerMenu.switchTheme', { theme: t('noir') }));
+const currentLanguageName = computed(() => languageToDisplayName(locale.value));
+const isRtl = computed(() => getLocaleDirection(locale.value) === 'rtl');
+const headerMenuIcon = computed(() => (isRtl.value ? 'grid-block-align-right-24' : 'grid-block-align-left-24'));
+const drillInIcon = computed(() =>
+  isRtl.value ? 'arrows-chevron-left-rounded-24' : 'arrows-chevron-right-rounded-24'
+);
 
-  @getter.libraryTheme private libraryTheme!: Theme;
-  @getter.settings.notificationActivated notificationActivated!: boolean;
-
-  @mutation.wallet.settings.toggleHideBalance private toggleHideBalance!: FnWithoutArgs;
-  @mutation.settings.setIsThemePreference private setIsThemePreference!: (flag: boolean) => void;
-  @mutation.settings.setAlertSettingsPopup private setAlertSettingsPopup!: (flag: boolean) => void;
-  @mutation.settings.setSelectLanguageDialogVisibility private setLanguageDialogVisibility!: (flag: boolean) => void;
-  @mutation.settings.setSelectCurrencyDialogVisibility private setCurrencyDialogVisibility!: (flag: boolean) => void;
-  @mutation.settings.setRotatePhoneDialogVisibility private setRotatePhoneDialogVisibility!: (flag: boolean) => void;
-  @mutation.settings.setIsRotatePhoneHideBalanceFeatureEnabled private setIsRotatePhoneHideBalanceFeatureEnabled!: (
-    flag: boolean
-  ) => void;
-
-  @mutation.settings.toggleDisclaimerDialogVisibility private toggleDisclaimerDialogVisibility!: FnWithoutArgs;
-
-  @Watch('libraryTheme', { immediate: true })
-  onLibraryThemeChange(newTheme: Theme) {
-    this.updateSelectedTheme(newTheme);
-  }
-
-  get mediaQueryList(): MediaQueryList {
-    return window.matchMedia(`(min-width: ${BREAKPOINT}px)`);
-  }
-
-  mounted() {
-    this.updateSelectedTheme(this.libraryTheme);
-  }
-
-  handleDropdownVisibilityChange(visible: boolean) {
-    this.isDropdownVisible = visible;
-  }
-
-  get isMobile(): boolean {
-    return this.screenBreakpointClass === BreakpointClass.Mobile;
-  }
-
-  get disclaimerText(): string {
-    return this.disclaimerVisibility ? this.t('headerMenu.hideDisclaimer') : this.t('headerMenu.showDisclaimer');
-  }
-
-  private updateSelectedTheme(newTheme: Theme) {
-    if (this.isThemePreference) {
-      this.selectedTheme = HeaderMenuType.Theme;
-    } else {
-      this.selectedTheme = newTheme === Theme.LIGHT ? HeaderMenuType.LightMode : HeaderMenuType.NoirMode;
-    }
-  }
-
-  private getHideBalancesIcon(isDropdown = false): string {
-    if (isDropdown) {
-      return this.shouldBalanceBeHidden ? 'basic-eye-no-24' : 'basic-filterlist-24';
-    } else {
-      return this.shouldBalanceBeHidden ? 'basic-filterlist-24' : 'basic-eye-no-24';
-    }
-  }
-
-  get hideBalancesText(): string {
-    return this.t(`headerMenu.${this.shouldBalanceBeHidden ? 'showBalances' : 'hideBalances'}`);
-  }
-
-  private getCurrenyOrLanguage(value: string): string {
-    if (value === HeaderMenuType.Currency) {
-      return this?.currency;
-    } else {
-      return this.currentLanguage;
-    }
-  }
-
-  private getHeaderMenuItems(isDropdown = false): Array<{ title: string; items: Array<MenuItem> }> {
-    return [
+const dropdownHeaderMenuItems = computed<MenuSection[]>(() => [
+  {
+    title: t('headerMenu.titleBalance'),
+    items: [
       {
-        title: this.t('headerMenu.titleBalance'),
-        items: [
-          {
-            value: HeaderMenuType.HideBalances,
-            icon: this.getHideBalancesIcon(isDropdown),
-            text: this.hideBalancesText,
-            iconType: 'arrows-chevron-right-rounded-24',
-          },
-          ...(this.isTMA && this.isMobile
-            ? [
-                {
-                  value: HeaderMenuType.TurnPhoneHide,
-                  icon: 'gadgets-iPhone-24',
-                  text: this.t('headerMenu.turnPhoneHideBalances'),
-                  iconType: 'arrows-chevron-right-rounded-24',
-                },
-              ]
-            : []),
-        ],
+        value: HeaderMenuType.HideBalances,
+        icon: getHideBalancesIcon(true),
+        iconType: drillInIcon.value,
+        text: t(`headerMenu.${shouldBalanceBeHidden.value ? 'showBalances' : 'hideBalances'}`),
+      },
+      ...(isTMA.value && isMobile.value
+        ? [
+            {
+              value: HeaderMenuType.TurnPhoneHide,
+              icon: 'gadgets-iPhone-24',
+              text: t('headerMenu.turnPhoneHideBalances'),
+              iconType: drillInIcon.value,
+            },
+          ]
+        : []),
+    ],
+  },
+  {
+    title: t('headerMenu.titleTheme'),
+    items: [
+      {
+        value: HeaderMenuType.Theme,
+        icon: 'basic-lightning-24',
+        text: t('headerMenu.systemPreferencesTheme'),
+        isThemeItem: true,
       },
       {
-        title: this.t('headerMenu.titleTheme'),
-        items: [
-          {
-            value: HeaderMenuType.Theme,
-            icon: 'basic-lightning-24',
-            text: this.t('headerMenu.systemPreferencesTheme'),
-            isThemeItem: true,
-          },
-          {
-            value: HeaderMenuType.LightMode,
-            icon: 'various-brightness-low-24',
-            text: this.t('headerMenu.switchTheme', { theme: this.t('light') }),
-            isThemeItem: true,
-          },
-          {
-            value: HeaderMenuType.NoirMode,
-            icon: 'finance-PSWAP-24',
-            text: this.t('headerMenu.switchTheme', { theme: this.t('noir') }),
-            isThemeItem: true,
-          },
-        ],
+        value: HeaderMenuType.LightMode,
+        icon: 'various-brightness-low-24',
+        text: lightThemeText.value,
+        isThemeItem: true,
       },
       {
-        title: this.t('headerMenu.titleCurrency'),
-        items: [
-          {
-            value: HeaderMenuType.Currency,
-            icon: 'various-lightbulb-24',
-            text: this.t('headerMenu.selectCurrency'),
-            iconType: 'arrows-chevron-right-rounded-24',
-            isTextInsteadIcon: true,
-          },
-        ],
+        value: HeaderMenuType.NoirMode,
+        icon: 'finance-PSWAP-24',
+        text: noirThemeText.value,
+        isThemeItem: true,
+      },
+    ],
+  },
+  {
+    title: t('headerMenu.titleCurrency'),
+    items: [
+      {
+        value: HeaderMenuType.Currency,
+        icon: 'various-lightbulb-24',
+        iconType: drillInIcon.value,
+        text: t('headerMenu.selectCurrency'),
+        isTextInsteadIcon: true,
+      },
+    ],
+  },
+  {
+    title: t('headerMenu.titleMisc'),
+    items: [
+      {
+        value: HeaderMenuType.Notification,
+        icon: 'notifications-bell-24',
+        iconType: drillInIcon.value,
+        text: t('browserNotificationDialog.title'),
       },
       {
-        title: this.t('headerMenu.titleMisc'),
-        items: [
-          {
-            value: HeaderMenuType.Notification,
-            icon: 'notifications-bell-24',
-            text: this.t('browserNotificationDialog.title'),
-            iconType: 'arrows-chevron-right-rounded-24',
-          },
-          {
-            value: HeaderMenuType.Disclaimer,
-            icon: 'info-16',
-            text: this.disclaimerText,
-            iconType: 'arrows-chevron-right-rounded-24',
-            disabled: this.disclaimerDisabled,
-          },
-          {
-            value: HeaderMenuType.Language,
-            icon: 'basic-globe-24',
-            text: `${Languages.find((lang) => lang.key === this.currentLanguage)?.name}`,
-
-            iconType: 'arrows-chevron-right-rounded-24',
-            isTextInsteadIcon: true,
-          },
-        ],
+        value: HeaderMenuType.Disclaimer,
+        icon: 'info-16',
+        iconType: drillInIcon.value,
+        text: disclaimerMenuText.value,
+        disabled: disclaimerDisabled.value,
       },
-    ];
+      {
+        value: HeaderMenuType.Language,
+        icon: 'basic-globe-24',
+        iconType: drillInIcon.value,
+        text: currentLanguageName.value,
+        isTextInsteadIcon: true,
+      },
+    ],
+  },
+]);
+
+function getHideBalancesIcon(reverse = false): string {
+  return reverse
+    ? shouldBalanceBeHidden.value
+      ? 'basic-eye-no-24'
+      : 'basic-filterlist-24'
+    : shouldBalanceBeHidden.value
+      ? 'basic-filterlist-24'
+      : 'basic-eye-no-24';
+}
+
+function getCurrencyOrLanguage(type: HeaderMenuType): string {
+  if (type === HeaderMenuType.Currency) {
+    return currentCurrency.value?.toLocaleLowerCase() ?? '';
   }
 
-  get headerMenuItems(): Array<MenuSection> {
-    return this.getHeaderMenuItems();
+  if (type === HeaderMenuType.Language) {
+    return languageToCode(locale.value);
   }
 
-  get dropdownHeaderMenuItems(): Array<MenuSection> {
-    return this.getHeaderMenuItems(true);
-  }
+  return '';
+}
 
-  get disclaimerDisabled(): boolean {
-    return this.disclaimerVisibility && !this.userDisclaimerApprove;
-  }
+function languageToCode(language: Language): string {
+  return language.split('-')[0] ?? language;
+}
 
-  openNotificationDialog(): void {
-    this.setAlertSettingsPopup(true);
-  }
+function languageToDisplayName(language: Language): string {
+  const selectedLanguage = Languages.find((value) => value.key === language);
+  return selectedLanguage?.name ?? selectedLanguage?.value ?? language;
+}
 
-  getDropdownVisible(): boolean {
-    const dropdown = (this.$refs.headerMenu as any)?.dropdown;
-    return dropdown ? dropdown.visible : false;
-  }
+function handleDropdownVisibilityChange(visible: boolean): void {
+  isDropdownVisible.value = visible;
+}
 
-  handleClickHeaderMenu(): void {
-    const dropdown = (this.$refs.headerMenu as any).dropdown;
-    if (dropdown) {
-      if (dropdown.visible) {
-        dropdown.hide();
-        this.isDropdownVisible = false;
+function handleClickHeaderMenu(): void {
+  headerMenu.value?.hide?.();
+  headerMenu.value?.dropdown?.hide?.();
+  isDropdownVisible.value = false;
+}
+
+async function handleSelectHeaderMenu(type: HeaderMenuType): Promise<void> {
+  switch (type) {
+    case HeaderMenuType.HideBalances:
+      walletStore.toggleHideBalance();
+      break;
+    case HeaderMenuType.Theme:
+      if (selectedTheme.value === type) break;
+      settingsStore.setIsThemePreference(true);
+      break;
+    case HeaderMenuType.LightMode:
+    case HeaderMenuType.NoirMode:
+      if (selectedTheme.value === type) break;
+      await updateTheme(type);
+      break;
+    case HeaderMenuType.TurnPhoneHide:
+      if (isRotatePhoneHideBalanceFeatureEnabled.value) {
+        settingsStore.setIsRotatePhoneHideBalanceFeatureEnabled(false);
+        tmaSdkService.removeDeviceRotationListener();
+        settingsStore.setRotatePhoneDialogVisibility(false);
+      } else if (!isRotatePhoneHideBalanceFeatureEnabled.value && isAccessRotationListener.value) {
+        tmaSdkService.listenForDeviceRotation();
+        settingsStore.setIsRotatePhoneHideBalanceFeatureEnabled(true);
       } else {
-        dropdown.show();
-        this.isDropdownVisible = true;
+        settingsStore.setRotatePhoneDialogVisibility(true);
+        handleClickHeaderMenu();
       }
-    }
-  }
-
-  async handleSelectHeaderMenu(value: HeaderMenuType): Promise<void> {
-    switch (value) {
-      case HeaderMenuType.HideBalances:
-        this.toggleHideBalance();
-        break;
-      case HeaderMenuType.Theme:
-        if (this.selectedTheme !== value) {
-          this.selectedTheme = value;
-          this.setIsThemePreference(true);
-        }
-        break;
-      case HeaderMenuType.LightMode:
-      case HeaderMenuType.NoirMode:
-        if (this.selectedTheme !== value) {
-          this.selectedTheme = value;
-          this.setIsThemePreference(false);
-          if ((this.selectedTheme === 'noir' ? 'dark' : this.selectedTheme) !== this.libraryTheme) {
-            applyTheme(this.selectedTheme !== 'light');
-          }
-        }
-        break;
-      case HeaderMenuType.TurnPhoneHide:
-        if (this.isRotatePhoneHideBalanceFeatureEnabled) {
-          this.setIsRotatePhoneHideBalanceFeatureEnabled(false);
-          tmaSdkService.removeDeviceRotationListener();
-          this.setRotatePhoneDialogVisibility(false);
-        } else if (!this.isRotatePhoneHideBalanceFeatureEnabled && this.isAccessRotationListener) {
-          tmaSdkService.listenForDeviceRotation();
-          this.setIsRotatePhoneHideBalanceFeatureEnabled(true);
-        } else {
-          this.setRotatePhoneDialogVisibility(true);
-        }
-
-        break;
-      case HeaderMenuType.Language:
-        this.setLanguageDialogVisibility(true);
-        break;
-      case HeaderMenuType.Currency:
-        this.setCurrencyDialogVisibility(true);
-        break;
-      case HeaderMenuType.Disclaimer:
-        if (this.disclaimerDisabled) return;
-        this.toggleDisclaimerDialogVisibility();
-        break;
-      case HeaderMenuType.Notification:
-        this.openNotificationDialog();
-        break;
-    }
+      break;
+    case HeaderMenuType.Language:
+      settingsStore.setSelectLanguageDialogVisibility(true);
+      handleClickHeaderMenu();
+      break;
+    case HeaderMenuType.Currency:
+      settingsStore.setSelectCurrencyDialogVisibility(true);
+      handleClickHeaderMenu();
+      break;
+    case HeaderMenuType.Notification:
+      settingsStore.setAlertSettingsPopup(true);
+      handleClickHeaderMenu();
+      break;
+    case HeaderMenuType.Disclaimer:
+      if (disclaimerDisabled.value) break;
+      settingsStore.toggleDisclaimerDialogVisibility();
+      handleClickHeaderMenu();
+      break;
   }
 }
+
+async function updateTheme(type: HeaderMenuType): Promise<void> {
+  selectedTheme.value = type;
+  const theme = type === HeaderMenuType.LightMode ? Theme.LIGHT : Theme.DARK;
+  applyTheme(theme === Theme.DARK);
+  await walletStore.setTheme(theme);
+  settingsStore.setIsThemePreference(false);
+}
+
+watch(
+  [walletTheme, isThemePreference],
+  ([theme, preference]) => {
+    selectedTheme.value = preference
+      ? HeaderMenuType.Theme
+      : theme === Theme.DARK
+        ? HeaderMenuType.NoirMode
+        : HeaderMenuType.LightMode;
+  },
+  { immediate: true }
+);
 </script>
 
 <style lang="scss">
@@ -379,35 +367,99 @@ $item-padding: 17px;
 .header-menu {
   $dropdown-background: var(--s-color-utility-surface);
   $dropdown-item-line-height: 42px;
+  transition:
+    right 0.2s cubic-bezier(0.22, 0.77, 0.81, 0.61),
+    left 0.2s cubic-bezier(0.22, 0.77, 0.81, 0.61);
 
   &.custom-z-index {
-    z-index: calc($app-loader-layer - 1) !important;
+    z-index: 1999 !important;
   }
-  transform: translateX(-100%);
-  transition: transform 0.2s cubic-bezier(0.22, 0.77, 0.81, 0.61);
 
   &.slide-in {
-    transform: translateX(0);
+    right: 4px !important;
+  }
+
+  &.is-open {
+    right: 4px !important;
   }
 
   &.el-dropdown-menu.el-popper {
     background-color: $dropdown-background;
     box-shadow: var(--s-shadow-element-pressed);
+    color: #000;
     position: fixed !important;
-    top: -16px !important;
-    max-width: $menu-setting-max-width;
-    height: calc(100% - #{$footer-height} + 4px);
-    right: calc(0px - ($menu-setting-max-width - $inner-spacing-small));
+    top: -4px !important;
+    right: 4px !important;
     left: auto !important;
-    border-radius: unset;
+    padding: 6px 0 !important;
+    width: min(284px, calc(100vw - 8px));
+    max-width: min(284px, calc(100vw - 8px)) !important;
+    height: calc(100% - 28px) !important;
     border: unset;
+    border-radius: unset;
+
     .popper__arrow {
       display: none;
     }
   }
+
+  .s-dropdown-menu {
+    margin: 0;
+    padding: 0;
+  }
+
+  @include large-mobile(true) {
+    transition: transform 0.2s cubic-bezier(0.22, 0.77, 0.81, 0.61);
+
+    &.slide-in,
+    &.is-open {
+      right: -272px !important;
+      transform: translateX(-264px) !important;
+    }
+
+    &.el-dropdown-menu.el-popper {
+      top: -16px !important;
+      right: -272px !important;
+      left: auto !important;
+      margin-top: 12px !important;
+      width: 264px;
+      max-width: 264px !important;
+      transform: translateX(-264px) !important;
+    }
+  }
+
+  html[dir='rtl'] & {
+    &.slide-in,
+    &.is-open {
+      right: auto !important;
+      left: 4px !important;
+    }
+
+    &.el-dropdown-menu.el-popper {
+      right: auto !important;
+      left: 4px !important;
+    }
+
+    @include large-mobile(true) {
+      &.slide-in,
+      &.is-open {
+        right: auto !important;
+        left: -272px !important;
+        transform: translateX(264px) !important;
+      }
+
+      &.el-dropdown-menu.el-popper {
+        right: auto !important;
+        left: -272px !important;
+        transform: translateX(264px) !important;
+      }
+    }
+  }
+
   &__button i {
     font-size: $icon-size !important;
   }
+
   &__settings {
     min-width: 264px;
     display: flex;
@@ -415,15 +467,43 @@ $item-padding: 17px;
     align-items: center;
     padding: 8px 17px;
     width: 100%;
+
     i {
       font-size: 24px !important;
     }
+
     p {
       font-weight: 500;
       font-size: 15px;
       color: var(--s-color-base-content-primary);
     }
   }
+
+  &__settings-close.el-button.s-action {
+    display: block;
+    width: 42px;
+    min-width: auto;
+    height: 42px;
+    min-height: 42px;
+    padding: 0;
+    color: var(--s-color-base-content-tertiary) !important;
+    font-weight: 500;
+    line-height: 14px;
+  }
+
+  &__settings-close .s-button__icon {
+    display: inline;
+    width: auto;
+    height: auto;
+  }
+
+  &__settings-close .s-button__icon > i {
+    display: inline-block;
+    color: var(--s-color-base-content-tertiary) !important;
+    font-size: 24px !important;
+    line-height: 24px !important;
+  }
+
   & &__item.el-dropdown-menu__item {
     line-height: $dropdown-item-line-height;
     font-weight: 500;
@@ -432,17 +512,52 @@ $item-padding: 17px;
     color: var(--s-color-base-content-primary);
     display: flex;
     align-items: center;
-    p {
-      @include text-ellipsis;
-      margin-left: $inner-spacing-small;
-      margin-right: $inner-spacing-tiny;
+    padding: 0 $item-padding;
+
+    &.s-dropdown-menu__item {
+      gap: 0;
     }
+
+    p {
+      margin-left: $inner-spacing-small;
+      margin-right: 4px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
     i {
       color: var(--s-color-base-content-tertiary);
       font-size: $icon-size;
     }
+
+    .el-dropdown-menu__icon {
+      width: auto !important;
+      height: auto !important;
+      margin-right: 5px;
+      font-size: $icon-size !important;
+      line-height: $icon-size !important;
+    }
+
     .icontype {
       margin-left: auto;
+    }
+
+    html[dir='rtl'] & {
+      p {
+        margin-right: $inner-spacing-small;
+        margin-left: 4px;
+      }
+
+      .el-dropdown-menu__icon {
+        margin-right: 0;
+        margin-left: 5px;
+      }
+
+      .icontype {
+        margin-right: auto;
+        margin-left: 0;
+      }
     }
 
     &:focus {
@@ -482,6 +597,12 @@ $item-padding: 17px;
       border-color 150ms,
       background-color 150ms;
     margin-left: auto;
+
+    html[dir='rtl'] & {
+      margin-right: auto;
+      margin-left: 0;
+    }
+
     i {
       margin: unset;
     }
@@ -494,20 +615,29 @@ $item-padding: 17px;
   .selected {
     background: var(--s-color-theme-accent);
     border: 1px solid transparent;
+
     i {
-      &::before {
-        color: white;
-      }
       opacity: 1;
+
+      &::before {
+        color: #fff;
+      }
     }
   }
 
   .el-divider--horizontal {
     margin: unset;
+    height: 1px;
+    background-color: var(--s-color-base-border-secondary);
   }
 
   .divider-between-items {
-    margin-left: calc($basic-spacing * 4);
+    margin-left: 64px;
+
+    html[dir='rtl'] & {
+      margin-right: 64px;
+      margin-left: 0;
+    }
   }
 }
 

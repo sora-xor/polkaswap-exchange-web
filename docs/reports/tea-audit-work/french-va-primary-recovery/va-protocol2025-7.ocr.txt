@@ -1,0 +1,56 @@
+2. ADM definisce un profilo “Gestore Vaticano” quale persona fisica in possesso delle credenziali
+SPID, di livello duc, che una volta abilitato, operera in manicra autonoma sul MAU (Modcllo
+Autorizzativo Unico) inscrendo 0 revocando le deleghe ad altre persone fisiche che operano per conto
+dello S.C.V. ¢ che siano in possesso delle credenziali SPID.
+
+8. I soggetti delegati possono cflettuare lc operazioni di dichiarazione sul nuovo applicalivo, previa
+autcnticazione da parte del sistema ADM.
+
+4, La trasmissionc ad ADM delle dichiarazioni prescntale dai soggetti delegati avverra per mezzo di
+un'unica interfaccia costituita dai Servizi Doganali del Governatorato dello $.C.V.
+
+Articolo 5 - Dichiarazione valutaria di denaro contante
+
+1. Lo S.C.V. powa prescniare la dichiarazionc valularia di denaro contante nella fascia oraria in cui il
+cma realizzato da ADM sara tecnologicamente disponibile, owvero tra Ie orc 8.00 ¢ le ore 16.00 dei
+giorni che vanno dal lunedi al venerdi.
+
+2. In ogni caso, la dichiarazionc valutaria di denaro contante in formato clettronico deve essere regisirata
+sul sistema informativo dell’ADM prima dell’inizio del trasferimento di denaro contante di cui
+all'articolo 2 owero dell’esportazione (ingresso nello $.C.V.) owero dell’ importazione (ingresso in
+Ttalia).
+
+8. Al termine della registrazione della dichiarazione, il sistema ADM visualizzcra se la dichiarazione ¢
+automaticamente accettata oppure se é previsto un controllo da parte dell’ Ufficio delle dogane di Roma
+1. In quest’ultimo caso, lo $.C.V. comunichera al predetto Ufficio l’arrivo previsto del denaro contante
+presso lo S.C.V. (Tl c US) ovwvero luscita prevista del denaro contante dallo §.C.V. (T2 ¢ IN) ed
+attendera l’arrivo dei funzionari ADM delegati all’attivita di controllo.
+
+4, Il soggetto che trasporta il denaro contante deve recare al seguito gli estremi dell’avvenuta
+registrazione della dichiarazione owero la stampa della dichiarazionc registrata ¢ sottoposta al sistema
+aulomalizzato di sclezione da parte del Circuito Dichiarazioni Valutaric (in scguito, CDV).
+
+Articolo 6 - Dichiarazione valutaria di denaro contante - Sigilli
+
+1. Per ogni movimento di denaro contante, all’atto della registrazione della dichiarazione valutaria di
+denaro contante, lo $.C.V. indichera gli estremi deci sigilli (aumerazionc) apposti sui sacchi/contenitori
+contenenti il denaro contante.
+
+Articolo 7 - Controllo
+
+{. In caso di controllo disposto dal sistema ADM, i funzionari doganali delegati dall’Uflicio delle
+dogane di Roma 1 effettucranno le veriliche presso i locali messi a disposizione dallo $.C.V.
+
+2. Il controllo potra consistere:
+a) nel riscontro della prescnza ¢ integrita dei sigilli apposti, la cui numerazione é slala
+indicata nella dichiarazionc come previsto dall’articolo 6;
+b) nel conteggio del denaro contante previa rimozionc dei sigilli apposti per verilicaruc la
+congruila rispetto ai quantitativi indicati nella dichiarazione valutaria di denaro contante.
+
+8. Al termine del controllo, i funzionari doganali delegati procedcramno con l'apposizione dei sigilli
+ADM uel caso di movimenti che prevedano V’ingresso del denaro contante in Italia dallo $.C.V. (12 ¢
+IN).
+
+4, Anche qualora il sistema ADM non abbia disposto alcun controllo, lo $.C.V. si impegna a
+comunicare all’Ufficio delle Dogane di Roma | cventuali criticila riscontrate nei movimenti di denaro
+contante.

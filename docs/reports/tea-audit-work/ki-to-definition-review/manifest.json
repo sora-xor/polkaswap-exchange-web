@@ -1,0 +1,82 @@
+[
+  {
+    "file": "ki-act2011.pdf",
+    "bytes": 3066640,
+    "sha256": "fbb4adff38f0eb405feee6e8db6e29e799dc3733f8ead30033f45b636f52f93b"
+  },
+  {
+    "file": "ki-act2011.txt",
+    "bytes": 242610,
+    "sha256": "684bad1b34adb0869395db085b86b6369be91490fc810370e3440e2540bf9183"
+  },
+  {
+    "file": "ki-source-only-full-row-proposal.json",
+    "bytes": 9261,
+    "sha256": "f173cb6ac8e676928c0b6f09cae4445c87b646ad9a6b5a8caad99df59fd6588b"
+  },
+  {
+    "file": "review.json",
+    "bytes": 6832,
+    "sha256": "f202ac98caed76f5e27da88578f4606ee54cd81a640034129b058072a4a1df89"
+  },
+  {
+    "file": "source-pass-result.json",
+    "bytes": 522,
+    "sha256": "94bc115711f1fe8ba57e8b2a32bdb861d2c28af76f4fe833361085b1d778ac18"
+  },
+  {
+    "file": "source-provenance.json",
+    "bytes": 1379,
+    "sha256": "2565bac4069c046706bb56dcfb4632a2b6cdbaa0e1a4f0f50c408dd110fbf0bc"
+  },
+  {
+    "file": "to-current-act.pdf",
+    "bytes": 593544,
+    "sha256": "8fa54f4b8541af3e095a3ca3e43ab554c3d7a6b5e6ec0cd197a8633e856a4a59"
+  },
+  {
+    "file": "to-current-act.txt",
+    "bytes": 32324,
+    "sha256": "4afdf5333a843a5cd395ff1fb7547caca396833b606127b78e45ed65597c89e3"
+  },
+  {
+    "file": "to-current-by-title.html",
+    "bytes": 112097,
+    "sha256": "450ae6939cbb767e433f8c9b2058fadbe0f5cddc45cf50258b25466f930c8bb8"
+  },
+  {
+    "file": "to-current-diseases-regulations.pdf",
+    "bytes": 775982,
+    "sha256": "38c5eecbe3f3540af7ccc72f94faf1de2011ee8feaddcbfa6a01582cf85ca332"
+  },
+  {
+    "file": "to-current-diseases-regulations.txt",
+    "bytes": 30294,
+    "sha256": "28777fcec03e81c54689ade10997cd152e7f62ed4e2530f64a6db910174bc1da"
+  },
+  {
+    "file": "to-current-law-index.html",
+    "bytes": 303030,
+    "sha256": "65d4cc836727e4e29fa3f34195e8118fafcf43e3bd1fab1b09e7d8352abff936"
+  },
+  {
+    "file": "to-current-p.html",
+    "bytes": 538022,
+    "sha256": "b4bd13a1796837219e79e347490449715c4bde70261390e2e6409009880523b8"
+  },
+  {
+    "file": "to-outcome-full-row-proposal.json",
+    "bytes": 9561,
+    "sha256": "91a83e0c7cef19ff71cbdb5f0037ac74b0cc924d7aee4d7b574fa207a3213141"
+  },
+  {
+    "file": "to-regulations1995.pdf",
+    "bytes": 269206,
+    "sha256": "ee5b56e82991dcc278743ba1145bb5320aac2addbab076974d2b299d02e49872"
+  },
+  {
+    "file": "to-regulations1995.txt",
+    "bytes": 31980,
+    "sha256": "b10e6cbd7f3ea1af75944350a7468c20746db02c7e42d84f6afd5d50b91db1ad"
+  }
+]

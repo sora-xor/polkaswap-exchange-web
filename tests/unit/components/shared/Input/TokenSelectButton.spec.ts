@@ -1,0 +1,152 @@
+import { describe, expect, it, vi } from 'vitest';
+import { mount } from '@vue/test-utils';
+
+const TokenLogoStub = vi.hoisted(() => ({
+  name: 'TokenLogoStub',
+  template: '<div class="token-logo-stub" />',
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/TokenLogo.vue', () => ({
+  default: TokenLogoStub,
+}));
+
+vi.mock('@/components/shared/PairTokenLogo.vue', () => ({
+  default: {
+    name: 'PairTokenLogoStub',
+    template: '<div class="pair-token-logo-stub" />',
+  },
+}));
+
+vi.mock('@/composables/useTranslation', () => ({
+  useTranslation: () => ({
+    t: (key: string) => `i18n:${key}`,
+  }),
+}));
+
+// Needs to be imported after mocks are declared.
+import TokenSelectButton from '@/components/shared/Input/TokenSelectButton.vue';
+
+const SIconStub = {
+  name: 'SIconStub',
+  props: ['name', 'size'],
+  template: '<i class="s-icon-stub" :data-name="name" :data-size="size" />',
+};
+
+const mountComponent = (props?: Record<string, unknown>) =>
+  mount(TokenSelectButton, {
+    props,
+    global: {
+      stubs: {
+        's-icon': SIconStub,
+      },
+    },
+  });
+
+describe('TokenSelectButton', () => {
+  it('falls back to choose token prompt when no asset is selected', () => {
+    const wrapper = mountComponent();
+    const exposed = wrapper.vm as unknown as {
+      buttonText: string;
+      buttonTabindex: number | string;
+      computedClasses: Array<string | Record<string, boolean>>;
+      hasToken: boolean;
+    };
+
+    expect(exposed.buttonText).toBe('i18n:buttons.chooseToken');
+    expect(exposed.buttonTabindex).toBe(0);
+    expect(exposed.hasToken).toBe(false);
+    expect(exposed.computedClasses).toEqual([
+      'el-button',
+      'el-tooltip',
+      'el-button--plain',
+      'el-button--small',
+      'neumorphic',
+      's-small',
+      's-border-radius-mini',
+      's-secondary',
+      'token-select-button',
+      { 'is-disabled': false },
+    ]);
+  });
+
+  it('renders token pair information when multiple assets are provided', () => {
+    const wrapper = mountComponent({
+      tokens: [{ symbol: 'XOR' }, { symbol: 'VAL' }],
+    });
+    const exposed = wrapper.vm as unknown as {
+      buttonText: string;
+      computedClasses: Array<string | Record<string, boolean>>;
+      hasToken: boolean;
+    };
+
+    expect(exposed.hasToken).toBe(true);
+    expect(exposed.buttonText).toBe('XOR-VAL');
+    expect(exposed.computedClasses).toContain('s-border-radius-mini');
+    expect(exposed.computedClasses).toContain('s-tertiary');
+    expect(exposed.computedClasses).toContain('token-select-button--token');
+  });
+
+  it('normalizes token symbols to avoid visual line breaks', () => {
+    const wrapper = mountComponent({
+      tokens: [{ symbol: ' XOR\n' }, { symbol: ' V AL ' }],
+    });
+    const exposed = wrapper.vm as unknown as { buttonText: string };
+
+    expect(exposed.buttonText).toBe('XOR-VAL');
+  });
+
+  it('renders token logo when a single token is provided', () => {
+    const wrapper = mountComponent({
+      token: { symbol: 'XOR' },
+    });
+
+    expect(wrapper.find('.token-logo-stub').exists()).toBe(true);
+  });
+
+  it('renders the pair logo when two assets are selected', () => {
+    const wrapper = mountComponent({
+      tokens: [{ symbol: 'XOR' }, { symbol: 'VAL' }],
+    });
+
+    expect(wrapper.find('.pair-token-logo-stub').exists()).toBe(true);
+  });
+
+  it('hides the icon when button is disabled even if icon prop is passed', () => {
+    const wrapper = mountComponent({
+      icon: 'general',
+      disabled: true,
+    });
+    const exposed = wrapper.vm as unknown as { buttonTabindex: number | string };
+
+    expect(wrapper.find('.s-icon-stub').exists()).toBe(false);
+    expect(exposed.buttonTabindex).toBe(-1);
+  });
+
+  it('renders the production button contract without the soramitsu shared text wrapper', () => {
+    const wrapper = mountComponent();
+    const button = wrapper.get('button.token-select-button');
+
+    expect(button.classes()).toContain('el-button');
+    expect(button.classes()).toContain('el-button--plain');
+    expect(button.find('.s-button__text').exists()).toBe(false);
+    expect(button.find('.token-select-button__content').exists()).toBe(false);
+    expect(button.element.firstElementChild?.tagName).toBe('SPAN');
+    expect(button.element.firstElementChild?.className).toBe('');
+  });
+
+  it('keeps logo, text and chevron inside the plain button span wrapper used by production', () => {
+    const wrapper = mountComponent({
+      token: { symbol: 'XOR' },
+      icon: 'chevron-down-rounded-16',
+    });
+
+    const button = wrapper.get('button.token-select-button');
+    const contentElement = button.element.firstElementChild as HTMLElement | null;
+
+    expect(contentElement?.tagName).toBe('SPAN');
+    expect(contentElement?.className).toBe('');
+    expect(contentElement?.querySelector('.token-logo-stub')).not.toBeNull();
+    expect(contentElement?.querySelector('.token-select-button__text')?.textContent).toBe('XOR');
+    expect(contentElement?.querySelector('.s-icon-stub')?.getAttribute('data-name')).toBe('chevron-down-rounded-16');
+  });
+});

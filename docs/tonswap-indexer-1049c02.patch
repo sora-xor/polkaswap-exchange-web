@@ -1,0 +1,592 @@
+diff --git a/docs/tonswap-burn.md b/docs/tonswap-burn.md
+new file mode 100644
+index 0000000..1462c8a
+--- /dev/null
++++ b/docs/tonswap-burn.md
+@@ -0,0 +1,24 @@
++# TONSWAP XOR burn campaign data
++
++The TS reservation campaign starts at finalized SORA mainnet block **27,720,478**. Its source SORA signer owns the future claim on tonswap.org; there is no Nexus or TON destination in the burn transaction.
++
++A qualifying transaction is a successful atomic `utility.batchAll` containing exactly these two calls, in order:
++
++1. `assets.burn` for the canonical XOR asset.
++2. `system.remark` containing UTF-8 JSON `{"app":"polkaswap","kind":"tonswap-xor-burn","version":1}` (encoded as hex bytes for the extrinsic).
++
++The marker accepts exactly those three fields. Ordinary burns, Nexus remarks, non-atomic `utility.batch`, extra calls and markers with recipient fields do not qualify. Compact `xorBurns` rows now expose optional `campaign: "tonswap"` and `extrinsicIndex` fields. Existing fields and record IDs remain compatible. Frontend SOLSWAP accounting must exclude rows tagged `tonswap`.
++
++## Complete finalized snapshots
++
++`tonswapBurnSnapshot(first: 100, after: Cursor, atBlock: Int)` returns `genesisHash`, `startBlock`, `indexedThroughBlock`, current `checkpointBlock` / `checkpointTimestamp`, `nodes`, and `pageInfo`. Omit `atBlock` on the first request; send that page's `indexedThroughBlock` unchanged on every subsequent request. Continue until `hasNextPage` is false, even when `nodes` is empty: pagination traverses the bounded compact ID index and omits unrelated burns. Reject GraphQL errors, missing metadata, stale timestamps, non-advancing cursors and conflicting transaction identities. The first snapshot block freezes the complete global history; clients order accepted rows by `(blockHeight, extrinsicIndex)`, never by transaction hash or address.
++
++Coverage is persisted as `updatesStreams/tonswapBurnCoverage-v1`. On startup the worker replays every campaign block through the actual caught-up finalized chain checkpoint, including an empty start block. Each replay batch commits its burn documents and coverage atomically. Normal finalized block writes extend coverage only contiguously and in the same transaction as burn records. No normal chain checkpoint is rewound. Missing/pruned historical data prevents certification rather than certifying a partial stream.
++
++The dedicated endpoint bypasses cache and rejects missing/incomplete coverage, an unready worker, more than two finalized blocks of lag, a block timestamp older than 60 seconds, or a checkpoint inconsistent with normal finalized indexing. Campaign coverage contains the reviewed SORA mainnet genesis and canonical block hash. The deployment-compatible implementation additionally compares archive block identity with the primary mainnet RPC before certifying each campaign block.
++
++## Allocation and limits
++
++The frontend/claim implementation consumes the complete global finalized stream. It integrates the marginal rate `50 - 45 * eligibleXor / 1753357` TS per XOR. Only the first 1,753,357 XOR in execution order earns TS; the final crossing burn receives the reward on its remaining eligible portion. Extra XOR is irreversibly burned without TS. Maximum integrated TS entitlement is 48,217,317.5. Use exact fixed-point arithmetic and cumulative entitlement differences, including fractional XOR.
++
++The ordinary burn extrinsic does not impose a chain-level campaign cap or reward reservation. A displayed quote is an estimate until finalized execution order is known. Optimistic wallet entries may be displayed as pending, but cannot establish the current price, global cap or final entitlement. Future TS distribution and source-wallet claim proof belong to tonswap.org at full launch.
+diff --git a/src/graphql/resolvers.ts b/src/graphql/resolvers.ts
+index 4170d3a..3420a81 100644
+--- a/src/graphql/resolvers.ts
++++ b/src/graphql/resolvers.ts
+@@ -6,6 +6,7 @@ import { GraphQLError } from 'graphql';
+ import { normalizeIndexedAccountId } from '../account-activity.js';
+ import { estimateRetainedValueBytes } from '../cache-weight.js';
+ import { metrics } from '../metrics.js';
++import { TONSWAP_START_BLOCK, TONSWAP_COVERAGE_ID, parseTonswapBurnCoverage } from '../tonswap-burn.js';
+ import { evaluateServiceReadiness, type WorkerReadinessThresholds } from '../readiness.js';
+ import {
+   createRepositoryCursorScope,
+@@ -1731,6 +1732,54 @@ export function createSchema(config: GraphqlResolverConfig = DEFAULT_GRAPHQL_CAC
+     cache,
+     config.graphqlMaxResultBytes ?? DEFAULT_GRAPHQL_QUERY_MAX_BYTES
+   );
++  /** Reads a frozen finalized TS snapshot; coverage and rows deliberately bypass cache. */
++  const tonswapBurnSnapshotResolver = async (
++    parent: unknown,
++    args: { first?: number | null; after?: string | null; atBlock?: number | null },
++    context: Context
++  ) => {
++    const [health, coverageDocument, chainState] = await Promise.all([
++      healthResolver(parent, {}, context),
++      context.repository.get('updatesStreams', TONSWAP_COVERAGE_ID),
++      context.repository.get('updatesStreams', 'chainState'),
++    ]);
++    const coverage = parseTonswapBurnCoverage(coverageDocument);
++    let lastIndexedBlock: unknown;
++    try {
++      lastIndexedBlock = JSON.parse(String(chainState?.data.data ?? '')).lastIndexedBlock;
++    } catch {
++      lastIndexedBlock = undefined;
++    }
++    const now = Math.floor(Date.now() / 1_000);
++    if (!health.ok || !coverage || health.workerLag === null || health.workerLag > 2 ||
++      coverage.indexedThroughBlock !== health.workerLatestIndexedBlock ||
++      coverage.indexedThroughBlock !== lastIndexedBlock ||
++      chainState?.blockHeight !== lastIndexedBlock || chainState.data.block !== lastIndexedBlock ||
++      now - coverage.blockTimestamp > 60 || coverage.blockTimestamp - now > 15) {
++      throw new GraphQLError('Complete fresh finalized TONSWAP burn coverage is unavailable', {
++        extensions: { code: 'TONSWAP_COVERAGE_UNAVAILABLE' },
++      });
++    }
++    const atBlock = args.atBlock ?? coverage.indexedThroughBlock;
++    if (!Number.isSafeInteger(atBlock) || atBlock < TONSWAP_START_BLOCK || atBlock > coverage.indexedThroughBlock ||
++      (args.after && args.atBlock === undefined)) throw badUserInput('A valid frozen campaign snapshot block is required');
++    // The compact ID index is bounded and stable. Page through it without a
++    // scan filter; only finalized TS rows within the frozen horizon are exposed.
++    // An empty TS page can still advance over non-campaign burns.
++    const page = await connectionResolver('xorBurns')(parent, {
++      first: args.first ?? 100, after: args.after, orderBy: ['ID_ASC'],
++    }, context);
++    return {
++      genesisHash: coverage.genesisHash,
++      startBlock: TONSWAP_START_BLOCK,
++      indexedThroughBlock: atBlock,
++      checkpointBlock: coverage.indexedThroughBlock,
++      checkpointTimestamp: coverage.blockTimestamp,
++      nodes: page.nodes.filter((row) => row.campaign === 'tonswap' &&
++        Number(row.blockHeight) >= TONSWAP_START_BLOCK && Number(row.blockHeight) <= atBlock),
++      pageInfo: page.pageInfo,
++    };
++  };
+   const documentResolver = createDocumentResolver(cache);
+   const cachedExploreStatsResolver = (
+     parent: unknown,
+@@ -1781,6 +1830,7 @@ export function createSchema(config: GraphqlResolverConfig = DEFAULT_GRAPHQL_CAC
+         orderBookSnapshots: connectionResolver(collection('orderBookSnapshots')),
+         historyElements: connectionResolver(collection('historyElements')),
+         xorBurns: connectionResolver(collection('xorBurns'), XOR_BURNS_MAX_CONNECTION_PAGE_SIZE),
++        tonswapBurnSnapshot: tonswapBurnSnapshotResolver,
+         referrerRewards: connectionResolver(collection('referrerRewards')),
+         stakingStakers: connectionResolver(collection('stakingStakers')),
+         stakingValidators: connectionResolver(collection('stakingValidators')),
+diff --git a/src/graphql/schema.ts b/src/graphql/schema.ts
+index 6c45956..9da6009 100644
+--- a/src/graphql/schema.ts
++++ b/src/graphql/schema.ts
+@@ -741,6 +741,18 @@ export const typeDefs = /* GraphQL */ `
+     timestamp: Int
+     txHash: String
+     nexusRecipient: String
++    campaign: String
++    extrinsicIndex: Int
++  }
++
++  type TonswapBurnSnapshotConnection {
++    genesisHash: String!
++    startBlock: Int!
++    indexedThroughBlock: Int!
++    checkpointBlock: Int!
++    checkpointTimestamp: Int!
++    nodes: [XorBurn!]!
++    pageInfo: PageInfo!
+   }
+ 
+   type XorBurnEdge {
+@@ -923,6 +935,7 @@ export const typeDefs = /* GraphQL */ `
+     orderBookOrders(first: Int, after: Cursor, orderBy: [OrderBy!], filter: OrderBookOrderFilter): OrderBookOrderConnection!
+     orderBookSnapshots(first: Int, after: Cursor, orderBy: [OrderBy!], filter: OrderBookSnapshotFilter): OrderBookSnapshotConnection!
+     historyElements(first: Int, last: Int, offset: Int, before: Cursor, after: Cursor, orderBy: [HistoryElementsOrderBy!], filter: HistoryElementFilter): HistoryElementConnection!
++    tonswapBurnSnapshot(first: Int, after: Cursor, atBlock: Int): TonswapBurnSnapshotConnection!
+     xorBurns(first: Int, after: Cursor, orderBy: [HistoryElementsOrderBy!], filter: XorBurnFilter): XorBurnConnection!
+     referrerRewards(first: Int, after: Cursor, orderBy: [OrderBy!], filter: ReferrerRewardFilter): ReferrerRewardConnection!
+     stakingStakers(first: Int, after: Cursor, orderBy: [OrderBy!], filter: AccountFilter): StakingStakerConnection!
+diff --git a/src/tonswap-burn.ts b/src/tonswap-burn.ts
+new file mode 100644
+index 0000000..bf3ff3e
+--- /dev/null
++++ b/src/tonswap-burn.ts
+@@ -0,0 +1,77 @@
++export const TONSWAP_MAINNET_GENESIS = '0x7e4e32d0feafd4f9c9414b0be86373f9a1efa904809b683453a9af6856d38ad5';
++
++/** Campaign checkpoints require a canonical, nonzero substrate block hash. */
++export const isCanonicalTonswapBlockHash = (value: unknown): value is string =>
++  typeof value === 'string' && /^0x[0-9a-f]{64}$/.test(value) && value !== `0x${'0'.repeat(64)}`;
++
++import type { IndexerDocument } from './repository/types.js';
++
++export const TONSWAP_START_BLOCK = 27_720_478;
++export const TONSWAP_COVERAGE_ID = 'tonswapBurnCoverage-v1';
++
++export type TonswapBurnCoverage = {
++  version: 1;
++  startBlock: typeof TONSWAP_START_BLOCK;
++  indexedThroughBlock: number;
++  blockHash: string;
++  blockTimestamp: number;
++  genesisHash: typeof TONSWAP_MAINNET_GENESIS;
++};
++
++/** Accepts only the published TS campaign marker, without a destination or extra fields. */
++export const isTonswapBurnRemark = (remark: unknown): boolean => {
++  if (typeof remark !== 'string' || remark.length > 512) return false;
++  try {
++    const text = remark.startsWith('0x') ? Buffer.from(remark.slice(2), 'hex').toString('utf8') : remark;
++    const value: unknown = JSON.parse(text);
++    if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
++    const record = value as Record<string, unknown>;
++    return Object.keys(record).sort().join(',') === 'app,kind,version' &&
++      record.app === 'polkaswap' && record.kind === 'tonswap-xor-burn' && record.version === 1;
++  } catch {
++    return false;
++  }
++};
++
++/** Persists coverage only alongside the burns from the complete finalized block range. */
++export const createTonswapBurnCoverage = (
++  indexedThroughBlock: number,
++  blockHash: string,
++  blockTimestamp: number
++): IndexerDocument => ({
++  collection: 'updatesStreams',
++  id: TONSWAP_COVERAGE_ID,
++  blockHeight: indexedThroughBlock,
++  timestamp: blockTimestamp,
++  data: {
++    id: TONSWAP_COVERAGE_ID,
++    block: indexedThroughBlock,
++    data: JSON.stringify({
++      version: 1,
++      startBlock: TONSWAP_START_BLOCK,
++      indexedThroughBlock,
++      blockHash,
++      blockTimestamp,
++      genesisHash: TONSWAP_MAINNET_GENESIS,
++    } satisfies TonswapBurnCoverage),
++  },
++});
++
++/** Rejects missing, malformed, mismatched or foreign-chain coverage checkpoints. */
++export const parseTonswapBurnCoverage = (document: IndexerDocument | null): TonswapBurnCoverage | null => {
++  if (!document || document.collection !== 'updatesStreams' || document.id !== TONSWAP_COVERAGE_ID ||
++    document.data.id !== TONSWAP_COVERAGE_ID || typeof document.data.data !== 'string') return null;
++  try {
++    const value = JSON.parse(document.data.data) as TonswapBurnCoverage;
++    if (value.version !== 1 || value.startBlock !== TONSWAP_START_BLOCK ||
++      value.genesisHash !== TONSWAP_MAINNET_GENESIS ||
++      !Number.isSafeInteger(value.indexedThroughBlock) || value.indexedThroughBlock < TONSWAP_START_BLOCK ||
++      !Number.isSafeInteger(value.blockTimestamp) || value.blockTimestamp <= 0 ||
++      !isCanonicalTonswapBlockHash(value.blockHash) ||
++      document.blockHeight !== value.indexedThroughBlock || document.data.block !== value.indexedThroughBlock ||
++      document.timestamp !== value.blockTimestamp) return null;
++    return value;
++  } catch {
++    return null;
++  }
++};
+diff --git a/src/worker/chain.ts b/src/worker/chain.ts
+index 484f11c..c9f4afb 100644
+--- a/src/worker/chain.ts
++++ b/src/worker/chain.ts
+@@ -19,6 +19,7 @@ import { estimateRetainedValueBytes } from '../cache-weight.js';
+ import type { AppConfig } from '../config.js';
+ import { compareLexical } from '../lexical.js';
+ import { metrics } from '../metrics.js';
++import { TONSWAP_START_BLOCK, TONSWAP_COVERAGE_ID, TONSWAP_MAINNET_GENESIS, isCanonicalTonswapBlockHash, createTonswapBurnCoverage, parseTonswapBurnCoverage, isTonswapBurnRemark } from '../tonswap-burn.js';
+ import { createRepositoryCursorScope } from '../repository/cursor.js';
+ import type { IndexerCollection, IndexerDocument, IndexerRepository, RepositoryQueryArgs } from '../repository/types.js';
+ import { MAX_REPOSITORY_WRITE_CALL_DOCUMENTS } from '../repository/validation.js';
+@@ -73,6 +74,7 @@ type CallLike = {
+ 
+ type BlockExtrinsicContext = {
+   id: string;
++  extrinsicIndex?: number;
+   module: string;
+   method: string;
+   address: string;
+@@ -1057,6 +1059,15 @@ const getBatchAllNexusRecipient = (context: BlockExtrinsicContext): string | und
+   return parseSoraNexusRecipient(remarkArgs.remark ?? remarkArgs.arg0);
+ };
+ 
++/** Recognizes only an atomic XOR burn followed by the exact TS marker. */
++const getTonswapCampaign = (module: string, method: string, calls: IndexedCall[]): 'tonswap' | undefined => {
++  const [burn, remark] = calls;
++  if (module !== 'utility' || method !== 'batchAll' || calls.length !== 2 ||
++    !burn || !isXorBurnCall(burn) || remark?.module !== 'system' || remark.method !== 'remark') return undefined;
++  const args = getCallArgs(remark);
++  return isTonswapBurnRemark(args.remark ?? args.arg0) ? 'tonswap' : undefined;
++};
++
+ /**
+  * Emits compact XOR burn documents so the burn page does not need an expensive historyElements scan.
+  */
+@@ -1079,6 +1090,8 @@ const createXorBurnDocuments = (
+       blockHeight,
+       timestamp,
+       txHash: context.id,
++      ...(context.extrinsicIndex === undefined ? {} : { extrinsicIndex: context.extrinsicIndex }),
++      ...(getTonswapCampaign(context.module, context.method, context.calls) ? { campaign: 'tonswap' } : {}),
+       ...(nexusRecipient ? { nexusRecipient } : {}),
+     },
+   });
+@@ -1180,6 +1193,9 @@ const createXorBurnDocumentsFromEvents = (
+           blockHeight,
+           ...(timestamp === null ? {} : { timestamp }),
+           ...(txHash ? { txHash } : {}),
++          ...(burn.extrinsicIndex === null ? {} : { extrinsicIndex: burn.extrinsicIndex }),
++          ...(extrinsic && getTonswapCampaign(extrinsic.method.section, extrinsic.method.method, getUtilityCalls(extrinsic))
++            ? { campaign: 'tonswap' } : {}),
+           ...(nexusRecipient ? { nexusRecipient } : {}),
+         },
+       },
+@@ -2416,6 +2432,8 @@ export class ChainIndexer {
+       // loading it earlier would leak future prices into historical rows.
+       const caughtUpBlock = await this.getLastIndexedBlock();
+       const projectionBlock = Math.max(0, Math.min(finalizedBlock, caughtUpBlock));
++      await this.backfillTonswapBurns(caughtUpBlock);
++      if (this.isStopping()) return;
+       const startupMaintenanceBlock = await this.runStartupMaintenance(projectionBlock);
+       if (this.isStopping()) return;
+       this.discardRefreshRequestsCoveredBy(startupMaintenanceBlock);
+@@ -2756,6 +2774,50 @@ export class ChainIndexer {
+     };
+   }
+ 
++  /** Proves campaign block identity against the primary finalized mainnet before certifying coverage. */
++  private async validateTonswapBlockIdentity(blockHeight: number, signedBlock: FetchedBlock['signedBlock']): Promise<void> {
++    if (!this.api || this.api.genesisHash?.toString() !== TONSWAP_MAINNET_GENESIS) {
++      throw new Error('TONSWAP campaign requires SORA mainnet');
++    }
++    const blockApi = await this.getBlockDataApi();
++    if (blockApi.genesisHash?.toString() !== TONSWAP_MAINNET_GENESIS) {
++      throw new Error('TONSWAP archive is not SORA mainnet');
++    }
++    const expectedHash = (await this.withRpcTimeout(
++      () => this.api!.rpc.chain.getBlockHash(blockHeight), `TONSWAP primary block ${blockHeight}`
++    )).toString().toLowerCase();
++    const actualHash = signedBlock.block.header.hash.toString().toLowerCase();
++    if (signedBlock.block.header.number.toNumber() !== blockHeight ||
++      !isCanonicalTonswapBlockHash(expectedHash) || actualHash !== expectedHash) {
++      throw new Error(`TONSWAP finalized block identity mismatch at ${blockHeight}`);
++    }
++  }
++
++  /** Replays the complete campaign range without rewinding the existing indexer or hourly history. */
++  private async backfillTonswapBurns(finalizedBlock: number): Promise<void> {
++    if (this.isStopping() || !this.api || finalizedBlock < TONSWAP_START_BLOCK) return;
++    const previous = parseTonswapBurnCoverage(await this.repository.get('updatesStreams', TONSWAP_COVERAGE_ID));
++    const startBlock = previous ? previous.indexedThroughBlock + 1 : TONSWAP_START_BLOCK;
++    for (let block = startBlock; block <= finalizedBlock; block += 100) {
++      if (this.isStopping()) return;
++      const batchEnd = Math.min(block + 99, finalizedBlock);
++      const blocks = Array.from({ length: batchEnd - block + 1 }, (_, index) => block + index);
++      const fetched = await mapWithConcurrency(blocks, 6, async (height) => {
++        const data = await this.fetchBlockByNumber(height);
++        await this.validateTonswapBlockIdentity(height, data.signedBlock);
++        return data;
++      });
++      const documents = fetched.flatMap((data, index) => createXorBurnDocumentsFromEvents(
++        blocks[index], data.timestamp, data.signedBlock, data.events, this.assetInfos
++      ));
++      const last = fetched[fetched.length - 1];
++      documents.push(createTonswapBurnCoverage(batchEnd,
++        last.signedBlock.block.header.hash.toString().toLowerCase(), last.timestamp));
++      if (this.isStopping()) return;
++      await this.repository.upsertMany(documents);
++    }
++  }
++
+   private async backfill(): Promise<boolean> {
+     if (this.isStopping() || !this.api) return false;
+ 
+@@ -3399,6 +3461,7 @@ export class ChainIndexer {
+       currentAccounts.forEach((account) => touchedAccounts.add(account));
+       const context = {
+         id,
++        extrinsicIndex: index,
+         module: extrinsic.method.section,
+         method: extrinsic.method.method,
+         address,
+@@ -3533,6 +3596,13 @@ export class ChainIndexer {
+     }
+ 
+     documents.push(this.createChainStateDocument(blockHeight));
++    if (blockHeight >= TONSWAP_START_BLOCK) {
++      await this.validateTonswapBlockIdentity(blockHeight, signedBlock);
++      const coverage = parseTonswapBurnCoverage(await this.repository.get('updatesStreams', TONSWAP_COVERAGE_ID));
++      if (blockHeight === TONSWAP_START_BLOCK || coverage?.indexedThroughBlock === blockHeight - 1) {
++        documents.push(createTonswapBurnCoverage(blockHeight, blockHash.toLowerCase(), timestamp));
++      }
++    }
+     if (this.isStopping()) return;
+     const preparedDocuments = await this.prepareReferrerRewardDocuments(documents);
+     if (this.isStopping()) return;
+diff --git a/tests/chain.spec.ts b/tests/chain.spec.ts
+index a818aa9..a8b4a86 100644
+--- a/tests/chain.spec.ts
++++ b/tests/chain.spec.ts
+@@ -2625,7 +2625,7 @@ describe('ChainIndexer price derivation', () => {
+     expect(accountMeta?.data.xorFees).toEqual({ amount: '1', amountUSD: '2' });
+   });
+ 
+-  it('indexes utility batch burn calls for burn page stats', async () => {
++  it.each(['0x7b7d', JSON.stringify({ app: 'polkaswap', kind: 'tonswap-xor-burn', version: 1 })])('indexes atomic burn campaign metadata for %s', async (remark) => {
+     const repository = new MemoryRepository();
+     const indexer = new ChainIndexer(config, repository) as unknown as {
+       api: unknown;
+@@ -2641,7 +2641,7 @@ describe('ChainIndexer price derivation', () => {
+     const remarkCall = {
+       section: 'system',
+       method: 'remark',
+-      args: ['0x7b7d'],
++      args: [remark],
+       meta: { args: [{ name: 'remark' }] },
+     };
+ 
+@@ -2690,6 +2690,8 @@ describe('ChainIndexer price derivation', () => {
+     const history = await repository.get('historyElements', '0xbatchburn');
+     const xorBurn = await repository.get('xorBurns', '0xbatchburn');
+     const chainState = await repository.get('updatesStreams', 'chainState');
++    expect(xorBurn?.data.extrinsicIndex).toBe(0);
++    expect(xorBurn?.data.campaign).toBe(remark === '0x7b7d' ? undefined : 'tonswap');
+ 
+     expect(history?.data).toMatchObject({
+       module: 'utility',
+@@ -2707,7 +2709,7 @@ describe('ChainIndexer price derivation', () => {
+         {
+           module: 'system',
+           method: 'remark',
+-          data: { args: { remark: '0x7b7d' } },
++          data: { args: { remark } },
+         },
+       ],
+     });
+@@ -4527,11 +4529,15 @@ describe('ChainIndexer price derivation', () => {
+       start: () => Promise<void>;
+       stop: () => Promise<void>;
+       backfill: () => Promise<boolean>;
++      getLastIndexedBlock: () => Promise<number>;
++      backfillTonswapBurns: (block: number) => Promise<void>;
+       subscribeFinalizedHeads: () => Promise<void>;
+       runStartupMaintenance: (finalizedBlock: number) => Promise<number>;
+       getStatus: () => { startupComplete: boolean };
+     };
+     const order: string[] = [];
++    indexer.getLastIndexedBlock = async () => 27_720_479;
++    indexer.backfillTonswapBurns = vi.fn(async () => undefined);
+     let finishBackfill: (() => void) | undefined;
+     let finishMaintenance: (() => void) | undefined;
+     const apiCreate = vi.spyOn(ApiPromise, 'create').mockResolvedValue({
+@@ -4577,6 +4583,7 @@ describe('ChainIndexer price derivation', () => {
+       expect(indexer.getStatus().startupComplete).toBe(false);
+       finishMaintenance?.();
+       await starting;
++      expect(indexer.backfillTonswapBurns).toHaveBeenCalledWith(27_720_479);
+       expect(order).toEqual([
+         'normal-backfill-start',
+         'normal-backfill-end',
+@@ -8089,3 +8096,68 @@ describe('MemoryRepository subscriptions', () => {
+     await watcher.return(undefined);
+   });
+ });
++
++describe('TONSWAP finalized coverage', () => {
++  it('backfills exact campaign blocks, rejects non-atomic markers, and advances only after an atomic write', async () => {
++    const repository = new MemoryRepository();
++    const subject = new ChainIndexer(config, repository) as unknown as {
++      api: unknown;
++      fetchBlockByNumber: (height: number) => Promise<unknown>;
++      backfillTonswapBurns: (height: number) => Promise<void>;
++    };
++    const blockHash = (height: number) => `0x${height.toString(16).padStart(64, '0')}`;
++    subject.api = { genesisHash: { toString: () => '0x7e4e32d0feafd4f9c9414b0be86373f9a1efa904809b683453a9af6856d38ad5' },
++      rpc: { chain: { getBlockHash: async (height: number) => ({ toString: () => blockHash(height) }) } } };
++    const start = 27_720_478;
++    const marker = JSON.stringify({ app: 'polkaswap', kind: 'tonswap-xor-burn', version: 1 });
++    const burn = { section: 'assets', method: 'burn', args: [XOR, SCALE.toString()],
++      meta: { args: [{ name: 'assetId' }, { name: 'amount' }] } };
++    const remark = { section: 'system', method: 'remark', args: [marker], meta: { args: [{ name: 'remark' }] } };
++    subject.fetchBlockByNumber = vi.fn(async (height) => ({
++      timestamp: 1_800_000_000,
++      signedBlock: { block: { header: { number: { toNumber: () => height }, hash: { toString: () => blockHash(height) } }, extrinsics: [
++        { hash: { toString: () => `0xts-${height}` }, method: {
++          section: 'utility', method: height === start ? 'batchAll' : 'batch', args: [[burn, remark]],
++          meta: { args: [{ name: 'calls' }] },
++        } },
++      ] } },
++      events: [eventRecord('assets', 'Burn', { address: 'alice', assetId: XOR, amount: SCALE.toString() })],
++    }));
++    await subject.backfillTonswapBurns(start + 1);
++    expect(subject.fetchBlockByNumber).toHaveBeenCalledTimes(2);
++    expect((await repository.get('xorBurns', `0xts-${start}`))?.data).toMatchObject({ campaign: 'tonswap', extrinsicIndex: 0 });
++    expect((await repository.get('xorBurns', `0xts-${start + 1}`))?.data.campaign).toBeUndefined();
++    expect((await repository.get('updatesStreams', 'tonswapBurnCoverage-v1'))?.data.block).toBe(start + 1);
++    await subject.backfillTonswapBurns(start + 1);
++    expect(subject.fetchBlockByNumber).toHaveBeenCalledTimes(2);
++    vi.spyOn(repository, 'upsertMany').mockRejectedValueOnce(new Error('atomic write failed'));
++    await expect(subject.backfillTonswapBurns(start + 2)).rejects.toThrow('atomic write failed');
++    expect((await repository.get('updatesStreams', 'tonswapBurnCoverage-v1'))?.data.block).toBe(start + 1);
++    expect(await repository.get('xorBurns', `0xts-${start + 2}`)).toBeNull();
++    subject.api = { genesisHash: { toString: () => 'wrong-network' } };
++    await expect(subject.backfillTonswapBurns(start + 2)).rejects.toThrow('requires SORA mainnet');
++  });
++  it('certifies the start block but never tags a failed atomic TS burn as reward evidence', async () => {
++    const repository = new MemoryRepository();
++    const subject = new ChainIndexer(config, repository) as unknown as {
++      api: unknown; indexFetchedBlock: (data: unknown, options: unknown) => Promise<void>;
++    };
++    const height = 27_720_478;
++    const hash = `0x${'12'.repeat(32)}`;
++    subject.api = { genesisHash: { toString: () => '0x7e4e32d0feafd4f9c9414b0be86373f9a1efa904809b683453a9af6856d38ad5' },
++      rpc: { chain: { getBlockHash: async () => ({ toString: () => hash }) } } };
++    const burn = { section: 'assets', method: 'burn', args: [XOR, SCALE.toString()],
++      meta: { args: [{ name: 'assetId' }, { name: 'amount' }] } };
++    const remark = { section: 'system', method: 'remark',
++      args: [JSON.stringify({ app: 'polkaswap', kind: 'tonswap-xor-burn', version: 1 })], meta: { args: [{ name: 'remark' }] } };
++    await subject.indexFetchedBlock({ timestamp: 1_800_000_000,
++      signedBlock: { block: { header: { number: { toNumber: () => height }, hash: { toString: () => hash } },
++        extrinsics: [{ isSigned: true, signer: { toString: () => 'alice' }, hash: { toString: () => '0xfailedts' },
++          method: { section: 'utility', method: 'batchAll', args: [[burn, remark]], meta: { args: [{ name: 'calls' }] } } }],
++      } }, events: [eventRecord('system', 'ExtrinsicFailed', {})],
++    }, { refreshDerivedState: false });
++    expect(await repository.get('xorBurns', '0xfailedts')).toBeNull();
++    expect((await repository.get('updatesStreams', 'tonswapBurnCoverage-v1'))?.data.block).toBe(height);
++  });
++
++});
+diff --git a/tests/tonswap-burn.spec.ts b/tests/tonswap-burn.spec.ts
+new file mode 100644
+index 0000000..ff6518c
+--- /dev/null
++++ b/tests/tonswap-burn.spec.ts
+@@ -0,0 +1,97 @@
++import { describe, expect, it } from 'vitest';
++import { graphql } from 'graphql';
++
++import { createSchema } from '../src/graphql/resolvers.js';
++import { MemoryRepository } from '../src/repository/memory.js';
++import { TONSWAP_MAINNET_GENESIS } from '../src/tonswap-burn.js';
++import { createTonswapBurnCoverage, isTonswapBurnRemark, parseTonswapBurnCoverage, TONSWAP_START_BLOCK } from '../src/tonswap-burn.js';
++
++type SnapshotResult = { nodes: unknown[]; indexedThroughBlock: number; pageInfo: { hasNextPage: boolean; endCursor: string | null } };
++
++const hash = `0x${'ab'.repeat(32)}`;
++const marker = JSON.stringify({ app: 'polkaswap', kind: 'tonswap-xor-burn', version: 1 });
++
++/** Seeds coherent finalized identity and dedicated campaign coverage without external services. */
++const contextFixture = async (age = 0) => {
++  const repository = new MemoryRepository();
++  const now = Math.floor(Date.now() / 1_000) - age;
++  const block = TONSWAP_START_BLOCK + 2;
++  await repository.upsertMany([
++    {
++      collection: 'updatesStreams', id: 'chainState', blockHeight: block, timestamp: now,
++      data: { id: 'chainState', block, data: JSON.stringify({
++        lastIndexedBlock: block, genesisHash: TONSWAP_MAINNET_GENESIS, blockHash: hash, blockTimestamp: now,
++      }) },
++    },
++    createTonswapBurnCoverage(block, hash, now),
++  ]);
++  return {
++    repository,
++    workerStatusProvider: { getStatus: () => ({
++      lifecycle: 'running' as const, startupComplete: true,
++      latestFinalizedBlock: block, latestIndexedBlock: block, lag: 0,
++      lastSuccessfulIndexTimestamp: now, lastError: null, lastErrorTimestamp: null,
++    }) },
++  };
++};
++
++describe('TONSWAP protocol and finalized snapshots', () => {
++  it('recognizes only the exact destination-free marker', () => {
++    expect(isTonswapBurnRemark(marker)).toBe(true);
++    expect(isTonswapBurnRemark(`0x${Buffer.from(marker).toString('hex')}`)).toBe(true);
++    for (const value of ['', '{}', '[]', '{', marker.replace('1', '2'), marker.replace('polkaswap', 'other'),
++      JSON.stringify({ ...JSON.parse(marker), recipient: 'destination' })]) {
++      expect(isTonswapBurnRemark(value)).toBe(false);
++    }
++  });
++
++  it('validates the coverage envelope and chain identity', () => {
++    const document = createTonswapBurnCoverage(TONSWAP_START_BLOCK, hash, 1_800_000_000);
++    expect(parseTonswapBurnCoverage(document)?.indexedThroughBlock).toBe(TONSWAP_START_BLOCK);
++    expect(parseTonswapBurnCoverage(null)).toBeNull();
++    expect(parseTonswapBurnCoverage({ ...document, blockHeight: TONSWAP_START_BLOCK + 1 })).toBeNull();
++    expect(parseTonswapBurnCoverage({ ...document, data: { ...document.data, data: '{}' } })).toBeNull();
++  });
++
++  it('paginates through non-campaign rows without counting them and freezes the snapshot block', async () => {
++    const context = await contextFixture();
++    await context.repository.upsertMany([
++      { collection: 'xorBurns', id: 'a', blockHeight: TONSWAP_START_BLOCK,
++        data: { id: 'a', address: 'alice', amount: '1', blockHeight: TONSWAP_START_BLOCK } },
++      { collection: 'xorBurns', id: 'b', blockHeight: TONSWAP_START_BLOCK + 1,
++        data: { id: 'b', address: 'bob', amount: '2', blockHeight: TONSWAP_START_BLOCK + 1,
++          campaign: 'tonswap', extrinsicIndex: 1, txHash: hash } },
++    ]);
++    const resolver = createSchema().getQueryType()!.getFields().tonswapBurnSnapshot.resolve!;
++    const first = await resolver({}, { first: 1 }, context, undefined as never) as SnapshotResult;
++    expect(first.nodes).toEqual([]);
++    expect(first.pageInfo.hasNextPage).toBe(true);
++    expect(first.pageInfo.endCursor).toBeTruthy();
++    const second = await resolver({}, {
++      first: 1, after: first.pageInfo.endCursor, atBlock: first.indexedThroughBlock,
++    }, context, undefined as never) as SnapshotResult;
++    expect(second.nodes).toEqual([expect.objectContaining({ id: 'b', campaign: 'tonswap', extrinsicIndex: 1 })]);
++    expect(second.pageInfo.hasNextPage).toBe(false);
++    expect(second.indexedThroughBlock).toBe(first.indexedThroughBlock);
++    const earlier = await resolver({}, { atBlock: TONSWAP_START_BLOCK }, context, undefined as never) as SnapshotResult;
++    expect(earlier.nodes).toEqual([]);
++  });
++
++  it('fails closed for stale, missing, incomplete, and future coverage', async () => {
++    const resolver = createSchema().getQueryType()!.getFields().tonswapBurnSnapshot.resolve!;
++    await expect(resolver({}, {}, await contextFixture(90), undefined as never)).rejects.toThrow('coverage is unavailable');
++    const context = await contextFixture();
++    await expect(resolver({}, { atBlock: TONSWAP_START_BLOCK + 3 }, context, undefined as never)).rejects.toThrow('snapshot block');
++    await context.repository.deleteMany('updatesStreams', ['tonswapBurnCoverage-v1']);
++    await expect(resolver({}, {}, context, undefined as never)).rejects.toThrow('coverage is unavailable');
++    await context.repository.upsert(createTonswapBurnCoverage(TONSWAP_START_BLOCK + 1, hash, Math.floor(Date.now() / 1_000)));
++    await expect(resolver({}, {}, context, undefined as never)).rejects.toThrow('coverage is unavailable');
++  });
++  it('serves the campaign snapshot through the public GraphQL field', async () => {
++    const result = await graphql({ schema: createSchema(), contextValue: await contextFixture(),
++      source: '{ tonswapBurnSnapshot(first: 100) { genesisHash startBlock indexedThroughBlock nodes { campaign extrinsicIndex } pageInfo { hasNextPage endCursor } } }' });
++    expect(result.errors).toBeUndefined();
++    expect(result.data?.tonswapBurnSnapshot).toMatchObject({ startBlock: TONSWAP_START_BLOCK, nodes: [] });
++  });
++
++});

@@ -36,47 +36,54 @@
       :class="['responsive-tabs__tabs', size]"
       type="rounded"
       :value="selectedKey"
-      @input="handleTabChange"
+      @update:model-value="handleTabChange"
     >
-      <s-tab v-for="tab in tabs" :key="tab.name" :name="tab.name" :label="tab.label" :disabled="disabled" />
+      <s-tab v-for="tab in tabs" :key="tab.name" :name="tab.name" :label="tab.label" :disabled="disabled"></s-tab>
     </s-tabs>
   </div>
 </template>
 
-<script lang="ts">
-import { Size } from '@soramitsu-ui/ui-vue2/lib/types';
-import { Component, Prop, Mixins, ModelSync } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed, toRefs } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { UiSize } from '@/consts/theme';
 import type { ResponsiveTab } from '@/types/tabs';
 
-@Component
-export default class ResponsiveTabs extends Mixins(TranslationMixin) {
-  @Prop({ default: false, type: Boolean }) readonly isHeader!: boolean;
-  @Prop({ default: true, type: Boolean }) readonly isMobile!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly disabled!: boolean;
-  @Prop({ default: Size.MEDIUM }) readonly size!: string;
-  @Prop({ default: () => [], type: Array }) readonly tabs!: Array<ResponsiveTab>;
-
-  @ModelSync('value', 'input', { type: String })
-  readonly selectedKey!: string;
-
-  private get selected(): Nullable<ResponsiveTab> {
-    return this.tabs.find((tab) => tab.name === this.selectedKey);
+const props = withDefaults(
+  defineProps<{
+    isHeader?: boolean;
+    isMobile?: boolean;
+    disabled?: boolean;
+    size?: UiSize;
+    tabs?: Array<ResponsiveTab>;
+    modelValue?: string;
+  }>(),
+  {
+    isHeader: false,
+    isMobile: true,
+    disabled: false,
+    size: UiSize.MEDIUM,
+    tabs: () => [],
+    modelValue: undefined,
   }
+);
 
-  get buttonType() {
-    return this.isHeader ? 'link' : 'tertiary';
-  }
+const emit = defineEmits<{
+  (event: 'update:modelValue', value: string): void;
+}>();
 
-  get selectedName(): string {
-    return this.selected?.label ?? '';
-  }
+const selectedKeyModel = computed(() => props.modelValue ?? '');
 
-  handleTabChange(name: string): void {
-    this.$emit('input', name);
-  }
+const selected = computed(() => props.tabs.find((tab) => tab.name === selectedKeyModel.value));
+const selectedName = computed(() => selected.value?.label ?? '');
+
+function handleTabChange(name: string): void {
+  emit('update:modelValue', name);
 }
+
+const selectedKey = computed(() => selectedKeyModel.value);
+
+const { isMobile, isHeader, size, tabs, disabled } = toRefs(props);
 </script>
 
 <style lang="scss">
@@ -120,11 +127,17 @@ $icon-size: 22px;
 
   &.s-tabs.s-rounded {
     .el-tabs__nav-wrap .el-tabs__item {
+      border-color: var(--s-color-base-content-primary);
+      font-weight: 600;
+
       &:not(.is-active).is-disabled {
         color: var(--s-color-base-content-primary);
       }
       &.is-disabled {
         cursor: not-allowed;
+      }
+      &.is-active {
+        border-color: var(--s-color-theme-accent);
       }
     }
 
@@ -142,7 +155,10 @@ $icon-size: 22px;
 .responsive-tabs {
   &__dropdown {
     &-selected {
+      margin: 0;
+      font-size: var(--s-font-size-large);
       font-weight: 300;
+      line-height: 1.3;
       letter-spacing: var(--s-letter-spacing-mini);
     }
     &-item {

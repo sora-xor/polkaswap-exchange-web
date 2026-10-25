@@ -1,0 +1,619 @@
+import { createPinia, setActivePinia } from 'pinia';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+const shared = vi.hoisted(() => {
+  const walletStore = {
+    address: 'stash-1',
+    account: {
+      address: 'stash-1',
+    },
+  };
+
+  const activeEraUnsubscribe = vi.fn();
+  const currentEraUnsubscribe = vi.fn();
+  const totalStakeUnsubscribe = vi.fn();
+  const controllerUnsubscribe = vi.fn();
+  const payeeUnsubscribe = vi.fn();
+  const nominationsUnsubscribe = vi.fn();
+  const accountLedgerUnsubscribe = vi.fn();
+  const apiRef = {
+    isReady: Promise.resolve(),
+  };
+
+  const nominate = vi.fn(async () => undefined);
+  const bondAndNominate = vi.fn(async () => undefined);
+  const getBondAndNominateNetworkFee = vi.fn(async () => '1');
+  const getNominateNetworkFee = vi.fn(async () => '2');
+  const bondExtra = vi.fn(async () => undefined);
+  const unbond = vi.fn(async () => undefined);
+  const withdrawUnbonded = vi.fn(async () => undefined);
+  const payout = vi.fn(async () => undefined);
+  const getPayoutNetworkFee = vi.fn(async () => '3');
+  const getIndexedValidatorsInfo = vi.fn(async () => null);
+  const getMyStakingInfo = vi.fn(async () => ({
+    totalStake: '10',
+    activeStake: '5',
+    redeemAmount: '1',
+    myValidators: ['validator-1'],
+  }));
+  const getValidatorsInfo = vi.fn(async () => [{ address: 'validator-1', apy: '10' }]);
+  const getNominatorsReward = vi.fn(async () => [{ era: 1 }]);
+  const getMinNominatorBond = vi.fn(async () => '1');
+  const getUnbondPeriod = vi.fn(() => 7);
+  const getMaxNominations = vi.fn(() => 16);
+  const getHistoryDepth = vi.fn(() => 84);
+  const getActiveEraObservable = vi.fn(() => ({
+    subscribe: (callback: (value: { index: number; start: number }) => void) => {
+      callback({ index: 10, start: 100 });
+      return { unsubscribe: activeEraUnsubscribe };
+    },
+  }));
+  const getCurrentEraObservable = vi.fn(() => ({
+    subscribe: (callback: (value: number) => void) => {
+      callback(11);
+      return { unsubscribe: currentEraUnsubscribe };
+    },
+  }));
+  const getEraTotalStakeObservable = vi.fn(() => ({
+    subscribe: (callback: (value: string) => void) => {
+      callback('1000');
+      return { unsubscribe: totalStakeUnsubscribe };
+    },
+  }));
+  const getControllerObservable = vi.fn(() => ({
+    subscribe: (callback: (value: string) => void) => {
+      callback('controller-1');
+      return { unsubscribe: controllerUnsubscribe };
+    },
+  }));
+  const getPayeeObservable = vi.fn(() => ({
+    subscribe: (callback: (value: string) => void) => {
+      callback('payee-1');
+      return { unsubscribe: payeeUnsubscribe };
+    },
+  }));
+  const getNominationsObservable = vi.fn(() => ({
+    subscribe: (callback: (value: Record<string, unknown>) => void) => {
+      callback({ targets: ['validator-1'] });
+      return { unsubscribe: nominationsUnsubscribe };
+    },
+  }));
+  const getAccountLedgerObservable = vi.fn(() => ({
+    subscribe: (callback: (value: Record<string, unknown>) => void) => {
+      callback({ active: '5' });
+      return { unsubscribe: accountLedgerUnsubscribe };
+    },
+  }));
+
+  return {
+    walletStore,
+    activeEraUnsubscribe,
+    currentEraUnsubscribe,
+    totalStakeUnsubscribe,
+    controllerUnsubscribe,
+    payeeUnsubscribe,
+    nominationsUnsubscribe,
+    accountLedgerUnsubscribe,
+    apiRef,
+    nominate,
+    bondAndNominate,
+    getBondAndNominateNetworkFee,
+    getNominateNetworkFee,
+    bondExtra,
+    unbond,
+    withdrawUnbonded,
+    payout,
+    getPayoutNetworkFee,
+    getIndexedValidatorsInfo,
+    getMyStakingInfo,
+    getValidatorsInfo,
+    getNominatorsReward,
+    getMinNominatorBond,
+    getUnbondPeriod,
+    getMaxNominations,
+    getHistoryDepth,
+    getActiveEraObservable,
+    getCurrentEraObservable,
+    getEraTotalStakeObservable,
+    getControllerObservable,
+    getPayeeObservable,
+    getNominationsObservable,
+    getAccountLedgerObservable,
+  };
+});
+
+vi.mock('@/stores/wallet', async () => {
+  const { reactive } = await import('vue');
+  shared.walletStore = reactive(shared.walletStore);
+  return { useWalletStore: () => shared.walletStore };
+});
+
+vi.mock('@/indexer/queries/staking/validators', () => ({
+  getValidatorsInfoFromIndexer: shared.getIndexedValidatorsInfo,
+}));
+
+vi.mock('@tests/stubs/walletRuntime', async () => {
+  const { createWalletMock } = await import('@tests/stubs/createWalletMock');
+
+  return createWalletMock({
+    api: {
+      api: shared.apiRef,
+      staking: {
+        nominate: shared.nominate,
+        bondAndNominate: shared.bondAndNominate,
+        getBondAndNominateNetworkFee: shared.getBondAndNominateNetworkFee,
+        getNominateNetworkFee: shared.getNominateNetworkFee,
+        bondExtra: shared.bondExtra,
+        unbond: shared.unbond,
+        withdrawUnbonded: shared.withdrawUnbonded,
+        payout: shared.payout,
+        getPayoutNetworkFee: shared.getPayoutNetworkFee,
+        getMyStakingInfo: shared.getMyStakingInfo,
+        getValidatorsInfo: shared.getValidatorsInfo,
+        getNominatorsReward: shared.getNominatorsReward,
+        getMinNominatorBond: shared.getMinNominatorBond,
+        getUnbondPeriod: shared.getUnbondPeriod,
+        getMaxNominations: shared.getMaxNominations,
+        getHistoryDepth: shared.getHistoryDepth,
+        getActiveEraObservable: shared.getActiveEraObservable,
+        getCurrentEraObservable: shared.getCurrentEraObservable,
+        getEraTotalStakeObservable: shared.getEraTotalStakeObservable,
+        getControllerObservable: shared.getControllerObservable,
+        getPayeeObservable: shared.getPayeeObservable,
+        getNominationsObservable: shared.getNominationsObservable,
+        getAccountLedgerObservable: shared.getAccountLedgerObservable,
+      },
+    },
+  });
+});
+
+import { useStakingStore } from '@/stores/staking';
+import { api } from '@/lib/soraneo-wallet/src/api';
+
+describe('staking store', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia());
+    shared.walletStore.address = 'stash-1';
+    shared.walletStore.account = { address: 'stash-1' };
+    shared.activeEraUnsubscribe.mockClear();
+    shared.currentEraUnsubscribe.mockClear();
+    shared.totalStakeUnsubscribe.mockClear();
+    shared.controllerUnsubscribe.mockClear();
+    shared.payeeUnsubscribe.mockClear();
+    shared.nominationsUnsubscribe.mockClear();
+    shared.accountLedgerUnsubscribe.mockClear();
+    shared.apiRef.isReady = Promise.resolve();
+    (api as { api?: unknown; connection?: { api?: unknown } }).api = shared.apiRef;
+    (api as { api?: unknown; connection?: { api?: unknown } }).connection = { api: shared.apiRef };
+    shared.nominate.mockClear();
+    shared.bondAndNominate.mockClear();
+    shared.getBondAndNominateNetworkFee.mockClear();
+    shared.getNominateNetworkFee.mockClear();
+    shared.bondExtra.mockClear();
+    shared.unbond.mockClear();
+    shared.withdrawUnbonded.mockClear();
+    shared.payout.mockClear();
+    shared.getPayoutNetworkFee.mockClear();
+    shared.getIndexedValidatorsInfo.mockClear();
+    shared.getIndexedValidatorsInfo.mockResolvedValue(null);
+    shared.getMyStakingInfo.mockClear();
+    shared.getValidatorsInfo.mockClear();
+    shared.getNominatorsReward.mockClear();
+    shared.getMinNominatorBond.mockClear();
+    shared.getUnbondPeriod.mockClear();
+    shared.getMaxNominations.mockClear();
+    shared.getHistoryDepth.mockClear();
+    shared.getActiveEraObservable.mockClear();
+    shared.getCurrentEraObservable.mockClear();
+    shared.getEraTotalStakeObservable.mockClear();
+    shared.getControllerObservable.mockClear();
+    shared.getPayeeObservable.mockClear();
+    shared.getNominationsObservable.mockClear();
+    shared.getAccountLedgerObservable.mockClear();
+  });
+
+  it('reads local staking state and stash through Pinia', () => {
+    const store = useStakingStore();
+
+    store.setStakeAmount('15');
+    store.setValidatorsFilter({
+      hasIdentity: true,
+      notSlashed: false,
+      notOversubscribed: true,
+      twoValidatorsPerIdentity: false,
+    });
+    store.setShowValidatorsFilterDialog(true);
+    store.setValidatorsType('select' as any);
+    store.setValidatorsInfo([{ address: 'validator-1', apy: '10' }] as any);
+    store.selectValidators([{ address: 'validator-2', apy: '11' }] as any);
+    store.setStakingInfo({ totalStake: '10' } as any);
+    store.setTotalNominators(99);
+    store.setMinNominatorBond('1');
+    store.setUnbondPeriod(7);
+    store.setMaxNominations(16);
+    store.setHistoryDepth(84);
+    store.setActiveEra({ index: 10, start: 100 } as any);
+    store.setCurrentEra(11);
+    store.setCurrentEraTotalStake('1000');
+    store.setPendingRewards([{ era: 1 }] as any);
+    store.setPayee('payee-1');
+    store.setController('controller-1');
+    store.setNominations({ targets: ['validator-1'] } as any);
+    store.setAccountLedger({ active: '5' } as any);
+
+    expect(store.stash).toBe('stash-1');
+    expect(store.stakeAmount).toBe('15');
+    expect(store.validatorsFilter).toEqual({
+      hasIdentity: true,
+      notSlashed: false,
+      notOversubscribed: true,
+      twoValidatorsPerIdentity: false,
+    });
+    expect(store.showValidatorsFilterDialog).toBe(true);
+    expect(store.newStakeValidatorsMode).toBe('select');
+    expect(store.validatorsInfo).toEqual([{ address: 'validator-1', apy: '10' }]);
+    expect(store.selectedValidators).toEqual([{ address: 'validator-2', apy: '11' }]);
+    expect(store.stakingInfo).toEqual({ totalStake: '10' });
+    expect(store.totalNominators).toBe(99);
+    expect(store.minNominatorBond).toBe('1');
+    expect(store.unbondPeriod).toBe(7);
+    expect(store.maxNominations).toBe(16);
+    expect(store.historyDepth).toBe(84);
+    expect(store.activeEra).toBe(10);
+    expect(store.activeEraStart).toBe(100);
+    expect(store.currentEra).toBe(11);
+    expect(store.currentEraTotalStake).toBe('1000');
+    expect(store.pendingRewards).toEqual([{ era: 1 }]);
+    expect(store.payee).toBe('payee-1');
+    expect(store.controller).toBe('controller-1');
+    expect(store.nominations).toEqual({ targets: ['validator-1'] });
+    expect(store.accountLedger).toEqual({ active: '5' });
+  });
+
+  it('routes staking api actions through the native store', async () => {
+    const store = useStakingStore();
+    store.selectValidators([{ address: 'validator-3', apy: '12' }] as any);
+    store.setStakeAmount('20');
+    store.setPayee('payee-1');
+    store.setController('controller-1');
+    const payouts = [{ era: 1, validators: ['validator-1'] }] as any;
+
+    await store.nominate();
+    await store.bondAndNominate();
+    expect(store.stakingInfo).toEqual({
+      myValidators: ['validator-3'],
+      payee: 'payee-1',
+      controller: 'controller-1',
+      redeemAmount: '0',
+      activeStake: '20',
+      totalStake: '20',
+      unbond: { unlocking: [], sum: '0' },
+    });
+    await expect(store.getBondAndNominateNetworkFee()).resolves.toBe('1');
+    await expect(store.getNominateNetworkFee()).resolves.toBe('2');
+    await store.bondExtra();
+    await store.unbond();
+    await store.withdraw(2);
+    await store.payout({ payouts, payee: 'payee-1' });
+    await expect(store.getPayoutNetworkFee({ payouts, payee: 'payee-1' })).resolves.toBe('3');
+
+    expect(shared.nominate).toHaveBeenCalledWith({ validators: ['validator-3'] });
+    expect(shared.getMyStakingInfo).toHaveBeenCalledWith('stash-1');
+    expect(shared.bondAndNominate).toHaveBeenCalledWith({
+      controller: 'controller-1',
+      value: '20',
+      payee: 'payee-1',
+      validators: ['validator-3'],
+    });
+    expect(shared.getBondAndNominateNetworkFee).toHaveBeenCalledTimes(1);
+    expect(shared.getNominateNetworkFee).toHaveBeenCalledTimes(1);
+    expect(shared.bondExtra).toHaveBeenCalledWith({ value: '20' });
+    expect(shared.unbond).toHaveBeenCalledWith({ value: '20' });
+    expect(shared.withdrawUnbonded).toHaveBeenCalledWith({ value: 2 });
+    expect(shared.payout).toHaveBeenCalledWith({ payouts, payee: 'payee-1' });
+    expect(shared.getPayoutNetworkFee).toHaveBeenCalledWith({ payouts, payee: 'payee-1' });
+  });
+
+  it('preserves withdrawal history amounts above the safe integer limit', async () => {
+    const store = useStakingStore();
+    const preciseAmount = '9007199254740993';
+
+    await store.withdraw(preciseAmount);
+
+    expect(shared.withdrawUnbonded).toHaveBeenCalledWith({ value: preciseAmount });
+  });
+
+  it('loads staking snapshots and manages live subscriptions locally', async () => {
+    const store = useStakingStore();
+
+    store.activeEraUpdates = { unsubscribe: shared.activeEraUnsubscribe } as any;
+    store.currentEraUpdates = { unsubscribe: shared.currentEraUnsubscribe } as any;
+    store.currentEraTotalStakeUpdates = { unsubscribe: shared.totalStakeUnsubscribe } as any;
+    store.controllerUpdates = { unsubscribe: shared.controllerUnsubscribe } as any;
+    store.payeeUpdates = { unsubscribe: shared.payeeUnsubscribe } as any;
+    store.nominationsUpdates = { unsubscribe: shared.nominationsUnsubscribe } as any;
+    store.accountLedgerUpdates = { unsubscribe: shared.accountLedgerUnsubscribe } as any;
+
+    await store.getStakingInfo();
+    await store.getValidatorsInfo();
+    await store.getPendingRewards();
+    await store.getMinNominatorBond();
+    await store.getUnbondPeriod();
+    await store.getMaxNominations();
+    await store.getHistoryDepth();
+    await store.subscribeOnActiveEra();
+    await store.subscribeOnCurrentEra();
+    await store.subscribeOnCurrentEraTotalStake();
+    await store.subscribeOnController();
+    await store.subscribeOnPayee();
+    await store.subscribeOnNominations();
+    await store.subscribeOnAccountLedger();
+
+    expect(store.stakingInfo).toEqual({
+      totalStake: '10',
+      activeStake: '5',
+      redeemAmount: '1',
+      myValidators: ['validator-1'],
+    });
+    expect(store.validatorsInfo).toEqual([{ address: 'validator-1', apy: '10' }]);
+    expect(store.pendingRewards).toEqual([{ era: 1 }]);
+    expect(store.minNominatorBond).toBe('1');
+    expect(store.unbondPeriod).toBe(7);
+    expect(store.maxNominations).toBe(16);
+    expect(store.historyDepth).toBe(84);
+    expect(store.activeEra).toBe(10);
+    expect(store.activeEraStart).toBe(100);
+    expect(store.currentEra).toBe(11);
+    expect(store.currentEraTotalStake).toBe('1000');
+    expect(store.controller).toBe('controller-1');
+    expect(store.payee).toBe('payee-1');
+    expect(store.nominations).toEqual({ targets: ['validator-1'] });
+    expect(store.accountLedger).toEqual({ active: '5' });
+    expect(store.activeEraUpdates?.unsubscribe).toBe(shared.activeEraUnsubscribe);
+    expect(store.currentEraUpdates?.unsubscribe).toBe(shared.currentEraUnsubscribe);
+    expect(store.currentEraTotalStakeUpdates?.unsubscribe).toBe(shared.totalStakeUnsubscribe);
+    expect(store.controllerUpdates?.unsubscribe).toBe(shared.controllerUnsubscribe);
+    expect(store.payeeUpdates?.unsubscribe).toBe(shared.payeeUnsubscribe);
+    expect(store.nominationsUpdates?.unsubscribe).toBe(shared.nominationsUnsubscribe);
+    expect(store.accountLedgerUpdates?.unsubscribe).toBe(shared.accountLedgerUnsubscribe);
+    expect(shared.activeEraUnsubscribe).toHaveBeenCalledTimes(1);
+    expect(shared.currentEraUnsubscribe).toHaveBeenCalledTimes(1);
+    expect(shared.totalStakeUnsubscribe).toHaveBeenCalledTimes(1);
+    expect(shared.controllerUnsubscribe).toHaveBeenCalledTimes(1);
+    expect(shared.payeeUnsubscribe).toHaveBeenCalledTimes(1);
+    expect(shared.nominationsUnsubscribe).toHaveBeenCalledTimes(1);
+    expect(shared.accountLedgerUnsubscribe).toHaveBeenCalledTimes(1);
+  });
+
+  it.each([
+    ['ActiveEra', 'activeEra', 'getActiveEraObservable', { index: 12, start: 200 }, 12],
+    ['CurrentEra', 'currentEra', 'getCurrentEraObservable', 13, 13],
+    ['CurrentEraTotalStake', 'currentEraTotalStake', 'getEraTotalStakeObservable', '2000', '2000'],
+    ['Controller', 'controller', 'getControllerObservable', 'controller-new', 'controller-new'],
+    ['Payee', 'payee', 'getPayeeObservable', 'payee-new', 'payee-new'],
+    [
+      'Nominations',
+      'nominations',
+      'getNominationsObservable',
+      { targets: ['validator-new'] },
+      { targets: ['validator-new'] },
+    ],
+    ['AccountLedger', 'accountLedger', 'getAccountLedgerObservable', { active: '123' }, { active: '123' }],
+  ] as const)('keeps %s live and ignores callbacks after reset', async (suffix, field, method, update, expected) => {
+    let emit!: (value: unknown) => void;
+    const stop = vi.fn();
+    shared[method].mockImplementationOnce(
+      () =>
+        ({
+          subscribe(callback: (value: unknown) => void) {
+            emit = callback;
+            callback(update);
+            return { unsubscribe: stop };
+          },
+        }) as never
+    );
+    const store = useStakingStore();
+    store.currentEra = 1;
+    await store[`subscribeOn${suffix}`]();
+    // A second emission must update the store, rather than only satisfying initialization.
+    store[field] = null as never;
+    emit(update);
+    expect(store[field]).toEqual(expected);
+
+    store[`reset${suffix}Updates`]();
+    store[field] = null as never;
+    emit(update);
+    expect(store[field]).toBeNull();
+    expect(stop).toHaveBeenCalledTimes(1);
+  });
+
+  it('revokes delayed account streams and snapshots when account data is reset', async () => {
+    let emitLedger!: (value: unknown) => void;
+    let resolveInfo!: (value: Awaited<ReturnType<typeof shared.getMyStakingInfo>>) => void;
+    let resolveRewards!: (value: Awaited<ReturnType<typeof shared.getNominatorsReward>>) => void;
+    const stop = vi.fn();
+    shared.getAccountLedgerObservable.mockImplementationOnce(() => ({
+      subscribe(callback: (value: unknown) => void) {
+        emitLedger = callback;
+        return { unsubscribe: stop };
+      },
+    }));
+    shared.getMyStakingInfo.mockReturnValueOnce(new Promise((resolve) => (resolveInfo = resolve)));
+    shared.getNominatorsReward.mockReturnValueOnce(new Promise((resolve) => (resolveRewards = resolve)));
+    const store = useStakingStore();
+    store.controller = 'old-controller';
+    store.payee = 'old-payee';
+    store.accountLedger = { active: '456' } as never;
+    store.stakeAmount = '456';
+    const pending = Promise.all([store.subscribeOnAccountLedger(), store.getStakingInfo(), store.getPendingRewards()]);
+    await vi.waitFor(() => expect(emitLedger).toBeDefined());
+
+    store.resetAccountData();
+    expect(store.accountLedger).toBeNull();
+    expect(store.controller).toBeNull();
+    expect(store.payee).toBeNull();
+    expect(store.stakeAmount).toBe('0');
+    emitLedger({ active: '999' });
+    resolveInfo({ totalStake: '999', activeStake: '999', redeemAmount: '0', myValidators: [] });
+    resolveRewards([{ era: 99 }]);
+    await pending;
+    expect(store.stakingInfo).toBeNull();
+    expect(store.pendingRewards).toBeNull();
+    expect(store.accountLedger).toBeNull();
+    expect(store.accountLedgerUpdates).toBeNull();
+    expect(stop).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not start old account reads after waiting for API readiness', async () => {
+    let resolveReady!: () => void;
+    shared.apiRef.isReady = new Promise<void>((resolve) => (resolveReady = resolve));
+    const store = useStakingStore();
+    const pending = Promise.all([store.getStakingInfo(), store.getPendingRewards(), store.subscribeOnController()]);
+    shared.walletStore.account = { address: 'stash-2' };
+    shared.walletStore.address = 'stash-2';
+    resolveReady();
+    await pending;
+    expect(shared.getMyStakingInfo).not.toHaveBeenCalled();
+    expect(shared.getNominatorsReward).not.toHaveBeenCalled();
+    expect(shared.getControllerObservable).not.toHaveBeenCalled();
+  });
+
+  it('keeps new account staking info when the old account responds last', async () => {
+    let resolveOld!: (value: Awaited<ReturnType<typeof shared.getMyStakingInfo>>) => void;
+    shared.getMyStakingInfo.mockReturnValueOnce(new Promise((resolve) => (resolveOld = resolve)));
+    const store = useStakingStore();
+    const oldRequest = store.getStakingInfo();
+    await vi.waitFor(() => expect(shared.getMyStakingInfo).toHaveBeenCalledWith('stash-1'));
+    shared.walletStore.account = { address: 'stash-2' };
+    shared.walletStore.address = 'stash-2';
+    await store.getStakingInfo();
+    resolveOld({ totalStake: '999', activeStake: '999', redeemAmount: '0', myValidators: [] });
+    await oldRequest;
+    expect(store.stakingInfo?.totalStake).toBe('10');
+  });
+
+  it('times out and unsubscribes when a staking stream never emits', async () => {
+    vi.useFakeTimers();
+    const unsubscribe = vi.fn();
+    const subscribe = vi.fn(() => ({ unsubscribe }));
+    shared.getActiveEraObservable.mockReturnValueOnce({ subscribe });
+    const store = useStakingStore();
+
+    try {
+      const pending = store.subscribeOnActiveEra();
+      await Promise.resolve();
+      await Promise.resolve();
+      expect(subscribe).toHaveBeenCalledTimes(1);
+
+      await vi.advanceTimersByTimeAsync(8_000);
+      await pending;
+
+      expect(unsubscribe).toHaveBeenCalledTimes(1);
+      expect(store.activeEraUpdates).toBeNull();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('preserves a minimum nominator bond above the JavaScript safe integer range', async () => {
+    const minNominatorBond = '1000000000000000000000000000000';
+    shared.getMinNominatorBond.mockResolvedValueOnce(minNominatorBond);
+    const store = useStakingStore();
+
+    await store.getMinNominatorBond();
+
+    expect(store.minNominatorBond).toBe(minNominatorBond);
+  });
+
+  it('loads validator info from the indexer before waiting for chain RPC readiness', async () => {
+    const store = useStakingStore();
+    let resolveReady!: () => void;
+
+    shared.apiRef.isReady = new Promise<void>((resolve) => {
+      resolveReady = resolve;
+    });
+    shared.getIndexedValidatorsInfo.mockResolvedValue([{ address: 'indexed-validator', apy: '65.7' }]);
+
+    await store.getValidatorsInfo();
+
+    expect(store.validatorsInfo).toEqual([{ address: 'indexed-validator', apy: '65.7' }]);
+    expect(shared.getIndexedValidatorsInfo).toHaveBeenCalledTimes(1);
+    expect(shared.getValidatorsInfo).not.toHaveBeenCalled();
+    resolveReady();
+  });
+
+  it('falls back to chain RPC when the indexer returns an empty validator list', async () => {
+    const store = useStakingStore();
+
+    shared.getIndexedValidatorsInfo.mockResolvedValue([]);
+
+    await store.getValidatorsInfo();
+
+    expect(store.validatorsInfo).toEqual([{ address: 'validator-1', apy: '10' }]);
+    expect(shared.getIndexedValidatorsInfo).toHaveBeenCalledTimes(1);
+    expect(shared.getValidatorsInfo).toHaveBeenCalledTimes(1);
+  });
+
+  it('waits for the staking api readiness before loading staking info', async () => {
+    const store = useStakingStore();
+    let resolveReady!: () => void;
+
+    shared.apiRef.isReady = new Promise<void>((resolve) => {
+      resolveReady = resolve;
+    });
+
+    const pending = store.getStakingInfo();
+
+    expect(shared.getMyStakingInfo).not.toHaveBeenCalled();
+
+    resolveReady();
+    await pending;
+
+    expect(shared.getMyStakingInfo).toHaveBeenCalledWith('stash-1');
+  });
+
+  it('waits for staking readiness before reading fees and era metadata', async () => {
+    const store = useStakingStore();
+    let resolveReady!: () => void;
+
+    shared.apiRef.isReady = new Promise<void>((resolve) => {
+      resolveReady = resolve;
+    });
+
+    const pendingNominateFee = store.getNominateNetworkFee();
+    const pendingUnbondPeriod = store.getUnbondPeriod();
+
+    expect(shared.getNominateNetworkFee).not.toHaveBeenCalled();
+    expect(shared.getUnbondPeriod).not.toHaveBeenCalled();
+
+    resolveReady();
+
+    await expect(pendingNominateFee).resolves.toBe('2');
+    await pendingUnbondPeriod;
+
+    expect(shared.getNominateNetworkFee).toHaveBeenCalledTimes(1);
+    expect(shared.getUnbondPeriod).toHaveBeenCalledTimes(1);
+    expect(store.unbondPeriod).toBe(7);
+  });
+
+  it('uses safe defaults when the chain api is unavailable', async () => {
+    const store = useStakingStore();
+
+    (api as { api?: unknown; connection?: { api?: unknown } }).api = null;
+    (api as { api?: unknown; connection?: { api?: unknown } }).connection = { api: null };
+
+    await expect(store.getNominateNetworkFee()).resolves.toBe('0');
+    await store.getStakingInfo();
+    await store.getUnbondPeriod();
+    await store.subscribeOnActiveEra();
+    await store.subscribeOnCurrentEra();
+
+    expect(shared.getNominateNetworkFee).not.toHaveBeenCalled();
+    expect(shared.getMyStakingInfo).not.toHaveBeenCalled();
+    expect(shared.getUnbondPeriod).not.toHaveBeenCalled();
+    expect(shared.getActiveEraObservable).not.toHaveBeenCalled();
+    expect(shared.getCurrentEraObservable).not.toHaveBeenCalled();
+    expect(store.activeEra).toBeNull();
+    expect(store.currentEra).toBeNull();
+  });
+});

@@ -1,0 +1,17 @@
+@mixin s-select-sizes {
+  &_sm {
+    min-height: 24px;
+  }
+
+  &_md {
+    min-height: 32px;
+  }
+
+  &_lg {
+    min-height: 40px;
+  }
+
+  &_xl {
+    min-height: 56px;
+  }
+}

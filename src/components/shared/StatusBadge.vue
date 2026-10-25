@@ -1,46 +1,46 @@
 <template>
   <div :class="['status-badge', { active }]">
     <div class="status-badge-logo">
-      <token-logo :token="rewardAsset" size="mini" />
-      <div v-if="active" :class="['status-badge-logo-icon', { active: !stopped }]" />
+      <token-logo :token="rewardAsset" size="mini"></token-logo>
+      <div v-if="active" :class="['status-badge-logo-icon', { active: !stopped }]"></div>
     </div>
 
     <div class="status-badge-title">
       <div>{{ title }}</div>
-      <div v-if="pricesAvailable" class="status-badge-title--mini">{{ apr }} {{ TranslationConsts.APR }}</div>
+      <div v-if="aprAvailable" class="status-badge-title--mini">{{ apr }} {{ TranslationConsts.APR }}</div>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Prop, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useTranslation } from '@/composables/useTranslation';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
 
-@Component({
+defineOptions({
+  name: 'StatusBadge',
   components: {
-    TokenLogo: components.TokenLogo,
+    TokenLogo: WalletComponentTokenLogo,
   },
-})
-export default class StatusBadge extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
-  @Prop({ required: true, type: Boolean }) readonly stopped!: boolean;
-  @Prop({ required: true, type: Boolean }) readonly active!: boolean;
-  @Prop({ required: true, type: String }) readonly apr!: string;
-  @Prop({ type: Object }) readonly rewardAsset!: Nullable<AccountAsset>;
+});
 
-  get pricesAvailable(): boolean {
-    return Object.keys(this.fiatPriceObject).length > 0;
-  }
+const props = defineProps<{
+  stopped: boolean;
+  active: boolean;
+  apr: string;
+  rewardAsset?: Nullable<AccountAsset>;
+}>();
 
-  get title(): string {
-    if (this.stopped) return this.t('demeterFarming.staking.stopped');
+const { t, TranslationConsts } = useTranslation();
+const aprAvailable = computed(() => props.apr.trim().length > 0);
 
-    return this.t(this.active ? 'demeterFarming.staking.active' : 'demeterFarming.actions.start');
-  }
-}
+const title = computed(() => {
+  if (props.stopped) return t('demeterFarming.staking.stopped');
+  return props.active ? t('demeterFarming.staking.active') : t('demeterFarming.actions.start');
+});
 </script>
 
 <style lang="scss">
@@ -49,6 +49,10 @@ $token-logo-width: 20px;
 .status-badge-logo {
   width: $token-logo-width;
   height: $token-logo-width;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 
   .logo {
     width: inherit;
@@ -57,6 +61,9 @@ $token-logo-width: 20px;
     .asset-logo--mini {
       width: inherit;
       height: inherit;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
     }
   }
 }
@@ -106,6 +113,10 @@ $status-badge-width: 143px;
   }
 
   &-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
     font-size: calc(var(--s-font-size-extra-mini) - 1px);
     font-weight: 700;
     line-height: var(--s-line-height-reset);
@@ -115,6 +126,7 @@ $status-badge-width: 143px;
 
     &--mini {
       font-weight: 600;
+      margin-top: 1px;
     }
   }
 

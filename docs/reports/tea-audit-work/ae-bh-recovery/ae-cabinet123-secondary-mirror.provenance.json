@@ -1,0 +1,11 @@
+{
+  "url": "https://lexaidxb.com/api/legislations/c49c2c04-0ec4-437c-88f7-09cc3f8b60f2/download",
+  "finalUrl": "https://lexaidxb.com/api/legislations/c49c2c04-0ec4-437c-88f7-09cc3f8b60f2/download",
+  "status": 200,
+  "contentType": "application/pdf",
+  "bytes": 625352,
+  "sha256": "269b3858dbaf77b9873bebe9c5c7045295a6e458821ee5d1d05de7fc322278a8",
+  "file": "docs/reports/tea-audit-work/ae-bh-recovery/ae-cabinet123-secondary-mirror.pdf",
+  "retrievedAt": "2026-09-30T07:12:42.370555+00:00",
+  "role": "Discovery only: secondary mirror; seek original official annex before relying on substantive outcome."
+}

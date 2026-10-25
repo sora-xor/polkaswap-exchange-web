@@ -1,0 +1,222 @@
+[
+  {
+    "code": "CI",
+    "status": "conditional",
+    "rule": "Decree 63-457, still identified by the official trade portal as the governing instrument, requires an import permit before ordering covered goods (article 2). Article 1(b) expressly covers any dried plant; article 5 applies articles 1 and 2 to every import whatever its size. The current portal also requires a sanitary or analysis certificate for processed plant-origin products. Applying the broad dried-plant provision to identifiable dried sencha leaves is an interpretation of the statutory wording, not a tea-specific written ruling.",
+    "personalMailApplicability": "Article 5 expressly extends the permit provisions to all imports regardless of size, with baggage mentioned as an additional example rather than an exclusive route. A 100 g personal parcel therefore does not obtain a small-quantity exemption under this text.",
+    "quantityLimit": "No small-quantity exemption: article 5 applies regardless of import size.",
+    "authority": "Côte d’Ivoire official trade portal; Decree 63-457 of 7 November 1963, official gazette scan held by FAOLEX",
+    "evidenceUrls": [
+      "https://www.gucecotedivoire.ci/pwic/vegetaux-et-produits-d-origine-vegetale/",
+      "https://faolex.fao.org/docs/pdf/Ivc178121.pdf"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the chapter 09 agricultural import workflow and searched personal-use, noncommercial and postal exceptions.",
+      "Read the actual official-gazette text of Decree 63-457, especially articles 1(b), 2, 5 and 6; cross-checked continued use against the current official PWIC page. Located the primary FAOLEX scan through its exact ECOLEX record. Read Law 64-490 and Order 509/2014 via the German NPPO mirror; did not treat generic commercial tax thresholds as agricultural exemptions."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "not_supported",
+    "permitFreeReason": "The current official portal relies on Decree 63-457. Articles 1(b), 2 and 5 together impose prior permission on dried plants irrespective of shipment size. Application to dried sencha leaves is an inference from that express scope; the required prior permit conflicts with the store’s no-permits policy. This is not a claim that tea is prohibited.",
+    "permitFreeSources": [
+      "https://www.gucecotedivoire.ci/pwic/vegetaux-et-produits-d-origine-vegetale/",
+      "https://faolex.fao.org/docs/pdf/Ivc178121.pdf"
+    ]
+  },
+  {
+    "code": "CM",
+    "status": "not_verified",
+    "rule": "The official 2023 MINADER legal compendium confirms the manufactured-product pest-risk definition and that Decree 2005/0771 article 3 reserves import licences for high-risk products identified by ministerial order. Its 2019 inspection-fee annex explicitly names tea leaves and manufactured products, and separately covers postal/courier platforms; the fee schedule does not itself determine whether sealed steamed sencha requires a foreign certificate or prior licence.",
+    "personalMailApplicability": "Postal/courier and accompanied-baggage inspections are expressly contemplated. Neither the inspected fee schedule nor the implementing decree establishes a certificate-free route for 100 g manufactured Japanese tea.",
+    "quantityLimit": null,
+    "authority": "Cameroon NPPO laws filed with IPPC",
+    "evidenceUrls": [
+      "https://assets.ippc.int/static/media/files/reportingobligation/2015/03/30/1137602168132_Law_Relating_To_Phytosanitary_Protection_2013062711-18En.doc",
+      "https://assets.ippc.int/static/media/files/reportingobligation/2015/03/30/1137678445097_Decret_sur_la_quarantain_vegetale_2014042319-21Fr.doc",
+      "https://www.minader.cm/wp-content/uploads/2023/10/final_RECUEIL-ANGLAIS-SIGNE-11-10-23.pdf"
+    ],
+    "remainingQuestion": "Does the applicable high-risk/regulated-product determination cover manufactured steamed sencha, and does the personal postal route require a foreign phytosanitary certificate or special application?",
+    "researchAttempts": [
+      "Read product definitions and sections 3 and 9; examined implementing decree and searched processed-tea exemptions.",
+      "Read the 2023 MINADER compendium: Law 2003/003 pp143–144; Decree 2005/0771 pp154–155; Joint Order of 4 March 2019 pp173–177 including tea leaves, manufactured products and courier/post platforms. Searched the ministerial/NPPO high-risk commodity list and tea-specific determinations. Excluded an inspection fee listing as conclusive evidence of an import certificate requirement."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "No no-document route verified. Current official consolidated rules distinguish high-risk licence requirements from inspections, and tea appears in the inspection fee schedule. That evidence is insufficient either to exempt the parcel or to assert that all manufactured tea necessarily needs a licence/certificate.",
+    "permitFreeSources": [
+      "https://assets.ippc.int/static/media/files/reportingobligation/2015/03/30/1137602168132_Law_Relating_To_Phytosanitary_Protection_2013062711-18En.doc",
+      "https://assets.ippc.int/static/media/files/reportingobligation/2015/03/30/1137678445097_Decret_sur_la_quarantain_vegetale_2014042319-21Fr.doc",
+      "https://www.minader.cm/wp-content/uploads/2023/10/final_RECUEIL-ANGLAIS-SIGNE-11-10-23.pdf"
+    ]
+  },
+  {
+    "code": "GN",
+    "status": "not_verified",
+    "rule": "The NPPO’s published PR01-23 import-permit procedure requires an application, risk analysis and origin phytosanitary or disinsection certification for goods within its plant/plant-product scope. It expressly cites ISPM/NIMP 5 and 32. Neither it nor Law L/92/027 assigns manufactured steamed tea to a risk category; the law limits manufactured-product coverage by pest risk.",
+    "personalMailApplicability": "No tea-specific personal postal allowance located.",
+    "quantityLimit": null,
+    "authority": "Guinea NPPO law filed with IPPC",
+    "evidenceUrls": [
+      "https://assets.ippc.int/static/media/files/reportingobligation/2021/11/29/Loi_Phytosanitaire_République_de_Guinée.pdf",
+      "https://agriculture.gov.gn/wp-content/uploads/2023/01/PROCEDURE-DELIVRANCE-PERMIS-D-IMPORTATION.pdf",
+      "https://magel.gov.gn/file/2023/01/PROCEDURE-DELIVRANCE-PERMIS-D-IMPORTATION.pdf",
+      "https://service-public.gov.gn/ova_sev/delivrance-dun-permis-dimportation/"
+    ],
+    "remainingQuestion": "Whether sealed steamed sencha is a regulated manufactured product under the national interpretation of NIMP 32; no applicable personal postal exemption or classification was published in the sources reviewed.",
+    "researchAttempts": [
+      "OCR-read articles 2 and 7 of the law; searched tea and small-consignment implementing rules.",
+      "Read the complete two-page national procedure PR01-23, including its risk-analysis step, origin documentation and references to NIMP 5/32. Checked the government services portal and agriculture procedures index. No tea-specific category or personal-post waiver located."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "The current national permit procedure is verified, but its application to manufactured sencha remains unresolved because the underlying product definition is risk-based. Referencing NIMP 32 is not by itself a national tea exemption.",
+    "permitFreeSources": [
+      "https://assets.ippc.int/static/media/files/reportingobligation/2021/11/29/Loi_Phytosanitaire_République_de_Guinée.pdf",
+      "https://agriculture.gov.gn/wp-content/uploads/2023/01/PROCEDURE-DELIVRANCE-PERMIS-D-IMPORTATION.pdf",
+      "https://magel.gov.gn/file/2023/01/PROCEDURE-DELIVRANCE-PERMIS-D-IMPORTATION.pdf",
+      "https://service-public.gov.gn/ova_sev/delivrance-dun-permis-dimportation/"
+    ]
+  },
+  {
+    "code": "CG",
+    "status": "not_verified",
+    "rule": "The WTO 2023 Congo review, using information supplied by the authorities, reports prior authorizations and sanitary/phytosanitary certificates for animal and plant products (paragraph 3.92). It identifies the applicable institutional framework but does not define the treatment of finished tea or small personal postal imports. Historical NPPO filings do not resolve that classification.",
+    "personalMailApplicability": "No applicable personal postal tea rule established.",
+    "quantityLimit": null,
+    "authority": "Republic of Congo NPPO / IPPC legal filings",
+    "evidenceUrls": [
+      "https://www.ippc.int/en/countries/congo/reportingobligation/4",
+      "https://www.wto.org/french/tratop_f/tpr_f/s445-03_f.pdf"
+    ],
+    "remainingQuestion": "Current manufactured-tea classification and any personal-post exemption remain unverified; general references to plant-product authorizations do not establish the exact documents for a 100 g retail parcel.",
+    "researchAttempts": [
+      "Checked NPPO legislation filings; excluded unrelated pesticide rules and an ambiguous colonial-era gazette as proof of current tea admissibility.",
+      "Read WTO 2023 Congo country report paragraphs 3.86–3.95, especially plant-product authorizations in 3.92 and implementing references. Separately searched current customs/single-window and government gazette material for tea, processed products and personal post. Did not infer agricultural permission from customs tax relief or a commercial conformity program."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "Current official trade-policy evidence confirms a general authorization/certificate system, but not the scope for manufactured tea or private postal use. No conclusive no-document route or tea prohibition was found.",
+    "permitFreeSources": [
+      "https://www.ippc.int/en/countries/congo/reportingobligation/4",
+      "https://www.wto.org/french/tratop_f/tpr_f/s445-03_f.pdf"
+    ]
+  },
+  {
+    "code": "GQ",
+    "status": "not_verified",
+    "rule": "No destination authority's current commodity rule was located that establishes the agricultural admissibility of a sealed personal tea parcel.",
+    "personalMailApplicability": "A tariff heading or postal service alone does not establish agricultural clearance.",
+    "quantityLimit": null,
+    "authority": "Equatorial Guinea NPPO / IPPC country file",
+    "evidenceUrls": [
+      "https://www.ippc.int/en/countries/equatorial-guinea/",
+      "https://www.guineaecuatorialpress.com/index.php/noticias/decreto_por_el_que_se_adoptan_medidas_de_regulacion_comercial_en_las_fronteras_terrestres_entre_guinea_ecuatorial_camerun_y_gabon",
+      "https://www.guineaecuatorialpress.com/noticias/orden_por_la_que_se_aprueba_sistema_aduanero_automatizado_para_la_tramitacion_de_los_procedimientos_relativos_a_la_entrada_y_salida_de_mercancias",
+      "https://slpost.gov.lk/documents/ListOfProhibitedArticles2025-09-25.pdf"
+    ],
+    "remainingQuestion": "A current published plant-health rule classifying manufactured tea and specifying personal postal conditions was not located.",
+    "researchAttempts": [
+      "Searched official and IPPC sources in Spanish, French and English for tea, manufactured plant products, phytosanitary requirements and personal parcels; found no dispositive rule.",
+      "Checked current NPPO country file and searched Spanish/French official legislation and government information. Read the official regional land-border decree: livestock certificate clauses and CEMAC tax concessions cannot be applied to Japanese tea by post. Checked the country’s February 2024 postal return in the UPU compilation: it excludes unauthorized restricted items but offers no tea or processed-food exemption."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "No affirmative destination-specific no-document rule was located. Official regional land-border and customs measures do not determine the rules for a Japanese personal postal tea parcel, and the postal list preserves all underlying restrictions.",
+    "permitFreeSources": [
+      "https://www.ippc.int/en/countries/equatorial-guinea/",
+      "https://www.guineaecuatorialpress.com/index.php/noticias/decreto_por_el_que_se_adoptan_medidas_de_regulacion_comercial_en_las_fronteras_terrestres_entre_guinea_ecuatorial_camerun_y_gabon",
+      "https://www.guineaecuatorialpress.com/noticias/orden_por_la_que_se_aprueba_sistema_aduanero_automatizado_para_la_tramitacion_de_los_procedimientos_relativos_a_la_entrada_y_salida_de_mercancias",
+      "https://slpost.gov.lk/documents/ListOfProhibitedArticles2025-09-25.pdf"
+    ]
+  },
+  {
+    "code": "KM",
+    "status": "not_verified",
+    "rule": "Law 17-004/AU of 2017 imposes permission/certification requirements for regulated plant goods, including post, with manufactured products defined by pest risk. Food Law 17-005/AU expressly includes personal-use food (article 6(I)(g)), but its examined certificate provisions concern specific animal products and import businesses; it does not resolve a certificate requirement for plain manufactured tea.",
+    "personalMailApplicability": "Post is expressly covered under Plant Law article 59 when goods are regulated. Food Law article 6 includes personal use, so private consumption cannot be treated as a blanket exemption from food rules; manufactured-tea classification remains unsettled.",
+    "quantityLimit": null,
+    "authority": "Comoros Ministry of Justice; Plant Protection Law 2017",
+    "evidenceUrls": [
+      "https://justice.gouv.km/wp-content/uploads/2025/03/decret-n-17-103pr-du-5-octobre-2917-promulguant-la-loi-n-17-004au-portant-protection-des-vegetaux-aux-comores.pdf",
+      "https://justice.gouv.km/texte/decret-n17-103-pr-du-5-octobre-2017-promulguant-la-loi-n17-004-au-portant-protection-des-vegetaux-aux-comores/",
+      "https://justice.gouv.km/wp-content/uploads/2025/03/loi-n-17-005au-du-10-juin-2017-portant-legislation-alimentaire-en-union-des-comores.pdf",
+      "https://douane.gov.km/produits%20interdits.php",
+      "https://www.wto.org/english/thewto_e/acc_e/com_e/WT_ACC_COM_37_LEG1.pdf",
+      "https://www.wto.org/english/thewto_e/acc_e/com_e/WT_ACC_COM_37_LEG7.pdf"
+    ],
+    "remainingQuestion": "Whether the ONPV classifies steamed/dried sencha as a regulated manufactured product and which applicable import documentation is required for a private postal parcel.",
+    "researchAttempts": [
+      "Compared the old 2006 law in FAOLEX with the newer 2017 law from the Ministry of Justice; read article 3 definition and articles 44,46,59; searched implementing tea conditions.",
+      "Read Food Law 17-005/AU article 6 personal-use scope and articles 57–73 certification provisions; did not extend animal-product certificates to plain tea. Checked customs restricted goods. Examined WTO-filed 2022 technical-control and special-authorization drafts: their instrument numbers/dates are blank, so they are not proof of enacted exemptions; the organic-product provision inspected was an export provision."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "Neither a blanket personal-use exemption nor a tea-specific certificate requirement is established. The plant-law risk qualification remains decisive. The later food law includes personal use but does not by itself impose the examined animal-product certificate rules on tea.",
+    "permitFreeSources": [
+      "https://justice.gouv.km/wp-content/uploads/2025/03/decret-n-17-103pr-du-5-octobre-2917-promulguant-la-loi-n-17-004au-portant-protection-des-vegetaux-aux-comores.pdf",
+      "https://justice.gouv.km/texte/decret-n17-103-pr-du-5-octobre-2017-promulguant-la-loi-n17-004-au-portant-protection-des-vegetaux-aux-comores/",
+      "https://justice.gouv.km/wp-content/uploads/2025/03/loi-n-17-005au-du-10-juin-2017-portant-legislation-alimentaire-en-union-des-comores.pdf",
+      "https://douane.gov.km/produits%20interdits.php",
+      "https://www.wto.org/english/thewto_e/acc_e/com_e/WT_ACC_COM_37_LEG1.pdf",
+      "https://www.wto.org/english/thewto_e/acc_e/com_e/WT_ACC_COM_37_LEG7.pdf"
+    ]
+  },
+  {
+    "code": "ER",
+    "status": "not_verified",
+    "rule": "The Ministry of Information’s 13 May 2026 report expressly confirms Plant Quarantine Proclamation 156/2006 remains in force and inspections operate at entry points. The proclamation’s manufactured-product definition depends on pest risk, and no official implementing exemption or classification for manufactured tea was located.",
+    "personalMailApplicability": "No personal-post or tea-specific exemption verified.",
+    "quantityLimit": null,
+    "authority": "Eritrea plant-quarantine legislation, FAOLEX copy",
+    "evidenceUrls": [
+      "https://faolex.fao.org/docs/pdf/eri68047.pdf",
+      "https://shabait.com/2026/05/13/international-day-of-plant-health-observed-at-national-and-international-levels/",
+      "https://shabait.com/2025/05/29/encouraging-results-in-ensuring-health-of-agricultural-production/",
+      "https://www.ippc.int/en/countries/eritrea/reportingobligation/4"
+    ],
+    "remainingQuestion": "Whether manufactured sealed steamed tea is within controlled plant products or a published exemption, including for a 100 g personal postal parcel.",
+    "researchAttempts": [
+      "Read statutory definition and articles 14–15; searched implementing exemptions and tea import requirements.",
+      "Checked current 2026 Ministry of Information plant-health report, 2025 regulatory-service update and NPPO legislation filings for implementing exemptions. The 2026 report confirms Proclamation 156/2006 remains in force but supplies no manufactured-tea or personal-post determination."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "The governing law’s continued operation is verified in a current government report, but the risk-based manufactured-tea classification is unresolved. General inspection statements do not establish the required special documents for this tea parcel.",
+    "permitFreeSources": [
+      "https://faolex.fao.org/docs/pdf/eri68047.pdf",
+      "https://shabait.com/2026/05/13/international-day-of-plant-health-observed-at-national-and-international-levels/",
+      "https://shabait.com/2025/05/29/encouraging-results-in-ensuring-health-of-agricultural-production/",
+      "https://www.ippc.int/en/countries/eritrea/reportingobligation/4"
+    ]
+  },
+  {
+    "code": "UG",
+    "status": "not_verified",
+    "rule": "Plant Protection and Health Act manufactured-product coverage depends on pest risk. Implementing SI 4/2020 regulations 3–5 specify application, permit and import procedures, but contain no tea or personal-post exemption. The trade ministry’s separate restricted-import licence list does not name tea; that does not waive plant-health controls.",
+    "personalMailApplicability": "No affirmative personal-post tea exemption located.",
+    "quantityLimit": null,
+    "authority": "Uganda Plant Protection and Health Act, FAOLEX copy",
+    "evidenceUrls": [
+      "https://faolex.fao.org/docs/pdf/uga158615.pdf",
+      "https://faolex.fao.org/docs/pdf/uga238074.pdf",
+      "https://ulii.org/en/akn/ug/act/si/2020/4/eng%402020-01-24",
+      "https://www.mtic.go.ug/export-and-import-procedures/permits-and-licences/",
+      "https://www.agriculture.go.ug/online-certification/"
+    ],
+    "remainingQuestion": "Whether the NPPO classifies this sealed heat-processed Japanese tea as a regulated plant product or grants a published product/personal-post exemption.",
+    "researchAttempts": [
+      "Read product and entry-point definitions, section 14 and exemption powers; searched tea-specific and personal import guidance.",
+      "Read actual SI 4/2020 (24 January 2020 Gazette), especially regulations 2–5; searched the national trade portal and agriculture source for tea-import and personal-food exceptions. Checked the current external-trade restricted-licence list, which does not include tea but does not displace phytosanitary law. Excluded tea-export workflows and EAC generic risk-category guidance as proof of a no-document Japanese import route."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "The actual 2020 implementing regulations are verified, but no national tea risk classification or personal postal exemption was established. Export tea certification and the regional EAC classification are not a substitute for an import determination for this parcel.",
+    "permitFreeSources": [
+      "https://faolex.fao.org/docs/pdf/uga158615.pdf",
+      "https://faolex.fao.org/docs/pdf/uga238074.pdf",
+      "https://ulii.org/en/akn/ug/act/si/2020/4/eng%402020-01-24",
+      "https://www.mtic.go.ug/export-and-import-procedures/permits-and-licences/",
+      "https://www.agriculture.go.ug/online-certification/"
+    ]
+  }
+]

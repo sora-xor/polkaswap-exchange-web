@@ -1,0 +1,80 @@
+@use '@/theme';
+@use 'sass:map';
+
+$outline-size: (
+  md: 12px,
+  lg: 16px,
+  xl: 20px,
+);
+
+$outline-border: (
+  md: 1px,
+  lg: 1.5px,
+  xl: 2px,
+);
+
+$dot-border: (
+  md: 1px,
+  lg: 2px,
+  xl: 2px,
+);
+
+$color-primary: theme.token-as-var('sys.color.primary');
+$color-border-primary: theme.token-as-var('sys.color.border-primary');
+
+$transition-dur-easing: 0.2s ease;
+
+.s-radio-atom {
+  @apply flex items-center justify-center;
+
+  border: 2px solid $color-border-primary;
+  border-radius: 99px;
+
+  transition: border-color $transition-dur-easing;
+
+  $root: &;
+
+  &_checked,
+  &_hover,
+  &:hover {
+    &:not(#{$root}_disabled) {
+      border-color: $color-primary;
+    }
+  }
+
+  &::before {
+    content: '';
+    opacity: 0;
+    background: $color-primary;
+    border: {
+      style: solid;
+      color: theme.token-as-var('sys.color.util.body');
+    }
+    width: 100%;
+    height: 100%;
+    transition: all 0.15s ease;
+    border-radius: 99px;
+  }
+
+  &_checked::before {
+    opacity: 1;
+  }
+
+  &_checked#{&}_disabled::before {
+    background: $color-border-primary;
+  }
+
+  @each $size in md, lg, xl {
+    &[data-size='#{$size}'] {
+      $px: map.get($outline-size, $size);
+      width: $px;
+      height: $px;
+
+      border-width: map.get($outline-border, $size);
+
+      &::before {
+        border-width: map.get($dot-border, $size);
+      }
+    }
+  }
+}

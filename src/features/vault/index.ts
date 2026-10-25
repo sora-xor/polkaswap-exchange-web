@@ -1,0 +1,1 @@
+export { vaultRoutes } from './routes';

@@ -1,0 +1,30 @@
+[
+  {
+    "file": "sgg-home.html",
+    "url": "https://www.sgg.gov.gn/",
+    "finalUrl": "https://www.sgg.gov.gn/",
+    "status": 200,
+    "bytes": 69681
+  },
+  {
+    "file": "sgg-journal-home.html",
+    "url": "https://journal-officiel.sgg.gov.gn/",
+    "finalUrl": "https://journal-officiel.sgg.gov.gn/fr/accueil.html",
+    "status": 200,
+    "bytes": 35504
+  },
+  {
+    "file": "oncq-home.html",
+    "url": "https://oncq-guinee.com/",
+    "finalUrl": "https://oncq-guinee.com/",
+    "status": 200,
+    "bytes": 207544
+  },
+  {
+    "file": "assembly-archive.html",
+    "url": "https://cnt.gov.gn/archive.assemblee/www.assemblee.gov.gn/",
+    "finalUrl": "https://cnt.gov.gn/archive.assemblee/www.assemblee.gov.gn/",
+    "status": 403,
+    "bytes": 52
+  }
+]

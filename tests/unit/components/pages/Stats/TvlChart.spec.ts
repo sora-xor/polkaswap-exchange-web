@@ -1,0 +1,288 @@
+import { flushPromises, mount } from '@vue/test-utils';
+import { defineComponent, nextTick, reactive } from 'vue';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+import TvlChart from '@/features/misc/components/stats/TvlChart.vue';
+import tvlChartSource from '@/features/misc/components/stats/TvlChart.vue?raw';
+
+const fetchDataMock = vi.hoisted(() => vi.fn(async () => []));
+const settingsStoreMock = vi.hoisted(() => ({ state: undefined as any }));
+
+vi.mock('@/components/shared/Widget/Base.vue', () => ({
+  default: {
+    template: '<div><slot name="filters"></slot><slot></slot></div>',
+  },
+}));
+
+vi.mock('@/components/shared/Chart/ChartSkeleton.vue', () => ({
+  default: {
+    props: ['loading', 'isEmpty', 'isError'],
+    template:
+      '<div class="chart-skeleton-stub" :data-loading="String(loading)" :data-empty="String(isEmpty)" :data-error="String(isError)"><slot /></div>',
+  },
+}));
+
+vi.mock('@/components/shared/PriceChange.vue', () => ({
+  default: {
+    template: '<div class="price-change-stub"></div>',
+  },
+}));
+
+vi.mock('@/components/shared/Stats/StatsFilter.vue', () => ({
+  default: {
+    template: '<div><slot /></div>',
+  },
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/FormattedAmount.vue', () => ({
+  default: defineComponent({
+    template: '<div><slot name="prefix"></slot><slot></slot></div>',
+  }),
+}));
+
+vi.mock('@/composables/useTranslation', () => ({
+  useTranslation: () => ({
+    t: (key: string) => key,
+    TranslationConsts: {
+      TVL: 'TVL',
+    },
+  }),
+}));
+
+vi.mock('@/composables/useLoading', () => ({
+  useLoading: () => ({
+    loading: { value: false },
+    withLoading: async (handler: () => Promise<void>) => await handler(),
+    withParentLoading: async (handler: () => Promise<void>) => await handler(),
+  }),
+}));
+
+vi.mock('@/composables/useChartSpec', () => ({
+  useChartSpec: () => ({
+    gridSpec: () => ({}),
+    xAxisSpec: () => ({}),
+    yAxisSpec: () => ({}),
+    tooltipSpec: () => ({}),
+    lineSeriesSpec: () => ({}),
+  }),
+}));
+
+vi.mock('@/lib/echarts/component', () => ({
+  default: defineComponent({
+    name: 'VChartStub',
+    props: ['option'],
+    template: '<div class="v-chart-stub"></div>',
+  }),
+}));
+
+vi.mock('@/indexer/queries/network/tvl', () => ({
+  fetchData: fetchDataMock,
+}));
+
+vi.mock('@/stores/settings', async () => {
+  const { reactive } = await import('vue');
+
+  settingsStoreMock.state ??= reactive({
+    nodeIsConnected: false,
+    indexerEndpoint: '',
+  });
+
+  return {
+    useSettingsStore: () => ({
+      get nodeIsConnected() {
+        return settingsStoreMock.state.nodeIsConnected;
+      },
+      get indexerType() {
+        return 'POLKASWAP';
+      },
+      get indexers() {
+        return {
+          POLKASWAP: {
+            endpoint: settingsStoreMock.state.indexerEndpoint,
+          },
+        };
+      },
+    }),
+  };
+});
+
+vi.mock('@/consts/snapshots', () => ({
+  SECONDS_IN_TYPE: {
+    day: 24 * 60 * 60,
+  },
+  NETWORK_STATS_FILTERS: [
+    {
+      label: '1D',
+      type: 'day',
+      count: 1,
+    },
+  ],
+}));
+
+vi.mock('pinia', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('pinia')>();
+
+  return {
+    ...actual,
+    storeToRefs: () => ({
+      exchangeRate: { value: 1 },
+      currencySymbol: { value: '$' },
+    }),
+  };
+});
+
+describe('TvlChart', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    settingsStoreMock.state = reactive({
+      nodeIsConnected: false,
+      indexerEndpoint: '',
+    });
+  });
+
+  it('keeps chart skeleton loading when node is disconnected and data is unresolved', async () => {
+    fetchDataMock.mockResolvedValueOnce([]);
+
+    const wrapper = mount(TvlChart, {
+      global: {
+        stubs: {
+          VChart: true,
+          'v-chart': true,
+        },
+      },
+    });
+
+    await nextTick();
+    await nextTick();
+
+    const skeleton = wrapper.find('.chart-skeleton-stub');
+    expect(skeleton.exists()).toBe(true);
+    expect(skeleton.attributes('data-loading')).toBe('true');
+  });
+
+  it('stops chart skeleton loading when node is connected even with empty dataset', async () => {
+    settingsStoreMock.state.nodeIsConnected = true;
+    fetchDataMock.mockResolvedValueOnce([]);
+
+    const wrapper = mount(TvlChart, {
+      global: {
+        stubs: {
+          VChart: true,
+          'v-chart': true,
+        },
+      },
+    });
+
+    await nextTick();
+    await nextTick();
+
+    const skeleton = wrapper.find('.chart-skeleton-stub');
+    expect(skeleton.exists()).toBe(true);
+    expect(skeleton.attributes('data-loading')).toBe('false');
+  });
+
+  it('renders without runtime errors when translation consts are available', async () => {
+    fetchDataMock.mockResolvedValueOnce([]);
+
+    const wrapper = mount(TvlChart, {
+      global: {
+        stubs: {
+          VChart: true,
+          'v-chart': true,
+        },
+      },
+    });
+
+    await nextTick();
+
+    expect(wrapper.exists()).toBe(true);
+    expect(fetchDataMock).toHaveBeenCalled();
+    expect(wrapper.find('.price-change-stub').exists()).toBe(true);
+  });
+
+  it('requests TVL through the current second so the latest indexer bucket is included', async () => {
+    const dateNowSpy = vi.spyOn(Date, 'now').mockReturnValue(1_782_755_207_999);
+    fetchDataMock.mockResolvedValueOnce([]);
+
+    try {
+      mount(TvlChart, {
+        global: {
+          stubs: {
+            VChart: true,
+            'v-chart': true,
+          },
+        },
+      });
+
+      await nextTick();
+      await nextTick();
+
+      expect(fetchDataMock).toHaveBeenCalledWith(1_782_755_207, 1_782_668_807, 'day');
+    } finally {
+      dateNowSpy.mockRestore();
+    }
+  });
+
+  it('refreshes unresolved TVL data when the indexer endpoint becomes available', async () => {
+    fetchDataMock.mockResolvedValue([]);
+
+    mount(TvlChart, {
+      global: {
+        stubs: {
+          VChart: true,
+          'v-chart': true,
+        },
+      },
+    });
+
+    await nextTick();
+    await nextTick();
+    expect(fetchDataMock).toHaveBeenCalledTimes(1);
+
+    settingsStoreMock.state.indexerEndpoint = 'https://indexer.example/graphql';
+    await nextTick();
+    await nextTick();
+
+    expect(fetchDataMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('keeps data from the latest endpoint refresh when an older request resolves last', async () => {
+    let resolveOldRequest!: (value: Array<{ timestamp: number; value: number }>) => void;
+    let resolveNewRequest!: (value: Array<{ timestamp: number; value: number }>) => void;
+    const oldRequest = new Promise<Array<{ timestamp: number; value: number }>>((resolve) => {
+      resolveOldRequest = resolve;
+    });
+    const newRequest = new Promise<Array<{ timestamp: number; value: number }>>((resolve) => {
+      resolveNewRequest = resolve;
+    });
+    fetchDataMock.mockImplementationOnce(() => oldRequest).mockImplementationOnce(() => newRequest);
+
+    const wrapper = mount(TvlChart);
+    await nextTick();
+
+    settingsStoreMock.state.indexerEndpoint = 'https://indexer.example/graphql';
+    await nextTick();
+    expect(fetchDataMock).toHaveBeenCalledTimes(2);
+
+    resolveNewRequest([{ timestamp: 2, value: 22 }]);
+    await flushPromises();
+    resolveOldRequest([{ timestamp: 1, value: 11 }]);
+    await flushPromises();
+
+    const option = wrapper.findComponent({ name: 'VChartStub' }).props('option') as {
+      dataset: { source: Array<[number, number]> };
+    };
+    expect(option.dataset.source).toEqual([[2, 22]]);
+  });
+
+  it('uses direct shared imports instead of the central lazy registry', () => {
+    expect(tvlChartSource).not.toContain('lazyComponent(');
+    expect(tvlChartSource).not.toContain('Components.');
+    expect(tvlChartSource).not.toContain("from '@/router'");
+    expect(tvlChartSource).toContain("from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue'");
+    expect(tvlChartSource).toContain("import BaseWidget from '@/components/shared/Widget/Base.vue';");
+    expect(tvlChartSource).toContain("import ChartSkeleton from '@/components/shared/Chart/ChartSkeleton.vue';");
+    expect(tvlChartSource).toContain("import PriceChange from '@/components/shared/PriceChange.vue';");
+    expect(tvlChartSource).toContain("import StatsFilter from '@/components/shared/Stats/StatsFilter.vue';");
+  });
+});

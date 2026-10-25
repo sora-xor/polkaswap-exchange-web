@@ -1,0 +1,301 @@
+{
+  "checkedAt": "2026-09-30T03:43:29.571326+00:00",
+  "goalStatus": "active",
+  "documentFreeCounts": {
+    "not_supported": 59,
+    "unresolved": 48,
+    "supported": 96
+  },
+  "coverageValidated": 203,
+  "liveChangesMade": false,
+  "newlySupported": [],
+  "newlyExcluded": [],
+  "materialProgressThisPass": false,
+  "blockedAuditConsecutiveTurns": 1,
+  "narrowedWithoutClosing": [
+    "AG",
+    "BB",
+    "BL",
+    "CK",
+    "DM",
+    "ET",
+    "GF",
+    "GU",
+    "KN",
+    "MF",
+    "MP",
+    "MQ",
+    "PM",
+    "SR",
+    "TC",
+    "VC",
+    "WF"
+  ],
+  "unresolved": [
+    {
+      "code": "AE",
+      "name": "United Arab Emirates",
+      "remainingQuestion": "The unresolved fact is MOCCAE’s classification of this finished steamed/dried sencha and any applicable risk-based certificate exception under current Law 7/2025. The receiving emirate must also identify the personal-food quantity category. The broad dead-plant definition alone does not settle the manufactured-tea exception identified by JETRO; no certificate-free route for the actual shipment is yet verified."
+    },
+    {
+      "code": "AF",
+      "name": "Afghanistan",
+      "remainingQuestion": "MAIL’s determination of whether steamed/dried, sealed sencha satisfies Article 3(7)’s pest-risk condition for manufactured plant products is missing. If covered, permit/certificate defaults apply; Article 11 permits a discretionary personal-use exemption but does not grant one automatically. The 2019 section 22(2) listed up-to-2-kg exemption does not name tea. Separately, the 2025 anti-smuggling food law is now confirmed enacted, but its full Gazette 1472 text and personal-postal document-processing scope were not recovered; its official publication summary describes licences for imports for trade, not an automatic private-parcel requirement."
+    },
+    {
+      "code": "AG",
+      "name": "Antigua and Barbuda",
+      "remainingQuestion": "Applicable published Category 1 versus Category 2 classification or processing criterion for finished tea, rather than an unnecessary assumption that each tea parcel needs a fresh ruling."
+    },
+    {
+      "code": "BB",
+      "name": "Barbados",
+      "remainingQuestion": "Evidence applying the statutory manufactured-product risk threshold or a published no-document condition to this tea; mere manufacture or retail packaging is insufficient under the cited text."
+    },
+    {
+      "code": "BH",
+      "name": "Bahrain",
+      "remainingQuestion": "The missing determination is whether Plant Protection and Quarantine treats this steamed/dried sencha as a pest-risk-bearing manufactured plant product, or applies the MAFF footnote-11 processing exception. The personal-food guide supplies a routine undertaking/label route but not an agricultural waiver or numeric mailed-tea limit."
+    },
+    {
+      "code": "BL",
+      "name": "Saint Barthélemy",
+      "remainingQuestion": "Actual scope and continued application of Guadeloupe Order 96-323, rather than absence of a newly issued tea-specific national schedule."
+    },
+    {
+      "code": "BQ",
+      "name": "Bonaire, Saba and Sint Eustatius",
+      "remainingQuestion": "Need current implementing conditions and manufactured-tea classification under BES Invoeringswet 18.2.4 a–b for Bonaire, Saba and Sint Eustatius. Published Venezuela-only Bonaire allowance cannot establish Japanese tea for the three-island shipping code."
+    },
+    {
+      "code": "BS",
+      "name": "Bahamas",
+      "remainingQuestion": "Need the operative private-post food rule and processed-tea classification reconciling the 0902 permit-list omission with the food-condition certificates and Act sections 4/35. The food law is not unqualified as to personal recipients; its commencement notice was not located. Ordinary retail sealing also does not establish aseptic packaging."
+    },
+    {
+      "code": "CG",
+      "name": "Congo",
+      "remainingQuestion": "Published finished-tea plant-health classification and personal postal conditions remain missing. PCEC cannot independently justify exclusion because it expressly exempts e-commerce post."
+    },
+    {
+      "code": "CK",
+      "name": "Cook Islands",
+      "remainingQuestion": "Determine whether Japan-origin manufactured steamed/dried Camellia sinensis tea belongs to PP 29 dried herbs or PP 23 dried plant material under the current January 2021 specification. The schedule does not define the herb category or otherwise classify tea. This biosecurity category conflict is sufficient to retain unresolved. Food regulation 18 has no express baggage-only restriction and its subsection (6) turns on consumption by the importer/family; lack of the word post alone is not treated as a separate proven document barrier."
+    },
+    {
+      "code": "CW",
+      "name": "Curacao",
+      "remainingQuestion": "Need Curaçao LVV’s current finished-tea commodity conditions or nonperishable personal-food exemption. Customs guidance covers plants/flowers generally and personal customs clearance, but neither establishes phytosanitary treatment of manufactured Japanese tea."
+    },
+    {
+      "code": "DM",
+      "name": "Dominica",
+      "remainingQuestion": "Published determination or process standard sufficient to establish that this finished tea is outside the Act’s pest-capable plant-product definition, or an express Act-level permit/certificate exemption. Additional 2026 food-law text/commencement gap remains as recorded."
+    },
+    {
+      "code": "ER",
+      "name": "Eritrea",
+      "remainingQuestion": "A currently operative food/conformity rule imposing or waiving special documents for private postal tea was not found. Ordinary arrival inspection and certificates issued by inspectors are not independently disqualifying; existing plant-risk classification remains open."
+    },
+    {
+      "code": "ET",
+      "name": "Ethiopia",
+      "remainingQuestion": "The finished-tea pest-risk classification under Plant Protection and Quarantine Proclamation 1400/2026 remains missing. Separately, establish how Proclamation 1112/2019 article 3 and any current EFDA food directive apply to an own-consumption postal purchase. The recovered 2014 directive expressly exempts personal food from competence licensing, but does not establish a current waiver from shipment certificates; its company-trade scope also prevents treating article 20 as an unqualified private import duty."
+    },
+    {
+      "code": "GF",
+      "name": "French Guiana",
+      "remainingQuestion": "Whether manufacture by steaming and drying goes beyond the incorporated unprocessed/simply-prepared definition; a legal processing exclusion or authoritative general-category interpretation would settle it, without needing a bespoke tea permit."
+    },
+    {
+      "code": "GN",
+      "name": "Guinea",
+      "remainingQuestion": "Whether ONCQ requires a separate certificate/authorization for a 100 g private tea parcel, or performs routine arrival inspection. The commercial procedure and unverified legal-database locator do not establish the private duty."
+    },
+    {
+      "code": "GP",
+      "name": "Guadeloupe",
+      "remainingQuestion": "Actual local Order 96-323, especially scope, definitions and postal coverage."
+    },
+    {
+      "code": "GQ",
+      "name": "Equatorial Guinea",
+      "remainingQuestion": "A current published plant-health rule classifying manufactured tea and specifying personal postal conditions was not located."
+    },
+    {
+      "code": "GU",
+      "name": "Guam",
+      "remainingQuestion": "Determine how the published minor-processing limit in 8 GAR 10100(g) applies to manufactured steamed/rolled/dried sencha. If it is outside plant products, 10103 does not itself impose that permit; if covered, 10120 admissibility can coexist with the permit. A published processing interpretation or commodity clarification could settle this; an individual authority ruling is not intrinsically required. The current 2026 permit form covers noncommercial post but does not answer this processing question."
+    },
+    {
+      "code": "GW",
+      "name": "Guinea-Bissau",
+      "remainingQuestion": "An operative implementing provision requiring or exempting special documents for this private postal food import remains missing; the independent food law does not close the plant-law simple-preparation classification."
+    },
+    {
+      "code": "IQ",
+      "name": "Iraq",
+      "remainingQuestion": "The missing determination is whether steamed/dried sencha remains a plant product under the statutory biological-nature test. If covered, determine whether any rule waives its import licence: Article 9(1)’s non-agricultural-use postal concession removes only the certificate, and the explicit Article 9(2) licence exception concerns seed samples. The 10 kg material-weight basis is also unspecified and is not a full postal allowance. The independent COSQC conformity programme cannot close this question: its published guide/list links currently return 404, and the applicable personal-postal scope/exemptions were not established."
+    },
+    {
+      "code": "JO",
+      "name": "Jordan",
+      "remainingQuestion": "The missing evidence is the Ministry of Agriculture’s current commodity decision including or exempting finished steamed/dried tea under the 2021 quarantine instructions, and an ordinary-food personal postal clearance rule from JFDA. The medicinal-parcel consultation is outside ordinary sencha’s scope; its enactment status is not the relevant missing fact."
+    },
+    {
+      "code": "KI",
+      "name": "Kiribati",
+      "remainingQuestion": "Obtain the existing section 26 import specification covering Japanese finished tea or processed plant foods from the statutory biosecurity register. Its existence and conditions are unverified. If none exists, section 27 makes an advance written application necessary and the route would be incompatible with the store constraint. If an existing specification requires only inspection/declaration, the route could qualify. The remaining gap is the applicable specification, not whether manufactured tea is within the Act."
+    },
+    {
+      "code": "KM",
+      "name": "Comoros Islands",
+      "remainingQuestion": "An adopted operative control list/method establishing the specific document duty or exemption for manufactured tea in private post remains missing. General technical-control powers do not establish an extra certificate obligation."
+    },
+    {
+      "code": "KN",
+      "name": "Saint Christopher and Nevis",
+      "remainingQuestion": "Recover the applicable commodity requirements or a published processing/category rule; neither the legislation nor export guidance settles this Japanese postal sencha."
+    },
+    {
+      "code": "MF",
+      "name": "Saint Martin (French part)",
+      "remainingQuestion": "Actual scope and continued application of Guadeloupe Order 96-323; the old NVWA sheet alone does not answer that local-law issue."
+    },
+    {
+      "code": "MP",
+      "name": "Northern Mariana Islands",
+      "remainingQuestion": "No express dried-food permit waiver; no clear differentiation between broadly defined manufactured plant material and the plant/product class covered by 204. The certificate list is narrower and does not itself require a tea phytosanitary certificate. This is not a finding that dried tea is prohibited."
+    },
+    {
+      "code": "MQ",
+      "name": "Martinique",
+      "remainingQuestion": "Actual Order 043448 of 22 November 2004 and any binding processing exclusion relevant to steamed/dried manufactured tea. Do not demand a tea-specific ruling if a general category provision resolves the same question."
+    },
+    {
+      "code": "MV",
+      "name": "Maldives",
+      "remainingQuestion": "The missing fact is the Plant Protection Section’s classification/exemption for steamed/dried retail Camellia sinensis tea under the December 2025 plant-import notice. The current MFDA personal-food standard has now been read; it does not by itself settle the separate agricultural permit question."
+    },
+    {
+      "code": "MZ",
+      "name": "Mozambique",
+      "remainingQuestion": "A published current Japan-origin manufactured-green-tea plant-health classification or personal postal exemption is still missing; the PAC postal exemption does not resolve that separate question."
+    },
+    {
+      "code": "OM",
+      "name": "Oman",
+      "remainingQuestion": "MAFWR must determine whether steamed/dried sencha is a regulated pest-risk-bearing manufactured plant product and, if it is, the Japan-origin permit/certificate conditions. The official commodity lookup requires a CAPTCHA. Australian MICOR’s old tea condition (certificate yes, permit no) is not a Japan-postal exemption; the personal-import customs service preserves agency restrictions. Personal-food product registration is now expressly waived by Decision 69/2024 Article 3(1); this does not settle any separate food-import licensing provision. The underlying Food Safety Regulation 2/2010 Article 30 and its private-parcel scope remain unverified because the available original PDF could not be read reliably."
+    },
+    {
+      "code": "PF",
+      "name": "French Polynesia",
+      "remainingQuestion": "The missing source is current Order 324 CM (16 March 2026), Annex 5, especially any Camellia/tea entry, processing/packaging exemption and personal-postal paperwork. The accessible reform summary is insufficient to determine whether this sencha needs special documents."
+    },
+    {
+      "code": "PG",
+      "name": "Papua New Guinea",
+      "remainingQuestion": "The missing source is PNG Biosecurity Authority’s current commodity specification/exemption for finished Japanese Camellia sinensis tea in personal postal parcels, including whether a recipient import permit or origin phytosanitary certificate is required."
+    },
+    {
+      "code": "PM",
+      "name": "St. Pierre and Miquelon",
+      "remainingQuestion": "Applicable processing definition or exclusion resolving steamed/dried sencha under this separate local regime."
+    },
+    {
+      "code": "QA",
+      "name": "Qatar",
+      "remainingQuestion": "The missing fact is the Plant Protection Department’s classification or published risk-based exception for finished steamed/dried Japanese sencha under Law 24/2005 Article 2 and its implementing rules. The personal-food document waiver does not itself answer this separate agricultural question. No numeric personal postal tea allowance was verified."
+    },
+    {
+      "code": "SH",
+      "name": "St. Helena",
+      "remainingQuestion": "Establish operative Tristan biosecurity instruments and authoritative scope of current live/dead-plants import warning for factory-sealed steamed/dried tea sent by post. No published commencement order or manufactured-tea specification located; food-business duties cannot be automatically transferred to a private consumer. Do not approve every SH address by country code alone."
+    },
+    {
+      "code": "SL",
+      "name": "Sierra Leone",
+      "remainingQuestion": "Does manufactured steamed/dried sencha qualify as cooked material excluded from the Notice, and does the bottle/can qualification attach to cooked goods as well as pickled goods? What rule is applied to sealed retail pouches in private post?"
+    },
+    {
+      "code": "SR",
+      "name": "Suriname",
+      "remainingQuestion": "Need a published commodity or processing determination, or applicable exemption, establishing whether finished Japanese steamed/dried Camellia tea meets the pest-risk threshold in Plant Protection Act 2020 article 1(1)(bb). A per-parcel authority ruling is not shown to be mandatory merely to answer that question; an applicable published general rule could suffice. Article 6(3) covers frozen processed fruit/vegetables, not tea; neither the old trade Negative List nor the simplified newsletter supplies the missing plant-health determination."
+    },
+    {
+      "code": "SX",
+      "name": "Saint Maarten",
+      "remainingQuestion": "Need Sint Maarten LVV’s current classification of manufactured steamed/dried Camellia tea and any applicable plant import permit/phytosanitary conditions. The food-import notification and certificate duties in current Public Health Decree article 4 are not a separate barrier for this personal plain-tea parcel; Dutch/EU or French-island plant rules still cannot substitute for Sint Maarten’s own conditions."
+    },
+    {
+      "code": "TC",
+      "name": "Turks and Caicos",
+      "remainingQuestion": "A published section 36 tea/processing condition or other applicable exemption resolving the category; statutory powers to grant or recognise waivers do not establish that a waiver exists for this product."
+    },
+    {
+      "code": "TG",
+      "name": "Togo",
+      "remainingQuestion": "Whether the order’s prior declaration applies to personal postal food purchases, with a non-business procedure or exemption, remains unverified. Do not extend annual business-import authorization to private recipients solely because tea is plant food."
+    },
+    {
+      "code": "TO",
+      "name": "Tonga",
+      "remainingQuestion": "The missing determination is whether the Director has classified Japanese steamed/dried retail tea as permit-controlled plant material under regulation 26, or prescribed a permit/certificate-free tea condition; an applicable current commodity schedule is needed."
+    },
+    {
+      "code": "UG",
+      "name": "Uganda",
+      "remainingQuestion": "Whether a personal postal parcel can use the regulation 7 destination-inspection route with ordinary customs documents and without a separate agency exemption/application; independently, whether the NPPO classifies this sealed heat-processed Japanese tea as a regulated plant product."
+    },
+    {
+      "code": "VA",
+      "name": "Vatican",
+      "remainingQuestion": "Which Vatican or Italian agricultural entry rule applies to a Japanese tea parcel addressed to a Vatican individual, and does finished retail tea require any plant-health permission?"
+    },
+    {
+      "code": "VC",
+      "name": "Saint Vincent",
+      "remainingQuestion": "Applicable section 10 condition and published manufactured-tea risk classification or general processing exemption; the ordinary postal reporting duty is not a permit requirement by itself."
+    },
+    {
+      "code": "VG",
+      "name": "British Virgin Islands",
+      "remainingQuestion": "The current operative Cap. 93 subsidiary commodity schedules (1991 regulations, as amended by SI 35/2002, and SI 13/1996 with amendments) are listed in the 2026 official index but were not available in the searchable revised-law collection. Need those schedules or an NPPO determination for finished Japanese tea; nursery-plant guidance cannot settle it."
+    },
+    {
+      "code": "WF",
+      "name": "Wallis and Futuna",
+      "remainingQuestion": "How the specific tea-in-bulk entry relates to the non-manufactured plant-product scope for steamed/dried loose-leaf sencha. The permit-only waiver is clear; a certificate waiver is not. AIP section is reproduced in 2026 but the underlying page amendment is 2014, not a newly enacted 2026 rule."
+    },
+    {
+      "code": "YT",
+      "name": "Mayotte",
+      "remainingQuestion": "Current 2026 amended annex and exact reconciliation of the 2019 postal text with the DAAF unprocessed-product description."
+    }
+  ],
+  "verification": {
+    "uniqueCatalogDestinations": 203,
+    "countryAnchors": 203,
+    "briefCountryLinks": 203,
+    "sourceCoverage": 203,
+    "quantityArithmetic": "passed",
+    "foodBarriersKeptSeparateFromAgriculturalClassification": true
+  },
+  "reportSha256": "8fe5d179b74c3f7c726b51702ee887db84b7d88faf5393f38b19c066e20e47db",
+  "continuationNote": "First continuation without a destination outcome change after the GD/MG/MW progress pass. Independent legal-scope peer review covered 19 destinations and corrected gaps, but all 48 remain unresolved. Do not repeat the same statutory-definition, complete-list or timed-out-source searches. A published applicable category/processing rule can suffice; a bespoke authority ruling is not inherently required. Remaining progress needs newly available operative text or a reliable applicable classification. No authority contact is authorized. Goal remains active; the three-consecutive-turn blocked threshold has not been reached.",
+  "additionalSourcePasses": [
+    "pacific-legal-scope-peer-review.json",
+    "caribbean-definition-peer-review/source-pass-result.json",
+    "french-territory-sources/peer-review-notes.json",
+    "legal-scope-peer-review/et-peer-review.json"
+  ],
+  "evidenceImprovedThisPass": true,
+  "reportJsonSha256": "8fe5d179b74c3f7c726b51702ee887db84b7d88faf5393f38b19c066e20e47db",
+  "validation": {
+    "coverage": 203,
+    "anchors": 203,
+    "briefCountryLinks": 203,
+    "sourceCoverage": 203,
+    "quantityArithmetic": "passed"
+  }
+}

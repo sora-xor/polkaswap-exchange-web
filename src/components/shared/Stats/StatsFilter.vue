@@ -1,8 +1,12 @@
 <template>
-  <div class="stats-filter">
-    <s-button type="link" size="small" class="stats-filter-button" @click="toggleMenu" :disabled="disabled">
-      {{ filter.label }}
-      <s-icon name="el-icon-arrow-down" size="12px" :class="['stats-filter-button-icon', { opened: visibility }]" />
+  <div ref="root" class="stats-filter">
+    <s-button type="link" size="small" class="stats-filter-button" :disabled="disabled" @click="toggleMenu">
+      {{ currentFilter?.label }}
+      <s-icon
+        name="el-icon-arrow-down"
+        size="12px"
+        :class="['stats-filter-button-icon', { opened: visibility }]"
+      ></s-icon>
     </s-button>
     <div v-show="visibility" class="stats-filter-menu stats-filter-list">
       <s-button
@@ -10,7 +14,7 @@
         :key="name"
         type="link"
         size="small"
-        :class="['stats-filter-list-item', { 's-pressed': name === filter.name }]"
+        :class="['stats-filter-list-item', { 's-pressed': name === currentFilter?.name }]"
         @click="setValue(name)"
       >
         {{ label }}
@@ -19,79 +23,131 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, ModelSync, Watch } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed, onBeforeUnmount, onMounted, ref, toRef, watchEffect } from 'vue';
 
 import type { SnapshotFilter } from '@/types/filters';
 
-function hasParentEl(target: Node, el: Node): boolean {
-  if (target === el) return true;
-  if (!target.parentNode) return false;
+defineOptions({ name: 'StatsFilter' });
 
-  return hasParentEl(target.parentNode, el);
-}
+const props = withDefaults(
+  defineProps<{
+    filters?: SnapshotFilter[];
+    disabled?: boolean;
+    modelValue?: SnapshotFilter | null;
+  }>(),
+  {
+    filters: () => [],
+    disabled: false,
+    modelValue: undefined,
+  }
+);
 
-@Component
-export default class StatsFilter extends Mixins() {
-  @Prop({ default: () => [], type: Array }) readonly filters!: SnapshotFilter[];
-  @Prop({ default: false, type: Boolean }) readonly disabled!: boolean;
+const emit = defineEmits<{
+  (event: 'update:modelValue', value: Nullable<SnapshotFilter>): void;
+}>();
 
-  @ModelSync('value', 'input', { type: Object })
-  filter!: SnapshotFilter;
+const root = ref<HTMLElement | null>(null);
+const visibility = ref(false);
 
-  visibility = false;
+const selectedFilter = computed<Nullable<SnapshotFilter>>(() => props.modelValue ?? props.filters[0] ?? null);
 
-  @Watch('visibility')
-  private toggleListener(value: boolean): void {
-    if (value) {
-      this.addListener();
-    } else {
-      this.removeListener();
+const filterModel = computed<Nullable<SnapshotFilter>>({
+  get: () => selectedFilter.value,
+  set: (value) => {
+    emit('update:modelValue', value);
+  },
+});
+
+const currentFilter = computed(() => filterModel.value);
+const isDisabled = toRef(props, 'disabled');
+
+const closeMenu = () => {
+  visibility.value = false;
+  removeListener();
+};
+
+const handleViewportOrNavigationChange = () => {
+  if (!visibility.value) return;
+  closeMenu();
+};
+
+const handleClickOutside = (event: Event) => {
+  const target = event.target as Node | null;
+  if (!target) return;
+  const container = root.value;
+  if (!container) return;
+  if (!container.contains(target)) {
+    closeMenu();
+  }
+};
+
+const supportsPointerEvents = typeof window !== 'undefined' && 'PointerEvent' in window;
+
+const addListener = () => {
+  const doc = root.value?.ownerDocument ?? document;
+  if (supportsPointerEvents) {
+    doc.addEventListener('pointerdown', handleClickOutside);
+  } else {
+    doc.addEventListener('click', handleClickOutside);
+    doc.addEventListener('touchstart', handleClickOutside);
+  }
+};
+
+const removeListener = () => {
+  const doc = root.value?.ownerDocument ?? document;
+  if (supportsPointerEvents) {
+    doc.removeEventListener('pointerdown', handleClickOutside);
+  } else {
+    doc.removeEventListener('click', handleClickOutside);
+    doc.removeEventListener('touchstart', handleClickOutside);
+  }
+};
+
+watchEffect(
+  () => {
+    if (isDisabled.value && visibility.value) {
+      closeMenu();
     }
+  },
+  { flush: 'post' }
+);
+
+onBeforeUnmount(() => {
+  removeListener();
+  window.removeEventListener('resize', handleViewportOrNavigationChange);
+  window.removeEventListener('hashchange', handleViewportOrNavigationChange);
+  window.removeEventListener('popstate', handleViewportOrNavigationChange);
+});
+
+onMounted(() => {
+  window.addEventListener('resize', handleViewportOrNavigationChange);
+  window.addEventListener('hashchange', handleViewportOrNavigationChange);
+  window.addEventListener('popstate', handleViewportOrNavigationChange);
+});
+
+const toggleMenu = () => {
+  if (props.disabled) return;
+  visibility.value = !visibility.value;
+  if (visibility.value) {
+    addListener();
+  } else {
+    removeListener();
   }
+};
 
-  private addListener(): void {
-    this.$el.ownerDocument.addEventListener('click', this.handleClickOutside);
-  }
+const setValue = (name: string) => {
+  const nextFilter = props.filters.find((item) => item.name === name);
+  if (!nextFilter) return;
+  filterModel.value = nextFilter;
+  closeMenu();
+};
 
-  private removeListener(): void {
-    this.$el.ownerDocument.removeEventListener('click', this.handleClickOutside);
-  }
-
-  beforeDestroy(): void {
-    this.removeListener();
-  }
-
-  toggleMenu(): void {
-    this.visibility = !this.visibility;
-  }
-
-  closeMenu(): void {
-    this.visibility = false;
-  }
-
-  handleClickOutside(e: Event): void {
-    const target = e.target as Node;
-    const isMenu = hasParentEl(target, this.$el);
-
-    if (!isMenu) {
-      this.closeMenu();
-    }
-  }
-
-  setValue(name: string): void {
-    const filter = this.getFilter(name);
-
-    if (filter) {
-      this.filter = filter;
-      this.closeMenu();
-    }
-  }
-
-  private getFilter(name: string): Nullable<SnapshotFilter> {
-    return this.filters.find((item) => item.name === name);
-  }
-}
+defineExpose({
+  visibility,
+  closeMenu,
+  toggleMenu,
+});
 </script>
 
 <style lang="scss" scoped>
@@ -101,8 +157,24 @@ $gap: $inner-spacing-mini;
   position: relative;
 
   &-button {
+    color: var(--s-color-base-content-secondary) !important;
+    font-weight: 500;
+    line-height: 12px;
+    padding: 4px 6px !important;
+
+    :deep(.s-button__text) {
+      color: var(--s-color-base-content-secondary);
+      font-weight: 500;
+      line-height: 12px;
+    }
+
     &-icon {
       margin-left: $inner-spacing-tiny;
+      width: 12px;
+      height: 12px;
+      font-size: 12px;
+      line-height: 12px;
+      color: inherit;
 
       &.opened {
         transform: rotate(180deg);
@@ -130,7 +202,30 @@ $gap: $inner-spacing-mini;
 
     &-item {
       @include columns(3, $gap);
+      color: var(--s-color-base-content-primary) !important;
+
+      :deep(.s-button__text) {
+        color: inherit;
+      }
+
+      &.s-pressed {
+        color: var(--s-color-theme-accent) !important;
+      }
     }
   }
+}
+
+:global(:root[data-theme='dark'] .stats-filter-button),
+:global(:root[design-system-theme='dark'] .stats-filter-button),
+:global(.sora-theme-provider[data-theme='dark'] .stats-filter-button),
+:global(.sora-theme-provider[design-system-theme='dark'] .stats-filter-button) {
+  color: var(--s-color-base-content-primary) !important;
+}
+
+:global(:root[data-theme='dark'] .stats-filter-button .s-button__text),
+:global(:root[design-system-theme='dark'] .stats-filter-button .s-button__text),
+:global(.sora-theme-provider[data-theme='dark'] .stats-filter-button .s-button__text),
+:global(.sora-theme-provider[design-system-theme='dark'] .stats-filter-button .s-button__text) {
+  color: var(--s-color-base-content-primary) !important;
 }
 </style>

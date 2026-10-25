@@ -1,25 +1,54 @@
 <template>
-  <s-tabs class="settings-tabs" type="rounded" :value="value" v-on="$listeners">
-    <s-tab v-for="tab in tabs" :key="tab.name" :name="tab.name" :label="tab.label">
-      <p v-if="tab.content" v-html="tab.content" class="settings-content" />
+  <s-tabs class="settings-tabs" type="rounded" :value="value" v-bind="attrs">
+    <s-tab v-for="tab in sanitizedTabs" :key="tab.name" :name="tab.name" :label="tab.label">
+      <p v-if="tab.content" v-html="tab.content" class="settings-content"></p>
     </s-tab>
   </s-tabs>
 </template>
 
-<script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed, useAttrs } from 'vue';
 
 import { TabItem } from '@/types/tabs';
+import { sanitizeHtml } from '@/utils/sanitize';
 
-@Component
-export default class SettingsTabs extends Vue {
-  @Prop({ type: String, default: '' }) value!: string;
-  @Prop({ type: Array, default: () => [] }) tabs!: Array<TabItem>;
-}
+const props = withDefaults(
+  defineProps<{
+    value?: string;
+    tabs?: Array<TabItem>;
+  }>(),
+  {
+    value: '',
+    tabs: () => [],
+  }
+);
+
+const attrs = useAttrs();
+
+const sanitizedTabs = computed(() =>
+  props.tabs.map((tab) => {
+    if (!tab.content) return tab;
+
+    return {
+      ...tab,
+      content: sanitizeHtml(tab.content, {
+        allowedTags: ['a', 'span', 'strong', 'em', 'p', 'br', 'ul', 'li'],
+        allowedAttributes: {
+          '*': ['class'],
+          a: ['href', 'rel', 'target', 'title'],
+        },
+      }),
+    };
+  })
+);
 </script>
 
 <style lang="scss">
 .settings-tabs.s-tabs {
+  font-size: var(--s-font-size-extra-small);
+  line-height: 1.15;
+  width: 100%;
+
   .el-tabs__header {
     margin-bottom: 0;
     width: 100%;

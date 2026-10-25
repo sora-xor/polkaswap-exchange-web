@@ -1,0 +1,122 @@
+{
+  "code": "GN",
+  "reviewedAt": "2026-09-30",
+  "reviewType": "Authenticated primary-law recovery; outcome unchanged",
+  "product": "One purchased factory-sealed 100 g plain Japanese Camellia sinensis sencha, steamed/rolled/dried, posted to an individual for own consumption.",
+  "sourceUrl": "https://journal-officiel.sgg.gov.gn/JO/2021/guinee-jo-2021-07-30-sp.pdf",
+  "sourceAuthority": "Secrétariat Général du Gouvernement, official Journal Officiel archive linked from current SGG home page",
+  "publication": "Spécial Textes Législatifs et Règlementaires Juillet 2021, published 30 July 2021",
+  "law": "Loi ordinaire L/2021/033/AN du 04 juillet 2021 portant contrôle des denrées, marchandises et services alimentaires et répression des fraudes commerciales",
+  "lawPages": [
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "promulgation": {
+    "decree": "D/2021/237/PRG/SGG du 21 juillet 2021",
+    "page": 19,
+    "effect": "Law Article 68 takes effect on promulgation; decree Articles 1–2 promulgate it with effect on signature, 21 July 2021."
+  },
+  "provisions": [
+    {
+      "article": "2",
+      "page": 5,
+      "finding": "General scope expressly includes all importing activities, alongside production, processing, manufacture, transport, distribution and sale. No general private-food exception appears in the complete Act."
+    },
+    {
+      "article": "4",
+      "page": 6,
+      "term": "importer",
+      "exactText": "introduction depuis un pays étranger vers le territoire national par tout moyen",
+      "finding": "This scope does not exclude air post or private consumers by its wording."
+    },
+    {
+      "article": "4",
+      "page": 6,
+      "terms": [
+        "entreprise alimentaire",
+        "établissement ou exploitant du secteur alimentaire"
+      ],
+      "finding": "Food enterprise and operator definitions expressly include nonprofit activities. Volunteer status is not a blanket exemption."
+    },
+    {
+      "article": "26",
+      "page": 8,
+      "finding": "Administrative operating authorizations concern slaughterhouses and food businesses active in production, processing or distribution. This clause is not a clear personal recipient registration requirement."
+    },
+    {
+      "article": "27",
+      "page": 8,
+      "finding": "Market-food labeling/information includes certificate of origin among its items. Article 4 defines that certificate in terms of exports produced, manufactured or processed in Guinea; this odd wording is not a defensible stand-alone Japanese origin-certificate duty for personal post."
+    },
+    {
+      "article": "38",
+      "page": 9,
+      "finding": "ONCQ is the principal national control organ for foods and consumer goods placed on the market."
+    },
+    {
+      "article": "40",
+      "page": 9,
+      "exactText": "Les denrées alimentaires d’origine industrielle, y compris les boissons, font l’objet d’un contrôle de qualité préalable à l’autorisation de mise à la consommation (AMC).",
+      "finding": "Industrial food, including beverages, undergoes quality control before authorization for consumption. Factory-manufactured retail sencha is within the ordinary industrial-food description; tea need not be named for this inference."
+    },
+    {
+      "article": "44",
+      "page": 9,
+      "exactText": "Les modalités d’exécution et la certification des contrôles officiels sont fixées par voie règlementaire.",
+      "finding": "Execution details and certification of official controls are delegated to regulations. The Act does not state a foreign origin document or advance application for this personal parcel."
+    },
+    {
+      "article": "45–48",
+      "page": 9,
+      "finding": "Control results are notified in writing to the person responsible for the enterprise, with compliance, recall, confiscation, closure or rejection measures. This context admits an arrival-control/release interpretation of AMC; it does not establish that the store must procure an origin certificate."
+    },
+    {
+      "article": "52",
+      "page": 10,
+      "exactText": "Quiconque importe, exporte, produit, transforme, distribue, entrepose ou transporte des denrées alimentaires sans autorisation ou impropres à la consommation humaine et animale, est passible d’un emprisonnement de 5 mois à 1 an et d’une amende égale à la valeur des marchandises incriminées.",
+      "finding": "A real broad penalty for unauthorized food import exists. It does not specify the authorization application, timing or foreign documentation; read with Articles 40 and 44, it cannot alone identify special advance paperwork rather than local arrival clearance."
+    }
+  ],
+  "assessment": {
+    "authenticationGapClosed": true,
+    "status": "not_verified",
+    "permitFreeDecision": "unresolved",
+    "overallDecisionChanged": false,
+    "confidence": "High confidence in recovered wording and authentication; unresolved operative paperwork classification for this private postal route.",
+    "strongestExclusionArgument": "Articles 2 and 4 cover import by any means, Article 40 affirmatively subjects industrial food to AMC, and Article 52 penalizes unauthorized import. These are actual duties, not merely enabling powers; no personal exception is stated in this Act.",
+    "whyNoForcedExclusion": "The user permits ordinary arrival declarations and inspection. The Act does not distinguish AMC issued after routine control from a separate prior approval, and it does not prescribe sender-procured certificates for this parcel. Treating every local release authorization as forbidden special paperwork would expand the user constraint.",
+    "strongestPermissionArgument": "The personal recipient is not automatically a food establishment under Article 26, and official inspection/release could be routine. However that possibility is not an established special-document-free route; neither Article 40 nor the later BNIQ order affirmatively resolves the private parcel.",
+    "remainingEvidence": "A current operative AMC/private-post procedure or general exception showing whether this parcel uses ordinary arrival clearance only; and resolution of BNIQ Order A/2024/920 Article 3 transport scope plus the Article 4/5 private non-sale exemption. No bespoke tea letter is intrinsically needed.",
+    "bniqConsistency": "Reread saved signed Order A/2024/920 Articles 2–6 and organization Order A/2024/1102 Article 3. The latter gives BNIQ power to examine and approve exemptions; it does not itself impose an exemption application on every individual. The former names containers, trucks and other international rolling transport, then mixes are exempt with may be exempt for private/non-sale goods. It has separate electronic declaration and foreign-document duties if covered. Law 2021 does not settle those later clauses.",
+    "paperworkType": "Actual AMC food quality-control/release authorization established; advance application/foreign-document classification for private post remains unresolved. Ordinary arrival inspection is not treated as a forbidden certificate."
+  },
+  "retrieval": {
+    "discoveryRoute": [
+      "https://www.sgg.gov.gn/",
+      "https://journal-officiel.sgg.gov.gn/fr/m-journal-officiel/le-journal-officiel.html?annee=2021&action=Rechercher",
+      "https://journal-officiel.sgg.gov.gn/JO/2021/guinee-jo-2021-07-30-sp.pdf"
+    ],
+    "method": "Used observed public GET year filter on current official gazette archive; followed the exact July 30 special-issue PDF link. Direct public download returned HTTP 200 application/pdf, 14,150,631 bytes. No credentials or access bypass.",
+    "failedAlternatives": "Exact-law search on the same official platform did not return the law; the year-filtered full Gazette did. Archived Assembly site returned 403. Web text renderer cannot open the PDF, but direct public request succeeded.",
+    "visualVerification": "Rendered and visually read PDF/printed pages 5, 6, 9, 10 and 19, including title, scope, import definition, Article 40, Article 44, Article 52 and promulgation. Read all extracted Act articles 1–68; extraction preserves page columns imperfectly, so relevant wording was visually checked.",
+    "sha256": "aca920234414e21502639b38bf033a1ff3b9c5faee3ecfbba2f5a319e8767d82",
+    "sourceFiles": [
+      "docs/reports/tea-audit-work/guinea-law2021-recovery/gn-gazette2021-07-30-sp.pdf",
+      "docs/reports/tea-audit-work/guinea-law2021-recovery/gn-gazette2021-07-30-sp.txt",
+      "docs/reports/tea-audit-work/guinea-law2021-recovery/gn-law2021-full.txt",
+      "docs/reports/tea-audit-work/guinea-law2021-recovery/sgg-official-journal2021.html",
+      "docs/reports/tea-audit-work/guinea-law2021-recovery/gazette-provenance.json",
+      "docs/reports/tea-audit-work/guinea-law2021-recovery/sgg-filter-provenance.json",
+      "docs/reports/tea-audit-work/guinea-law2021-recovery/gn-gazette-page05.png",
+      "docs/reports/tea-audit-work/guinea-law2021-recovery/gn-gazette-page06.png",
+      "docs/reports/tea-audit-work/guinea-law2021-recovery/gn-gazette-page09.png",
+      "docs/reports/tea-audit-work/guinea-law2021-recovery/gn-gazette-page10.png",
+      "docs/reports/tea-audit-work/guinea-law2021-recovery/gn-gazette-page19.png"
+    ]
+  }
+}

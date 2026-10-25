@@ -1,132 +1,140 @@
 <template>
-  <div class="disclaimer">
-    <div class="disclaimer__header">
-      <div class="disclaimer__header-title">{{ t('disclaimerTitle') }}</div>
-      <s-icon
-        v-button
-        v-if="userDisclaimerApprove"
-        class="disclaimer__header-close-btn"
-        size="28px"
-        name="basic-clear-X-xs-24"
-        @click.native="handleClose"
-      />
-    </div>
-    <s-scrollbar>
-      <div class="disclaimer__text">
-        <p
-          v-html="
-            t('disclaimer', {
-              disclaimerPrefix,
-              polkaswapFaqLink,
-              memorandumLink,
-              privacyLink,
-            })
-          "
-        />
-        <p class="disclaimer__text-fiat" ref="endLine">{{ t('fiatDisclaimer') }}</p>
+  <s-modal
+    v-model:show="disclaimerVisibility"
+    :teleport-to="useViewportModal ? 'body' : null"
+    :absolute="!useViewportModal"
+    :lock-scroll="false"
+    :focus-trap="isSwapPage"
+    :show-overlay="isSwapPage"
+    :root-class="modalRootClass"
+    :labelled-by="titleId"
+    modal-class="disclaimer-modal__dialog"
+    :close-on-overlay-click="isSwapPage && userDisclaimerApprove"
+    :close-on-esc="userDisclaimerApprove"
+  >
+    <div class="disclaimer">
+      <div class="disclaimer__header">
+        <h2 :id="titleId" class="disclaimer__header-title">{{ t('disclaimerTitle') }}</h2>
+        <s-button
+          v-if="userDisclaimerApprove"
+          class="disclaimer__header-close-btn"
+          type="action"
+          icon="basic-clear-X-xs-24"
+          :aria-label="t('closeText')"
+          @click="handleClose"
+        ></s-button>
       </div>
-    </s-scrollbar>
-    <s-button
-      v-if="!userDisclaimerApprove"
-      :loading="loadingAcceptBtn"
-      type="primary"
-      @click="handleAccept"
-      class="disclaimer__accept-btn"
-      :disabled="!isActiveAccptBtn"
-    >
-      {{ btnText }}
-    </s-button>
-  </div>
+      <div class="disclaimer__text" tabindex="0" role="region" :aria-label="t('disclaimerSummary.fullTerms')">
+        <div class="disclaimer__summary">
+          <h3>{{ t('disclaimerSummary.title') }}</h3>
+          <ul>
+            <li>{{ t('disclaimerSummary.responsibility') }}</li>
+            <li>{{ t('disclaimerSummary.alpha') }}</li>
+            <li>{{ t('disclaimerSummary.risk') }}</li>
+          </ul>
+        </div>
+        <h3>{{ t('disclaimerSummary.fullTerms') }}</h3>
+        <div v-html="disclaimerContent"></div>
+        <p class="disclaimer__text-fiat">{{ t('fiatDisclaimer') }}</p>
+      </div>
+      <div v-if="!userDisclaimerApprove" class="disclaimer__footer">
+        <label class="disclaimer__acknowledgement">
+          <input v-model="acknowledged" type="checkbox" />
+          <span>{{ t('disclaimerSummary.acknowledgement') }}</span>
+        </label>
+        <s-button type="primary" @click="handleAccept" class="disclaimer__accept-btn" :disabled="!acknowledged">
+          {{ t('acceptText') }}
+        </s-button>
+      </div>
+    </div>
+  </s-modal>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Ref } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { ref, computed, useId, watch } from 'vue';
+import { useRoute } from 'vue-router';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Links } from '@/consts';
-import { mutation, state } from '@/store/decorators';
-import { delay } from '@/utils';
+import { useTranslation } from '@/composables/useTranslation';
+import { Links, PageNames } from '@/consts';
+import { SModal } from '@/lib/soramitsu-ui/components/Modal';
+import { useSettingsStore } from '@/stores/settings';
+import { escapeHtml, sanitizeHtml } from '@/utils/sanitize';
+import { resolveDisclaimerVisibilityOnRouteChange } from '@/views/utils/resolveDisclaimerVisibilityOnRouteChange';
 
-@Component
-export default class AppDisclaimer extends Mixins(TranslationMixin) {
-  @state.settings.userDisclaimerApprove userDisclaimerApprove!: boolean;
-  @mutation.settings.setUserDisclaimerApprove private setUserDisclaimerApprove!: FnWithoutArgs;
-  @mutation.settings.toggleDisclaimerDialogVisibility private toggleVisibility!: FnWithoutArgs;
+defineOptions({ name: 'AppDisclaimer' });
 
-  loadingAcceptBtn = false;
-  isActiveAccptBtn = false;
+const { t } = useTranslation();
+const route = useRoute();
+const settingsStore = useSettingsStore();
 
-  @Ref('endLine') private readonly endLine!: HTMLElement;
+const acknowledged = ref(false);
+const titleId = `disclaimer-title-${useId()}`;
 
-  async handleAccept(): Promise<void> {
-    this.loadingAcceptBtn = true;
-    await delay(1_200);
-    this.setUserDisclaimerApprove();
-    this.toggleVisibility();
-  }
+const userDisclaimerApprove = computed(() => settingsStore.userDisclaimerApprove);
+const isSwapPage = computed(() => route.name === PageNames.Swap);
+const useViewportModal = computed(() => isSwapPage.value && !userDisclaimerApprove.value);
+const modalRootClass = computed(() => ['disclaimer-modal', { 'disclaimer-modal--nonblocking': !isSwapPage.value }]);
+const effectiveDisclaimerVisibility = computed(() =>
+  resolveDisclaimerVisibilityOnRouteChange(
+    Boolean(settingsStore.disclaimerVisibility),
+    Boolean(userDisclaimerApprove.value),
+    route.name
+  )
+);
+const disclaimerVisibility = computed({
+  get: () => effectiveDisclaimerVisibility.value,
+  set: (visible: boolean) => {
+    if (visible === settingsStore.disclaimerVisibility) return;
+    settingsStore.setDisclaimerDialogVisibility(visible);
+  },
+});
 
-  handleClose(): void {
-    this.toggleVisibility();
-  }
-
-  get btnText(): string {
-    if (this.isActiveAccptBtn) return this.t('acceptText');
-    return this.t('acceptOnScrollText');
-  }
-
-  get disclaimerPrefix(): string {
-    return `<span class="disclaimer__prefix">${this.t('disclaimerTitle')}:</span>`;
-  }
-
-  get memorandumLink(): string {
-    return this.generateDisclaimerLink(Links.terms, this.t('memorandum'));
-  }
-
-  get privacyLink(): string {
-    return this.generateDisclaimerLink(Links.privacy, this.t('helpDialog.privacyPolicy'));
-  }
-
-  get polkaswapFaqLink(): string {
-    return this.generateDisclaimerLink(Links.faq, this.t('FAQ'));
-  }
-
-  generateDisclaimerLink(href: string, content: string): string {
-    return `<a href="${href}" target="_blank" rel="nofollow noopener" class="link" title="${content}">${content}</a>`;
-  }
-
-  checkUserScroll(): void {
-    let observer;
-
-    try {
-      observer = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting) {
-            this.makeAcceptBtnActive(300);
-          }
-        },
-        { threshold: 0.95 }
-      );
-    } catch {
-      this.makeAcceptBtnActive(2_000);
-      return;
-    }
-
-    if (this.endLine) {
-      observer.observe(this.endLine);
-    } else {
-      this.makeAcceptBtnActive(2_000);
-    }
-  }
-
-  async makeAcceptBtnActive(ms = 1_000): Promise<void> {
-    await delay(ms);
-    this.isActiveAccptBtn = true;
-  }
-
-  mounted(): void {
-    this.checkUserScroll();
-  }
+/** Builds a safe external document link for the existing full legal notice. */
+function generateDisclaimerLink(href: string, content: string): string {
+  const safeContent = escapeHtml(content);
+  const safeHref = escapeHtml(href);
+  return `<a href="${safeHref}" target="_blank" rel="nofollow noopener" class="link" title="${safeContent}">${safeContent}</a>`;
 }
+
+const disclaimerPrefix = computed(() => `<span class="disclaimer__prefix">${t('disclaimerTitle')}:</span>`);
+
+const memorandumLink = computed(() => generateDisclaimerLink(Links.terms, t('memorandum')));
+const privacyLink = computed(() => generateDisclaimerLink(Links.privacy, t('helpDialog.privacyPolicy')));
+const polkaswapFaqLink = computed(() => generateDisclaimerLink(Links.faq, t('FAQ')));
+
+const disclaimerContent = computed(() => {
+  const raw = t('disclaimer', {
+    disclaimerPrefix: disclaimerPrefix.value,
+    polkaswapFaqLink: polkaswapFaqLink.value,
+    memorandumLink: memorandumLink.value,
+    privacyLink: privacyLink.value,
+  });
+
+  return sanitizeHtml(raw, {
+    allowedTags: ['a', 'span', 'strong', 'em', 'p', 'br'],
+    allowedAttributes: {
+      '*': ['class'],
+      a: ['href', 'rel', 'target', 'title', 'class'],
+      span: ['class'],
+    },
+  });
+});
+
+/** Persists acceptance only after the user explicitly acknowledges the terms. */
+function handleAccept(): void {
+  if (!acknowledged.value) return;
+  settingsStore.setUserDisclaimerApprove();
+  settingsStore.setDisclaimerDialogVisibility(false);
+}
+
+/** Closes the notice after a previous acceptance has been recorded. */
+function handleClose(): void {
+  settingsStore.setDisclaimerDialogVisibility(false);
+}
+
+watch(disclaimerVisibility, (visible) => {
+  if (!visible) acknowledged.value = false;
+});
 </script>
 
 <style lang="scss">
@@ -134,6 +142,7 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
   &__prefix {
     color: var(--s-color-theme-accent);
   }
+
   .link {
     @include focus-outline;
   }
@@ -145,65 +154,140 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
   background-color: var(--s-color-utility-surface);
   border-radius: var(--s-border-radius-medium);
   box-shadow: var(--s-shadow-dialog);
-  width: 24%;
-  min-width: 335px;
-  max-width: 550px;
-  position: absolute;
-  top: var(--s-size-mini);
-  right: var(--s-size-mini);
-  z-index: $app-above-loader-layer;
-  padding: $basic-spacing 6px 12px 20px;
+  width: 100%;
+  min-width: 0;
+  max-width: 640px;
+  max-height: calc(100dvh - 32px);
+  padding: 24px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  color: var(--s-color-base-content-primary);
 
   &__header {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    margin-bottom: $inner-spacing-mini;
+    flex-shrink: 0;
+    gap: 16px;
+    margin-bottom: 16px;
 
     &-title {
+      margin: 0;
       font-weight: 600;
-      font-size: var(--s-font-size-small);
-      display: flex;
-      align-items: center;
+      font-size: 20px;
+      line-height: 1.4;
     }
 
     &-close-btn {
-      margin-right: $inner-spacing-small;
-      color: var(--s-color-base-content-tertiary);
-      transition: var(--s-transition-default);
-      &:hover {
-        color: var(--s-color-base-content-secondary);
-        cursor: pointer;
-      }
+      flex-shrink: 0;
+      color: var(--s-color-base-content-secondary);
     }
   }
 
   &__text {
-    border-radius: var(--s-border-radius-medium);
-    padding: 0 $basic-spacing 10px 0;
-    font-size: var(--s-font-size-extra-mini);
-    font-weight: 300;
-    height: 260px;
-    line-height: var(--s-line-height-extra-small);
-    letter-spacing: var(--s-letter-spacing-small);
-    color: var(--s-color-base-content-secondary);
-    margin-bottom: -12px;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-right: 12px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--s-color-base-content-primary);
+
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0 0 12px;
+    }
 
     &-fiat {
-      margin-top: $basic-spacing;
+      margin-top: 16px;
+    }
+  }
+
+  &__summary {
+    margin-bottom: 24px;
+
+    ul {
+      margin: 0;
+      padding-left: 24px;
+    }
+
+    li + li {
+      margin-top: 8px;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex-shrink: 0;
+    padding-top: 16px;
+    margin-top: 16px;
+    border-top: 1px solid var(--s-color-base-border-secondary);
+  }
+
+  &__acknowledgement {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    cursor: pointer;
+
+    input {
+      width: 20px;
+      height: 20px;
+      flex: 0 0 20px;
+      margin: 1px 0 0;
+      accent-color: var(--s-color-theme-accent);
     }
   }
 
   &__accept-btn {
-    margin-top: $basic-spacing;
     width: 100%;
+    min-height: 44px;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 640px) {
+    padding: 20px 16px;
   }
 }
-</style>
 
-<style lang="scss">
-.disclaimer {
-  .el-scrollbar__bar.is-vertical {
-    opacity: 1;
-  }
+:global(.disclaimer-modal) {
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+}
+
+:global(.s-modal__root.disclaimer-modal--nonblocking) {
+  justify-content: flex-end !important;
+  align-items: flex-start !important;
+  padding-top: 16px !important;
+  padding-right: 0 !important;
+  pointer-events: none;
+}
+
+:global(.s-modal__root.disclaimer-modal--nonblocking .s-modal__modal) {
+  pointer-events: none;
+  width: auto;
+}
+
+:global(.s-modal__root.disclaimer-modal--nonblocking .disclaimer) {
+  pointer-events: auto;
+  width: 400px;
+  max-width: calc(100vw - 32px);
+  margin-right: 16px;
+}
+
+:global(.disclaimer-modal__dialog) {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
 }
 </style>

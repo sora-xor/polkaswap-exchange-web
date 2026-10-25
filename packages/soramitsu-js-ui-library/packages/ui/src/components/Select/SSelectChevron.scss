@@ -1,0 +1,9 @@
+.s-select-chevron {
+  transition: transform 0.15s;
+  fill: currentColor;
+  @apply ease-in-out;
+
+  &_rotate {
+    transform: rotate(180deg);
+  }
+}

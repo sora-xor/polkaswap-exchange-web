@@ -1,0 +1,68 @@
+[
+  {
+    "code": "BL",
+    "name": "Saint Barthélemy",
+    "status": "not_verified",
+    "rule": "The current territorial Environment Code, consolidated after 12 March 2026, restricts living specimens under Article 32-17; its plant annex concerns living plants, fruiting bodies and propagules. That invasive-species restriction does not establish a permit duty for manufactured, non-living sencha. Separate national plant-health controls still apply through Code rural L272-11-1; the applicable finished-tea import schedule has not been established.",
+    "personalMailApplicability": "Environmental living-specimen controls do not resolve the separate plant-health conditions for Japanese retail tea sent by post. No current territorial manufactured-tea postal clearance was verified.",
+    "quantityLimit": null,
+    "authority": "Saint Barthélemy territorial government/ATE; French Code rural and plant-health authority",
+    "evidenceUrls": [
+      "https://www.agencedelenvironnement.fr/en/page/Identify-invasive-exotic-species",
+      "https://www.agencedelenvironnement.fr/en/page/promoting-native-flora",
+      "https://www.agencedelenvironnement.fr/en/formulaire/2",
+      "https://info.agriculture.gouv.fr/boagri/instruction-2025-102/telechargement",
+      "https://www.comstbarth.fr/votre-collectivite/codes-et-reglements",
+      "https://www.comstbarth.fr/in/rest/annotationSVC/DownloadAttachment/attach_cmsUpload_5e4c7f67-7625-45cc-a980-855c9a10ceff",
+      "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006071367/LEGISCTA000006138326/"
+    ],
+    "remainingQuestion": "Need the operative plant-health commodity schedule under Code rural L272-11-1/L271-5 to L271-8 for finished Japanese tea. The current 2026 Environment Code has now been read: its living-specimen restriction is not itself the missing manufactured-food classification.",
+    "researchAttempts": [
+      "Reviewed ATE territorial invasive-plant rules, native-flora guidance and plant authorization forms; no processed-tea or personal-post provision found.",
+      "Second review searched 2025/2026 local tea exclusions. The 2025 ministry overseas instruction explicitly excludes Saint Barthélemy/Saint Martin regulations from its analysis; it does not extend a mainland exemption.",
+      "Retrieved the official 199-page Environment Code via the territorial website’s March 2026 consolidation link. Read Articles 32-1 to 32-28 and the Article 32-17 plant annex: the invasive-species prohibition concerns living specimens. Separately read current Code rural L272-1, L272-3 and L272-11-1. Environmental scope is now clear but does not establish the applicable national agricultural import schedule; no inferred blanket tea ban or clearance."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "Need the operative plant-health commodity schedule under Code rural L272-11-1/L271-5 to L271-8 for finished Japanese tea. The current 2026 Environment Code has now been read: its living-specimen restriction is not itself the missing manufactured-food classification.",
+    "permitFreeSources": [
+      "https://www.agencedelenvironnement.fr/en/page/Identify-invasive-exotic-species",
+      "https://www.agencedelenvironnement.fr/en/page/promoting-native-flora",
+      "https://www.agencedelenvironnement.fr/en/formulaire/2",
+      "https://info.agriculture.gouv.fr/boagri/instruction-2025-102/telechargement",
+      "https://www.comstbarth.fr/votre-collectivite/codes-et-reglements",
+      "https://www.comstbarth.fr/in/rest/annotationSVC/DownloadAttachment/attach_cmsUpload_5e4c7f67-7625-45cc-a980-855c9a10ceff",
+      "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006071367/LEGISCTA000006138326/"
+    ]
+  },
+  {
+    "code": "MF",
+    "name": "Saint Martin (French part)",
+    "status": "not_verified",
+    "rule": "Saint Martin is outside the EU plant-health territory. A Dutch NPPO country sheet lists specific dried plant goods needing certification, but does not list tea and dates its substantive rules to 2012; that cannot verify the present Japanese postal route. Current Code rural L273-6-2 expressly applies the overseas plant-health framework in L271-5 to L271-8 to Saint Martin; this confirms the governing framework but does not supply the missing commodity-level finished-tea decision.",
+    "personalMailApplicability": "No current local manufactured-tea/personal-post confirmation; do not use mainland French rules automatically.",
+    "quantityLimit": null,
+    "authority": "Netherlands NVWA country requirements for Saint Martin; French plant-health law",
+    "evidenceUrls": [
+      "https://www.nvwa.nl/site/binaries/site-content/collections/documents/fytosanitair/landeneisen/diverse-producten/saint-martin-diverse-producten-exporteisen/Saint-Martin_Diverse_producten_exporteisen_1.0.pdf",
+      "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000343648/",
+      "https://info.agriculture.gouv.fr/boagri/instruction-2025-102/telechargement",
+      "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006071367/LEGISCTA000006138326/"
+    ],
+    "remainingQuestion": "Need a current Saint Martin commodity schedule and confirmation that direct Japanese finished tea is outside certificate controls. The available NVWA country sheet reflects 2012 substantive rules and does not list tea; it is insufficient evidence of present territorial rules.",
+    "researchAttempts": [
+      "Reviewed the full NVWA Saint Martin country sheet, including its 2012/2013 revision history and third-country plant-product list; searched French local import guidance. Current tea-specific scope remains unverified.",
+      "Second review searched 2025/2026 local tea exclusions. The 2025 ministry overseas instruction explicitly excludes Saint Barthélemy/Saint Martin regulations from its analysis; it does not extend a mainland exemption.",
+      "Read current Code rural L273-1 to L273-7, including L273-6-2’s express extension of the overseas plant-health framework. This strengthens the legal-framework evidence but is not a tea-specific schedule or a personal-post exemption."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "Need a current Saint Martin commodity schedule and confirmation that direct Japanese finished tea is outside certificate controls. The available NVWA country sheet reflects 2012 substantive rules and does not list tea; it is insufficient evidence of present territorial rules.",
+    "permitFreeSources": [
+      "https://www.nvwa.nl/site/binaries/site-content/collections/documents/fytosanitair/landeneisen/diverse-producten/saint-martin-diverse-producten-exporteisen/Saint-Martin_Diverse_producten_exporteisen_1.0.pdf",
+      "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000343648/",
+      "https://info.agriculture.gouv.fr/boagri/instruction-2025-102/telechargement",
+      "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006071367/LEGISCTA000006138326/"
+    ]
+  }
+]

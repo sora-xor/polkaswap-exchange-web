@@ -1,0 +1,46 @@
+[
+  {
+    "code": "QA",
+    "status": "conditional",
+    "rule": "Qatar Customs current published active restricted-goods schedule (14 January 2025) explicitly assigns retail green tea HS 090210000000 only to Ministry of Public Health food control (agency 5), with no agricultural-control agency 27 entry. All five HS 0902 tea entries have the same allocation; the complete schedule separately assigns both agencies to products where both controls apply. Combined with Customs published GCC food-guide footnote 3 exempting personal-use food from its document requirements, this supports sealed 100 g ordinary green tea for personal consumption with adequate packaging and origin-establishment identification, ordinary customs declaration and inspection. This is an inference from the published commodity allocation plus an express personal-food exemption.",
+    "personalMailApplicability": "The customs commodity schedule is an import control allocation, not a traveller concession. Food-guide footnote 3 refers to food imported for personal use without an accompanied-baggage restriction; applying it to one sealed 100 g personal parcel is a scope inference. Ordinary declaration and possible recipient inspection/clearance remain applicable.",
+    "quantityLimit": null,
+    "authority": "Destination agricultural/food authority; Japan MAFF Plant Protection Station where cited",
+    "evidenceUrls": [
+      "https://www.maff.go.jp/pps/j/search/e_hayami_yubin.pdf?d=1702",
+      "https://www.almeezan.qa/PrintArticle_section.aspx?LawTreeSectionID=12350&language=ar&lawId=3818",
+      "https://emsfsa.moph.gov.qa/en/moph_documents/guides%20and%20instructions/food%20importers%20guide.pdf",
+      "https://www.customs.gov.qa/Arabic/Procedures/Guide-to-Clearance-of-Imported-Goods/Pages/Chapter1.aspx",
+      "https://www.almeezan.qa/LawView.aspx?LawID=210&language=ar&opt=",
+      "https://www.almeezan.qa/LawArticles.aspx?LawArticleID=8416&LawId=210&language=ar",
+      "https://customs.gov.qa/Arabic/Tariff/Pages/Restricted-Goods.aspx"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read Qatar legal portal definitions and express postal scope.",
+      "Downloaded and read MOPH food importer guide, including separate processed-food/plant certificate templates and tea classification.",
+      "Cross-checked current MAFF postal manufactured-tea column.",
+      "30 September: Qatar Customs publishes the GCC guide with footnote 3 expressly excluding personal-use food from its general food-document requirements, provided packaging and identifying information are adequate. This does not establish whether the separate agricultural PQ*11 processed-product exemption applies to this tea.",
+      "30 September final review: checked official Al Meezan current-in-force Law 24/2005 and exact Article 2. It applies permit/certificate requirements to covered imports from outside the GCC and authorizes commodity risk-based exceptions. Read alongside implementing regulation’s postal scope; did not infer that the personal-food document exception waives plant quarantine.",
+      "Targeted official searches for tea, manufactured plant products and personal postal exceptions did not identify the authority’s commodity determination for Japanese steamed/dried tea.",
+      "30 September bounded independent processing/list peer review: recovered the full Al Meezan text of Ministerial Decision 61/2007, articles 1–19, using normal curl after Python requests failed certificate-chain validation. Article 1(8) retains the manufactured-product pest-risk condition; article 3 includes postal parcels; articles 7–8 require advance permission/certificate for covered consignments. Article 11 expressly waives permit and certificate for accompanied traveller goods up to 100 kg under its conditions, not postal purchases. Article 12 permit exceptions cover diplomatic/consular/international bodies, scientific research and government/public bodies. Neither is a general private-postal or finished-tea exemption. No outcome change; saved full portal HTML/text in middle-east-definition-peer-review/qa-reg2007.*.",
+      "30 September fresh Arabic official-source recovery: downloaded complete current Customs restricted-goods HTML (5,644,008 bytes), extracted 6,361 table rows and verified all five HS0902 tea entries only have agency5 Health, with no agency27 Agriculture entry. Downloaded the full Arabic Customs food guide and verified footnote3 exempts personal-use food documentary requirements subject to adequate packaging and identifying data. Proposed supported outcome is explicit combined-source inference, preserving ordinary arrival declaration/inspection. Saved HTML/text/extracted rows and HTTP/provenance records under official-online-recovery-2026-09-30/asia/."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The specific official commodity table closes the former manufactured-tea agricultural-classification gap: 090210 green tea retail≤3kg is subject only to food control, unlike products independently assigned agricultural control. The same authority publishes an explicit personal-food exemption from the food guide documentary requirements. No permit, origin certificate, special registration or advance approval is identified for the stated one-packet personal-use shipment. This combines two sources; the table is not itself a written exemption from the Agricultural Quarantine Law.",
+    "permitFreeSources": [
+      "https://www.maff.go.jp/pps/j/search/e_hayami_yubin.pdf?d=1702",
+      "https://www.almeezan.qa/PrintArticle_section.aspx?LawTreeSectionID=12350&language=ar&lawId=3818",
+      "https://emsfsa.moph.gov.qa/en/moph_documents/guides%20and%20instructions/food%20importers%20guide.pdf",
+      "https://www.customs.gov.qa/Arabic/Procedures/Guide-to-Clearance-of-Imported-Goods/Pages/Chapter1.aspx",
+      "https://www.almeezan.qa/LawView.aspx?LawID=210&language=ar&opt=",
+      "https://www.almeezan.qa/LawArticles.aspx?LawArticleID=8416&LawId=210&language=ar",
+      "https://customs.gov.qa/Arabic/Tariff/Pages/Restricted-Goods.aspx"
+    ],
+    "requiredDocument": "Ordinary postal/customs declaration, intact original packaging with sufficient product and origin-manufacturer/establishment identification; possible routine arrival inspection/clearance.",
+    "paperworkType": "ordinary_customs_declaration_and_inspection",
+    "permitFreeReviewedAt": "2026-09-30",
+    "inferenceBasis": "Specific current Customs commodity-control schedule assigns all tea HS0902 only to health agency5, whereas regulated plant commodities separately carry agriculture agency27; express Customs personal-food document exemption then applies. The 3kg figure is the HS packaging classification, not an established maximum personal-import quantity."
+  }
+]

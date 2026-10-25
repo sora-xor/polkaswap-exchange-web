@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Standard Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+    <!-- Site Properities -->
+    <meta name="generator" content="Visual Studio 2015">
+    <title>MAAP SELICEF</title>
+    <link rel="icon" href="img/icon.png" type="image/x-icon">
+
+    <meta name="description" content="Stagb Admin Template">
+    <meta name="keywords"
+        content="html5, ,semantic,ui, library, framework, javascript,jquery,template,blog,stagb,template">
+    <link href="vendor/semantic/dist/semantic.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="vendor/toastify-js-master/src/toastify.css">
+    <link href="css/main.css" rel="stylesheet">
+    <link href="css/searc.css" rel="stylesheet" />
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.2/semantic.min.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/components/form.css">
+    <link rel="stylesheet" type="text/css" href="vendor/calendar/calendar.css">
+    <link rel="stylesheet" type="text/css" href="vendor/semantic/dist/semantic.css">
+    <link rel="stylesheet" type="text/css" href="vendor/toastify-js-master/src/toastify.css">
+    <link rel="stylesheet" type="text/css" href="vendor/jquery-new/jquery-ui.css">
+    <link href="css/main.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/components/form.js">
+    </script>
+
+    <style>
+        /*search box css start here*/
+
+        .search-sec {
+            padding: 2rem;
+        }
+
+        .search-slt {
+            display: block;
+            width: 100%;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            color: #55595c;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            /* height: calc(3rem + 2px) !important; */
+            border-radius: 0;
+        }
+
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 100% !important;
+            }
+        }
+
+        .container {
+            width: 100% !important;
+        }
+
+        .wrn-btn {
+            width: 100%;
+            font-size: 16px;
+            font-weight: 400;
+            background: blue;
+            text-transform: capitalize;
+            height: calc(3rem + 2px) !important;
+            border-radius: 0;
+        }
+    </style>
+
+</head>
+
+<body style="width: 100% !important;">
+
+    <div style="width: 100% !important;">
+
+        <div class="container background-image-css" style="width: 100% !important;">
+            <div style="float: right;">
+                <!-- <label for="languageSelect">Language:</label> -->
+                <select id="languageSelect">
+                    <option value="en">English</option>
+                    <option value="pt">PortuguÃªs</option>
+                </select>
+            </div>
+            <div style="width: 100%;" class="ui container">
+                <section class="search-sec">
+                    <div class="container">
+                        <div class="ui horizontal divider">
+                            <h4 id="search_imp_req_label" style="color: #fff;">SEARCH Import Requirements</h4>
+                        </div>
+
+                        <form role="form" autocomplete="on" action="" id="mainForm" class="ui form segment">
+
+                            <div class="four fields">
+
+                                <div class="field">
+                                    <label id="country_label" for="country_id">Country</label>
+                                    <select onchange="loadCountrySelect()" name="country_ID" id="country_ID"
+                                        class="ui search dropdown">
+                                        <option value="">-Select Country-</option>
+                                    </select>
+                                </div>
+
+                                <div class="field">
+                                    <label id="import_purpose_label">Import Purpose</label>
+                                    <select onchange="loadcommoditytypesbyimportpurpose()" id="importPurposeID"
+                                        name="importPurposeID" class="ui search dropdown">
+                                        <option value="">-Select Import Purpose-</option>
+                                    </select>
+                                </div>
+
+                                <div class="field">
+                                    <label id="commodity_type_label">Commodity Type</label>
+                                    <select id="products_id" name="products_id" class="ui search dropdown">
+                                        <option value="">-Select Commodity-</option>
+                                    </select>
+                                </div>
+
+
+                                <div class="field">
+                                    <label id="commodity_form_label">Commodity Form</label>
+                                    <select onchange="loadcommoditytproductformID()" id="product_form_id"
+                                        name="product_form_id" class="ui search dropdown">
+                                        <option value="">-Select Commodity Form-</option>
+                                    </select>
+                                </div>
+
+
+                                <div class="field">
+                                    <label id="search_label">Search</label>
+                                    <div id="submit_btn" class="ui primary submit button" onclick="loadRequirements()">
+                                        Search Requirements</div>
+                                </div>
+                            </div>
+                            <h4 id="imp_req_res" class="ui top attached header">Import Requirement Results</h4>
+                            <div class="ui bottom attached segment">
+                                <div class="field">
+                                    <div style="padding-left: 10px; padding-right: 10px;  width: 100%;"
+                                        id="import_description" class="row">
+                                    </div>
+                                </div>
+                            </div>
+                            <p><a id="back_to_login_label" href="login.html" style="color:#09a04b">Back to Login</a></p>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <div class="xcrud-overlay" style="display: none;"></div>
+</body>
+<footer>
+    <script type="text/javascript">
+    </script>
+    <script src="js/main/controller.js"></script>
+    <script src="js/app/search_import.js"></script>
+    <script src="translation.js"></script>
+
+    <div class="xcrud-overlay" style="display: none;"></div>
+    <script src="vendor/jquery-new/jquery-3.4.1.js">
+    </script>
+    <script src="vendor/jquery-new/jquery-ui.js">
+    </script>
+    <script src="vendor/semantic/dist/semantic.js">
+    </script>
+    <script src="vendor/jquery-new/jquery.serialize-object.min.js">
+    </script>
+    <script src="vendor/toastify-js-master/src/toastify.js">
+    </script>
+    <!--    </script>-->
+    <script>
+        $(document).ready(function () {
+            $('.ui.dropdown')
+                .dropdown();
+            $('.ui.form').form({
+                fields: {
+                    country_id: {
+                        identifier: 'country_id',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Please select'
+                        }]
+                    },
+                    products_id: {
+                        identifier: 'products_id',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Please select'
+                        }]
+                    },
+                    product_form_id: {
+                        identifier: 'product_form_id',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Please select'
+                        }]
+                    },
+                    importPurposeID: {
+                        identifier: 'importPurposeID',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Please select'
+                        }]
+                    },
+                },
+                onSuccess: function (event, fields) {
+                    event.preventDefault();
+                },
+            }, {
+                inline: true,
+                on: 'blur',
+                transition: 'fade down',
+            });
+        });
+
+
+
+        function loadCountrySelect() {
+            $('#importPurposeID').dropdown('clear');
+            $('#importPurposeID').dropdown('restore defaults');
+
+            $('#product_form_id').dropdown('clear');
+            $('#product_form_id').dropdown('restore defaults');
+
+            loadImportPurpose();
+        }
+
+        function loadImportPurpose() {
+            var options = ""
+            var url = serverURL + "importPurpose/importPurposeList";
+            var async_status = true;
+            controller.getRequest(url, async_status, function (data, status) {
+                options += "<option value =''>-Select Import Purpose-</option>";
+                options += controller.loadSelect(data, 'importPurposeID', 'name', '');
+                $('#importPurposeID').html(options);
+            });
+        }
+
+        function loadcommoditytypesbyimportpurpose() {
+            var countryID = $.trim($("#country_ID").val());
+            var importPurposeID = $.trim($("#importPurposeID").val());
+            var url5 = serverURL + "importRequirement/findProductByImportRequiremntCountryAndImportPupose?countryId=" + countryID + "&importPurposeId=" + importPurposeID + "";
+            var async_status = true;
+            controller.getRequest(url5, true, function (data, status) {
+                console.log("datadata", data);
+
+                var options = "";
+                if (data.length > 0) {
+                    options += "<option selected value =''>-Select Commodity-</option>";
+                    options += controller.loadSelect(data, 'products_id', 'name', '');
+                    $('#products_id').html(options);
+                } else {
+                    options += "<option>-Select Commodity-</option>";
+                    $('#products_id').html(options);
+                }
+            });
+        }
+
+        function loadcommodityformproducts() {
+
+            var countryID = $.trim($("#country_ID").val());
+            var importPurposeID = $.trim($("#importPurposeID").val());
+            var products_id = $.trim($("#products_id").val());
+
+            var options_22 = "";
+            var url5 = serverURL + "importRequirement/findProductFormByImportRequiremntCountry?countryId=" + countryID + "&importPurposeId=" + importPurposeID + "&productId=" + products_id + "";
+            var async_status = true;
+            controller.getRequest(url5, true, function (data, status) {
+                if (data.length > 0) {
+                    options_22 += "<option>-Select Commodity Form-</option>";
+                    for (let i = 0; i < data.length; i++) {
+                        options_22 += '<option value=' + data[i].product_form_id + '>' + data[i].name + '</option>';
+                        $('#product_form_id').html(options_22);
+                    }
+                } else {
+                    options_22 += "<option>-Select Commodity-</option>";
+                    $('#product_form_id').html(options_22);
+
+                }
+            });
+
+
+        }
+
+        function loadcommoditytproductformID() {
+            var countryID = $.trim($("#country_ID").val());
+            var importPurposeID = $.trim($("#importPurposeID").val());
+            var products_id = $.trim($("#products_id").val());
+            var product_form_id = $.trim($("#product_form_id").val());
+
+
+            var url5 = serverURL + "importRequirement/getImportRequirements?country_id=" + countryID + "&import_purpose_id=" + importPurposeID + "&product_form_id=" + product_form_id + "&products_id=" + products_id + "";
+            var async_status = true;
+            controller.getRequest(url5, true, function (data, status) {
+                if (data.length > 0) {
+                    $("#import_description").val(data[i].description);
+                } else {
+                    $("#import_description").val("No Import Requirements! Consider raising a Pest Risk Analysis(PRA)");
+
+                }
+            });
+        }
+    </script>
+
+<script>
+    (function(d,t) {
+      var BASE_URL="https://app.chatwoot.com";
+      var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+      g.src=BASE_URL+"/packs/js/sdk.js";
+      g.defer = true;
+      g.async = true;
+      s.parentNode.insertBefore(g,s);
+      g.onload=function(){
+        window.chatwootSDK.run({
+          websiteToken: 'UnjCBQZwbmwuPLwrLDcQzD5T',
+          baseUrl: BASE_URL
+        })
+      }
+    })(document,"script");
+  </script>
+
+
+</html>
+</footer>

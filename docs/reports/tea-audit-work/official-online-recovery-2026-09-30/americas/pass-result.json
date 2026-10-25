@@ -1,0 +1,163 @@
+{
+  "reviewedAt": "2026-09-30",
+  "scope": "Fresh official online recovery for AG BB BQ BS CW DM KN SR SX TC VC VG; optional GU/MP spot searches produced no usable new rule and were not treated as a full re-audit.",
+  "product": "Paid personal postal purchase of 100 g plain factory-manufactured steamed/rolled/dried Camellia sinensis sencha from Japan, in intact retail packaging; no permits, foreign certificates, special registrations or advance agency notices; normal postal/customs declarations and arrival inspection allowed.",
+  "mainArraysEdited": false,
+  "authorityContactsMade": false,
+  "decisionsAreProposalsForRootReview": true,
+  "readyFiles": {
+    "AG_SR": "ag-sr-proposed-overrides.json",
+    "BS": "bs-proposed-override.json",
+    "BB": "bb-proposed-override.json",
+    "evidenceOnly": "evidence-only-overrides.json"
+  },
+  "discoveries": [
+    {
+      "code": "AG",
+      "proposedDecision": "supported",
+      "discovery": "Current-linked ISPM 32 Appendix 2 specifically lists tea in Category 1. Combined with Antigua’s domestic Categories 2–4 commodity table and signed 2021/current PPU scope, it supplies the missing actual commodity evidence. Recovered the apparently 2022 broad leaflet’s original IPPC report date 14 May 2014 and identical body apart from contact email, preventing a newer upload date from overriding newer signed guidance. Separate current health-law index labels Food Safety 2020 as a Bill; no independent private-food certificate duty established.",
+      "qualification": "Explicit combined-source inference. Appendix 2 is reference-only/non-prescriptive; older broad leaflet conflict is disclosed. This is not mere IPPC membership or all-dried-herbs exemption.",
+      "sourceFiles": [
+        "ag-guidelines2021.pdf",
+        "ag-guide2022.pdf",
+        "ag-ippc-guide2014.pdf",
+        "ag-guide-dating.json",
+        "ag-act2012-fao.pdf",
+        "ispm32-publication.html",
+        "ispm32-current-ru.txt"
+      ]
+    },
+    {
+      "code": "SR",
+      "proposedDecision": "supported",
+      "discovery": "Recovered alternate official DNA Act 2020 full text and current 2026 PPU media notice. Domestic article 1(2) expressly incorporates/prevails with IPPC/SPS definitions and associated standards/guidelines; current-linked ISPM 32 Category 1 tea example now supplies commodity evidence for article 1(1)(bb) risk-qualified manufactured-product scope.",
+      "qualification": "Explicit statutory-scope inference; not a general free-import consequence of IPPC membership. The reference-only appendix is used through domestic incorporation and product processing. The frozen fruit/vegetable specific waiver is not expanded to tea.",
+      "sourceFiles": [
+        "sr-act2020-alternate.pdf",
+        "sr-media-invoer.json",
+        "ispm32-publication.html",
+        "ispm32-current-ru.txt"
+      ]
+    },
+    {
+      "code": "BS",
+      "proposedDecision": "not_supported",
+      "discovery": "Recovered full 1972 Food/Plants/Animals ImportControl Regulations, current law index, Interpretation Act 1976 s33 and replacement Customs Management Act 2011. Food regulation 4(1) independently requires written import licence for food; compatibility continuation survives parent repeal and current official index associates it with the replacement Act. Personal exceptions in separate 1957 General Regulations do not amend this food instrument.",
+      "qualification": "Agriculture stays not_verified. Separate food-licence exclusion is legal-scope inference; not a phytosanitary certificate or food-business duty. BAHFSA exception requires aseptic packaging AND hermetic OR vacuum sealing. Ordinary factory-sealed tea is not shown to satisfy aseptic packaging; hermetic/vacuum seal alone does not meet published words.",
+      "sourceFiles": [
+        "bs-importcontrol1972-fao.pdf",
+        "bs-interpretation1976.pdf",
+        "bs-lawindex.html",
+        "bs-customs2011.pdf",
+        "bs-customsamend2013.pdf",
+        "bs-law-recovery.json",
+        "law-continuation-recovery.json"
+      ]
+    },
+    {
+      "code": "BB",
+      "proposedDecision": "supported",
+      "discovery": "Government Printery public post search recovered enacted Plant Protection Act 2023–2, assented 16 February 2023, and SI 2024/23 establishing commencement 29 May 2024. Main row’s 2007-only law is outdated. New s2(2) requires ISPM 5-consistent interpretation, s14 requires standards/science/proportionality and s18(4) standards/PRA-based measures; current-linked ISPM 32 tea example supports manufactured-product scope inference.",
+      "qualification": "Explicit proposed combined-source inference, subject to parent peer review. No local tea-specific ruling; ISPM 32 Appendix 2 is not itself a domestic exemption list. Existing discretionary food-certificate request power remains disclosed. If parent rejects decision inference, enacted-law/commencement correction remains mandatory evidence update.",
+      "sourceFiles": [
+        "bb-post-2649.json",
+        "bb-post-2649.txt",
+        "bb-act2023-gazette.html",
+        "bb-post-3273.json",
+        "bb-post-3273.txt",
+        "bb-law2023-recovery.json"
+      ]
+    },
+    {
+      "code": "BQ",
+      "proposedDecision": "unresolved",
+      "discovery": "Recovered official BES law explanatory memorandum explicitly distinguishing the limited island plant-health powers from the European Netherlands regime.",
+      "remainingGap": "Current island-specific implementing commodity conditions for manufactured Japanese tea under Invoeringswet 18.2.4a–b for all three islands. Venezuela-only Bonaire allowance and EU exemptions do not resolve this.",
+      "sourceFiles": [
+        "bq-law-explanation.html"
+      ]
+    },
+    {
+      "code": "CW",
+      "proposedDecision": "unresolved",
+      "discovery": "Recovered current-linked Dutch NPPO diverse-product sheet (effective 2013) and local Fair Trade Authority 2024 food report. The blank certificate commodity entry is expressly lack of known conditions, not a Curaçao exemption.",
+      "remainingGap": "Operative Curaçao LVV manufactured-tea scope/commodity conditions; no all-private-food certificate rule found. Netherlands exporter advice does not establish Japan route.",
+      "sourceFiles": [
+        "cw-nvwa-diverse2013.pdf",
+        "cw-ftac2024.pdf"
+      ]
+    },
+    {
+      "code": "DM",
+      "proposedDecision": "unresolved",
+      "discovery": "Fresh official searches still expose the 2026 Food Act assent/Gazette preview but not complete new enacted text or a new personal-post/processed-tea condition. Existing regulation 8(g) is only a waiver from regulation 4 and is not converted into a waiver of parent-Act duties.",
+      "remainingGap": "Full current 2026 Food Act and commencement/application text plus an applicable parent-Act processed-tea scope rule. ISPM 32 example alone does not settle the separate food-law gap.",
+      "sourceFiles": []
+    },
+    {
+      "code": "KN",
+      "proposedDecision": "unresolved",
+      "discovery": "Recovered actual March 2024 government plant-import poster from media index; it only tells readers to call and contains no commodity rule. Re-read current 2024 Act international-standard provisions alongside actual ISPM 32 tea example.",
+      "remainingGap": "A domestic applicable classification/processing condition resolving scope. Duty to consider/use standards for measures does not unambiguously incorporate Category 1 as a local waiver; dried-tea wording in current guidance concerns export.",
+      "sourceFiles": [
+        "kn-media-import.json",
+        "kn-plantposter2024.jpeg",
+        "kn-poster-provenance.json"
+      ]
+    },
+    {
+      "code": "SX",
+      "proposedDecision": "unresolved",
+      "discovery": "Recovered current official LVV page HTML: Import Export Conditions is an image without usable linked commodity conditions; current forms are for small animals.",
+      "remainingGap": "Domestic LVV processed-tea plant-health classification; independently established personal-food notification/certificate exemption remains preserved.",
+      "sourceFiles": [
+        "sx-lvv.html"
+      ]
+    },
+    {
+      "code": "TC",
+      "proposedDecision": "unresolved",
+      "discovery": "Actual current agriculture residents-page retrieval retried on both hosts; certificate/host failures persist. Re-read operative 2024 mail/permit/certificate provisions alongside actual ISPM 32 tea illustration.",
+      "remainingGap": "Published s36 plant-import commodity conditions applying processed tea; standards/PRA duty plus reference-only international example does not settle local regulated-article category, including broad packaging limb. Private-food exclusion is preserved, with earlier commencement-source qualification.",
+      "sourceFiles": [
+        "ag-sr-tc-recovery.json",
+        "final-index-recovery.json"
+      ]
+    },
+    {
+      "code": "VC",
+      "proposedDecision": "unresolved",
+      "discovery": "Recovered current official import-agencies guide. Its origin health certificate is meat-specific; general foods face inspection. Reassessed statutory ISPM implementation duties against current tea example.",
+      "remainingGap": "Applicable s10 regulated article condition or domestic general processing/category rule; statutory NPPO standards duty is not an actual published local Category 1 exemption.",
+      "sourceFiles": [
+        "vc-import-agencies.html"
+      ]
+    },
+    {
+      "code": "VG",
+      "proposedDecision": "unresolved",
+      "discovery": "Recovered current official Fumigation of Plants Act revised 1 January 2023. It expressly includes parcel post but plant scope is propagation/living material and does not supply a tea food certificate requirement.",
+      "remainingGap": "Actual operative Cap.93 subsidiary commodity schedules listed in current 2026 official legal index; new 2022 Plant Protection Act remains uncommenced.",
+      "sourceFiles": [
+        "vg-fumigation.pdf",
+        "vg-fumigation.html",
+        "vg-lawindex.html"
+      ]
+    }
+  ],
+  "importantSourceLimits": [
+    "Current IPPC ISPM 32 publication page is dated 28 July 2025 but links an older Russian adopted text; no 2025 enactment/revision is claimed. Current-linked Russian appendix confirms Tea/Чай in Category 1 and expressly says reference-only, not prescriptive.",
+    "Current-linked English FAO endpoint failed; saved ispm32-current.pdf is an error response, not a valid PDF. Direct RU primary PDF is saved by parent in sibling french/ispm32-current-ru.pdf.",
+    "BS direct official 1972 and 1957 download files, old Food 1985 PDF and BAHFSA HTML include failed shell responses. Official web reader and successful full FAO 1972 primary reproduction were used; the failure files are not represented as full laws.",
+    "BB FAOLEX bar220617.pdf is a 24 January 2023 amended Bill, so it was not used as enacted-law proof. Official gazette and proclamation supply enacted/operative evidence.",
+    "Cayman unexpected fresh search result: official 21 September 2026 commencement order and Plant Protection Regulations 2026 sent to parent for separate closed-row review; outside this 12-country batch."
+  ],
+  "parentPeerReview": {
+    "BB": "2026-09-30 parent independently read enacted ss18–20,66 and commencement; accepted explicit conditional scope inference. Supported-row remainingQuestion set null; caveats retained in rule/reason."
+  },
+  "additionalCorroboration": {
+    "file": "ispm32-slovenia-en2015.pdf",
+    "url": "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf",
+    "note": "Successfully downloaded official Slovenian NPPO-hosted2015 English PDF. Appendix2 PDFpage16, printed32-14, visually verified Tea in Category1 Other and reference-only caveat. Current-linked RU and current IPPC publication page establish continued current linkage, not this mirror alone. Render ispm32-en2015-appendix2.png."
+  }
+}

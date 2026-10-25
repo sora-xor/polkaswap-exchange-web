@@ -1,0 +1,14 @@
+[
+  {
+    "file": "sgg-official-law033-results.html",
+    "url": "https://journal-officiel.sgg.gov.gn/fr/textes-officiels/recherche.html?field_numeroAAAA=2021&field_numeroNN=033&action=Rechercher",
+    "status": 200,
+    "bytes": 36512
+  },
+  {
+    "file": "sgg-official-journal2021.html",
+    "url": "https://journal-officiel.sgg.gov.gn/fr/m-journal-officiel/le-journal-officiel.html?annee=2021&action=Rechercher",
+    "status": 200,
+    "bytes": 98327
+  }
+]

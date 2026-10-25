@@ -1,0 +1,79 @@
+[
+  {
+    "file": "mv-law-index.html",
+    "url": "https://mvlaw.gov.mv/dv/legislations?filter%5Brelated_categories%5D=7",
+    "retrievedAt": "2026-09-30",
+    "bytes": 191426,
+    "sha256": "7599273ae0ec07385007fe4550b4e20914ff17a6b44dd7511507ced29698db23"
+  },
+  {
+    "file": "mv-law2011-current.html",
+    "url": "https://mvlaw.gov.mv/dv/legislations/201/consolidations/238?lang=dv",
+    "retrievedAt": "2026-09-30",
+    "bytes": 878881,
+    "sha256": "f30de84841f9d33abbdcee00421b17a11e645c5b99107030bbbca7193f8908f4"
+  },
+  {
+    "file": "mv-law2011-current.pdf",
+    "url": "https://mvlaw.gov.mv/dv/legislations/201/consolidations/238/pdf",
+    "retrievedAt": "2026-09-30",
+    "bytes": 22620446,
+    "sha256": "d96809adf98eb953702f1a9c1475ec4ea88f1204a5cb92bf682e5252c064db74"
+  },
+  {
+    "file": "mv-original.pdf",
+    "url": "https://mvlaw.gov.mv/storage/uploads/6nL8gRnQ/dsemrcxg.pdf?download=1",
+    "retrievedAt": "2026-09-30",
+    "bytes": 298040,
+    "sha256": "9f461146251f1271e19ab4903d8ea0e31a09b5267448ba2f211f89e6f7517a41"
+  },
+  {
+    "file": "mv-reg-report.html",
+    "url": "https://www.ippc.int/en/countries/maldives/reportingobligation/2025/06/plant-protection-regulation/?view=1",
+    "retrievedAt": "2026-09-30",
+    "bytes": 74990,
+    "sha256": "6636e6c542dfa8011e0dfda3db32683f9c9c6b01766a4a0d4d6a197856a55012"
+  },
+  {
+    "file": "pg-parliament-index.html",
+    "url": "https://parliament.gov.pg/bills-legislations/",
+    "retrievedAt": "2026-09-30",
+    "bytes": 175795,
+    "sha256": "5297795ce3ab03530405a001e2a2013a3936f854468fd6b8d43487d73fb88c10"
+  },
+  {
+    "file": "pg-parliament-public.js",
+    "url": "https://parliament.gov.pg/wp-content/plugins/parliamentpg/public/assets/static/js/main.4028671b.js?ver=1790339653",
+    "retrievedAt": "2026-09-30",
+    "bytes": 687609,
+    "sha256": "3c7f2fd7091b9644a36f8389192db558460024db403efaff9927f68150f8c0f5"
+  },
+  {
+    "file": "pg-bills.json",
+    "url": "https://parliament.gov.pg/wp-json/parliament-pg/v1/get-bills",
+    "retrievedAt": "2026-09-30",
+    "bytes": 9461,
+    "sha256": "c6166107a9d1266ea639b57087cf14eb59669e3cc59c793522d2ca2dcbf89550"
+  },
+  {
+    "file": "pg-biosecurity-filter.json",
+    "url": "https://parliament.gov.pg/wp-json/parliament-pg/v1/get-bills?textSearch=Biosecurity",
+    "retrievedAt": "2026-09-30",
+    "bytes": 578,
+    "sha256": "8b5b1df04f48c96f2935b18f3a4ed19a932d2521db2b899b2c053984ba5bb498"
+  },
+  {
+    "file": "pg-bio-search.json",
+    "url": "https://parliament.gov.pg/wp-json/parliament-pg/v1/get-bills?textSearch=bio",
+    "retrievedAt": "2026-09-30",
+    "bytes": 578,
+    "sha256": "8b5b1df04f48c96f2935b18f3a4ed19a932d2521db2b899b2c053984ba5bb498"
+  },
+  {
+    "file": "pg-bills2025-title.json",
+    "url": "https://parliament.gov.pg/wp-json/parliament-pg/v1/get-bills?textSearch=2025",
+    "retrievedAt": "2026-09-30",
+    "bytes": 8591,
+    "sha256": "8f49aa301e0747c1659b45a79384ce500e1c9b53acb3a68e9e292538b2776ba4"
+  }
+]

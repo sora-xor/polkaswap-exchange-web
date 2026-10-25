@@ -7,15 +7,21 @@
             :label="t('dexSettings.slippageTolerance')"
             :label-tooltip="t('dexSettings.slippageToleranceHint')"
             :value="localeFormattedSlippageTolerance"
-          />
+          ></info-line>
         </template>
         <div :class="slippageToleranceClasses">
           <div class="slippage-tolerance-default">
-            <settings-tabs :value="slippageTolerance" :tabs="SlippageToleranceTabs" @input="selectTab" />
+            <settings-tabs
+              :value="selectedSlippageTab"
+              :tabs="slippageToleranceTabs"
+              @update:model-value="selectTab"
+            ></settings-tabs>
           </div>
           <div class="slippage-tolerance-custom">
             <s-float-input
               class="slippage-tolerance-custom_input"
+              inputmode="decimal"
+              :aria-label="t('dexSettings.slippageTolerance')"
               size="small"
               :decimals="2"
               has-locale-string
@@ -24,7 +30,7 @@
               v-model="customSlippageTolerance"
               @blur="handleSlippageToleranceOnBlur"
               @focus="handleSlippageToleranceOnFocus"
-            />
+            ></s-float-input>
           </div>
           <div v-if="slippageToleranceValidation" class="slippage-tolerance_validation">
             {{ t(`dexSettings.slippageToleranceValidation.${slippageToleranceValidation}`) }}
@@ -35,140 +41,161 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/sdk';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { computed, ref } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components } from '@/consts';
-import { lazyComponent } from '@/router';
-import { state, mutation } from '@/store/decorators';
+import SettingsTabs from '@/components/shared/Settings/Tabs.vue';
+import { UiSize } from '@/consts/theme';
+import { useNumberFormatter } from '@/composables/useNumberFormatter';
+import { useTranslation } from '@/composables/useTranslation';
+import { useSettingsStore } from '@/stores/settings';
 import type { TabItem } from '@/types/tabs';
 
-@Component({
+import { DEFAULT_SLIPPAGE_TABS_LIST, getTabName } from './useSlippageToleranceModel';
+import WalletInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
+
+defineOptions({
+  name: 'SlippageTolerance',
   components: {
-    SettingsTabs: lazyComponent(Components.SettingsTabs),
-    InfoLine: components.InfoLine,
+    SettingsTabs,
+    InfoLine: WalletInfoLine,
   },
-})
-export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixin, TranslationMixin) {
-  readonly delimiters = FPNumber.DELIMITERS_CONFIG;
-  readonly SlippageToleranceTabs: Array<TabItem> = ['0.1', '0.5', '1'].map((name) => ({
-    name: name,
-    label: `${this.formatStringValue(name)}%`,
-  }));
+});
 
-  readonly slippageToleranceExtremeValues = {
-    min: 0.01,
-    max: 10,
-  };
+const { t } = useTranslation();
+const { formatStringValue, getFPNumber } = useNumberFormatter();
+const settingsStore = useSettingsStore();
 
-  slippageToleranceFocused = false;
-  slippageToleranceOpened = true;
+const slippageToleranceFocused = ref(false);
+const slippageToleranceOpened = ref(true);
 
-  @state.settings.slippageTolerance slippageTolerance!: string;
-  @state.settings.transactionDeadline transactionDeadline!: number;
+const delimiters = FPNumber.DELIMITERS_CONFIG;
 
-  @mutation.settings.setSlippageTolerance private setSlippageTolerance!: (value: string) => void;
-  @mutation.settings.setTransactionDeadline private setTransactionDeadline!: (value: number) => void;
+const slippageToleranceExtremeValues = {
+  min: 0.01,
+  max: 10,
+};
 
-  get localeFormattedSlippageTolerance() {
-    return `${this.formatStringValue(this.slippageTolerance)}%`;
+const slippageTolerance = computed({
+  get: () => settingsStore.slippageTolerance,
+  set: (value: string) => {
+    settingsStore.setSlippageTolerance(value);
+  },
+});
+
+const transactionDeadline = computed({
+  get: () => settingsStore.transactionDeadline,
+  set: (value: number) => {
+    settingsStore.setTransactionDeadline(value);
+  },
+});
+
+const slippageToleranceTabs = computed<TabItem[]>(() =>
+  DEFAULT_SLIPPAGE_TABS_LIST.map((value) => ({
+    name: getTabName(value),
+    label: `${formatStringValue(value)}%`,
+  }))
+);
+
+const selectedSlippageTab = computed(() => {
+  const match = DEFAULT_SLIPPAGE_TABS_LIST.find((value) => value === slippageTolerance.value);
+  return match ? getTabName(match) : '';
+});
+
+const localeFormattedSlippageTolerance = computed(() => `${formatStringValue(slippageTolerance.value)}%`);
+
+const customSlippageTolerance = computed({
+  get: () => {
+    const suffix = slippageToleranceFocused.value ? '' : '%';
+    return `${slippageTolerance.value}${suffix}`;
+  },
+  set: (value: string) => {
+    const prepared = prepareInputValue(value);
+    slippageTolerance.value = prepared;
+  },
+});
+
+const slippageToleranceValidation = computed(() => {
+  const tolerance = Number(slippageTolerance.value);
+
+  if (tolerance >= slippageToleranceExtremeValues.min && tolerance <= 0.1) {
+    return 'warning';
   }
-
-  get customSlippageTolerance(): string {
-    const suffix = this.slippageToleranceFocused ? '' : '%';
-
-    return `${this.slippageTolerance}${suffix}`;
+  if (tolerance >= 5 && tolerance <= slippageToleranceExtremeValues.max) {
+    return 'frontrun';
   }
-
-  set customSlippageTolerance(value: string) {
-    const prepared = this.prepareInputValue(value);
-    this.setSlippageTolerance(prepared);
+  if (isErrorValue.value) {
+    return 'error';
   }
+  return '';
+});
 
-  get slippageToleranceClasses(): string {
-    const defaultClass = 'slippage-tolerance';
-    const classes = [defaultClass, 's-flex'];
+const isErrorValue = computed(() => {
+  const tolerance = Number(slippageTolerance.value);
+  return tolerance < slippageToleranceExtremeValues.min || tolerance > slippageToleranceExtremeValues.max;
+});
 
-    if (this.slippageToleranceValidation) {
-      classes.push(
-        `${defaultClass}--${
-          this.slippageToleranceValidation === 'frontrun' ? 'warning' : this.slippageToleranceValidation
-        }`
-      );
-    }
+const slippageToleranceClasses = computed(() => {
+  const defaultClass = 'slippage-tolerance';
+  const classes = [defaultClass, 's-flex'];
 
-    return classes.join(' ');
-  }
-
-  get computedClasses(): string {
-    if (this.slippageToleranceOpened) return 'is-collapsed';
-    return '';
-  }
-
-  get isErrorValue(): boolean {
-    const slippageTolerance = Number(this.slippageTolerance);
-    return (
-      slippageTolerance < this.slippageToleranceExtremeValues.min ||
-      slippageTolerance > this.slippageToleranceExtremeValues.max
+  if (slippageToleranceValidation.value) {
+    classes.push(
+      `${defaultClass}--${
+        slippageToleranceValidation.value === 'frontrun' ? 'warning' : slippageToleranceValidation.value
+      }`
     );
   }
 
-  get slippageToleranceValidation(): string {
-    const slippageTolerance = Number(this.slippageTolerance);
-    if (slippageTolerance >= this.slippageToleranceExtremeValues.min && slippageTolerance <= 0.1) {
-      return 'warning';
-    }
-    if (slippageTolerance >= 5 && slippageTolerance <= this.slippageToleranceExtremeValues.max) {
-      return 'frontrun';
-    }
-    if (this.isErrorValue) {
-      return 'error';
-    }
-    return '';
-  }
+  return classes.join(' ');
+});
 
-  selectTab(name: string): void {
-    this.setSlippageTolerance(name);
-  }
+const computedClasses = computed(() => (slippageToleranceOpened.value ? 'is-collapsed' : ''));
 
-  prepareInputValue(value): string {
-    let v = value.replace('%', '');
-
-    if (v.length) {
-      if (v[0] === '0' && v[1] === '0') {
-        v = v.replace(/^0+(?=\d)/, '');
-      }
-    }
-
-    return v;
-  }
-
-  handleSlippageToleranceOnBlur(): void {
-    let value = this.slippageTolerance;
-    if (
-      FPNumber.lt(this.getFPNumber(this.slippageTolerance), this.getFPNumber(this.slippageToleranceExtremeValues.min))
-    ) {
-      value = `${this.slippageToleranceExtremeValues.min}`;
-    }
-    this.setSlippageTolerance(value);
-    this.slippageToleranceFocused = false;
-  }
-
-  handleSlippageToleranceOnFocus(): void {
-    this.slippageToleranceFocused = true;
-  }
-
-  handleSetTransactionDeadline(value: number): void {
-    this.setTransactionDeadline(value);
-  }
-
-  handleCollapseChange(): void {
-    this.slippageToleranceOpened = !this.slippageToleranceOpened;
+function selectTab(name: string): void {
+  const match = DEFAULT_SLIPPAGE_TABS_LIST.find((value) => getTabName(value) === name);
+  if (match) {
+    slippageTolerance.value = match;
   }
 }
+
+function prepareInputValue(value: string): string {
+  let sanitized = value.replace('%', '');
+  if (sanitized.length && sanitized.startsWith('0') && sanitized[1] === '0') {
+    sanitized = sanitized.replace(/^0+(?=\d)/, '');
+  }
+  return sanitized;
+}
+
+function handleSlippageToleranceOnBlur(): void {
+  let value = slippageTolerance.value;
+  if (FPNumber.lt(getFPNumber(value), getFPNumber(slippageToleranceExtremeValues.min))) {
+    value = `${slippageToleranceExtremeValues.min}`;
+  }
+  slippageTolerance.value = value;
+  slippageToleranceFocused.value = false;
+}
+
+function handleSlippageToleranceOnFocus(): void {
+  slippageToleranceFocused.value = true;
+}
+
+function handleSetTransactionDeadline(value: number): void {
+  transactionDeadline.value = value;
+}
+
+function handleCollapseChange(): void {
+  slippageToleranceOpened.value = !slippageToleranceOpened.value;
+}
+
+defineExpose({
+  selectTab,
+  handleSlippageToleranceOnBlur,
+  handleSlippageToleranceOnFocus,
+  handleSetTransactionDeadline,
+  handleCollapseChange,
+});
 </script>
 
 <style lang="scss">
@@ -178,14 +205,26 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
 .slippage-tolerance {
   &-custom_input.s-input {
     min-height: var(--s-size-small);
+    height: var(--s-size-small);
+    padding: $basic-spacing #{$inner-spacing-medium};
     box-shadow: var(--s-shadow-element);
 
     @include focus-outline($focusWithin: true, $withOffset: true);
 
     &.s-focused {
       .el-input__inner {
-        color: var(--s-color-theme-accent);
+        color: var(--s-color-action-text);
       }
+    }
+
+    .s-input__content {
+      min-height: calc(var(--s-size-small) - (#{$basic-spacing} * 2));
+    }
+
+    .el-input,
+    .el-input__inner {
+      height: calc(var(--s-size-small) - (#{$basic-spacing} * 2));
+      line-height: calc(var(--s-size-small) - (#{$basic-spacing} * 2));
     }
 
     .el-input > input {
@@ -196,7 +235,7 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
   &--error &-custom_input.s-input .el-input > input {
     &,
     &:focus {
-      border-color: var(--s-color-status-error);
+      border-color: var(--s-color-status-error-text);
     }
   }
 
@@ -205,23 +244,50 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
   }
 
   .el-collapse.neumorphic .el-icon-arrow-right {
-    transition: transform 0.3s;
-
     margin-left: 6px;
-    height: 15px;
-    line-height: 15px;
-    width: 15.8px;
+    height: var(--s-icon-font-size-medium);
+    line-height: 1;
+    width: var(--s-icon-font-size-medium);
     padding: 0;
     position: relative;
 
-    background-color: var(--s-color-base-content-tertiary);
-    color: var(--s-color-base-on-accent) !important;
-    border-radius: var(--s-border-radius-medium);
-    font-size: 16px;
+    background-color: transparent;
+    color: var(--s-color-base-content-tertiary) !important;
+    border-radius: 0;
+    font-size: var(--s-icon-font-size-mini);
+    font-weight: 300;
+    font-family: var(--s-font-family-icons) !important;
+    box-shadow: none;
   }
 
   .el-collapse-item__header {
-    height: 36px;
+    justify-content: normal;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 48px;
+  }
+
+  .el-collapse-item__arrow {
+    margin: 0 0 0 auto;
+  }
+
+  .el-collapse-item__header .el-icon-arrow-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .el-collapse-item__header .el-icon-arrow-right::before {
+    position: absolute;
+  }
+
+  .info-line .s-icon-info-16 {
+    color: var(--s-color-base-content-tertiary);
+  }
+
+  .el-collapse-item__header {
+    min-height: 36px;
+    height: auto;
   }
 
   .el-collapse-item__content {
@@ -239,7 +305,9 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
     border: none !important;
 
     &-value {
-      color: var(--s-color-theme-accent);
+      white-space: nowrap;
+      flex-shrink: 0;
+      color: var(--s-color-action-text);
     }
 
     .el-tooltip {
@@ -272,10 +340,10 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
     line-height: var(--s-line-height-big);
   }
   &--warning {
-    color: var(--s-color-status-warning);
+    color: var(--s-color-status-warning-text);
   }
   &--error {
-    color: var(--s-color-status-error);
+    color: var(--s-color-status-error-text);
   }
 
   .value {

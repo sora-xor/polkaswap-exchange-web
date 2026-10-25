@@ -1,0 +1,913 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-24",
+  "repository": "polkaswap-exchange-web",
+  "status": "completed-and-deployed",
+  "deployed": true,
+  "report": "docs/reports/dependency-security-2026-10-24.md",
+  "audit_results": {
+    "application": {
+      "count_unit": "package/advisory rows, not proven exploitable paths",
+      "before": {
+        "critical": 2,
+        "high": 102,
+        "moderate": 110,
+        "low": 15,
+        "info": 0,
+        "total": 229
+      },
+      "after": {
+        "critical": 0,
+        "high": 0,
+        "moderate": 0,
+        "low": 0,
+        "info": 0,
+        "total": 0
+      },
+      "baseline_deprecation_notices_excluded": 14,
+      "expected_current_exit_code": 0,
+      "after_initial_refresh": {
+        "critical": 0,
+        "high": 1,
+        "moderate": 0,
+        "low": 1,
+        "info": 0,
+        "total": 2
+      }
+    },
+    "copied_vendor": {
+      "package_names": 47,
+      "before": {
+        "high": 1,
+        "moderate": 2,
+        "total": 3
+      },
+      "after": {
+        "total": 0
+      }
+    },
+    "standalone_ucan": {
+      "before": {
+        "high": 1,
+        "total": 1
+      },
+      "after": {
+        "total": 0
+      }
+    }
+  },
+  "direct_dependency_change_counts": {
+    "updated": 61,
+    "added": 7,
+    "removed": 3
+  },
+  "direct_dependency_changes": [
+    {
+      "section": "dependencies",
+      "name": "@babel/runtime",
+      "before": "^7.29.2",
+      "after": "^7.29.10",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "@interactjs/actions",
+      "before": "1.10.27",
+      "after": "1.10.28",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "@interactjs/auto-scroll",
+      "before": "1.10.27",
+      "after": "1.10.28",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "@interactjs/auto-start",
+      "before": "1.10.27",
+      "after": "1.10.28",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "@interactjs/core",
+      "before": "1.10.27",
+      "after": "1.10.28",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "@interactjs/dev-tools",
+      "before": "1.10.27",
+      "after": "1.10.28",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "@interactjs/interact",
+      "before": "1.10.27",
+      "after": "1.10.28",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "@interactjs/modifiers",
+      "before": "1.10.27",
+      "after": "1.10.28",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "@interactjs/utils",
+      "before": "1.10.27",
+      "after": "1.10.28",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "@modelcontextprotocol/server",
+      "before": "2.0.0",
+      "after": "2.4.0",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "@polkadot/keyring",
+      "before": "14.0.2",
+      "after": "14.0.3",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "@polkadot/networks",
+      "before": "14.0.2",
+      "after": "14.0.3",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "@polkadot/ui-keyring",
+      "before": "3.16.4",
+      "after": "3.16.7",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "@polkadot/ui-settings",
+      "before": "3.16.4",
+      "after": "3.16.7",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "@polkadot/ui-shared",
+      "before": "3.16.4",
+      "after": "3.16.7",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "@polkadot/util",
+      "before": "14.0.2",
+      "after": "14.0.3",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "@polkadot/util-crypto",
+      "before": "14.0.2",
+      "after": "14.0.3",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "@tonconnect/ui",
+      "before": "2.3.1",
+      "after": "2.4.4",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "@urql/core",
+      "before": "6.0.1",
+      "after": "6.0.3",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "@vueuse/core",
+      "before": "14.2.1",
+      "after": "14.4.0",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "@walletconnect/ethereum-provider",
+      "before": "2.23.8",
+      "after": "2.26.0",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "axios",
+      "before": "^1.13.6",
+      "after": "^1.20.0",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "country-flag-emoji-polyfill",
+      "before": "^0.1.8",
+      "after": "^0.1.10",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "date-fns",
+      "before": "4.1.0",
+      "after": "4.4.0",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "echarts",
+      "before": "^6.0.0",
+      "after": "^6.1.0",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "ethers",
+      "before": "6.16.0",
+      "after": "6.17.0",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "graphql",
+      "before": "^16.13.1",
+      "after": "^16.14.2",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "graphql-ws",
+      "before": "6.0.7",
+      "after": "6.4.1",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "lodash",
+      "before": "^4.17.23",
+      "after": "^4.18.1",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "mobx",
+      "before": "6.15.0",
+      "after": "6.16.1",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "vue",
+      "before": "3.5.30",
+      "after": "3.5.44",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "vue-echarts",
+      "before": "^8.0.1",
+      "after": "^8.3.2",
+      "kind": "updated"
+    },
+    {
+      "section": "dependencies",
+      "name": "vue-i18n",
+      "before": "^11.3.0",
+      "after": "^11.4.16",
+      "kind": "updated"
+    },
+    {
+      "section": "devDependencies",
+      "name": "@electron-toolkit/preload",
+      "before": "^3.0.2",
+      "after": null,
+      "kind": "removed"
+    },
+    {
+      "section": "devDependencies",
+      "name": "@eslint/js",
+      "before": "9.39.4",
+      "after": "9.39.5",
+      "kind": "updated"
+    },
+    {
+      "section": "devDependencies",
+      "name": "@playwright/test",
+      "before": "^1.58.2",
+      "after": "^1.64.1",
+      "kind": "updated"
+    },
+    {
+      "section": "devDependencies",
+      "name": "@rollup/plugin-inject",
+      "before": null,
+      "after": "5.0.5",
+      "kind": "added"
+    },
+    {
+      "section": "devDependencies",
+      "name": "@types/electron-devtools-installer",
+      "before": "^4.0.0",
+      "after": null,
+      "kind": "removed"
+    },
+    {
+      "section": "devDependencies",
+      "name": "@types/lodash",
+      "before": "^4.17.24",
+      "after": "^4.17.27",
+      "kind": "updated"
+    },
+    {
+      "section": "devDependencies",
+      "name": "@types/node",
+      "before": "26.0.1",
+      "after": "26.6.5",
+      "kind": "updated"
+    },
+    {
+      "section": "devDependencies",
+      "name": "@types/telegram-web-app",
+      "before": "^9.5.0",
+      "after": "^9.6.0",
+      "kind": "updated"
+    },
+    {
+      "section": "devDependencies",
+      "name": "@vitejs/plugin-vue",
+      "before": "^6.0.5",
+      "after": "^6.0.10",
+      "kind": "updated"
+    },
+    {
+      "section": "devDependencies",
+      "name": "@vitest/coverage-v8",
+      "before": "4.1.0",
+      "after": "4.1.12",
+      "kind": "updated"
+    },
+    {
+      "section": "devDependencies",
+      "name": "@vue/compiler-dom",
+      "before": null,
+      "after": "3.5.44",
+      "kind": "added"
+    },
+    {
+      "section": "devDependencies",
+      "name": "@vue/compiler-sfc",
+      "before": "3.5.30",
+      "after": "3.5.44",
+      "kind": "updated"
+    },
+    {
+      "section": "devDependencies",
+      "name": "@vue/test-utils",
+      "before": "^2.4.6",
+      "after": "^2.5.1",
+      "kind": "updated"
+    },
+    {
+      "section": "devDependencies",
+      "name": "assert",
+      "before": null,
+      "after": "2.1.0",
+      "kind": "added"
+    },
+    {
+      "section": "devDependencies",
+      "name": "baseline-browser-mapping",
+      "before": "^2.10.9",
+      "after": "^2.11.32",
+      "kind": "updated"
+    },
+    {
+      "section": "devDependencies",
+      "name": "buffer",
+      "before": null,
+      "after": "6.0.3",
+      "kind": "added"
+    },
+    {
+      "section": "devDependencies",
+      "name": "cssnano",
+      "before": "7.1.3",
+      "after": "7.1.9",
+      "kind": "updated"
+    },
+    {
+      "section": "devDependencies",
+      "name": "electron",
+      "before": "39.8.3",
+      "after": "43.8.3",
+      "kind": "updated"
+    },
+    {
+      "section": "devDependencies",
+      "name": "eslint",
+      "before": "9.39.4",
+      "after": "9.39.5",
+      "kind": "updated"
+    },
+    {
+      "section": "devDependencies",
+      "name": "eslint-plugin-prettier",
+      "before": "^5.5.5",
+      "after": "^5.5.7",
+      "kind": "updated"
+    },
+    {
+      "section": "devDependencies",
+      "name": "eslint-plugin-promise",
+      "before": "^7.2.1",
+      "after": "^7.3.0",
+      "kind": "updated"
+    },
+    {
+      "section": "devDependencies",
+      "name": "eslint-plugin-vue",
+      "before": "10.8.0",
+      "after": "10.11.1",
+      "kind": "updated"
+    },
+    {
+      "section": "devDependencies",
+      "name": "events",
+      "before": null,
+      "after": "3.3.0",
+      "kind": "added"
+    },
+    {
+      "section": "devDependencies",
+      "name": "playwright",
+      "before": "^1.58.2",
+      "after": "^1.64.1",
+      "kind": "updated"
+    },
+    {
+      "section": "devDependencies",
+      "name": "postcss",
+      "before": "^8.5.8",
+      "after": "^8.5.31",
+      "kind": "updated"
+    },
+    {
+      "section": "devDependencies",
+      "name": "prettier",
+      "before": "^3.8.1",
+      "after": "^3.9.10",
+      "kind": "updated"
+    },
+    {
+      "section": "devDependencies",
+      "name": "process",
+      "before": null,
+      "after": "0.11.10",
+      "kind": "added"
+    },
+    {
+      "section": "devDependencies",
+      "name": "react",
+      "before": "19.2.4",
+      "after": "19.3.1",
+      "kind": "updated"
+    },
+    {
+      "section": "devDependencies",
+      "name": "react-dom",
+      "before": "19.2.4",
+      "after": "19.3.1",
+      "kind": "updated"
+    },
+    {
+      "section": "devDependencies",
+      "name": "sass",
+      "before": "1.98.0",
+      "after": "1.106.1",
+      "kind": "updated"
+    },
+    {
+      "section": "devDependencies",
+      "name": "tsx",
+      "before": "^4.21.0",
+      "after": "^4.23.15",
+      "kind": "updated"
+    },
+    {
+      "section": "devDependencies",
+      "name": "typescript-eslint",
+      "before": "8.57.1",
+      "after": "8.72.0",
+      "kind": "updated"
+    },
+    {
+      "section": "devDependencies",
+      "name": "util",
+      "before": null,
+      "after": "0.12.5",
+      "kind": "added"
+    },
+    {
+      "section": "devDependencies",
+      "name": "vite",
+      "before": "7.3.1",
+      "after": "7.3.7",
+      "kind": "updated"
+    },
+    {
+      "section": "devDependencies",
+      "name": "vite-plugin-node-polyfills",
+      "before": "^0.25.0",
+      "after": null,
+      "kind": "removed"
+    },
+    {
+      "section": "devDependencies",
+      "name": "vite-svg-loader",
+      "before": "^5.1.1",
+      "after": "^5.1.3",
+      "kind": "updated"
+    },
+    {
+      "section": "devDependencies",
+      "name": "vitest",
+      "before": "4.1.0",
+      "after": "4.1.12",
+      "kind": "updated"
+    },
+    {
+      "section": "devDependencies",
+      "name": "vue-eslint-parser",
+      "before": "^10.4.0",
+      "after": "^10.4.1",
+      "kind": "updated"
+    }
+  ],
+  "scoped_overrides": {
+    "ipfs-unixfs/protobufjs": "7.6.6",
+    "ipfs-core-utils/parse-duration": "2.1.9",
+    "@sora/sora-pay/nodemailer": "10.2.1",
+    "viem/ws": "8.22.0",
+    "@reown/appkit-wallet/zod": "4.6.7",
+    "@coinbase/cdp-sdk/zod": "4.6.7",
+    "@coinbase/cdp-sdk/abitype": "patch:abitype@npm:1.3.0#./.yarn/patches/abitype-npm-1.3.0-zod4-bounds.patch"
+  },
+  "removed_override": {
+    "name": "jayson",
+    "reason": "@coinbase/cdp-sdk 1.60.0 no longer depends on jayson."
+  },
+  "remediated_follow_up_advisories": [
+    {
+      "package": "elliptic",
+      "id": 1112030,
+      "title": "Elliptic Uses a Cryptographic Primitive with a Risky Implementation",
+      "url": "https://github.com/advisories/GHSA-848j-6mx2-7j84",
+      "severity": "low",
+      "affected_range": "<=6.6.1",
+      "dependents": ["browserify-sign@4.2.3"],
+      "status": "Resolved by removing the blanket Node polyfill dependency and its Elliptic chain.",
+      "previous_installed_versions": ["6.6.1"]
+    },
+    {
+      "package": "zod",
+      "id": 1243066,
+      "title": "Zod can exhaust memory while validating oversized constrained collections",
+      "url": "https://github.com/advisories/GHSA-mrhx-c7xc-m3w5",
+      "severity": "high",
+      "affected_range": "<4.6.6",
+      "dependents": ["@coinbase/cdp-sdk@1.60.0", "@reown/appkit-wallet@1.8.19"],
+      "status": "Resolved by migrating actual AppKit and CDP schemas and declarations to Zod 4.6.7, with explicit array limits and abitype 1.3.0.",
+      "previous_installed_versions": ["3.22.4", "3.25.76"]
+    }
+  ],
+  "remaining_advisories": [],
+  "initial_refresh_validation": {
+    "audit_script_tests": {
+      "passed": 32
+    },
+    "scoped_dependency_compatibility_tests": {
+      "passed": 4
+    },
+    "lodash_regression_tests": {
+      "passed": 9
+    },
+    "electron_tests": {
+      "passed": 17
+    },
+    "translation_tests": {
+      "passed": 13,
+      "files": 4
+    },
+    "full_unit_suite": {
+      "application": {
+        "passed": 10960,
+        "files": 1095,
+        "duration_seconds": 1020.6
+      },
+      "scripts": {
+        "passed_initially": 3279,
+        "failed_initially": 3,
+        "total": 3282,
+        "files_passed_initially": 164,
+        "files_failed_initially": 2,
+        "duration_seconds": 1294.97
+      },
+      "initial_exit_code": 1,
+      "follow_up": {
+        "vite_config_and_electron": {
+          "passed": 25,
+          "files": 4
+        },
+        "full_study_replay_cases": {
+          "passed": 2,
+          "duration_seconds": [4.555, 4.464]
+        },
+        "changes": [
+          "Updated the obsolete Electron preload-entry assertion after removing the unused bridge.",
+          "Two full-journal replay cases passed unchanged in isolation; assigned their existing fixture budget of 60 seconds per test to accommodate full-suite contention. Assertions are unchanged."
+        ],
+        "limits": "All three initial failures passed focused reruns. The entire suite was not rerun after these test-only corrections."
+      }
+    },
+    "final_message_guard_tests": {
+      "passed": 12
+    },
+    "final_build_after_latest_changes": {
+      "passed": true,
+      "duration_seconds": 42.59
+    },
+    "electron_build": {
+      "passed": true,
+      "duration_seconds": 40.28
+    },
+    "browser_smoke": {
+      "passed": 9,
+      "duration_seconds": 9.6,
+      "scope": "Chromium IPFS-prefixed static bundle: swap shell, direct index, Swap, Bridge, Wallet, Kensetsu, Explore, Stats and Rewards routes"
+    },
+    "immutable_install": {
+      "passed": true,
+      "duration_seconds": 1.727,
+      "notes": "Existing upstream peer warnings remain."
+    },
+    "final_focused_lint_and_formatting": {
+      "passed": true
+    }
+  },
+  "initial_refresh_production_module_inventory": {
+    "source_artifact": "bundled-modules.json",
+    "sha256": "fbc1f47d693e7ee4926785a1861e5cf2148bebe9dcf62163b2848132ab98c00d",
+    "successful_build_duration_seconds_rounded": 43,
+    "total_module_ids": 7452,
+    "packages": {
+      "elliptic": {
+        "module_count": 0,
+        "modules": []
+      },
+      "browserify-sign": {
+        "module_count": 0,
+        "modules": []
+      },
+      "crypto-browserify": {
+        "module_count": 0,
+        "modules": []
+      },
+      "@coinbase/cdp-sdk": {
+        "module_count": 0,
+        "modules": []
+      },
+      "nodemailer": {
+        "module_count": 0,
+        "modules": []
+      },
+      "@reown/appkit-wallet": {
+        "module_count": 9,
+        "modules": [
+          "node_modules/@reown/appkit-wallet/dist/esm/src/RegexUtil.js",
+          "node_modules/@reown/appkit-wallet/dist/esm/src/W3mFrame.js",
+          "node_modules/@reown/appkit-wallet/dist/esm/src/W3mFrameConstants.js",
+          "node_modules/@reown/appkit-wallet/dist/esm/src/W3mFrameHelpers.js",
+          "node_modules/@reown/appkit-wallet/dist/esm/src/W3mFrameLogger.js",
+          "node_modules/@reown/appkit-wallet/dist/esm/src/W3mFrameProvider.js",
+          "node_modules/@reown/appkit-wallet/dist/esm/src/W3mFrameSchema.js",
+          "node_modules/@reown/appkit-wallet/dist/esm/src/W3mFrameStorage.js",
+          "node_modules/@reown/appkit-wallet/node_modules/zod/lib/index.mjs"
+        ]
+      },
+      "zod": {
+        "module_count": 1,
+        "modules": ["node_modules/@reown/appkit-wallet/node_modules/zod/lib/index.mjs"]
+      }
+    },
+    "limits": "Final production module graph after message-guard hardening. Absence does not remove installed dependency advisories or prove absence from prebundled third-party code."
+  },
+  "consumer_patches": {
+    "@reown/appkit-wallet": "patch:@reown/appkit-wallet@npm:1.8.19#./.yarn/patches/@reown-appkit-wallet-npm-1.8.19-zod4.patch",
+    "@coinbase/cdp-sdk": "patch:@coinbase/cdp-sdk@npm:1.60.0#./.yarn/patches/@coinbase-cdp-sdk-npm-1.60.0-zod4.patch",
+    "abitype_for_cdp": "patch:abitype@npm:1.3.0#./.yarn/patches/abitype-npm-1.3.0-zod4-bounds.patch"
+  },
+  "patch_provenance": [
+    {
+      "path": ".yarn/patches/@reown-appkit-wallet-npm-1.8.19-zod4.patch",
+      "sha256": "f2ec2ef2f4167e4149c77aae76e01209c4a6f8e90e612ddf025feefe37c4737c"
+    },
+    {
+      "path": ".yarn/patches/@coinbase-cdp-sdk-npm-1.60.0-zod4.patch",
+      "sha256": "1f200901fc54386bdf7a7ebab20903aaa1e3bb80f3dc2468bb85cf2ace77baf5"
+    },
+    {
+      "path": ".yarn/patches/abitype-npm-1.3.0-zod4-bounds.patch",
+      "sha256": "e6efbce51cc1fac24f160470919a8807939793144742f95faa3dcbc8c5b92340"
+    }
+  ],
+  "schema_array_limits": {
+    "maximum": 2048,
+    "appkit_added": 42,
+    "cdp_added": 17,
+    "abitype_added": 11,
+    "existing_stricter_limits_preserved": true
+  },
+  "independent_review": {
+    "appkit_parsed_value_parity_fixtures": 198,
+    "abi_normal_fixtures_per_module_format": 13,
+    "abi_early_rejection_checks": 44,
+    "notes": "ESM/CJS, synchronous/asynchronous arrays reject with zero element reads; exact values compared with original schemas."
+  },
+  "validation": {
+    "security_script_tests": {
+      "passed": 104,
+      "files": 11,
+      "duration_seconds": 39.04
+    },
+    "strict_consumer_declarations": {
+      "passed": true,
+      "generated_declaration_files": 5,
+      "skipLibCheck": false,
+      "scope": "Regenerated declarations and public fixture; unrelated upstream declarations outside scope."
+    },
+    "translation_tests": {
+      "passed": 13,
+      "files": 4,
+      "duration_seconds": 5.48
+    },
+    "immutable_install": {
+      "passed": true,
+      "duration_seconds": 1.67,
+      "notes": "Existing upstream peer warnings remain."
+    },
+    "aggregate_audit": {
+      "passed": true,
+      "findings": 0,
+      "exit_code": 0
+    },
+    "wallet_security_tests": {
+      "passed": 100,
+      "files": 10,
+      "duration_seconds": 6.13
+    },
+    "zod_consumer_tests": {
+      "passed": 13,
+      "files": 1,
+      "duration_seconds": 2.33,
+      "fresh_process_dynamic_function_attempts": 0
+    },
+    "wallet_schema_csp_browser": {
+      "passed": 1,
+      "duration_seconds": 2.4,
+      "browser": "Chromium",
+      "csp": "default-src 'none'; script-src 'self';",
+      "csp_violations": 0,
+      "console_errors": 0,
+      "page_errors": 0,
+      "unexpected_requests": 0,
+      "negative_control": "Removing jitless in memory triggered a blocked eval CSP violation; installed package unchanged."
+    },
+    "final_focused_lint_and_formatting": {
+      "passed": true,
+      "diff_whitespace_check_passed": true
+    },
+    "production_build": {
+      "passed": true,
+      "reported_duration": "1m 43s"
+    },
+    "electron_build": {
+      "passed": true,
+      "reported_stage_durations": ["762ms", "1m 36s"]
+    },
+    "browser_smoke": {
+      "passed": 11,
+      "duration_seconds": 13.1,
+      "browser": "Chromium",
+      "scope": "Final IPFS-prefixed build: Swap shell, direct index, Swap/Bridge/Wallet/Kensetsu/Explore/Stats/Rewards, logged-out wallet connection, real wallet schemas under strict CSP."
+    },
+    "cold_vite_development_smoke": {
+      "passed": true,
+      "duration_seconds": 23.37,
+      "title": "Swap - Polkaswap",
+      "console_errors": 0,
+      "page_errors": 0,
+      "failed_requests": 0,
+      "http_errors": 0,
+      "globals_verified": [
+        "Buffer base64 encoding",
+        "process.browser",
+        "global === globalThis",
+        "crypto.getRandomValues"
+      ]
+    },
+    "final_development_config_tests": {
+      "passed": 10,
+      "duration_seconds": 9.54,
+      "notes": "Run after restricting optimizeDeps.entries to index.html; overlaps existing config coverage in the combined security test run."
+    }
+  },
+  "production_module_inventory": {
+    "source_artifact": "bundled-modules-final.json",
+    "sha256": "a4204276e052660b6febc810c83b8ff9a6bf2b6d8079d9b461845f96eceefbdb",
+    "total_module_ids": 7477,
+    "packages": {
+      "elliptic": {
+        "module_count": 0,
+        "modules": []
+      },
+      "browserify-sign": {
+        "module_count": 0,
+        "modules": []
+      },
+      "crypto-browserify": {
+        "module_count": 0,
+        "modules": []
+      },
+      "@coinbase/cdp-sdk": {
+        "module_count": 0,
+        "modules": []
+      },
+      "nodemailer": {
+        "module_count": 0,
+        "modules": []
+      },
+      "@reown/appkit-wallet": {
+        "module_count": 8,
+        "modules": [
+          "node_modules/@reown/appkit-wallet/dist/esm/src/RegexUtil.js",
+          "node_modules/@reown/appkit-wallet/dist/esm/src/W3mFrame.js",
+          "node_modules/@reown/appkit-wallet/dist/esm/src/W3mFrameConstants.js",
+          "node_modules/@reown/appkit-wallet/dist/esm/src/W3mFrameHelpers.js",
+          "node_modules/@reown/appkit-wallet/dist/esm/src/W3mFrameLogger.js",
+          "node_modules/@reown/appkit-wallet/dist/esm/src/W3mFrameProvider.js",
+          "node_modules/@reown/appkit-wallet/dist/esm/src/W3mFrameSchema.js",
+          "node_modules/@reown/appkit-wallet/dist/esm/src/W3mFrameStorage.js"
+        ]
+      },
+      "zod": {
+        "module_count": 18,
+        "modules": [
+          "node_modules/zod/v4/classic/errors.js",
+          "node_modules/zod/v4/classic/parse.js",
+          "node_modules/zod/v4/classic/schemas.js",
+          "node_modules/zod/v4/core/api.js",
+          "node_modules/zod/v4/core/checks.js",
+          "node_modules/zod/v4/core/core.js",
+          "node_modules/zod/v4/core/doc.js",
+          "node_modules/zod/v4/core/errors.js",
+          "node_modules/zod/v4/core/json-schema-processors.js",
+          "node_modules/zod/v4/core/memoizer.js",
+          "node_modules/zod/v4/core/parse.js",
+          "node_modules/zod/v4/core/regexes.js",
+          "node_modules/zod/v4/core/registries.js",
+          "node_modules/zod/v4/core/schemas.js",
+          "node_modules/zod/v4/core/to-json-schema.js",
+          "node_modules/zod/v4/core/util.js",
+          "node_modules/zod/v4/core/versions.js",
+          "node_modules/zod/v4/locales/en.js"
+        ]
+      }
+    },
+    "legacy_zod_module_count": 0,
+    "limits": "Final emitted web chunks, including lazy chunks. Version audits separately cover the installed graph. Module identities do not inspect arbitrary prebundled third-party code."
+  },
+  "deployment_report": "docs/reports/deployment-2026-10-24.md",
+  "deployment_evidence": "output/playwright/security-deploy-20261024/final-verification.json",
+  "deployment": {
+    "productionCidV1": "bafybeicqvi4opmxmxoqem73mtybdh4ka2ltx3wo7nlvr5k46tqypd3bxea",
+    "scope": "October22 shipped full-site assembly plus dependency/security fixes, preserving unrelated working changes locally",
+    "verified": true
+  }
+}

@@ -1,12 +1,13 @@
 <template>
   <div v-loading="parentLoading" class="container el-form--pool">
-    <generic-page-header class="page-header--pool" :title="t('exchange.Pool')" :tooltip="t('pool.description')" />
+    <generic-page-header
+      class="page-header--pool"
+      :title="t('exchange.Pool')"
+      :tooltip="t('pool.description')"
+    ></generic-page-header>
     <div class="pool-wrapper" data-test-name="Pools">
-      <p v-if="!isLoggedIn" key="not-logged" class="pool-info-container pool-info-container--empty">
-        {{ t('pool.connectToWallet') }}
-      </p>
-      <p v-else-if="!hasAccountLiquidities" key="pools-empty" class="pool-info-container pool-info-container--empty">
-        {{ t('pool.liquidityNotFound') }}
+      <p v-if="!isLoggedIn || !hasAccountLiquidities" class="pool-info-container pool-info-container--empty">
+        {{ !isLoggedIn ? t('pool.connectToWallet') : t('pool.liquidityNotFound') }}
       </p>
       <s-collapse v-else key="has-pools" class="pool-list" :borders="true" @change="updateActiveCollapseItems">
         <s-collapse-item
@@ -19,13 +20,13 @@
             <pair-token-logo
               :first-token="liquidityItem.firstAsset"
               :second-token="liquidityItem.secondAsset"
-              size="small"
-            />
+              size="medium"
+            ></pair-token-logo>
             <div class="pool-info-container-block">
               <h3 class="pool-info-container__title">
                 {{ liquidityItem.title }}
               </h3>
-              <slot name="title-append" v-bind="{ liquidity: liquidityItem, activeCollapseItems }" />
+              <slot name="title-append" v-bind="{ liquidity: liquidityItem, activeCollapseItems }"></slot>
             </div>
           </template>
 
@@ -36,20 +37,24 @@
               :label="t('pool.pooledToken', { tokenSymbol: liquidityItem.firstAssetSymbol })"
               :value="liquidityItem.firstBalanceFormatted"
               :fiat-value="liquidityItem.firstBalanceFiat"
-            />
+            ></info-line>
             <info-line
               is-formatted
               value-can-be-hidden
               :label="t('pool.pooledToken', { tokenSymbol: liquidityItem.secondAssetSymbol })"
               :value="liquidityItem.secondBalanceFormatted"
               :fiat-value="liquidityItem.secondBalanceFiat"
-            />
-            <info-line value-can-be-hidden :label="t('pool.poolShare')" :value="liquidityItem.poolShareFormatted" />
+            ></info-line>
+            <info-line
+              value-can-be-hidden
+              :label="t('pool.poolShare')"
+              :value="liquidityItem.poolShareFormatted"
+            ></info-line>
             <info-line
               v-if="liquidityItem.apyFormatted"
               :label="t('pool.strategicBonusApy')"
               :value="liquidityItem.apyFormatted"
-            />
+            ></info-line>
 
             <template #buttons>
               <s-button
@@ -71,7 +76,7 @@
             </template>
           </pool-info>
 
-          <slot name="append" v-bind="{ liquidity: liquidityItem, activeCollapseItems }" />
+          <slot name="append" v-bind="{ liquidity: liquidityItem, activeCollapseItems }"></slot>
         </s-collapse-item>
       </s-collapse>
     </div>
@@ -84,28 +89,32 @@
     >
       {{ t('pool.addLiquidity') }}
     </s-button>
-    <s-button v-else type="primary" class="s-typography-button--large" @click="connectSoraWallet">
+    <s-button v-else class="s-typography-button--large" type="primary" @click="connectSoraWallet()">
       {{ t('connectWalletText') }}
     </s-button>
 
-    <add-liquidity-dialog :visible.sync="addLiquidityVisibility" />
-    <remove-liquidity-dialog :visible.sync="removeLiquidityVisibility" />
+    <add-liquidity-dialog v-model:visible="addLiquidityVisibility"></add-liquidity-dialog>
+    <remove-liquidity-dialog v-model:visible="removeLiquidityVisibility"></remove-liquidity-dialog>
   </div>
 </template>
 
-<script lang="ts">
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import GenericPageHeader from '@/components/shared/GenericPageHeader.vue';
+import PairTokenLogo from '@/components/shared/PairTokenLogo.vue';
+import PoolInfo from '@/components/shared/PoolInfo.vue';
+import { computed, ref } from 'vue';
 
-import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
-import { Components } from '@/consts';
-import { PoolComponents } from '@/modules/pool/consts';
-import PoolApyMixin from '@/modules/pool/mixins/PoolApy';
-import { poolLazyComponent } from '@/modules/pool/router';
-import { lazyComponent } from '@/router';
-import { action, getter, mutation, state } from '@/store/decorators';
-import type { LiquidityParams } from '@/store/pool/types';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useInternalConnect } from '@/composables/useInternalConnect';
+import { useLoading } from '@/composables/useLoading';
+import { useTranslation } from '@/composables/useTranslation';
+import { usePoolApy } from '@/modules/pool/composables/usePoolApy';
+import AddLiquidityDialog from '@/modules/pool/components/AddLiquidity/Dialog.vue';
+import RemoveLiquidityDialog from '@/modules/pool/components/RemoveLiquidity/Dialog.vue';
+import InfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
+import { useAssetsStore } from '@/stores/assets';
+import { usePoolStore } from '@/stores/pool';
+import type { LiquidityParams } from '@/stores/pool/types';
 import { sortPools } from '@/utils';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
@@ -125,128 +134,158 @@ type LiquidityItem = AccountLiquidity & {
   title?: string;
 };
 
-@Component({
-  components: {
-    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    PoolInfo: lazyComponent(Components.PoolInfo),
-    AddLiquidityDialog: poolLazyComponent(PoolComponents.AddLiquidityDialog),
-    RemoveLiquidityDialog: poolLazyComponent(PoolComponents.RemoveLiquidityDialog),
-    FormattedAmount: components.FormattedAmount,
-    InfoLine: components.InfoLine,
-  },
-})
-export default class Pool extends Mixins(
-  mixins.FormattedAmountMixin,
-  mixins.LoadingMixin,
-  InternalConnectMixin,
-  PoolApyMixin
-) {
-  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
-  readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
+const { t } = useTranslation();
+const { loading } = useLoading();
+const parentLoading = loading;
+const { connectSoraWallet, isLoggedIn } = useInternalConnect();
+const { formatCodecNumber, formatStringValue, getFiatAmountByCodecString } = useFormattedAmount();
+const { getPoolApyFormatted } = usePoolApy();
+const assetsStore = useAssetsStore();
+const poolStore = usePoolStore();
 
-  @state.pool.accountLiquidity private accountLiquidity!: Array<AccountLiquidity>;
+const accountLiquidity = computed(() => poolStore.accountLiquidity as Array<AccountLiquidity>);
+const getAsset = assetsStore.assetDataByAddress as (addr?: string) => Nullable<AccountAsset>;
 
-  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<AccountAsset>;
+const addLiquidityVisibility = ref(false);
+const removeLiquidityVisibility = ref(false);
+const activeCollapseItems = ref<string[]>([]);
 
-  @action.addLiquidity.setDataFromLiquidity private setAddressesToAdd!: (args: LiquidityParams) => Promise<void>;
+const hasAccountLiquidities = computed(() => accountLiquidity.value.length > 0);
 
-  @mutation.removeLiquidity.setAddresses private setAddressesToRemove!: (args: LiquidityParams) => void;
+const getLiquidityAsset = (address: string, decimals: number): AccountAsset => {
+  const asset = getAsset(address);
 
-  activeCollapseItems: string[] = [];
-
-  addLiquidityVisibility = false;
-  removeLiquidityVisibility = false;
-
-  get hasAccountLiquidities(): boolean {
-    return this.accountLiquidity.length !== 0;
+  if (asset) {
+    return asset;
   }
 
-  get accountLiquidityData() {
-    const items = this.accountLiquidity.map((liquidity) => {
-      const firstAsset = this.getAsset(liquidity.firstAddress) as AccountAsset;
-      const firstAssetSymbol = this.getAssetSymbol(firstAsset);
-      const secondAsset = this.getAsset(liquidity.secondAddress) as AccountAsset;
-      const secondAssetSymbol = this.getAssetSymbol(secondAsset);
+  const unknownAssetText = t('unknownAssetText');
 
-      return {
-        ...liquidity,
-        firstAsset,
-        firstAssetSymbol,
-        firstBalanceFormatted: this.formatCodecNumber(liquidity.firstBalance, liquidity.decimals),
-        firstBalanceFiat: firstAsset ? this.getFiatAmountByCodecString(liquidity.firstBalance, firstAsset) : '0',
-        secondAsset,
-        secondAssetSymbol,
-        secondBalanceFormatted: this.formatCodecNumber(liquidity.secondBalance, liquidity.decimals),
-        secondBalanceFiat: secondAsset ? this.getFiatAmountByCodecString(liquidity.secondBalance, secondAsset) : '0',
-        poolShareFormatted: `${this.formatStringValue(liquidity.poolShare)}%`,
-        apyFormatted: this.getStrategicBonusApy(liquidity.firstAddress, liquidity.secondAddress),
-        title: this.getPairTitle(firstAssetSymbol, secondAssetSymbol),
-      };
-    });
+  return {
+    address,
+    symbol: unknownAssetText,
+    name: unknownAssetText,
+    decimals,
+    balance: '0',
+    isMintable: false,
+  } as AccountAsset;
+};
 
-    const defaultSorted = [...items].sort((a, b) =>
-      sortPools(
-        { baseAsset: a.firstAsset, poolAsset: a.secondAsset },
-        { baseAsset: b.firstAsset, poolAsset: b.secondAsset }
-      )
-    );
+const accountLiquidityData = computed<LiquidityItem[]>(() => {
+  const items = accountLiquidity.value.map((liquidity) => {
+    const firstAsset = getLiquidityAsset(liquidity.firstAddress, liquidity.decimals);
+    const secondAsset = getLiquidityAsset(liquidity.secondAddress, liquidity.decimals2 || liquidity.decimals);
+    const firstAssetSymbol = getAssetSymbol(firstAsset);
+    const secondAssetSymbol = getAssetSymbol(secondAsset);
 
-    return defaultSorted;
+    return {
+      ...liquidity,
+      firstAsset,
+      firstAssetSymbol,
+      firstBalanceFormatted: formatCodecNumber(liquidity.firstBalance, liquidity.decimals),
+      firstBalanceFiat: firstAsset ? getFiatAmountByCodecString(liquidity.firstBalance, firstAsset) : null,
+      secondAsset,
+      secondAssetSymbol,
+      secondBalanceFormatted: formatCodecNumber(liquidity.secondBalance, liquidity.decimals),
+      secondBalanceFiat: secondAsset ? getFiatAmountByCodecString(liquidity.secondBalance, secondAsset) : null,
+      poolShareFormatted: `${formatStringValue(liquidity.poolShare)}%`,
+      apyFormatted: getPoolApyFormatted(liquidity.firstAddress, liquidity.secondAddress),
+      title: getPairTitle(firstAssetSymbol, secondAssetSymbol),
+    };
+  });
+
+  return items.sort((a, b) =>
+    sortPools(
+      { baseAsset: a.firstAsset, poolAsset: a.secondAsset },
+      { baseAsset: b.firstAsset, poolAsset: b.secondAsset }
+    )
+  );
+});
+
+const handleAddLiquidity = (item?: LiquidityItem) => {
+  const firstAddress = item?.firstAsset.address ?? '';
+  const secondAddress = item?.secondAsset.address ?? '';
+
+  void poolStore.setAddLiquidityDataFromLiquidity({ firstAddress, secondAddress } as LiquidityParams);
+
+  addLiquidityVisibility.value = true;
+};
+
+const handleRemoveLiquidity = (item: LiquidityItem) => {
+  const firstAddress = item.firstAsset.address;
+  const secondAddress = item.secondAsset.address;
+
+  poolStore.setRemoveLiquidityAddresses({ firstAddress, secondAddress } as LiquidityParams);
+  removeLiquidityVisibility.value = true;
+};
+
+const updateActiveCollapseItems = (items: string[]) => {
+  activeCollapseItems.value = items;
+};
+
+const getAssetSymbol = (asset: Nullable<AccountAsset>): string => asset?.symbol ?? t('unknownAssetText');
+
+const getPairTitle = (firstTokenSymbol?: string, secondTokenSymbol?: string): string => {
+  if (firstTokenSymbol && secondTokenSymbol) {
+    return `${firstTokenSymbol}-${secondTokenSymbol}`;
   }
-
-  updateActiveCollapseItems(items: string[]) {
-    this.activeCollapseItems = items;
-  }
-
-  handleAddLiquidity(item?: LiquidityItem): void {
-    const firstAddress = item?.firstAsset.address ?? XOR.address;
-    const secondAddress = item?.secondAsset.address ?? '';
-
-    this.setAddressesToAdd({ firstAddress, secondAddress });
-
-    this.addLiquidityVisibility = true;
-  }
-
-  handleRemoveLiquidity(item: LiquidityItem): void {
-    const firstAddress = item.firstAsset.address;
-    const secondAddress = item.secondAsset.address;
-
-    this.setAddressesToRemove({ firstAddress, secondAddress });
-
-    this.removeLiquidityVisibility = true;
-  }
-
-  private getAssetSymbol(asset: Nullable<AccountAsset>): string {
-    return asset?.symbol ?? this.t('unknownAssetText');
-  }
-
-  private getPairTitle(firstTokenSymbol?: string, secondTokenSymbol?: string): string {
-    if (firstTokenSymbol && secondTokenSymbol) {
-      return `${firstTokenSymbol}-${secondTokenSymbol}`;
-    }
-    return '';
-  }
-
-  private getStrategicBonusApy(firstAddress: string, secondAddress: string): string {
-    const apy = this.getPoolApy(firstAddress, secondAddress);
-    if (!apy) {
-      return '';
-    }
-    return `${this.getFPNumberFromCodec(apy).mul(this.Hundred).toLocaleString()}%`;
-  }
-}
+  return '';
+};
 </script>
 
 <style lang="scss">
 .pool-list {
   @include collapse-items;
+
   .el-collapse-item__header {
-    align-items: flex-start;
+    align-items: center;
 
     .pair-logo {
+      flex-shrink: 0;
       margin-right: $inner-spacing-medium;
-      margin-top: $inner-spacing-tiny;
+      margin-top: 0;
+    }
+
+    .el-collapse-item__arrow {
+      align-items: center;
+      align-self: center;
+      background: transparent;
+      border: 1px solid var(--s-color-base-border-primary);
+      border-radius: 50%;
+      box-shadow: none;
+      color: var(--s-color-base-content-tertiary);
+      display: inline-flex;
+      flex: 0 0 36px;
+      font-size: 0;
+      height: 36px;
+      justify-content: center;
+      line-height: 1;
+      margin-left: $inner-spacing-small;
+      transition:
+        color var(--s-transition-default),
+        transform var(--s-transition-default);
+      width: 36px;
+
+      &::before {
+        border-bottom: 2px solid currentColor;
+        border-right: 2px solid currentColor;
+        content: '';
+        display: block;
+        height: 8px;
+        transform: rotate(-45deg);
+        width: 8px;
+      }
+
+      &.is-active {
+        transform: rotate(90deg);
+      }
+    }
+
+    &:hover,
+    &:focus-visible {
+      .el-collapse-item__arrow {
+        color: var(--s-color-base-content-primary);
+      }
     }
   }
 }
@@ -261,24 +300,29 @@ export default class Pool extends Mixins(
 </style>
 
 <style lang="scss" scoped>
-$title-height: 42px;
+$title-height: 44px;
 
 .el-form--pool {
   display: flex;
   flex-direction: column;
   align-items: center;
+
   .page-header--pool {
     .el-button--settings {
       margin-left: auto;
     }
   }
-  .el-button {
-    &--create-pair {
-      margin-left: 0;
-    }
+
+  .el-button--create-pair {
+    margin-left: 0;
+    margin-top: $inner-spacing-mini;
+    width: 100%;
   }
-  @include full-width-button;
-  @include full-width-button('el-button--create-pair', $inner-spacing-mini);
+
+  .s-primary {
+    margin-top: $inner-spacing-medium;
+    width: 100%;
+  }
 }
 
 .pool {
@@ -293,16 +337,16 @@ $title-height: 42px;
   &-info {
     &-container {
       &--empty {
-        color: var(--s-color-base-content-secondary);
-        padding: $basic-spacing-medium $inner-spacing-big;
         background: var(--s-color-utility-surface);
         border-radius: var(--s-border-radius-small);
         box-shadow: var(--s-shadow-dialog);
+        color: var(--s-color-base-content-secondary);
         font-size: var(--s-font-size-small);
-        line-height: var(--s-line-height-medium);
         font-weight: 600;
-        text-transform: uppercase;
+        line-height: var(--s-line-height-medium);
+        padding: 20px 24px;
         text-align: center;
+        text-transform: uppercase;
       }
 
       &-block {
@@ -310,11 +354,14 @@ $title-height: 42px;
       }
 
       &__title {
+        display: flex;
+        align-items: center;
         flex: 1;
         font-weight: 700;
-        text-align: left;
+        line-height: var(--s-line-height-medium);
+        margin: 0;
         min-height: $title-height;
-        line-height: $title-height;
+        text-align: left;
       }
 
       & + .el-button {

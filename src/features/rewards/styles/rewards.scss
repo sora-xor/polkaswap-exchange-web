@@ -1,0 +1,271 @@
+// Shared look of the rewards dashboard: colour tokens, the analytics card and a few small primitives.
+//
+// Chart colours: the four reward sources use fixed slots (color follows the source, never its rank). Each set was run
+// through the dataviz palette validator against the surface it is drawn on: adjacent colour-blind separation
+// >= 10 (target 8), normal-vision floor >= 23 (floor 15) and >= 3:1 contrast, in both themes.
+.rewards {
+  // Light surface #fdf7fb.
+  --rw-src-liquidity: #d8267a;
+  --rw-src-strategic: #5b6ee1;
+  --rw-src-crowdloan: #d9741a;
+  --rw-src-external: #0e9680;
+  --rw-accent: var(--rw-src-liquidity);
+  --rw-on-accent: #ffffff;
+  // Up / down text, >= 4.5:1 on the surface.
+  --rw-up: #006300;
+  --rw-down: #b42318;
+
+  --rw-ink: var(--s-color-base-content-primary);
+  --rw-muted: var(--s-color-base-content-secondary);
+  --rw-faint: var(--s-color-base-content-tertiary);
+  --rw-surface: var(--s-color-utility-surface);
+  --rw-recess: var(--s-color-base-background);
+  --rw-line: var(--s-color-base-border-secondary);
+  --rw-grid: color-mix(in srgb, var(--s-color-base-content-primary) 9%, transparent);
+  --rw-radius: 24px;
+  --rw-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset, 0 14px 34px -14px rgba(42, 23, 31, 0.16);
+}
+
+// Dark theme: its own steps, validated against the dark surface #592d71.
+[design-system-theme='dark'] .rewards {
+  --rw-src-liquidity: #f04e9a;
+  --rw-src-strategic: #7585f0;
+  --rw-src-crowdloan: #d9741a;
+  --rw-src-external: #14ad93;
+  --rw-on-accent: #1d0d31;
+  --rw-up: #6ee7a8;
+  --rw-down: #ffb3b3;
+  --rw-shadow: 0 1px 0 rgba(255, 255, 255, 0.08) inset, 0 18px 40px -16px rgba(16, 3, 30, 0.6);
+}
+
+// Cards rise in one after another. `--rw-i` is the card's position in the column.
+.rw-card {
+  position: relative;
+  min-width: 0;
+  padding: 20px 22px 22px;
+  border: 1px solid var(--rw-line, #ede4e7);
+  border-radius: var(--rw-radius, 24px);
+  background: var(--rw-surface, #fdf7fb);
+  box-shadow: var(--rw-shadow, none);
+  color: var(--rw-ink, #2a171f);
+  animation: rw-rise 0.65s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: calc(var(--rw-i, 0) * 90ms);
+  transition:
+    border-color 0.25s ease,
+    transform 0.25s ease;
+
+  // HUD corner ticks.
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    border: 1px solid color-mix(in srgb, var(--rw-ink, #2a171f) 28%, transparent);
+    opacity: 0.55;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+
+  // Logical sides, so the strokes follow the corner they sit in when the page is mirrored.
+  &::before {
+    top: 9px;
+    inset-inline-start: 9px;
+    border-width: 0;
+    border-block-start-width: 1px;
+    border-inline-start-width: 1px;
+    border-start-start-radius: 4px;
+  }
+
+  &::after {
+    bottom: 9px;
+    inset-inline-end: 9px;
+    border-width: 0;
+    border-block-end-width: 1px;
+    border-inline-end-width: 1px;
+    border-end-end-radius: 4px;
+  }
+
+  &:hover {
+    border-color: color-mix(in srgb, var(--rw-accent, #d8267a) 38%, var(--rw-line, #ede4e7));
+    transform: translateY(-2px);
+  }
+
+  &:hover::before,
+  &:hover::after {
+    opacity: 1;
+  }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $inner-spacing-mini;
+    margin-bottom: $inner-spacing-medium;
+    min-height: 26px;
+  }
+
+  // Small uppercase label: it names the chart, in the text colour, never in a series colour.
+  &__title {
+    margin: 0;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    line-height: 1.4;
+    text-transform: uppercase;
+    color: var(--rw-muted, #6e6168);
+  }
+
+  &__toggle {
+    flex: 0 0 auto;
+    padding: 3px 11px;
+    border: 1px solid var(--rw-line, #ede4e7);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--rw-muted, #6e6168);
+    font: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.5;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+
+    &:hover,
+    &[aria-pressed='true'] {
+      background: color-mix(in srgb, var(--rw-ink, #2a171f) 7%, transparent);
+      color: var(--rw-ink, #2a171f);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--s-color-focus-ring, #ab0555);
+      outline-offset: 2px;
+    }
+  }
+
+  &__note {
+    margin: $inner-spacing-mini 0 0;
+    color: var(--rw-muted, #6e6168);
+    font-size: var(--s-font-size-extra-small);
+    line-height: 1.5;
+  }
+
+  &__ghost {
+    margin: 0;
+    padding: $inner-spacing-small 0 0;
+    color: var(--rw-muted, #6e6168);
+    font-size: var(--s-font-size-mini);
+    line-height: 1.5;
+  }
+}
+
+// The table twin of a chart: same numbers, readable without colour or a pointer.
+.rw-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--s-font-size-extra-small);
+  font-variant-numeric: tabular-nums;
+
+  th,
+  td {
+    padding: 7px 0;
+    border-bottom: 1px solid var(--rw-line, #ede4e7);
+    text-align: end;
+    vertical-align: baseline;
+  }
+
+  th:first-child,
+  td:first-child {
+    text-align: start;
+  }
+
+  th {
+    color: var(--rw-muted, #6e6168);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  td {
+    color: var(--rw-ink, #2a171f);
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+}
+
+.rw-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// Placeholder blocks while data loads. The shimmer is a moving highlight, so only `transform` animates.
+.rw-skeleton {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--rw-ink, #2a171f) 8%, transparent);
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--rw-surface, #fff) 70%, transparent),
+      transparent
+    );
+    transform: translate3d(-100%, 0, 0);
+    animation: rw-shimmer 1.6s ease-in-out infinite;
+  }
+}
+
+// `translate` is an individual transform property, so the entrance does not lock the `transform` used by hover.
+@keyframes rw-rise {
+  from {
+    opacity: 0;
+    translate: 0 16px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes rw-shimmer {
+  to {
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rw-card {
+    animation: none;
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
+
+  .rw-skeleton::after {
+    animation: none;
+    display: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .rw-card {
+    border-color: CanvasText;
+  }
+}

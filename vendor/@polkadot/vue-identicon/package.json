@@ -1,0 +1,213 @@
+{
+  "author": "Jaco Greeff <jacogr@gmail.com>",
+  "bugs": "https://github.com/polkadot-js/ui/issues",
+  "description": "Renders an SVG picture representing an address",
+  "engines": {
+    "node": ">=18"
+  },
+  "homepage": "https://github.com/polkadot-js/ui/tree/master/packages/vue-identicon#readme",
+  "license": "Apache-2.0",
+  "name": "@polkadot/vue-identicon",
+  "repository": {
+    "directory": "packages/vue-identicon",
+    "type": "git",
+    "url": "https://github.com/polkadot-js/ui.git"
+  },
+  "sideEffects": [
+    "./packageDetect.js",
+    "./cjs/packageDetect.js"
+  ],
+  "type": "module",
+  "version": "4.0.0",
+  "main": "./cjs/index.js",
+  "module": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    "./cjs/package.json": "./cjs/package.json",
+    "./cjs/*": "./cjs/*.js",
+    ".": {
+      "module": {
+        "types": "./index.d.ts",
+        "default": "./index.js"
+      },
+      "require": {
+        "types": "./cjs/index.d.ts",
+        "default": "./cjs/index.js"
+      },
+      "default": {
+        "types": "./index.d.ts",
+        "default": "./index.js"
+      }
+    },
+    "./bundle": {
+      "module": {
+        "types": "./bundle.d.ts",
+        "default": "./bundle.js"
+      },
+      "require": {
+        "types": "./cjs/bundle.d.ts",
+        "default": "./cjs/bundle.js"
+      },
+      "default": {
+        "types": "./bundle.d.ts",
+        "default": "./bundle.js"
+      }
+    },
+    "./icons": {
+      "module": {
+        "types": "./icons/index.d.ts",
+        "default": "./icons/index.js"
+      },
+      "require": {
+        "types": "./cjs/icons/index.d.ts",
+        "default": "./cjs/icons/index.js"
+      },
+      "default": {
+        "types": "./icons/index.d.ts",
+        "default": "./icons/index.js"
+      }
+    },
+    "./icons/Beachball": {
+      "module": {
+        "types": "./icons/Beachball.d.ts",
+        "default": "./icons/Beachball.js"
+      },
+      "require": {
+        "types": "./cjs/icons/Beachball.d.ts",
+        "default": "./cjs/icons/Beachball.js"
+      },
+      "default": {
+        "types": "./icons/Beachball.d.ts",
+        "default": "./icons/Beachball.js"
+      }
+    },
+    "./icons/Empty": {
+      "module": {
+        "types": "./icons/Empty.d.ts",
+        "default": "./icons/Empty.js"
+      },
+      "require": {
+        "types": "./cjs/icons/Empty.d.ts",
+        "default": "./cjs/icons/Empty.js"
+      },
+      "default": {
+        "types": "./icons/Empty.d.ts",
+        "default": "./icons/Empty.js"
+      }
+    },
+    "./icons/Jdenticon": {
+      "module": {
+        "types": "./icons/Jdenticon.d.ts",
+        "default": "./icons/Jdenticon.js"
+      },
+      "require": {
+        "types": "./cjs/icons/Jdenticon.d.ts",
+        "default": "./cjs/icons/Jdenticon.js"
+      },
+      "default": {
+        "types": "./icons/Jdenticon.d.ts",
+        "default": "./icons/Jdenticon.js"
+      }
+    },
+    "./icons/Polkadot": {
+      "module": {
+        "types": "./icons/Polkadot.d.ts",
+        "default": "./icons/Polkadot.js"
+      },
+      "require": {
+        "types": "./cjs/icons/Polkadot.d.ts",
+        "default": "./cjs/icons/Polkadot.js"
+      },
+      "default": {
+        "types": "./icons/Polkadot.d.ts",
+        "default": "./icons/Polkadot.js"
+      }
+    },
+    "./Identicon": {
+      "module": {
+        "types": "./Identicon.d.ts",
+        "default": "./Identicon.js"
+      },
+      "require": {
+        "types": "./cjs/Identicon.d.ts",
+        "default": "./cjs/Identicon.js"
+      },
+      "default": {
+        "types": "./Identicon.d.ts",
+        "default": "./Identicon.js"
+      }
+    },
+    "./package.json": {
+      "require": "./cjs/package.json",
+      "default": "./package.json"
+    },
+    "./packageDetect": {
+      "module": {
+        "types": "./packageDetect.d.ts",
+        "default": "./packageDetect.js"
+      },
+      "require": {
+        "types": "./cjs/packageDetect.d.ts",
+        "default": "./cjs/packageDetect.js"
+      },
+      "default": {
+        "types": "./packageDetect.d.ts",
+        "default": "./packageDetect.js"
+      }
+    },
+    "./packageInfo.js": {
+      "module": {
+        "types": "./packageInfo.d.ts",
+        "default": "./packageInfo.js"
+      },
+      "require": {
+        "types": "./cjs/packageInfo.d.ts",
+        "default": "./cjs/packageInfo.js"
+      },
+      "default": {
+        "types": "./packageInfo.d.ts",
+        "default": "./packageInfo.js"
+      }
+    },
+    "./packageInfo": {
+      "module": {
+        "types": "./packageInfo.d.ts",
+        "default": "./packageInfo.js"
+      },
+      "require": {
+        "types": "./cjs/packageInfo.d.ts",
+        "default": "./cjs/packageInfo.js"
+      },
+      "default": {
+        "types": "./packageInfo.d.ts",
+        "default": "./packageInfo.js"
+      }
+    },
+    "./util": {
+      "module": {
+        "types": "./util.d.ts",
+        "default": "./util.js"
+      },
+      "require": {
+        "types": "./cjs/util.d.ts",
+        "default": "./cjs/util.js"
+      },
+      "default": {
+        "types": "./util.d.ts",
+        "default": "./util.js"
+      }
+    }
+  },
+  "dependencies": {
+    "@polkadot/ui-shared": "3.16.1",
+    "@polkadot/util": "^13.5.6",
+    "@polkadot/util-crypto": "^13.5.6",
+    "jdenticon": "3.2.0",
+    "tslib": "^2.8.1"
+  },
+  "peerDependencies": {
+    "@polkadot/util": "*",
+    "@polkadot/util-crypto": "*",
+    "vue": "^3.3.0"
+  }
+}

@@ -1,0 +1,14 @@
+// Local copy of bridge constants to avoid circular imports with the wallet bundle.
+export const BLOCK_PRODUCE_TIME_MS = 6_000;
+
+export const ETH_BRIDGE_STATES = {
+  INITIAL: 'INITIAL',
+  SORA_SUBMITTED: 'SORA_SUBMITTED',
+  SORA_PENDING: 'SORA_PENDING',
+  SORA_REJECTED: 'SORA_REJECTED',
+  SORA_COMMITED: 'SORA_COMMITED',
+  EVM_SUBMITTED: 'EVM_SUBMITTED',
+  EVM_PENDING: 'EVM_PENDING',
+  EVM_REJECTED: 'EVM_REJECTED',
+  EVM_COMMITED: 'EVM_COMMITED',
+} as const;

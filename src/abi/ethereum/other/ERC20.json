@@ -94,10 +94,10 @@
     "inputs": [],
     "name": "decimals",
     "outputs": [
-        {
-          "name": "",
-          "type": "uint8"
-        }
+      {
+        "name": "",
+        "type": "uint8"
+      }
     ],
     "payable": false,
     "stateMutability": "view",
@@ -105,21 +105,21 @@
   },
   {
     "inputs": [
-        {
-          "name": "to",
-          "type": "address"
-        },
-        {
-          "name": "value",
-          "type": "uint256"
-        }
+      {
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "name": "value",
+        "type": "uint256"
+      }
     ],
     "name": "transfer",
     "outputs": [
-        {
-          "name": "",
-          "type": "bool"
-        }
+      {
+        "name": "",
+        "type": "bool"
+      }
     ],
     "payable": false,
     "stateMutability": "nonpayable",

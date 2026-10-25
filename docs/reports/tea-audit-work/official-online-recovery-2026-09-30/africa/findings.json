@@ -1,0 +1,143 @@
+{
+  "reviewedAt": "2026-09-30",
+  "product": "100 g sealed Japanese manufactured steamed/dried Camellia sinensis sencha; paid personal postal order; ordinary customs/arrival inspection allowed; no permits, certificates, registrations, special approvals or advance notice.",
+  "scope": "Fresh official-online recovery after explicit user resumption; main country arrays not edited.",
+  "outcomeChanges": [
+    "CG"
+  ],
+  "countryFindings": [
+    {
+      "code": "CG",
+      "outcome": "not_supported",
+      "outcomeChanged": true,
+      "finding": "Official enacted Law 3-2007 Articles 7(2) and 9 expressly impose the special authorization regime on household imports for own needs. Article 11 removes personal-use preshipment inspection only. Printed page 256 visually verified; current 2025 official decree corroborates administration. Agricultural classification remains not_verified.",
+      "override": "cg-override.json",
+      "sources": [
+        "cg-trade-law2007.pdf",
+        "cg-current2025.pdf",
+        "cg-law-p256.png"
+      ]
+    },
+    {
+      "code": "ER",
+      "outcome": "unresolved",
+      "outcomeChanged": false,
+      "finding": "Recovered original L.N.78/2003: Article 3 requires a separate permit for each commercial-goods consignment; Article 5 lists tea as a price-controlled article. Recovered parent Proclamation 125/2002: Article 3(b) defines dealer by commercial activity and 3(c) defines importer as a dealer. Recovered L.N.100/2005 (1 January 2005): it removes the franco-valuta definition and replaces Article 4(2) with banks checking import permits before import services, and 4(3) with ministry permission for development/basic-consumer/other important goods after case-by-case examination, payment per Bank regulations. It leaves Article 3 commercial-goods language unchanged. Read parent definition visually on PDF page 8 (printed 18) and amendment entire page. These linked commercial/banking provisions are not automatically applied to a private recipient. Original L.N.76/2003 Articles 3–4 remit customs duty/tax on mail up to 200 Nakfa subject to exclusions; that is not an SPS/permit waiver.",
+      "remainingEvidence": "Whether this paid private postal purchase falls within the amended trade-permit/banking route despite the commercial-goods/dealer framework; independently, operative finished-tea plant-health coverage. Actual amendment text is now available, not an access gap.",
+      "sources": [
+        "er-importnotice2003.pdf",
+        "er-importnotice2003-fao.pdf",
+        "er-lawindex2023.pdf",
+        "eritrean-notice-76-2003.pdf",
+        "eritrean-proc-125-2002.pdf",
+        "eritrean-proc-125-2002-ocr.txt",
+        "eritrean-notice-100-2005.pdf",
+        "er-amendment2005-p1.png"
+      ]
+    },
+    {
+      "code": "ET",
+      "outcome": "unresolved",
+      "outcomeChanged": false,
+      "finding": "Read current Ministry of Justice Coffee and Tea Authority registered-directive index, including 2026 entries. The available directive titles concern coffee marketing/quality control or spices, not an operative private tea import rule. An EFDA 2023–2026 implementation plan describes future regulatory work rather than an enacted private-food exception.",
+      "remainingEvidence": "Current implementing risk category or sufficient-processing rule under Plant Protection Proclamation 1400/2026; no automatic private postal exemption established.",
+      "sources": [
+        "et-teaauthority-directives.html"
+      ]
+    },
+    {
+      "code": "GN",
+      "outcome": "unresolved",
+      "outcomeChanged": false,
+      "finding": "Fresh review of current ONCQ import-control page shows document, identity and physical controls at port/airport, with origin, quality and fumigation documents in a commercial-shipping workflow. No new published private-parcel scope or exception identified. The linked principal-document page fails (502). Exact 2021 law search on government domains returned no primary enacted text. Existing signed 2024 BNIQ Article 4 noncommercial exception and Article 3 transport scope remain material; do not override them with general website wording.",
+      "remainingEvidence": "Applicable processing/risk classification and whether the private non-sale postal parcel is within the 2024 order or its Article 4 exemption.",
+      "sources": [
+        "gn-oncq-import-control.html"
+      ]
+    },
+    {
+      "code": "GQ",
+      "outcome": "unresolved",
+      "outcomeChanged": false,
+      "finding": "Fresh Spanish searches of government press and Hacienda publications returned fiscal fee tables, industrial-investment rules and a 2026 budget funding border/food-control systems. These do not publish an operative retail-tea/private-parcel document requirement or exemption. No outcome inferred from a fee entry or general enabling power.",
+      "remainingEvidence": "Operative plant/food-import rules and processed-product/private-post scope, not merely the authority structure.",
+      "officialLocatorUrls": [
+        "https://www.guineaecuatorialpress.com/pdf/LeydeTasasFiscales.pdf",
+        "https://minhacienda-gob.com/wp-content/uploads/2026/01/Libro_LPGE-2026.pdf",
+        "https://minhacienda-gob.com/wp-content/uploads/2020/06/Minas-Hidrocarburos-Industria.pdf"
+      ]
+    },
+    {
+      "code": "GW",
+      "outcome": "unresolved",
+      "outcomeChanged": false,
+      "finding": "New actual Gazette recovery: Decree-Law 8/2011 of 10 May, Article 10(1)(a) abolishes BRPI/BRPE prior import/export forms; 10(2) replaces them with a written declaration lodged with Customs. Article 10(3) preserves special regulated-activity requirements. This defeats relying on the repealed general prior form as a separate-doc barrier, but does not override Decree-Law 4/99 plant-health conditions or settle steamed-tea simple-preparation scope.",
+      "remainingEvidence": "Whether steamed/dried sencha is covered by the plant-law definition of unprocessed or simply prepared plant products, and any operative personal-food documents beyond ordinary customs.",
+      "sources": [
+        "gw-tradesimplification2011.pdf"
+      ]
+    },
+    {
+      "code": "KM",
+      "outcome": "unresolved",
+      "outcomeChanged": false,
+      "finding": "Recovered full Health Code 2011 directly from Justice Ministry. Articles 41–46 cover food hygiene; Article 43 prior authorization is specific to food additives, while Article 46 delegates standards/protection measures. Plain sencha is not thereby shown to require the additive approval. These provisions do not establish a private postal food-certificate duty.",
+      "remainingEvidence": "Operative 2017 plant/food law implementation and controlled-commodity/private-post scope; fresh general hygiene clauses do not decide it.",
+      "sources": [
+        "km-health2011.pdf"
+      ]
+    },
+    {
+      "code": "MZ",
+      "outcome": "unresolved",
+      "outcomeChanged": false,
+      "finding": "Recovered complete Decree 5/2009 plant-health regulation and Annex 1 from the Ministry host. Article 12(2) requires prior authorization after risk analysis for controlled products not specified in Annex 1. Thus absence of a finished-tea entry is not an exhaustive-schedule exemption. Article 1 manufactured-product coverage still depends on pest risk. Independent 2023 conformity-programme postal exemption from prior review remains valid but does not waive plant-health rules.",
+      "remainingEvidence": "National manufactured-tea risk classification or sufficient-processing rule; generic list omission cannot close it.",
+      "sources": [
+        "mz-phytoreg2009.pdf"
+      ]
+    },
+    {
+      "code": "SL",
+      "outcome": "unresolved",
+      "outcomeChanged": false,
+      "finding": "Fresh official parliament/standards/tax-source searches again retrieved the 2017 bill, parliamentary proceedings and general inspection guidance, not a final operative private-food certificate rule. The known 1976 Notice cooking/container wording remains decisive uncertainty; no new primary definition of manufactured steamed tea was found.",
+      "remainingEvidence": "Published scope of the cooked-material exclusion and bottle/can qualification for steamed sencha in retail pouches, or an independently applicable food import rule.",
+      "officialLocatorUrls": [
+        "https://www.parliament.gov.sl/uploads/bill_files/The%20Food%20and%20Feed%20Safety%20Authority%20Act%2C%202017.pdf",
+        "https://www.parliament.gov.sl/uploads/handsards/29%20NOVEMBER%202017.pdf"
+      ]
+    },
+    {
+      "code": "TG",
+      "outcome": "unresolved",
+      "outcomeChanged": false,
+      "finding": "Recovered newly published official cross-border e-commerce guide linked from Togo Trade Portal. It addresses establishing an online business, NIF/company registration, logistics and compliance with destination rules. It creates neither a retail-customer permit duty nor a private parcel exemption. The portal commodity procedures remain business workflows; no tea procedure was located.",
+      "remainingEvidence": "Applicable personal-post food approval scope and the national plant-law classification of processed tea.",
+      "sources": [
+        "tg-ecommerce.html",
+        "tg-ecommerce-guide.pdf"
+      ]
+    },
+    {
+      "code": "UG",
+      "outcome": "unresolved",
+      "outcomeChanged": false,
+      "finding": "Fresh Revenue Authority page states food/plant clearance generally but names a Ministry of Agro-Industry and Food Security (inconsistent with Uganda MAAIF), so it is not reliable standalone evidence for this commodity. Current agriculture searches did not publish a manufactured-tea risk category. Existing UNBS 2022 regulation 7 destination inspection and regulation 8 customs-declaration alternative remain unrefuted; ordinary arrival inspection is not treated as forbidden paperwork.",
+      "remainingEvidence": "Whether ordinary private postal arrival inspection can use that alternative without a separate agency application; independently, manufactured-tea plant-health risk classification.",
+      "sources": [
+        "ug-ura-restricted.html"
+      ]
+    },
+    {
+      "code": "SH",
+      "outcome": "unresolved",
+      "outcomeChanged": false,
+      "finding": "A brief fresh island-specific search did not retrieve a new Tristan manufactured-tea condition. Existing St Helena/Ascension allowance cannot clear all SH addresses. No further repeat of already reviewed local by-laws was made.",
+      "remainingEvidence": "Tristan operative rules and a rule covering commercially manufactured tea; 2021 ordinance commencement remained unestablished in prior primary-source work.",
+      "sources": []
+    }
+  ],
+  "provenanceFile": "provenance.json",
+  "caveat": "Unresolved means the available applicable general rules do not yet settle the parcel, not that a bespoke official ruling is inherently required. Commodity lists, sufficient-processing rules or broad enacted private-use provisions can resolve it."
+}

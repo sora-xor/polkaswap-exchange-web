@@ -1,0 +1,186 @@
+{
+  "checkedAt": "2026-09-30T08:36:15.934449+00:00",
+  "goalStatus": "active",
+  "documentFreeCounts": {
+    "not_supported": 69,
+    "supported": 113,
+    "unresolved": 21
+  },
+  "coverageValidated": 203,
+  "liveChangesMade": false,
+  "newlySupported": [
+    "AG",
+    "BB",
+    "BH",
+    "BQ",
+    "DM",
+    "ER",
+    "GU",
+    "GW",
+    "KM",
+    "KN",
+    "MV",
+    "MZ",
+    "PF",
+    "QA",
+    "SR",
+    "UG",
+    "VC"
+  ],
+  "newlyExcluded": [
+    "AE",
+    "AF",
+    "BS",
+    "CG",
+    "ET",
+    "IQ",
+    "MP",
+    "OM",
+    "TC",
+    "TO"
+  ],
+  "materialProgressThisPass": true,
+  "evidenceImprovedThisPass": true,
+  "previousGoalTurnClassification": "resumed_fresh_audit",
+  "blockedAuditConsecutiveTurns": 0,
+  "blockedAuditReason": null,
+  "progressExplanation": "Current official-source recovery and independent legal-scope review supplied 27 defensible operating-decision changes from the resumed baseline: 17 supported and 10 excluded. The goal stays active with 21 unresolved destinations. Complete current Bahrain, Maldives, Ethiopia, Iraq, Jordan, Uganda, Guinea and Vatican sources replaced specific retrieval gaps; research attempts and unresolved legal scope do not count as completed countries. No live shipping changes.",
+  "reviewScope": "Japan-origin paid personal postal factory-sealed100g steamed/rolled/dried pure Camellia sinensis sencha. No special permits, certificates, registration or advance authority notice. Ordinary customs declaration, invoice and routine arrival inspection permitted.",
+  "decisionInferenceCaveat": "AG/BB/SR rely on explicitly stated combined domestic-law/international-processing interpretations. QA combines actual Customs commodity-agency allocation with the personal food-guide waiver. PF applies currently maintained postal cooked-plant-food guidance to actual steam manufacture. AF/CG/OM are independently excluded on express conservative personal-scope interpretations of food/general-import permission; agricultural classification is kept separate. BS requires aseptic AND hermetic/vacuum packaging for the published food-permit waiver; ordinary factory sealing does not establish that condition. KM/MZ/ER use operative national standards/risk provisions, while GU/BQ/KN/VC/GW apply the actual domestic processing/risk definition with manufacture/ISPM32 tea as technical facts. These are explicit general-category legal inferences. MP/TO are conservative exclusions under actual affirmative permit clauses, with contrary processing/admissibility provisions retained. MP allows oral or written authorization; mandatory advance/written permission is not asserted for every small parcel. BH/MV/DM apply domestic scope and manufacture as explicit legal-category inferences, not individualized tea rulings. ET/AE/IQ/TC exclusions are conservative interpretations of affirmative food-market or physical plant-part duties, with substantial contrary readings retained. UG combines the current agricultural risk definition with full domestic regulation7/8 ordinary-arrival conformity clearance; the exemption-letter contrary reading remains documented. The authority-issued arrival ICC is not exporter-procured certification. Maldives5kg is explicitly net weight, yielding50exact100gpackets; its current checkout cap is within that weight threshold.",
+  "currentnessCorrection": "KY September2026 publication starts on1November2026, not immediately; current supported entry records a future-law transition review. BB2023 law actually commenced29May2024 and replaced2007law.",
+  "quantityMismatches": [
+    "FM",
+    "IQ",
+    "MR",
+    "PA",
+    "SB"
+  ],
+  "catalogRecheck": {
+    "checkedAt": "2026-09-30T08:34:41.767854+00:00",
+    "url": "https://mof.sora.org/sora-pay/v1/catalog",
+    "version": "polkaswap-store-worldwide-2026-09-27",
+    "destinationCount": 203,
+    "added": [],
+    "removed": [],
+    "sameProduct": true,
+    "sameShipping": true,
+    "responseSha256": "0643f8632fb627624dc85e0c9ff62e89ac5b46591f09ae03022cb8ae464cb696"
+  },
+  "sourceRecoveryDirectory": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30",
+  "reportSha256": "e7247615f7f5e53aa21ed7ee2055d385adc4b5766ffcb435c29baad072255df2",
+  "unresolved": [
+    {
+      "code": "BL",
+      "name": "Saint Barthélemy",
+      "remainingQuestion": "L 272-11-1 supplies the statutory bridge. Organic Law 2007-223 Article 18 IX preserves non-contrary pre-existing measures with territorial-reference substitution; this can preserve both favorable national lists and an applicable Guadeloupe 1996 order. The 2026 environmental code living-specimen restrictions do not cover finished nonliving tea. Remaining issue is actual inherited local-order scope and the published old/new implementation conflict, not absence of a new tea-specific schedule. Current statute and ministry implementation conflict; a general published processing/implementation clarification suffices without a bespoke tea letter."
+    },
+    {
+      "code": "CK",
+      "name": "Cook Islands",
+      "remainingQuestion": "An applicable current specification or a general published meaning/category allocation that distinguishes PP 29 dried herbs from PP 23 dried plant material for manufactured infusion tea; alternatively an exhaustive register showing this type has no specification. No bespoke individual ruling is intrinsically necessary."
+    },
+    {
+      "code": "CW",
+      "name": "Curacao",
+      "remainingQuestion": "Current Curaçao operative plant/plant-product import definition or conditions for processed food; if the older free-sale certificate claim remains applicable, its enacted current private-post scope is also missing."
+    },
+    {
+      "code": "GF",
+      "name": "French Guiana",
+      "remainingQuestion": "Order R 03-2021-04-26-00003 Article 1, read through the prior legal-text reproduction cross-checked with its official index, applies personal introductions/imports in any quantity and origin using 1990 Article 1 definitions. Article 2 requires a studied derogation. This is a concrete broad local measure, not a missing tea line in a certificate schedule. Newer risk-qualified statutory scope is a material counterargument, but the 2026 implementation position expressly retains old rules and the manufactured/simple-preparation compatibility remains unresolved. Official PDF retrieval remains unavailable. Current statute and ministry implementation conflict; a general published processing/implementation clarification suffices without a bespoke tea letter."
+    },
+    {
+      "code": "GN",
+      "name": "Guinea",
+      "remainingQuestion": "The recovered 2021 Act establishes industrial-food quality control/AMC but does not identify whether a private postal parcel must undergo special advance application or provide foreign certificates, as distinct from routine arrival inspection/release. Separately, for BNIQ Order A/2024/920, whether Article 3 containers/trucks/other rolling international transport covers the air-post parcel, and whether Article 4 non-sale/noncommercial exemption operates automatically through Article 5 or needs BNIQ approval. Organization Order A/2024/1102 Article 3 supplies exemption-approval power, not by itself a universal application duty. Article 6 foreign documents apply if the parcel is covered. A general operative postal/AMC rule can decide this; no bespoke tea ruling is intrinsically necessary."
+    },
+    {
+      "code": "GP",
+      "name": "Guadeloupe",
+      "remainingQuestion": "Order 96-323 of 16 April 1996 has not been recovered. Official passenger-only and outside-commercial-channel summaries cannot establish whether the order covers a paid personal postal purchase or which processing definition it uses. The newer statutory argument is favorable, but current administrative reliance on old rules prevents treating the unrecovered local measure as definitely superseded. Current statute and ministry implementation conflict; a general published processing/implementation clarification suffices without a bespoke tea letter."
+    },
+    {
+      "code": "GQ",
+      "name": "Equatorial Guinea",
+      "remainingQuestion": "An operative national plant law/commodity rule defining manufactured plant products and the applicable private postal route; neither regional border measures nor a postal prohibited-items list supplies that missing scope."
+    },
+    {
+      "code": "JO",
+      "name": "Jordan",
+      "remainingQuestion": "The operative Article 3 commodity-designation decisions and Article 8(c) ministerial exception decisions, or another current general processing rule, sufficient to place finished sencha inside or outside the controlled class. The full 2021 instructions themselves no longer need recovery. No complete commodity/exemption list appears on any of the 13 pages."
+    },
+    {
+      "code": "KI",
+      "name": "Kiribati",
+      "remainingQuestion": "Current section 26 specification/saved earlier instrument covering finished plant-origin foods, or the relevant complete register showing none exists and thus triggering section 27. ISPM 32 tea risk evidence is relevant to the Director’s section 26 assessment but does not remove the Act’s unconditional manufactured-product scope."
+    },
+    {
+      "code": "MF",
+      "name": "Saint Martin (French part)",
+      "remainingQuestion": "L 273-6-2 supplies the statutory bridge. The same 2007 continuity law preserves non-contrary pre-existing measures. The inherited national scheduled treatment is favorable, but actual scope of any surviving Guadeloupe 1996 local restriction remains unverified; the old NVWA list cannot resolve that issue. Preserve the new statutory argument and current implementation conflict. Current statute and ministry implementation conflict; a general published processing/implementation clarification suffices without a bespoke tea letter."
+    },
+    {
+      "code": "MQ",
+      "name": "Martinique",
+      "remainingQuestion": "Current DAAF guidance invokes Order 043448 of 22 November 2004 for personal introductions/imports and the 1990 definitions. The actual local order is unrecovered. The newer risk-qualified statutory scope is a material counterargument, not a confirmed repeal or postal processing exemption. Current statute and ministry implementation conflict; a general published processing/implementation clarification suffices without a bespoke tea letter."
+    },
+    {
+      "code": "PG",
+      "name": "Papua New Guinea",
+      "remainingQuestion": "Enacted Biosecurity Act 2025 definitions, entry-duty and transition provisions plus any preserved/current commodity specification or exemption for finished manufactured tea; no need for a tea-specific administrative letter if the general operative scope settles it."
+    },
+    {
+      "code": "PM",
+      "name": "St. Pierre and Miquelon",
+      "remainingQuestion": "Resolve the publicly documented statutory/administrative implementation conflict and the applicable general manufacturing boundary for the local 2009 order. A current published general processing clarification or operative implementation text would suffice; a tea-specific permit letter is not inherently required."
+    },
+    {
+      "code": "SH",
+      "name": "St. Helena",
+      "remainingQuestion": "Operative Tristan by-laws/commencement and general scope of the live/dead-plants import warning for factory-manufactured tea; the whole SH destination code cannot be cleared from two islands alone."
+    },
+    {
+      "code": "SL",
+      "name": "Sierra Leone",
+      "remainingQuestion": "Recover the complete operative P.N.66/1974, especially definitions, Rule 2 exceptions and Rule 9 scope, or an authoritative general rule that determines how the 1976 cooked-food exclusion affects the parent import duty. Then apply the cooking clause to industrial steaming and its container qualification. No bespoke tea ruling is required if those generic rules decide the question."
+    },
+    {
+      "code": "SX",
+      "name": "Saint Maarten",
+      "remainingQuestion": "Current legal basis and operative scope for LVV plant-produce controls, including any law/conditions adopted after the official 2022 policy explicitly said plant-protection legislation was being developed. The current LVV administrative page is broader than that historical legal account but has no manufactured-food definition. Public-health private-use scope is resolved."
+    },
+    {
+      "code": "TG",
+      "name": "Togo",
+      "remainingQuestion": "The operative documentary prescription applicable to a one-off private postal tea parcel, and whether the prior-declaration/annual economic-operator procedure has a personal scope or exception."
+    },
+    {
+      "code": "VA",
+      "name": "Vatican",
+      "remainingQuestion": "The applicable Vatican plant-health rule, or an actual instrument receiving the relevant Italian agricultural rules, remains unestablished. The 2008 sources-of-law statute does not itself establish automatic application of the whole Italian/EU phytosanitary regime."
+    },
+    {
+      "code": "VG",
+      "name": "British Virgin Islands",
+      "remainingQuestion": "Actual current Cap.93 definition and operative subsidiary schedules remain missing; the January 2026 official index identifies the legislation but is not its substantive rules. A general published definition/schedule would suffice; no individualized tea letter is inherently necessary."
+    },
+    {
+      "code": "WF",
+      "name": "Wallis and Futuna",
+      "remainingQuestion": "Current binding certificate scope and relation between the specific tea-in-bulk provision and unmanufactured-product definition; full current territorial plant-health consolidation or a published general manufactured-food postal rule. No contrary certificate exemption was established."
+    },
+    {
+      "code": "YT",
+      "name": "Mayotte",
+      "remainingQuestion": "Current 2026 amended annex and exact reconciliation of the 2019 postal text with the DAAF unprocessed-product description."
+    }
+  ],
+  "ongoingWork": [
+    "French overseas local-order and statutory/implementation scope",
+    "Cook Islands/Kiribati actual applicable specifications; PNG current enacted law/transition",
+    "Jordan commodity designation; Curaçao/Sint Maarten/BVI operative plant controls",
+    "Guinea personal-post BNIQ/AMC implementation; Sierra Leone parent1974Rules; Togo documentary prescriptions",
+    "Equatorial Guinea operative rules; Tristan scope; Vatican plant-law reception"
+  ],
+  "completionStatus": "incomplete"
+}

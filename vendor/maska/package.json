@@ -1,0 +1,97 @@
+{
+  "name": "maska",
+  "description": "Simple zero-dependency input mask for Vanilla JS, Vue, Alpine.js and Svelte",
+  "version": "3.2.0",
+  "keywords": [
+    "mask",
+    "inputmask",
+    "alpinejs",
+    "svelte",
+    "vue"
+  ],
+  "author": "Alexander Shabunevich",
+  "homepage": "https://beholdr.github.io/maska/",
+  "repository": {
+    "url": "git+https://github.com/beholdr/maska.git",
+    "type": "git"
+  },
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/maska.js",
+  "module": "./dist/maska.mjs",
+  "unpkg": "./dist/cdn/maska.js",
+  "types": "./dist/maska.d.ts",
+  "typesVersions": {
+    "*": {
+      "alpine": [
+        "./dist/alpine.d.ts"
+      ],
+      "svelte": [
+        "./dist/svelte.d.ts"
+      ],
+      "vue": [
+        "./dist/vue.d.ts"
+      ]
+    }
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/maska.d.ts",
+      "import": "./dist/maska.mjs",
+      "require": "./dist/maska.js"
+    },
+    "./alpine": {
+      "types": "./dist/alpine.d.ts",
+      "import": "./dist/alpine.mjs",
+      "require": "./dist/alpine.js"
+    },
+    "./svelte": {
+      "types": "./dist/svelte.d.ts",
+      "import": "./dist/svelte.mjs",
+      "require": "./dist/svelte.js"
+    },
+    "./vue": {
+      "types": "./dist/vue.d.ts",
+      "import": "./dist/vue.mjs",
+      "require": "./dist/vue.js"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "docs": "cd docs && http-server",
+    "build": "tsc && vite build && npm run build:alpine && npm run build:maska && npm run build:vue",
+    "build:alpine": "tsc && vite build -m alpine",
+    "build:maska": "tsc && vite build -m maska",
+    "build:vue": "tsc && vite build -m vue",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "lint": "ts-standard src",
+    "lint:fix": "ts-standard --fix src",
+    "version": "npm run build && npm test"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "@testing-library/dom": "^10.1.0",
+    "@testing-library/jest-dom": "^6.4.5",
+    "@testing-library/svelte": "^5.2.6",
+    "@testing-library/user-event": "^14.5.2",
+    "@tsconfig/svelte": "^5.0.4",
+    "@types/alpinejs": "^3.13.10",
+    "@types/node": "^20.13.0",
+    "@vitejs/plugin-vue": "^5.0.5",
+    "@vitest/coverage-v8": "^3.0.4",
+    "@vue/test-utils": "^2.4.6",
+    "alpinejs": "^3.14.0",
+    "jsdom": "^26.0.0",
+    "svelte": "^5.19.6",
+    "ts-standard": "^12.0.2",
+    "typescript": "5.6.3",
+    "vite": "^6.0.11",
+    "vite-plugin-banner": "^0.8.0",
+    "vite-plugin-dts": "^4.5.0",
+    "vitest": "^3.0.4",
+    "vue": "^3.4.27"
+  }
+}

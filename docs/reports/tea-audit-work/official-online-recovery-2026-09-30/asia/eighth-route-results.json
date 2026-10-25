@@ -1,0 +1,32 @@
+[
+  {
+    "name": "pg-tariff-currentupload",
+    "url": "https://customs.gov.pg/uploads/HS%202022%20Import%20%26%20Export%20Tariff%20Act.pdf",
+    "status": "500",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/pg-tariff-currentupload.pdf",
+    "retrievedAt": "2026-09-30T06:37:25.308318+00:00",
+    "bytes": 7309,
+    "sha256": "a8a284f377cb9f21c53e5553234ecb693dc4c2c38f3306b6cde4aead5e05e913"
+  },
+  {
+    "name": "pg-customs-reg1951-index",
+    "url": "https://customs.gov.pg/legislations/forms",
+    "status": "500",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/pg-customs-reg1951-index.html",
+    "retrievedAt": "2026-09-30T06:37:25.420642+00:00",
+    "bytes": 7309,
+    "sha256": "a8a284f377cb9f21c53e5553234ecb693dc4c2c38f3306b6cde4aead5e05e913"
+  },
+  {
+    "name": "jo-operations2025-full",
+    "url": "https://www.moa.gov.jo/ebv4.0/root_storage/ar/eb_list_page/%D8%AF%D9%84%D9%8A%D9%84_%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA_2025.pdf",
+    "status": "200",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/jo-operations2025-full.pdf",
+    "retrievedAt": "2026-09-30T06:37:54.263577+00:00",
+    "bytes": 11840698,
+    "sha256": "3859687b38c338e43b8ef2037903fcc68e3959a862b93152a458e7ba72e426c0"
+  }
+]

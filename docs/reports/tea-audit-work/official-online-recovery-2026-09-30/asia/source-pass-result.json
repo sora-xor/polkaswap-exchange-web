@@ -1,0 +1,54 @@
+{
+  "reviewedAt": "2026-09-30",
+  "purpose": "Fresh official online source recovery after explicit user continuation.",
+  "product": "One sealed 100 g plain Japanese steamed/rolled/dried Camellia sinensis sencha packet, purchased for personal consumption and sent by post.",
+  "constraint": "No permits, official certificates, agency registration or advance approvals/notice. Ordinary customs and routine recipient arrival declarations/inspection okay. No contacts or main-array/live changes.",
+  "codes": [
+    "CK",
+    "KI",
+    "MV",
+    "TO",
+    "PG",
+    "AE",
+    "BH",
+    "OM",
+    "QA",
+    "JO",
+    "IQ",
+    "AF"
+  ],
+  "materialProposals": [
+    {
+      "code": "QA",
+      "decision": "supported",
+      "file": "qa-proposed-override.json",
+      "basis": "Complete official January 2025 restricted-goods table allocates all 0902 tea to food-health agency 5, not Agriculture 27; personal-food guide footnote 3 waives guide requirements with packaging/identification conditions. Root reports merged. Three kg HS retail-pack breakpoint is not a personal limit."
+    },
+    {
+      "code": "OM",
+      "decision": "not_supported",
+      "file": "om-proposed-override.json",
+      "basis": "Previously unreadable official Regulation 2/2010 recovered. Unqualified Article 30 requires a licence application before food import; 170/2025 expressly references this continuing licence. Personal registration exemption preserved. Explicit private-scope inference; agricultural status unresolved."
+    },
+    {
+      "code": "AF",
+      "decision": "not_supported",
+      "file": "af-proposed-override.json",
+      "basis": "Previously inaccessible current Gazette 1472 recovered via public HTTP legal database and verified identical direct PDF. Independently unqualified Articles 22–23 reach companies/persons and official/unofficial routes. Commercial-specific Article 21 caveat preserved; agricultural status unresolved. Explicit private-scope inference."
+    }
+  ],
+  "unchangedCodes": [
+    "CK",
+    "KI",
+    "MV",
+    "TO",
+    "PG",
+    "AE",
+    "BH",
+    "JO",
+    "IQ"
+  ],
+  "sourceOnlyFile": "source-only-overrides.json",
+  "provenance": "initial/second through tenth-route-results.json, named *provenance.json; exact raw originals saved alongside. See key-provisions JSON for Oman/Afghanistan; commodity-assessment JSON for Qatar.",
+  "limitation": "Failed downloads are recorded as failures. Some PDF-extension files contain HTML error responses and are not used as law. Search snippets are separated from fully recovered operative documents. Proposed files require parent integration; this pass made no main-array edits."
+}

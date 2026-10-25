@@ -1,6 +1,7 @@
 import { FPNumber, Operation } from '@sora-substrate/sdk';
 
 import { subBridgeApi } from '@/utils/bridge/sub/api';
+import { isDisplayOnlyRecoveredSubBridgeHistory } from '@/utils/bridge/sub/reconciliation';
 import { SubTransferType } from '@/utils/bridge/sub/types';
 
 import type { CodecString, WithConnectionApi } from '@sora-substrate/sdk';
@@ -11,15 +12,84 @@ export const isOutgoingTx = (tx: SubHistory): boolean => {
   return tx.type === Operation.SubstrateOutgoing;
 };
 
-export const isUnsignedTx = (tx: SubHistory): boolean => {
-  const signId =
-    subBridgeApi.isEvmAccount(tx.externalNetwork as SubNetwork) && !isOutgoingTx(tx) ? tx.externalHash : tx.txId;
+/**
+ * Returns whether an incoming Substrate bridge transfer records a prior source
+ * submission attempt and therefore must never enter the signing path again.
+ *
+ * Every caller that can reach a signing path must use this predicate: bridge
+ * tracking deliberately clears or moves transaction hashes as it advances, so
+ * checking `txId` alone can submit the same source burn twice after recovery.
+ * Individual fields such as `txId` or `startBlock` do not by themselves prove
+ * chain inclusion; recovery must verify the source events or SORA request.
+ */
+export const hasSubBridgeIncomingSubmissionEvidence = (tx: SubHistory): boolean => {
+  if (isOutgoingTx(tx) || isDisplayOnlyRecoveredSubBridgeHistory(tx)) return false;
 
-  return !tx.blockId && !signId;
+  return Boolean(
+    tx.txId ||
+    tx.externalHash ||
+    tx.blockId ||
+    tx.externalBlockId ||
+    tx.hash ||
+    tx.payload?.submissionState !== undefined ||
+    tx.payload?.startBlock !== undefined ||
+    tx.payload?.batchNonce !== undefined ||
+    tx.payload?.messageNonce !== undefined
+  );
 };
 
-export const getTransaction = (id: string): SubHistory => {
-  const tx = subBridgeApi.getHistory(id) as SubHistory;
+/**
+ * Returns whether a recorded incoming attempt has enough identifiers for a
+ * read-only recovery check. A request hash is directly queryable on SORA;
+ * otherwise the source hash needs either a known block or the signed-height
+ * search window. This is intentionally stricter than the no-resign guard.
+ */
+export const hasSubBridgeIncomingTrackingEvidence = (tx: SubHistory): boolean => {
+  if (isOutgoingTx(tx) || isDisplayOnlyRecoveredSubBridgeHistory(tx)) return false;
+  if (typeof tx.hash === 'string' && tx.hash.trim()) return true;
+
+  const sourceHash = [tx.externalHash, tx.txId].some((value) => typeof value === 'string' && value.trim());
+  const sourceBlock = [tx.externalBlockId, tx.blockId].some((value) => typeof value === 'string' && value.trim());
+  const sourceStartBlock = Number(tx.payload?.startBlock);
+
+  return sourceHash && (sourceBlock || (Number.isSafeInteger(sourceStartBlock) && sourceStartBlock >= 0));
+};
+
+/** Returns whether a Substrate bridge transfer has no recorded submission evidence. */
+export const isUnsignedTx = (tx: SubHistory): boolean => {
+  if (isDisplayOnlyRecoveredSubBridgeHistory(tx)) return false;
+  if (hasSubBridgeIncomingSubmissionEvidence(tx)) return false;
+
+  const incomingExternalHash = !isOutgoingTx(tx) ? tx.externalHash : undefined;
+  const signId =
+    subBridgeApi.isEvmAccount(tx.externalNetwork as SubNetwork) && !isOutgoingTx(tx)
+      ? incomingExternalHash
+      : (tx.txId ?? incomingExternalHash);
+
+  return !(tx.blockId || tx.externalBlockId || signId);
+};
+
+/**
+ * Loads the authoritative local Sub bridge record before considering a UI
+ * cache entry. The cache can stay pinned while another bridge family is
+ * selected, so allowing it to win would hide retry state transitions written
+ * to the persisted Sub history.
+ */
+export const findTransaction = (id: string): SubHistory | null => {
+  const history = (subBridgeApi.history ?? {}) as Record<string, SubHistory>;
+  const keyedTransaction = (subBridgeApi.getHistory(id) as SubHistory | null) ?? history[id];
+
+  if (keyedTransaction) return keyedTransaction;
+
+  return (
+    Object.values(history).find((item) => {
+      return item?.id === id || item?.hash === id || item?.txId === id || item?.externalHash === id;
+    }) ?? null
+  );
+};
+
+export const getTransaction = (id: string, cachedTransaction?: SubHistory | null): SubHistory => {
+  const tx = findTransaction(id) ?? cachedTransaction;
 
   if (!tx) throw new Error(`[Bridge]: Transaction is not exists: ${id}`);
 
@@ -70,6 +140,19 @@ export const getBridgeProxyHash = (events: Array<any>): string => {
   }
 
   return bridgeProxyEvent.event.data[0].toString();
+};
+
+export const isSoraBridgeProviderUpdate = (e) => isEvent(e, 'soraBridgeProvider', 'RequestStatusUpdate');
+
+/** Extracts the SORA bridge request hash emitted by a standalone Liberland burn. */
+export const getSoraBridgeProviderHash = (events: Array<any>): string => {
+  const bridgeProviderEvent = events.find((e) => isSoraBridgeProviderUpdate(e));
+
+  if (!bridgeProviderEvent) {
+    throw new Error(`Unable to find "soraBridgeProvider.RequestStatusUpdate" event`);
+  }
+
+  return bridgeProviderEvent.event.data[0].toString();
 };
 
 export const isBridgeProxyHash = (e: any, hash: string): boolean => {

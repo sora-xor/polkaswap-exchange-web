@@ -1,0 +1,23 @@
+{
+  "sourceUrl": "https://health.gov.mv/storage/uploads/XqP12zoB/xafwwjjj.pdf",
+  "sourceFile": "mv-food2025.pdf",
+  "section": "4.1, printed page4",
+  "weightType": "net",
+  "netGrams": 5000,
+  "inclusive": true,
+  "aggregation": "Processed-food category; no per-product or per-variety allowance stated. Section4.1 does not expressly define parcel/time interval. Category-wide aggregation for the consignment is conservative application.",
+  "otherProvisions": {
+    "1.10": "Personal food imported in intended person’s name; company-name imports treated as commercial.",
+    "1.11": "Limited rounding to a whole product unit where meeting the standard quantity requires at least half that final unit. No uplift used in store policy.",
+    "2.1": "Fruit/vegetable category separately and expressly total together on one occasion; do not silently copy its exact words into4.1.",
+    "4.2": "Package must not be damaged/leaking and label must identify food."
+  },
+  "operationalSizing": {
+    "max100gBags": 41,
+    "outerGrams": 80,
+    "perPackGrossGrams": 120,
+    "legalGrossLimit": false
+  },
+  "translation": "Reviewer paraphrase of official Dhivehi; net-weight loanword is explicit.",
+  "sha256": "096dabb1d52121982459917d971e279027e1c5a2110333a36455e201fe51deec"
+}

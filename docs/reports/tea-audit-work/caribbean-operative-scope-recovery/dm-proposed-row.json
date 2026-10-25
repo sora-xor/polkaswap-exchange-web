@@ -1,0 +1,77 @@
+{
+  "code": "DM",
+  "name": "Dominica",
+  "status": "conditional",
+  "rule": "Conditional support by applying the domestic pest-capability definition to factory-steamed, rolled and dried plain sencha. Act10/1986 section2 restricts plant products only when capable of harbouring or transporting plant pests; its other botanical categories concern propagative material and raw/unprocessed fruits or vegetables. Saved Importations Regulations8(g) and their printed Explanation recognize cooked/parboiled/otherwise processed pest-free products as unlikely to introduce injurious organisms. Current-linked ISPM32 Appendix2 identifies tea as Category1, providing manufacturing evidence rather than an automatically incorporated foreign exemption. Taken together, these support treating uncontaminated industrial retail sencha in clean new packaging as outside restricted-article scope. Regulation8 itself waives regulation4 entry/inspection only, not Act3–4 permits/certificates. The no-document conclusion is an explicit combined-source scope inference, not a tea-specific authority ruling or a claim that every dried leaf is exempt.",
+  "personalMailApplicability": "Act10 explicitly covers restricted articles in the mail; this conclusion instead applies the general restricted-article scope to the actual manufactured product, irrespective of postal purchase. It does not borrow a passenger allowance. Ordinary customs declarations and arrival enforcement remain.",
+  "quantityLimit": null,
+  "authority": "Dominica Ministry of Agriculture",
+  "evidenceUrls": [
+    "https://establishment.gov.dm/services/application-import-permit",
+    "https://divisionofagriculture.gov.dm/images/documents/forms/sample_import_permit_and_submission_form.pdf",
+    "https://faolex.fao.org/docs/pdf/dmi4119.pdf",
+    "https://bwcimplementation.org/sites/default/files/resource/chap58-40.pdf",
+    "https://faolex.fao.org/docs/pdf/dmi111807.pdf",
+    "https://customs.gov.dm/trade/prohibited-and-restricted-items",
+    "https://agriculture.gov.dm/images/documents/forms/application_for_import_permit.pdf",
+    "https://printery.dominica.gov.dm/ProductDocuments/DownloadPreview/7908",
+    "https://printery.dominica.gov.dm/ProductDocuments/DownloadPreview/7913",
+    "https://www.dominica.gov.dm/images/docs/bills/food_safety_bill_2026.pdf",
+    "https://dominica.gov.dm/laws/1997/act08-1997.pdf",
+    "https://faolex.fao.org/docs/pdf/dmi87508.pdf",
+    "https://www.ippc.int/en/publications/587/",
+    "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf",
+    "https://assets.ippc.int/static/media/files/publications/ru/1366800159_ISPM_32_2009_Ru_2012-12-10.pdf",
+    "https://pressroomopm.gov.dm/parliament-passes-food-safety-bill-to-strengthen-public-health-and-protect-consumers/"
+  ],
+  "remainingQuestion": null,
+  "researchAttempts": [
+    "Read the ministry import permit procedure, sample permit and Plant Protection Act. Preserved-fruit exceptions do not clearly cover manufactured Camellia tea; no personal postal waiver found.",
+    "2026-09-30: Read the full saved subsidiary regulations, including regulation 8(g), all commodity restrictions and SRO 8/2003; checked the Act’s processed/unprocessed pest-capability definition against current official customs and application guidance. Corrected the earlier narrow preserved-fruit description. No tea-specific classification found, and did not promote an inspection exemption into a permit/certificate waiver.",
+    "2026-09-30: Read official Gazette of 5 March 2026 confirming assent to Food Safety Act 5/2026, and checked the printery Act preview: one page of contents only. Read the complete government-published 2026 bill, including section 3(2) personal-consumption exclusion and commencement-by-order clause, while keeping it distinct from enacted law. Retrieved and OCR-extracted the 38-page Environmental Health Services Act 8/1997 and reviewed its food/import and certificate provisions; its food-import clause is a regulation-making power, not a self-executing universal certificate duty. The identified 2003 hygiene regulations concern food businesses. No independent enacted private tea food-certificate duty established; plant classification remains the decisive open issue, with new Act text/commencement an additional source gap.",
+    "30 September bounded legal-scope peer review: The parent Act defines processed and unprocessed plant products by capability of harbouring or transporting pests and directly requires prior permits with certificates for restricted articles. Regulation 8 expressly exempts listed articles only from regulation 4. Even if sencha qualified as cooked/processed and free of organisms under 8(g), that does not expressly waive Act sections 3–4. Being free of organisms in a given consignment is also a different proposition from being incapable of carrying pests as a product category. The complete subsidiary table names other crop controls but supplies no broader permit waiver for tea.",
+    "30 September narrow manufactured-tea definition review: identified principal Act10/1986 (not2009); reviewed Act2–4,10,12,25–28 and Reg8(g). Visually checked actual Tea entry in ISPM32 Appendix2 and read §1 footnote1/current IPPC scope statement excluding later contamination/storage pests. Found1997SRO51 ISPM survey clause, limited to pink/hibiscus mealybug pest-free areas; it is not general adoption of ISPM32. Retained agricultural uncertainty because statutory harbouring/transporting-pests scope is broader than the standard, not because a national tea name is missing. Independent food review found no enacted blanket private-parcel special-document requirement; unavailable2026text is not used as a standalone blocker.",
+    "30 September operative-scope recovery: Read the full Act again with saved regulation4,8(g) and the printed Explanation on pp19–20. The Explanation affirmatively identifies specified processed articles as unlikely to introduce injurious organisms, supplying domestic factual context previously underweighted. Applying that context and actual ISPM32 tea Category1 evidence to clean industrial sencha supports a conditional scope conclusion without demanding bespoke commodity approval. Explicitly retained the counterarguments about regulation8 being inspection-only, capability vs present contamination, section3 other non-plant articles and post-processing pests."
+  ],
+  "reviewedAt": "2026-09-30",
+  "permitFreeDecision": "supported",
+  "permitFreeReason": "Supported conditionally for a 100g sealed plain industrially steamed/rolled/dried sencha parcel for personal drinking: domestic risk-qualified product scope plus domestic recognition of processed pest-free products and actual Category1 tea evidence. Excludes raw/naturally dried herbs, viable material, visible infestation/contamination, and plant-based untreated packing. No independently established enacted private-food certificate, registration or advance-approval duty.",
+  "permitFreeSources": [
+    "https://establishment.gov.dm/services/application-import-permit",
+    "https://divisionofagriculture.gov.dm/images/documents/forms/sample_import_permit_and_submission_form.pdf",
+    "https://faolex.fao.org/docs/pdf/dmi4119.pdf",
+    "https://bwcimplementation.org/sites/default/files/resource/chap58-40.pdf",
+    "https://faolex.fao.org/docs/pdf/dmi111807.pdf",
+    "https://customs.gov.dm/trade/prohibited-and-restricted-items",
+    "https://agriculture.gov.dm/images/documents/forms/application_for_import_permit.pdf",
+    "https://printery.dominica.gov.dm/ProductDocuments/DownloadPreview/7908",
+    "https://printery.dominica.gov.dm/ProductDocuments/DownloadPreview/7913",
+    "https://www.dominica.gov.dm/images/docs/bills/food_safety_bill_2026.pdf",
+    "https://dominica.gov.dm/laws/1997/act08-1997.pdf",
+    "https://faolex.fao.org/docs/pdf/dmi87508.pdf",
+    "https://www.ippc.int/en/publications/587/",
+    "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf",
+    "https://assets.ippc.int/static/media/files/publications/ru/1366800159_ISPM_32_2009_Ru_2012-12-10.pdf",
+    "https://pressroomopm.gov.dm/parliament-passes-food-safety-bill-to-strengthen-public-health-and-protect-consumers/"
+  ],
+  "permitFreeReviewedAt": "2026-09-30",
+  "foodImportReview": "No independently established enacted mandatory origin/health certificate, registration or advance approval for this private tea parcel. The1997 Act enables regulations; food-business rules do not automatically bind a private recipient. Full enacted Food Safety Act5/2026 and commencement remain unavailable beyond the official preview, but this source gap is not an independent shipping blocker; the published bill excludes personal consumption and cannot be used as enacted contrary evidence.",
+  "paperworkType": "Ordinary truthful postal/customs declaration; no special agricultural documents on the stated combined-source manufacturing/scope inference.",
+  "requiredDocument": "No permit or certificate supported for this specific clean manufactured sencha parcel; usual invoice/customs declaration and product label retained.",
+  "definitionReview": {
+    "method": "Domestic statutory classification and manufacturing evidence; no assumed direct incorporation of ISPM32.",
+    "provisions": [
+      "Act10/1986 sections2,3,4,10,25,26(2)(a),29",
+      "Saved Importations Regulations4,8(g), printed Explanation pp19–20",
+      "Current-linked ISPM32 Category1 tea illustration, Appendix2"
+    ],
+    "packaging": "Act2 receptacle covers articles actually carrying plants or capable of transporting pests; section26(2)(a) ties search/seizure to restricted articles constituting an agricultural risk. New clean manufactured paper/plastic protecting an unregulated finished food is read contextually, not automatically as a pest carrier merely because later contamination is hypothetically possible. Regulation4 expressly carries the regulation8 exception through to containers/wrappers.",
+    "strongestContrary": "Regulation8 only exempts regulation4, and freedom from organisms is not literally identical to an abstract inability to harbour organisms. Act3 also says any other non-plant articles. A maximally literal reading could impose permit/certificate controls despite manufacturing. The preferred contextual reading gives effect to the domestic pest-capability limitation and domestic low-risk processing explanation; other non-plant articles are read in the Act's agricultural pest-carriage context rather than encompassing every ordinary import. No claim that ISPM32 eliminates post-processing contamination or storage pests.",
+    "conditions": [
+      "Only plain Camellia sinensis sencha industrially steamed, rolled and dried for drinking.",
+      "Factory-sealed, uncontaminated and free of plant pests; clean new paper/plastic shipping material.",
+      "100g genuinely for the recipient's own use; accurately declare manufactured green tea, Japan origin, weight and value."
+    ],
+    "food": "Prior full1997 food-law and enacted2026 preview/bill scope review found no independent enacted mandatory special-document route for private tea. The unavailable final2026text/commencement is recorded, not used as a hypothetical veto."
+  }
+}

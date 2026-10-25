@@ -1,0 +1,1744 @@
+    STATUTORYINSTRUMENTS
+    SUPPLEMENT No. 3                                              24th January, 2020
+
+                  STATUTORYINSTRUMENTSSUPPLEMENT
+           to The Uganda Gazette No. 6, VolumeCX/11,dated 24th January, 2020
+                  Printed by UPPC, Entcbbc, by Order of the Government
+
+
+
+      STATUTORY                           INSTRUMENTS
+
+
+                                     2020 No. 4.
+
+       THE PLANT PROTECTION AND HEALTH (IMPORT AND
+                 EXPORT) REGULATIONS, 2020
+
+                                 PART I-PRELIMINARY
+    Regulation
+
+        1. Title
+        2. Interpretation
+
+                 PART JI-IMPORTATION       OF PLANT OR PLANT PRODUCTS
+
+
+        3. Application for import permit.
+        4. Issuance of an import permit
+        5. General requirements for importation
+        6. Expiry of the import permit
+        7. Refusal to grant an import permit.
+        8. Importation for research purposes
+        9. Importation of live insects or microbial cultures
+       10. Importation of timber
+       11. Prohibition of importation of soil
+       12. Inspections of imports
+       13. Precautionary measures on imports
+                                     77
+
+I
+ PART III-REGULATION     OF EXPORTSOF PLANT OR PLANT PRODUCTS
+
+
+14.   Application for Phytosanitary Certificate.
+15.   Procedure for considering application.
+16.   Refusal to issue a Phytosanitary Certificate.
+17.   General conditions for export
+18.   Phytosanitary inspections and export certification
+19.   Export of endangered plants or plant products
+20.   Re-exports
+
+               PART JV-REGISTRATION    OF PACK HOUSE
+
+
+21.   Registration of pack house
+22.   Application for registration of pack house
+23.   Alterations of the pack house
+24.   Issuance of certificate of registration
+25.   Revocation of certificate of registration
+
+                       PART V-MISCELLANEOUS
+26.   Packaging
+27.   Labelling
+28.   Tampering with a package
+29.   Transportation              .
+30.    Cooperation with other government agencies
+31.   Maintenance and preservation of records
+32.   Appeals
+33.   Unclaimed plant, plant products or regulated articles
+
+
+
+
+                               78
+   STATUTORY                         INSTRUMENTS
+
+                                2020 No. 4.
+
+      The Plant Protection and Health (Import and Export)
+                        Regulations, 2020
+
+      IN EXERCISE of the powers conferred on the Minister responsible
+for Agriculture by section 8 ( 1) (b ), 14 (8) and 21 of the Plant Protection
+and Health Act, 2016, Act 6 of 2016, these Regulations are made this
+31st day of December, 2019.
+
+                           PART I-PRELIMINARY
+
+
+1.   Title
+These Regulations may be cite'd as the Plant Protection and Health
+(Import and Export) Regulations, 2020.
+
+2.     Interpretation
+ In these regulations, unless the context otherwise requires-
+
+      "Act" means the Plant Protection and Heath Act, 2016;
+
+      "additional declaration" means a statement that is required by
+            an importing country to be entered in a phytosanitary
+            certificate and which provides specific additional
+            information relating to the phytosanitary condition of a
+            consignment;
+
+      "beneficial insect" includes insect that serves the best interests
+           of human 's including insect pest predators, parasites and
+           pollinating agents;
+
+      "bio-control agent" means any biological agent such as parasite,
+            predator, parasitoid, microbial organism or self-replicating
+            entity that is used for control of pests;
+                                     79
+"consignment" means a quantity of plants, plant products or
+     other articles moved from or to Uganda and covered, by a
+     single Phytosanitary Certificate;
+
+"Currency point"; means the value assigned to the currency
+     point in Schedule I
+
+"devitalisation" means the procedure of rendering plants and
+      plant products incapable of germination, growth or further
+      reproduction;
+
+"dossier" means a document contammg a collection of
+      information relating on the description, potential hazards,
+      history of usage of an insect, biological control agent or
+      microbial cultures;
+
+"dunnage" means wood packaging material used to secure or
+     support a commodity but which does not remain associated
+     with the commodity;
+
+"grain" does not include a seed certified for planting;
+
+"germplasm" means plants in whole or in part and their
+     propagulcs including seeds, vegetative parts, tissue
+     cultures, cell cultures, genes and DNA based sequences
+     that are held in a repository or collected from wild as the
+     case may be and are utilized in genetic studies or plant
+     breeding programmes for crop improvement;
+
+"irradiation" means the treatment of food or agricultural
+       products with any type of processing of ionising radiation
+       such as gamma irradiation or micro-electron acceleration
+       processing;
+"noxious weed" means any weed harmful, hazardous or
+      unwholesome to human beings, animal life or parasitic on
+      plant species;
+                        80
+     "pack house" means premises where a plant, a plant product
+          or regulated articles for export are graded, packaged and
+          coded for purposes of export certification;
+     "pathway" includes any means that allows the entry or spread
+          of a pest;
+
+     "pest risk analysis" means the process of evaluating scientific
+           and economic evidence to determine whether a plant, plant
+           product or other regulated article scientific contains a pest
+           that is regulated or should be regulated and the appropriate
+           strength of phytosanitary measures to be taken against it;
+      "regulated article" means a plant, plant product, storage place,
+           packaging, conveyance, container, soil and any other
+           organism, object or material capable of harbouring and
+           spreading pests that require phytosanitary measures
+           particularly where international movement is involved;
+
+      "seed" means propagative material, plants and parts of plants
+            intended for the propagation and multiplication of a plant
+            variety;
+      "timber" includes a tree or any part of a tree which has fallen or
+           been felled and all wood, whether or not sawn, split, hewn
+           or otherwise cut up or fashioned;
+      "tissue cultured plant" means any part of a plant or plant tissue
+            or plantlet grown under aseptic or sterile conditions in
+            flasks or other suitable containers on appropriate media
+            and shall include ex-agar washed plantlets.
+
+         PART II-IMPORTATION OF PLANT OR PLANT PRODUCTS
+
+
+3.     Application for import permit.
+       ( 1) A person who wishes to import any plant, plant product or
+any other regulated article shall make an application for an importation
+permit to the Commissioner responsible for crop inspection and
+certification.
+                                   81
+I
+
+
+
+'          (2) The application for an importation permit shall specify-
+           (a)    the name of the plant, plant product or regulated article to
+                  be imported;
+           (b)    the purposes for which the plant, plant product or regulated
+                  article to be imported in intended to be used;
+           (c)    the particulars of the consignee;
+           ( d)   the particulars of the consignor;
+           (e)    the country of origin of the plant or plant products to be
+                  imported;
+           (f)    the quantity of the plant or plant product to be imported;
+                  and
+           (g)    proof of payment of the prescribed fees.
+
+         (3) The application referred to in sub regulation (1) shall be in
+    Form A set out in Schedule II.
+
+           (4) The Commissioner responsible for crop inspection and
+    certification shall upon receipt of the application conduct a pest risk
+    analysis to determine the suitability of the plant, plant product or
+    regulated article to be imported.
+
+          (5) Where an application for an import permit under sub
+    regulation (I), is in respect of a plant, plant product or regulated article
+    that has previously undergone a pest risk analysis, the Commissioner
+    responsible for crop inspection and certification shall consider the
+    application and communicate his or her decision to the applicant
+    within ten working days.
+
+          (6) Wnere an application for a permit under sub regulation (I), is
+    in respect of a plant, plant product or regulated article which requires
+    a pest risk analysis to be undertaken, the Commissioner responsible
+    for crop inspection and certification shall consider the application and
+    communicate his or her decision to the applicant within ten working
+    days after conducting a pest risk analysis.
+
+                                        82
+4.     Issuance of an import permit
+       ( 1) The Commissioner responsible for crop inspection and
+certification shall if satisfied that the applicant meets the requirements
+of importation of a plant, plant product or regulated article issue an
+import permit in Form B specified in Schedule II.
+
+      (2) The import permit may be subject to such terms and conditions
+as the commissioner may deem appropriate.
+
+     (3) Notwithstanding sub regulation (2), the terms and conditions
+may include-
+      (a)    a requirement    for a phytosanitary      certificate or its
+             equivalent;
+      (b)    a requirement for additional declarations;
+      (c)    a specific designated point of entry for the imports;
+      (d)    applying to consignment specified in the permit only;
+      ( e)   the nature of the packaging;
+      (f)    the nature of the treatment of the consignment;
+      (g)    the validity of the permit; and
+      (h)    presentation of a plant, plant product or regulated article
+             for inspection at the point of entry.
+
+      (4) A person who imports any plant or plant material without a
+permit issued under these Regulations commits an offence and is liable
+on conviction to a term of imprisonment not exceeding six month or
+fine not exceeding two currency points.
+
+       (5) In addition to the punishment referred to under sub regulation
+(4), the inspector shall seize the plant, plant products or regulated
+articles imported by a person convicted under sub regulation (4) and
+shall deal with them in accordance with section 19 of the Act.
+
+
+                                   83
+       (6) The terms and conditions specified in the permit shall not
+ be changed or modified without the approval of the Commissioner
+ responsible for crop inspection and certification.
+
+S.    General requirements for importation
+      (I) Any plant, plant product or regulated article imported under
+these Regulations shall be held, grown and maintained in compliance
+with the conditions stated in the permit, and shall be made available to
+the Inspector for examination at all reasonable times.
+
+      (2) An importer shall furnish the exporting country with the copy
+of the import permit for processing of the consignment and in case of
+any additional declarations, the exporting country shall be required
+to endorse the additional declarations on the phytosanitary certificate
+issued for the importation of the commodity.
+
+       (3) Upon arrival of the consignment at the point of entry, an
+importer shall declare the consignment and accompanying documents
+to an inspector for purposes of inspection.
+
+      (4) The inspector shall examine the documents and the
+consignment to verify the authenticity or otherwise of the accompanying
+documents including the original copy of the import permit and the
+phytosanitary certificate.
+
+      (5) If the consignment requires testing or treatment, an inspector
+at the entry point shall recommend the type of testing or treatment
+required and the treatment or testing shall be under the supervision of
+an Inspector.
+
+      (6) Where an inspector recommends that the consignment should
+be destroyed or quarantined it shall be carried out under the direction
+and supervision of the Commissioner responsible for crop inspection
+and certification at the expense of the owner of the consignment.
+                                   84
+       (7) Where the quantity that is pennissible for importationas specified
+in the import pennit is in excess by at least ten percent as specified in the
+phytosanitary certificate, the consignment may be allowed upon payment
+of an additional inspection fee and import pennit fee.
+
+      (8) The import permit issued under these Regulations shall not
+be transferable or assignable and no amendments shall be made to
+the permit unless permitted by the Commissioner responsible for crop
+inspection and certification.
+
+       (9) A consignment of seed or plant for propagation and regulated
+articles including live insects, microbial cultures, bio-control agents,
+germplasm and soil shall only be imported through a Plant Quarantine
+Station or a designated containment facility.
+
+      (10) For purposes of re-exports imported in Uganda the
+consignment, shall be accompanied by a phytosanitary certificate and
+the re-export phytosanitary certificate.
+
+6.    Expiry of the import permit
+      (1) An import permit issued under regulation 4, shall be valid
+for six months from the date of issue and shall only be used for the
+prescribed entry point and specified consignment.
+      (2) Notwithstanding sub regulation (1), the Commissioner
+responsible for crop inspection and certification may, on application,
+extend the validity of an import permit for a further period of six
+months upon payment of a fee prescribed in Schedule Ill.
+     (3) The application for extension under sub regulation (2), shall
+be made in writing to the commissioner with justifiable reasons at least
+one month before the expiry of the import permit.
+
+7.     Refusal to grant an import permit.
+       (1) The Commissioner responsible for crop inspection and
+certification may refuse to grant an import permit under these
+Regulations and shall give reasons for the refusal in writing within
+seven days from the date of the refusal.
+                                  85
+        (2) The Commissioner responsible for crop inspection and
+ certification may refuse to issue an import permit on any of the
+ following grounds-
+      (a)   where there is a risk that cannot be managed;
+      (b)   if the applicant fails to comply with the provisions of the
+            Act or these Regulations;
+      (c)   if the pest risk analysis bas not been conducted; or
+      (d)   if the applicant has previously failed to comply with an
+            order of Commissioner responsible for crop inspection or
+            certification made under the Act or these regulations.
+
+8.    Importation for research purposes
+      ( 1) A person who wishes to import any plant, plant product or
+any other regulated article for purposes of essential scientific research
+or experiment under section 15 of the Act shall apply to the Minster
+for an importation permit.
+
+      (2) The application referred to in sub regulation (1) shall be in
+respect of anything for purposes of essential scientific research m .
+experiment permit and shall include-
+      (a)   germplasm;
+      (b)   microbial organism;
+      (c)   insect; or
+      (d)   genetically modified organisms.
+
+      (3) In addition to the requirements specified in regulation 3
+of these Regulations an application to import genetically modified
+organism for research or experimental purposes shall be accompanied
+by a letter of no objection issued by the Uganda National Council for
+Science and Technology.
+      (4) The imported consignment of genetically modified organisms
+or biological control agents shall not be opened at the point of entry,
+but shall be accompanied by an inspector, to the containment facility
+for verification and inspection.
+                                   86
+["""   •
+
+
+
+
+           9.    Import of live insects, biological control agents or microbial
+                 cultures
+                 (I) Where an application for an import pennit in respect of
+           importation oflive insects, micro cultures including mushroom spawns
+           and algae or biological control agents, the application shall be made to
+           the Commissioner responsible for crop inspection and certification in
+           Forni C prescribed in Schedule II.
+
+                  (2) In addition to the requirements specified in regulation 3 of
+           these Regulations an application to import made under sub regulation
+           ( 1) shall be accompanied by-
+                  (a) proof of a containment facility;
+                  (b) a statement of bio safety levels and arrangement;
+                  (c) a monitoring plan for the imported insect, biological
+                         control agents or microbial cultures;
+                  (d) proof of trained staff to manage the imported insect,
+                         biological control agents or microbial cultures; and
+                  (e) a copy of dossier of the imported insect, biological control
+                         agents or microbial cultures.
+                 (3) A consignment of live insects, micro cultures including
+           mushroom spawns and algae or biological control agents shall only
+           enter Uganda through a permissible or designated point of entry with
+           a specified plant quarantine station or designated containment facility.
+
+           IO. Importation of timber
+                 (I) The Commissioner for crop protection and certification shall
+           only issue an import permit in respect of a consignment for timber if-
+                 (a)   the timber is stripped of its bark either squared or rounded;
+                 (b)   the timber is accompanied by an official statement that
+                       wood has been appropriately fumigated or treated;
+                 (c)   the consignment is accompanied by a treatment certificate;
+                 (d)   the nature of the treatment or fumigation is endorsed on
+                       the phytosanitary certificate issued by country of origin or
+                       re-export, as the case may be; and
+                                              87
+       (e)   the timber is marked with an internationally recognized
+             mark.
+      (2) An inspector shall inspect a consignment of imported timber
+on board, before unloading at the port of entry, and if he or she finds it
+necessary to fumigate or treat the timber on board, the timber shall be
+fumigated or treated at the cost of the importer, before unloading.
+
+JJ.   Prohibition of importation of soil
+      (I) A person shall not import soil or soil rooted plants except
+plants rooted in soilless sterile media.
+      (2) A person who contraventions sub regulation ( 1) commits an
+offence and is liable on conviction to six months imprisonment or fine
+not exceeding two currency points or both.
+
+J2.   I nspcctions of imports
+       (I) A consignment of imported plants, plant products or regulated
+articles shall be inspected by an inspector at the point of entry point or
+designated facility for inspection in accordance with the Act and these
+Regulations.
+      (2) For the purpose of this regulation an inspector shall-
+      (a)    inspect a plant, plant product and other regulated articles
+             at the point of entry or another place as he or she may
+             reasonably consider necessary;
+      (b)    inspect a vehicle, aircraft, container or other things used in
+             connection with the transportation of a plant, plant product
+             or other regulated articles and require a person in charge or
+             control of a vehicle, aircraft, container or other thing used
+             in connection with transportation to restrain from moving
+             it until is inspected;
+      (c)_ where an inspector has found that the imported plant, plant
+           product or regulated article presents a risk for introduction
+           or spread of pests, the inspector may at the expense of the
+           importer-
+                                    88
+            (i)    intercept the consignment and order that the
+                   consignment be moved to a designated place or
+                   facility further inspection;
+            (ii)   order for treatment or fumigation as prescribed;
+            (iii) order for re-export; or
+            (iv)   seize and destroy in accordance with section 19 of
+                   the Act.
+
+     (3) An inspector shall not conduct an inspection under these
+Regulations except an impo"rter furnishes to the inspector proof of
+payment of the inspection fees prescribed in Schedule 111.
+
+      (4) If the inspector is of the opinion that imported plants, plant
+products or regulated articles do not present any risk for spread of
+pests, the inspector shall issue an inspection certificate for every
+consignment inspected and release the consignment to the importer.
+
+      (5) If the inspector is of the opinion that imported plants, plant
+products or regulated articles present any risk for spread of pests, the
+inspector shall seize and destroy imported plants, plant products or
+regulated articles in accordance with section 19 of the Act.
+
+      (6) An inspector who seizes and destroys imported plants, plant
+products or regulated articles under sub regulation (5), shall issue an
+importer a certificate of destruction for every consignment destroyed
+in Form C-1 prescribed in Schedule II.
+
+13. Precautionary measures on imports
+The Commissioner responsible for inspection and certification may with
+the guidance of the Plant Protection and Health Technical Committee,
+for purposes of protecting plant resources and the environment-
+      (a)   prohibit or restrict importation and entry of any plants,
+            plant products or other regulated articles;
+      (b)   take any necessary action to prevent the introduction of or
+            spread of pests not known to occur in Uganda that may be
+            caused by imports;
+                                   89
+       (c)   declare phytosanitary emergency measures; or
+       (d)   permit entry of any plant, plant product or regulated
+             articles for limited purposes.
+
+             PART III-REGULATION      OF E>..'PORTSOF PLANT OR
+                                PLANT PRODUCTS
+
+
+J4.    Application for Phytosanitary Certificate
+      (I) A person who intends to export a plant, plant product or
+regulated article shall apply to the Commissioner responsible for crop
+inspection and certification for a phytosanitary certificate in Form D
+specified in Schedule II.
+
+     (2) The application for a phytosanitary certificate shall be
+accompanied by-
+
+      (a)    the import permit or import conditions issued by the
+             importing country, as the case may be;
+      (b)    the name of the plant, plant product or regulated article to
+             be exported;
+      (c)    the purposes for which the plant, plant product or regulated
+             article to be exported is intended to be used for;
+      (d)    the particulars of the consignee;
+      (e)    the particulars of the consignor;
+      (f)    the point of entry;
+      (g)    means of transport to ne used;
+      (h)    place of origin;
+      (i)    a copy of the certificate of registration of pack house;
+      (j)    the quantity of the plant or plant product to be exported;
+             and
+      (k)    proof of payment of the prescribed fees.
+
+                                     90
+       (3) For a person intending to export a plant, plant product or
+regulated article or soil material ofuncertain health status, the applicant
+shall apply to the Commissioner responsible for crop inspection and
+certification in Form D prescribed in Schedule II for pennission to
+export.
+
+      (4) The permission to export under sub regulation (3) shall be
+issued in Form X prescribed in Schedule II.
+
+15.    Procedure for considering the application.
+       (I) That upon receipt of the application for a phytosanitary
+certificate, the Inspector shall inspect the consignment specified in the
+application upon payment of inspection fees and submit an inspection
+report to the Commissioner responsible for crop inspection and
+certification within at least three days.
+                                                              ,
+      (2) Where the Commissioner responsible for Crop inspection
+and certification is satisfied that the applicant has satisfied all the
+requirements shall he or she issue a phytosanitary certificate in Form
+E prescribed in Schedule II.
+
+       (3) A phytosanitary certificate shall indicate the expiry date of the
+certificate based on the nature of the plant, plant product or regulated
+article being exported and the means of transportation.
+
+16.   Refusal to issue a Phytosanitary certificate.
+      ( 1) If the Commissioner for crop protection and certification is of
+the opinion that the applicant has not fulfilled the requirements for the
+grant of the phytosanitary certificate, the commissioner shall refuse to
+grant a Phytosanitary certificate and communicate in writing to applicant
+and any other relevant authority stating the reasons for refusal to grant
+the certificate at least within five days from the date of refusal.
+
+      (2) The grounds for refusal include-
+      (a)    failure to comply with the conditions in the import permit
+             issued by the importing country;
+                                   91
+      (b)   if the consignment contains prohibited materials from
+            export;
+      (c)   if the plant or plant products are prohibited in the country
+            where they are intended to be exported;
+      (d)   if the plant or plant products are not properly packaged or
+            labelled; and
+      (e)   if the application does not comply with the provisions of
+            the Act or these Regulations.
+
+       (3) Where the Commissioner responsible for crop inspection and
+certification refuses to grant a Phytosanitary certificate and re submit
+an application to the Commissioner may require the exporter to take
+remedial measures on the consignment.
+
+17. General conditions for export
+A person who intends to export any plant, plant product or regulated
+articles shall fulfill the following conditions-
+
+      (a)   accompany a valid phytosanitary certificate and, all the
+            required documentation by the importing country, issued
+            by the Commissioner;
+      (b)   export through a designated exit point;
+      (c)   exports shall be clearly marked, identified or appropriately
+            labelled as determined by the Commissioner; and
+      (d)   exports shall be declared to an inspector and made available
+            for inspection at the point of exit.
+
+18.    Phytosanitary inspections and export certification
+      (I) The exporter shall prepare the consignment for inspection
+prior to export and make fom1al request for inspection only when the
+consignment is ready for export.
+
+      (2) A consignment for export shall be inspected by an inspector
+at a designated inspection site.
+                                 92
+      (3) For purposes of exports relating to fruits and vegetables, the
+exporter shall provide with the inspector, prior to the inspection, the
+following-
+      (a)   planting returns;
+      (b)   harvest records;
+      (c) • scouting records; and
+      (d)   agrochemical use record.
+
+19. Export of endangered plants or plant products
+Subject to regulation 15 of these Regulations, a person shall only be
+issued with phytosanitary certificate to export endangered plants or
+plant products ifhe or she is in possession of CITES permits issued by
+the Uganda wildlife Authority.
+
+20.     Re-exports
+       (I) A person intending to re-export plant, plant products or
+regulated articles shall make an application to the Commissioner
+responsible for inspection and certification for a re-export phytosanitary
+certificate.
+
+      (2) The application shall be in Form A set out in Schedule II.
+
+(3) Subject to regulation 14 of these Regulations, the Commissioner
+responsible for crop inspection and certification shall issue a re-export
+Phytosanitary Certificate id he or she is satisfied that-
+
+      (a)   the phytosanitary certificate or its certified copy where
+            issued by the exporting country;
+      (b)   the requirements of the importing country have been met;
+      (c)   the consignment has been inspected and found suitable for
+            re-export;
+      (d)   the applicant has complied with the terms and conditions
+            in the import permit;
+
+                                    93
+      (e)    the consignment has not been processed to change its
+             nature; and
+      ( f)   there is proof of payment of the prescribed fees in Schedule
+             Ill.
+
+      (4) A consignment of plant, plant products or regulated articles
+shall not be re-exported out of Uganda unless-
+      (a)    it is accompanied by a copy of Phytosanitary Certificate
+             and a re-export Phytosanitary Certificate;
+      (b)    a copy of the import permit or import conditions issued by
+             the competent Authority of the importing country; and
+      (c)    it is clearly marked and identified as a re-export.
+
+       (5) Where the Commissioner responsible for inspection and
+certification is satisfied that the consignment is fit for re-export, he or
+she shall issue a re-export Phytosanitary Certificate.
+
+      (6) The re-export Phytosanitary Certificate shall be in the Form
+F as prescribed in Schedule II.
+
+                PART IV-REGISTRATION      OF PACK HOUSE
+
+
+21.   Registration of pack house
+      ( 1) A person shall not operate a pack house for purposes of
+exports of plant, plant products or regulated articles unless the pack
+house is registered under these Regulations.
+
+      (2) Any person who contravenes sub regulation (1) commits an
+offence and is liable on conviction to a fine not exceeding two currency
+points or a term of imprisonment not exceeding six months or both.
+
+22.  Application for registration of pack house
+     ( 1) A person who intends to export plant, plant products
+or regulated articles shall make an application in writing to the
+
+                                    94
+Commissioner responsible for crop inspection and certification for
+registration of pack house for export under which the export of plant,
+plant products or regulated articles for export takes place.
+
+      (2) The application for registration of a pack house shall be
+accompanied by the proof of payment of the prescribed fees specified
+in Schedule 111.
+
+       (3) The Commissioner responsible for crop inspection and
+certification shall prior to issuing a certificate of registration of pack
+house, inspect the premises fixtures, equipment and other physical
+attributes the pack house to detennine that the pack house is suitable
+for the purpose for which the certificate is to be issued.
+
+      (4) Where the Commissioner responsible for crop inspection
+and certification is satisfied that the pack house, fixtures, equipment
+and other physical attributes of the pack house in respect of which an
+application is made, render the pack house suitable for the purpose, the
+Commissioner responsible for crop inspection and certification shall
+issue a certificate of registration of the pack house.
+
+     (5) The certificate of registration of a pack house shall be in the
+Fonn G as prescribed in Schedule 11.
+
+23.    Alterations of the pack house
+       (I) A person whose pack house is registered t·nder regulation 22,
+shall not make any alteration lo the registered pack i1ouse except with
+the approval of the Commissioner responsible for crop inspection and
+certification.
+      (2) A person who intends to make alterations under sub regulation
+(I) shall make an application to the Commissioner responsible for
+crop inspection and certification for approval and the application shall
+specify the proposed alterations.
+
+24.    Issuance of certificate of registration
+       (I) The Commissioner responsible for crop inspection and
+certification shall consider the application made under regulation 22
+                                   95
+and if satisfied that the proposed alteration to the premises, fixtures,
+equipment and other physical attributes of the pack house in respect
+of which an application is made, render the pack house suitable for
+the purpose, the Commissioner responsible for crop inspection and
+certification shall issue a certificate of registration of pack house
+specifying the terms and conditions.
+
+       (2) The Commissioner responsible for crop inspection and
+certification may refuse to issue a certificate ofregistration if he or she
+finds that-
+      (a)   the premises, fixtures. ~quipment and other physical
+            attributes arc not suitahlc for the intended purpose; or
+      (b)   the application docs not comply with the provisions of
+            these Regulations and the Act.
+
+      (3) The certificate of registration of pack houses issued under
+these Regulations shall be valid for three years and subject to renewal.
+
+      (4) The certificate issued under sub regulation (1) shall be placed
+conspicuously in the principal place of business of the certificate
+holder.
+
+      (5) Where the Commissioner responsible for crop inspection
+and certification refuses to issue a certificate of registration under sub
+regulation (I) shall give reasons in writing to the applicant.
+
+25.    Revocation of certificate of registration
+       ( 1) The Commissioner responsible for crop inspection and
+certification may revoke the certificate of registration if-
+      (a)   the premises, fixtures, equipment and other physical
+            attributes are no longer suitable for the purpose for which
+            they were registered;
+      (b)   the persons in control or management of the pack house
+            contravenes any of the terms and conditions specified in
+            the certificate of registration; or
+                                     96
+      (c)   the persons in control or management of the pack house
+            does not operate in accordance with the provisions of
+            these Regulations and the Act.
+
+       (2) The Commissioner responsible for crop inspection and
+certification shall give a notice of fourteen days to the persons in
+control or management of the pack house to show cause why the
+certificate of registration is not revoked.
+
+      (3) If the certificate of registration is revoked, the holder of
+the certificate shall surrender the certificate of registration to the
+Commissioner responsible for inspection and certification.
+
+       (4) A person who refuses to surrender the certificate of
+registration under sub regulation (3), commits an ofTencc and is liable
+on conviction to imprisonment not exceeding six months or fine not
+exceeding two currency points or both.
+
+     (5) Upon revocation of the certificate of registration of the pack
+houses shall be cease to operate.
+
+                       PART V-MISCELLANEOUS
+
+26.   Packaging
+      (I) A person who imports or exports plant, plant products or
+regulated articles shall use packaging that is-
+
+      (a)   of sufficient strength and scaling to withstand reasonable
+            handling;
+      (b)   tamper proof;
+      (c)    leak proof; and
+      (d)   clean and not previously used.
+
+     (2) A person who fails to comply with sub regulation (I) shall
+have his or her plant, plant products or regulated articles confiscated
+and destroyed in accordance with the provisions of the Act.
+                                  97
+      (3) An import wrapped or cushioned by regulated articles,
+prohibited materials or materials of plant origin including timber straw,
+rice husks, peat or chaff shall be referred to an inspector for inspection
+where the consignment is accompanied with a phytosanitary certificate
+in respect of the packaging.
+      (4) Where phytosanitary certificate is not furnished in respect of
+the said packaging materials in sub regulation (3), a customs officer or
+any other person shall not grant clearance unless clearance is obtained
+from the inspector who shall permit clearance and may if deemed
+necessary subject the said materials to destruction at the expense of
+the importer.
+       (5) An import packaged with plant, plant products or regulated
+articles shall not be released by customs officials unless an inspection
+referred to in sub regulation (3) is conducted and the inspectors
+recommends that the imports be released.
+
+27.   Labelling
+      (I) A person who intends to import or export a plant, plant
+products or regulated articles shall label the plant, plant products or
+regulated articles for purposes of traceability.
+
+      (2) The label on the package of a plant, plant products or
+regulated articles shall include-
+      (a) the name of the plant, plant products or regulated articles;
+      (b) the name and address or contact information of an importer,
+            exporter and producer;
+      (c) the lot identification or batch number;
+      (d) the certification mark; and
+      (e) the intended use.
+
+      (3) The label under subsection (1) shall-
+      (a)   be printed in English or any other language approved by the
+            Commissioner responsible for inspection and certification;
+            and
+                                   98
+      (b)   be legible, durable and distinct from any other plant, plant
+            products or regulated articles on the market.
+
+      (4) A plant, plant products or regulated articles that is imported
+in contravention of this regulation shall be treated as illegally imported
+materials and section 19 of the Act shall apply.
+
+28.   Tampering with a package
+      ( 1) A person shall not-
+      ( a) tamper with the packaged plant, plant products or regulated
+             articles;
+      (b) willfully remove;
+      (c) alter; or
+      (d) deface,
+the prescribed tags, labels, marking or other information placed on the
+package of plant, plant products or regulated articles.
+      (2) A person who contravenes this provision commits an offence
+and is, on conviction liable to a fine not exceeding two currency points
+or to a term of imprisonment not exceeding six months or both.
+
+29.    Transportation
+       (1) A person transporting plant, plant product or regulated
+articles shall use means of transport that secure the plant, plant product
+or regulated articles from exposure to damage, contamination or the
+likely spr~ad of pests.
+      (2) An inspector may intercept and inspect a vehicle, container or
+any other means of conveyance used to transport a plant, plant product
+or other regulated articles and require a person in charge or control of
+the means of conveyance to restrain from moving it until the plant,
+plant product or other regulated articles is inspected.
+
+30.   Cooperation with other government agencies
+     (1) In the performance of their functions, an inspector or the
+Commissioner, shall cooperate with other ministries, departments or
+agencies of Government.
+                               99
+      (2) For the purposes of implementing these Regulations,
+the Commissioner may enter into an arrangement with a ministry,
+department or agency of Government relating to-
+       (a)   the exchange of information between the Commissioner
+             and that ministry, department or agency of Government;
+       (b)   enforcement of the compliance of the Act and these
+             Regulations;
+       (c)   modalities of clearance of plant, plant products or regulated
+             articles clearance at the points of entry or exit points; or
+       (d)   the conduct of investigations and inspections.
+
+3 l.    Maintenance and preservation of records
+       ( l) The Commissioner responsible for crop inspection and
+certification shall keep and maintain all the records concerning all the
+activities performed under these Regulations for at least two years from
+the date when the record is received or generated by the Commissioner
+responsible for crop inspection and certification.
+
+     (2) The records to be maintained in relation to grant of a
+phytosanitary certificate shall include-
+
+       (a)   any inspection, testing, treatment or other verification
+             which was conducted on the consignment;
+       (b)   the names of the personnel who undertook the inspection,
+             testing, treatment or other verification;
+       (c)   the date on which the activity was undertaken;
+       (e)   the results obtained; and
+       (f)   any sample taken and diagnosed in the laboratory.
+
+32.   Appeals
+      (I) A person aggrieved by the decision of the inspector may
+appeal to the Commissioner and in case the appeal is against the
+decision of the Commissioner, the appeal shall be made to the Minister.
+                                   100
+      (2) The appeal under sub regulation (I) shall be made in writing
+within thirty days from the date of the decision.
+
+33.   Unclaimed plant, plant products or regulated articles
+      ( 1) An inspector may destroy or otherwise dispose of any plant,
+plant product or regulated article which on importer abandons or which
+remains unclaimed at a quarantine station for at least six months, or
+within reasonable time, in the case of perishables.
+
+      (2) The destruction or disposal referred to in sub regulation ( 1)
+shall be at the expense of the importer or owner but where the owner
+or importer is not traceable, the destruction shall be at the expense of
+Government.
+
+
+
+
+                                  101
+--------------------                            ---------------------
+
+
+                                                 SCHEDULES
+
+
+                                                SCHEDULE I-
+                                                                                 Reg11/atio112
+
+
+                                             CURRENCY POINT
+
+
+                       A currency point is equivalent to Twenty thousand Uganda shillings.
+
+
+
+
+                                                          102
+                                             SCHEDULE II
+
+                                                  FORMS
+
+                                                  FORMA
+                                                                                                 Regulation 3
+
+
+\           TIIE PLANT PROTECTION AND HEALTH ACT, 2016
+          APPLICATION FORM FOR IMPORT PERMIT OF PLANTS,
+.I            PLANT PRODUCTS OR REGULATED ARTICLES
+
+      (Please read the inst111ctio11s             given below carefully)
+     I/We      hereby           apply          for     a    Plant   Importation          Permit              to
+     in1port.....................................        .into Uganda from ........................            .
+
+     I.      Nature of import ..................................................                         .
+             (Whether plant, plant product or regulated article)
+     2.      Quantity to be i1nported .....................................................                    .
+     4.      Name and address of importer(s) ...........................................                       .
+
+
+
+
+     5.      NameandaddressofExporter(s)                  ............................................         .
+
+
+
+
+     6.      Name of vessel or particulars of route ................................                           .
+
+
+                (Whether air freight, air parcel post, surface post, surface freight)
+     7.         The purpose of the imports .....................................................              ..
+              ......................................................................
+                                                                      ,       .
+
+
+
+                                                      103
+      Dated on this ........... day of ........... 20 ........ .
+
+
+
+
+                                                                   (Signature of Applica11t)
+
+
+
+
+                                                                      (Name of Applicant)
+
+
+     JNSTJUJCTJONS;
+
+     I.      The above application form should be filled in duplicate-
+
+            (a)     ORIGINAL to be forwarded to the Commissioner for crop
+                    protection and certification
+
+            (b)     Permits will only be issued if the above application is filled into
+                    the satisfaction of the officer named in I (a) above.
+
+     2.     No application will be entertained where the order has been placed
+            before the receipt of the Plant Importation Permit in question.
+
+
+
+
+                                               104
+
+
+..
+                                          FORMB
+                                                                                 Reg11/atio11
+                                                                                            4
+
+
+         THE PLANT PROTECTION AND HEALTH ACT, 2016
+
+
+                                                            Penni! No ........................   .
+
+
+           IMPORT PERMIT PLANTS, PLANT PRODUCT OR
+                              REGULATED ARTICLES
+
+
+                                             Date: ............................. ..
+The importer must furnish the supplier with a copy of this Import Pcnnit
+before plants, plant products and regulated articles arc dispatched.
+
+*Permission is hereby granted to ................................................               of
+...............................................................................          10 i1nport
+from ...................................................................................         .
+
+the following plants/plant products/regulated articles:
+
+
+
+
+Subject to the following conditions:
+1.      All plants/plant products/regulated articles to be produce and grown in
+
+2.      The consignment to be inspected on arrival and the importing authority
+        reserves the right to treat, destroy or refuse the importation.
+3.      Plants, plant products or regulated articles shall be entirely free from
+        soil, chaff and/or leaf mould.
+4.      Each consignment shall be accompanied with an original copy of this
+        Import Permit and Phytosanitary Certificate (International model or its
+        equivalent) from country of origin.
+      Additional declaration:
+
+
+
+
+      Failure to furnish the required certificates may result in prohibition
+      of entry of the plant/plant products/regulated articles.
+
+
+5.    Packaging: The following materials must not be used: banana leaves,
+      maize, rice, sorghum, palm, wheat straw, soil or leaf mould. If any
+      other plant residue is used as packaging material, the consignment
+      must be accompanied by a certificate stating: All pests have been
+      killed before use of the material either by heating to 180°F/83° C, for
+      ten minutes or by chemical treatment. (N.8.: Details to be stated on
+      Phytosanitary Certificate).
+
+
+This permit is valid for six months from the date of issue, but may be
+cancelled at any time by the Commissioner Crop Protection or by an
+officer Authorized by the Commissioner to issue the permit on his or her
+behalf.
+
+
+
+                                             Signature of Authorized Officer
+Official Stamp
+
+
+
+                                                 Name of Authorized Officer
+
+
+                                       ··••••••••••••••••••••••••••••••••••••·
+                                                  Trtle of Authorized Officer
+
+                                    106
+                                                                                 l
+Copies lo:
+       (a)     Original: Consignor: must accompany consignment
+                                                                                 l
+       (b)     Duplicate: Commissioner, Crop Protection
+       (c)     triplicate: Principal Agricultural Inspector (Phytosanitary and
+               Quarantine)
+The permission is hereby granted in addition lo any permission or                .:_
+licence required under any other law.                                            f-
+Full name and address of supplier lo be staled.
+Delete whichever is not applicable
+
+
+
+
+                                      107
+                                                FORMC
+                                                                                          Regulation 9
+
+             THE PLANT PROTECTION AND HEALTH ACT, 2016
+            APPLICATION TO IMPORT LIVE INSECTS, MICRO
+             CULTURES OR BIOLOGICAL CONTROL AGENTS
+
+ Name and the address of the applicant ...........................................                  .
+
+ I.         The details of the live insects and or Biological Control agents lo be
+            imported
+
+
+
+
+ .,        Quantity to be imported ..................................................                   .
+
+ 3.        Country of origin ..........................................................                 .
+
+4.         Name and address of importer(s) if different from the applicant ..... .
+
+
+
+
+5.         Name and address of Exportcr(s) ......................................                   .
+
+
+
+
+C.         Name of vessel or particulars of route ......................................            .
+           ···························································•·••••••••••••••
+                                                                             .......
+
+       (Whether air freight, air parcel post, surface post, surface freight) .
+
+Documentation
+
+      I.    The application Musi be accompanied by a dossier detailing the
+            nature of the live insects or the biological control agents
+
+
+                                                   108
+                                                                               t
+
+
+
+
+2.   Detailed transportation plan for the live insects or biological control
+     agents to be imported
+                                                                               l
+3.   Evidence of an accredited/certified     containment   facility for live
+     insects or biological control agents
+
+
+
+
+                                      Dale      (Signature of AJ>plic:anl)
+
+
+
+
+                          (Name of Applicanl)
+
+
+
+
+                                   109
+                                                               Regulation 12 (6)
+
+                                  FORM C-1
+            Tl IE PLANT PROTECTION AND HEALTH ACT, 2016
+
+                             Destruction Certificate
+                                                                   No. ___   _
+
+ Case Ref/ Clients Name
+ Point of Entry ( Boarder point )
+ Reference Number and date
+ AWB/ Bill of lading No.
+ Distinguishing marks
+ Number and description of packages
+     Declared name and address of consignee
+ Place of origin
+ Declared means of conveyance
+ Value of Goods at Importation
+ Authority for Destruction                             Name
+                                                       Rank
+                                                       Signature
+
+This is to certify that the plants, plant products or other regulated articles
+described herein have been destroyed according to appropriate official
+procedures.
+
+I hereby certify that I witnessed the destruction of the above goods.
+
+I.       Name _______                 _ Organization
+
+         Rank:
+               ------               Sign/Date/ Official Stamp ____           _
+
+2.       Name:_               ... _Organization
+                                                  -----------
+         Rank:_
+                                    Sign/Date /Official Stamp ____               _
+                                       110
+                                                                                     .
+                               FORMD
+                                                          Regulation 14
+    THE PLANT PROTECTION AND HEALTH ACT, 2016
+
+       APPLICATION FOR PHYTOSANITARY CERTIFICATE
+
+
+TO: Commissioner for crop protection and certification
+
+I would be grateful to have a Phytosanitary certificate issued in respect
+of the consignment indicated below
+Name and address of the exporter:
+Name and address of the consignee: ___________                         _
+Number and description of packages: __________                       _
+Distinguishing marks: ______             Grown at:______               _
+Means of Conveyance:                       Entry Point:_____           _
+Quantity of Material:                     Botanical Name: ____          _
+Inspection:                              Place:________                 _
+Treatment if any: _________________                                  _
+
+Additional Declaration required by the importing country, if any:
+
+
+
+
+Signature: ____________________                                      _
+
+For Official Use
+Inspected By _________                  Treatment _______                _
+Chemical and dosage ______               _       Charges _____           _
+Additional information ______                _   Signature ____      _
+Date
+       --------                Status
+                                  111
+                                        ----------
+•
+
+                                                              Regulation 15 (2)
+
+           THE PLANT PROTECTION AND HEALTH ACT, 2016
+                  PHYTOSANITARY CERTIFICATE
+
+                                                                 No. ___      _
+
+    TO: Plant Protection Organization(s) of__________                          _
+    I.    Description of Consignment
+          (a)     Name and address of exporter: __________                     _
+          (b)     Declared name and address of consignee: ______                  _
+          (c)     Import pennit Number:____________                            _
+          (d)     Number and description of packages: _______                 _
+          (c)     Distinguishing marks:
+          (f)     Place of origin: _______________                             _
+          (g)     Declared means of conveyance: _________                      _
+           (h)    Declared point of entry:
+                                             -------------
+           ( i)   Name of produce and quantity declared:
+                                                            -------
+           (j)    Botanical name of plants:
+                                               ------------
+    This is to certify that the plants, plant products or other regulated articles
+    described herein have been inspected and/or tested according to appropriate
+    official procedures and arc considered to be free from the quarantine pests
+    specified by the importing contracting party and to confonn with the current
+    phytosanitary requirements of the importing contracting party, including
+    those for regulated non-quarantine pests.
+
+    They are deemed to be practically free from other pests. *
+
+    II.   Additional Declaration
+          ................................................................
+          .................................................................................
+          ...............................................................................
+                                         112
+HI.   Disinfcstation and/or Disinfection Treatment ·
+      Date ___      Treatment ___        Chemical (active ingredient) __   _
+
+      Duration and temperature
+                                    ---------------
+      Concentration
+
+      Additional   information
+
+      Place of issue
+                       --------------------
+      (StampofOrganization)Nameofauthorizcdofficcr
+                                                          --------
+      Date ______            (Signature) _____________                     _
+
+      No financial liability with respect to this certificate shall attach to
+      (name of Plant Protection
+
+      Organization) or to any of its officers or representatives. •
+
+      • Optional clause
+
+
+
+
+                                     113
+                                  fORMF
+                                                            Regulation 20 (6)
+
+        THE PLANT PROTECTION AND HEALTH ACT, 2016
+              RE-EXPORT PHYTOSANITARY CERTIFICATE
+
+
+                                    Phytosanitary Certificate No. ___       _
+
+ Plant Protection Organization of ______             (contracting party of re-
+ export)
+
+ TO:   Plant Protection Organization(s) of __       (contracting party (ies) of
+       import)
+
+ I.    Description of Consignment
+       (a) Nameandaddressof exporter: ___________                               _
+       (b)    Declared name and address of consignee: ______                _
+       (c)    Import permit Number: ___________                            _
+       (d)    Number and description of packages:
+                                                  --------
+       ( e)   Distinguishing marks:
+       ( f)   Place of origin:
+                                       -------------
+       (g)    Declared means of conveyance:
+       (h)    Declared point of entry:
+                                               -----------
+       (i)    Name of produce and quantity declared: _______                _
+       (j)    Botanical name of plants: ___________                         _
+
+
+This is to certify that the plants, plant products or other regulated articles
+described above ______              were imported into (contracting party of
+re-export) _____          from ______             (contracting party of origin)
+covered by Phytosanitary certificate No.
+                                            ----
+•original o certified true copy o of which is attached to this certificate; that
+they are packed orepacked o in original o •new o containers, that based on
+
+                                      114
+the original phytosanitary certificate o and additional inspection o, they arc
+considered to confonn with the current phytosanitary requirements of the
+importing contracting party, and that during storage in ______           _
+(contracting party of re-export), the consignment has not been subjected to
+the risk of infestation or infection.
+
+
+* Insert tick in appropriate o boxes
+
+II. Additional Declaration
+
+
+
+
+III.   Disinfestation and/or Disinfection Treatment
+       Date ___     Treatment ___       Chemical (active ingredient) __    _
+
+
+       Duration and temperature _______________                            _
+       Concentration ___________________                                  _
+       Additional infonnation
+                                -----------------
+
+       Place of issue ____________________                                     _
+
+
+       (Stamp of Organization) Name of authorized officer ______              _
+
+
+       Date _____           (Signature).____________                      _
+
+
+       No financial liability with respect to this certificate shall attach to
+       _____          (name of Plant Protection Organization) or to any of its
+       officers or representatives. **
+
+
+       ** Optional clause
+
+
+
+
+                                       115
+                                           FORMH
+
+
+        THE PLANT PROTECTION AND HEALTH ACT, 2016
+
+ APPLICATION FOR FORM X (FOR PLANTS, PLANT PRODUCTS
+  OR REGULATED ARTICLES OF UNKNOWN PLANT HEALTH
+                      STATUS)
+
+              (Please read the instmctions given below carefully)
+
+
+ 1.    Name and address of applicant ............................................         .
+
+
+
+2.     Country of import ...........................................................     ..
+ 3.    Materials to be exported .................................................        ..
+
+
+
+ (Whether plant, plant product or regulated article)
+4.     Quantity to be exported .....................................................      .
+5.     Country of origin .............................................................        .
+6.     Name and address of exporter (s) (if different from the applicant) ..... .
+
+
+
+
+6.     The project to be supported ...............................................            .
+
+
+                (For projects, specifically for research materials)
+
+7.    The reasons for export ........................................................         .
+
+      •••••••••••••••
+                  ••••••••••••
+                           ••••••••••••
+                                    ·······················•••••••••••••••••
+      ••••••••••••••••••••••••••••••••••••••••···························•••••••
+
+                                                 116
+9.       Treatment          if        any .........................................................          .
+
+
+
+
+                                                                                   (Signature of Applicant)
+
+
+
+
+                                                                                         (Name of Applicant)
+
+Date ..............................        .
+
+
+      For Official Use
+
+
+      Inspected By _________                                     Treatment ________                      _
+
+
+
+      Chemical and dosage if any _______                                          Charges _____              _
+
+
+
+      Additional information                        ______                       Signature ____          _
+
+
+
+      Date                                                        Status
+             ----------
+
+
+
+
+                                                          117
+                                                           FORMX
+                                                                                                             Regulation 14 (4)
+
+            THE PLANT PROTECTION AND HEALTH ACT, 2016
+
+                     RE-EXPORT PHYTOSANITARY CERTIFICATE
+
+
+FORM X: AUTHORITY/LICENCE TO EXPORT PLANT/SOIL
+MATERIALS OF UNCERTAIN HEALTH STATUS
+
+
+In accordance with Section .... Of the Plant Protection and Health Act, 2011
+the National Plant Protection Organisation hereby authorises:
+
+
+
+ Dr/Mr./Mrs./Miss/Ms ..............................................................                                                             .
+
+of .....................................................................................                                                    .
+
+
+
+
+(the"Licencee") to take to .................................................                                                  (Country)
+between          . .. ... . . .. . . . . .. .. . . . .. . . . .. and         .........................................                              .
+(Dates)        .. . . . . . . .. . . . . . . . . . . . . . . . . . . . . . . .. . .. . . . . ... . . . . . . . .. .. . . . .. .. . ... (Material)
+from ..............................                      (country), with the agreement of the National
+Plant Protection Organisation of the importing country, and for research
+purposes in designated laboratories as specified in the Plant Health Regulations
+of the importing                    country             .....................................................                                       ..
+material(s) specified above, possibly infected with pathogenic pests or pest
+arthropods.
+
+This licence/authority is subject to all other provisions of the above law and
+the International Plant Protection Convention 1997 and to the following
+conditions:
+                                                                   118
+1.    This licence or a copy shall be surrendered to officials of the National
+      Plant Protection Organisation of the importing country, who will
+      decide on the entry status, mode of transport and handling of materials/
+      organisms.
+
+2.    The licencee, whilestill in Uganda,shall take all the necessary precautions
+      to prevent dissemination of the .......................................    .
+      (Material) from his or her package(s)/custody.
+
+3.    The licencee shall permit an authorised officer of the National Plant
+      Protection Organisation, to inspect the conditions under which the
+      materials/organisms are kept or packed.
+
+4.    In the event of loss of the ............................................... ..
+      (materials/organisms) while still in Uganda, the licencee shall
+      immediately notify the National Plant Protection Organisation.
+
+5.    This licence may be varied or revoked by the Head of the National
+      Plant Protection Organisation or his or her designated representative
+      at any time.
+6.    Subject to condition five above, this licence/authority expires at the
+      end of one month from the date of issue.
+
+7.    See Appendix.
+
+      Dated .........................................     .
+
+
+
+                                                        Signature of Authorized Officer
+
+Official Stamp
+
+                                                              Name of Authorized Officer
+
+
+
+                                                               Title of Authorized Officer
+
+
+                                                  119
+APPENDIXTOLICENCE/AUTHORITYNO .................................                                .
+
+                                                          National Plant Protection Organisation
+
+A     Materials to be exported
+
+
+
+
+B.    Sources
+
+
+
+
+C.    Project
+
+      This is to support Project ...............................................                   .
+
+
+
+
+      Objectives (summary)
+
+
+
+
+      •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+      ...................................................................................
+      Date of Commencement
+
+     ............   ./ ..............................            /2   .......   .
+
+     (day)                                      (month)
+
+
+
+                                                          120
+D.      Remarks
+
+        Treatment
+
+
+
+
+Yes/Not given
+
+Other
+
+
+
+
+                            Signature of Authorised Officer
+
+
+Official Stamp
+
+
+
+
+                               Name of Authorised Officer
+
+
+
+
+                                 Title of Authorised Officer
+
+
+
+
+                    Date
+
+                      121
+                                        FORM I
+
+       THE PLANT PROTECTION AND HEALTH ACT, 2016
+
+APPLICATION          FOR REGISTRATION OF PACK HOUSES
+
+I.   Name and the address of the applicant.. ....................                ••• .. ·•••••••
+
+     .........•••••••···················································
+                                                                    •••••• ••••••
+     ••••••••••••
+                ···························································•
+                                                                       ••••••••
+2.   Registration status of the pack house (incorporation)                             attach
+     copy ..........................................................................            .
+     •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+
+3.   Registration status of the pack house with the Export
+     Promotion Board (attach a copy) ..................................... .
+
+
+
+4.   Physical location of the Pack house ......................................                 .
+     ............. ........................................ .. ....... ......................
+     ......···········•••••••••••••••••••••••••••••••••••••••••••••••••······
+5.   Rules governing          pack house operations (attach Copy) ..............                .
+     ... ...... ...···········••••••••••••••••••••••••••••••••••••••••············
+     .................................................................................
+     ... ...... .................................... ......................................
+
+6.   List of the qualified personnel for phytosanitary controls (attach proof
+     of qualification )
+     ..........................................................................
+             ... ... ... ... ... ... ... ... ... ... .... ... ... ... ... ... ... ... ... ...
+     ... ... ... ... ... ... ... ... .... ... ... ... ... ... ... ... .... ... . .. .... ... ...
+     ... ... ... ... ... ... .... ... ... ... .... ... ... ... .. . . .. ... ... ... ... ... ...
+     ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ...
+     ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... .... ... .
+                                             122
+7.     Means of access to water for cleaning .............................                  .
+
+
+
+
+8.     Equipment (provide status)
+       (a)  Inspection table ......................................................         .
+       (b) Inspection kit ........................................................          .
+       (c)  Lighting ...........................................................            .
+       (d)  Sorting platforms ....................................................          .
+       (e)  Pallets ............................................................            .
+       (f)  Cleaning materials ........ -............................................       .
+       (g)  Personal protective equipment (provide list) .....................              .
+
+9.     List of farmers supplying the pack house (provide list) .................            .
+
+10.    Waste management plan ...................................................        .
+
+11.    Traceability plan through the value chain (provide copy of the plan)
+
+
+
+12.    Literature on the regulatory framework of Uganda and the destination
+       market (provide copies)
+13.    Literature and Pest cards of quarantine pests for the destination
+       markets (provide copies)
+
+                                                                                                l
+                                                                  (Signature of Applicant)
+                                                                                                I
+                                                                       (Name of Applicant)
+
+
+Date
+                                             123
+                                                                       FORMJ
+                    THE PLANT PROTECTION AND HEALTH ACT, 2016
+
+                          PACK HOUSE REGISTRATION CERTIFICATE
+
+                                                                                                      Certificate No ........... .
+
+     A Pack house Certificate is hereby granted to-
+
+     Name ..........................................................................                                                                       .
+     ............                                 Address..........................................................                                        .
+     For handling packing of plant, Plant product or regulated article at
+     . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .. . . . . . . . . . . . . .. for the period as
+     from..............................                                       to .................................                           .
+
+     The Certificate is subject to the following conditions and standards.
+     I.          The pack house must meet the minimum standards as per the
+                 registration requirements at all times.
+     2.          The registration is only valid for the premise inspected and registered
+     3.          Registration of the premise is independent of the inspection of
+                 consignment
+    4.           Upon registration, the proprietors of the pack house-
+                 (a)          shall renew the certificate upon expiry (valid for one year); or
+                 (b)          if not renewed for one year, the Dealer shall have to apply to
+                              renew.
+•
+
+
+                                                                                      Signature............................. .
+                                                                                          Commissioner responsible for
+                                                                                       Crop Inspection and Certification
+
+
+    Date ................................                          .
+
+                                                                            124
+                                   SCHEDULEIII
+                                          FEES
+Item   Matter                                                 Fees (Ug Shs)
+
+I      Application for an Import permit                                       25,000
+
+                                            A consignment
+       Inspection fees for an imported con- not exceeding                     100,000
+                                                          I
+       signment                             ton
+2
+       For every ton in excess of I ton        20,000
+
+3      Application fee for Phytosanitary certificate                           50,000
+
+4      Application for extension of an import permit                           50,000
+
+                          A consignment not exceeding I ton                    80,000
+       Export lnspec-
+s      tion fees
+                          For every ton in excess of I ton                     20,000
+
+       Application for registration of premises                               200,000
+
+                                                              30,000 per hectare of
+       Field inspection fees                                  production area of field
+                                                              crop
+
+
+       Renewal of the registration of premises                100,000
+
+                                                              15,000 per square metre
+       Demurrage Fees in a quarantine station
+                                                              per day
+
+
+
+
+                                           HON. VINCENT SSEMPIJJA (MP)
+                         Minister of Agriculture, Animal Industry and Fisheries
+                                            125
+

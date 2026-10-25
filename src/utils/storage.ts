@@ -1,8 +1,10 @@
-import { Storage } from '@sora-substrate/sdk';
-import { storage as soraStorage } from '@soramitsu/soraneo-wallet-web';
+import { Storage } from '@/lib/substrate/sdk/storage';
 
-import { LOCAL_STORAGE_MAX_SIZE, listOfRemoveForLocalStorage } from '@/consts/index';
-export { settingsStorage } from '@soramitsu/soraneo-wallet-web';
+import { LOCAL_STORAGE_MAX_SIZE, listOfRemoveForLocalStorage } from '@/consts/storage';
+
+// Keep storage self contained to avoid circular imports with the wallet bundle.
+export const settingsStorage = new Storage('dexSettings');
+const soraStorage = new Storage('wallet');
 
 export default soraStorage;
 

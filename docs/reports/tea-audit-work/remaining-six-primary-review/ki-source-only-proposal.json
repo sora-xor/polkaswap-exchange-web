@@ -1,0 +1,23 @@
+{
+  "code": "KI",
+  "outcome": "unresolved",
+  "decisionChanged": false,
+  "reviewedAt": "2026-09-30",
+  "finding": "Biosecurity Act 2011 section 2 unconditionally includes manufactured plant products among regulated articles. Section 26 determines whether particular goods require a permit or PC, not a blanket permit rule. Section 27 expressly requires advance written application if the type has no specification. Sections 26(8), 79 and 80 provide a public register and office/Island Council inspection routes; electronic keeping is permissive. Compatible earlier instruments may survive through section 107.",
+  "proposedDecision": "Keep unresolved. Strong proof that tea is within the Act and that section 27 is mandatory when triggered does not prove its no-existing-specification condition. The register need not be published online. An actual existing specification or exhaustive register is the missing fact.",
+  "newSourceResult": "Re-read the full enacted statute including the public-register mechanism and current ministry incoming-mail/permit service page. The saved trade-portal procedure119/step141 is a meat workflow, not a general plant-food import specification. No public general processing exemption or complete online register was established; no repeated failed source routes pursued.",
+  "urls": [
+    "https://www.melad.gov.ki/index.php?Itemid=380&id=43&option=com_quix&view=page",
+    "https://faolex.fao.org/docs/pdf/kir147512.pdf",
+    "https://kiribati.tradeportal.org/procedure/119/step/141"
+  ],
+  "preciseRemainingEvidence": "Current section 26 specification/saved earlier instrument covering finished plant-origin foods, or the relevant complete register showing none exists and thus triggering section 27. ISPM32 tea risk evidence is relevant to the Director’s section26 assessment but does not remove the Act’s unconditional manufactured-product scope.",
+  "contraryInterpretation": "An application is necessary if the product truly has no specification; the no-permit store then cannot use that route. The evidence does not demonstrate the premise, and no online result is insufficient for it.",
+  "confidence": "High for scope and conditional duty; unknown actual specification.",
+  "sourceFiles": [
+    "ki-to-definition-review/ki-act2011.pdf",
+    "ki-to-definition-review/ki-act2011.txt",
+    "official-online-recovery-2026-09-30/asia/ki-tradefood.html",
+    "official-online-recovery-2026-09-30/asia/ki-tradefood-links.json"
+  ]
+}

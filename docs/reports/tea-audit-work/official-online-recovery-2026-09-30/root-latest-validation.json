@@ -1,0 +1,26 @@
+{
+  "checkedAt": "2026-09-30T08:36:15.934449+00:00",
+  "destinationCount": 203,
+  "documentFreeCounts": {
+    "not_supported": 69,
+    "supported": 113,
+    "unresolved": 21
+  },
+  "sameLiveCatalog": true,
+  "newlySupportedCount": 17,
+  "newlyExcludedCount": 10,
+  "maldivesNetBagCap": 50,
+  "maldivesWithinCurrentCap": true,
+  "quantityMismatchCodes": [
+    "FM",
+    "IQ",
+    "MR",
+    "PA",
+    "SB"
+  ],
+  "completionStatus": "incomplete",
+  "goalStatus": "active",
+  "sourceChecks": 10,
+  "reportSha256": "e7247615f7f5e53aa21ed7ee2055d385adc4b5766ffcb435c29baad072255df2",
+  "liveChangesMade": false
+}

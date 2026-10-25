@@ -1,0 +1,662 @@
+                                             MONTSERRAT
+
+
+
+
+                                      CHAPTER 9.02
+
+                         PLANT PROTECTION ACT
+                                  and Subsidiary Legislation
+
+
+                                      Revised Edition
+                             showing the law as at 1 January 2013
+
+            This is a revised edition of the law, prepared by the Law Revision Commissioner under
+            the authority of the Revised Edition of the Laws Act.
+
+
+This edition contains a consolidation of the following laws—
+                                                                                                    Page
+PLANT PROTECTION ACT                                                                                 3
+  Act 11 of 1941 .. in force 29 December 1941
+    Amended by Act 9 of 2011 .. in force 27 September 2011 (S.R.O. 40/2011)
+
+  PLANT PROTECTION REGULATIONS – Section 15                                                         13
+    S.R.O.s 2/1951, 12/1952 and 22/1956
+      Amended by S.R.O. 14/1966 .. in force 17 June 1966
+                                             MONTSERRAT
+
+
+
+
+                                      CHAPTER 9.02
+
+                         PLANT PROTECTION ACT
+                                  and Subsidiary Legislation
+
+
+                                      Revised Edition
+                             showing the law as at 1 January 2013
+
+            This is a revised edition of the law, prepared by the Law Revision Commissioner under
+            the authority of the Revised Edition of the Laws Act.
+
+
+This edition contains a consolidation of the following laws—
+                                                                                                    Page
+PLANT PROTECTION ACT                                                                                 3
+  Act 11 of 1941 .. in force 29 December 1941
+    Amended by Act 9 of 2011 .. in force 27 September 2011 (S.R.O. 40/2011)
+
+  PLANT PROTECTION REGULATIONS – Section 15                                                         13
+    S.R.O.s 2/1951, 12/1952 and 22/1956
+      Amended by S.R.O. 14/1966 .. in force 17 June 1966
+      LAWS OF
+     MONTSERRAT                      Plant Protection                 CAP. 09.02   3
+Revision Date: 1 Jan 2013
+
+
+
+
+                                          CHAPTER 9.02
+
+                                  PLANT PROTECTION ACT
+
+                                ARRANGEMENT OF SECTIONS
+
+     SECTION
+           1.      Short title
+           2.      Interpretation
+           3.      Appointment of Officers
+           4.      Power to make proclamations
+           5.      Occupier to give notice of notifiable disease or pest
+           6.      Power of entry
+           7.      Procedure for eradication of diseases and pests
+           8.      Non-compliance with order
+           9.      Quarantine of nurseries
+          10.      Service of notice in absence of occupier
+          11.      Compensation
+          12.      Informality not to invalidate proceedings
+          13.      Offences
+          14.      Legal proceedings
+          15.      Regulations
+          16.      Document to be evidence
+                   SCHEDULE: Form
+      LAWS OF
+     MONTSERRAT                 Plant Protection               CAP. 09.02     5
+Revision Date: 1 Jan 2013
+
+
+
+
+                                    CHAPTER 9.02
+
+                             PLANT PROTECTION ACT
+                             (Acts 11 of 1941 and 9 of 2011)
+
+     Commencement
+     [29 December 1941]
+
+     Short title
+          1. This Act may be cited as the Plant Protection Act.
+
+     Interpretation
+       2. In this Act—
+     “animal organism” means any animal organism in whatever stage of
+           existence such animal organism may be;
+     “disease” means any abnormal conditions of plants, communicable or
+           believed to be communicable by the transfer of a causative agent or
+           by the propagation of the affected plants, which the Governor may
+           by proclamation from time to time declare to be a disease within the
+           meaning of this Act;
+     “diseased” means affected with disease;
+     “disinfection” means the utilization of any substance or process designed
+           to prevent, eliminate or reduce any disease or pest with which plants
+           or parts of plants may be affected;
+     “import”, with its grammatical variations and cognate expressions, means
+           to bring or cause to be brought within Montserrat or the waters
+           thereof;
+     “land” includes plantation and nursery;
+     “notifiable disease” means any disease which the Governor may by
+           proclamation, from time to time, declare to be a notifiable disease
+           within the meaning of this Act;
+     “notifiable pest” means any pest which the Governor may, by
+           proclamation, from time to time, declare to be a notifiable pest
+           within the meaning of this Act;
+     “nursery” means any land or place whereon is grown or kept any plant
+           intended for sale or distribution;
+     “occupier”, in relation to any land or building, means the person in actual
+           occupation thereof or, if there is no such person, the owner of such
+           land or building;
+                                                                      LAWS OF
+6         CAP. 09.02             Plant Protection                    MONTSERRAT
+                                                                Revision Date: 1 Jan 2013
+
+
+“owner” means the person who is for the time being entitled to receive the
+      rent of any land, or who, if the same were let to a tenant at a rack
+      rent, would be entitled to receive such rent;
+“package” includes any container, box, covering, wrapper, or anything
+      whatsoever in which plants are, or have been, imported, kept or
+      conveyed;
+“pest” means any parasitical, epiphytal or other animal or vegetable
+      organism inimical to the growth or existence of living plants or
+      injurious to plant products, and any agent capable of producing a
+      communicable disease of plants, which the Governor may, by
+      proclamation, from time to time declare to be a pest within the
+      meaning of this Act;
+“plant” includes any tree, shrub, herb or vegetable; any cutting, bulb, seed,
+      bud or graft; and the fruit or any other part of any plant; and the
+      whole or any part of any growing, dying, or dead plant, including
+      any pod, husk or skin;
+“Plant Protection Officer” means the Chief Plant Protection Officer and
+      any person or persons appointed as a Plant Protection Officer under
+      this Act;
+“Plant Quarantine Committee” means the Committee of Management of
+      the Plant Quarantine Station, Trinidad, established under section 16
+      of the Plant Protection Act of Trinidad and Tobago;
+“vegetable organism” means any vegetable organism in whatever stage of
+      existence such organism may be.
+
+Appointment of Officers
+  3. The Governor or Deputy Governor may appoint an appropriately
+qualified person as Chief Plant Protection Officer, and such Plant
+Protection Officers as may be necessary for the purposes of this Act.
+
+Power to make proclamations
+    4. The Governor may by proclamation—
+          (a) prohibit, control or restrict the transport of any diseased
+              plant, or of any plant appearing to be affected with any pest
+              or disease, or of anything whatever, whether of a nature
+              similar to a plant or not, likely to infect any plant with any
+              pest or disease;
+          (b) prohibit, control or restrict the cultivation and harvesting
+              either throughout Montserrat, or in any specified area
+              thereof, of any plant when, in the opinion of the Governor,
+              such measures are necessary for the control or eradication of
+              any pest or disease;
+          (c) direct, authorise or control the quarantine of infected areas;
+      LAWS OF
+     MONTSERRAT                      Plant Protection              CAP. 09.02           7
+Revision Date: 1 Jan 2013
+
+
+                      (d) direct and specify the precautions to be taken to prevent the
+                          spread of plant diseases or pests;
+                      (e) authorise or require the inspection before import or export of
+                          any plant or article likely to infect any plant with any pest or
+                          disease, and provide for the grant of a certificate as to the
+                          results of any such inspection;
+                      (f) direct or authorise the disinfection or treatment of any plant
+                          and of any article likely to infect any plant with a pest or
+                          disease;
+                      (g) authorise the immediate destruction without compensation of
+                          any plant or article which on inspection appears to be
+                          infested or infected with any pest or disease;
+                      (h) direct or authorise the detention of classes of imported plants
+                          in any specified place and specify the precautions to be
+                          observed during such detention;
+                      (i) require plants, or any class or classes of plants, to be
+                          accompanied on importation by a plant certificate issued by a
+                          competent person or persons.
+
+     Occupier to give notice of notifiable disease or pest
+        5. (1) The occupier of any land, on which any notifiable disease or
+     notifiable pest occurs, shall as soon as practicable give notice thereof to a
+     Plant Protection Officer.
+            (2) Any occupier who fails to give such notice shall be liable on
+     summary conviction to a fine of $240.
+            (3) In any proceedings under this section it shall be no defence that
+     the occupier was not aware of the occurrence of such disease or pest unless
+     it shall be shown to the satisfaction of the Court that he and the persons
+     employed by him on the land took all reasonable steps to discover such
+     occurrence.
+
+     Power of entry
+        6. (1) Subject to any regulations made under this Act, a Plant
+     Protection Officer may at all reasonable times enter without notice (with or
+     without assistance as may to him seem fit) upon any land, or into any
+     building or part of any building, not being a dwelling house, for the purpose
+     of searching for and examining any animal or vegetable organism, or any
+     disease-infected or pest-infested plant, or any soil, manure, straw or
+     package, and may remain thereon or therein so long as may be reasonably
+     necessary for any such purpose.
+            (2) Before entering on any such land or building under the
+     provisions of this section the Plant Protection Officer shall inform the
+     occupier, if present at the time, of his intention so to do.
+                                                                       LAWS OF
+8        CAP. 09.02              Plant Protection                     MONTSERRAT
+                                                                 Revision Date: 1 Jan 2013
+
+
+Procedure for eradication of diseases and pests
+   7. A Plant Protection Officer may, by notice in writing in the form in
+the Schedule served upon the occupier of any land, require him to take at
+his own expense and within a time specified in the notice, running from the
+date of service, all such measures as may be necessary for the eradication
+or the prevention of the spread of any disease or pest. Such measures may
+include the total destruction if necessary of any plant whether infected by
+any disease or infested with any pest or not.
+
+Non-compliance with order
+    8. (1) If an occupier fails to take any measure which by a notice under
+the preceding section he is required to take, a Plant Protection Officer may,
+on the expiration of the time specified in such notice, enter upon the land
+and cause such measures to be taken.
+        (2) Any expenses incurred by the Plant Protection Officer in
+connection with such measures shall be paid by the person in default:
+       Provided that, it shall be lawful for the Governor to dispense with the
+payment of such expenses in cases where, owing to the person in default
+being in needy circumstances, or for any other reason, the Governor thinks
+fit so to do.
+        (3) The expenses so incurred shall be recoverable as a civil debt by
+the Plant Protection Officers.
+
+Quarantine of nurseries
+   9. (1) Where any Plant Protection Officer finds any nursery or any part
+of any nursery to be affected by any disease or pest he may by notice in
+writing served upon the occupier declare such nursery or part thereof to be
+under quarantine.
+       (2) The notice shall remain in force until a Plant Protection Officer
+shall have given the owner or occupier of the nursery affected a certificate
+in writing that the nursery is free from diseases and pests.
+       (3) While the notice is in force no person shall remove, or allow or
+cause to be removed any plant or any soil, manure, packages, or any
+vegetable or animal organism, from the area under quarantine.
+       (4) The occupier of a nursery having his nursery or any part thereof
+thus placed under quarantine may, upon application to a Plant Protection
+Officer, have his nursery examined free of charge to determine whether or
+not the disease or pest has been eradicated.
+
+Service of notice in absence of occupier
+   10. If there is no person in actual occupation of any land, or if the
+occupier cannot be found, service of any notice under this Act may be
+made by affixing the same in some conspicuous place on the land and such
+affixing shall be deemed to be good and sufficient service.
+      LAWS OF
+     MONTSERRAT                 Plant Protection               CAP. 09.02            9
+Revision Date: 1 Jan 2013
+
+
+     Compensation
+        11. It shall be lawful for the Governor, out of money voted for that
+     purpose by the Legislative Assembly, to make grants by way of
+     compensation to occupiers and to owners (according to their respective
+     interests) in respect of healthy plants destroyed in order to prevent the
+     increase of any disease or pest or the spread of any disease or pest into
+     adjoining lands. (Amended by Act 9 of 2011)
+
+     Informality not to invalidate proceedings
+        12. Proceedings taken under this Act shall not be rendered invalid by
+     reason of the informality of any order or notice made or given except as
+     against any person prejudiced by such informality.
+
+     Offences
+          13. Every person who—
+                (a) in any manner obstructs or impedes any person in the
+                    execution of any of the powers conferred by this Act or by
+                    regulations or proclamations made thereunder; or
+                (b) knowingly introduces any disease or pest into any cultivated
+                    or uncultivated land or to any plant whether cultivated or not
+                    cultivated; or
+                (c) fails to comply with or acts in contravention of any of the
+                    provisions of this Act or any regulations or proclamations
+                    made thereunder or any order given in pursuance thereof,
+     when no other penalty is provided in this Act, shall be guilty of an offence
+     and shall, for every such offence, be liable on summary conviction to a fine
+     of $96 or to imprisonment for a term not exceeding three months.
+
+     Legal proceedings
+        14. All proceedings under this Act shall be taken in the name of the
+     Chief Plant Protection Officer and shall not be deemed to affect any civil
+     liability which may exist independently thereof.
+
+     Regulations
+        15. The Governor acting on the advice of Cabinet may make regulations
+     for all or any of the following purposes—
+                 (a) for prohibiting, restricting or regulating the importation into
+                      Montserrat of—
+                      (i) any plant, vegetable organism or package;
+                     (ii) any article or class of articles, whether of a nature similar
+                          to plants or not;
+                    (iii) any animal or animal organism,
+                                                                 LAWS OF
+10   CAP. 09.02             Plant Protection                    MONTSERRAT
+                                                           Revision Date: 1 Jan 2013
+
+
+         likely to cause infection by any animal or vegetable organism
+         or other agent which is or is believed to be inimical to the
+         growth of plants;
+     (b) for requiring that any plant, or any other thing mentioned in
+         paragraph (a) shall only be imported into Montserrat on the
+         advice of and with the concurrence of the Plant Quarantine
+         Committee previously obtained and subject to such
+         conditions as the Committee may impose;
+     (c) for authorising or requiring the inspection before import of
+         any plant or article likely to infect any plant with any animal
+         organism or vegetable organism or other agent which is or is
+         believed to be inimical to the growth of plants;
+     (d) for authorising or requiring the disinfection, treatment,
+         destruction and disposal without compensation of any
+         diseased plant or of any plant appearing to be infected with
+         any animal or vegetable organism or other agent which is or
+         is believed to be inimical to the growth of plants, or of
+         anything whatever, whether of a nature similar to a plant or
+         not, likely to infect any plant with any animal or vegetable
+         organism or other agent which is or is believed to be inimical
+         to the growth of plants;
+     (e) for directing or authorizing the disinfection, treatment and
+         fumigation of buildings, vehicles, vessels or aircraft used or
+         suspected of having been used for the storage or conveyance
+         of anything likely to infect a plant with any pest or disease;
+         and for prohibiting any such vessels or aircraft from
+         approaching or remaining within a distance of two miles
+         from any point in Montserrat;
+     (f) for prohibiting the importation of any plant or plants except
+         at specified ports or places of entry;
+     (g) for directing or authorising the detention of any imported
+         plant or plants in any specified place and prescribing the
+         precautions to be observed during such detention;
+     (h) for requiring the importation of any plant or plants to be
+         accompanied by a plant certificate issued by an authorised
+         person or persons;
+     (i) for authorising or requiring the issue and revocation of
+         licences for and the inspection of nurseries in which plants
+         are reared for the purposes of sale, and the imposition of fees
+         for such licences, and the regulation of the sale or removal of
+         plants, whether reared in nurseries or not;
+     (j) for regulating or prohibiting the removal from any land or
+         building, or the transference or conveyance from any part of
+         Montserrat to any other part thereof, of any plant, soil,
+      LAWS OF
+     MONTSERRAT                      Plant Protection              CAP. 09.02         11
+Revision Date: 1 Jan 2013
+
+
+                          manure, straw, package, vegetable organism, or animal
+                          organism;
+                      (k) for fixing the payment of fees for disinfection or treatment or
+                          any other services rendered by officers under this Act;
+                      (l) for defining the duties of Plant Protection Officers under this
+                          Act;
+                      (m) for regulating the manner in which applications are to be
+                          made to a Plant Protection Officer; and
+                      (n) generally for carrying into effect the provisions of this Act.
+                                     (Amended by Act 9 of 2011)
+
+     Document to be evidence
+        16. Every document purporting to be an instrument issued by the Plant
+     Quarantine Committee and signed by the Chairman of the Committee shall
+     be received in evidence and be deemed to be such an instrument without
+     further proof unless the contrary is shown.
+                                     ___________
+                                                                                                                          LAWS OF
+  12               CAP. 09.02                                Plant Protection                                            MONTSERRAT
+                                                                                                                  Revision Date: 1 Jan 2013
+
+
+
+                                                        SCHEDULE
+                                                          (Section 7)
+
+To ..........................................................................
+
+               Nursery                      
+               Plantation                   
+               Land                         
+
+Situate at ...............................................................................................................
+
+          In pursuance of the powers vested in me by section 7 of the Plant Protection
+Act, I hereby direct you within ........................ days of the service upon you of this
+notice to do the following work on your
+
+               Nursery                      
+               Plantation                   
+               Land                         
+
+viz—
+
+                                                                                              Plant Protection Officer.
+
+(Date)
+
+
+                                                       _____________
+      LAWS OF
+     MONTSERRAT                       Plant Protection               CAP. 09.02           13
+Revision Date: 1 Jan 2013                                                          [Subsidiary]
+
+
+
+                            PLANT PROTECTION REGULATIONS – SECTION 15
+                             (S.R.O.s 2/1951, 12/1952, 22/1956 and 14/1966)
+
+     Short title
+          1. These Regulations may be cited as the Plant Protection Regulations.
+
+     Prohibition of importation
+       2. It is hereby prohibited absolutely to import into Montserrat the articles
+     mentioned in the first column of the First Schedule from the countries and places
+     mentioned in the second column of the said Schedule.
+
+     Restriction of importation
+         3. It is hereby prohibited to import into Montserrat the articles mentioned in the
+     first column of the Second Schedule from the countries and places mentioned in the
+     third column of the said Schedule except upon the conditions specified in the second
+     column of the said Schedule.
+                                         ___________
+                                                                                      LAWS OF
+14             CAP. 09.02                    Plant Protection                        MONTSERRAT
+[Subsidiary]                                                                    Revision Date: 1 Jan 2013
+
+
+                                      FIRST SCHEDULE
+                             ARTICLES ABSOLUTELY PROHIBITED
+
+
+                  Articles prohibited from               Countries and places from which
+                        importation                          importation prohibited
+
+ (a)      The fruit of the banana                           All countries and places except
+                                                        the United States of America,
+                                                        Dominica, and the other Colonies of
+                                                        the Leeward Islands.
+
+ (b)      All fruit and plants of the citrus family        Cuba, Haiti, Santo Domingo,
+          and parts of such fruit and plants            Jamaica, the United States of
+                                                        America and the Commonwealth of
+                                                        Australia except the State of
+                                                        Tasmania.
+
+ (c)      All other fruits except—                          The Commonwealth of Australia
+            (i)    plantains                            except the State of Tasmania, the
+           (ii)    nuts                                 Bahamas, Bermuda, British Guiana
+          (iii)    dried, canned, candied or other      and all other countries and places
+                   processed fruits                     except the British Isles, Canada, the
+                                                        British West Indies and the United
+                                                        States of America.
+
+ (d)      All vegetables except—                                       ditto.
+            (i)    onions
+           (ii)    Irish (English) potatoes
+          (iii)    canned or processed vegetables
+
+ (e)      Cotton seed, cotton seed hulls, cake and         Cuba, Haiti, Santo Domingo and
+          meal and other cotton seed products, seed     Venezuela.
+          cotton, cotton lint and any part of the
+          cotton plant and any other malvaceous
+          plant and any part thereof
+
+ (f)      Fertilizers and stock feeds containing                       ditto.
+          cotton seed meal
+
+ (g)      Pillows and bedding material containing                      ditto.
+          seed cotton, cotton lint or any part of the
+          cotton plant
+
+ (h)      All agricultural produce in bags                             ditto.
+      LAWS OF
+     MONTSERRAT                        Plant Protection                    CAP. 09.02                15
+Revision Date: 1 Jan 2013                                                                     [Subsidiary]
+
+
+
+
+     (i)        Second-hand empty bags and baling                              ditto.
+                material
+
+     (j)        Packages, containers and coverings which                       ditto.
+                contain or are reasonably suspected to
+                have contained any of the articles
+                specified in item (e) of this Schedule
+
+     (k)        Personal baggage and effects of any                            ditto.
+                description which contain or are
+                reasonably suspected to have contained
+                any of the articles specified in item (e) of
+                this Schedule
+
+     (l)        Personal baggage and effects of any               All countries and places.
+                description which have been in contact
+                with or in close proximity to other
+                baggage, cargo, produce or articles of any
+                description infected or reasonably
+                suspected to be infected with the cotton
+                boll weevil (Anthonomus grandis
+                Boheman)
+
+     (m)        Articles which have formed part of the                         ditto.
+                cargo of a ship another part of the cargo
+                of which has been found to be infected or
+                is reasonably suspected to be infected
+                with the cotton boll weevil (Anthonomus
+                grandis Boheman)
+
+     (n)        Soil                                               Bahamas,      Bermuda,     British
+                                                               Guiana, Trinidad and all other
+                                                               countries and places except the
+                                                               British Isles, Canada, the other
+                                                               islands of the British West Indies not
+                                                               in this paragraph mentioned, and the
+                                                               United States of America.
+
+     (o)        Plants and parts of plants of “Maga,”          From all countries and places.
+                (Thespesia grandiflora PDC).
+
+     (p)        Sunflower seeds                                  All countries and places in South
+                                                               America.
+                                                                                  LAWS OF
+16             CAP. 09.02                  Plant Protection                      MONTSERRAT
+[Subsidiary]                                                                Revision Date: 1 Jan 2013
+
+
+
+
+(q)       All fruit and vegetables and any parts      The United States of America.
+          thereof except
+            (i)   canned fruit and vegetables;
+           (ii)   fruit and vegetables which have
+                  been dried, candied, preserved or
+                  otherwise processed
+
+(r)       All fruit and plants of the citrus family      Barbados
+                                 (Inserted by S.R.O. 14/1966)
+                                            ___________
+      LAWS OF
+     MONTSERRAT                        Plant Protection                 CAP. 09.02             17
+Revision Date: 1 Jan 2013                                                               [Subsidiary]
+
+
+
+                                           SECOND SCHEDULE
+                                  ARTICLES PROHIBITED CONDITIONALLY
+
+
+                       Articles             Conditions of Importation   Countries and Places
+
+       (a)      Sugar cane, sugar cane          Under licence granted      All countries and
+                seedlings and plants, and   by the Governor             places.
+                all parts of the sugar
+                cane
+
+       (b)      Banana plants and parts                ditto                Bahamas, Bermuda,
+                of banana plants                                        British Guiana, Central
+                                                                        America, Dutch
+                                                                        Guiana, and any island
+                                                                        or place in the West
+                                                                        Indies and the other
+                                                                        Colonies of the
+                                                                        Leeward Islands.
+
+       (c)      Cotton seed, cotton lint,       Under licence granted      All countries and
+                seed cotton and all         by the Governor and         places other than Cuba,
+                packages, coverings,        subject to fumigation of    Haiti, Santo Domingo
+                containers, bags and        any cotton seed, bags and   and Venezuela.
+                other articles and things   packages immediately on
+                which have been used as     landing
+                packings, coverings,
+                con-tainers, or bags for
+                any cotton seed, cotton
+                lint or seed cotton
+
+       (d)      Sprouted Coconuts               Under licence granted       Trinidad, St. Vincent,
+                                            by the Governor             St. Lucia, Grenada,
+                                                                        Cuba, Jamaica, and all
+                                                                        parts of Central and
+                                                                        South America.
+
+       (e)      All fruits and plants of        Under licence granted       All countries and
+                the citrus family and       by the Governor             places other than Cuba,
+                parts of such fruits and                                Haiti, Santo Domingo,
+                plants                                                  Jamaica, the United
+                                                                        States of America and
+                                                                        the Commonwealth of
+                                                                        Australia except the
+                                                                        State of Tasmania.
+
+       (f)      Soil and plants growing         Under licence granted      All countries and
+                                            by the Governor and
+                                                                                      LAWS OF
+18             CAP. 09.02                 Plant Protection                           MONTSERRAT
+[Subsidiary]                                                                    Revision Date: 1 Jan 2013
+
+
+          in soil                      subject to fumigation          places.
+                                       immediately on landing
+
+ (g)      All other fruits except          To be accompanied by          The British Isles,
+            (i) plantains              a certificate of origin from   Canada, British West
+           (ii) nuts                   a responsible authority        Indies, the State of
+          (iii) dried, canned,         stating that such fruit was    Tasmania and the
+                 candied or other      not grown in a country or      United States of
+                 processed fruits      place from whence its          America.
+                                       importation is prohibited
+
+ (h)      All vegetables except                    ditto                        ditto
+            (i) onions
+           (ii) Irish     (English)
+                potatoes
+          (iii) canned or
+                preserved
+                vegetables
+
+ (i)      All living material (other       Under licence granted         All countries and
+          than seeds) of plants of     by the Governor                places.
+          the family Gramineae
+          (Grasses)
+
+ (j)      Animal manure                    Under licence granted                ditto
+                                       by the Governor
+
+ (k)      Vegetable and flower             Under licence granted         All countries and
+          seed                         by the Governor and            places.
+                                       subject to being accompa-
+                                       nied by a plant sanitation
+                                       certificate from a responsi-
+                                       ble authority in the
+                                       exporting country
+                                         ___________
+

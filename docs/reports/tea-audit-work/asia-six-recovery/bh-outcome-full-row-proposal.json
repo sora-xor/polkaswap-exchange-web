@@ -1,0 +1,83 @@
+{
+  "code": "BH",
+  "status": "conditional",
+  "rule": "Supported for the described factory-steamed, rolled and dried plain tea by an explicit scope inference. Bahrain's enacted GCC Plant Quarantine Law Article 2 covers living plants and manufactured plant products that can introduce or spread pests; Articles 15(1) and 15(3) address covered consignments and risk-based waivers. ISPM32 section 2 and Appendix 2 identify manufactured tea as Category 1. Applied as factual evidence to the domestic definition, the sealed finished sencha falls outside the pest-risk-qualified manufactured-product limb; it does not need an individual waiver to be outside that limb. Article 31(1) requires measures to conform with IPPC/WTO-SPS standards, but is not treated as automatically adopting every ISPM. The current 2024 food guide separately allows regular food without prior registration/authorization and provides a personal-use route with recipient undertaking, suitable personal quantity, Arabic/English labels and possible inspection.",
+  "personalMailApplicability": "The conclusion uses the generally applicable domestic product definition and the food guide's non-commercial-import section, not a traveller-only concession. Japan MAFF's postal PQ*11 entry preserves a processing exception; its default is not treated as proof that manufactured Category 1 tea is covered. Ordinary postal Customs declarations and recipient food-clearance declarations remain required.",
+  "quantityLimit": null,
+  "authority": "Destination agricultural/food authority; Japan MAFF Plant Protection Station where cited",
+  "evidenceUrls": [
+    "https://www.maff.go.jp/pps/j/search/e_hayami_yubin.pdf?d=1702",
+    "https://www.ippc.int/en/countries/bahrain/eventreporting/2017/10/import-phytosanitary-requirements-2/",
+    "https://www.mun.gov.bh/newportal/newportal/en/agriculture-marine-resources-affairs/services/examination-and-application-agricultural-quarantine",
+    "https://assets.ippc.int/static/media/files/eventreporting/2017/10/23/plant_quarantine_law_-_English.pdf",
+    "https://www.mun.gov.bh/newportal/newportal/en/agriculture-marine-resources-affairs/rules-and-regulations",
+    "https://lloc.gov.bh/OG/3800A.pdf",
+    "https://tfadatabase.org/en/members/bahrain-kingdom-of/publication-of-information-for-governments-and-traders",
+    "https://www.bahraincustoms.gov.bh/ar/tariff-finder",
+    "https://www.customs.gov.bh/en/tariff-finder",
+    "https://www.ofoq.gov.bh/pdf/FoodImportersGuide_2024_EN.pdf",
+    "https://faolex.fao.org/docs/pdf/bah72236.pdf",
+    "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf",
+    "https://www.bahrain.bh/wps/portal/ar/BNP/ServicesCatalogue/GSX-UI-PServiceDetails?psID=1560"
+  ],
+  "remainingQuestion": null,
+  "researchAttempts": [
+    "Read Bahrain NPPO phytosanitary notice and 2026 ministry service including traveller-only exemption.",
+    "Read GCC plant-product definition: manufactured products are covered when they present pest risk.",
+    "Current MAFF postal matrix supplies exact commodity/channel evidence. Bahrain food-guide PDF could not be freshly retrieved because of host certificate/connection failures; it is not used as agricultural clearance.",
+    "30 September: The Ministry of Health food-import guide has a separate personal-use route: a written personal-use undertaking, suitable quantities and Arabic/English labelling (or approved translation) are required. A routine recipient undertaking is not itself an official certificate. The unresolved agricultural classification under the MAFF PQ*11 processing exception still prevents clearance.",
+    "30 September final review: rechecked ministry agricultural-quarantine service as indexed with its September 2026 update: prior permit, original phytosanitary certificate, shipping list, customs declaration and waybill; the small-quantity permit concession is expressly for plants accompanying travellers. It cannot be applied to post.",
+    "Searched the current ministry rules directory (2003 quarantine law, 2004 import law, 2007 amendment) and official finished-tea/processing exemptions. Ministry direct pages returned access errors; indexed service text was readable. No tea-specific exemption or personal-postal agricultural designation was found; retained exact classification gap rather than applying commercial requirements automatically.",
+    "30 September bounded independent processing/list peer review: downloaded the complete 23-page English Plant Quarantine Law submitted by Bahrain NPPO to IPPC, OCRed the image PDF, and visually checked PDF pages 7 and 9. Article 2 defines manufactured products by pest risk. Article 15(1) supplies permit/certificate defaults; 15(3) authorises commodity risk-based waivers but grants no enumerated automatic processing waiver. Article 24 addresses goods in travellers’ possession and cannot be extended to post. The annex on PDF pp.12–23 is Bahrain’s regulated-pest lists, not an exhaustive list of controlled/exempt food commodities; absence of tea there therefore proves nothing about its category. No outcome change. Source PDF/OCR saved in middle-east-definition-peer-review/.",
+    "30 September narrow commodity-table recovery: downloaded full official Gazette supplement3800A (13 March2025), Decision29/2025, replacing19/2022 and effective day after publication. Exact HS090210000000 retail green tea is 0% duty with a blank procedure/action cell on PDF p66 (tariff printed p71). The same action column is blank for live horses/cattle and planting material0601/0602, while it marks some prohibited goods; this is not demonstrated to enumerate all national import-permit controls. No duty exemption was treated as a phytosanitary waiver.",
+    "Bahrain government notification to WTO identifies the official Tariff Finder as displaying HS codes, rates and the related Regulatory Authority if a permit is required. Current bahraincustoms.gov.bh HTTPS and HTTP routes timed out; old customs.gov.bh route returned403 and browser navigation timed out. This is the precise unavailable agency-allocation source, rather than a need for a bespoke ruling.",
+    "Reviewed NPPO-submitted Plant Quarantine Law Article31(1), PDF p10: implementing measures and procedures must conform to IPPC and WTO-SPS standards/guidelines/recommendations. This is a regulatory compatibility duty, not express automatic domestic adoption of ISPM32 Category1. Read with Article2 pest-risk-qualified manufactured products and Article15(3) ministerial waiver power, it does not classify retail steamed/dried tea.",
+    "30 September fresh six-destination recovery: OFOQ current public document library linked the correctly spelled FoodImportersGuide_2024_EN.pdf, successfully downloaded in full (32 pages). The earlier misspelled FoodImpotersGuide route/access failure no longer represents the food-source position. Read printed p5 and pp17–18 in context; ordinary food needs no prior registration, and personal imports have their own undertaking/label/quantity route. The broadly titled Ministry_of_Municipalities_Affair_and_Agriculture.pdf contains veterinary procedures only and was not applied to tea.",
+    "Reassessed the precise Article2 living-plants/manufactured-product boundary against the actual ISPM32 Appendix2 Tea example (visually verified by the root audit); Article15(3) individual waiver is not logically required for goods outside the definition. Article31 supports standards-consistent interpretation but is not used as an automatic treaty exemption. This supersedes the earlier assumption that absence of a named tea ruling necessarily leaves processing scope unresolved.",
+    "Verified current Bahrain government service explicitly cites national Law5/2003 adopting the GCC quarantine law, plus Decision1/2004; recovered national enacting text from FAO for provenance. No absence of a tariff restriction cell or generic international membership was used as an exemption."
+  ],
+  "reviewedAt": "2026-09-30",
+  "permitFreeDecision": "supported",
+  "permitFreeReason": "Explicit legal-scope and manufacturing inference: the operative national law limits manufactured plant products by pest risk, and the actual ISPM32 tea example supports the finding that factory-made, sealed steamed/rolled/dried sencha is outside that class. A missing Customs agency lookup does not require a bespoke ruling where this general definition suffices. Use the separate official personal-food route, supply Arabic or English product labelling, and have the recipient complete the routine personal-use undertaking if requested. This is not a claim of a tea-specific Bahrain ruling or an exemption for raw dried herbs, seeds, blends or contaminated goods.",
+  "permitFreeSources": [
+    "https://www.maff.go.jp/pps/j/search/e_hayami_yubin.pdf?d=1702",
+    "https://www.ippc.int/en/countries/bahrain/eventreporting/2017/10/import-phytosanitary-requirements-2/",
+    "https://www.mun.gov.bh/newportal/newportal/en/agriculture-marine-resources-affairs/services/examination-and-application-agricultural-quarantine",
+    "https://assets.ippc.int/static/media/files/eventreporting/2017/10/23/plant_quarantine_law_-_English.pdf",
+    "https://www.mun.gov.bh/newportal/newportal/en/agriculture-marine-resources-affairs/rules-and-regulations",
+    "https://lloc.gov.bh/OG/3800A.pdf",
+    "https://tfadatabase.org/en/members/bahrain-kingdom-of/publication-of-information-for-governments-and-traders",
+    "https://www.bahraincustoms.gov.bh/ar/tariff-finder",
+    "https://www.customs.gov.bh/en/tariff-finder",
+    "https://www.ofoq.gov.bh/pdf/FoodImportersGuide_2024_EN.pdf",
+    "https://faolex.fao.org/docs/pdf/bah72236.pdf",
+    "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf",
+    "https://www.bahrain.bh/wps/portal/ar/BNP/ServicesCatalogue/GSX-UI-PServiceDetails?psID=1560"
+  ],
+  "requiredDocument": "Ordinary postal/Customs declaration; recipient written personal-use undertaking for food clearance; Arabic or English label. If only another language is supplied, the guide requires an approved translation-office sticker, so use an adequate English/Arabic label initially to stay within the no-special-documents constraint.",
+  "paperworkType": "ordinary_customs_and_recipient_declaration",
+  "permitFreeReviewedAt": "2026-09-30",
+  "urls": [
+    "https://www.mun.gov.bh/newportal/newportal/ar",
+    "https://s3.eu-west-1.amazonaws.com/staticbh.mun.gov.bh-ire/2026/50/docs/Municipal_Services_Guide_2024.pdf",
+    "https://lloc.gov.bh/Legislation/HTM/K3418"
+  ],
+  "files": [
+    "bh-services2024.pdf",
+    "bh-services2024.txt",
+    "bh-food-law2018.html"
+  ],
+  "finding": "New complete official English personal-food guide recovered; independently applied the already-recovered domestic manufactured-product definition to the actual ISPM32 manufactured-tea example. This closes the no-special-documents route by an explicitly labelled scope/manufacturing inference.",
+  "remainingGap": null,
+  "outcome": "supported",
+  "decisionChanged": true,
+  "customsCommodityReview": "Government-notified tariff agency lookup remains inaccessible, and blank tariff procedure cells were not treated as proof of clearance. The supported outcome instead follows the operative risk-qualified product definition and independently verified manufactured-tea evidence.",
+  "foodImportReview": "Complete current OFOQ English Food Importers Guide (updated April 2024) recovered successfully. Printed p5 item3(b) says regular food needs no prior registration or authorization; pp17–18 separately prescribe a personal-use undertaking, quantity within the allowance, Arabic/English labels (or approved translation), lawful ingredients and possible laboratory inspection. Commercial company registration and origin health-certificate procedures elsewhere in the guide are not automatically transferred into this separate personal section. The guide gives no numerical personal tea maximum; this finding is limited to a single 100 g package as an ordinary personal-use amount, not an unlimited or invented statutory allowance.",
+  "quantityLimitKg": null,
+  "inferenceLevel": "Domestic legal-scope and commodity-manufacturing inference; no tea-specific national ruling.",
+  "conditions": [
+    "Only plain factory-manufactured Camellia sinensis tea, steamed/rolled/dried and sealed; not raw dried leaves/herbs, planting material, blends or infested goods.",
+    "One 100 g package for genuine recipient personal consumption, with no resale/distribution; this is the assessed quantity, not a verified statutory maximum.",
+    "Arabic or English product label and routine personal-use undertaking; ordinary Customs/arrival inspection and any lawful charges apply."
+  ]
+}

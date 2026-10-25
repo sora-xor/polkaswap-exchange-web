@@ -1,15 +1,21 @@
 <template>
   <div class="app-status s-flex">
-    <a v-if="blockNumber" class="block-number s-flex" :href="blockExplorerLink" target="_blank" rel="nofollow noopener">
-      <span class="block-number-icon" /><span>{{ blockNumberFormatted }}</span>
+    <a
+      v-if="blockNumber && blockExplorerLink"
+      class="block-number s-flex"
+      :href="blockExplorerLink"
+      target="_blank"
+      rel="nofollow noopener"
+    >
+      <span class="block-number-icon"></span><span>{{ blockNumberFormatted }}</span>
     </a>
     <footer-popper
       icon="globe-16"
       panel-class="node"
       :panel-text="nodeConnectionText"
-      :status="nodeConnectionClass"
+      :status="nodeConnectionStatus"
       :action-text="t('selectNodeText')"
-      @action="openNodeSelectionDialog"
+      @action="setSelectNodeDialogVisibility(true)"
     >
       <template #label>
         <span>{{ t('selectNodeConnected') }}</span>
@@ -20,13 +26,28 @@
         <span v-if="formattedNodeLocation">
           {{ formattedNodeLocation.name }} <span class="flag-emodji">{{ formattedNodeLocation.flag }}</span>
         </span>
+        <div class="node-extras" v-if="node">
+          <span v-if="nodeLatencyText">Latency: {{ nodeLatencyText }}</span>
+          <span v-if="backoffNextText">Next retry: {{ backoffNextText }}</span>
+          <s-button class="s-typography-button--mini" size="mini" type="secondary" @click="runLatencyProbe">
+            Test latency
+          </s-button>
+          <div v-if="isDebug" class="node-dev s-flex">
+            <s-button class="s-typography-button--mini" size="mini" type="secondary" @click="toggleBackoff">
+              Toggle backoff ({{ backoffEnabledText }})
+            </s-button>
+            <s-button class="s-typography-button--mini" size="mini" type="secondary" @click="toggleParallel">
+              Toggle parallel ({{ parallelDialEnabledText }})
+            </s-button>
+          </div>
+        </div>
       </template>
     </footer-popper>
     <footer-popper
       icon="wi-fi-16"
       panel-class="internet"
       :panel-text="internetConnectionText"
-      :status="internetConnectionClass"
+      :status="internetConnectionStatus"
       :action-text="t('footer.internet.action')"
       @action="refreshPage"
     >
@@ -38,230 +59,297 @@
         <span>{{ internetConnectionDesc }}</span>
       </template>
     </footer-popper>
-    <footer-popper
-      icon="software-cloud-24"
-      panel-class="statistics"
-      :panel-text="statisticsConnectionText"
-      :status="statisticsConnectionClass"
-      :action-text="t('footer.statistics.action')"
-      @action="openIndexerSelectionDialog"
+    <div
+      class="app-status__item indexer-block s-flex"
+      :class="indexerBlockStatus"
+      :aria-label="indexerBlockText"
+      :title="indexerBlockText"
     >
-      <template #label>
-        <span>{{ t('footer.statistics.label') }}</span>
-        <span>{{ statisticsConnectionDesc }}</span>
-      </template>
-    </footer-popper>
+      <span v-if="isIndexerBlockInitialLoading" class="indexer-block__loading"></span>
+      <s-icon v-else name="software-cloud-24" size="16"></s-icon>
+      <span class="indexer-block__text">{{ indexerBlockText }}</span>
+    </div>
     <div class="sora-logo">
       <span class="sora-logo__title">{{ t('poweredBy') }}</span>
       <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener">
-        <sora-logo :theme="libraryTheme" />
+        <sora-logo :theme="libraryTheme"></sora-logo>
       </a>
     </div>
+    <router-link class="agents-link" :to="{ name: PageNames.ForAgents }">
+      {{ t('footer.forAgents') }}
+    </router-link>
     <select-node-dialog
+      v-if="selectNodeDialogVisibility"
       :connection="appConnection"
       :visibility="selectNodeDialogVisibility"
       :set-visibility="setSelectNodeDialogVisibility"
-    />
-    <statistics-dialog />
-    <no-internet-dialog />
+    ></select-node-dialog>
+    <no-internet-dialog v-if="!isBrowserOnline"></no-internet-dialog>
   </div>
 </template>
 
-<script lang="ts">
-import { FPNumber } from '@sora-substrate/sdk';
-import { getExplorerLinks, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
-import { Status } from '@soramitsu-ui/ui-vue2/lib/types';
-import { Component, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { FPNumber } from '@sora-substrate/math';
+import { computed, markRaw, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { Status } from '@soramitsu-ui/ui/types';
+import { SelectNodeDialog } from '@/app/shell/components';
+import { useTranslation } from '@/composables/useTranslation';
 import SoraLogo from '@/components/shared/Logo/Sora.vue';
-import { Components } from '@/consts';
-import { lazyComponent } from '@/router';
-import { state, getter, mutation } from '@/store/decorators';
+import { IndexerType, PageNames, type SoraNetwork } from '@/consts';
+import { Theme } from '@/consts/theme';
+import { createAsyncComponent } from '@/shared/ui/async';
+import { connection } from '@/lib/soraneo-wallet/src/api';
+import { getExplorerLinks } from '@/lib/soraneo-wallet/src/util';
+import { ConnectionStatus, type IndexerState } from '@/lib/soraneo-wallet/src/types/common';
+import { useSettingsStore } from '@/stores/settings';
 import type { Node } from '@/types/nodes';
-import type { NodesConnection } from '@/utils/connection';
-
-import { formatLocation } from '../Settings/Node/utils';
+import { NodesConnection } from '@/utils/connection';
+import { toSafeExternalLink } from '@/utils/externalLinks';
+import { settingsStorage } from '@/utils/storage';
+import { formatLocation } from '@/components/App/Settings/Node/utils';
+import { resolveIndexerStatus } from '@/components/App/Footer/utils/resolveIndexerStatus';
 
 import FooterPopper from './FooterPopper.vue';
-import NoInternetDialog from './NoInternetDialog.vue';
 
-import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
+const NoInternetDialog = createAsyncComponent(() => import('./NoInternetDialog.vue'));
+type LatestIndexedBlockModule = typeof import('@/indexer/queries/latestIndexedBlock');
+
+let latestIndexedBlockModulePromise: Promise<LatestIndexedBlockModule> | null = null;
+
+/**
+ * Defers Polkaswap indexer query code until the footer refreshes indexer
+ * status, keeping GraphQL out of the shell startup path.
+ */
+const loadLatestIndexedBlockModule = (): Promise<LatestIndexedBlockModule> => {
+  latestIndexedBlockModulePromise ??= import('@/indexer/queries/latestIndexedBlock');
+  return latestIndexedBlockModulePromise;
+};
 
 /** Max limit provided by navigator.connection.downlink */
 const MAX_INTERNET_CONNECTION_LIMIT = 10;
+const INDEXER_BLOCK_REFRESH_INTERVAL_MS = 30_000;
 
-@Component({
-  components: {
-    SoraLogo,
-    FooterPopper,
-    NoInternetDialog,
-    SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
-    StatisticsDialog: lazyComponent(Components.StatisticsDialog),
-  },
-})
-export default class AppFooter extends Mixins(TranslationMixin) {
-  // Block explorer
-  @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
-  @state.wallet.settings.indexerType private indexerType!: WALLET_CONSTS.IndexerType;
-  @state.wallet.settings.blockNumber blockNumber!: number;
-  @getter.libraryTheme libraryTheme!: Theme;
+defineOptions({ name: 'AppFooter' });
 
-  get blockExplorerLink(): string | undefined {
-    const links = getExplorerLinks(this.soraNetwork);
-    if (!links.length) {
-      return undefined;
-    }
-    return links[0].value;
-  }
+const { t, TranslationConsts } = useTranslation();
+const settingsStore = useSettingsStore();
 
-  get blockNumberFormatted(): string {
-    return new FPNumber(this.blockNumber).toLocaleString();
-  }
+const soraNetwork = computed(() => settingsStore.soraNetwork as Nullable<SoraNetwork>);
+const blockNumber = computed(() => settingsStore.blockNumber);
+const indexerType = computed(() => settingsStore.indexerType ?? IndexerType.POLKASWAP);
+const libraryTheme = computed(() => (settingsStore.libraryTheme as Theme | null) ?? Theme.LIGHT);
 
-  // Node connection
-  @state.settings.appConnection appConnection!: NodesConnection;
-  @state.settings.selectNodeDialogVisibility selectNodeDialogVisibility!: boolean;
-  @mutation.settings.setSelectNodeDialogVisibility setSelectNodeDialogVisibility!: (flag: boolean) => void;
+const defaultAppConnection = markRaw(new NodesConnection(settingsStorage, markRaw(connection)));
+const appConnection = computed<NodesConnection>(() => {
+  const connectionInstance = settingsStore.appConnection as NodesConnection | undefined;
+  return connectionInstance ?? defaultAppConnection;
+});
+const selectNodeDialogVisibility = computed(() => Boolean(settingsStore.selectNodeDialogVisibility));
 
-  private get connectingNode(): Nullable<Node> {
-    const { nodeAddressConnecting, nodeList } = this.appConnection;
+const indexersData = computed(
+  () => (settingsStore.indexers as Record<IndexerType, IndexerState>) ?? ({} as Record<IndexerType, IndexerState>)
+);
+const indexerEndpoint = computed(() => indexersData.value[indexerType.value]?.endpoint ?? '');
+const sorametricsApiEndpoint = computed(() => settingsStore.sorametricsApiEndpoint ?? '');
 
-    if (!nodeAddressConnecting) return null;
+const isBrowserOnline = computed(() => settingsStore.isInternetConnectionEnabled);
+const isConnectionStable = computed(() => settingsStore.isInternetConnectionStable);
+const connectionSpeedMb = computed(() => settingsStore.internetConnectionSpeedMb);
+const latestIndexedBlock = ref<Nullable<number>>(null);
+const latestIndexedBlockSource = ref<'polkaswap' | 'sorametrics'>('polkaswap');
+const isIndexerBlockLoading = ref(false);
+let indexerBlockRefreshTimer: Nullable<ReturnType<typeof window.setInterval>> = null;
+let indexerBlockRequestId = 0;
 
-    return nodeList.find((node) => node.address === nodeAddressConnecting);
-  }
+const blockExplorerLink = computed(() => toSafeExternalLink(getExplorerLinks(soraNetwork.value)?.[0]?.value));
+const blockNumberFormatted = computed(() => new FPNumber(blockNumber.value).toLocaleString());
 
-  get isNodeConnected(): boolean {
-    return this.appConnection.nodeIsConnected;
-  }
+const connectingNode = computed(() => {
+  const { nodeAddressConnecting, nodeList } = appConnection.value;
+  if (!nodeAddressConnecting) return null;
+  return nodeList.find((node) => node.address === nodeAddressConnecting) ?? null;
+});
 
-  private get isNodeConnecting(): boolean {
-    return !!this.connectingNode;
-  }
+const node = computed<Node | null>(() => connectingNode.value ?? appConnection.value.node ?? null);
 
-  private get nodeConnectionStatusKey(): string {
-    if (this.isNodeConnected) return 'connected';
-    if (this.isNodeConnecting) return 'loading';
-    return 'disconnected';
-  }
+const isNodeConnected = computed(() => appConnection.value.nodeIsConnected);
+const isNodeConnecting = computed(() => Boolean(connectingNode.value));
 
-  get nodeConnectionClass(): Status {
-    if (this.isNodeConnected) return Status.SUCCESS;
-    if (this.isNodeConnecting) return Status.INFO;
-    return Status.ERROR;
-  }
+const nodeConnectionStatus = computed(() => {
+  if (isNodeConnected.value) return Status.SUCCESS;
+  if (isNodeConnecting.value) return Status.INFO;
+  return Status.ERROR;
+});
 
-  get nodeConnectionText(): string {
-    return this.t(`footer.node.title.${this.nodeConnectionStatusKey}`);
-  }
+const nodeConnectionText = computed(() => {
+  const key = isNodeConnected.value ? 'connected' : isNodeConnecting.value ? 'loading' : 'disconnected';
+  return t(`footer.node.title.${key}`);
+});
 
-  get node(): Nullable<Node> {
-    return this.connectingNode ?? this.appConnection.node;
-  }
+const formattedNodeLocation = computed(() => (node.value?.location ? formatLocation(node.value.location) : null));
 
-  get formattedNodeLocation() {
-    if (!this.node?.location) {
-      return null;
-    }
-    return formatLocation(this.node.location);
-  }
+const nodeLatencyText = computed(() => {
+  const addr = node.value?.address;
+  if (!addr) return '';
+  const latency = appConnection.value.getNodeLatency(addr);
+  return latency != null && isFinite(latency as number) ? `${latency} ms` : '';
+});
 
-  openNodeSelectionDialog(): void {
-    this.setSelectNodeDialogVisibility(true);
-  }
+const backoffEnabledText = computed(() => (NodesConnection.enableBackoff ? t('connectedText') : t('disabled')));
+const parallelDialEnabledText = computed(() =>
+  NodesConnection.enableParallelDial ? t('connectedText') : t('disabled')
+);
 
-  openIndexerSelectionDialog(): void {
-    this.setSelectIndexerDialogVisibility(true);
-  }
+const backoffNextText = computed(() => {
+  if (!NodesConnection.enableBackoff) return '';
+  const ms = appConnection.value.lastReconnectDelayMs;
+  if (!ms) return '';
+  const s = Math.ceil(ms / 1000);
+  return `${s}s (attempt ${appConnection.value.reconnectAttempt})`;
+});
 
-  // Internet connection
-  @mutation.settings.setInternetConnectionEnabled private setEnabled!: VoidFunction;
-  @mutation.settings.setInternetConnectionDisabled private setDisabled!: VoidFunction;
-  @mutation.settings.setInternetConnectionSpeed private setSpeedMb!: VoidFunction;
-  @getter.settings.isInternetConnectionEnabled private isInternetConnectionEnabled!: boolean;
-  @getter.settings.isInternetConnectionStable private isInternetConnectionStable!: boolean;
-  @getter.settings.internetConnectionSpeedMb internetConnectionSpeedMb!: number;
+const isDebug = computed(() => settingsStore.debugEnabled);
 
-  private get internetStatusKey(): string {
-    if (!this.isInternetConnectionEnabled) return 'disabled';
-    if (!this.isInternetConnectionStable) return 'unstable';
-    return 'stable';
-  }
+const internetConnectionStatus = computed(() => {
+  if (!isBrowserOnline.value) return Status.ERROR;
+  if (!isConnectionStable.value) return Status.WARNING;
+  return Status.SUCCESS;
+});
 
-  get internetConnectionClass(): Status {
-    if (!this.isInternetConnectionEnabled) return Status.ERROR;
-    if (!this.isInternetConnectionStable) return Status.WARNING;
+const internetConnectionText = computed(() => {
+  const key = !isBrowserOnline.value ? 'disabled' : !isConnectionStable.value ? 'unstable' : 'stable';
+  return t(`footer.internet.title.${key}`);
+});
+
+const internetConnectionDesc = computed(() => {
+  const key = !isBrowserOnline.value ? 'disabled' : !isConnectionStable.value ? 'unstable' : 'stable';
+  return t(`footer.internet.desc.${key}`);
+});
+
+const internetConnectionSpeedMbText = computed(() => {
+  if (!connectionSpeedMb.value) return '';
+  const suffix = connectionSpeedMb.value === MAX_INTERNET_CONNECTION_LIMIT ? '≥ ' : '';
+  return `${suffix}${connectionSpeedMb.value} ${TranslationConsts.mbps}`;
+});
+
+const indexerStatus = computed(() => {
+  return resolveIndexerStatus(indexerType.value, indexersData.value);
+});
+
+const indexerBlockStatus = computed(() => {
+  if (latestIndexedBlock.value !== null) {
     return Status.SUCCESS;
   }
 
-  get internetConnectionText(): string {
-    return this.t(`footer.internet.title.${this.internetStatusKey}`);
+  switch (indexerStatus.value) {
+    case ConnectionStatus.Unavailable:
+      return Status.ERROR;
+    case ConnectionStatus.Loading:
+      return Status.INFO;
+    case ConnectionStatus.Available:
+      return Status.SUCCESS;
+    default:
+      return Status.INFO;
   }
+});
 
-  get internetConnectionDesc(): string {
-    return this.t(`footer.internet.desc.${this.internetStatusKey}`);
-  }
+const isIndexerBlockInitialLoading = computed(
+  () => isIndexerBlockLoading.value && latestIndexedBlock.value === null
+);
+const latestIndexedBlockFormatted = computed(() => {
+  if (latestIndexedBlock.value === null) return '-';
+  return new FPNumber(latestIndexedBlock.value).toLocaleString();
+});
+const latestIndexedBlockSourceLabel = computed(() =>
+  latestIndexedBlockSource.value === 'sorametrics' ? 'SoraMetrics' : 'Polkaswap Indexer'
+);
+const indexerBlockText = computed(() =>
+  t('footer.statistics.indexerBlock', {
+    block: latestIndexedBlockFormatted.value,
+    source: latestIndexedBlockSourceLabel.value,
+  })
+);
 
-  get internetConnectionSpeedMbText(): string {
-    if (!this.internetConnectionSpeedMb) return '';
-    const suffix = this.internetConnectionSpeedMb === MAX_INTERNET_CONNECTION_LIMIT ? '≥ ' : '';
-    return `${suffix}${this.internetConnectionSpeedMb} ${this.TranslationConsts.mbps}`;
-  }
+function setSelectNodeDialogVisibility(flag: boolean): void {
+  settingsStore.setSelectNodeDialogVisibility(flag);
+}
 
-  refreshPage(): void {
-    window.location.reload();
-  }
+async function runLatencyProbe(): Promise<void> {
+  await appConnection.value.testLatency();
+}
 
-  // Statistics connection
-  @state.wallet.settings.indexers private indexersData!: Record<WALLET_CONSTS.IndexerType, WALLET_TYPES.IndexerState>;
-  @mutation.settings.setSelectIndexerDialogVisibility private setSelectIndexerDialogVisibility!: (
-    flag: boolean
-  ) => void;
+function toggleBackoff(): void {
+  NodesConnection.enableBackoff = !NodesConnection.enableBackoff;
+}
 
-  showStatisticsDialog = false;
+function toggleParallel(): void {
+  NodesConnection.enableParallelDial = !NodesConnection.enableParallelDial;
+}
 
-  get indexerStatus(): WALLET_TYPES.ConnectionStatus {
-    return this.indexersData[this.indexerType].status;
-  }
+function refreshPage(): void {
+  window.location.reload();
+}
 
-  get statisticsConnectionClass(): Status {
-    switch (this.indexerStatus) {
-      case WALLET_TYPES.ConnectionStatus.Unavailable:
-        return Status.ERROR;
-      case WALLET_TYPES.ConnectionStatus.Loading:
-        return Status.INFO;
-      case WALLET_TYPES.ConnectionStatus.Available:
-        return Status.SUCCESS;
-      default:
-        return Status.INFO;
+function handleOffline(): void {
+  settingsStore.setInternetConnectionDisabled();
+}
+
+function handleOnline(): void {
+  settingsStore.setInternetConnectionEnabled();
+}
+
+function handleConnectionChange(): void {
+  settingsStore.setInternetConnectionSpeed();
+}
+
+async function refreshLatestIndexedBlock(): Promise<void> {
+  const requestId = ++indexerBlockRequestId;
+  isIndexerBlockLoading.value = true;
+
+  try {
+    const { fetchLatestIndexedBlock } = await loadLatestIndexedBlockModule();
+    const result = await fetchLatestIndexedBlock(sorametricsApiEndpoint.value);
+    if (requestId !== indexerBlockRequestId) return;
+    if (result !== null) {
+      latestIndexedBlock.value = result.block;
+      latestIndexedBlockSource.value = result.source;
+    }
+  } catch (error) {
+    console.warn('[footer] Latest Polkaswap indexer block is unavailable', error);
+  } finally {
+    if (requestId === indexerBlockRequestId) {
+      isIndexerBlockLoading.value = false;
     }
   }
-
-  get statisticsConnectionText(): string {
-    return this.t(`footer.statistics.title.${this.indexerStatus}`);
-  }
-
-  get statisticsConnectionDesc(): string {
-    return this.t(`footer.statistics.desc.${this.indexerStatus}`);
-  }
-
-  openStatisticsDialog(): void {
-    this.showStatisticsDialog = true;
-  }
-
-  created(): void {
-    window.addEventListener('offline', this.setDisabled);
-    window.addEventListener('online', this.setEnabled);
-    (navigator as any)?.connection?.addEventListener('change', this.setSpeedMb);
-  }
-
-  beforeDestroy(): void {
-    window.removeEventListener('offline', this.setDisabled);
-    window.removeEventListener('online', this.setEnabled);
-    (navigator as any)?.connection?.removeEventListener('change', this.setSpeedMb);
-  }
 }
+
+watch([indexerType, indexerEndpoint, sorametricsApiEndpoint], () => {
+  latestIndexedBlock.value = null;
+  latestIndexedBlockSource.value = 'polkaswap';
+  void refreshLatestIndexedBlock();
+});
+
+onMounted(() => {
+  window.addEventListener('offline', handleOffline);
+  window.addEventListener('online', handleOnline);
+  (navigator as any)?.connection?.addEventListener('change', handleConnectionChange);
+  void refreshLatestIndexedBlock();
+  indexerBlockRefreshTimer = window.setInterval(() => {
+    void refreshLatestIndexedBlock();
+  }, INDEXER_BLOCK_REFRESH_INTERVAL_MS);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('offline', handleOffline);
+  window.removeEventListener('online', handleOnline);
+  (navigator as any)?.connection?.removeEventListener('change', handleConnectionChange);
+  indexerBlockRequestId += 1;
+  if (indexerBlockRefreshTimer !== null) {
+    window.clearInterval(indexerBlockRefreshTimer);
+    indexerBlockRefreshTimer = null;
+  }
+});
 </script>
 
 <style lang="scss" scoped>
@@ -277,6 +365,15 @@ $sora-logo-width: 115px;
   background-color: var(--s-color-utility-surface);
   justify-content: center;
   align-items: center;
+  gap: $inner-spacing-tiny;
+  padding: 0 $inner-spacing-small;
+
+  :deep(i[class*='s-icon-']) {
+    font-size: 16px !important;
+    line-height: 16px !important;
+    width: 16px;
+    height: 16px;
+  }
 }
 .block-number {
   color: var(--s-color-status-success);
@@ -289,6 +386,35 @@ $sora-logo-width: 115px;
     height: $block-icon-size;
     width: $block-icon-size;
     margin-right: 2px;
+  }
+}
+
+.indexer-block {
+  @include app-status-item;
+  cursor: default;
+
+  &.error :deep(i) {
+    color: var(--s-color-status-error);
+  }
+
+  &.warning :deep(i) {
+    color: var(--s-color-status-warning);
+  }
+
+  &.success :deep(i) {
+    color: var(--s-color-status-success);
+  }
+
+  &__loading {
+    height: var(--s-font-size-mini);
+    width: var(--s-font-size-mini);
+    background-image: url('@/assets/img/status-pending.svg');
+    @include loading;
+  }
+
+  &__text {
+    margin-left: $inner-spacing-mini;
+    white-space: nowrap;
   }
 }
 
@@ -317,9 +443,64 @@ $sora-logo-width: 115px;
   }
 }
 
+.agents-link {
+  display: flex;
+  align-items: center;
+  color: var(--s-color-base-content-secondary);
+  font-size: var(--s-font-size-extra-mini);
+  font-weight: 400;
+  text-decoration: none;
+  white-space: nowrap;
+  @include app-status-item;
+
+  &:hover,
+  &:focus {
+    color: var(--s-color-base-content-primary);
+  }
+}
+
 @include desktop(true) {
   .sora-logo {
     display: none;
+  }
+}
+
+@include large-mobile(true) {
+  .app-status {
+    justify-content: space-between;
+    padding: 0 $inner-spacing-mini;
+    gap: $inner-spacing-mini;
+  }
+
+  .block-number {
+    display: none;
+  }
+
+  .indexer-block {
+    flex: 1 1 auto;
+    justify-content: center;
+    min-width: 0;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: $inner-spacing-tiny;
+    padding-right: $inner-spacing-tiny;
+
+    &__text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .sora-logo {
+    display: none;
+  }
+
+  .agents-link {
+    flex: 0 0 auto;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: $inner-spacing-tiny;
+    padding-right: $inner-spacing-tiny;
   }
 }
 </style>

@@ -1,0 +1,24 @@
+{
+  "reviewedAt": "2026-09-30",
+  "scope": "One bounded independent food-law pass for 100g Japanese manufactured sencha, purchased personal postal parcel; no contacts or americas.json edits.",
+  "BQ": {
+    "sources": [
+      "https://wetten.overheid.nl/BWBR0028619/",
+      "https://faolex.fao.org/docs/pdf/net214082.pdf"
+    ],
+    "finding": "Warenwet BES article 2(1) excludes manufacture within the same private household, not purchased-food import generally. Article3(1)(j)–(k) empowers implementing import/export and registration rules; it does not itself impose a universal imported-food origin certificate. Article3(4) allows rules for particular BES islands. Read current official indexed 2023 text and FAOLEX 2023 full-text copy. No material new common three-island personal postal food exemption or mandatory certificate found. Existing manufactured-tea/island-specific implementing-rule gap remains.",
+    "newLeadAccessFailure": "Official NVWA miscellaneous-products PDF search result returned 404 when fetched; it was not relied upon."
+  },
+  "CW": {
+    "sources": [
+      "https://lokaleregelgeving.overheid.nl/CVDR143880/1",
+      "https://lokaleregelgeving.overheid.nl/CVDR143880/1?show-wti=true"
+    ],
+    "finding": "Current Warenlandsverordening article 2(1) likewise excludes manufacture within a private household, not import of purchased retail food. Article3(1)(j)–(k) authorizes import/export and registration rules, not a self-executing universal origin certificate; regulation-making powers alone do not exclude personal tea. The publicly indexed permit-list decree concerns specific bakery/meat/produce categories, not a new tea ruling. No material personal-postal exemption/barrier established; LVV finished-tea conditions remain missing."
+  },
+  "SX": {
+    "overrideFile": "bq-cw-sx-food-override.json",
+    "decision": "unresolved",
+    "finding": "Materially narrowed independent food question with actual current Public Health Decree article 4 and official explanatory note; only SX ready override supplied. No agricultural permission inferred."
+  }
+}

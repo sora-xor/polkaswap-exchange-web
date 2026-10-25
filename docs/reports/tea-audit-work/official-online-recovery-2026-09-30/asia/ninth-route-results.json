@@ -1,0 +1,42 @@
+[
+  {
+    "name": "om-reg2010-official",
+    "url": "https://www.nsg.gov.om/data/1bc7e394-9983-47c0-ac4e-a94673d0d197.pdf",
+    "status": "200",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/om-reg2010-official.pdf",
+    "retrievedAt": "2026-09-30T06:40:02.843438+00:00",
+    "bytes": 1779269,
+    "sha256": "5110bb979ae58845bb90a1b1b17cd6f620c012304087bfaf9a88a39b06315552"
+  },
+  {
+    "name": "om-og903-official",
+    "url": "https://www.mjla.gov.om/images/decrees/file/Book802905.pdf",
+    "status": "200",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/om-og903-official.pdf",
+    "retrievedAt": "2026-09-30T06:40:01.372807+00:00",
+    "bytes": 290666,
+    "sha256": "dd16c51f5a1e30d0f0eb371ba20c90c54be93a17c99f2a405a3c15542a9651d0"
+  },
+  {
+    "name": "pg-prohibited-imports",
+    "url": "https://customs.gov.pg/pdf/pages/prohibited_imports.pdf",
+    "status": "500",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/pg-prohibited-imports.pdf",
+    "retrievedAt": "2026-09-30T06:39:58.715982+00:00",
+    "bytes": 7309,
+    "sha256": "a8a284f377cb9f21c53e5553234ecb693dc4c2c38f3306b6cde4aead5e05e913"
+  },
+  {
+    "name": "jo-customs-tea",
+    "url": "https://services.customs.gov.jo/jccits/search_tariffcode.aspx?parent=090210",
+    "status": "200",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/jo-customs-tea.html",
+    "retrievedAt": "2026-09-30T06:40:01.117585+00:00",
+    "bytes": 60562,
+    "sha256": "224bf7704edb92cc1a8ebc1792178e99ace65f249c07a2dfbc2ba548c1f38710"
+  }
+]

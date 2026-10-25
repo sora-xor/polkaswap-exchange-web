@@ -1,0 +1,39 @@
+[
+  {
+    "code": "SR",
+    "name": "Suriname",
+    "status": "not_verified",
+    "rule": "The enacted Plant Protection Act 2020, article 1(1)(bb), includes unprocessed plant material and processed products whose nature or processing may create a pest-introduction/spread risk. The 2023 ministry newsletter gives a simplified unprocessed-material description, not a complete statutory exemption. Articles 5–8 require advance permission and original phytosanitary certification for covered articles; article 6(3) has a specific processed frozen fruit/vegetable certificate exception, with permission still required. The August 2026 procedure reiterates the controls. Finished sencha is not classified by the retrieved provisions. The separate 2003 trade Negative List omits tea chapter 9 from its plant-certification row but does not override this later plant-health regime. The 2026 Food Act remains officially listed as a pending bill.",
+    "personalMailApplicability": "General import notice contains no personal-post exemption; noncommercial plant imports are covered if regulated.",
+    "quantityLimit": null,
+    "authority": "Suriname Ministry of Agriculture, Livestock and Fisheries NPPO",
+    "evidenceUrls": [
+      "https://www.dna.sr/media/dc5fihzb/sb_2020___78.pdf",
+      "https://gov.sr/wp-content/uploads/2026/08/Procedure-voor-de-invoer-van-planten-en-plantaardige-producten.jpg",
+      "https://gov.sr/wp-content/uploads/2023/08/LVV-IDB-Nieuwsbrief-uitgave-02.pdf",
+      "https://www.dna.sr/wetgeving/ontwerpwetten-bij-dna/in-behandeling/ontwerpwet-levensmiddelenwet-2026/",
+      "https://gov.sr/ministeries/ministerie-van-economische-zaken-ondernemerschap-technologische-innovatie/invoer-uitvoer-en-deviezen-controle-iud/",
+      "https://faolex.fao.org/docs/pdf/sur129510.pdf",
+      "https://gov.sr/wp-content/uploads/2022/05/staatsbesluit-van-2-februari-2006-no-20-houdende-wijziging-van-het-besluit-negatieve-lijst-2003-sb-2003-no-74.pdf"
+    ],
+    "remainingQuestion": "Need a published commodity or processing determination, or applicable exemption, establishing whether finished Japanese steamed/dried Camellia tea meets the pest-risk threshold in Plant Protection Act 2020 article 1(1)(bb). A per-parcel authority ruling is not shown to be mandatory merely to answer that question; an applicable published general rule could suffice. Article 6(3) covers frozen processed fruit/vegetables, not tea; neither the old trade Negative List nor the simplified newsletter supplies the missing plant-health determination.",
+    "researchAttempts": [
+      "Read and OCRed the 14 August 2026 official import procedure notice, then compared the 2023 government explanation of plant-product scope. The finished-tea classification remains unresolved.",
+      "2026-09-30: Checked current Parliament record: Levensmiddelenwet 2026 submitted 6 March 2026 remains under pending bills with adoption date blank; did not apply its draft controls. Read the IUD ministry import guidance, full original 2003 Negative List (FAOLEX copy of official Gazette, including import annex) and OCR-read the government’s 2006 amendment. The plant-certification annex enumerates chapters 6, 7, 8, 10, 12 and 25, not 9; it supplies no general all-food origin-certificate category. The 2006 amendment concerns chemicals/ozone products and metal exports. Business-licensing conditions and trade-business registration guidance were not applied to private postal tea. Without a current NPPO finished-tea classification or complete current overriding exemption, preserved unresolved rather than assuming old schedule omission establishes present permission.",
+      "30 September bounded independent peer review: retrieved the complete enacted Plantenbeschermingswet 2020, S.B. 2020 no.78, from Parliament and reread the actual official 2023 LVV newsletter. Article 1(1)(bb), printed p.4, expressly includes pest-risk-bearing processed products; the newsletter pp.3–4 is a simplified explanation and cannot establish a manufactured-food exemption. Read articles 1(2), 2(5)–(6), 5–8 and 14: IPPC/SPS term meanings take priority, but this clause does not itself classify sencha or incorporate a commodity-specific no-document route. Article 6(3) removes the phytosanitary certificate only for processed frozen fruit/vegetables and still requires permission. Article 14 expressly includes postal custody of unauthorised covered goods. No published list in this Act supplies a tea classification; its regime is independent of the older trade Negative List. Preserved unresolved and saved the enacted PDF/text plus newsletter at caribbean-definition-peer-review/."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "Need a published commodity or processing determination, or applicable exemption, establishing whether finished Japanese steamed/dried Camellia tea meets the pest-risk threshold in Plant Protection Act 2020 article 1(1)(bb). A per-parcel authority ruling is not shown to be mandatory merely to answer that question; an applicable published general rule could suffice. Article 6(3) covers frozen processed fruit/vegetables, not tea; neither the old trade Negative List nor the simplified newsletter supplies the missing plant-health determination.",
+    "permitFreeSources": [
+      "https://www.dna.sr/media/dc5fihzb/sb_2020___78.pdf",
+      "https://gov.sr/wp-content/uploads/2026/08/Procedure-voor-de-invoer-van-planten-en-plantaardige-producten.jpg",
+      "https://gov.sr/wp-content/uploads/2023/08/LVV-IDB-Nieuwsbrief-uitgave-02.pdf",
+      "https://www.dna.sr/wetgeving/ontwerpwetten-bij-dna/in-behandeling/ontwerpwet-levensmiddelenwet-2026/",
+      "https://gov.sr/ministeries/ministerie-van-economische-zaken-ondernemerschap-technologische-innovatie/invoer-uitvoer-en-deviezen-controle-iud/",
+      "https://faolex.fao.org/docs/pdf/sur129510.pdf",
+      "https://gov.sr/wp-content/uploads/2022/05/staatsbesluit-van-2-februari-2006-no-20-houdende-wijziging-van-het-besluit-negatieve-lijst-2003-sb-2003-no-74.pdf"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  }
+]

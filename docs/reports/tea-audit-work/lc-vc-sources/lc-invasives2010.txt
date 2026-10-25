@@ -1,0 +1,1983 @@
+  National Invasive Species Strategy for Saint Lucia
+
+                   PATHWAYS
+
+
+
+
+            Carried out under the project
+
+Mitigating the Threats of Invasive Alien Species in
+             the Insular Caribbean
+  Project No. GFL / 2328 – 2713-4A86, GF-1030-09-03
+                    Guy Mathurin
+
+              NISS Pathways Specialist
+                  September 2010
+Invasive Alien Species (IAS) Pathways:
+Saint Lucia
+
+
+
+by Guy Mathurin
+
+
+
+
+September 2010
+CONTENTS
+ACKNOWLEDGEMENTS                                                                                                                     iii
+INTRODUCTION                                                                                                                         iv
+Invasive Species Pathways                   ......................................................................................   1
+Review of Invasive Species Pathways with specific reference to Saint Lucia                                                ........   3
+Transportation Related Pathways                          .........................................................................   3
+Air transportation             ...................................................................................................   3
+         Air transportation discussion .........................................................................                     4
+Water/aquatic transportation ......................................................................................                  6
+         Port Castries ...................................................................................................           6
+         Port Vieux‐Fort ...................................................................................................         7
+         Rodney Bay Marina                  ......................................................................................   7
+         Marigot Marina                     ......................................................................................   8
+         Water/aquatic transportation discussion                                   ...............................................   8
+Terrestrial/Land transportation ......................................................................................               9
+Items used in the shipping process                       .........................................................................   11
+         Containers            ...................................................................................................   11
+         Packing material                   ......................................................................................   11
+Mail/courier companies                      ......................................................................................   12
+Travel/tourism/relocation/recreation .........................................................................                       13
+Transportation of heavy equipment and military vehicles                                         ..................................   14
+Living industry pathways (Plant pathways)                             ...........................................................    15
+         Importation of plants for research                           ............................................................   15
+         Potting soils, growing media                    .........................................................................   15
+         Plant trade (nurseries, landscaping, floral)                              ...............................................   15
+Food pathways (transportation of animals for immediate consumption) .....................                                            17
+         Live seafood ...................................................................................................            17
+         Other live food animals                         .........................................................................   17
+         Plants and plant parts and forage                            ............................................................   17
+Non‐food animal pathways (transporting animals for purposes other
+                               than consumption)                                   ...............................................   17
+         Aquarium trade                     ......................................................................................   17
+         Aquaculture           ...................................................................................................   18
+         Pets                  ...................................................................................................   18
+         Release of organisms for religious, cultural or other reasons                                       .....................   19
+         Bait     ................................................................................................................   19
+Non‐living animal and plant related pathways ............................................................                            20
+         Minimally and partially processed meat products                                        ..................................   20
+         Minimally processed plant products                           ............................................................   20
+Miscellaneous pathways                      ......................................................................................   20
+         Biological control                 ......................................................................................   20
+         Other aquatic pathways                          .........................................................................   21
+         Fresh water rivers, streams and canals ............................................................                         21
+         Marine/estuarine areas and canals                            ............................................................   21
+Natural spread of invasive alien species .........................................................................                   22
+
+                                                                              ii
+        Natural migration                 ......................................................................................   22
+        Ocean currents                    ......................................................................................   23
+        Wind patterns                     ......................................................................................   23
+        Unusual weather events                         .........................................................................   23
+        Climate change                    ......................................................................................   24
+Ecosystem disturbance Long term – highway and utility rights of way,
+        land clearing, logging, construction projects, etc ...............................................                         24
+        Short term (habitat restoration)                            ............................................................   25
+Garbage         ................................................................................................................   25
+Hitchhikers     ................................................................................................................   26
+Hosting of regional events                ......................................................................................   26
+Public health and environmental concerns                            ............................................................   27
+
+RECOMMENDATIONS TO MITIGATE AGAINST ALIEN INVASIVE SPECIES
+Air transport recommendations                 .........................................................................            27
+Water/aquatic transport recommendations                    ............................................................            28
+Packing material recommendations              .........................................................................            28
+Mail and courier company recommendations ............................................................                              28
+Traveller/tourist/relocation/recreation recommendations                              ..................................            30
+Recommendations for heavy equipment and military vehicles ..................................                                       30
+Recommendations for plants for research                    ............................................................            30
+Recommendations for potting soils, growing media                        ...............................................            31
+Recommendations for plant trade               .........................................................................            31
+Recommendations for live seafood              .........................................................................            31
+Recommendations for plants for forage .........................................................................                    31
+Recommendations for the aquarium trade                     ............................................................            31
+Recommendations for aquaculture               .........................................................................            31
+Recommendations for pets         ......................................................................................            32
+Recommendations for minimally or partially processed meats ..................................                                      32
+Recommendations for minimally processed plants                          ...............................................            32
+Recommendations for biological control                     ............................................................            32
+Recommendations for fresh water rivers, streams and canals                           ..................................            32
+Recommendations for marine/estuarine areas and canals                                ..................................            32
+Recommendations for natural spread .........................................................................                       32
+Recommendations for climate change .........................................................................                       33
+Recommendations for ecosystem disturbance ............................................................                             33
+Recommendations for garbage ......................................................................................                 33
+Recommendations for hitchhikers               .........................................................................            33
+Recommendations for regional events .........................................................................                      33
+Recommendations for public health and environmental concerns                                      .....................            34
+Pathway risk assessment          ......................................................................................            34
+Annex 1: List of ACRONYMS        ......................................................................................            35
+Annex 2: Interview questionnaire              .........................................................................            36
+Annex 3: Interview results       ......................................................................................            37
+Annex 4: List of references      ......................................................................................            39
+
+
+                                                                             iii
+ACKNOWLEDGEMENTS
+
+I would like to thank Dr. Ulrike Krauss – Invasive Species Coordinator, Forestry Department, Dr.
+Vasantha Chase – Consultant and National Invasive Species Strategy Team Leader, Dr. Marie‐Louise Felix
+– Consultant and Team member, and Mr. Lyndon John – Assistant Chief Forestry Officer (Conservation)
+and Team member, for the opportunity and assistance they gave me to undertake the preparation of
+this report. Mr. Eden Compton – Director of Agricultural Services, Ministry of Agriculture, Lands,
+Forestry and Fisheries (MALFF) and Mr. Hilary George – Senior Research Officer, MALFF for permission
+to utilize office space during the preparation of the report.
+
+I would like to thank the following personnel of the MALFF for allowing me to interview them during the
+preparation of this report: Mr. Gregory Squires, Mr. Rudolph Louisy, Ms. Natisha Duncan, Mr. Leroy St.
+Louis and Mr. Duane Antoine of the Crop Protection and Quarantine Unit, Research & Development
+Division; Mr. Michael Andrew, Mr. Adams Toussaint and Mr. Alwin Dornelly of the Forestry Department;
+Ms. Alicia Daniel‐George and Mr. Winsbert Pierre‐Louis of the Plant Propagation Unit; Dr Auria King of
+the Livestock Services & Veterinary Division; Mr. Eden Compton, Director of Agricultural Services; Ms.
+Sarah George and Ms. Kate St. Mark of the Fisheries Division; Mr. George Small of the Extension Division
+and Mr. Frank Girard of the Information Unit.
+
+I also want to thank the following persons and institutions for granting me interviews: Mr. Paul Richards
+and Mr. Kenneth Lawrence of the Saint Lucia Air & Seaports Authority; Mr. Ronnie Pilgrim of the
+Caribbean Agricultural Research & Development Institute (CARDI); Ms. James of the Pet Palace; Mr.
+Laurianus Lesfloris of the Saint Lucia Solid Waste Management Authority; Mr. Kenneth Mathurin of the
+Rodney Bay Marina; Mr. Cuthbert Didier of the Ministry of Tourism; Mr. Marcus Thomas and Mr. Gilbert
+Lenor of the Customs & Excise Department; and Ms. Tabitha Mathurin of the Immigration Department.
+
+For the other persons who assisted me with this report and whom I may have forgotten to mention (or
+did not want to be), I also thank you!!
+
+
+
+Guy Mathurin
+Plant Health and Pesticides Management Consultant
+P.O. Box 42
+Castries
+SAINT LUCIA
+
+Tel:   (758) 384‐9088
+Email: guymathurin@yahoo.com
+       guymathurin@candw.lc
+
+
+
+
+                                                   iv
+Introduction
+This document is produced as part of the development of a National Invasive Species Strategy (NISS)
+which is being formulated for Saint Lucia under the project “Mitigating the Threat of Invasive Alien
+Species in the Insular Caribbean”. This project is funded by the Global Environment Facility (GEF) and
+implemented by CABI Bioscience. The aim of this report is to identify possibly pathways by which
+Invasive Alien Species (IAS) could arrive into Saint Lucia and recommend measures which may be taken
+to mitigate against them.
+
+
+
+
+                                                  v
+INVASIVE SPECIES PATHWAYS
+
+“Pathways”, with reference to invasive alien species (IAS) are defined as “routes by which species move
+from one locale to another, either within a country or between countries” [11]. Natural pathways
+include wind, sea currents and other forms of dispersal in which a specific species has developed
+morphological and behavioural characteristics to employ [21]. Man‐made pathways are those which are
+created or enhanced by human activity [21]. Man‐made pathways are of two (2) types:
+
+    •   Intentional – which is the result of a deliberate action to translocate an organism.
+    •   Unintentional – where it is not the intention to translocate an organism [21].
+
+Another definition of “pathway” can be “the means (e.g. aircraft, vessel or train), purpose or activity
+(e.g. agriculture, forestry or horticulture), or commodity (e.g. timber) by which an alien species may be
+transported to a new location, either intentionally or unintentionally” [10].
+
+Pathways can also be categorized and broken down into “sub pathways” [4]. Examples of such a
+categorization and breakdown can be found in the document “Training and Implementation Guide for
+Pathway Definition, Risk Analysis and Risk Prioritization” [4]. Those which are relevant to Saint Lucia are
+discussed below.
+
+Most of the pathways for the translocation of IAS have been identified and described, but new ones are
+constantly emerging, as in the case where it was recently discovered and reported that the plastic rings
+that researchers put on sea birds’ legs can transport barnacles from the tropics to Northern Europe [6].
+
+
+
+    a) Transportation Related Pathways
+
+        This category includes all the various pathways related to transportation of people and goods.
+
+        Subcategories include:
+
+                •   Modes of Transportation
+                    Air transportation
+                    Water/aquatic transportation
+                    Terrestrial/land
+
+                •   Items uses in the shipping process
+                    Containers
+                    Packing or packaging material
+
+                •   Mail/Courier companies
+                •   Travel/Tourism/Relocation/Recreation
+                •   Transportation of heavy vehicles and equipment, including military
+
+                                                     1
+b)   Living Industry Pathways
+
+            Subcategories include:
+
+        •   Plant Pathways
+            Importation of plants for research
+            Potting soils and growing media
+            Plant trade (nurseries, landscaping, floral)
+
+        •   Food Pathways (Transportation of animals for immediate consumption):
+            Live seafood
+            Other live food animals
+            Plant and plant parts as food (movement of forage)
+
+        •   Non‐food Animal Pathways (Transporting animals for reasons other than
+            consumption):
+            Aquarium trade
+            Aquaculture
+            Pets
+            Non‐pet animals
+            Release of organisms for religious, cultural or other reasons
+            Bait
+
+        •   Non‐living Animal and Plant Related Pathways:
+            Minimally and partially processed meat products
+            Minimally processed plant products
+
+c)   Miscellaneous Pathways
+
+            Subcategories include:
+
+        •   Biological control
+            Release of a species that unexpectedly becomes invasive
+
+        •   Other Aquatic Pathways
+            Freshwater rivers, streams and canals
+            Marine/estuarine areas and canals
+
+        •   Natural spread of Invasive Alien Species
+            Natural migration
+            Ocean currents
+            Wind patterns
+            Unusual weather events
+            Climate change
+
+
+
+                                                 2
+            •   Ecosystem Disturbance
+
+                Long term – highway and utility rights of way, land clearing, logging, construction
+                projects, etc
+                Short term – habitat restoration
+
+            •   Garbage
+
+            •   Hitchhikers
+
+            •   Hosting of Regional events
+
+            •   Public Health and Environmental Concerns
+
+
+REVIEW OF INVASIVE SPECIES PATHWAYS WITH SPECIFIC REFERENCE TO ST. LUCIA
+
+Transportation Related Pathways
+
+Air transportation
+
+Saint Lucia has two (2) airports, the George F. L. Charles Airport (GFL) which is located in northwest
+Castries and the Hewanorra International Airport (HIA) which is located minutes north of Vieux‐Fort. The
+GFL airport services mainly regional air transport needs and handles passengers, luggage, cargo, animals
+(live poultry, pets) and animal products, plants and plant products, mail and items transported by
+courier services. GFL also is a port of entry for smaller chartered international, regional and occasional
+military flights. The HIA services mainly international air routes and handles passengers, cargo and mail.
+There are a few inter‐island, private and charter flights.
+
+During 2009, the GFL had a total of twenty‐two thousand, two hundred and twelve (22,212) flights.
+There were a total of three hundred and eleven thousand and thirty‐five (311,035) passengers, and one
+million, seventy‐eight thousand, nine hundred and four (1,078,904) kilograms of cargo were handled
+[29, 30].
+
+AIRCRAFT MOVEMENT (George F.L. Charles Airport) – 2009
+Scheduled flights                                            10,206
+Non‐scheduled flights                                        10,186
+Other                                                         1,820
+TOTAL                                                        22,212
+Table 1. Aircraft movement GFL Charles Airport – 2009 [29, 30]
+
+
+
+
+                                                    3
+PASSENGER TRAFFIC (George F.L. Charles Airport) – 2009
+Passengers embarked                                            129,405
+Passengers disembarked                                         119,602
+Passengers in‐transit                                           62,028
+TOTAL                                                          311,035
+Table 2. Passenger traffic GFL Charles Airport – 2009 [29, 30]
+
+CARGO (George F.L. Charles Airport) – 2009 (Kilograms)
+Loaded                                                        393,802
+Unloaded                                                      685,102
+TOTAL handled                                               1,078,904
+Table 3. Cargo handled GFL Airport – 2009 [29, 30]
+
+During 2009, the HIA had a total of ten thousand and seventy‐five (10,075) flights. There were a total of
+five hundred and fifteen thousand, one hundred and ten (515,110) passengers, and one million, seven
+hundred and thirteen thousand, two hundred and twenty‐five (1,713,225) kilograms of cargo were
+handled (SLASPA Statistical Digest 2008 – 2009).
+
+
+AIRCRAFT MOVEMENT (Hewanorra International) – 2009
+Scheduled flights                                             3,112
+Non‐scheduled flights                                         5,998
+Other                                                           965
+TOTAL                                                       10,075
+Table 4. Aircraft movement Hewanorra International Airport – 2009 [29, 30]
+
+PASSENGER TRAFFIC (Hewanorra International) – 2009
+Passengers embarked                                          229,446
+Passengers disembarked                                       229,819
+Passengers in‐transit                                         55,845
+TOTAL                                                        515,110
+Table 5. Passenger traffic Hewanorra International Airport – 2009 [29, 30]
+
+CARGO (Hewanorra International) – 2009 (Kilograms)
+Loaded                                                     947,851
+Unloaded                                                   765,374
+TOTAL handled                                            1,713,225
+Table 6. Cargo handled Hewanorra International Airport– 2009 [29, 30]
+
+Air transportation discussion
+
+International air travel has long been recognized as a significant means of moving organisms, including
+pest species and IAS [40]. Insects, including flies and mosquitoes are regularly found in passenger cabins,
+cargo and luggage compartments. They, along with other animals, have also been found in wheel bays
+of aircraft. It is reported that it is relatively easy for human pest and disease pathogens, pests and
+diseases of agricultural crops and IAS to survive flights of several hours duration [40].
+                                                       4
+The frontline against IAS at the airports in Saint Lucia includes the Customs and Excise Department
+Officers, Immigration Officers, Port Authority Workers, Public Health and Ministry of Agriculture (Plant
+and Animal Health) Officers. They are the personnel who are responsible for identifying the possible
+entry of any animal, plant or human pests or diseases and other organisms, implementing the provisions
+of the International Plant Protection Convention (IPPC), the Convention on International Trade in
+Endangered Species of Wild Fauna and Flora (CITES), the Convention on Biological Diversity (CBD), the
+International Convention for the Prevention of Pollutions from Ships (MARPOL) and any other relevant
+conventions, bilateral or multilateral agreements. At a National Plant Quarantine Workshop facilitated
+by the author, it was recently revealed that Customs Officers, Ports Personnel, Ministry of Agriculture
+and Ministry of Health personnel all needed training in the provisions, requirements and operating
+procedures of the above‐mentioned conventions (National Plant Quarantine Workshop, 26th – 30th July,
+2010, Castries, Saint Lucia).
+
+At GFL, a public health nurse is stationed full‐time at the port health facility, which was built by the Saint
+Lucia Air & Sea Ports Authority (SLASPA) to meet requirements for the International Cricket Council (ICC)
+Cricket World Cup which was hosted in the Caribbean in 2007. At that time there was the fear of a global
+pandemic of avian influenza (H5N1) and it was believed that the virus could come to the Caribbean via
+infected fans from countries where the virus existed. Since the building of the facility, which also houses
+areas for animal and plant health and quarantine, it has never been occupied full‐time by plant or
+animal health/quarantine officers.
+
+An animal/plant health quarantine inspector is based full‐time at the HIA. However, he does not work on
+weekends or allotted time off days. Aircraft are never boarded by the quarantine officer, which should
+be the first event which takes place after an international flight arrives and the passengers disembark.
+As it occurs now, after passengers disembark, cleaners board the aircraft to make them ready for return
+flights. All garbage collected by the cleaners is deposited into the local garbage stream, which ends up in
+the local landfill. There is no monitoring of the process by public health or animal/plant quarantine.
+
+At the GFL airport, the regional passenger airlines do not stay on the ground for more than 10 – 15
+minutes, which makes it difficult (even if an animal/plant health quarantine person was based there) for
+a quarantine inspection. Also, passengers are almost always on board during the aircraft’s time on the
+tarmac. At either airport, the holds are neither inspected nor treated for any possible human, animal,
+plant pests or diseases, hitchhikers or possible IAS.
+
+The greatest risk for the introduction of pests and diseases and IAS apart from those carried by human
+beings and animals, has been found to be in items carried in passenger luggage. Further, the greatest
+risk in passenger luggage has been found to be in the luggage of persons who are travelling to visit
+friends and families, or are returning home from vacations [40].
+
+Imported cargo at the airports is not monitored by the public or animal and plant health personnel. Only
+if animal or plant quarantine products are identified by Customs personnel, then the animal/plant
+health officers are requested to conduct examinations.
+
+
+
+
+                                                      5
+There are no incineration or fumigation facilities at the island’s two airports. A newly acquired
+incinerator has been installed at Roseau, southwest of Castries, near to the old banana research station
+which was formerly run by the former Windward Islands Banana Association (WINBAN) and is now
+WINFRESH (just a name, not an acronym). This means that any items confiscated because they present
+an animal or plant health risk, must be transported inland, through agricultural regions to the
+incinerator.
+
+Cargo imported by mail or courier services is taken away from the airports and straight to the courier
+offices without any inspection by the public, animal or plant health personnel. Customs officers are
+based at those offices and if any plant or animal products show up at the time of their inspections,
+those personnel are then notified.
+
+A helicopter service based at the GFL airport, transports passengers and luggage between the two
+airports and conducts island tours. It also provides charter services.
+
+
+Water/Aquatic Transportation
+
+Saint Lucia has two (2) main seaports: Port Castries and Port Vieux‐Fort. In addition, there are two (2)
+marinas: Rodney Bay and Marigot Bay. There are also sea ports at Soufriere and Cul de Sac. The seaport
+at Cul de Sac is mainly used for the importation of petroleum products, molasses and aggregate, mainly
+sand.
+
+Port Castries
+
+                Castries Seaport – Container Traffic (TEUs)
+                – 2009
+                                     TEUs         Tonnage
+                In                   15,055       330,085
+                Out                  15,131       18,248
+                TOTAL                30,186       348,333
+Table 7. Container traffic – Castries seaport, 2009 (TEU = Twenty foot equivalent unit) [29, 30].
+
+In 2009 at Port Castries, approximately four hundred and twenty‐seven thousand, three hundred and
+twenty‐six (427,326) short tons (1 short ton = 907.18474kg) of cargo was imported and twenty
+thousand, two hundred and twenty (20,220) short tons was exported. It consisted mainly of
+containerized and break‐bulk cargo. This figure also includes two hundred and twenty (220) short tons
+of petroleum products at Port Castries, five thousand, five hundred and eighty‐nine (5,589) short tons of
+molasses at Cul de Sac and (sixteen thousand, five hundred and thirty‐eight (16,538) short tons of
+aggregate at Cul de Sac.
+
+In 2009, there were one thousand and forty seven (1,047) vessel calls to Port Castries. This included
+cargo vessels, conventional break bulk vessels, container ships, combination ships, product tankers, car
+and truck carriers, tugs and barges, tugs, cruise ships (regional and international), naval, coast guard and
+others.
+
+
+                                                     6
+There (in 2009) were three hundred and ninety‐seven (397) cruise calls with seven hundred and twelve
+(712) passengers landed and six hundred and ninety‐nine thousand, three hundred and six (699,306) in‐
+transit passengers. There were at least sixteen (16) cruise line companies whose vessels made stops in
+Port Castries.
+
+Also in 2009, there were one hundred and fifty‐three (153) ferry calls with thirty thousand and forty‐
+three (30,043) arriving passengers and twenty‐nine thousand, eight hundred and forty‐seven (29,847)
+departing. These ferries were mainly from Martinique, but travelling as far north as Dominica and
+Guadeloupe.
+
+
+Port Vieux – Fort
+
+                Vieux‐Fort Seaport – Container Traffic
+                (TEUs) – 2009
+                                     TEUs         Tonnage
+                In                     10,782.5       76,089.0
+                Out                    10,973.5       47,404.0
+                TOTAL                  21,756.0      123,493.0
+Table 8. Container traffic – Vieux‐Fort, 2009 (TEU = Twenty foot equivalent unit) [29, 30].
+
+In 2009, approximately sixty‐four thousand, three hundred and seventy (64,370) short tons (1 short ton
+= 907.18474kg) of cargo was imported and sixty‐eight thousand, four hundred and sixty‐three (68,463)
+short tons was exported at Port Vieux‐Fort. It consisted mainly of petroleum products, cement, lumber,
+paper rolls, bananas, general cargo and trans‐shipments.
+
+There were six hundred and nine (609) vessel calls to Port Vieux‐Fort in 2008. They consisted of cargo
+vessels, conventional break bulk vessels, container ships, combination ships, product tankers, tugs and
+barges and tugs. There were no cruise ship calls at Port Vieux‐Fort in 2009.
+
+There are no public, plant or animal health personnel stationed at Port Vieux‐Fort. If Customs officers
+intercept any consignment of interest, it is detained and the relevant authorities summoned. Office
+space had formerly been allocated to plant and animal quarantine, but the area was never refurbished
+accordingly and was subsequently “re‐possessed” by Saint Lucia Marine Terminals Ltd.
+
+Rodney Bay Marina
+
+During 2009, a total of six thousand, one hundred and twenty (6,120) yachts arrived at Rodney Bay
+Marina. In December 2009, there were an additional two hundred and one (201) yachts which arrived
+during the Atlantic Rally Crossing (ARC). This is an annual event, with yachts crossing the Atlantic Ocean
+from the Canary Islands to Saint Lucia every December. The total number of passengers and crew on all
+yachts for 2009 was thirty‐one thousand, nine hundred and ninety‐seven (31,997).
+
+
+
+
+                                                     7
+Marigot Bay Marina
+
+During the period January to July 2010, there were one thousand, four hundred and thirty‐six (1,436)
+yacht calls to Marigot Bay Marina. The total number of passengers and crew for that period was seven
+thousand and seventy‐three (7,073) (SLASPA Research & Statistics Officer).
+
+There were no figures available from SLASPA for Port Soufriere for 2009.
+
+Water/Aquatic transportation discussion
+
+There is only one animal/plant health inspector from the MALFF stationed at Port Castries. Her office is
+located at the Ferry Terminal and she is summoned to the other areas of the port by Customs officers
+when required. She visits the Marigot Bay marina “every other day” and also works at the General Post
+Office in Castries. There are no other seaports in Saint Lucia where animal or plant health
+officers/inspectors are based on a full time basis. The Rodney Bay marina is visited by plant and animal
+health officers from the main Crop Protection and Quarantine Office at Union, Castries, once or twice
+per week. Whether at Port Castries, Port Vieux Fort or the marinas, these officers only concern
+themselves with phytosanitary or animal health matters. They are not trained to look out for aquatic
+alien invasive plants or animals which may enter the sea ports. Hence, there is potential for IAS to arrive
+into Saint Lucia on ship hulls, navigational buoys, floatation devices, anchors, chains, ropes, and flotsam
+or jetsam. They may also hitch a ride on containers, pallets, crates, nets, traps, trawls, or other gear
+associated with the fishing industry and recreational equipment (e.g., boat skis, SCUBA gear, wetsuits,
+boots, waders, etc.) [12].
+
+Garbage and other waste is normally discharged from cruise ships and other vessels, including yachts.
+International waste from the cruise ships and other big vessels is handled by the Saint Lucia Solid Waste
+Management Authority (SLSWMA). The offloading process is sometimes observed by the MALFF officer.
+The garbage removed from the vessels is transported to the landfills at Deglos, Cul de Sac, or
+Beausejour, Vieux‐Fort. That garbage is required to be “sorted” on board and should not contain any
+organic material. Garbage from the yachts in the marina is taken off the boats by the crews and then put
+into a local communal bin at the marina. It is then transported to the landfills. This garbage is not sorted
+or monitored and presents a very high risk to plant, animal and human health as well as the possibility of
+the introduction of IAS.
+
+An interview with the Operations Manager of SLASPA revealed that he was not aware of the IAS issue.
+His department had encountered both live and dead animals in imported consignments of cargo
+occasionally, but had not thought of them as possibly being invasive in nature. He stated that there were
+also possibilities of introduction of other animals via the mooring ropes on vessels. He informed the
+author that although during their day‐to‐day activities they did not specifically look out for IAS, anytime
+they saw any dead or live plants or animals, they would halt work and call the “relevant” authorities. He
+was aware of the issue of ballast water, but was not sure yet what measures were being put in place to
+manage it. He stated that his department would be willing to work with other collaborating agencies to
+address the problem of IAS because of their potential threat to Saint Lucia.
+
+
+
+
+                                                     8
+The Fisheries Department of the MALFF is aware of the IAS problem. In an interview with the author, the
+Chief Fisheries Officer stated that her department is very much aware of the IAS issue. They were aware
+of the problem through their work activities and training. She admitted that not much had been done in
+the past by her department to address the problem. However, she also stated that her department was
+now taking part in IAS conferences and workshops addressing the lionfish. It was the intention of her
+department to include monitoring for IAS in fisheries officers’ surveillance activities. Her department
+was also willing to train plant and animal health officers based at ports of entry, in the recognition and
+monitoring of IAS and other CITES‐related matters.
+
+An interview with the Yachting Specialist at the Ministry of Tourism indicated that they were aware of
+the IAS problem. He stated that during his tenure as the former general manager of the Rodney Bay
+Marina, he had done his best to accommodate plant and animal quarantine officers. One of the
+problems, he stated was the fact that none of the plant/animal health officers were based at the marina
+on a full‐time basis. It was difficult to have passengers and crew comply with measures in the absence of
+those officers. He admitted that during the “day‐to‐day” activities of the marina and dry dock, measures
+had not been sufficiently put in place to mitigate against the threat of IAS through that pathway. The
+garbage from the yachts was placed in a communal bin and then transported to the local landfill. The
+scraping from the hulls of yachts was also transported to the landfill or just thrown back into the water.
+To take care of these issues, he suggested that strict laws be enacted, officers be trained and deployed,
+the marina workers and public be trained and sensitized. He mentioned that his agency would be willing
+to work with the IAS project to help train, gather information and sensitize the public on the subject of
+IAS.
+
+In the Palau National Strategy, reference is made to “blind spots” with respect to the activities of fisher
+folk, local leisure yachts and the like, who make landings without reporting to immigration, customs or
+quarantine authorities [24]. This is a normal occurrence at the designated ports of entry and the
+numerous “unofficial” beaches, bays and coves around Saint Lucia. This is a potential pathway for the
+introduction of IAS. Reference is also made to “Free Zone Areas”, where consignments incoming or
+outgoing, move without normal port controls and inspections. In Saint Lucia, the Hess Oil Facility and the
+Beane Field Industrial Park are designated as “Free Zone Areas”.
+
+Terrestrial/Land Transportation
+
+Unlike air and water transportation, terrestrial/land transportation in Saint Lucia is confined within the
+borders of the country. Fortunately, Saint Lucia is protected by the Caribbean Sea and Atlantic Ocean,
+but this fact does not diminish the impact that terrestrial/land transportation can have with respect to
+IAS. The main means of terrestrial transportation in Saint Lucia are:
+
+    •   Car (private, taxi, rentals)
+    •   Minibus (public, private [churches, groups], taxi, rental)
+    •   Container trucks and containers (trucks for hire, private business)
+    •   Pickup vans (private, farmer, rental, transport services)
+    •   Public service vehicles (pickup vans, trucks, jeeps, ambulances, police, fire, ambulance, heavy
+        equipment)
+    •   Utility vehicles and heavy equipment (water, electricity, cable companies)
+    •   Coaster vans (private, taxi, charter)
+
+                                                    9
+    •   Coach (private, taxi, charter)
+    •   Heavy equipment carriers (public ministry, contracting companies, roadworks, construction)
+    •   Motor bikes and scooters (private, rental)
+    •   Bicycles
+    •   ATV’s (private and rental)
+    •   Trucks (private, transportation services, rentals)
+    •   Garbage trucks (private, commercial)
+    •   Heavy equipment (construction, road works, rentals)
+    •   Donkey (private and recreational)
+    •   Horse (private and recreational)
+
+
+The experiences of the plant and animal health services of the MALFF can be applied somewhat to that
+of IAS. It has been agreed among experts from those fields, that some plant and animal pests and
+diseases are invasive in nature. After the introductions of the pink hibiscus mealybug (Maconellicoccus
+hirsutus), the Giant African Snail (Achatina fulica) and the Amblyomma tick (Amblyomma sp.), several
+public announcements were made urging people from infected/infested areas, not to transport high risk
+materials to uninfested/uninfected areas. In the case of the Amblyomma tick, actual quarantine areas
+were demarcated and road signs and posters displayed. It did not take officials long to recognize that,
+because of the “culture” of the country, it would be virtually impossible to implement such internal
+quarantines. At several meetings that the author attended, the thought of police assisted road‐blocks
+set up to search for mealybugs, snails, ticks and other pests seemed very “far‐fetched”. As predicted
+then, all of these pests/diseases spread island‐wide due to human activity and movement of
+contaminated conveyances and articles. It may be significant to note that the spread of the pink hibiscus
+mealybug and the Giant African Snail was roughly mapped and found to be closely associated with the
+road networks in Saint Lucia. That may also be the case of other IAS (especially plants and weeds)
+present. It is well documented in some countries, that the road networks are a “sub‐pathway” for the
+spread of IAS plants. That is because the verges are usually regularly disturbed and the seeds and other
+plant parts are carried by human beings, animals and vehicles along those roads [40].
+
+In Saint Lucia, this potential mode of spread for IAS is extremely important and should not be
+underestimated. All kinds of soil and soil organisms, plants, plant seeds and cuttings, animals (vertebrate
+and invertebrate) can be potentially spread via the pathway of land/terrestrial transportation and there
+is little that can be done to stop it, given historical experiences. All of the above‐mentioned types of
+vehicles ply the nation’s highways and byways, city, towns, villages, rural communities, farm and forest
+roads and tracks without a thought being considered for the potential of spreading IAS. It must be stated
+though, that some members of the public did check their vehicles for hitch‐hiking Giant African Snails
+during the period just after it was reported as present in Saint Lucia (July 2000). This indicated a certain
+level of awareness and concern.
+
+Construction and roadworks companies from overseas regularly come to work in Saint Lucia. The plant
+quarantine service is not notified as a matter of routine, to arrange for the inspection of the vehicles and
+equipment on arrival at the seaports in Saint Lucia. It is therefore possible that IAS could be introduced
+into Saint Lucia via this pathway.
+
+
+
+                                                    10
+Items used in the shipping process
+
+Containers:
+
+Sea containers (i.e. 20‐ and 40‐foot intermodal freight or shipping containers) are a significant pathway
+for the potential entry of IAS and pests, as they are now the most common means of transfer of
+internationally traded goods and moving personal effects. Insects, snails, other invertebrates and
+vertebrates may contaminate containers during storage or packing, attracted by odour, light,
+temperature or humidity conditions. Micro‐organisms, seeds and other plant parts and plant debris may
+be present in contaminating soil, birds’ excrement etc. on or inside containers. Some of these organisms
+may be IAS or pests [33]. The same may apply to air shipping containers although contamination and
+presence of organisms may be more obvious, since these are handled more closely by airport personnel.
+
+Discussion
+
+Sea containers are not specifically checked for IAS or plant/animal pests and diseases. In many cases,
+containers arriving into Saint Lucia are taken straight from the ports of entry to the premises where they
+are unloaded. They are transported all over the island to business places and residential areas before
+unloading takes place, which means that there is the potential for IAS to be transported with them. A
+Customs officer has to be present when such containers are opened. If the consignment is agricultural in
+nature, a quarantine officer also has to be present. There have been instances where exotic insects
+other animals and storage pests have been found in containers containing non‐agricultural commodities
+and personal effects. Obviously, this presents a challenge for the containment of IAS or plant and animal
+pests if they were to be found on or in such containers (See Tables 7 and 8). Containers stored at the
+Castries seaport can be found no more than one metre away from the perimeter fencing, making it
+potentially easy for IAS to leave the port areas and make their way into the surrounding areas and
+vegetation.
+
+The International Plant Protection Convention (IPPC) is in the process of creating an International
+Standard for Phytosanitary Measures (ISPM) which will deal specifically with “sea containers and
+conveyances in international trade”. The Secretariats of the International Maritime Organisation (IMO)
+and the Convention on Biological Diversity (CDB) are invited to send representatives to sit on the
+working group which will be responsible for drafting the standard [33].
+
+In the case of air containers, although they never usually leave airport facilities, they may be
+contaminated especially with insects, because they are usually handled in the well‐lit environments of
+airports.
+
+
+
+Packing Material
+
+Packing material which can also be termed “packaging material” is defined as “material used in
+supporting, protecting or carrying a commodity” (IPPC ISPM No. 5, 2006). It can consist of paper, plastic,
+aluminium foil, bubble wrap, chipboard, foam peanuts, cellophane, corrugated fibreboard and plastic,
+glass, hessian cloth, jute, straw, plant leaves and stems, polyethylene, peat moss, soil, oasis, saran
+plastic, wood and many more materials.
+
+
+
+                                                   11
+Wood packaging material (WPM) is considered as so much of a high risk for plant pests, that a specific
+standard, ISPM No. 15 – “Regulation of Wood Packaging Material in International Trade – Revised
+2009”, was deemed necessary by the parties to the International Plant Protection Convention (IPPC). It
+covers wood packaging material such as crates, boxes, packing cases, dunnage (wood packaging
+material used to secure or support a commodity during transport, but which does not remain associated
+with the commodity), pallets, cable drums and spools/reels, which can be present in almost any
+imported consignment, including consignments that would not normally be subject to phytosanitary
+inspection. It requires the treatment of all WPM by fumigation or heat treatment to rid them of
+phytosanitary pests, which may include IAS. After the treatment, the WPM is then stamped with the
+authorised IPPC stamp.
+
+WPM is believed to be the pathway for several exotic plant pest introductions worldwide [40]. There are
+no regulations specifying the type of wood to be used for WPM and in some cases, bark and portions of
+vascular tissue may be found on WPM, providing a suitable habitat for some types of beetles [40]. WPM
+may also consist of one or many different wood species and can be made from fresh cut timber or
+seasoned lumber. This makes it virtually impossible to know the true origin of WPM [40]. Also WPM is
+reused and recycled for making more WPM. The presence of WPM does not have to be reported on any
+manifest and WPM inspected at ports of entry is usually only associated with agricultural commodity
+consignments although all other consignments often have WPM. Plant pests and diseases (fungi, insects,
+mites, spiders, weeds, and potential IAS can be found inside and on the outside of WPM. The
+effectiveness of the required IPPC treatments for WPM are still being studied and it is also possible that
+such treated wood may become re‐infested eventually [40]. The IPPC, with its members, is presently
+actively looking for new treatments to manage organisms associated with WPM [27].
+
+Discussion
+
+Certain packaging materials are already prohibited from entering Saint Lucia under Plant Protection
+Regulations (grass, leaves, shag, trash, soil, used bags) due to the possibility of introducing exotic plant
+pests or diseases [35]. This restriction could also be useful to help prevent the introduction of IAS. Any
+items containing the above‐mentioned materials are usually detained if intercepted by Customs officials
+and then referred to plant quarantine officers. On a daily basis, WPM (especially pallets and crates)
+leave the ports of entry for destinations islandwide. There is no regulation of that movement. Pallets can
+be found all over the island and are usually reused for flooring makeshift bars and stands at public
+events. They can also be found stacked up outside local bakeries, exposed to the elements. They do
+present a significant risk for the introduction of IAS and plant pests. Other packing materials are
+disposed of in the normal garbage stream or recycled for various uses.
+
+
+
+Mail/Courier companies
+
+MALFF quarantine officers are usually called to do inspections at mail and courier companies. Plant or
+animal material or suspect consignments are detained by Customs officials pending examination by the
+MALFF officers. In most cases, for courier companies, plant and animal material arriving into Saint Lucia
+is normally covered by import permits. In normal mail this permission is not usually obtained and permit
+requirements are regularly violated. Consignments include cut flowers, flowers for planting, seeds, herbs
+(dried and fresh), medicinal herbs, dried floral arrangements, dried herbs and handicraft items. There is
+a distinct possibility of potential IAS arriving into Saint Lucia via this particular pathway. The greatest
+risks in mail and courier services are items related to the major crops, landscaping, forests, or IAS which
+                                                      12
+could become established in those environments [40]. Also (as has been seen in the USA), there is the
+possibility of mailing human pathogens which are invasive in nature eg. Anthrax.
+
+There are no sorting facilities, x‐ray machines or sniffer dogs present at the post offices or courier
+service companies. Items are chosen for inspection by the contents of the manifest or at the discretion
+of the postal/courier company workers and/or the Customs officials. There are regular occurrences of
+wrong declarations on the manifests to try to avoid inspections (personal comm.).
+
+
+
+Travel/Tourism/Relocation/Recreation
+
+Invasive alien species can be introduced by travellers to, or spread within a country, in the following
+ways:
+
+        •   Purposeful carriage of animals or plants as gifts,
+        •   Intentional carriage of animals and/or plants or micro‐organisms for commerce,
+        •   Intentional collection of animals and/or plants or micro‐organisms and movement to a
+            another location,
+        •   Accidental carriage of animals or plants or micro‐organisms in luggage or on clothing
+        •   Accidental carriage of organisms in soil or other substances present in luggage containers or
+            shoes,
+        •   Accidental carriage of organisms in packing and wrapping materials that are brought with
+            the travelers or sent by post, courier, or as freight [37, 40].
+
+This sub‐pathway represents one of the highest risk groups in terms of the spread of IAS and exotic plant
+and animal pests and diseases. It is reported that over six hundred and fifty million (650,000,000)
+travellers cross international borders annually [11, 35]. Travellers and tourists may carry plants, seeds,
+animals for pets, game or agriculture (with their pests/diseases) and human pests/diseases from one
+country or locale to another. They can also carry on their persons and in their luggage, insect and mite
+eggs, juveniles and adults, fungal spores, bacteria and other organisms.
+
+Persons actively and purposefully collect plants and plant parts, insects, snails, pieces of wood, soil, sand
+and other items which may either be IAS or have IAS associated with them [40].
+
+Tourists collect souvenirs from places visited and take them to more places on their vacation and
+ultimately to their homes. These include plants and plant materials, animals or animal parts, handicraft,
+soil/sand, and other items which may become IAS if introduced into new areas. Hats made of plant
+material have been cited as a special concern, because they are worn as people move about and “are at
+a height where contact with vegetation is easy [40].
+
+Certain microorganisms (eg. the plant pathogen, Phytopthora ramorum) are reported to occur more on
+hiking trails and public lands rather than on minimally disturbed areas [40]. They can be picked up by
+hikers and spread to other areas. The spores of fungi, nematode cysts and weed seeds can be picked up
+by hikers and persons who participate in outdoor activities. They may remain viable for long periods of
+time in dry soil or on clothing and shoes. The same applies to the gear used for recreation (rafting,
+hiking, mountain climbing, rain forest and jungle excursions and water sports (diving, snorkelling,
+fishing, etc.) [40]. Weed seeds with adaptations to hook onto animal fur (thus, human clothing) have
+been found on jackets, cuffs, socks, bags, seams, Velcro and other parts of clothing [40].
+
+                                                     13
+Tourists who take cruise vacations in the Caribbean, visit a number of different destinations during a
+very short time period. It is possible that they can carry viable IAS from one destination to another that
+is also suitable for the survival of the IAS [40]. This is especially important because cruise passengers
+often take tours to pristine areas at the destinations and they also visit the local markets.
+
+Even if the tourist and travellers do not vacation or participate in outdoor activities outside of their
+national boundaries, they, their vehicles and gear could be responsible for the internal spread of IAS.
+
+The food which is served on international flights and cruise ships is usually bought and prepared in one
+country and served en‐route to, or in other countries. The left‐overs and scraps which can contain or
+habour IAS‐contaminated materials, is usually disposed of by various means in the destination countries
+or locales. In Saint Lucia, those organic leftovers and scraps are not landed from cruise ships. They
+should be held in a storage tank, ground and disposed of on the “high seas”. From aircraft those
+leftovers and scrap join the domestic garbage stream and end up in the possession of the cleaners or in
+the landfills.
+
+Discussion
+
+Customs officers routinely stop travellers who carry plant and animal materials in their luggage. It’s
+harder to detect micropopagules of plant, animal and human, pests and diseases. However, because of
+the recent threats by avian and swine influenza, public health officials have been occasionally
+monitoring travellers for symptoms of illness.
+
+In the case of persons returning home to live from overseas and workers coming to Saint Lucia to work
+for a while, not all baggage and cargo in their personal effects are inspected. It is safe to assume that
+potentially invasive plants and animals and their parts and microorganisms may enter the country on a
+regular basis via this route.
+
+Scanners have been deployed at several ports of entry, but they are not being utilised to inspect
+passenger baggage, apart from “carry‐on” items. In fact, some of them have become obsolete without
+ever having being used. This is evident at the Ferry Terminal, for example.
+
+This sub‐pathway can be considered high risk for the spread of unwanted organisms and a huge amount
+of reliance on the knowledge and actions of the public is necessary to prevent that spread.
+
+
+
+Transportation of Equipment and Military Vehicles
+
+Saint Lucia has been the recipient of donor assistance from countries who sometimes deploy
+construction personnel, including engineers, workers and military personnel. They undertake projects
+including the renovation of existing facilities or construction of new ones. In most cases, these groups
+bring along their own equipment and supplies (tents, food, machinery, tools, medicines, etc.). Plant and
+animal health personnel are not, as a matter of routine, notified so as to require the inspection of the
+imported items as in most cases, they are given diplomatic clearances. There is a possibility for the
+introduction of IAS via this pathway. However, on one occasion, the author observed a military unit
+cleaning all their heavy equipment and tools prior to their departing Saint Lucia and returning to the
+USA. Hopefully, that was also done prior to them leaving their last assignment location for Saint Lucia.
+
+
+
+                                                   14
+LIVING INDUSTRY PATHWAYS
+
+Plant Pathways
+
+Importation of plants for research
+
+In Saint Lucia, cultivars of bananas have been introduced for research purposes and eventual adoption
+as part of assistance to farmers in the search for improved varieties, enhanced and efficient production.
+Before 1995, this was done by the Windward Islands Banana Association (WINBAN) whom spearheaded
+such research. The Caribbean Agricultural Research & Development Institute (CARDI) have also brought
+in new varieties of agricultural crops such as sweet potatoes (Ipomea batatas), yams (Dioscorea spp. and
+hot peppers (Capsicum annuum). The introduction of the sweet potato weevil (Cylas formicarius) into
+Saint Lucia, may have been linked to such an introduction.
+
+Since 1995, other plants and plant parts have been imported and introduced into Saint Lucia including
+sweet potatoes (Ipomea batatas), orchids (various species), bananas (Musa spp.), dragon fruit
+(Hylocereus undatus), wax apple (Syzygium samarangense), Jatropha for biofuel (Jatropha spp.) and very
+little formal, if any research has been done with these plants. In fact, some of these plants or plant parts
+may have been introduced against the advice of the Crop Protection Unit, MALFF. Concern has been
+about the possibility of them bringing in new plant pests and diseases and invasiveness.
+
+
+
+Potting soils, growing media
+
+Potting soils and media are regularly imported into Saint Lucia under permit from the Crop Protection
+and Quarantine Unit – MALFF. In most cases they are imported commercially and usually comply with
+phytosanitary requirements. Samples, however are not taken regularly to verify freedom from possible
+pests/diseases and IAS.
+
+Plants in potting soils and media are also imported as part of personal effects by persons returning to
+Saint Lucia, or coming to live in Saint Lucia as residents. In these cases the potting soils and media may
+enter the country without the required permits and/or treatments. Customs officers are usually the first
+officials to detect such items in consignments and usually detain them for inspection by MALFF
+quarantine officials.
+
+
+Plant Trade (nurseries, landscaping, floral)
+
+Plants for planting are regularly imported into Saint Lucia. They include roses (bare‐rooted) (Rosa spp.),
+anthurium lilies (Anthurium spp.) and orchids (from tissue culture). In most cases, they meet
+phytosanitary permit requirements and are required to be sourced from reputable nurseries in Europe
+and Asia. Plant Quarantine Service – MALFF, informed the author that “invasiveness” is also one
+characteristic which is evaluated before plants for planting can be given permission to be imported.
+Inspection by plant quarantine officials at ports of entry is also required before consignments can be
+cleared.
+
+                                                    15
+Enthusiast gardeners request permits to bring exotic plants into Saint Lucia. In many instances
+permission is denied because the importer cannot provide sufficient detail regarding the plant health
+history of the plants in their countries of origin. The Plant Quarantine Service – MALFF has had several
+experiences where containers of plants for planting as part of landscaping projects have been imported
+into Saint Lucia without the required phytosanitary clearance. Upon opening these containers, apart
+from soil, live insects, spiders and reptiles have been found. The contents of those containers had to be
+returned to the country of origin or incinerated.
+
+Nurseries, including the MALFF‐run one, also indicate interest and request phytosanitary permits to
+import exotic plants and plant parts to be sold and introduced into Saint Lucia.
+
+Cut flowers are imported into Saint Lucia on a weekly basis. Among the flowers imported are: roses
+(Rosa spp.), orchids (various species), daisies (Bellis simplex), oriental lilies (Lilium auratum), Asiatic lilies
+(Lilium asiatic), Alstroemeria (Alstroemeria psittacina), chrysanthemums (Chrysanthemum morifolium),
+gladiolus (Gladioulus spp.), solidago (Solidago spp.), baby breath (Gypsophila paniculata), statice
+(Limonium leptostachyum), calla lilies (Zantesdeschia aethiopica), pin cushion (Scabiosa atropurpurea),
+fern leaf (various species).
+
+The Plant Quarantine Service – MALFF is sometimes under severe pressure to conduct pest risk analyses
+(PRAs) to determine whether some of these plants or their parts can be imported into Saint Lucia. In
+more developed countries, there are entire units of experts with the responsibility to conduct these
+PRAs. In Saint Lucia, it is usually down to one or two staff and a decision is usually required rapidly.
+Additional parameters to be analysed now include economic impact, invasiveness and Living Modified
+Organisms (LMOs). Many times, official plant health information required to be obtained from countries
+where intended plant imports originate is not easily obtainable.
+
+Due to manpower limitations, the inspection of most of the consignments of imported plants is not
+thorough and few samples are taken for further analysis in the laboratory (nematodes, pests, diseases,
+etc.). Because many pests and diseases including IAS are microscopic and they may exist inside the host
+material, the majority escape detection at ports of entry. Detection is usually based on symptoms
+expressed and there are many instances where plant quarantine officers could encounter symptomless
+hosts, or alternate host plants and plant parts. Microscopic mites on plant and animals and their
+products normally escape detection by inspectors at ports of entry [40]. Even if samples were taken to
+the laboratory for diagnostic purposes, the manpower and time required to conduct such diagnoses
+would not be feasible for perishable consignments. No post‐entry plant quarantine facilities exist in
+Saint Lucia.
+
+The IPPC is presently considering a draft ISPM entitled “Integrated Measures Approach for Plants for
+Planting in International Trade. The draft contends that there are problems with the present
+phytosanitary regulatory approach for plants, plant pests and diseases in international trade. These
+problems include: i) the volume of trade is too great for inspection, ii) it addresses risk with known plant
+pests/diseases, whereas most pests and diseases introduced with plants for planting were previously
+unknown and iii) the IPPC prohibits phytosanitary measures against “unknown” pests. This draft ISPM
+recommends a “systems” approach which guarantees that plant for planting in trade are free from all
+plant pests and diseases, known and unknown. This approach, it claims, would reduce the global spread
+of plant pests and diseases, some of which are IAS [38, 30].
+
+                                                       16
+At least one invasive aquatic plant, the Water Hyacinth (Eichhornia crassipes) is listed as present in Saint
+Lucia [43]. The pathway of arrival can only be speculated upon.
+
+
+Food Pathways (Transportation of animals for immediate consumption)
+
+Live seafood
+
+The Veterinary and Livestock Services Division – MALFF, informed the author that no live seafood is
+imported into Saint Lucia. It is imported either fresh‐chilled, or frozen. All consignments must have been
+granted an import permit prior to import and are inspected by veterinary officers at ports of entry, or on
+importer premises in the case of container shipments. These inspections are done alongside officers
+from the Ministry of Health (Public Health Division). Is it possible that because of the increasing numbers
+of foreign national residents in Saint Lucia, a market for the importation of live seafood may emerge?
+
+Other live food animals
+
+Other live food animals normally imported are goats, sheep, rabbits, day old chicks and hatchling eggs.
+Apart from day old chicks, the other importations do not occur on a regular basis.
+
+Between January and December 2008, ninety‐three thousand and forty (93,040) broiler and layer chicks
+were imported from Barbados (Source: Livestock & Veterinary Services Division, MALFF).
+
+Plants and plant parts as forage
+
+Dr Auria King, MALLF Livestock & Veterinary Services Department officer informed the author that no
+forage was imported into Saint Lucia. Occasionally improved forage seeds are imported for research
+purposes. These seeds were “certified” and are sown in a “forage bank”. She was not aware of any
+instances where forage grasses had “escaped” from forage banks and had become invasive. Under plant
+quarantine regulations all grasses, except for certified seed, are prohibited entry into Saint Lucia. The
+MALFF does have the authority to import such normally prohibited plant material for research purposes
+[35, 36].
+
+
+
+Non‐food Animal Pathways (Transporting animals for reasons other than consumption)
+
+Aquarium trade
+
+“The pet/aquaria trade has been identified as a substantial source of potentially invasive species;
+escaped or released pets and aquaria species can predate upon, compete with, or spread diseases and
+parasites to native wildlife. Aquaria dumping and water gardening can also be sources of invasive plants
+[33].
+The Livestock & Veterinary Services Department, MALFF reported that several species of fish, including
+swordfish (Xiphophorus helleri), goldfish (Carassius auratus), cories (Corydoras spp.) and freshwater
+turtles – the red‐eared slider (Trachemys scripta elegans), are imported into Saint Lucia as part of the
+aquarium trade. The management of the only pet store in the island and the Livestock and Veterinary
+                                                   17
+Services Department confirmed that no aquatic plants are imported. The Fisheries Department, MALFF
+reviews the applications for importation of aquarium species. Risk analyses are performed based on
+country of origin and disease status of that species and their relatives in the country of origin. On arrival
+at ports of entry, any approved species must be inspected by the Veterinary Services and Livestock
+Division prior to entry.
+
+Aquaculture
+
+Different tilapia species are reported as having been introduced into Saint Lucia as early as the 1950’s.
+There are several verbal accounts of Tilapi nilotica and Tilapia mossambica being imported into Saint
+Lucia from Jamaica at that time. They were reportedly imported and introduced into several rivers.
+Officers from the Fisheries Department, MALFF could not confirm this.
+
+In the 1990’s there was also an “Aquaculture Programme” spearheaded by the MALFF, where farmers
+were encouraged to build ponds on their properties. Tilapia and freshwater prawns were imported and
+distributed to farmers. Some of those Tilapia and prawns may also have been introduced into rivers on
+the island. In Saint Lucia if any “aquaculture” species is introduced, it would be extremely difficult to
+regulate the movement and transfer of those species from pond to pond and possibly, into fresh water
+canals, streams and rivers. The Fisheries Department mentioned that this is an educational topic usually
+covered with aquaculture farmers and enthusiasts at exhibitions and during field visits. Six hundred
+(600) tilapia were imported from the Dominican Republic into Saint Lucia between January and
+December 2008 (Source: Livestock & Veterinary Services Division, MALFF).
+
+Pets
+
+Pets (dogs, cats, horses, hamsters, budgies) are all regularly imported by residents and the pet store in
+Saint Lucia. For the importations to take place, applicants must have an import permit from the MALFF
+and a health certificate from the country of origin. In some instances macaws are also imported and
+apart from Veterinary and Livestock Services requirements, they have to meet CITES and Forestry
+Department (Wildlife) specifications. It is widely believed that some pets, especially parrots, cats and
+dogs and lately, monkeys are imported illegally. For example “pit‐bull” dogs are found in all communities
+and they are officially illegal. Those illegally imported pets present a formidable risk as a pathway for
+the introduction of IAS, including their related pests, diseases and parasites.
+
+In the Palau National Strategy, it is reported that imported animals, especially ruminants and herbivores
+could be a pathway for invasive weed seeds. Animals to be imported into Palau, should be fed weed‐
+free feed for a period of time before they are exported from their country of origin [24].
+
+The highest risks for the introduction of IAS along the aquarium and pet pathway according to the Pet
+Industry Joint Advisory Council and the Global Invasive Species Programme were “likely to be associated
+with:
+    • Consumers
+    • Non – regulated direct sales
+    • Free or inexpensive pets
+    • Species which grow large, reproduce easily and in large numbers in captivity, have specialized
+        dietary or other husbandry requirements, have aggressive temperaments and
+
+                                                     18
+    •   Species ecologically suited to the geographic region in which they are maintained as pets” [33].
+
+The management of the local pet store stated that their pets (hamsters and budgies) were unlikely to be
+invasive in the wild because the conditions for them to feed and breed successfully would not be met.
+According to them for example, the budgies would need a specific kind of seed for feed not available in
+the wild and would starve. The hamsters and especially their young, would be attacked by other rodents
+and ants. The fish and the turtles imported for aquaria would not have conditions in local rivers and
+streams suitable for their survival and eventually, becoming invasive in Saint Lucia. However, the red‐
+eared slider turtle (Trachemys scripta elegans) is reported as being invasive in some countries and in
+Australia, heavy penalties may be imposed on persons caught with them as pets (from Wikepedia).
+
+
+
+ COUNTRY         Broiler    Layer      Cat    Hatching    Aquarium      Dogs
+                 Chicks     Chicks              Eggs        Fish
+                                              (Dozens)
+Barbados          32,000      5,900                                        2
+USA              158,300     17,450       4      22,360                    6
+Trinidad                                                        4,592
+Martinique                                                                 1
+UK                                                                         1
+TOTAL           190,300     23,350      4      22,360       4,592      10
+Table 9 – Live Animal Imports, 2009 (Source Livestock & Veterinary Services Dept. MALFF).
+
+
+Release of organisms for religious, cultural or other reasons
+
+The Livestock Services & Veterinary Division and the Forestry Department – MALFF, reported that
+animals were not imported into, or released in Saint Lucia for religious, cultural or other reasons.
+
+In 1992 an elephant was imported into Saint Lucia by Mr. Colin Tennant, also known as Lord Glenconner
+(UK Independent Newspaper, Obituaries 31st August, 2010). It lived in the Soufriere area at Jalousie
+Estate and died in 1994.
+
+Roosters are imported into Saint Lucia for “cock‐fighting” via both legal avenues and “blind spots”
+(personal comm).
+
+In the last twenty (20) years, there has been at least one travelling circus to Saint Lucia which included
+several types of animals including big cats.
+
+Bait
+
+According to officers of the Fisheries Division and the Veterinary & Livestock Services Department –
+MALFF, no live animals are imported into Saint Lucia to be utilized as bait.
+
+
+
+
+                                                     19
+Non‐living Animal and Plant Related Pathways
+
+Minimally and partially processed meat products
+
+The Livestock and Veterinary Services Department, MALFF and the Ministry of Health (Public Health)
+oversee the importation of minimally and partially processed meat products. Sausages, burgers and
+other meat preparations for the franchises (Burger King, Dominoes Pizza, Subway, etc.) are usually pre‐
+cooked in the United States at special franchise‐owned facilities. These have to be pre‐cooked at certain
+temperatures and for certain lengths of time and certified as having been so done before they are
+imported into Saint Lucia. The standards set by the World Organisation for Animal Health (OIE) and
+Codex Alimentarius are the ones applied.
+
+Products such as milk and cheese have to be pasteurized before they can be imported into Saint Lucia.
+No raw milk or cheese is permitted to enter Saint Lucia.
+
+Travellers usually bring cooked meat products into Saint Lucia. Depending on the country of origin, the
+Veterinary & Livestock Services Department and the Ministry of Health (Public Health) may grant
+permission for these to enter Saint Lucia.
+
+
+Minimally processed plant products
+
+
+Plant products are sometimes “minimally processed” before they are imported into Saint Lucia. This
+“minimal processing” can range from the defoliation or removal of leaves from stems (in the case of
+fresh herbs and cut flowers, to drying (in the case of dried herbs, floral arrangements, hats, other outer
+wear and souvenirs), to varnishing and painting (in the case of furniture and craft items). Many of these
+items, which are often imported without the required permits, may harbour plant pests and diseases
+and may also present a risk of introduction of alien invasive species. Such items and consignments are
+supposed to be detained by Customs officers at ports of entry for inspection by plant quarantine
+officers. The disposition of these items, if detained, can range from removal of leaves, seeds and other
+parts capable of propagation, to fumigation for possible wood‐boring insects and forestry pests, return
+to country of origin, or confiscation and incineration.
+
+Other processed plant products which undergo processing such as cooking, canning, pickling and baking
+are not considered plant health risks and therefore do not require inspection by plant quarantine
+officers. There is however, concern on plant products which have been dried and may contain pests
+such and mites, seed borers and other stored product pests not yet reported as being present in Saint
+Lucia.
+
+
+Miscellaneous Pathways
+
+Biological control
+
+Saint Lucia has had the experience of importing organisms to effect biological control of a species. After
+the introduction and establishment of the Pink Hibiscus Mealybug (PHMB) (Maconellicoccus hirsutus)
+into Saint Lucia in 1996, the MALFF imported the ladybird beetle (Cryptolaemous montrouzeiri) and the
+                                                  20
+parasitoid wasp (Anagyrus kamali), for the biological control of the PHMB. The effort was very
+successful and thus far, no reports of invasiveness for any of the imported organisms have been
+reported. However, no related studies have been done in Saint Lucia.
+
+In the 1980’s, entomologists introduced parasitic (parasitoid) wasps into Saint Lucia to control insect
+pests of agricultural crops. The sugarcane borer (Diatraea sacchari) and the Diamond back moth
+(Plutella xylostella) were two of these pests. The releases were done by several entomologists including
+Dr. Munir M. Alam [41], who worked with CARDI at the time. The fate of these parasitoids is yet to be
+studied. Attempts have also been made to control the coconut mite Aceria guerreronis using a fungus,
+Hirsutella thompsonii. Several strains of Bacillus thuringiensis are also available in commercial
+formulations for the use against lepidopteran pests.
+
+
+Other Aquatic Pathways
+
+Freshwater rivers, streams and canals
+
+Conversations with senior officers of the Fisheries and Forestry Departments and Veterinary & Livestock
+Services Department of the MALLF revealed that little or no work is presently being done with respect to
+monitoring the freshwater rivers, streams and canals for IAS. All of the officers were aware of the
+impacts which could result from the introductions of IAS, as gained from knowledge in training and
+information available on the job from various sources (journals, meetings, workshops, etc.). It was
+generally agreed that inventories of all of these habitats need to be conducted in earnest. However, it
+was also recognized that any damage which may have resulted from the presence of IAS in those
+habitats may have never been documented. All of them indicated that they were interested in such
+research projects, but lacked the capacity (human and financial resources) to address them presently.
+
+There are no measures in place presently to prevent the introduction of IAS into rivers, streams and
+canals by the local populace.
+
+
+
+
+Marine/estuarine areas and canals
+
+The situation which applied for freshwater rivers, streams and canals also applies to marine/estuarine
+areas and canals. There have been some unofficial reports of algal blooms reaching our shores and also
+dead fish sightings which may have been caused by such phenomena. Occasionally, persons complain of
+sicknesses, rashes and earaches which may have been brought about by organisms drifting in sea
+currents or released in ballast water. Since these possibilities are not monitored, it would be difficult to
+confirm. There used to be a “Coastal Zone Management Committee” which included personnel from the
+Ministries of Tourism, Health, Physical Planning and Agriculture. One of their main functions was to test
+waters in close proximity to popular beach areas for fecal matter and other organisms potentially
+harmful to human health. This committee has since become inactive. Presently, there is at least one site
+(Port Castries) in Saint Lucia where raw sewage is deposited directly into the sea.
+
+                                                    21
+Natural spread of Invasive Alien Species
+
+Natural migration
+
+It was stated that humans have “ascended” to the principal agent of dispersal of organisms, including
+IAS [38]. Since we achieved that “distinction”, the “the comparative orderly flow and ebb of natural
+migration has been disrupted”. Human activity has caused long distance dispersals of organisms to
+become commonplace and thus, it is hard to determine whether the arrival of an IAS, human, animal or
+plant pest or disease, has been caused by natural forces or human activity [38].
+
+There have been several introductions of plant pests and diseases into Saint Lucia which were invasive in
+nature and are suspected to have arrived on island by “natural” spread. Some of the more recent
+examples include:
+
+    •   Eriophyid Mite of Coconut (Aceria guerreronis) – 1980 (across the Atlantic Ocean by wind)
+    •   Pink hibiscus mealybug (Maconellicoccus hirsutus) – 1996 (throughout the Caribbean by wind)
+    •   Gliricidia moth (Azeta repugnalis) – 2001 (throughout the Caribbean by wind?)
+    •   Red Palm Mite (Raoiella indica) – 2004 (throughout the Caribbean by wind?)
+    •   White cedar thrips (Holopothrips iniquilinus) – 2007 (throughout the Lesser Antilles by wind?)
+    •   Black Sigatoka (Mycosphaerella fijiensis) – December 2009 (throughout the Caribbean by wind?)
+
+Disease spread has been reported as strongly linked to weather events with diseases like Asian Citrus
+Canker bacterium Xanthomonas axonopodis pv. citri increasing in distribution in Florida, USA
+immediately after hurricanes in 2004 – 2005 [40].
+
+There is no doubt that weed seeds, small arthropods, fungal spores, mites and other microorganisms
+can be spread to and throughout the Caribbean via wind patterns and weather events such as
+hurricanes [40]. Even if the IAS was not at first introduced into the region via wind, it can be
+subsequently spread along that pathway.
+
+There are two (2) potential IAS projects on which the Forestry Department is presently working viz., the
+Ivy Gourd vine (Coccinia grandis) and the Central American Iguana (Iguana spp.). They both present
+challenges in terms of resources for public awareness and staffing to assist in the desired eradication
+attempts. Meanwhile, both of those IAS they are reported to be spreading in their distribution areas
+(personal comm.). The Ivy Gourd may be spreading due to human activity, seeds and vegetatively, in
+addition to the aggressive nature of the vine. The Iguana is spreading under its own power, although
+human activity is responsible for introducing it into Saint Lucia in the first instance.
+
+The movement and spread of other IAS, including plant pests and diseases are not well documented.
+The Forestry Department has been able with the assistance of this project, to compile a draft list of IAS.
+Some animals and/or their pests and diseases which are invasive in nature may be easier to document
+as in the case of the Amblyomma tick (Amblyomma spp.). This also applies to invasive human pests and
+diseases likes Swine or Avian influenza.
+
+
+
+                                                   22
+Ocean currents
+
+Ocean currents move countless species of plankton and other marine organisms around the globe. With
+the warming of the oceans due to climate change, it is expected that sea levels will rise. This may flood
+existing mangrove areas, killing the mangroves and creating the opportunities for invasive sea grasses,
+weeds and other organisms to move in [42]. Algae is known to be moved by ocean currents and
+scientists have observed that algae from temperate areas which were strongly seasonal, are now
+moving into tropical areas and reproducing throughout most of the year [42]. Additionally, because of
+the melting of ice caps in the arctic regions, new channels have been opened up, allowing organisms to
+spread from the Pacific Ocean to the Atlantic Ocean in currents [42]. These organisms some of which
+have invasive properties could cause problems such as species extinction through direct competition
+and also biodiversity loss. As a small island whose coast provides a livelihood for communities, the
+fishing and tourism sectors, Saint Lucia could be negatively impacted by invasive alien marine organisms
+via this sub‐pathway.
+
+Coconuts, other plants and plant parts and other organic materials are known to travel around the world
+via ocean currents.
+
+
+Wind patterns
+
+The winds in Saint Lucia approach the island primarily from the northeast and east. From December to
+June they are called the “north‐easterly tradewinds”. From June to November, the winds may originate
+off the coast of Africa accompanied by tropical waves which may become hurricanes, or westerly from
+Central and South America. It is documented that many microorganisms are moved actively or passively
+via wind currents [40]. At least one or two plant pests are suspected to have arrived into Saint Lucia and
+the Caribbean region via wind currents for example, the Eriophyid Mite of Coconut (Aceria guerreronis)
+– 1980. The African Desert Locust has arrived in the Caribbean on more than one occasion. Hurricanes
+have circular wind patterns and may be responsible for the spread of several invasive plant pests and
+diseases that have the morphological adaptations for that mode of spread. Examples are the red palm
+mite (Raoiella indica) and black sigatoka (Mycosphaerella fijiensis) of bananas and plantain. Since it has
+happened before, possibilities exist that new IAS will be introduced via wind currents.
+
+Unusual weather events
+
+In Saint Lucia, weather patterns are more or less, consistent with defined dry and rainy seasons. The last
+unusual weather event in my opinion, was the tropical storm “Debbie” on 10th September, 1994.
+Almost 10 inches of rain fell in less than twelve hours (National Emergency Management Organisation,
+Wikipedia). Persons were killed, landslides and land slippages occurred. There was widespread flooding
+and an interruption of the pipe‐borne water supply. It is possible that such unusual weather‐related
+events could spread invasive plants and weeds, nematodes and plant and animal pests and diseases via
+flood waters. Interruption to a clean water supply could also help create a suitable environment for the
+rapid spread of contagious human diseases. The only other unusual weather pattern in Saint Lucia
+occurs sometimes during the month of January when the night time temperatures could drop to
+approximately 65 degrees Fahrenheit.
+
+                                                   23
+Climate change
+
+Climate change although with its skeptics, is predicted to have many environmental consequences
+which will include changes in the present habitat ranges of species of animals, plants and
+microorganisms. FAO states that “climate change may produce more favourable conditions for invasive
+species”. They predict that due to climate and environmental changes, once dominant native species
+will be replaced by newly arrived alien invasive species. Global trade patterns may change and also
+mentioned are the effects of increased greenhouse gases [37].
+
+In Saint Lucia, it is predicted that there will be more prolonged droughts and intense hurricanes, along
+with the loss of present coastal areas due to rising sea levels. These events may create favourable
+conditions to plants, animals and microorganisms more suited to the resulting environment along with
+alien invasives arriving on island due to human activity and natural phenomena.
+
+
+Ecosystem Disturbance
+
+Long term – highway and utility rights of way, land clearing, logging, construction projects, etc
+
+Recent major roadworks in Saint Lucia included the construction of the east coast road, the construction
+of the west coast road and the widening of the Castries – Gros Islet Highway from the Choc Junction to
+John Compton Highway. The equipment brought in from overseas for these road projects was never
+inspected by plant health officials to determine if they were contaminated with soil and weeds, etc. If
+they were contaminated it is likely that potential IAS could have been introduced. Local weeds and
+plants of an invasive nature could have been facilitated by the road works and the movement of
+equipment along the routes being constructed.
+
+The island’s electricity supply company erected some pylons island‐wide to carry high tension/voltage
+wires to various locations island. The vegetation under those lines was removed and it is possible that
+plants invasive in nature have replaced the original vegetation.
+
+Land clearing, including logging have long been sore points for the MALFF. Some farmers use the “slash
+and burn” method where all vegetation, including trees is felled and when they dry up, fire is set to
+them. This usually leaves exposed land where food crops are supposed to be planted. This technique
+was especially prevalent in the early days and peak of the banana industry. Weeds species which
+favoured the new habitat quickly invaded the exposed areas, sometimes resulting in an additional cost
+to banana production. In other cases the cleared land was never planted and invasive weeds quickly
+replaced the original vegetation. This method of land clearing was also blamed for landslips and
+landslides during or after periods of heavy rainfall.
+
+Construction projects, which have to be approved by the Development Control Authority (DCA) of the
+Ministry of Physical Planning, have in some instances not been completed. In some cases, the land may
+be cleared prior to the beginning of the construction and landscaping phases of development. If for
+economic or other reasons, the development has to be halted as is the case in several recent projects,
+the land area is subject to opportunistic invasive species of plants.
+
+                                                   24
+Short term – habitat restoration
+
+As persons become more aware of the impact of IAS in Saint Lucia, especially through this project, it is
+hoped that efforts will be initiated to select IAS to be eradicated from vulnerable habitats. Efforts to
+remove certain IAS (rodents, for example) on some of the islets off the east coast have been successful.
+The rodents posed a threat to endemic reptiles and nesting endemic and migratory birds. Repeats of
+such success on the main island for invasive plants and animals will be more challenging on several
+levels (education, manpower and funding) and will require the efforts of whole communities.
+
+Garbage
+
+Until fairly recently, all garbage in Saint Lucia was disposed on in open air “rubbish dumps” where
+people and animals had fairly easy access to them. This practice may have resulted in the spread of IAS
+to other areas of the country. Biomedical waste and plant and animal health waste and confiscations
+were also disposed of at the same locations, after which they were set on fire. It was not unusual,
+especially in the case of disposed plant material, to return to the scene of the fire to find persons
+actually trying to put out the fires and remove the plant material. It is very likely that they were
+sometimes successful in their attempts, resulting in the possible movement of pests and diseases and
+IAS.
+
+With the formation of the Saint Lucia Solid Waste Management Authority (SLSWMA) in October 1996
+and the introduction of garbage disposal by way of the “sanitary landfill”, much better control of
+garbage after it had been disposed of by residents and business establishments was effected. The
+garbage is usually buried in the landfill and the area is secured. It has also resulted in much less burning
+and pilferage of previously dumped refuse.
+
+Garbage disposed of at the landfills is transported from business and residential locations island‐wide.
+There is limited sorting of garbage, except for bulk (old fridges, washing machines, freezers, etc.) items
+which are usually collected once per month. The vehicles used to collect and transport the garbage
+range from used specialised garbage trucks with compacters, to open vans and trucks. In the case of the
+used garbage trucks which are imported, they usually leak liquids from the garbage from where it is
+picked up, all the way to the landfill. During a national quarantine course (July 26th – 30th, 2010) ,
+participants observed one of those garbage trucks, recently imported, on the docks contaminated with
+soil from the country of origin. In the case of open vans and trucks, there is a requirement for these
+vehicles to be covered with tarpaulin when transporting materials. This requirement is not always met.
+
+As previously mentioned, garbage, presumably sorted is taken from cruise ships. It is definitely not clear
+that other ships meet these requirements and it is known that for yachts, schooners and aircraft, that
+the garbage enters the domestic stream without any inspection or control.
+
+There is no doubt that this is a sub‐pathway of concern for the introduction and spread of IAS, and the
+internal spread of invasive species.
+
+
+
+
+                                                    25
+Hitchhikers
+
+Hitchhikers in the sense of IAS can be considered to be IAS “which are moved to a different location not
+in association with a host commodity, but either in a commodity which is not a host, or on/in the
+conveyance (plane, maritime vessel, etc) or shipping container used for transport” [40].
+
+Hitchhikers may arrive into a location in or on a non‐host commodity, conveyance or container by
+chance or because of attractive environmental conditions (light, odour, temperature, humidity). IAS
+which may have formerly been associated with a commodity may be left behind in a container after off‐
+loading and then become a hitchhiking IAS [40].
+
+It is reported that both live and dead hitchhikers, especially insects are regularly found in aircraft
+passenger cabins and baggage compartments. They have also been found in the holds of cargo aircraft
+[40]. In some cases these hitchhikers are attracted to the aircraft because airports are usually well lit
+areas.
+
+Hitchhikers are also found contaminating cruise and cargo ships’ decks, quarters, holds and stores [40].
+
+Shipping containers (air and sea) are found with hitchhikers (mollusks, weeds, and arthropods, including
+insect egg masses). Some of the live insects found contaminating containers were identified as potential
+forestry pests. Others were stored product pests. Soil, which may habour fungi, nematodes, seeds and
+bacterial pathogens has also been found contaminating shipping containers [40]. The likelihood of
+containers being contaminated usually depends on the country or ports of origin and those visited en‐
+route (including transshipment storage), time of shipping, storage and handling of containers [40]. It
+appears that containers can be contaminated with hitchhikers regardless of the content of the
+containers (commercial goods or personal effects).
+
+Studies have demonstrated that for many IAS and plant and animal pests, their chances of survival
+during transportation from one country or area to another, whether it be inside or outside of aircraft,
+maritime vessels and/or their shipping containers, is mostly favourable [40].
+
+Hosting of regional events
+
+The MALFF has had the experience of dealing with the importation of plant and animals, their products
+and associated equipment to facilitate international and regional festival and trade – related events. In
+many instances the lack of collaboration between Ministries of government facilitating such events and
+the MALFF, has caused the delays in the ability of those plants and animals and their products to enter
+Saint Lucia. On the other hand, that same lack of collaboration has facilitated the entry of those items
+without the requisite permits and inspections at ports of entry. Usually, some of the items imported for
+those events may eventually be sold or given to locals as gifts, returned to the country of origin or
+disposed of in the regular garbage stream. There has also been in the past, the arrival of at least one
+touring circus with live animals including monkeys, lions, tigers, etc..
+
+Regional and some international sporting events are hosted by Saint Lucia and results in the importation
+(in most cases on a temporary basis) of clothing (boots, shoes), equipment and gear. Some of these
+events are outdoor (eg. Road, bike and horse races, golf, cricket, football, etc) and could cause the
+                                                  26
+introduction of IAS by contaminated clothing, gear and equipment. In most instances all of the
+associated luggage, gear and equipment is facilitated entry into Saint Lucia without the requisite permits
+and inspections at ports of entry.
+
+This sub‐pathway presents considerable risk for the entry of plant, animal and human pests and diseases
+and IAS.
+
+Public Health and Environmental Concerns
+
+Saint Lucian people are becoming progressively aware of the negative impacts of pesticides use to
+human and environmental health. This awareness partially resulted in the cessation of aerial banana
+spraying for fungal disease control during the two decades. Fogging for mosquitoes with Malathion
+insecticide to prevent Dengue fever, takes place under the supervision of the Ministry of Health. In
+situations where efforts to mitigate against the impact of IAS include pesticides applications and use,
+there may be public opposition to that particular method of management. This could affect IAS control
+programmes negatively [37].
+
+RECOMMENDATIONS TO MIGITATE AGAINST IAS PATHWAYS
+
+“Unfortunately, scientific knowledge and institutional mechanisms are currently insufficient to
+effectively predict, prevent or mitigate the impacts of invasive species – whether plant, animal, fish,
+insect or micro‐organism – on native biodiversity and other human systems, such as agriculture and
+livestock” [10].
+
+“It is even less realistic to expect that developing countries with severe resource limitations can
+effectively address invasive alien species once they have been introduced or become established. For all
+of these reasons, adopting vigorous prevention measures to keep invasive alien species from being
+introduced in the first place plainly is the best way to decouple introductions from the increase in
+volume of trade” [10].
+
+It is recommended that existing capacity is used for early detection. This includes the Crop Protection
+Unit, Veterinary and Livestock Services Unit, farmers, divers, hikers, photographers, port workers,
+Extension officers, Customs officers, bird watchers, etc. Education and awareness programmes targeted
+at these groups will be important. Obviously that education or awareness programme will have to
+demonstrate the value of native biodiversity and instil some sense of pride in protecting it.
+
+All the above‐mentioned groups and other stakeholders should meet to conduct an “inter agency needs
+assessment” and create a comprehensive biosecurity plan with cross budget, to integrate all commodity
+and product inspection services. The co‐housing of relevant staff may enhance effectiveness [3].
+
+As usual, adequate resources and political will be required.
+
+Air Transportation Recommendations
+
+    •   Work with Civil Aviation to educate them on the risks associated with civil aviation pathways.
+    •   On arrival, plant/animal health inspectors should board aircraft from international destinations
+        to inspect the passenger and baggage areas for organisms of concern and IAS before cleaners
+        are deployed. All items confiscated during these inspections should be incinerated.
+
+                                                    27
+   •   All passenger luggage and carry‐on items should be scanned for plant/animals and their
+       products on arrival, using appropriate technology
+   •   Cargo aircraft should be inspected on arrival at the airports and before cargo is removed from
+       the aircraft.
+   •   Air cargo containers should not be stored too close to perimeter fences and under security
+       lighting.
+   •   Courier mail aircraft should be inspected on arrival at the airports and before mail is removed
+       from the aircraft.
+   •   Customs declaration forms should require passenger information on possible transportation of
+       animals, plants, their products and possible visits to farms, forests, gardens and other places of
+       high risk for IAS
+   •   Plant and Animal Health Inspectors with the assistance of the Forestry Department, should
+       monitor the perimeters of ports of entry on a monthly basis to look for potential IAS.
+   •   Ministry of Health personnel should be re‐instated at ports of entry to observe incoming
+       passengers for signs of ill health.
+   •   Cross ‐ training is required for plant and animal health inspectors, ports health personnel,
+       Customs officers, port authority workers on matters pertaining to IAS, the IPPC, MARPOL, CDB,
+       Ballast Water, CITES, etc.
+   •   Educate air travellers prior to departure and arrival on the economic and environmental
+       consequences of the introduction of IAS
+
+Water/Aquatic Transportation Recommendations
+
+   •   The manifests of container cargo should be made available to plant and animal health
+       inspectors, whom could make copies available to the Forest and Fisheries Divisions for their
+       review to determine if there are any potential risks and so advise the inspectors.
+   •   Containers should be examined externally during offloading for hitchhiking organisms.
+   •   Encourage cargo loading when pest entry is least likely (not at nights).
+   •   Inspect and clean containers and conveyances, including empty containers.
+   •   Traps for insects and mollusks should be placed on maritime vessels.
+   •   All containers should be stored at least 3 – 4 metres away from perimeter fences at the ports of
+       entry.
+   •   Containers with non‐agricultural consignments, especially personal effects, should be examined
+       by a plant or animal health inspector at the time of opening the container on the premises
+       where it is to be offloaded.
+   •   Samples of ballast water should be taken from maritime vessels for analysis (determination of
+       organisms present).
+   •   Cargo, lumber and cruise ships should be boarded on arrival into ports by animal/plant health
+       inspectors as part of the boarding party before any cargo is offloaded.
+   •   Monitor inter‐island cargo traffic via sea (commodities, quantities, countries of origin,
+       destination and incidence of wood packing material).
+   •   All yachts should be boarded by animal and plant health inspectors before final clearance is
+       granted by Customs and Immigration authorities.
+   •   All garbage from yachts should be collected in special receptacles for incineration. It should not
+       join the local garbage stream.
+
+                                                  28
+   •   All incoming passenger luggage and cargo from ferry traffic should be scanned using appropriate
+       technology.
+   •   Fisheries officers should monitor marinas and coastal areas monthly for marine IAS. Marinas
+       should submit monthly information reports on activities to the Fisheries Department.
+   •   Hull cleaning should be conducted using best practices to minimize hull fouling. Saint Lucia
+       should support more effective non‐toxic anti fouling systems to replace those banned by IMO’s
+       International Convention on the Control of Harmful Anti‐Fouling Systems. This should be
+       monitored by the Fisheries Department as part of the suggested monthly reports from the
+       marinas, including dry docks.
+   •   Place information signage on IAS in marinas and include questions on IAS in
+       customs/immigration declarations.
+   •   Full time presence and visibility at the marinas by plant/animal health officers is required.
+   •   There should be increased monitoring of “blind spots” for IAS. This would require monthly
+       daytime surveys by Forestry and Fisheries Department officers.
+
+Packaging Material Recommendations
+
+   •   The provisions of the IPPC’s ISPM No. 15 on wood packing material should be implemented.
+   •   All organic packing materials should be prohibited unless prior approval is granted in import
+       permit conditions. Inspection on arrival should be mandatory.
+   •   All packaging materials should be subject to inspection at the discretion of the plant/animal
+       inspectors based on information contained in the manifests accompanying consignments in
+       trade.
+   •   Adequate inspection of wood packing material on all agricultural and non‐agricultural cargo.
+
+Mail and courier company recommendations
+
+   •   Put up posters at all mail facilities to inform workers and the public about IAS, CITES, human,
+       plant and animal health.
+   •   Training of mail and courier facility personnel along with all other co‐operators.
+   •   Upgrade data collection at mail and courier facilities.
+   •   Employ sniffer dogs for detecting organic materials.
+   •   Utilise scanning facilities to examine mail and parcels.
+
+
+
+
+                                                 29
+Traveller/Tourist Recommendations
+
+   •   All tourism sites, including ecotourism sites, nature trails, beaches and hotel properties should
+       be monitored for IAS. Monthly reports on activities should be submitted to the Forestry and/or
+       Fisheries Divisions.
+   •   Educational and public awareness programmes should be ongoing on maritime vessels and
+       aircraft.
+   •   Tour guides, dive operators, taxi drivers, eco tourism site managers and other hospitality
+       workers should be trained on IAS and the risks involved with the movement and introduction of
+       IAS.
+   •   Post signs at ecotourism sites.
+   •   Clean shoes and clothing after leaving natural and agricultural areas.
+   •   Raise funds and awareness by selling souvenirs at eco‐tourism sites. A user fee system could be
+       implemented for IAS prevention and management.
+   •   Conduct biodiversity impact studies at eco‐tourism sites.
+
+Recommendations for heavy equipment and military vehicles
+
+   •   The plant quarantine office should be notified when it is the intention for heavy equipment and
+       military vehicles to be imported.
+   •   All such equipment should be thoroughly cleaned in the country of origin, examined and
+       certified. It should then be inspected on arrival into Saint Lucia before it is allowed to be
+       offloaded from maritime vessels or aircraft.
+   •   Develop a code of conduct to minimise the risk of introduction of IAS during engineering and
+       infrastructure development.
+
+Recommendations for plants for research
+
+   •   Before plants or their parts are imported for research purposes, application should be made to
+       the Crop Protection & Quarantine Unit, MALFF seeking permission to import such plant material
+       to conduct trials. Information provided should include information on the purpose of the trials,
+       expected results, design and layout in the field, location, treatments, duration, precautions to be
+       taken in the event of weather events or project termination, and the final disposition of the
+       harvested/final produce or products.
+   •   All trials should be monitored by regulatory officials from MALFF and other designated agencies.
+   •   Results of such trials should be made available to regulatory officials from MALFF, even if they
+       have to be kept confidential.
+   •   Given the number of unofficial trials purported to take place in Saint Lucia and the increasing
+       requests for different species and varieties of plants to be imported, serious consideration
+       should be given to the establishment of a post‐entry quarantine facility.
+   •   The Jatropha biofuel project has been terminated. At least forty thousand (40,000) seeds were
+       imported from India for that project. MALFF should immediately follow up on this project to
+       locate the nursery and follow up on plants distributed under this project.
+
+
+
+
+                                                   30
+Recommendations for potting media
+
+   •   All potting media should be accompanied by plant import permit and phytosanitary certification.
+   •   Consignments should be sampled regularly for bacteria, nematodes, mites, fungal spores and
+       related microorganisms to verify freedom from the above‐mentioned.
+
+Recommendations for plant trade
+
+   •   Efforts should be made to educate nurseries and garden enthusiasts to work with and improve
+       local varieties of plants instead of the desire to import plants and varieties from foreign sources.
+   •   The CPU‐MALFF along with importers and other stakeholders should seek to implement the
+       provisions of relevant ISPMs.
+   •   Improve personnel numbers at ports of entry and inspection protocols.
+   •   Post‐entry phytosanitary monitoring of plants imported for planting.
+   •   Cooperate with nurseries, gardeners, landscapers to develop awareness and a code of conduct
+       or best practices.
+
+Recommendations for live seafood
+
+    • Continue to enforce ban on live seafood.
+    • Monitor the ports and “blind spots” for attempts at illegal importations.
+
+Recommendations for plants for forage
+
+    • The same phytosanitary requirements as for plants for research purposes should be met.
+    • Strict control and supervision by the Crop Protection Unit, Livestock & Veterinary Services
+       Division and the Forestry Department.
+
+Recommendations for the aquarium trade
+
+   •   The whole aquarium trade and industry should be assessed with a view to establishing the
+       potential risk from IAS.
+   •   Public awareness and education on IAS is required for collectors, agents, retailers and
+       customers.
+   •   A recovery mechanism for unwanted pets should be put in place. The pet shops should offer this
+       service in conjunction with the Fisheries and Livestock & Veterinary Services Department,
+       MALFF.
+   •   Code of conduct should be developed.
+
+Recommendations for aquaculture
+
+   •   Assessment of entire industry should be implemented with regards to IAS.
+   •   Regular audits of fish and prawn farms.
+   •   A code of conduct for responsible fisheries which also addresses the risk of escapes from fish
+       farms should be developed.
+   •   Public and stakeholder education and awareness programmes.
+                                                   31
+Recommendation for pets
+
+   •   Same recommendations as for the aquarium trade.
+   •   “Blind spots” and rumours should be monitored for information on illegal pets in Saint Lucia.
+
+Recommendations for minimally processed meats
+
+    • Continue status quo with increased vigilance.
+
+Recommendations for minimally processed plants
+
+    • Increased phytosanitary inspections of such plants and their products are required.
+
+Recommendations for biological control
+
+    • Implement the provisions of all the relevant ISPMs of the IPPC prior to importing organisms for
+       biological control purposes.
+    • Conduct studies on the status organisms already introduced into Saint Lucia for biological
+       control purposes.
+
+Recommendations for fresh water rivers, streams, canals
+
+   •   A baseline inventory of the species inhabiting fresh water rivers, streams and canals in Saint
+       Lucia should be conducted.
+   •   The Fisheries or Forestry Department, or both, should take “ownership” of these areas,
+       implement regulatory controls to prevent the introduction of IAS and conduct regular
+       monitoring exercises, especially in high risk areas.
+
+Recommendations for marine/estuarine areas, canals
+
+    • A baseline inventory of the species inhabiting those habitats should be undertaken.
+    • High risk areas such as seaports and marinas should be monitored. Fishers and divers and sea
+      coastal tour operators can assist with other areas along the coastline. Provision of monthly
+      reports from officially established business interests should be submitted to the Fisheries
+      Department.
+
+
+
+
+                                                  32
+Recommendations for natural spread by of IAS by ocean currents, wind, water, self propelled and
+unusual weather events
+
+   •   Monitor and surveys should be conducted after events such as hurricanes, strong winds, rains,
+       floods, Sahara dust. This is part of early detection capability.
+   •   Keep updated and informed about potential IAS already threatening and expected to impact
+       Saint Lucia.
+
+Recommendations for climate change
+
+   •   Nationally, implement measures which mitigate against climate change and environmentally
+       unsound practices which damage our small environment.
+   •   In future planning activities, be prepared to work with a changing landscape, especially near the
+       coastline.
+   •   Continued and improved establishment of germplasm banks locally and with international
+       assistance.
+
+Recommendations for ecosystem disturbance
+
+   •   Liaise with the Ministries of Planning and the Environment and other stakeholder entities to
+       encourage comprehensive impact assessments and minimal ecosystem disturbance.
+   •   As mentioned earlier, establish a code of conduct to minimise the risk of introduction of IAS
+       during engineering and infrastructure development.
+
+Recommendations for garbage
+
+   •   Garbage truck companies should observe good transportation practices. These include proper
+       covering of loads and prevention of liquid leakages and spills along routes.
+   •   Monitor routes and landfill areas for IAS.
+   •   Public education and awareness.
+   •   All foreign organic garbage to be prohibited or incinerated immediately after arrival into Saint
+       Lucia.
+
+Hitchikers
+
+   •   Increased vigilance at ports of entry by all border authorities.
+   •   Increased vigilance by travellers, farmers, gardeners, road workers, hikers, divers,
+       photographers and enthusiasts.
+   •   Public education.
+
+Recommendations for hosting of regional events
+
+   •   Insist on compliance with laws and regulations governing the movement of restricted articles.
+   •   Monitor, to ensure compliance is adhered to.
+   •   Impose penalties for violations.
+
+                                                  33
+Recommendations for public health and environmental concerns
+   • Implement integrated pest management practices for public health pests and diseases, using
+      pesticides as a last resort.
+   • Public awareness and education
+
+PATHWAY RISK ASSESSMENT
+
+The general pathway risk assessment process includes the following stages:
+
+   1) “Pathway magnitude (number of species, inoculation strength and frequency, diversity of
+      species carried via pathway)
+   2) Survivability or viability of organisms during transport and in transit
+   3) Likelihood of pathway to transmit IAS which are difficult to detect or manage during transport
+      and/or transit in the pathway
+   4) Environmental comparability of origin and destination habitats
+   5) Ease of spread (via artificial or natural means) of the IAS once present
+   6) Environmental comparability to that of the country of origin
+   7) Difficulty of control if the IAS becomes established” [21]
+
+
+It is recommended that agencies responsible for granting permits for the importation of plant, plant
+parts or their products, animals, animal parts and their products, and also other organisms, conduct an
+IAS pathway risk assessment in addition to their primary risk assessments to assist in the determination
+of their entry status.
+
+
+
+
+                                                  34
+ANNEX 1.
+
+LIST OF ACRONYMS
+   1) ARC – Atlantic Rally Crossing
+   2) ATV’s – All terrain vehicles
+   3) CARDI – Caribbean Agricultural Research & Development Institute
+   4) CBD – Convention on Biological Diversity
+   5) CITES ‐ Convention on International Trade in Endangered Species of Wild Fauna and Flora
+   6) DCA – Development Control Authority
+   7) GEF – Global Environment Facility
+   8) GFL – George F. L. Charles Airport
+   9) HIA – Hewanorra International Airport
+   10) IAS – Invasive Alien Species
+   11) ICC – International Cricket Council
+   12) IPPC – International Plant Protection Convention
+   13) ISPM – International Standard for Phytosanitary Measures
+   14) LMOs – Living Modified Organisms
+   15) MALFF – Ministry of Agriculture, Lands, Forestry & Fisheries
+   16) MARPOL – the International Convention for the Prevention of Pollutions from Ships
+   17) NISS – National Invasive Species Strategy
+   18) OIE – World Organization for Animal Health
+   19) SLASPA – Saint Lucia Air & Sea Ports Authority
+   20) SLSWMA – Saint Lucia Solid Waste Management Authority
+   21) USA – United States of America
+   22) WINBAN – Windward Islands Banana Association
+
+
+
+
+                                                35
+ANNEX 2.
+
+
+
+
+                                  INTERVIEWEE QUESTIONNAIRE
+
+
+
+   1) Are you aware of Invasive Alien Species (IAS)?
+
+
+   2) Are you aware of IAS “pathways”?
+
+
+   3) Are you aware of IAS pathways in your business/operation?
+
+
+   4) Are you doing anything to mitigate against IAS in YOUR pathway/operation?
+
+
+   5) Would you cooperate with agencies who seek to mitigate against IAS in your
+      operation/pathway?
+
+   6) Do you care to make any comments, remarks or suggestions as to how potential threats from
+      IAS can be handled in Saint Lucia.
+
+
+
+
+                                                 36
+ANNEX 3.
+
+
+Results of Interviews with Persons on IAS
+
+I interviewed a total of twenty‐seven (27) persons in the process of preparing this report. All of them
+worked in areas where they could come into contact (knowingly or unknowingly) with IAS during the
+course of their day to day activities. Six (6) questions were asked and I requested the answers
+immediately, without giving them a chance to research the topic.
+
+The results of the interviews were as follows:
+
+Question 1 –    Are you aware of Invasive Alien Species (IAS)?
+
+    •   88.8% (24) responded that they were
+    •   11.2% (3) responded that they were not
+
+Most of the respondents knew about IAS through their work or general knowledge. It was suprising to
+learn that until the term was explained, one of the persons from the port authority and the one from
+the pet shop had never heard the term. They did however, know of IAS like the Giant African Snail.
+
+Question 2 –    Are you aware of IAS pathways?
+
+    •   88.8% (24) responded that they were
+    •   11.2% (3) responded that they were not
+
+Some of the responses included: winds, tourism, trade, sea currents, winds, smuggling, travel, escapes
+from trade.
+
+Question 3 –    Are you aware of IAS pathways in your business/operation?
+
+    • 85.2% (23) responded that they were
+    • 14.8% (4) responded that they were not
+
+Question 4 –    Are you doing anything to mitigate against IAS in YOUR pathway/operation?
+
+    •   88.8% (24) responded that they were doing something to mitigate against IAS
+    •   11.2% (3) responded that they were not doing anything to mitigate against IAS
+
+Some of the actions being taken included choosing clean plant material for planting; phytosanitary
+activities; deep burial of waste at the landfills; working in existing IAS programmes; ensuring importation
+of clean equipment from overseas; farmer training; port human health programme; animal health
+programme at ports of entry.
+
+
+
+
+                                                    37
+Question 5 – Would you cooperate with agencies who seek to mitigate against IAS in your
+operation/pathway?
+
+    • 100% (27) responded that they would
+
+Question 6 – Do you care to make any comments, remarks and suggestions as to how potential
+threats from IAS can be handled in Saint Lucia.
+
+Comments included the following:
+
+    •   Workshops and conferences on IAS
+    •   Ports of entry: ship waste protocols
+    •   Importation of clean used vehicles and heavy equipment
+    •   Cooperation among all “the players”
+    •   Provision of funding to facilitate port health programmes
+    •   All relevant agencies should sit together to plan and strategize
+    •   Early identification and quick responses to IAS were necessary
+    •   “Sustained” public awareness campaigns showing negative effects of IAS
+    •   Updating legislation and regulations
+    •   Best practices
+    •   Training of more front line officers
+    •   Baseline surveys to determine what IAS exist in Saint Lucia
+    •   Sign and ratify relevant treaties
+    •   Incinerators at all ports of entry
+    •   Timely surveys of borders for IAS
+    •   Post entry quarantine facilities
+    •   Persons should stop smuggling animals and plants into the country
+    •   Penalties for persons violating border protection laws
+
+
+
+
+                                                 38
+ANNEX 4.
+
+
+REFERENCES
+
+   1) Aquatic Nuisance Species Task Force (ANSTF) and National Invasive Species Council (NISC)
+       (2007). Training and Implementation Guide for Pathway Definition, Risk Analysis and Risk
+       Prioritization. United States Department of Agriculture Animal and Plant Health Inspection
+       Service. Riverdale, Maryland. [4]
+   2) Aquatic Nuisance Species Task Force (ANSTF) and National Invasive Species Council (NISC). NISC
+       Prevention Committee Pathways Work Team (2005). Focus Group Conference Report and
+       Pathways Ranking Guide. United States Department of Agriculture Animal and Plant Health
+       Inspection Service. Riverdale, Maryland. [21]
+   3) Burgiel S., Foote G., Orellana M., and Perrault A., (2006). Invasive Alien Species and Trade:
+       Integrating Prevention Measures and International Trade Rules. Paper for the Centre for
+       International Environment Law (CIEL) and Defender of Wildlife. Washington DC., USA. [10]
+   4) Evans H., Britton K., Kenis M. and Sathyapala S. (Contributors) (circa 2008). Recommendation of
+       a Pathway Approach for Regulation of Plants for Planting – A concept paper from the IUFROS
+       Unit on Alien Invasive Species and International Trade. International Union of Forest Research
+       Organisations (IUFRO). [30]
+   5) FAO Document (2009). Invasive Species: Impacts on Forests and Forestry. FAO, Rome, Italy. [37]
+   6) Forestry Department, Ministry of Agriculture, Lands, Forestry and Fisheries. Invasive Alien
+       Species present in Saint Lucia and their current status, Table 4. Draft List (2010), Saint Lucia. [34]
+   7) International Plant Protection Convention (IPPC). (2010). Appendix to ISPM 15:2009. Submission
+       of New Treatments for Inclusion in ISPM 15. IPPC Secretariat, FAO, Rome, Italy. [27]
+   8) International Plant Protection Convention (IPPC). (2010). Draft Standard Integrated Measures
+       Approach for Plants for Planting in International Trade. IPPC Secretariat, FAO, Rome, Italy. [38]
+   9) International Plant Protection Convention (IPPC). (2010). Minimizing pest movement by sea
+       containers and conveyances in international trade. International Standards for Phytosanitary
+       Measures – Specification n. 51 For ISPM. IPPC Secretariat, FAO, Rome, Italy. [34]
+   10) McNeely J. A., Mooney H. A., Neville L. E., Schei P. J. and Waage J. K., Editors (2001). Global
+       Strategy on Invasive Alien Species. The World Conservation Union, Switzerland and UK. [11]
+   11) Meissner H., Lemay A., Bertone C., Schwartzburg K., Ferguson L. and Newton L. (2009).
+       Evaluation of Pathways for Exotic Plant Pest Movement into and within the Greater Caribbean
+       Region. Caribbean Invasive Species Working Group (CISWG), Plant Epidemiology and Risk
+       Analysis Laboratory (PERAL), Center for Plant Health Science and Technology (CPHST), United
+       States Department of Agriculture, North Carolina, USA. [40]
+   12) Messing R.H., Tremblay M. N., Mondor E.B., Foottit, R.G. and Pike, K.S. (2007). Invasive aphids
+       attack native Hawaiian plants. Biological Invasions (2007), Vol. 9, pp 601 – 607. [41]
+   13) Ministry of Agriculture, Lands, Forestry and Fisheries (2009). St. Lucia Annual Agricultural Review
+       2008. [39]
+
+                                                    39
+14) National Environmental Protection Council (2004). Palau National Invasive Species Strategy.
+    Palau. [24]
+15) National Invasive Species Awareness Week Briefing Paper (2010). Marine Bioinvasions and
+    Climate Change. National Invasive Species Committee, Washington DC, USA. [42]
+16) Pet Industry and Joint Advisory Council (PIJAC) and Global Invasive Species Programme (GISP)
+    (circa. 2008). Pet Trade Pathway Toolkit – A call for Contributors and Sponsors. PIJAC,
+    Washington DC, USA. [33]
+17) Plant Protection Regulations – Saint Lucia. Statutory Instrument No. 66, 1995. [35]
+18) Ray, G. L. (2005). Invasive Animal Species in Marine and Estuarine Environments: Biology and
+    Ecology. Aquatic Nuisance Species Research Program. US Army Corps of Engineers – Engineer
+    Research and Development Center, MS, USA. [12]
+19) Reaser J. K. and Waugh J. D. (2007). Opportunities to Build Capacity to Prevent the Introduction
+    of Invasive Species and Improve Biosecurity at US Ports. The World Conservation Union (IUCN),
+    Switzerland. [3]
+20) Saint Lucia Air & Sea Ports Authority (undated). Statistical Digest 2008. Castries, Saint Lucia.
+21) Saint Lucia Air & Sea Ports Authority (undated). Statistical Digest 2009. Castries, Saint Lucia.
+22) SeaWeb Ocean Update (2010), Volume 15, No. 14. Leg Rings on Gulls Are Potential Pathway for
+    Invasive Species. [6]
+23) Saint Lucia Plant Protection Act No. 21 of 1988. [36]
+
+
+
+
+                                              40
+

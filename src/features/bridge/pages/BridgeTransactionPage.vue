@@ -1,0 +1,1263 @@
+<template>
+  <div class="container transaction-container">
+    <generic-page-header has-button-back :title="t('bridgeTransaction.title')" @back="handleBack">
+      <s-button
+        class="el-button--history"
+        type="action"
+        icon="time-time-history-24"
+        :tooltip="t('bridgeHistory.showHistory')"
+        :aria-label="t('bridgeHistory.showHistory')"
+        tooltip-placement="bottom-end"
+        @click="handleViewTransactionsHistory"
+      ></s-button>
+    </generic-page-header>
+
+    <div class="transaction-content">
+      <div class="header">
+        <div v-loading="isTxPending" :class="headerIconClasses"></div>
+        <h5 class="header-details">
+          <formatted-amount
+            class="info-line-value"
+            value-can-be-hidden
+            :value="amountFormatted"
+            :asset-symbol="assetSymbol"
+          >
+            <i :class="`network-icon network-icon--${getNetworkIcon(isOutgoing ? 0 : externalNetworkId)}`"></i>
+          </formatted-amount>
+          <span class="header-details-separator">{{ t('bridgeTransaction.for') }}</span>
+          <formatted-amount
+            class="info-line-value"
+            value-can-be-hidden
+            :value="amountReceivedFormatted"
+            :asset-symbol="assetSymbol"
+          >
+            <i :class="`network-icon network-icon--${getNetworkIcon(isOutgoing ? externalNetworkId : 0)}`"></i>
+          </formatted-amount>
+        </h5>
+      </div>
+
+      <div
+        v-for="{ value, formatted, placeholder, tooltip, links, direction, ariaLabel } in accountLinks"
+        class="transaction-hash-container transaction-hash-container--with-dropdown"
+        :key="value"
+      >
+        <div class="transaction-address-label">
+          <span class="transaction-address-label__direction">{{ direction }}:</span>
+          <span class="transaction-address-label__network">{{ placeholder }}</span>
+        </div>
+        <div class="transaction-address-control">
+          <s-input
+            class="transaction-address"
+            :aria-label="ariaLabel"
+            :placeholder="placeholder"
+            :value="formatted"
+            readonly
+          ></s-input>
+          <s-button
+            class="s-button--hash-copy"
+            type="action"
+            alternative
+            icon="basic-copy-24"
+            :tooltip="tooltip"
+            :aria-label="tooltip"
+            @click="handleCopyAddress(value, $event)"
+          ></s-button>
+          <links-dropdown v-if="links.length" :links="links"></links-dropdown>
+        </div>
+      </div>
+
+      <info-line
+        :class="failedClass"
+        :label="t('bridgeTransaction.networkInfo.status')"
+        :value="transactionStatus"
+      ></info-line>
+      <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="txDate"></info-line>
+      <info-line
+        v-if="amount"
+        is-formatted
+        value-can-be-hidden
+        :label="t('bridgeTransaction.networkInfo.amount')"
+        :value="amountFormatted"
+        :asset-symbol="assetSymbol"
+        :fiat-value="amountFiatValue"
+      ></info-line>
+      <info-line
+        v-if="amountReceived"
+        is-formatted
+        value-can-be-hidden
+        :label="t('receivedText')"
+        :value="amountReceivedFormatted"
+        :asset-symbol="assetSymbol"
+        :fiat-value="amountReceivedFiatValue"
+      ></info-line>
+      <info-line
+        is-formatted
+        :label="getNetworkText(t('bridgeTransaction.networkInfo.transactionFee'))"
+        :value="txSoraNetworkFeeFormatted"
+        :asset-symbol="KnownSymbols.XOR"
+        :fiat-value="txSoraNetworkFeeFiatValue"
+      ></info-line>
+      <info-line
+        v-if="!isDisplayOnlyRecoveredHistory"
+        is-formatted
+        :label="
+          getNetworkText(
+            t('bridgeTransaction.networkInfo.transactionFee'),
+            externalNetworkId,
+            txExternalNetworkFeeApproximation
+          )
+        "
+        :value="txExternalNetworkFeeFormatted"
+        :asset-symbol="nativeTokenSymbol"
+        :fiat-value="txExternalNetworkFeeFiatValue"
+      ></info-line>
+      <info-line
+        v-if="txExternalTransferFeeNotZero"
+        is-formatted
+        :label="t('bridge.externalTransferFee', { network: externalNetworkName })"
+        :value="txExternalTransferFeeFormatted"
+        :asset-symbol="assetSymbol"
+        :fiat-value="txExternalTransferFeeFiatValue"
+      ></info-line>
+
+      <div
+        v-for="{ value, formatted, placeholder, tooltip, links } in transactionLinks"
+        class="transaction-hash-container transaction-hash-container--with-dropdown"
+        :key="value"
+      >
+        <div class="transaction-address-control">
+          <s-input class="transaction-address" :placeholder="placeholder" :value="formatted" readonly></s-input>
+          <s-button
+            class="s-button--hash-copy"
+            type="action"
+            alternative
+            icon="basic-copy-24"
+            :tooltip="tooltip"
+            :aria-label="tooltip"
+            @click="handleCopyAddress(value, $event)"
+          ></s-button>
+          <links-dropdown v-if="links.length" :links="links"></links-dropdown>
+        </div>
+      </div>
+
+      <div
+        v-if="showTrackingRecovery"
+        class="transaction-recovery"
+        :class="{ 'transaction-recovery--active': resumeRequested }"
+        data-testid="bridge-tracking-recovery"
+        role="status"
+        aria-live="polite"
+      >
+        <strong class="transaction-recovery__title">{{ trackingRecoveryTitle }}</strong>
+        <span v-if="trackingRecoveryError" class="transaction-recovery__error">{{ trackingRecoveryError }}</span>
+        <span class="transaction-recovery__description">{{ trackingRecoveryDescription }}</span>
+      </div>
+
+      <template v-if="!txIsFinilized">
+        <s-button v-if="isAnotherExternalAddress" type="primary" @click="connectExternalWallet">
+          <template v-if="!currentExternalAccount">
+            {{ t('connectWalletText') }}
+          </template>
+          <template v-else>
+            {{ t('changeAccountText') }}
+          </template>
+        </s-button>
+
+        <s-button
+          v-else-if="isExternalNetworkUnavailable && bridgeTransaction.isEvmTxType.value"
+          type="primary"
+          class="s-typograhy-button--big"
+          :disabled="networkChangeRequested"
+          @click="changeExternalNetwork"
+        >
+          {{ t('changeNetworkText') }}
+        </s-button>
+
+        <s-button
+          v-else
+          type="primary"
+          class="s-typograhy-button--big"
+          :disabled="confirmationButtonDisabled"
+          @click="handlePrimaryAction"
+        >
+          <template v-if="confirmationBlocksLeft">
+            {{ t('bridgeTransaction.blocksLeft', { count: confirmationBlocksLeft }) }}
+          </template>
+          <template v-else-if="txWaitingForApprove">{{
+            t('bridgeTransaction.allowToken', { tokenSymbol: assetSymbol })
+          }}</template>
+          <template v-else-if="isTxPending">{{ transactionPendingText }}</template>
+          <template v-else-if="canResumeTracking">{{ t('bridgeTransaction.recovery.resume') }}</template>
+          <template v-else-if="isExternalNetworkUnavailable">{{ t('changeNetworkText') }}</template>
+          <template v-else-if="isInsufficientBalance">{{
+            t('insufficientBalanceText', { tokenSymbol: assetSymbol })
+          }}</template>
+          <template v-else-if="isInsufficientXorForFee">{{
+            t('insufficientBalanceText', { tokenSymbol: KnownSymbols.XOR })
+          }}</template>
+          <template v-else-if="isInsufficientEvmNativeTokenForFee">{{
+            t('insufficientBalanceText', { tokenSymbol: nativeTokenSymbol })
+          }}</template>
+          <template v-else-if="isGreaterThanMaxAmount">
+            {{ t('exceededAmountText', { amount: t('maxAmountText') }) }}
+          </template>
+          <template v-else-if="isLowerThanMinAmount">
+            {{ t('exceededAmountText', { amount: t('minAmountText') }) }}
+          </template>
+          <template v-else-if="isTxWaiting">{{ t('confirmTransactionText') }}</template>
+          <template v-else-if="hasRetry">{{ t('retryText') }}</template>
+        </s-button>
+
+        <div v-if="txWaitingForApprove" class="transaction-approval-text">
+          {{ t('bridgeTransaction.approveToken') }}
+        </div>
+      </template>
+    </div>
+    <s-button
+      v-if="txIsFinilized && !isTerminalBridgeRecovery && !requiresManualBridgeRecovery"
+      class="s-typography-button--large"
+      type="secondary"
+      @click="navigateToBridge"
+    >
+      {{ t('bridgeTransaction.newTransaction') }}
+    </s-button>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { Operation } from '@sora-substrate/sdk';
+import { KnownSymbols as KnownSymbolsEnum } from '@sora-substrate/sdk/build/assets/consts';
+import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useRouter } from 'vue-router';
+import {
+  getTonswapBridgeFundingPurpose,
+  tonswapBridgeFailureTranslation,
+} from '@/features/misc/lib/tonswapBridgeLiquidity';
+import { getTsFundingQuery } from '@/features/misc/lib/getTsFlow';
+
+import { useBridgeCore } from '@/composables/useBridgeCore';
+import { useBridgeTransaction } from '@/composables/useBridgeTransaction';
+import { useCopyAddress } from '@/composables/useCopyAddress';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useLoading } from '@/composables/useLoading';
+import { useTranslation } from '@/composables/useTranslation';
+import { useWeb3Connection } from '@/composables/useWeb3Connection';
+import { type ExplorerLink, PageNames, TranslationConsts, ZeroStringValue } from '@/consts';
+import { resolveBridgeBackLocation } from '@/features/bridge/services/navigationHistory';
+import {
+  buildBridgeAddressAriaLabel,
+  isBridgeWaitingForSoraConfirmation,
+  requiresBridgeExternalAccountMatch,
+  requiresBridgeExternalNetworkMatch,
+  resolveBridgePendingNetworkName,
+} from '@/features/bridge/pages/bridgeTransactionPage.utils';
+import { useBridgeStore } from '@/stores/bridge';
+import { useWeb3Store } from '@/stores/web3';
+import {
+  formatAddress,
+  hasInsufficientBalance,
+  hasInsufficientNativeTokenForFee,
+  hasInsufficientXorForFee,
+} from '@/utils';
+import { isUnsignedTx } from '@/utils/bridge/common/utils';
+import { areBridgeExternalAccountsEqual } from '@/utils/bridge/common/account';
+import { subBridgeApi } from '@/utils/bridge/sub/api';
+import {
+  isDisplayOnlyRecoveredSubBridgeHistory,
+  SubBridgeAuthoritativeStatus,
+  SubBridgeReconciliationErrorCode,
+  type SubBridgeRecoveryPayload,
+} from '@/utils/bridge/sub/reconciliation';
+import { hasSubBridgeIncomingSubmissionEvidence, hasSubBridgeIncomingTrackingEvidence } from '@/utils/bridge/sub/utils';
+
+import type { CodecString, IBridgeTransaction } from '@sora-substrate/sdk';
+import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { SubHistory, SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
+import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
+import type { Nullable } from '@/types/common';
+import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
+import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
+import ConfirmBridgeTransactionDialog from '@/components/shared/Dialog/ConfirmBridgeTransaction.vue';
+import GenericPageHeader from '@/components/shared/GenericPageHeader.vue';
+import LinksDropdown from '@/components/shared/LinksDropdown.vue';
+
+const FORMATTED_HASH_LENGTH = 24;
+const KnownSymbols = KnownSymbolsEnum;
+
+type LinkData = {
+  value: string;
+  formatted: string;
+  placeholder: string;
+  tooltip: string;
+  links: Array<ExplorerLink>;
+};
+
+type AddressLinkData = LinkData & {
+  direction: string;
+  ariaLabel: string;
+};
+
+type BridgeTransactionWithFailure = IBridgeTransaction & {
+  errorMessage?: unknown;
+};
+
+defineOptions({
+  name: 'BridgeTransactionPage',
+  inheritAttrs: false,
+});
+
+const FormattedAmount = WalletComponentFormattedAmount;
+const InfoLine = WalletComponentInfoLine;
+
+const { t, tc } = useTranslation();
+const { handleCopyAddress, copyTooltip } = useCopyAddress();
+const { formatStringValue, formatCodecNumber, getFiatAmountByString, getFiatAmountByCodecString } =
+  useFormattedAmount();
+const { withParentLoading } = useLoading();
+const router = useRouter();
+const { connectEvmWallet, connectSubWallet, ensureEvmNetwork } = useWeb3Connection();
+const bridgeStore = useBridgeStore();
+const web3Store = useWeb3Store();
+const { waitingForApprove, inProgressIds } = storeToRefs(bridgeStore);
+const bridgeCore = useBridgeCore();
+const {
+  handleViewTransactionsHistory,
+  navigateToBridge,
+  asset,
+  nativeToken,
+  nativeTokenSymbol,
+  nativeTokenDecimals,
+  isValidNetwork,
+  externalNativeBalance,
+  isNativeTokenSelected,
+  xor,
+  externalNetworkFee,
+  soraNetworkFee,
+} = bridgeCore;
+
+const tx = computed(() => bridgeStore.activeTransaction as Nullable<IBridgeTransaction>);
+const fundingPurpose = computed(() => getTonswapBridgeFundingPurpose(tx.value ?? {}));
+const bridgeTransaction = useBridgeTransaction(tx);
+const getNetworkIcon = bridgeTransaction.formatter.getNetworkIcon;
+const getNetworkText = bridgeTransaction.getNetworkText;
+const isOutgoing = bridgeTransaction.isOutgoing;
+const externalNetworkId = bridgeTransaction.externalNetworkId;
+
+const externalBlockNumber = computed(() => bridgeStore.fees.externalBlockNumber);
+const resumeRequested = ref(false);
+const transactionRequested = ref(false);
+const networkChangeRequested = ref(false);
+
+const txIsUnsigned = computed(() => (tx.value?.id ? isUnsignedTx(tx.value) : false));
+const txTrackingIds = computed(() => {
+  const item = tx.value;
+  const ids = [item?.id, item?.hash, item?.txId, item?.externalHash, bridgeStore.history.id].filter(
+    (value): value is string => typeof value === 'string' && value.length > 0
+  );
+
+  return [...new Set(ids)];
+});
+const hasTrackedTxFlag = (flags: Record<string, boolean>): boolean =>
+  txTrackingIds.value.some((id) => Boolean(flags[id]));
+const txInProcess = computed(() => {
+  return hasTrackedTxFlag(inProgressIds.value);
+});
+const txWaitingForApprove = computed(() => {
+  return hasTrackedTxFlag(waitingForApprove.value);
+});
+
+const amount = computed(() => tx.value?.amount ?? '');
+const amountReceived = computed(() => tx.value?.amount2 ?? amount.value);
+
+const amountFiatValue = computed(() => (asset.value ? getFiatAmountByString(amount.value, asset.value) : null));
+const amountReceivedFiatValue = computed(() =>
+  asset.value ? getFiatAmountByString(amountReceived.value, asset.value) : null
+);
+
+const amountFormatted = computed(() =>
+  amount.value && asset.value ? formatStringValue(amount.value, asset.value.decimals) : ''
+);
+const amountReceivedFormatted = computed(() =>
+  amountReceived.value && asset.value
+    ? formatStringValue(
+        amountReceived.value,
+        bridgeTransaction.isOutgoing.value
+          ? (asset.value.externalDecimals ?? asset.value.decimals)
+          : asset.value.decimals
+      )
+    : ''
+);
+
+const assetSymbol = computed(() => asset.value?.symbol ?? '');
+
+const parachainNetworkId = computed<Nullable<SubNetwork>>(() => {
+  const networkId = bridgeTransaction.externalNetworkId.value as SubNetwork | null;
+  if (!networkId) return null;
+  try {
+    return subBridgeApi.getSoraParachain(networkId);
+  } catch {
+    return null;
+  }
+});
+
+const txSoraNetworkFee = computed<CodecString>(() => tx.value?.soraNetworkFee ?? soraNetworkFee.value);
+const txSoraNetworkFeeFormatted = computed(() => formatCodecNumber(txSoraNetworkFee.value, xor.value?.decimals));
+const txSoraNetworkFeeFiatValue = computed(() => getFiatAmountByCodecString(txSoraNetworkFee.value));
+
+const txExternalNetworkFee = computed<CodecString>(() => tx.value?.externalNetworkFee ?? externalNetworkFee.value);
+const txExternalNetworkFeeFormatted = computed(() =>
+  formatCodecNumber(txExternalNetworkFee.value, nativeTokenDecimals.value)
+);
+const txExternalNetworkFeeApproximation = computed(() => {
+  if (txExternalNetworkFeeFormatted.value === ZeroStringValue) return false;
+  return !tx.value?.externalNetworkFee;
+});
+const txExternalNetworkFeeFiatValue = computed(() =>
+  nativeToken.value ? getFiatAmountByCodecString(txExternalNetworkFee.value, nativeToken.value) : null
+);
+
+const txExternalTransferFee = computed<CodecString>(
+  () => (tx.value as SubHistory | null)?.externalTransferFee ?? ZeroStringValue
+);
+const txExternalTransferFeeFormatted = computed(() =>
+  formatCodecNumber(txExternalTransferFee.value, asset.value?.externalDecimals)
+);
+const txExternalTransferFeeNotZero = computed(() => txExternalTransferFee.value !== ZeroStringValue);
+const txExternalTransferFeeFiatValue = computed(() =>
+  asset.value ? getFiatAmountByCodecString(txExternalTransferFee.value, asset.value) : null
+);
+
+const txParachainBlockId = computed(() => (tx.value as SubHistory | null)?.parachainBlockId ?? '');
+const txParachainBlockNumber = computed(() => (tx.value as SubHistory | null)?.parachainBlockHeight);
+
+const txDate = computed(() => bridgeTransaction.formatter.formatDatetime(tx.value));
+const txState = computed(() => tx.value?.transactionState ?? BridgeTxStatus.Pending);
+
+const isTxFailed = computed(() => bridgeTransaction.formatter.isFailedState(tx.value));
+const isTxCompleted = computed(() => bridgeTransaction.formatter.isSuccessState(tx.value));
+const isTxWaiting = computed(() => bridgeTransaction.formatter.isWaitingForActionState(tx.value));
+const isTxPending = computed(() => !isTxFailed.value && !isTxCompleted.value);
+const bridgeRecoveryStatus = computed(
+  () => ((tx.value as SubHistory | null)?.payload as SubBridgeRecoveryPayload | undefined)?.bridgeRecoveryStatus
+);
+const isDisplayOnlyRecoveredHistory = computed(() =>
+  isDisplayOnlyRecoveredSubBridgeHistory(tx.value as SubHistory | null)
+);
+const isTerminalBridgeRecovery = computed(
+  () =>
+    bridgeRecoveryStatus.value === SubBridgeAuthoritativeStatus.Failed ||
+    bridgeRecoveryStatus.value === SubBridgeAuthoritativeStatus.Refunded
+);
+const isStandaloneIncomingSubBridge = computed(() => {
+  const transaction = tx.value as SubHistory | null;
+
+  return Boolean(
+    bridgeTransaction.externalNetworkType.value === BridgeNetworkType.Sub &&
+    transaction?.type === Operation.SubstrateIncoming &&
+    subBridgeApi.isStandalone(transaction.externalNetwork as SubNetwork)
+  );
+});
+const hasRecordedSubBridgeAttempt = computed(() => {
+  const transaction = tx.value as SubHistory | null;
+
+  return Boolean(
+    isTxFailed.value &&
+    isStandaloneIncomingSubBridge.value &&
+    transaction &&
+    hasSubBridgeIncomingSubmissionEvidence(transaction)
+  );
+});
+const requiresManualBridgeRecovery = computed(() => {
+  const transaction = tx.value as SubHistory | null;
+
+  return Boolean(
+    hasRecordedSubBridgeAttempt.value &&
+    !isTerminalBridgeRecovery.value &&
+    transaction &&
+    !hasSubBridgeIncomingTrackingEvidence(transaction)
+  );
+});
+const canResumeTracking = computed(() => {
+  const transaction = tx.value as SubHistory | null;
+
+  return Boolean(
+    hasRecordedSubBridgeAttempt.value &&
+    !isTerminalBridgeRecovery.value &&
+    transaction &&
+    hasSubBridgeIncomingTrackingEvidence(transaction)
+  );
+});
+const hasRetry = computed(
+  () =>
+    !isDisplayOnlyRecoveredHistory.value &&
+    isTxFailed.value &&
+    (txIsUnsigned.value || bridgeTransaction.isEvmTxType.value)
+);
+const txIsFinilized = computed(
+  () => !isTxPending.value && !isTxWaiting.value && !canResumeTracking.value && !hasRetry.value
+);
+const isSoraConfirmationPending = computed(() => isBridgeWaitingForSoraConfirmation(txState.value));
+const showTrackingRecovery = computed(
+  () =>
+    canResumeTracking.value ||
+    requiresManualBridgeRecovery.value ||
+    isTerminalBridgeRecovery.value ||
+    (resumeRequested.value && !isTxCompleted.value)
+);
+const trackingRecoveryTitle = computed(() => {
+  if (resumeRequested.value) return t('bridgeTransaction.recovery.resumingTitle');
+  if (bridgeRecoveryStatus.value === SubBridgeAuthoritativeStatus.Refunded) {
+    return t('bridgeTransaction.recovery.refundedTitle');
+  }
+  if (bridgeRecoveryStatus.value === SubBridgeAuthoritativeStatus.Failed) {
+    return t('bridgeTransaction.recovery.rejectedTitle');
+  }
+  if (requiresManualBridgeRecovery.value) return t('bridgeTransaction.recovery.manualTitle');
+
+  return t('bridgeTransaction.recovery.failedTitle');
+});
+const trackingRecoveryDescription = computed(() => {
+  if (resumeRequested.value) return t('bridgeTransaction.recovery.resumingDescription');
+  if (bridgeRecoveryStatus.value === SubBridgeAuthoritativeStatus.Refunded) {
+    return t('bridgeTransaction.recovery.refundedDescription');
+  }
+  if (bridgeRecoveryStatus.value === SubBridgeAuthoritativeStatus.Failed) {
+    return t('bridgeTransaction.recovery.rejectedDescription');
+  }
+  if (requiresManualBridgeRecovery.value) return t('bridgeTransaction.recovery.manualDescription');
+
+  return t('bridgeTransaction.recovery.failedDescription');
+});
+const trackingRecoveryError = computed(() => {
+  if (resumeRequested.value || isTerminalBridgeRecovery.value || requiresManualBridgeRecovery.value) return '';
+
+  const errorMessage = (tx.value as BridgeTransactionWithFailure | null)?.errorMessage;
+  const fundingErrorKey = tonswapBridgeFailureTranslation(errorMessage, fundingPurpose.value ?? 'ts');
+  if (fundingErrorKey) return t(fundingErrorKey);
+
+  if (Object.values(SubBridgeReconciliationErrorCode).some((code) => code === errorMessage)) return '';
+
+  return typeof errorMessage === 'string' ? errorMessage.trim() : '';
+});
+
+const headerIconClasses = computed(() => {
+  const iconClass = 'header-icon';
+  const classes = [iconClass];
+
+  if (isTxWaiting.value) {
+    classes.push(`${iconClass}--wait`);
+  } else if (isTxFailed.value) {
+    classes.push(`${iconClass}--error`);
+  } else if (isTxCompleted.value) {
+    classes.push(`${iconClass}--success`);
+  } else {
+    classes.push(`${iconClass}--wait`);
+  }
+
+  return classes.join(' ');
+});
+
+const transactionStatus = computed(() => {
+  if (txIsUnsigned.value || isTxWaiting.value || isSoraConfirmationPending.value) {
+    return t('bridgeTransaction.statuses.waitingForConfirmation');
+  }
+  if (canResumeTracking.value || requiresManualBridgeRecovery.value) {
+    return t('bridgeTransaction.statuses.trackingInterrupted');
+  }
+  if (isTxFailed.value) {
+    return t('bridgeTransaction.statuses.failed');
+  }
+  if (isTxCompleted.value) {
+    return t('bridgeTransaction.statuses.done');
+  }
+
+  return `${t('bridgeTransaction.statuses.pending')}...`;
+});
+
+const isGreaterThanMaxAmount = computed(
+  () =>
+    txIsUnsigned.value &&
+    bridgeCore.isGreaterThanTransferMaxAmount(amount.value, asset.value, bridgeTransaction.isOutgoing.value)
+);
+
+const isLowerThanMinAmount = computed(
+  () =>
+    txIsUnsigned.value &&
+    bridgeCore.isLowerThanTransferMinAmount(amount.value, asset.value, bridgeTransaction.isOutgoing.value)
+);
+
+const isInsufficientBalance = computed(() => {
+  const fee = bridgeTransaction.isOutgoing.value ? txSoraNetworkFee.value : txExternalNetworkFee.value;
+  if (!asset.value || !amount.value || !fee) return false;
+
+  return (
+    txIsUnsigned.value &&
+    hasInsufficientBalance(asset.value, amount.value, fee, {
+      isExternalBalance: !bridgeTransaction.isOutgoing.value,
+      isExternalNative: isNativeTokenSelected.value,
+    })
+  );
+});
+
+const isInsufficientXorForFee = computed(
+  () => txIsUnsigned.value && hasInsufficientXorForFee(xor.value, txSoraNetworkFee.value)
+);
+
+const isInsufficientEvmNativeTokenForFee = computed(() => {
+  const outgoing = bridgeTransaction.isOutgoing.value;
+  return (
+    ((txIsUnsigned.value && !outgoing) || (!txIsUnsigned.value && outgoing)) &&
+    hasInsufficientNativeTokenForFee(externalNativeBalance.value, txExternalNetworkFee.value)
+  );
+});
+
+const txExternalAccount = computed(() => bridgeTransaction.txExternalAccount.value ?? '');
+
+const isSubTransaction = computed(() => bridgeTransaction.externalNetworkType.value === BridgeNetworkType.Sub);
+const usesSubstrateExternalAccount = computed(() => {
+  const network = externalNetworkId.value;
+
+  return Boolean(isSubTransaction.value && network && !subBridgeApi.isEvmAccount(network as SubNetwork));
+});
+const currentExternalAccount = computed(() =>
+  usesSubstrateExternalAccount.value ? (web3Store.subAddress ?? '') : (web3Store.evmAddress ?? '')
+);
+const shouldMatchExternalAccount = computed(() =>
+  requiresBridgeExternalAccountMatch({
+    isEvmTransaction: bridgeTransaction.isEvmTxType.value,
+    isSubTransaction: isSubTransaction.value,
+    isOutgoing: bridgeTransaction.isOutgoing.value,
+    isUnsigned: txIsUnsigned.value,
+  })
+);
+const isAnotherExternalAddress = computed(() => {
+  if (!shouldMatchExternalAccount.value) return false;
+
+  return !areBridgeExternalAccountsEqual(txExternalAccount.value, currentExternalAccount.value);
+});
+const isExternalNetworkUnavailable = computed(
+  () =>
+    !isValidNetwork.value &&
+    requiresBridgeExternalNetworkMatch({
+      isEvmTransaction: bridgeTransaction.isEvmTxType.value,
+      isOutgoing: bridgeTransaction.isOutgoing.value,
+      isUnsigned: txIsUnsigned.value,
+      transactionState: txState.value,
+    })
+);
+
+const confirmationButtonDisabled = computed(() => {
+  if (canResumeTracking.value) {
+    return txInProcess.value || transactionRequested.value || resumeRequested.value;
+  }
+
+  return (
+    txInProcess.value ||
+    transactionRequested.value ||
+    isExternalNetworkUnavailable.value ||
+    isAnotherExternalAddress.value ||
+    isInsufficientBalance.value ||
+    isGreaterThanMaxAmount.value ||
+    isLowerThanMinAmount.value ||
+    isInsufficientXorForFee.value ||
+    isInsufficientEvmNativeTokenForFee.value ||
+    isTxPending.value
+  );
+});
+
+const externalNetworkName = computed(() => {
+  const type = bridgeTransaction.externalNetworkType.value;
+  const id = bridgeTransaction.externalNetworkId.value;
+  if (!(type && id)) return '';
+  return bridgeTransaction.formatter.getNetworkName(type, id);
+});
+
+const txPendingNetworkName = computed(() =>
+  resolveBridgePendingNetworkName({
+    transactionState: txState.value,
+    isOutgoing: bridgeTransaction.isOutgoing.value,
+    internalNetworkName: TranslationConsts?.Sora ?? 'SORA',
+    externalNetworkName: externalNetworkName.value,
+  })
+);
+
+const transactionPendingText = computed(() => t('bridgeTransaction.pending', { network: txPendingNetworkName.value }));
+
+const parachainExplorerLinks = computed(() => {
+  const type = bridgeTransaction.externalNetworkType.value;
+  const networkId = parachainNetworkId.value;
+  if (!(type && networkId)) return [];
+
+  return bridgeTransaction.formatter.getNetworkExplorerLinks({
+    networkType: type,
+    networkId,
+    value: '',
+    blockId: txParachainBlockNumber.value,
+  });
+});
+
+const confirmationBlocksLeft = computed(() => {
+  if (
+    !(
+      bridgeTransaction.isEvmTxType.value &&
+      !bridgeTransaction.isOutgoing.value &&
+      bridgeTransaction.txExternalBlockNumber.value &&
+      externalBlockNumber.value
+    )
+  ) {
+    return 0;
+  }
+
+  const blocksLeft = (bridgeTransaction.txExternalBlockNumber.value ?? 0) + 30 - externalBlockNumber.value;
+
+  return Math.max(blocksLeft, 0);
+});
+
+const failedClass = computed(() => (isTxFailed.value && !isTxWaiting.value ? 'info-line--error' : ''));
+
+const txInternalHash = computed(() => {
+  if (!bridgeTransaction.isOutgoing.value) {
+    return (
+      bridgeTransaction.txSoraHash.value ||
+      (isDisplayOnlyRecoveredHistory.value ? ((tx.value as SubHistory | null)?.txId ?? '') : '')
+    );
+  }
+  return (
+    bridgeTransaction.txSoraHash.value || bridgeTransaction.txInternalBlockId.value || bridgeTransaction.txSoraId.value
+  );
+});
+
+/** Keeps the signed source hash visible when an ambiguous incoming attempt has not yet populated `externalHash`. */
+const txExternalSourceHash = computed(() => {
+  if (bridgeTransaction.txExternalHash.value) return bridgeTransaction.txExternalHash.value;
+  if (!hasRecordedSubBridgeAttempt.value) return '';
+
+  return (tx.value as SubHistory | null)?.txId ?? '';
+});
+
+const txExternalSourceExplorerLinks = computed(() => {
+  if (bridgeTransaction.externalExplorerLinks.value.length) return bridgeTransaction.externalExplorerLinks.value;
+
+  const value = txExternalSourceHash.value;
+  const networkType = bridgeTransaction.externalNetworkType.value;
+  const networkId = bridgeTransaction.externalNetworkId.value;
+
+  if (!(value && networkType && networkId)) return [];
+
+  return bridgeTransaction.formatter.getNetworkExplorerLinks({ networkType, networkId, value });
+});
+
+const parachainLinks = computed(() => parachainExplorerLinks.value);
+
+const accountLinks = computed(() => {
+  const name = t('accountAddressText');
+  const internal = getLinkData(
+    bridgeTransaction.txInternalAccount.value,
+    bridgeTransaction.internalAccountLinks.value,
+    name
+  );
+  const external = getLinkData(
+    bridgeTransaction.txExternalAccount.value,
+    bridgeTransaction.externalAccountLinks.value,
+    name,
+    bridgeTransaction.externalNetworkId.value
+  );
+
+  const source = bridgeTransaction.isOutgoing.value ? internal : external;
+  const destination = bridgeTransaction.isOutgoing.value ? external : internal;
+
+  return [
+    withAddressDirection(source, t('transaction.from')),
+    withAddressDirection(destination, t('transaction.to')),
+  ].filter(Boolean) as AddressLinkData[];
+});
+
+const transactionLinks = computed(() => {
+  const txHashName = t('bridgeTransaction.transactionHash');
+  const txBlockName = t('transaction.blockId');
+  const internal = getLinkData(txInternalHash.value, bridgeTransaction.internalExplorerLinks.value, txHashName);
+  const parachain = getLinkData(txParachainBlockId.value, parachainLinks.value, txBlockName, parachainNetworkId.value);
+  const external = getLinkData(
+    txExternalSourceHash.value || bridgeTransaction.txExternalBlockId.value,
+    txExternalSourceExplorerLinks.value,
+    txExternalSourceHash.value ? txHashName : txBlockName,
+    bridgeTransaction.externalNetworkId.value
+  );
+
+  return sortLinksByTxDirection([internal, parachain, external]);
+});
+
+function sortLinksByTxDirection(outgoingOrderedLinks: Array<LinkData | null>): LinkData[] {
+  const links = outgoingOrderedLinks.filter(Boolean) as LinkData[];
+  return bridgeTransaction.isOutgoing.value ? links : [...links].reverse();
+}
+
+/** Attaches explicit FROM/TO context to an address row while preserving its network label. */
+function withAddressDirection(link: LinkData | null, direction: string): AddressLinkData | null {
+  if (!link) return null;
+
+  return {
+    ...link,
+    direction,
+    ariaLabel: buildBridgeAddressAriaLabel(direction, link.placeholder),
+  };
+}
+
+function getLinkData(
+  value: string,
+  links: Array<ExplorerLink>,
+  name: string,
+  networkId?: Nullable<BridgeNetworkId>
+): LinkData | null {
+  if (!value) return null;
+
+  const placeholder = bridgeTransaction.getNetworkText(name, networkId);
+
+  return {
+    value,
+    formatted: formatAddress(value, FORMATTED_HASH_LENGTH),
+    placeholder,
+    tooltip: copyTooltip(placeholder),
+    links,
+  };
+}
+
+/** Starts at most one run of the selected persisted transaction after wallet guards pass. */
+function handleTransaction(withAutoStart = true, onSettled?: () => void): void {
+  if (!(withAutoStart && tx.value?.id) || txInProcess.value || transactionRequested.value) return;
+  if (!canResumeTracking.value && (isAnotherExternalAddress.value || isExternalNetworkUnavailable.value)) return;
+
+  const id = tx.value.id;
+  transactionRequested.value = true;
+
+  void bridgeStore
+    .handleBridgeTransaction(id)
+    .catch((error) => {
+      console.error('[BridgeTransactionPage]: bridge transaction processing failed', error);
+    })
+    .finally(() => {
+      transactionRequested.value = false;
+      onSettled?.();
+    });
+}
+
+/**
+ * Restarts the status check for an incoming Substrate transfer with durable
+ * attempt evidence. The bridge recovery path only uses the saved identifiers;
+ * it never signs or submits a transfer from this action.
+ */
+function handlePrimaryAction(): void {
+  if (isDisplayOnlyRecoveredHistory.value) return;
+  if (confirmationButtonDisabled.value) return;
+  if (canResumeTracking.value && (resumeRequested.value || txInProcess.value)) return;
+
+  if (!canResumeTracking.value) {
+    handleTransaction();
+    return;
+  }
+
+  resumeRequested.value = true;
+  handleTransaction(true, () => {
+    if (isTxFailed.value) resumeRequested.value = false;
+  });
+}
+
+/** Requests only a wallet network change; confirmation still uses the saved bridge row. */
+async function changeExternalNetwork(): Promise<void> {
+  if (networkChangeRequested.value || !isExternalNetworkUnavailable.value) return;
+
+  networkChangeRequested.value = true;
+  try {
+    await ensureEvmNetwork();
+  } catch {
+    // A declined wallet request leaves the network action available to retry.
+  } finally {
+    networkChangeRequested.value = false;
+  }
+}
+
+// A restored pending row may have mounted before the destination wallet was
+// reconnected. Continue that same row once its wallet requirements are met.
+watch(
+  [isAnotherExternalAddress, isExternalNetworkUnavailable],
+  ([accountUnavailable, networkUnavailable], [wasAccountUnavailable, wasNetworkUnavailable]) => {
+    if (
+      !accountUnavailable &&
+      !networkUnavailable &&
+      (wasAccountUnavailable || wasNetworkUnavailable) &&
+      isTxPending.value
+    ) {
+      handleTransaction();
+    }
+  }
+);
+
+async function connectExternalWallet(): Promise<void> {
+  if (usesSubstrateExternalAccount.value) {
+    connectSubWallet();
+    return;
+  }
+
+  await connectEvmWallet();
+}
+
+function handleBack(): void {
+  if (fundingPurpose.value) {
+    void router.push({ path: '/bridge/history', query: getTsFundingQuery(fundingPurpose.value) });
+    return;
+  }
+  const backLocation = resolveBridgeBackLocation();
+  if (backLocation) {
+    router.push(backLocation);
+    return;
+  }
+
+  navigateToBridge();
+}
+
+const txLink = computed(() => {
+  const link = bridgeTransaction.isOutgoing.value
+    ? bridgeTransaction.externalExplorerLinks.value[0]
+    : bridgeTransaction.internalExplorerLinks.value[0];
+  const network = bridgeTransaction.isOutgoing.value ? bridgeTransaction.externalNetworkId.value : undefined;
+
+  return prepareLink(link, network);
+});
+
+const txAccountLink = computed(() => {
+  const link = bridgeTransaction.isOutgoing.value
+    ? bridgeTransaction.externalAccountLinks.value[0]
+    : bridgeTransaction.internalAccountLinks.value[0];
+  const network = bridgeTransaction.isOutgoing.value ? bridgeTransaction.externalNetworkId.value : undefined;
+
+  return prepareLink(link, network, false);
+});
+
+function prepareLink(
+  link: ExplorerLink | undefined,
+  externalNetworkId?: Nullable<BridgeNetworkId>,
+  isTxLink = true
+): { href: string; title: string } | null {
+  if (!link) return null;
+  const linkText = isTxLink ? tc('transactionText', 1) : tc('accountText', 1);
+
+  return {
+    href: link.value,
+    title: bridgeTransaction.getNetworkText(linkText, externalNetworkId),
+  };
+}
+
+onMounted(async () => {
+  if (!tx.value) {
+    navigateToBridge();
+    return;
+  }
+
+  await withParentLoading(() => {
+    const withAutoStart =
+      !isDisplayOnlyRecoveredHistory.value &&
+      !txInProcess.value &&
+      isTxPending.value &&
+      !isAnotherExternalAddress.value;
+    handleTransaction(withAutoStart);
+  });
+});
+
+onBeforeUnmount(async () => {
+  if (!tx.value) return;
+  if (txInProcess.value) return;
+
+  // Only discard a pristine draft. Failed rows may contain the sole forensic
+  // record of an ambiguous wallet/RPC attempt and must survive navigation.
+  if (txIsUnsigned.value && !isTxFailed.value) {
+    const historyCopy = { ...tx.value };
+    await bridgeStore.removeHistory({ tx: historyCopy, force: true });
+  }
+
+  bridgeStore.setHistoryId();
+});
+</script>
+
+<style lang="scss">
+$header-icon-size: 52px;
+$header-spinner-size: 62px;
+$header-font-size: var(--s-heading3-font-size);
+
+.transaction {
+  &-container {
+    @include bridge-container;
+  }
+  &-content {
+    @include collapse-items;
+    .header {
+      &-details .info-line-value {
+        .formatted-amount {
+          &__integer,
+          &__symbol {
+            font-size: $header-font-size;
+          }
+          &__decimal {
+            font-size: calc(#{$header-font-size} * 0.75) !important;
+          }
+        }
+      }
+      &-icon {
+        position: relative;
+        @include svg-icon('', $header-icon-size);
+        .el-loading-mask {
+          background-color: var(--s-color-utility-surface);
+        }
+        .el-loading-spinner {
+          top: 0;
+          margin-top: calc(#{$header-icon-size - $header-spinner-size} / 2);
+          .circular {
+            width: $header-spinner-size;
+            height: $header-spinner-size;
+          }
+        }
+      }
+    }
+    .el-button .network-title {
+      text-transform: uppercase;
+    }
+    .info-line {
+      &--error .info-line-value {
+        color: var(--s-color-status-error);
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+      &-label {
+        font-weight: 300;
+      }
+    }
+  }
+  &-hash-container {
+    --transaction-address-action-gap: #{$inner-spacing-tiny};
+    --transaction-address-action-inset: #{$inner-spacing-mini};
+    --transaction-address-action-size: var(--s-size-small);
+
+    .transaction-address-label {
+      display: flex;
+      flex-wrap: wrap;
+      gap: calc(#{$inner-spacing-mini} / 2);
+      align-items: baseline;
+      margin: 0 0 $inner-spacing-mini $inner-spacing-tiny;
+      color: var(--s-color-base-content-secondary);
+      font-size: var(--s-font-size-mini);
+      line-height: var(--s-line-height-mini);
+      letter-spacing: 0;
+      text-transform: uppercase;
+
+      &__direction {
+        color: var(--s-color-base-content-primary);
+        font-weight: 700;
+      }
+
+      &__network {
+        font-weight: 600;
+      }
+    }
+
+    .transaction-address-control {
+      position: relative;
+    }
+
+    .transaction-address.s-input {
+      background-color: var(--s-color-utility-body);
+      border-radius: var(--s-border-radius-small);
+      box-shadow: var(--s-shadow-element-pressed);
+      color: var(--s-color-base-content-primary);
+
+      .s-input__content {
+        min-height: var(--s-size-medium);
+        padding: 0
+          calc(
+            var(--transaction-address-action-inset) + var(--transaction-address-action-size) +
+              var(--transaction-address-action-size) + var(--transaction-address-action-gap)
+          )
+          0 #{$inner-spacing-medium};
+      }
+
+      .el-input__inner {
+        font-size: var(--s-font-size-medium);
+        font-weight: 600;
+        line-height: var(--s-line-height-small);
+        text-overflow: ellipsis;
+      }
+    }
+
+    .s-button--hash-copy {
+      padding: 0;
+      width: var(--transaction-address-action-size);
+      height: var(--transaction-address-action-size);
+      color: var(--s-color-base-content-tertiary) !important;
+
+      .s-button__icon {
+        margin-right: 0 !important;
+      }
+    }
+    &--with-dropdown {
+      .s-button--hash-copy {
+        right: calc(
+          var(--transaction-address-action-inset) + var(--transaction-address-action-size) +
+            var(--transaction-address-action-gap)
+        );
+      }
+      .s-dropdown--hash-menu {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        z-index: $app-content-layer;
+        top: 0;
+        bottom: 0;
+        right: var(--transaction-address-action-inset);
+        width: var(--transaction-address-action-size);
+        height: var(--transaction-address-action-size);
+        color: var(--s-color-base-content-tertiary);
+      }
+    }
+    i {
+      font-weight: 600;
+      @include icon-styles;
+    }
+  }
+}
+.s-button--hash-copy {
+  right: $inner-spacing-medium;
+  &,
+  .el-tooltip {
+    &:focus {
+      outline: auto;
+    }
+  }
+}
+[design-system-theme='dark'] {
+  .transaction-content .transaction-address.s-input {
+    background-color: var(--s-color-base-on-accent);
+  }
+
+  // Dark-theme status background tokens intentionally collapse to their
+  // foreground colors. Use the on-accent token so recovery guidance remains
+  // readable instead of rendering pink-on-pink or orange-on-orange.
+  .transaction-content .transaction-recovery {
+    color: var(--s-color-base-on-accent);
+  }
+}
+</style>
+
+<style lang="scss" scoped>
+$network-title-max-width: 250px;
+
+.transaction {
+  &-container {
+    flex-direction: column;
+    align-items: center;
+    margin-top: $inner-spacing-large;
+    margin-right: auto;
+    margin-left: auto;
+    &.el-loading-parent--relative .transaction-content {
+      min-height: $bridge-height;
+    }
+  }
+  &-content .el-button,
+  &-container .s-typography-button--large {
+    width: 100%;
+    margin-top: $inner-spacing-medium;
+  }
+  &-content {
+    @include bridge-content(285px);
+    margin-top: $inner-spacing-big;
+
+    & > *:not(:first-child) {
+      margin-top: $inner-spacing-medium;
+    }
+  }
+
+  &-hash-container {
+    .s-button--hash-copy {
+      position: absolute;
+      z-index: $app-content-layer;
+      top: 0;
+      bottom: 0;
+      margin-top: auto;
+      margin-bottom: auto;
+      padding: 0;
+      width: var(--transaction-address-action-size);
+      height: var(--transaction-address-action-size);
+      line-height: 1;
+    }
+  }
+  &-recovery {
+    background-color: var(--s-color-status-error-background);
+    border-radius: var(--s-border-radius-small);
+    color: var(--s-color-status-error);
+    display: flex;
+    flex-flow: column nowrap;
+    gap: $inner-spacing-tiny;
+    padding: $inner-spacing-medium;
+    margin-bottom: $inner-spacing-medium;
+    line-height: var(--s-line-height-mini);
+    text-align: left;
+
+    &--active {
+      background-color: var(--s-color-status-warning-background);
+      color: var(--s-color-status-warning);
+    }
+    &__title {
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    &__description {
+      font-weight: 400;
+    }
+    &__error {
+      font-weight: 600;
+    }
+  }
+  &-approval-text {
+    margin-top: $inner-spacing-medium;
+    font-size: var(--s-font-size-mini);
+  }
+}
+.header {
+  margin-bottom: $inner-spacing-medium;
+  text-align: center;
+  &-icon {
+    margin: $inner-spacing-medium auto;
+    &--success {
+      background-image: url('@/assets/img/status-success.svg');
+      background-size: 110%;
+    }
+    &--wait {
+      background-image: url('@/assets/img/header-wait.svg');
+    }
+    &--error {
+      background-image: url('@/assets/img/header-error.svg');
+      background-size: 125%;
+    }
+    &.el-loading-parent--relative {
+      background-image: none;
+    }
+  }
+  &-details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: $inner-spacing-mini;
+    font-weight: 700;
+    line-height: var(--s-line-height-medium);
+    .network-icon {
+      margin-left: calc(#{$inner-spacing-mini} / 4);
+    }
+    &-separator {
+      margin-right: $inner-spacing-tiny;
+      margin-left: $inner-spacing-tiny;
+      font-size: var(--s-heading3-font-size);
+      font-weight: 300;
+    }
+  }
+}
+</style>

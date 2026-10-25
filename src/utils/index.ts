@@ -1,24 +1,47 @@
-import { FPNumber, CodecString } from '@sora-substrate/sdk';
-import { isNativeAsset } from '@sora-substrate/sdk/build/assets';
+import { FPNumber, type CodecString } from '@sora-substrate/math';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { api, WALLET_CONSTS, getExplorerLinks } from '@soramitsu/soraneo-wallet-web';
-import scrollbarWidth from 'element-ui/src/utils/scrollbar-width';
 import debounce from 'lodash/debounce';
+import { watch } from 'vue';
 
-import { app, TranslationConsts, ZeroStringValue } from '@/consts';
-import i18n from '@/lang';
-import router from '@/router';
-import store from '@/store';
-
-import type { AmountWithSuffix } from '../types/formats';
 import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
-import type { Currency, CurrencyFields } from '@soramitsu/soraneo-wallet-web/lib/types/currency';
-import type { Route } from 'vue-router';
+import type { Currency, CurrencyFields } from '@/lib/soraneo-wallet/src/types/currency';
 
 type AssetWithBalance = AccountAsset | RegisteredAccountAsset;
 
-type PoolAssets<T extends Asset> = { baseAsset: T; poolAsset: T };
+import { ExplorerType, type ExplorerLink, SoraNetwork } from '@/consts';
+import { getExplorerLinks } from '@/lib/soraneo-wallet/src/util';
+import pinia from '@/plugins/pinia';
+import { useWalletStore } from '@/stores/wallet';
+import getScrollbarWidth from '@/utils/scrollbar-width';
+import { delay } from './timing';
+import {
+  asZeroValue,
+  getAssetBalance,
+  getAssetDecimals,
+  formatAssetBalance as formatAssetBalanceInternal,
+  formatAmountWithSuffix as formatAmountWithSuffixInternal,
+  isAmountValueIntegerOnly as isAmountValueIntegerOnlyInternal,
+} from './asset-formatting';
+import { sortAssets as sortAssetsInternal, sortPools as sortPoolsInternal } from './asset-sort';
+import { toPrecision as toPrecisionInternal } from './fp';
+
+const SORA_NATIVE_MAX_FEE_MARGIN_CODEC = '1000000000000';
+
+export { getMobileCssClasses } from './device';
+export { registerDocumentTitleResolver, updateDocumentTitle } from './documentTitle';
+export { updateFpNumberLocale } from './fp-locale';
+export { updatePipTheme } from './pipTheme';
+export { delay } from './timing';
+export { waitForAccountPair } from './walletReady';
+
+export { asZeroValue, getAssetBalance, getAssetDecimals };
+export const formatAssetBalance = formatAssetBalanceInternal;
+export const formatAmountWithSuffix = formatAmountWithSuffixInternal;
+export const isAmountValueIntegerOnly = isAmountValueIntegerOnlyInternal;
+export const sortAssets = sortAssetsInternal;
+export const sortPools = sortPoolsInternal;
+export const toPrecision = toPrecisionInternal;
 
 export async function waitUntil(condition: () => boolean): Promise<void> {
   if (condition()) return;
@@ -26,23 +49,30 @@ export async function waitUntil(condition: () => boolean): Promise<void> {
   await waitUntil(condition);
 }
 
-export async function waitForSoraNetworkFromEnv(): Promise<WALLET_CONSTS.SoraNetwork> {
-  return new Promise<WALLET_CONSTS.SoraNetwork>((resolve) => {
-    const unsubscribe = store.original.watch(
-      (state) => state.wallet.settings.soraNetwork,
+export async function waitForSoraNetworkFromEnv(): Promise<SoraNetwork> {
+  const walletStore = useWalletStore(pinia);
+
+  if (walletStore.soraNetwork) {
+    return walletStore.soraNetwork as SoraNetwork;
+  }
+
+  return new Promise<SoraNetwork>((resolve) => {
+    const stop = watch(
+      () => walletStore.soraNetwork,
       (value) => {
         if (value) {
-          unsubscribe();
-          resolve(value);
+          stop();
+          resolve(value as SoraNetwork);
         }
-      }
+      },
+      { flush: 'sync' }
     );
   });
 }
 
 export const copyToClipboard = async (text: string): Promise<void> => {
   try {
-    return navigator.clipboard.writeText(text);
+    await navigator.clipboard.writeText(text);
   } catch (err) {
     console.error('Could not copy text: ', err);
   }
@@ -50,9 +80,7 @@ export const copyToClipboard = async (text: string): Promise<void> => {
 
 export const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
 
-export const formatAddress = (address: string, length = address.length / 2): string => {
-  return `${address.slice(0, length / 2)}...${address.slice(-length / 2)}`;
-};
+export { formatAddress } from './formatAddress';
 
 export const areEqual = <T>(prev: T, curr: T): boolean => JSON.stringify(prev) === JSON.stringify(curr);
 
@@ -67,7 +95,9 @@ export const isMaxButtonAvailable = (
   xorAsset: AccountAsset | RegisteredAccountAsset,
   isXorOutputSwap = false
 ): boolean => {
-  if (store.state.wallet.settings.shouldBalanceBeHidden) {
+  const walletStore = useWalletStore(pinia);
+
+  if (walletStore.shouldBalanceBeHidden) {
     return false; // MAX button behavior discloses hidden balance so it should be hidden in ANY case
   }
 
@@ -100,6 +130,12 @@ export const getMaxBalance = (
   ) {
     const fpFee = FPNumber.fromCodecValue(fee, decimals);
     fpResult = fpResult.sub(fpFee);
+
+    // Static SORA fees are estimated from placeholder calls; reserve a tiny
+    // native-token margin so MAX values do not exceed post-fee balance.
+    if (!isExternalBalance && isXorAccountAsset(asset)) {
+      fpResult = fpResult.sub(FPNumber.fromCodecValue(SORA_NATIVE_MAX_FEE_MARGIN_CODEC, decimals));
+    }
   }
 
   return fpResult.max(FPNumber.ZERO);
@@ -111,11 +147,6 @@ export const getMaxValue = (
   { isExternalBalance = false, isExternalNative = false, isBondedBalance = false } = {}
 ): string => {
   return getMaxBalance(asset, fee, { isExternalBalance, isExternalNative, isBondedBalance }).toString();
-};
-
-/** Change FPNumber precision (`FPNumber.dp()` has issues) */
-export const toPrecision = (value: FPNumber, precision: number): FPNumber => {
-  return new FPNumber(value.toFixed(precision), precision);
 };
 
 /**
@@ -178,10 +209,6 @@ export const hasInsufficientNativeTokenForFee = (nativeBalance: CodecString, fee
   return FPNumber.lt(fpBalance, fpFee);
 };
 
-export async function delay(ms = 50, success = true): Promise<void> {
-  return await new Promise((resolve, reject) => setTimeout(success ? resolve : reject, ms));
-}
-
 export async function conditionalAwait(func: AsyncFnWithoutArgs, wait: boolean): Promise<void> {
   if (wait) {
     await func();
@@ -190,120 +217,46 @@ export async function conditionalAwait(func: AsyncFnWithoutArgs, wait: boolean):
   }
 }
 
-export const asZeroValue = (value: any): boolean => {
-  return !Number.isFinite(+value) || +value === 0;
-};
-
-export const getAssetBalance = (
-  asset: Nullable<AssetWithBalance>,
-  { internal = true, isBondedBalance = false } = {}
-) => {
-  if (!asset) return ZeroStringValue;
-
-  if (!internal) {
-    return (asset as RegisteredAccountAsset)?.externalBalance;
-  }
-
-  if (isBondedBalance) {
-    return (asset as AccountAsset)?.balance?.bonded;
-  }
-
-  return (asset as AccountAsset)?.balance?.transferable;
-};
-
 export const getLiquidityBalance = (liquidity: Nullable<AccountLiquidity>): CodecString | undefined => {
   return liquidity?.balance;
-};
-
-export const getAssetDecimals = (asset: any, { internal = true } = {}): number | undefined => {
-  if (!asset) return undefined;
-
-  return internal ? asset.decimals : asset.externalDecimals;
-};
-
-export const formatAssetBalance = (
-  asset: any,
-  { internal = true, formattedZero = '', showZeroBalance = true, isBondedBalance = false } = {}
-): string => {
-  if (!asset) return formattedZero;
-
-  const balance = getAssetBalance(asset, { internal, isBondedBalance });
-
-  if (!balance || (!showZeroBalance && asZeroValue(balance))) return formattedZero;
-
-  const decimals = getAssetDecimals(asset, { internal });
-
-  return FPNumber.fromCodecValue(balance, decimals).toLocaleString();
 };
 
 export const debouncedInputHandler = (fn: any, timeout = 500, options = { leading: true }) =>
   debounce(fn, timeout, options);
 
-export const updateFpNumberLocale = (locale: string): void => {
-  const thousandSymbol = Number(10000).toLocaleString(locale).substring(2, 3);
+const getCssVariablesScopeElement = (): Nullable<Element> => {
+  if (typeof document === 'undefined') return null;
 
-  if (thousandSymbol !== '0') {
-    FPNumber.DELIMITERS_CONFIG.thousand = Number(12345).toLocaleString(locale).substring(2, 3);
-  }
-
-  FPNumber.DELIMITERS_CONFIG.decimal = Number(1.2).toLocaleString(locale).substring(1, 2);
-};
-
-/** It's used to set css classes for mobile. `[mobile, android | windows | ios]` or `undefined` */
-export const getMobileCssClasses = () => {
-  const win: typeof window & Record<string, any> = window;
-  const userAgent = navigator.userAgent || navigator.vendor || win.opera;
-  const mobileClass = 'mobile';
-  // Windows Phone must come first because its UA also contains "Android"
-  if (/windows phone/i.test(userAgent)) {
-    return [mobileClass, 'windows'];
-  }
-  if (/android/i.test(userAgent)) {
-    return [mobileClass, 'android'];
-  }
-  // iOS detection from: http://stackoverflow.com/a/9039885/177710
-  if (/iPad|iPhone|iPod/.test(userAgent) && !win.MSStream) {
-    return [mobileClass, 'ios'];
-  }
-  // The only difference between iPadPro and the other macos platforms is that iPadPro is touch enabled.
-  if (navigator?.maxTouchPoints > 2 && /Mac/.test(userAgent)) {
-    return [mobileClass, 'ios'];
-  }
-  return undefined;
-};
-
-export const updateDocumentTitle = (to?: Route) => {
-  const page = to ?? router.currentRoute;
-  const pageName = page?.name;
-  const pageTitleKey = `pageTitle.${pageName}`;
-  // TODO: update pageTitle list: remove duplicates, add missed / change logic
-  if (pageName && i18n.te(pageTitleKey)) {
-    const pageTitleValue = i18n.t(pageTitleKey, TranslationConsts) as string;
-    document.title = `${pageTitleValue} - ${app.name}`;
-  } else {
-    document.title = app.title;
-  }
+  return (
+    document.querySelector('.sora-theme-provider[data-theme]') ??
+    document.querySelector('.sora-theme-provider') ??
+    document.documentElement
+  );
 };
 
 export const getCssVariableValue = (name: string): string => {
-  return getComputedStyle(document.documentElement as any)
+  const scope = getCssVariablesScopeElement();
+  if (!scope) return '';
+
+  const scopeValue = getComputedStyle(scope as any)
     .getPropertyValue(name)
     .trim();
+
+  if (scopeValue) return scopeValue;
+
+  if (scope !== document.documentElement) {
+    return getComputedStyle(document.documentElement as any)
+      .getPropertyValue(name)
+      .trim();
+  }
+
+  return '';
 };
 
 export const toQueryString = (params: any): string => {
   return Object.entries(params)
     .map(([key, value]) => `${key}=${encodeURIComponent(value as string)}`)
     .join('&');
-};
-
-export const waitForAccountPair = async (func?: FnWithoutArgs | AsyncFnWithoutArgs): Promise<any> => {
-  if (!api.accountPair) {
-    await delay();
-    return await waitForAccountPair(func);
-  } else {
-    return func?.();
-  }
 };
 
 export const getTextWidth = (text: string, fontFamily = 'Sora', size = 10): number => {
@@ -325,38 +278,6 @@ export const calcPriceChange = (current: FPNumber, prev: FPNumber): FPNumber => 
   return current.sub(prev).div(prev).mul(FPNumber.HUNDRED);
 };
 
-// [TODO]: move to FPNumber
-export const formatAmountWithSuffix = (value: FPNumber, precision = 2): AmountWithSuffix => {
-  const val = value.toNumber();
-  const entries: [number, string][] = [
-    [3, 'K'], // Thousand (Kilo)
-    [6, 'M'], // Million
-    [9, 'B'], // Billion
-    [12, 't'], // trillion
-    [15, 'q'], // quadrillion
-    [18, 'Q'], // Quintillion
-  ];
-
-  let suffix = '';
-  let result = val;
-
-  for (const [pow, symbol] of entries) {
-    const res = val / Math.pow(10, pow);
-
-    if (Math.trunc(res) > 0) {
-      suffix = symbol;
-      result = res;
-    } else {
-      break;
-    }
-  }
-
-  return {
-    amount: new FPNumber(result.toFixed(precision)).toLocaleString(),
-    suffix,
-  };
-};
-
 export const convertFPNumberToNumber = (fpValue: Nullable<FPNumber>, precision = 2): number => {
   return parseFloat((fpValue ?? FPNumber.ZERO).toFixed(precision));
 };
@@ -368,36 +289,7 @@ export const formatDecimalPlaces = (value: FPNumber | number, asPercent = false)
   return `${formatted}${postfix}`;
 };
 
-const sortAssetsByProp = <T extends Asset>(a: T, b: T, prop: 'address' | 'symbol' | 'name') => {
-  if (a[prop] < b[prop]) return -1;
-  if (a[prop] > b[prop]) return 1;
-  return 0;
-};
-
-export const sortAssets = <T extends Asset>(a: T, b: T) => {
-  const isNativeA = isNativeAsset(a);
-  const isNativeB = isNativeAsset(b);
-  // sort native assets by address
-  if (isNativeA && isNativeB) {
-    return sortAssetsByProp(a, b, 'address');
-  }
-  if (isNativeA && !isNativeB) {
-    return -1;
-  }
-  if (!isNativeA && isNativeB) {
-    return 1;
-  }
-  // sort non native assets by symbol
-  return sortAssetsByProp(a, b, 'symbol');
-};
-
-export const sortPools = <T extends Asset>(a: PoolAssets<T>, b: PoolAssets<T>) => {
-  const byBaseAsset = sortAssets(a.baseAsset, b.baseAsset);
-
-  return byBaseAsset === 0 ? sortAssets(a.poolAsset, b.poolAsset) : byBaseAsset;
-};
-
-export const calcElScrollGutter: () => number = scrollbarWidth;
+export const calcElScrollGutter: () => number = getScrollbarWidth;
 
 const getSubscanTxLink = (baseUrl: string, txId?: string, blockId?: number | string, eventIndex?: number): string => {
   if (!(txId || blockId)) return '';
@@ -415,6 +307,49 @@ const getSubscanTxLink = (baseUrl: string, txId?: string, blockId?: number | str
   return link;
 };
 
+const SORAMETRICS_V2_PATH = 'sorav2';
+
+/** Builds SoraMetrics v2 dashboard links; the root route is now a network chooser. */
+const getSorametricsBaseUrl = (baseUrl: string): string => {
+  const trimmedUrl = baseUrl.replace(/\/+$/, '');
+  return trimmedUrl.endsWith(`/${SORAMETRICS_V2_PATH}`) ? trimmedUrl : `${trimmedUrl}/${SORAMETRICS_V2_PATH}`;
+};
+
+const getSorametricsLink = (baseUrl: string, params: Record<string, string>): string => {
+  const query = Object.entries(params)
+    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+    .join('&');
+
+  return `${getSorametricsBaseUrl(baseUrl)}?${query}`;
+};
+
+const getSorametricsAccountLink = (baseUrl: string, accountId?: string): string => {
+  if (!accountId) return '';
+
+  return getSorametricsLink(baseUrl, { tab: 'balance', address: accountId });
+};
+
+const getSorametricsTxLink = (
+  baseUrl: string,
+  txId?: string,
+  blockId?: number | string,
+  eventIndex?: number
+): string => {
+  if (txId) {
+    return getSorametricsLink(baseUrl, { tab: 'extrinsics', q: txId });
+  }
+
+  if (Number.isFinite(eventIndex) && Number.isFinite(blockId)) {
+    return getSorametricsLink(baseUrl, { tab: 'extrinsics', q: `${blockId}-${eventIndex}` });
+  }
+
+  if (blockId) {
+    return getSorametricsLink(baseUrl, { tab: 'extrinsics', block: String(blockId) });
+  }
+
+  return '';
+};
+
 const getPolkadotTxLink = (baseUrl: string, txId?: string, blockId?: number | string, eventIndex?: number): string => {
   if (blockId) {
     return `${baseUrl}/${blockId}`;
@@ -423,7 +358,7 @@ const getPolkadotTxLink = (baseUrl: string, txId?: string, blockId?: number | st
 };
 
 export const getSubstrateExplorerLinks = (
-  baseLinks: WALLET_CONSTS.ExplorerLink[],
+  baseLinks: ExplorerLink[],
   isAccount = false,
   id?: string, // tx hash or account address
   blockId?: number | string,
@@ -433,17 +368,23 @@ export const getSubstrateExplorerLinks = (
 
   if (isAccount) {
     return baseLinks
-      .filter(({ type }) => type !== WALLET_CONSTS.ExplorerType.Polkadot)
-      .map(({ type, value }) => ({ type, value: `${value}/account/${id}` }));
+      .filter(({ type }) => type !== ExplorerType.Polkadot)
+      .map(({ type, value }) => ({
+        type,
+        value: type === ExplorerType.Sorametrics ? getSorametricsAccountLink(value, id) : `${value}/account/${id}`,
+      }))
+      .filter((value) => !!value.value);
   }
 
   return baseLinks
     .map(({ type, value }) => {
-      const link = { type } as WALLET_CONSTS.ExplorerLink;
+      const link = { type } as ExplorerLink;
 
-      if (type === WALLET_CONSTS.ExplorerType.Subscan) {
+      if (type === ExplorerType.Sorametrics) {
+        link.value = getSorametricsTxLink(value, id, blockId, eventIndex);
+      } else if (type === ExplorerType.Subscan) {
         link.value = getSubscanTxLink(value, id, blockId, eventIndex);
-      } else if (type === WALLET_CONSTS.ExplorerType.Polkadot) {
+      } else if (type === ExplorerType.Polkadot) {
         link.value = getPolkadotTxLink(value, id, blockId, eventIndex);
       }
 
@@ -453,22 +394,13 @@ export const getSubstrateExplorerLinks = (
 };
 
 export const soraExplorerLinks = (
-  soraNetwork: Nullable<WALLET_CONSTS.SoraNetwork>,
+  soraNetwork: Nullable<SoraNetwork>,
   txValue?: string,
   blockId?: number | string,
   eventIndex?: number,
   isAccount = false
-): Array<WALLET_CONSTS.ExplorerLink> => {
+): Array<ExplorerLink> => {
   if (!soraNetwork) return [];
 
   return getSubstrateExplorerLinks(getExplorerLinks(soraNetwork), isAccount, txValue, blockId, eventIndex);
-};
-
-export const updatePipTheme = (): void => {
-  const pipWindow = (window as any).documentPictureInPicture?.window;
-  if (pipWindow) {
-    const htmlElement = pipWindow.document.documentElement;
-    const theme = document.documentElement.getAttribute('design-system-theme');
-    htmlElement.setAttribute('design-system-theme', theme);
-  }
 };

@@ -1,13 +1,9 @@
 import { FPNumber } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { SubqueryIndexer, SubsquidIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
+import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { gql } from '@urql/core';
 
-import type {
-  ConnectionQueryResponse,
-  ReferrerRewardEntity,
-} from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
+import type { ConnectionQueryResponse, ReferrerRewardEntity } from '@/lib/soraneo-wallet/src/services/indexer/types';
 
 export type ReferrerRewards = {
   rewards: FPNumber;
@@ -16,28 +12,9 @@ export type ReferrerRewards = {
   };
 };
 
-const { IndexerType } = WALLET_CONSTS;
-
-const SubqueryReferrerRewardsQuery = gql<ConnectionQueryResponse<ReferrerRewardEntity>>`
-  query SubqueryReferrerRewardsQuery($first: Int = 100, $filter: ReferrerRewardFilter, $after: Cursor = "") {
+const PolkaswapReferrerRewardsQuery = gql<ConnectionQueryResponse<ReferrerRewardEntity>>`
+  query PolkaswapReferrerRewardsQuery($first: Int = 100, $filter: ReferrerRewardFilter, $after: Cursor = "") {
     data: referrerRewards(first: $first, filter: $filter, after: $after) {
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-      edges {
-        node {
-          referral
-          amount
-        }
-      }
-    }
-  }
-`;
-
-const SubsquidReferrerRewardsQuery = gql<ConnectionQueryResponse<ReferrerRewardEntity>>`
-  query SubsquidReferrerRewardsQuery($first: Int = 1000, $filter: ReferrerRewardWhereInput, $after: String = null) {
-    data: referrerRewardsConnection(orderBy: id_ASC, first: $first, where: $filter, after: $after) {
       pageInfo {
         hasNextPage
         endCursor
@@ -56,29 +33,9 @@ const SubsquidReferrerRewardsQuery = gql<ConnectionQueryResponse<ReferrerRewardE
  * Get Referral Rewards summarized by referral
  */
 export async function getReferralRewards(referrer?: string): Promise<Nullable<ReferrerRewards>> {
-  const indexer = getCurrentIndexer();
-
-  let result!: Nullable<ReferrerRewardEntity[]>;
-
-  switch (indexer.type) {
-    case IndexerType.SUBQUERY: {
-      const filter = referrer ? { referrer: { equalTo: referrer } } : undefined;
-      const variables = { filter };
-      const subqueryIndexer = indexer as SubqueryIndexer;
-      result = await subqueryIndexer.services.explorer.fetchAllEntities(SubqueryReferrerRewardsQuery, variables);
-      break;
-    }
-    case IndexerType.SUBSQUID: {
-      const filter = referrer ? { referrer_eq: referrer } : undefined;
-      const variables = { filter };
-      const subsquidIndexer = indexer as SubsquidIndexer;
-      result = await subsquidIndexer.services.explorer.fetchAllEntitiesConnection(
-        SubsquidReferrerRewardsQuery,
-        variables
-      );
-      break;
-    }
-  }
+  const filter = referrer ? { referrer: { equalTo: referrer } } : undefined;
+  const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
+  const result = await polkaswapIndexer.services.explorer.fetchAllEntities(PolkaswapReferrerRewardsQuery, { filter });
 
   if (!result) return null;
 

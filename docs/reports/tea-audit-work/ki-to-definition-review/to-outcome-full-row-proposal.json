@@ -1,0 +1,69 @@
+{
+  "code": "TO",
+  "name": "Tonga",
+  "status": "permit_required",
+  "rule": "Current official Plant Quarantine Act (2020 Revised Edition), section 2, defines plant material as all materials of plant origin; manufactured items are excluded only from the separate definition of plant. Section 25(1) makes importing any plant, plant material or other regulated article unlawful until a written permit is issued under prescribed regulations. Applying this unqualified plant-material scope to finished steamed/dried sencha is a legal-scope inference. Section 17 was repealed in 1995 and is not a current permit provision. Regulation 26 specifically requires permits with conditions for manufactured material assessed by the Director as a potential serious exotic-pest carrier, but contains no express general permit waiver for other manufactured material; regulations 23–25 contain narrower preserved fruit/vegetable and dried-flower provisions. ISPM 32’s Category 1 tea example is technical evidence, not an automatic domestic statutory waiver. Food Act 2020 import definitions concern commercial purposes and do not independently establish a private-food certificate duty.",
+  "personalMailApplicability": "The Act defines import by any conveyance, applies to any person, authorizes examination/opening of mail in sections 11–12, and expressly requires Customs/Post Office holding and notification for regulated incoming mail in section 29. There is no personal-consumption or 100 g exception in the reviewed permit provision.",
+  "quantityLimit": null,
+  "authority": "Tonga Attorney General’s Office; Ministry of Agriculture, Food and Forests",
+  "evidenceUrls": [
+    "https://ago.gov.to/cms/images/LEGISLATION/PRINCIPAL/1981/1981-0024/PlantQuarantineAct_3.pdf",
+    "https://ago.gov.to/cms/legislation/current-revised-edition/by-title.html?view=acts_alpha",
+    "https://faolex.fao.org/docs/pdf/ton80201.pdf",
+    "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf",
+    "https://maff.gov.to/qqmd/",
+    "https://www.mpi.govt.nz/dmsdocument/697/direct",
+    "https://micor.agriculture.gov.au/plants/tonga_to/herb-and-species---dried",
+    "https://faolex.fao.org/docs/pdf/ton49222.pdf",
+    "https://maff.gov.to/legislation/",
+    "https://ago.gov.to/cms/images/LEGISLATION/PRINCIPAL/2020/2020-0073/FoodAct2020_1.pdf",
+    "https://maff.gov.to/division/food/",
+    "https://www.wto.org/english/tratop_e/tpr_e/s409_e.pdf"
+  ],
+  "remainingQuestion": "No additional source is needed for the conservative no-permit store exclusion under section 25(1). A published automatic permit waiver for manufactured retail tea, or authoritative legal construction that regulation 26 exhaustively displaces section 25(1) for such material, would change it. The reviewed text contains neither; the interpretive caveat is preserved rather than presenting a tea-specific ruling.",
+  "researchAttempts": [
+    "Read Tonga MAFF Quarantine Division guidance and legislation links.",
+    "Compared MPI Tonga import conditions with current Australian MICOR dried-herb conditions; origin and product coverage differ.",
+    "Searched for tea-specific conditions and personal-postal exemption; not verified.",
+    "Obtained the NPPO-submitted 1995 regulations via FAOLEX and read regulations 16, 17, 21, 23, 25 and 26. Manufactured plant material is governed by a risk determination, not a blanket exemption or automatic blanket permit rule.",
+    "Read the Plant Quarantine Act definition: plant excludes manufactured items, but plant material includes all materials of plant origin. This makes the specific regulation 26 determination essential.",
+    "Rechecked MPI’s February 2024 Tonga conditions and section 1.2 origin scope. Its removed herbal-teabag entries and Australia’s named dried-herb conditions do not establish Japanese Camellia tea conditions.",
+    "30 September independent food-law review: retrieved the current Attorney General-hosted Food Act 2020 (Act 3 of 2020). Section 2, printed p.9, defines both import and importer by commercial purposes. Section 51, printed p.30, requires prescribed documents and presentation for inspection, but must be read with those definitions. Section 19 concerns information the Authority obtains from Customs, not an independent requirement that every private consumer procure each named certificate. The WTO 2021 review paragraph 3.65 broadly describes food-import permits/certificates, but does not establish private-post scope and was not used to override the enacted definitions. The current MAFF Food Division still cites the 2020 Act. No independent private-consumption certificate obligation established; saved official Act in pacific-food-sources/to-food2020-government.*.",
+    "30 September bounded remaining-scope review: Reread saved regulations 23–26: preserved fruit/vegetable and dried-flower provisions are specific categories; regulation 26 depends on the Director's assessment of manufactured plant material as a serious exotic-pest carrier. Those concessions do not expressly determine Camellia tea, and no new applicable specification was recovered.",
+    "30 September fresh official-text recovery: used AGO Current Revised Edition title form (submit4=P, point-in-time 2026-09-30) to recover PlantQuarantineAct_3.pdf, identified as current 2020 Revised Edition, commenced 4 December 2020. Section 17 is repealed by Act10/1995. Read current sections 2, 3, 11–12, 18, 23–29 and endnotes with complete 1995 Regulations 21–29. Current section 25(1) expressly covers any plant material; section 2 defines that category as all material of plant origin. Unlike regulation 23(4), regulation 26 never expressly permits low-risk manufactured goods without a permit. Proposed conservative exclusion using this current broad duty and preserving the interpretive caveat. No general mandatory ISPM-processing exemption appears; IPPC reference in Act2 concerns certificate format. Do not use the old section17 or presume a processed-tea phytosanitary certificate duty from current section25(2)."
+  ],
+  "reviewedAt": "2026-09-30",
+  "permitFreeDecision": "not_supported",
+  "permitFreeReason": "Conservative exclusion under the current parent Act’s affirmative permit duty: section 25(1), read with the unqualified section 2 plant-material definition, covers processed tea by legal-scope inference. Regulation 26’s risk-qualified requirement is acknowledged, but it does not expressly say manufactured goods outside that assessment may enter without permit, unlike the express no-permit concessions in regulation 23. No applicable automatic tea/general-manufactured-food permit waiver was found. This is a special import-permit barrier under the store constraint, not a finding that tea is prohibited or an unsupported demand for a foreign certificate.",
+  "permitFreeSources": [
+    "https://ago.gov.to/cms/images/LEGISLATION/PRINCIPAL/1981/1981-0024/PlantQuarantineAct_3.pdf",
+    "https://ago.gov.to/cms/legislation/current-revised-edition/by-title.html?view=acts_alpha",
+    "https://faolex.fao.org/docs/pdf/ton80201.pdf",
+    "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf",
+    "https://maff.gov.to/qqmd/",
+    "https://www.mpi.govt.nz/dmsdocument/697/direct",
+    "https://micor.agriculture.gov.au/plants/tonga_to/herb-and-species---dried",
+    "https://faolex.fao.org/docs/pdf/ton49222.pdf",
+    "https://maff.gov.to/legislation/",
+    "https://ago.gov.to/cms/images/LEGISLATION/PRINCIPAL/2020/2020-0073/FoodAct2020_1.pdf",
+    "https://maff.gov.to/division/food/",
+    "https://www.wto.org/english/tratop_e/tpr_e/s409_e.pdf"
+  ],
+  "permitFreeReviewedAt": "2026-09-30",
+  "paperworkType": "advance_import_permit",
+  "requiredDocument": "Written plant-material import permit under Plant Quarantine Act section 25(1), applying its broad material-of-plant-origin scope to finished sencha by inference. The decision does not rely on construing section 25(2)’s living plants and plant material wording as a processed-tea certificate requirement. Ordinary Customs/arrival inspection paperwork is not the blocker.",
+  "foodImportReview": "No independent blanket special-document obligation established for the described private 100 g postal food order; this does not establish agricultural clearance.",
+  "urls": [
+    "https://maff.gov.to/qqmd/"
+  ],
+  "files": [
+    "to-quarantine.html",
+    "to-quarantine-www.html"
+  ],
+  "finding": "New official current consolidated Act recovered. Prior Act PDF predated repeal of section 17. Section 25(1) remains a broad affirmative plant-material permit duty. Proposed conservative not_supported decision, with regulation 26 interpretation caveat retained.",
+  "remainingGap": "No-permit store decision closed conservatively from broad current statute; no tea-specific authority ruling claimed. A contrary applicable automatic exemption would warrant revision.",
+  "outcome": "not_supported",
+  "decisionChanged": true,
+  "legalInterpretation": "Broad parent-Act duty controls unless a specific exemption applies. Regulation 26 states a positive permit requirement for risk-assessed manufactured material, not an express negative exemption for the rest. This is an interpretation of complete published operative text; it is not a tea-specific national classification.",
+  "certificateRequirementEstablished": false
+}

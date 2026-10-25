@@ -1,0 +1,585 @@
+{
+  "reviewedAt": "2026-09-30",
+  "files": [
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/additional-retrieval-provenance.json",
+      "bytes": 1619,
+      "sha256": "6c304365a15cba711e62b6f8761582f24ce7fb7111ae76eeb34b4f13283a9e98"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/er-notice100-2005.pdf",
+      "bytes": 111346,
+      "sha256": "11b1423bc1525c32ae2e4ca0f343d4348a31e1d445edb2729a4904d04a66f6b7"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/er-notice100-2005.txt",
+      "bytes": 1580,
+      "sha256": "e32ba27535a55d245f79e6266edabfc782826ec2ea6c89b4a8691bde3359a8b2"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/er-proposed-override.json",
+      "bytes": 17596,
+      "sha256": "8d71c5bab49e7cdc107d8ce8dbbdfe1733aff0402451cd31241d09d6e9a8b54f"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/er-trade125-2002.pdf",
+      "bytes": 2354380,
+      "sha256": "b326a6a56bb254bebbd5f605e36cc59813a04497707c736ab41f56905eb0b5b7"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/er-trade125-2002.txt",
+      "bytes": 16,
+      "sha256": "c7f9034fd448868f927dcf94fe314df53b524af244a01203ee2bad12dddc8386"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/er-trade125-english-ocr.txt",
+      "bytes": 7849,
+      "sha256": "6b95ec2ecb0dd272e1b6b02ea7c34f357505720696ddab5e388cf02f88c043c5"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/er-trade125-p10.png",
+      "bytes": 665317,
+      "sha256": "a76990171b4ac5a2df2f7f0ed7b6612c2058cdb2f51aa848e3d14edcbdecf15d"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/er-trade125-p10.txt",
+      "bytes": 867,
+      "sha256": "7b03faefcf31174d24387dcbd9fee92d2cda84a0e51a04d5cda8fa16207df04f"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/er-trade125-p11.png",
+      "bytes": 616838,
+      "sha256": "a79a49f175ee278f57bb3eedca194859dd0df72de908bf46d21976b074c60468"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/er-trade125-p11.txt",
+      "bytes": 773,
+      "sha256": "fc922d160c58ce85f364fb9a099af6d1ffbf077583cffbf5457594324135c18f"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/er-trade125-p12.png",
+      "bytes": 725328,
+      "sha256": "206229971349c09cce9aa3f3418bee4b852022a2caf4e848f85d814a9c0709c6"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/er-trade125-p12.txt",
+      "bytes": 973,
+      "sha256": "e07eb798de8076a7e1873c3acaa8ea758d243678210a3816d57a51e30d2dcd54"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/er-trade125-p13.png",
+      "bytes": 695695,
+      "sha256": "db7d4858491fef709588ab8b18cf1f4737dd97d5c2bec2a29b76565ad32d0b27"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/er-trade125-p13.txt",
+      "bytes": 887,
+      "sha256": "30c04cd573be6e5780824b178672612763890f63cb06c2d8354a11a00d02e3fc"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/er-trade125-p14.png",
+      "bytes": 563063,
+      "sha256": "aeed9fb6b8b25b901c98538c156d9c583455dd355cad0114bd5fe6e98fa5aabe"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/er-trade125-p14.txt",
+      "bytes": 779,
+      "sha256": "cc453d07d6e4c379a27f993dc1ea08bfa94f80713a9f40cb097c20dc8afab245"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/er-trade125-p15.png",
+      "bytes": 711649,
+      "sha256": "f0ab452c6723e8faf312d7ffc6478b00a2e8b1032c1b9923919fe62ed58fd9c7"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/er-trade125-p15.txt",
+      "bytes": 942,
+      "sha256": "02e16bb828ec9ca709bf2dc5dc82ab66d314f0673e543f9696d7636dc31b0392"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/er-trade125-p16.png",
+      "bytes": 550410,
+      "sha256": "0caf9def105347ac9022c4637682cc2fb6cb31485d0e62538f706251d74bd655"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/er-trade125-p16.txt",
+      "bytes": 750,
+      "sha256": "51768940c0fd3be3d7378edf02a3c6394429e02e964fe613573d63fb3f0d0375"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/er-trade125-p8.png",
+      "bytes": 517907,
+      "sha256": "6ba061f0e68316c370d6cf9093a779458c17153dcc1fde5ba210912ef62577ee"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/er-trade125-p8.txt",
+      "bytes": 704,
+      "sha256": "ca23548fa78c6fbc54a8c55b924ba3f033542605380c49d63750d835d8d0ed63"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/er-trade125-p9.png",
+      "bytes": 594352,
+      "sha256": "bef8794e3a47931a2f4f3af91de53b47884507ea6017905990b46b43e6a70003"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/er-trade125-p9.txt",
+      "bytes": 1158,
+      "sha256": "f639c54840c1050f78cf130cdf3882c3a3c387b2a56ef2702517aafa14591dea"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/et-source-only-proposed-row.json",
+      "bytes": 12974,
+      "sha256": "71c997444df22f70da08bc50b7a85970f2ecb16947a214a7301ec3cc1f0983e1"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-bniq-policies.html",
+      "bytes": 5530,
+      "sha256": "eefb6fa120c70eff24457c768e3e99d5774e459fec4784ab4423ad67fc86c815"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-bniq-services.html",
+      "bytes": 5548,
+      "sha256": "8a6b085767397757c4d7f0c8db43d1ad1a230aa814cc9bb8e391da197c5fd705"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-documents.html",
+      "bytes": 5479,
+      "sha256": "6449941163184d79f21bc5cfba23159df6c79698813e07e0fca2965f81a2481c"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-organization2024-ocr.txt",
+      "bytes": 12195,
+      "sha256": "5b31c291a49ad19495a348309a77da525ccb6e84ce914547c016d9399c28ba31"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-organization2024-p1.png",
+      "bytes": 1343924,
+      "sha256": "782f30bdc6265644ca2a8147fbb00a4b1b33d6bad69702b50e9cb573e7f084db"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-organization2024-p1.txt",
+      "bytes": 2084,
+      "sha256": "6cea53186cb43eb20d855821b2710c749b8ba2c330709ac6681f0f98a980399f"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-organization2024-p2.png",
+      "bytes": 1474520,
+      "sha256": "763058ea2e745fb327bd8509d1077eaae6b0047c2304b7fd543669b9730d0451"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-organization2024-p2.txt",
+      "bytes": 2772,
+      "sha256": "504d76a29af6a46aeca096f446626a76651d41fadacb91cc8ea9aa6abd4a732b"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-organization2024-p3.png",
+      "bytes": 1428820,
+      "sha256": "b5b9ee3cebf8ff884bc791b1c15c3625ca97835b85bd7c01e353b94921ed2319"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-organization2024-p3.txt",
+      "bytes": 2631,
+      "sha256": "5e5bcda369b475046cd4da780388cc788999e94067979d1840335095a50b13ac"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-organization2024-p4.png",
+      "bytes": 1189841,
+      "sha256": "2fd719082e79f4c5caebadb022890230e6ee03f5e11df0b8ce7fd08d189d0439"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-organization2024-p4.txt",
+      "bytes": 1926,
+      "sha256": "46a64e57e4bddfaf76b1218fff45cd955ea50079de9a8fdd3f8892f04c3de5b9"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-organization2024-p5.png",
+      "bytes": 1146474,
+      "sha256": "79f135c821c06076f2cb82c806df408dff3b2fcfded87e36563aafd7ec0666f1"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-organization2024-p5.txt",
+      "bytes": 1918,
+      "sha256": "1ffacc9f7f9f4af0362c23c6cfc0b2ca29d7bf100d67ec8ef3119a785c4747f3"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-organization2024-p6.png",
+      "bytes": 799672,
+      "sha256": "a320dfb38ed4ae490e5a6051ff7c2dcbf3529735a0223124c49e3230da8ae168"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-organization2024-p6.txt",
+      "bytes": 854,
+      "sha256": "5285ee9340002ba58512102a2435b777b33bc1077475c920b615327d3dde0174"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-organization2024.pdf",
+      "bytes": 2595052,
+      "sha256": "66fbfbddc77764bba6fb427b04cd08a349b92b3dc3ea1a4e763cac13e6dbc883"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-organization2024.txt",
+      "bytes": 6,
+      "sha256": "7b2aa16484b6ad79ef5bec51da3501f5079367b625da44bf97468422d27e8e95"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-retrieval-provenance.json",
+      "bytes": 765,
+      "sha256": "ec219dd6fb9c41581c4f47cdbdb6b77ce33194d2a21452241cad0f107d0e5402"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-source-only-proposed-row.json",
+      "bytes": 16818,
+      "sha256": "798b14e4b38aeccecf2294bcf74edba538c79d08ad53c5006bf571ec8cdc5943"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-tariff2025-ocr.txt",
+      "bytes": 12146,
+      "sha256": "2c708fc217eb6fcb47808a429511108615637cfb72a5101e20e6e533410b2edc"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-tariff2025-p1.png",
+      "bytes": 1254872,
+      "sha256": "fe52901bb3165f930a2cfe94c98f260bcab70ac813232588bb828035a02aa171"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-tariff2025-p1.txt",
+      "bytes": 2196,
+      "sha256": "64fb91d5636ca32a3a3e15027f7097c504fee9402bc2083a17f1300be381c4b6"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-tariff2025-p2.png",
+      "bytes": 1447720,
+      "sha256": "691d574d76d546ba6b274346a968f7aad81c10338696731674f1e9c33171855e"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-tariff2025-p2.txt",
+      "bytes": 2699,
+      "sha256": "793ecfacc5ffe27744a3d84ae69e5b7346560088ffc08ff1ad8c83a07370558b"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-tariff2025-p3.png",
+      "bytes": 1587728,
+      "sha256": "464005d1332a9de1310cf5f5ff0b4d3655dba46be8fc144dc37bfde14da13895"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-tariff2025-p3.txt",
+      "bytes": 2143,
+      "sha256": "b8ca96fb8ab427379f28e55e8624ef1e52c284f4b45d715b90ec70bd19a2a94d"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-tariff2025-p4.png",
+      "bytes": 1499314,
+      "sha256": "ddb8fe43e1675062efdf805cdbcdded4bc922950d8c9c61704571e0865d3f0ba"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-tariff2025-p4.txt",
+      "bytes": 1525,
+      "sha256": "73a33185905ca2007d22750200ba95e0cf9a0486be8810cc302948ffe675d407"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-tariff2025-p5.png",
+      "bytes": 1379427,
+      "sha256": "bf7a7370bc9bb4213e0602d838d41f0199a76553882bcc1a2285f1776f490787"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-tariff2025-p5.txt",
+      "bytes": 2543,
+      "sha256": "b0a03237da71619134d9dfa6046cf517931fab53a593149aaae3f6453e7436f5"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-tariff2025-p6.png",
+      "bytes": 805445,
+      "sha256": "e9642fec3147748d312bbfcce29fb04d3216f61a95d4057fa3f1b8707a0e7c70"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-tariff2025-p6.txt",
+      "bytes": 1030,
+      "sha256": "06c487f3270ca6d3303c6e9d2302fa5ff537e9d15de06f375111d273dcfa3eb0"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-tariff2025.pdf",
+      "bytes": 5981870,
+      "sha256": "efebceafafec73635a6fc91333e0d27c398868bc780f98875af2bd118a76b761"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gn-tariff2025.txt",
+      "bytes": 6,
+      "sha256": "7b2aa16484b6ad79ef5bec51da3501f5079367b625da44bf97468422d27e8e95"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/gw-proposed-override.json",
+      "bytes": 11549,
+      "sha256": "42da36d111de836f3d02a0f89074320a8ac7d2957b5f8dfc1367696748b6749d"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/retrieval-provenance.json",
+      "bytes": 800,
+      "sha256": "884cac47481a597cce5ab041125d772299f604665db190baff4ac492bc382c5c"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/review.json",
+      "bytes": 6253,
+      "sha256": "8619dd1b3e09550f827e026f16e032d65b12b1e0e6e3558b546263914c005813"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/root-peer-merge.json",
+      "bytes": 478,
+      "sha256": "8b569f0d675c9b93f25b2f97127d88a2dfcdbb7142331e17b22a7d7a2e9da5b4"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sh-import-health-standards-redirect.html",
+      "bytes": 236436,
+      "sha256": "5746216a7dba843604976de890455e15cb7b3990bd097095f2b270a7a404077a"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sh-mislinked-ascension-law.pdf",
+      "bytes": 621954,
+      "sha256": "f235e9ee1c3e80045581d3c55d16628d13ca57b2803d23b1b62200821ae0c2d8"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sh-source-only-proposed-row.json",
+      "bytes": 12597,
+      "sha256": "984c0b9d1fa7a6385303d2d47c15ddf3f6d1bc33d2e12aec5b4346ebf2ac39e6"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sh-tristan-lawindex.html",
+      "bytes": 228160,
+      "sha256": "1c7eeee2c73f06b03e2f1c3d0922447674eb64e181e030f69f64cc5a0e3229ca"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/faolex-country.html",
+      "bytes": 5765,
+      "sha256": "8e3a477b59fc87a43ce3a1e2e18bbc0c664bf512fa7394d6fb3f6c75eea00498"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/faolex-country.txt",
+      "bytes": 3872,
+      "sha256": "bbe85e3ad2f0308ecfeaa68b030a813659fede597fcd0acdea16a1953910be3b"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/gazettes-sl1974-provenance.json",
+      "bytes": 90,
+      "sha256": "977bb392d17b5688dc5efa5b18c39b122b9b075ddd12b42376accafdfeef45f7"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/gazettes-sl1974.html",
+      "bytes": 38346,
+      "sha256": "925d58d3e090a3a333584cf12fdfd2da93099cf672ce2782415861f126da4587"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/gazettes-sl1974.txt",
+      "bytes": 2161,
+      "sha256": "f88469c3b899bea777d67a03ad0596abab9e4ef592f80a541c465b49fdc5e3f7"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/index-0.html",
+      "bytes": 78151,
+      "sha256": "f004e6e029cdd9fad57ceeea266dcc5a3c37df5aa630d3ec076d3b52b4640233"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/index-1.html",
+      "bytes": 28088,
+      "sha256": "385ca2312cb62975e2c916123952f0d3fd09638c09ac6692f27befb03e19099d"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/index-2.html",
+      "bytes": 13665,
+      "sha256": "a9dec8638dc90349af834a23e0621c49e25982d3de727727552fbd37a95fae43"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/index-provenance.json",
+      "bytes": 752,
+      "sha256": "951d9ae092ab9ddd2deb7225bd0a92667d24d500ca4c7d1ed6eb021be08fc530"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/ippc-country.html",
+      "bytes": 80247,
+      "sha256": "43a47c8c723db95df897ce06bc6397ea48e8e2e71c8adb312961324689a6bc24"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/ippc-legislation.html",
+      "bytes": 73821,
+      "sha256": "c0fb9565a39f8f96a7fd5d0668487070e0d42bd5185270f79ef07d625ccf5ed9"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/ippc-legislation.txt",
+      "bytes": 4871,
+      "sha256": "332b901f009aa6939f912df25a65e983c9d4b7b9a3bda05f8c81189810dda7a0"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/ippc-obligations.html",
+      "bytes": 3984,
+      "sha256": "02233031a1f6559588052946457b9b347a6b83238f66bb8421d145de4a8ae9e3"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/ippc-obligations.txt",
+      "bytes": 1492,
+      "sha256": "77a61b98e85af8825cdf918a580fe59968d38d76f388e50e6a2961255462a1a4"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/lawreform-instruments.html",
+      "bytes": 40845,
+      "sha256": "cfc504b00b9ee930300616ac3de29cc6805e60f951fc750cb06bd6e0f15c6572"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/lawreform-instruments.txt",
+      "bytes": 2152,
+      "sha256": "69227dd0fe58d4c076db547ebe6b4b7247f48e7fdafb183e56446aa401e49b1f"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/lawreform-search-1974.html",
+      "bytes": 23869,
+      "sha256": "7f49c8c4411e22695228315c25cdca50dd1db5586a4c4fbd3f806635b35e7bdd"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/lawreform-search-agricultural.html",
+      "bytes": 18760,
+      "sha256": "c1257e00946a76daabd2836c39c1374f766320e2102bb2327ac35476e049d2da"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/lawreform-search-phytosanitary.html",
+      "bytes": 14957,
+      "sha256": "9ec76685930f47526fc625e5d05a78223d025a041fada41b3479507db21b5089"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/lawreform-search-provenance.json",
+      "bytes": 4016,
+      "sha256": "3fd30d35b599af125589c3d76cdbbc501e0ca014001cddcef95a7dfd62ee6f19"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/lawreform-vol4.html",
+      "bytes": 44938,
+      "sha256": "24ffce70ad6e5d8513a4339f9868399e9c420cb30a8038d73a935859f282409e"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/lawreform-vol4.txt",
+      "bytes": 2810,
+      "sha256": "59de5b8ba4556090793f60e53c6a1350e2b473ff9b132d9e12a9261e1bcc2404"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/lawreform.html",
+      "bytes": 17820,
+      "sha256": "3236ad3d8b784a91a222fd9b7d2bad9671251ed3e730688c00715ef5cde823ec"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/lawreform1974.html",
+      "bytes": 15672,
+      "sha256": "6bb51c87fb26904892de6f6be0ccb526152ff1ebd7e0d09393982c7575de1f0c"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/lawreform1974.txt",
+      "bytes": 595,
+      "sha256": "372fa23df7b793e599c72f81cab487cf096be8ed59a3ec07732be1616b764faf"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/primary-recovery-provenance.json",
+      "bytes": 1057,
+      "sha256": "41faa15406cfa9d9c0dfb3ce2f05dc986dacf09f616befee5e3b9cf99d766f5e"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/repository-provenance.json",
+      "bytes": 5207,
+      "sha256": "1d4d505db4339167a5eac7b5ecb5d9c3b1b1f363bcbb81c53b383d57e919c368"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/review.json",
+      "bytes": 5992,
+      "sha256": "bcb6c67264baa984164b4ac0354d60288a43298bcc113cce9d221dabbb4aa090"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/secondary-index-provenance.json",
+      "bytes": 5919,
+      "sha256": "6127fed9050e9c7a2f14e8d7572bc73f6120b47959c548d10dd1f8d04af879c3"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/sierralii-all.html",
+      "bytes": 104025,
+      "sha256": "4e0cd413ad9b46a7421c3d678d2bacce29f427a8a9d2dc16a3b3be46331f9600"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/sierralii-all.txt",
+      "bytes": 4920,
+      "sha256": "7d6d81ca103e04f93232947d22f91ea3de5244e1819657919a5271bdb8755b30"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/sierralii-home-provenance.json",
+      "bytes": 75,
+      "sha256": "b6627444f9b39ae3a284b2043da9ed06d6db64e6b262231aefcc9cbd518f4cba"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/sierralii-home.html",
+      "bytes": 52429,
+      "sha256": "7376f043fc07af82653da33aaf7978f53410bbfaa549e87e58f54b562340ef5f"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/sierralii-legislation.html",
+      "bytes": 107273,
+      "sha256": "c47c782542fe81691c0bc27a4c9b61a43d07a7ee18573cd769f7ba92101b09c8"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/sierralii-legislation.txt",
+      "bytes": 6362,
+      "sha256": "d0e5148c403aa5b0a90cbacf9fc90cd8339bb7af2a46dd3090c3066e53c5091e"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/sierralii-search.html",
+      "bytes": 15062,
+      "sha256": "b65895a2378f7ed56ad422f8b6568c279b893d4963d377e6d3d79e6da3793c56"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/sierralii-search.txt",
+      "bytes": 3836,
+      "sha256": "45c3845de21bb544a6db0e73df5db266fe573bfceb30504ee2be7e53283ca36a"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/sl-cap185.pdf",
+      "bytes": 316293,
+      "sha256": "a3efc2986be1dd38c6480dd317fe9f8e1fc8b73e96b1a8b239958ba65eeadd69"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/sl-cap185.txt",
+      "bytes": 16003,
+      "sha256": "ec3818285eca6b114ff02a943575f5dcc68b4b87772945611ae50e449bef0bd0"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/sl/sl-source-only-proposed-row.json",
+      "bytes": 9819,
+      "sha256": "ef5946dad028efa37808c95985c60c26591b09bca822ab07882186ddd9153e6f"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/tristan-biosecurity2025.html",
+      "bytes": 23050,
+      "sha256": "f1d05ca4952b4158008b8b13d5acab0e35003895fa12f53342f4f9012a90d8da"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/ug-plant-consolidated2023.pdf",
+      "bytes": 289587,
+      "sha256": "70ecb7d984990ca29e98bd116685335ce28f6c0a008288b065886b721fdf11a6"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/ug-plant-consolidated2023.txt",
+      "bytes": 63108,
+      "sha256": "38cdfabad91612805053a60c8e5dafac3a749b0d5298527cbc202c49a69d6e94"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/ug-retrieval-provenance.json",
+      "bytes": 462,
+      "sha256": "9423e63ef75499c31d064a51dac4c3384a48c30ce938ac0797be978a0d4d6740"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/ug-source-only-proposed-row.json",
+      "bytes": 15683,
+      "sha256": "8819d68596c6d4d143e9b50abba17e3b9c3951217cd722b08b2f24eda8566fd6"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/ug-unbs-portal-sept2026.html",
+      "bytes": 5490,
+      "sha256": "c6e781b7c53409b338339e0435679d4d1659b54baf2cf36168e43a6065f8ef54"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/africa-scope-resolution/ug-unbs-sept2026-indexed-provenance.json",
+      "bytes": 769,
+      "sha256": "2505b0aab50c722e8809864e85783d7f2069857f46320a555d05556663445466"
+    }
+  ]
+}

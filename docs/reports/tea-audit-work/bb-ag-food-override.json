@@ -1,0 +1,77 @@
+[
+  {
+    "code": "AG",
+    "name": "Antigua and Barbuda",
+    "status": "not_verified",
+    "rule": "Antigua PPU requires permits and phytosanitary certificates for regulated plants in any quantity. Its complete published commodity table regulates Categories 2–4 in the all-country row; it does not classify manufactured steamed/dried Camellia tea or give a Category 1 tea determination. Some processed foods remain regulated, so manufacture alone is not proof of exemption. An independent food-law review did not establish a separate mandatory health/free-sale certificate for every private tea parcel. Public Health Act sections 57 and 66 provide food regulation/enforcement powers; Importation Protection Act section 3 concerns imports intended for sale, while its express certificate requirement concerns secondhand clothing.",
+    "personalMailApplicability": "All inbound consignments covered if regulated; no established small postal exemption.",
+    "quantityLimit": null,
+    "authority": "Antigua and Barbuda Plant Protection Unit",
+    "evidenceUrls": [
+      "https://agriculture.gov.ag/index.php/plant-protection/",
+      "https://agriculture.gov.ag/wp-content/uploads/2022/06/Import-Status-of-Plant-Commodities-and-Regulated-Items-PLANT-PROTECTION-ANTIGUA-AND-BARBUDA-ver.-27082020.pdf",
+      "https://laws.gov.ag/wp-content/uploads/2018/08/cap-353.pdf",
+      "https://laws.gov.ag/wp-content/uploads/2018/08/cap-211.pdf",
+      "https://health.gov.ag/guidelines/"
+    ],
+    "remainingQuestion": "Need the Antigua PPU classification of finished steamed/dried Camellia sencha as Category 1 (non-regulated) or a regulated Category 2–4 product. The complete 2020 commodity table and current PPU page are accessible, but neither supplies that classification. Japan’s omission is not independently treated as a tea ban because the table concerns regulated commodities.",
+    "researchAttempts": [
+      "Reviewed PPU import guidance and the 27 August 2020 commodity-status table, including processed-food examples. No explicit heat-processed Camellia tea classification or small postal waiver found.",
+      "2026-09-30: Re-read the current official PPU page in the browser. It regulates any quantity only when the article is regulated; processing examples include crushed herbs, dehydrated fruit/vegetables and other pest-bearing preparations, but do not classify steamed manufactured Camellia tea. Public generic processing guidance is exhausted without that commodity determination.",
+      "2026-09-30: Downloaded and read the complete 10-page official commodity-status table dated 27 August 2020. The all-country row specifically addresses Categories 2–4 and requires permit plus phytosanitary certificate; no Camellia tea/Japan entry or Category 1 processing determination appears. Rechecked current PPU guidance and targeted cooking/steaming/sterilisation/Category 1 guidance. No published product determination found; did not infer either automatic exemption or a Japan-origin ban.",
+      "Read official Public Health Act Cap. 353, Part VI: section 49 defines food and importer broadly; section 57(1)(a) authorizes food-import regulations for food intended for sale; section 66(e) enforces applicable food-import regulations; section 67 permits sampling of imported consignments. These provisions do not themselves create a blanket origin/free-sale/health-certificate requirement for private tea imports.",
+      "Read official Importation Protection Act Cap. 211 sections 3–6: section 3 authorizes controls for imported articles intended for sale and contains a rebuttable sale presumption. The express origin-health-certificate duty in section 4 applies to secondhand clothing, not tea. The traveller personal-effects exception in section 6 likewise concerns clothing, so it was not used as a food exemption.",
+      "Searched official legislation, ministry health guidance, food-import requirements and free-sale certificate terms. The located Food Safety Act 2017 file is in the Bills collection and the ministry labels its 2020 text Food Safety Bill; neither was treated as an enacted private-import obligation. No separate enacted blanket food-certificate or import-approval rule was established. The existing plant-risk classification gap therefore remains unresolved."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "Need the Antigua PPU classification of finished steamed/dried Camellia sencha as Category 1 (non-regulated) or a regulated Category 2–4 product. The complete 2020 commodity table and current PPU page are accessible, but neither supplies that classification. Japan’s omission is not independently treated as a tea ban because the table concerns regulated commodities.",
+    "permitFreeSources": [
+      "https://agriculture.gov.ag/index.php/plant-protection/",
+      "https://agriculture.gov.ag/wp-content/uploads/2022/06/Import-Status-of-Plant-Commodities-and-Regulated-Items-PLANT-PROTECTION-ANTIGUA-AND-BARBUDA-ver.-27082020.pdf",
+      "https://laws.gov.ag/wp-content/uploads/2018/08/cap-353.pdf",
+      "https://laws.gov.ag/wp-content/uploads/2018/08/cap-211.pdf",
+      "https://health.gov.ag/guidelines/"
+    ],
+    "paperworkType": "Plant permit/phytosanitary certificate applicability unresolved; independent blanket private-food certificate duty not established.",
+    "requiredDocument": "Unresolved for the manufactured tea. No general private-parcel health/free-sale certificate obligation was established from the enacted food statutes reviewed; this does not establish a plant-quarantine exemption.",
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "BB",
+    "name": "Barbados",
+    "status": "not_verified",
+    "rule": "Operative Plant Protection Act 2007-53 (Cap.268), section 2, includes manufactured products only where their nature or processing may create a pest-introduction/spread risk. Sections 14–15 impose plant import conditions, and section 21 expressly covers postal detention. Finished steamed/dried Camellia tea is not classified in the retrieved operative text or current public import form. Independent food-law review found that Health Services (Food Hygiene) Regulations 26A allows inspection of all imported food and permits, but does not invariably require, the inspector to request an origin inspection certificate. The Barbados Wholesome Food Certificate is issued by the inspecting officer after passing inspection; it is not an advance foreign certificate.",
+    "personalMailApplicability": "Personal/mail options establish that individual parcels can be regulated; they do not prove that sencha is regulated or exempt.",
+    "quantityLimit": null,
+    "authority": "Barbados Ministry of Agriculture Plant Quarantine",
+    "evidenceUrls": [
+      "https://agriculture.gov.bb/Apply/ImportationOfPlants",
+      "https://agriculture.gov.bb/attachments/Plant%20Protection%20Act%20CAP268_1.pdf",
+      "https://oag.gov.bb/attachments/Health%20Services%20%28Food%20Hygiene%29%20Regulations%2C%201969%20Cap44%27M.PDF",
+      "https://alpha.gov.bb/business-trade/apply-for-food-business-licence",
+      "https://www.health.gov.bb/Legislation"
+    ],
+    "remainingQuestion": "Need the Barbados NPPO determination whether manufactured steamed/dried sencha is a risk-bearing plant product under operative Cap.268 section 2, and therefore subject to sections 14–15. The complete enacted Act is now available; the unresolved issue is commodity classification, not reliance on a draft law. Neither the mail/consumption form nor the Act supplies a finished-tea exception or classification. Food Hygiene regulation 26A does not resolve that classification and supplies only a discretionary origin-certificate request, not an automatic advance-paperwork requirement for every private parcel.",
+    "researchAttempts": [
+      "Reviewed the government plant-import procedure and personal-consumption/mail form options. Searched operative tea processing exemptions; did not rely on a draft replacement Plant Protection Act.",
+      "2026-09-30: Retrieved the ministry-hosted complete operative Plant Protection Act Cap.268, enacted 2007-53 and commenced 20 December 2007; read definitions and sections 14–21. Manufactured-product definition is expressly pest-risk qualified, section 15 invokes standards/risk analysis, and section 21 explicitly covers postal officers. Targeted current official tea/processing and personal-food searches supplied no tea classification. Replaced the earlier draft-access gap with this precise commodity gap.",
+      "Read enacted Health Services (Food Hygiene) Regulations 1969 as amended by SI 1999/88, current Attorney General consolidated copy: regulation 2 defines food to include processed food/drink, and regulation 26A(1)–(4), printed page M15, covers all food imports. Inspection and requests for origin inspection certificates are discretionary; the destination Wholesome Food Certificate is issued as part of arrival clearance. This does not prove a blanket special-document obligation for each 100 g private tea parcel.",
+      "Distinguished the food-business licensing requirement in regulations 2–4 and current government food-business service (updated August 2026) from private consumption. Did not apply staff medical certificates or business licences to a private recipient.",
+      "Searched current official food-import legislation/guidance and found no published mandatory foreign health/free-sale certificate or food-import approval specifically covering all private processed-tea parcels. The Food Safety and Quality Bill 2021 located remains labelled draft and was not used as enacted law. The plant-product classification gap remains unresolved."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "Need the Barbados NPPO determination whether manufactured steamed/dried sencha is a risk-bearing plant product under operative Cap.268 section 2, and therefore subject to sections 14–15. The complete enacted Act is now available; the unresolved issue is commodity classification, not reliance on a draft law. Neither the mail/consumption form nor the Act supplies a finished-tea exception or classification. Food Hygiene regulation 26A does not resolve that classification and supplies only a discretionary origin-certificate request, not an automatic advance-paperwork requirement for every private parcel.",
+    "permitFreeSources": [
+      "https://agriculture.gov.bb/Apply/ImportationOfPlants",
+      "https://agriculture.gov.bb/attachments/Plant%20Protection%20Act%20CAP268_1.pdf",
+      "https://oag.gov.bb/attachments/Health%20Services%20%28Food%20Hygiene%29%20Regulations%2C%201969%20Cap44%27M.PDF",
+      "https://alpha.gov.bb/business-trade/apply-for-food-business-licence",
+      "https://www.health.gov.bb/Legislation"
+    ],
+    "paperworkType": "Plant-permit applicability unresolved; food inspector may request an origin inspection certificate. Destination inspection certificate is routine arrival clearance.",
+    "requiredDocument": "No independent mandatory advance food certificate was established. Origin inspection certificate can be requested under regulation 26A(2); destination Wholesome Food Certificate is issued by the inspector under 26A(3).",
+    "permitFreeReviewedAt": "2026-09-30"
+  }
+]

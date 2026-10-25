@@ -4,11 +4,11 @@
       <search-input
         class="search"
         autofocus
-        :value="exploreQuery"
+        :model-value="exploreQuery"
         :placeholder="t('searchText')"
-        @input="updateSearch"
+        @update:model-value="updateSearch"
         @clear="resetSearch"
-      />
+      ></search-input>
     </div>
     <s-table
       ref="table"
@@ -34,27 +34,35 @@
             <span class="explore-table__primary">DEBT / COLLATERAL</span>
           </div>
         </template>
-        <template v-slot="{ $index, row }">
-          <span class="explore-table-item-index explore-table-item-index--body">{{ $index + startIndex + 1 }}</span>
+        <template v-slot="{ $index, index, row }">
+          <span class="explore-table-item-index explore-table-item-index--body">
+            {{
+              (typeof ($index ?? index) === 'number' && Number.isFinite($index ?? index)
+                ? ($index ?? index)
+                : tableItems.indexOf(row)) +
+              sliceStart +
+              1
+            }}
+          </span>
           <pair-token-logo
             class="explore-table-item-logo"
             size="small"
             :first-token="row.debtAsset"
             :second-token="row.lockedAsset"
-          />
+          ></pair-token-logo>
           <div class="explore-table-item-info explore-table-item-info--body">
             <div class="explore-table-item-name">{{ row.debtAsset.symbol }} / {{ row.lockedAsset.symbol }}</div>
           </div>
-          <s-icon v-if="isLoggedIn && row.isAvailable" name="plus-16" size="12" />
+          <s-icon v-if="isLoggedIn && row.isAvailable" name="plus-16" size="12"></s-icon>
         </template>
       </s-table-column>
       <!-- Interest -->
       <s-table-column width="140" header-align="right" align="right">
         <template #header>
-          <sort-button name="stabilityFeeValue" :sort="{ order, property }" @change-sort="changeSort">
+          <sort-button name="stabilityFeeValue" :sort="sortState" @change-sort="changeSort">
             <span class="explore-table__primary">{{ t('kensetsu.interest') }}</span>
             <s-tooltip border-radius="mini" :content="t('kensetsu.interestDescription')">
-              <s-icon name="info-16" size="14px" />
+              <s-icon name="info-16" size="14px"></s-icon>
             </s-tooltip>
           </sort-button>
         </template>
@@ -65,7 +73,7 @@
       <!-- Max LTV -->
       <s-table-column width="120" header-align="right" align="right">
         <template #header>
-          <sort-button name="maxLtvValue" :sort="{ order, property }" @change-sort="changeSort">
+          <sort-button name="maxLtvValue" :sort="sortState" @change-sort="changeSort">
             <span class="explore-table__primary">MAX LTV</span>
           </sort-button>
         </template>
@@ -76,7 +84,7 @@
       <!-- Total locked -->
       <s-table-column min-width="180" header-align="right" align="right">
         <template #header>
-          <sort-button name="totalLockedValue" :sort="{ order, property }" @change-sort="changeSort">
+          <sort-button name="totalLockedValue" :sort="sortState" @change-sort="changeSort">
             <span class="explore-table__primary">Total locked</span>
           </sort-button>
         </template>
@@ -86,13 +94,14 @@
               <formatted-amount
                 class="explore-table-item-token"
                 :font-size-rate="FontSizeRate.SMALL"
+                :integer-only="isAmountValueIntegerOnly(row.totalLocked)"
                 :value="row.totalLocked"
-              />
+              ></formatted-amount>
               <token-logo
                 class="explore-table-item-logo explore-table-item-logo--plain"
                 size="small"
                 :token="row.lockedAsset"
-              />
+              ></token-logo>
             </div>
             <div v-if="row.totalLockedFiat" class="explore-table-cell">
               <formatted-amount
@@ -100,7 +109,7 @@
                 is-fiat-value
                 :font-size-rate="FontSizeRate.SMALL"
                 :value="row.totalLockedFiat"
-              />
+              ></formatted-amount>
             </div>
           </div>
         </template>
@@ -108,7 +117,7 @@
       <!-- Total debt -->
       <s-table-column min-width="180" header-align="right" align="right">
         <template #header>
-          <sort-button name="totalDebtValue" :sort="{ order, property }" @change-sort="changeSort">
+          <sort-button name="totalDebtValue" :sort="sortState" @change-sort="changeSort">
             <span class="explore-table__primary">Total debt</span>
           </sort-button>
         </template>
@@ -118,13 +127,14 @@
               <formatted-amount
                 class="explore-table-item-token"
                 :font-size-rate="FontSizeRate.SMALL"
+                :integer-only="isAmountValueIntegerOnly(row.totalDebt)"
                 :value="row.totalDebt"
-              />
+              ></formatted-amount>
               <token-logo
                 class="explore-table-item-logo explore-table-item-logo--plain"
                 size="small"
                 :token="row.debtAsset"
-              />
+              ></token-logo>
             </div>
             <div v-if="row.totalDebtFiat" class="explore-table-cell">
               <formatted-amount
@@ -132,7 +142,7 @@
                 is-fiat-value
                 :font-size-rate="FontSizeRate.SMALL"
                 :value="row.totalDebtFiat"
-              />
+              ></formatted-amount>
             </div>
           </div>
         </template>
@@ -140,7 +150,7 @@
       <!-- Available -->
       <s-table-column min-width="180" header-align="right" align="right">
         <template #header>
-          <sort-button name="availableToBorrowValue" :sort="{ order, property }" @change-sort="changeSort">
+          <sort-button name="availableToBorrowValue" :sort="sortState" @change-sort="changeSort">
             <span class="explore-table__primary">Available</span>
           </sort-button>
         </template>
@@ -150,13 +160,14 @@
               <formatted-amount
                 class="explore-table-item-token"
                 :font-size-rate="FontSizeRate.SMALL"
+                :integer-only="isAmountValueIntegerOnly(row.availableToBorrow)"
                 :value="row.availableToBorrow"
-              />
+              ></formatted-amount>
               <token-logo
                 class="explore-table-item-logo explore-table-item-logo--plain"
                 size="small"
                 :token="row.debtAsset"
-              />
+              ></token-logo>
             </div>
             <div v-if="row.availableToBorrowFiat" class="explore-table-cell">
               <formatted-amount
@@ -164,7 +175,7 @@
                 is-fiat-value
                 :font-size-rate="FontSizeRate.SMALL"
                 :value="row.availableToBorrowFiat"
-              />
+              ></formatted-amount>
             </div>
           </div>
         </template>
@@ -179,21 +190,33 @@
       :last-page="lastPage"
       :loading="loadingState"
       @pagination-click="handlePaginationClick"
-    />
+    ></history-pagination>
   </div>
 </template>
 
-<script lang="ts">
-import { components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
-import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
-import { Components, HundredNumber } from '@/consts';
-import { lazyComponent } from '@/router';
-import { state } from '@/store/decorators';
+import { SortDirection } from '@soramitsu-ui/ui/types';
+import SortButton from '@/components/shared/Button/SortButton.vue';
+import PairTokenLogo from '@/components/shared/PairTokenLogo.vue';
+import DataRowSkeleton from '@/components/shared/Skeleton/DataRow.vue';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useTranslation } from '@/composables/useTranslation';
+import { FontSizeRate, FontWeightRate, HundredNumber, PaginationButton } from '@/consts';
+import { useAssetsStore } from '@/stores/assets';
+import { useSettingsStore } from '@/stores/settings';
+import { useVaultStore } from '@/stores/vault';
+import { useWalletStore } from '@/stores/wallet';
+import { isAmountValueIntegerOnly } from '@/utils';
+import { getKensetsuAmountSortValue, getKensetsuFiatAmount } from '@/modules/vault/utils/fiat';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { Collateral } from '@sora-substrate/sdk/build/kensetsu/types';
+import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
+import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
+import WalletComponentHistoryPagination from '@/lib/soraneo-wallet/src/components/HistoryPagination.vue';
+import WalletComponentSearchInput from '@/lib/soraneo-wallet/src/components/Input/SearchInput.vue';
 
 type TableItem = {
   name: string;
@@ -215,108 +238,257 @@ type TableItem = {
   maxLtvValue: number;
 };
 
-@Component({
-  components: {
-    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    SortButton: lazyComponent(Components.SortButton),
-    DataRowSkeleton: lazyComponent(Components.DataRowSkeleton),
-    TokenLogo: components.TokenLogo,
-    FormattedAmount: components.FormattedAmount,
-    HistoryPagination: components.HistoryPagination,
-    SearchInput: components.SearchInput,
-  },
-})
-export default class ExplorePools extends Mixins(ExplorePageMixin) {
-  @state.vault.collaterals private collaterals!: Record<string, Collateral>;
-  @state.settings.percentFormat private percentFormat!: Nullable<Intl.NumberFormat>;
-  @state.settings.menuCollapsed collapsed!: boolean;
+const TokenLogo = WalletComponentTokenLogo;
+const FormattedAmount = WalletComponentFormattedAmount;
+const HistoryPagination = WalletComponentHistoryPagination;
+const SearchInput = WalletComponentSearchInput;
 
-  property = 'totalDebtValue';
+const props = defineProps<{
+  exploreQuery: string;
+}>();
 
-  formatPercent(value: number): string {
-    const percent = value / HundredNumber;
-    return this.percentFormat?.format?.(percent) ?? `${percent * HundredNumber}%`;
-  }
+const emit = defineEmits<{
+  (event: 'open', locked: RegisteredAccountAsset, debt: RegisteredAccountAsset): void;
+  (event: 'update-search', value: string): void;
+}>();
 
-  get prefilteredItems(): TableItem[] {
-    return Object.values(this.collaterals).reduce<TableItem[]>((acc, collateral) => {
-      const lockedAsset = this.getAsset(collateral.lockedAssetId);
-      const debtAsset = this.getAsset(collateral.debtAssetId);
-      if (!(lockedAsset && debtAsset)) return acc;
+const tableRef = ref<any>(null);
+const teardownScrollSync = ref<Nullable<FnWithoutArgs>>(null);
 
-      const stabilityFeeValue = collateral.riskParams.stabilityFeeAnnual.toNumber();
-      const stabilityFee = this.formatPercent(stabilityFeeValue);
+const { getFPNumberFiatAmountByFPNumber } = useFormattedAmount();
+const { t } = useTranslation();
+const settingsStore = useSettingsStore();
+const walletStore = useWalletStore();
+const assetsStore = useAssetsStore();
+const vaultStore = useVaultStore();
 
-      const maxLtvValue = collateral.riskParams.liquidationRatioReversed;
-      const maxLtv = this.formatPercent(maxLtvValue);
+const collaterals = computed(() => vaultStore.collaterals);
+const percentFormat = computed(() => settingsStore.percentFormat as Nullable<Intl.NumberFormat>);
+const collapsed = computed(() => settingsStore.menuCollapsed);
+const isLoggedIn = computed(() => walletStore.isLoggedIn);
+const getAsset = assetsStore.assetDataByAddress as (addr?: string) => Nullable<RegisteredAccountAsset>;
 
-      const totalLocked = collateral.totalLocked.toLocaleString(2);
-      const totalLockedFiatFp = this.getFPNumberFiatAmountByFPNumber(collateral.totalLocked, lockedAsset) ?? this.Zero;
-      const totalLockedValue = totalLockedFiatFp.toNumber();
-      const totalLockedFiat = totalLockedFiatFp.toLocaleString(2);
+const order = ref<SortDirection | ''>(SortDirection.DESC);
+const property = ref<string>('totalDebtValue');
+const currentPage = ref(1);
+const pageAmount = ref(10);
 
-      const totalDebt = collateral.debtSupply.toLocaleString(2);
-      const totalDebtFiatFp = this.getFPNumberFiatAmountByFPNumber(collateral.debtSupply, debtAsset) ?? this.Zero;
-      const totalDebtValue = totalDebtFiatFp.toNumber();
-      const totalDebtFiat = totalDebtFiatFp.toLocaleString(2);
+const loadingState = ref(false);
 
-      let availableToBorrowValue = 0;
-      let availableToBorrow = '0';
-      let availableToBorrowFiat: Nullable<string> = '0';
-      let isAvailable = false;
-      const availableToBorrowFp = collateral.riskParams.hardCap.sub(collateral.debtSupply).dp(2);
-      if (availableToBorrowFp.isGtZero()) {
-        isAvailable = true;
-        availableToBorrow = availableToBorrowFp.toLocaleString(2);
-        const availableToBorrowFiatFp =
-          this.getFPNumberFiatAmountByFPNumber(availableToBorrowFp, debtAsset) ?? this.Zero;
-        availableToBorrowValue = availableToBorrowFiatFp.toNumber();
-        availableToBorrowFiat = availableToBorrowFiatFp.toLocaleString(2);
-      }
+const formatPercent = (value: number): string => {
+  const percent = value / HundredNumber;
+  return percentFormat.value?.format?.(percent) ?? `${percent * HundredNumber}%`;
+};
 
-      const name = `${debtAsset.symbol}/${lockedAsset.symbol}`; // For search
+const prefilteredItems = computed<TableItem[]>(() =>
+  Object.values(collaterals.value).reduce<TableItem[]>((acc, collateral) => {
+    const lockedAsset = getAsset(collateral.lockedAssetId);
+    const debtAsset = getAsset(collateral.debtAssetId);
+    if (!(lockedAsset && debtAsset)) return acc;
 
-      acc.push({
-        name,
-        lockedAsset,
+    const stabilityFeeValue = collateral.riskParams.stabilityFeeAnnual.toNumber();
+    const stabilityFee = formatPercent(stabilityFeeValue);
+
+    const maxLtvValue = collateral.riskParams.liquidationRatioReversed;
+    const maxLtv = formatPercent(maxLtvValue);
+
+    const totalLocked = collateral.totalLocked.toLocaleString(2);
+    const totalLockedFiatFp = getKensetsuFiatAmount(
+      collateral.totalLocked,
+      lockedAsset,
+      getFPNumberFiatAmountByFPNumber
+    );
+    const totalLockedValue = getKensetsuAmountSortValue(collateral.totalLocked, totalLockedFiatFp);
+    const totalLockedFiat = totalLockedFiatFp?.toLocaleString(2);
+
+    const totalDebt = collateral.debtSupply.toLocaleString(2);
+    const totalDebtFiatFp = getKensetsuFiatAmount(collateral.debtSupply, debtAsset, getFPNumberFiatAmountByFPNumber);
+    const totalDebtValue = getKensetsuAmountSortValue(collateral.debtSupply, totalDebtFiatFp);
+    const totalDebtFiat = totalDebtFiatFp?.toLocaleString(2);
+
+    let availableToBorrowValue = 0;
+    let availableToBorrow = '0';
+    let availableToBorrowFiat: Nullable<string> = null;
+    let isAvailable = false;
+    const availableToBorrowFp = collateral.riskParams.hardCap.sub(collateral.debtSupply).dp(2);
+    if (availableToBorrowFp.isGtZero()) {
+      isAvailable = true;
+      availableToBorrow = availableToBorrowFp.toLocaleString(2);
+      const availableToBorrowFiatFp = getKensetsuFiatAmount(
+        availableToBorrowFp,
         debtAsset,
-        stabilityFeeValue,
-        stabilityFee,
-        totalLockedValue,
-        totalLocked,
-        totalLockedFiat,
-        totalDebtValue,
-        totalDebt,
-        totalDebtFiat,
-        availableToBorrowValue,
-        availableToBorrow,
-        availableToBorrowFiat,
-        isAvailable,
-        maxLtv,
-        maxLtvValue,
-      });
-      return acc;
-    }, []);
-  }
+        getFPNumberFiatAmountByFPNumber
+      );
+      availableToBorrowValue = getKensetsuAmountSortValue(availableToBorrowFp, availableToBorrowFiatFp);
+      availableToBorrowFiat = availableToBorrowFiatFp?.toLocaleString(2);
+    }
 
-  // ExplorePageMixin method implementation
-  async updateExploreData(): Promise<void> {
-    // Do nothing
-  }
+    acc.push({
+      name: `${debtAsset.symbol}/${lockedAsset.symbol}`,
+      lockedAsset,
+      debtAsset,
+      stabilityFeeValue,
+      stabilityFee,
+      totalLockedValue,
+      totalLocked,
+      totalLockedFiat,
+      totalDebtValue,
+      totalDebt,
+      totalDebtFiat,
+      availableToBorrowValue,
+      availableToBorrow,
+      availableToBorrowFiat,
+      isAvailable,
+      maxLtv,
+      maxLtvValue,
+    });
+    return acc;
+  }, [])
+);
 
-  openSelectedPosition(row: TableItem): void {
-    if (!(this.isLoggedIn && row.isAvailable)) return;
-    this.$emit('open', row.lockedAsset, row.debtAsset);
-  }
+const filteredItems = computed(() => {
+  const search = props.exploreQuery.toLowerCase().trim();
+  if (!search) return prefilteredItems.value;
 
-  updateSearch(value: string): void {
-    this.$emit('update-search', value);
-  }
+  const filterAsset = (asset?: { name?: string; symbol?: string; address?: string }) =>
+    asset?.name?.toLowerCase?.().includes(search) ||
+    asset?.symbol?.toLowerCase?.().includes(search) ||
+    asset?.address?.toLowerCase?.() === search;
 
-  resetSearch(): void {
-    this.$emit('update-search', '');
+  return prefilteredItems.value.filter((item) => {
+    return item.name.toLowerCase().includes(search) || filterAsset(item.lockedAsset) || filterAsset(item.debtAsset);
+  });
+});
+
+const isDefaultSort = computed(() => !property.value);
+
+const preparedItems = computed(() => {
+  if (isDefaultSort.value) return filteredItems.value;
+
+  const isAscending = order.value === SortDirection.ASC;
+  const prop = property.value as keyof TableItem;
+
+  return [...filteredItems.value].sort((a, b) => {
+    const aValue = a[prop];
+    const bValue = b[prop];
+
+    if (aValue === bValue) return 0;
+
+    return (isAscending ? aValue > bValue : aValue < bValue) ? 1 : -1;
+  });
+});
+
+const total = computed(() => preparedItems.value.length);
+const lastPage = computed(() => (total.value ? Math.ceil(total.value / pageAmount.value) : 1));
+const startIndex = computed(() => (currentPage.value - 1) * pageAmount.value);
+const sliceStart = computed(() => {
+  if (!total.value) return 0;
+  const start = startIndex.value;
+  if (start >= total.value) {
+    return Math.max(total.value - pageAmount.value, 0);
   }
-}
+  return start;
+});
+
+const tableItems = computed(() => {
+  const start = sliceStart.value;
+  const end = start + pageAmount.value;
+  return preparedItems.value.slice(start, end);
+});
+
+watch(
+  () => props.exploreQuery,
+  () => {
+    currentPage.value = 1;
+  }
+);
+
+watch(total, () => {
+  if (currentPage.value > lastPage.value) {
+    currentPage.value = lastPage.value;
+  }
+});
+
+const changeSort = ({ order: newOrder = SortDirection.DESC, property: newProperty = '' } = {}) => {
+  order.value = newOrder;
+  property.value = newProperty;
+};
+
+const handleResetSort = () => {
+  changeSort();
+};
+
+const sortState = computed(() => ({
+  order: order.value,
+  property: property.value,
+}));
+
+const handlePaginationClick = (button: PaginationButton) => {
+  switch (button) {
+    case PaginationButton.Prev:
+      currentPage.value = Math.max(currentPage.value - 1, 1);
+      break;
+    case PaginationButton.Next:
+      currentPage.value = Math.min(currentPage.value + 1, lastPage.value);
+      break;
+    case PaginationButton.Last:
+      currentPage.value = lastPage.value;
+      break;
+    default:
+      currentPage.value = 1;
+  }
+};
+
+const openSelectedPosition = (row: TableItem) => {
+  if (!(isLoggedIn.value && row.isAvailable)) return;
+  emit('open', row.lockedAsset, row.debtAsset);
+};
+
+const updateSearch = (value: string) => {
+  emit('update-search', value);
+};
+
+const resetSearch = () => {
+  emit('update-search', '');
+};
+
+const initScrollbarSync = () => {
+  teardownScrollSync.value?.();
+
+  const tableComponent = tableRef.value;
+  const elTable = tableComponent?.$refs?.table;
+  const bodyWrapper = elTable?.$refs?.bodyWrapper as HTMLElement | undefined;
+  const headerWrapper = elTable?.$refs?.headerWrapper as HTMLElement | undefined;
+
+  if (!bodyWrapper || !headerWrapper) return;
+
+  const syncScroll = () => {
+    const scrollLeft = bodyWrapper.scrollLeft;
+    headerWrapper.scrollLeft = scrollLeft;
+    elTable.scrollPosition = scrollLeft === 0 ? 'left' : 'right';
+  };
+
+  bodyWrapper.addEventListener('scroll', syncScroll, { passive: true });
+  syncScroll();
+
+  teardownScrollSync.value = () => {
+    bodyWrapper.removeEventListener('scroll', syncScroll);
+  };
+};
+
+onMounted(async () => {
+  await nextTick();
+  initScrollbarSync();
+});
+
+watch(tableItems, () => {
+  nextTick().then(() => initScrollbarSync());
+});
+
+onBeforeUnmount(() => {
+  teardownScrollSync.value?.();
+  teardownScrollSync.value = null;
+});
 </script>
 
 <style lang="scss">
@@ -325,6 +497,22 @@ export default class ExplorePools extends Mixins(ExplorePageMixin) {
 .collaterals-table.explore-table.el-table.el-table--enable-row-hover .el-table__body tr:hover > td.el-table__cell {
   background-color: rgba(42, 23, 31, 0.06);
   cursor: pointer;
+}
+
+.collaterals-table.explore-table.el-table {
+  font-size: 16px;
+  line-height: 18.4px;
+}
+
+.collaterals-table.explore-table.el-table .el-table__header tr > th > .cell {
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  font-weight: 500 !important;
+}
+
+.collaterals-table.explore-table.el-table .el-table__body tr > td > .cell {
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
 }
 </style>
 
@@ -368,6 +556,57 @@ $min_breakpoint_large-mobile: $breakpoint_large-mobile - 1px;
     > .search {
       max-width: $explore-search-input-max-width;
     }
+
+    > :deep(.search.search-input) {
+      display: flex;
+      min-height: 58px;
+      position: relative;
+      border-radius: 24px;
+      padding: 8px 16px;
+      border: 0 solid var(--s-color-base-border-primary);
+      background-color: var(--s-color-base-background);
+      box-shadow: var(--s-shadow-element);
+    }
+
+    > :deep(.search.search-input .s-input__content) {
+      height: 21px;
+      width: 100%;
+      min-height: 0;
+      padding: 0;
+      gap: 0;
+      border: 0 none var(--s-color-base-content-primary);
+    }
+
+    > :deep(.search.search-input .s-input__prefix) {
+      position: absolute;
+      left: 16px;
+      top: 8px;
+      display: block;
+      height: 21px;
+      line-height: 21px;
+    }
+
+    > :deep(.search.search-input .s-input__input) {
+      display: block;
+      position: relative;
+      width: 100%;
+      border: 0 none var(--s-color-base-content-primary);
+    }
+
+    > :deep(.search.search-input .el-input__inner) {
+      line-height: 21px;
+      padding: 0 26px;
+      width: 100%;
+    }
   }
+}
+
+:global(:root[data-theme='dark'] .collaterals-search > .search.search-input),
+:global(:root[design-system-theme='dark'] .collaterals-search > .search.search-input),
+:global(.sora-theme-provider[data-theme='dark'] .collaterals-search > .search.search-input),
+:global(.sora-theme-provider[design-system-theme='dark'] .collaterals-search > .search.search-input) {
+  background-color: var(--s-color-base-dark-background);
+  border-color: var(--s-color-base-border-primary);
+  box-shadow: var(--s-shadow-element);
 }
 </style>

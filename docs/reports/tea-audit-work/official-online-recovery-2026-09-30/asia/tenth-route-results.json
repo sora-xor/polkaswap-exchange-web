@@ -1,0 +1,38 @@
+[
+  {
+    "url": "https://customs.gov.pg/pdf/pages/customs_prohibited_import_regulations.pdf",
+    "status": "500",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/pg-prohibited-reg1973.pdf",
+    "retrievedAt": "2026-09-30T06:50:41.683529+00:00",
+    "bytes": 7309,
+    "sha256": "a8a284f377cb9f21c53e5553234ecb693dc4c2c38f3306b6cde4aead5e05e913"
+  },
+  {
+    "url": "https://agriculture.gov.mv/storage/24YEn3qe/bujmhspe.pdf",
+    "status": "200",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/mv-dec2025-notice.pdf",
+    "retrievedAt": "2026-09-30T06:50:41.658419+00:00",
+    "bytes": 87242,
+    "sha256": "37396d1b709ae2e8bfbf328b44b182878135ee67235f28c92be26549559f19b8"
+  },
+  {
+    "url": "http://laws.moj.gov.af/ShowLawPersian.aspx",
+    "status": "200",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/af-lawdb-http.html",
+    "retrievedAt": "2026-09-30T06:50:42.282964+00:00",
+    "bytes": 21501,
+    "sha256": "1f25eea2e8e445f1f77348735affea21bb95c7f87b0d1c5b987d951e68bb62c4"
+  },
+  {
+    "url": "https://lloc.gov.bh/Legislation/HTM/K3418",
+    "status": "200",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/bh-food-law2018.html",
+    "retrievedAt": "2026-09-30T06:50:43.583204+00:00",
+    "bytes": 311779,
+    "sha256": "c2585f6241904d4e973defc972a378bba57632291bf531404472acd472facbca"
+  }
+]

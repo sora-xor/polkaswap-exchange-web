@@ -1,23 +1,25 @@
 <template>
   <dialog-base
-    :visible.sync="isVisible"
+    v-model:visible="isVisible"
     :title="t('selectToken.title')"
     custom-class="asset-select"
+    wrapper-class="asset-select-wrapper"
     :append-to-body="appendToBody"
     :modal-append-to-body="appendToBody"
+    @after-open="handleAfterOpen"
   >
-    <s-tabs :value="tabValue" class="s-tabs--exchange" type="rounded" @input="handleTabChange">
+    <s-tabs :value="tabValue" class="s-tabs--exchange" type="rounded" @update:model-value="handleTabChange">
       <search-input
-        ref="search"
+        ref="searchRef"
         v-model="query"
         :placeholder="activeSearchPlaceholder"
         autofocus
         @clear="handleClearSearch"
-        class="token-search"
-      />
+        class="token-search neumorphic s-focused s-border-radius-small s-size-big s-input--prefix"
+      ></search-input>
 
       <s-tab :label="t('selectToken.assets.title')" name="assets">
-        <assets-filter class="token-filter-options" />
+        <assets-filter class="token-filter-options"></assets-filter>
       </s-tab>
 
       <s-tab :disabled="disabledCustom" :label="t('selectToken.custom.title')" name="custom" class="asset-select__info">
@@ -32,7 +34,7 @@
             :whitelist-ids-by-symbol="whitelistIdsBySymbol"
             :loading="loading"
             @add="handleAddAsset"
-          />
+          ></add-asset-details-card>
         </template>
 
         <span v-else-if="searchQuery">{{ t('selectToken.custom.notFound') }}</span>
@@ -43,7 +45,7 @@
       </s-tab>
 
       <select-asset-list
-        v-show="shouldAssetsListBeShown"
+        v-if="shouldAssetsListBeRendered"
         :assets="activeAssetsList"
         :size="assetsListSize"
         :connected="connected"
@@ -53,7 +55,7 @@
       >
         <template #action="token">
           <div v-if="isCustomTabActive" class="token-item__remove" @click.stop="handleRemoveCustomAsset(token)">
-            <s-icon name="basic-trash-24" />
+            <s-icon name="basic-trash-24"></s-icon>
           </div>
         </template>
       </select-asset-list>
@@ -61,218 +63,497 @@
   </dialog-base>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { api, mixins, components, WALLET_TYPES, getAssetsSubset } from '@soramitsu/soraneo-wallet-web';
-import first from 'lodash/fp/first';
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
+import { api } from '@/lib/soraneo-wallet/src/api';
+import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
 
-import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components, ObjectInit } from '@/consts';
-import { lazyComponent } from '@/router';
-import { getter, state, action } from '@/store/decorators';
+import SelectAssetList from '@/components/shared/SelectAsset/List.vue';
+import { filterAssetsByQuery as filterAssetsBySearchQuery } from '@/composables/useAssetSearch';
+import { useTranslation } from '@/composables/useTranslation';
+import { useLoading } from '@/composables/useLoading';
+import { ObjectInit } from '@/consts';
+import { getAssetsSubset } from '@/lib/soraneo-wallet/src/util';
+import { FilterOptions } from '@/lib/soraneo-wallet/src/types/common';
+import { Theme } from '@/consts/theme';
+import { useAssetsStore } from '@/stores/assets';
+import { useSettingsStore } from '@/stores/settings';
+import { useWalletStore } from '@/stores/wallet';
+import { getSupportedPoolBaseAssetIds } from '@/modules/pool/utils/basePairs';
+import { isSelectableAsset } from '@/components/shared/SelectAsset/utils';
+import { createAsyncComponent } from '@/shared/ui/async';
+import { sortAssets } from '@/utils';
 
-import type { Asset, AccountAsset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
-import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
+import type { Nullable } from '@/types/common';
+import type { Asset, AccountAsset, RegisteredAccountAsset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
+import WalletAssetsFilter from '@/lib/soraneo-wallet/src/components/shared/AssetsFilter.vue';
+import WalletDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletSearchInput from '@/lib/soraneo-wallet/src/components/Input/SearchInput.vue';
 
 enum Tabs {
   Assets = 'assets',
   Custom = 'custom',
 }
 
-function getNonWhitelistDivisibleAssets<T extends Asset | AccountAsset>(
+type SelectTokenEvents = {
+  (event: 'select', asset: Asset | AccountAsset | RegisteredAccountAsset): void;
+  (event: 'close'): void;
+};
+type SelectableAsset = Asset | AccountAsset | RegisteredAccountAsset;
+
+const DialogBase = WalletDialogBase;
+const SearchInput = WalletSearchInput;
+const AssetsFilter = WalletAssetsFilter;
+const AddAssetDetailsCard = createAsyncComponent(
+  () => import('@/lib/soraneo-wallet/src/components/AddAsset/AddAssetDetailsCard.vue')
+);
+
+const isNonEmptyBalance = (asset: AccountAsset | RegisteredAccountAsset): boolean =>
+  Boolean(asset.balance) && Boolean(+asset.balance.transferable);
+
+const getNonWhitelistDivisibleAssets = <T extends Asset | AccountAsset>(
   assets: T[],
   whitelist: Whitelist
-): Record<string, T> {
-  return assets.reduce((buffer, asset) => {
+): Record<string, T> => {
+  return assets.reduce<Record<string, T>>((buffer, asset) => {
     if (!api.assets.isWhitelist(asset, whitelist) && asset.decimals) {
       buffer[asset.address] = asset;
     }
     return buffer;
   }, {});
-}
+};
 
-@Component({
-  components: {
-    DialogBase: components.DialogBase,
-    SelectAssetList: lazyComponent(Components.SelectAssetList),
-    TokenAddress: components.TokenAddress,
-    SearchInput: components.SearchInput,
-    AssetsFilter: components.AssetsFilter,
-    AddAssetDetailsCard: components.AddAssetDetailsCard,
+const props = withDefaults(
+  defineProps<{
+    connected?: boolean;
+    asset?: Nullable<Asset>;
+    disabledCustom?: boolean;
+    isFirstTokenSelected?: boolean;
+    isAddLiquidity?: boolean;
+    filter?: (value: AccountAsset) => boolean;
+    appendToBody?: boolean;
+  }>(),
+  {
+    connected: false,
+    asset: ObjectInit,
+    disabledCustom: false,
+    isFirstTokenSelected: false,
+    isAddLiquidity: false,
+    filter: () => true,
+    appendToBody: false,
+  }
+);
+
+const emit = defineEmits<SelectTokenEvents>();
+
+const { t } = useTranslation();
+const assetsStore = useAssetsStore();
+const walletStore = useWalletStore();
+const settingsStore = useSettingsStore();
+const { loading, withLoading } = useLoading();
+
+const searchRef = ref<InstanceType<any> | null>(null);
+const query = ref('');
+const isVisible = defineModel<boolean>('visible', { required: true });
+const tabValue = ref<Tabs>(Tabs.Assets);
+const isAssetsListHydrated = ref(false);
+let assetsListHydrationTimer: number | undefined;
+let assetsListHydrationFrame: number | undefined;
+
+/** Cancels deferred token-list setup when the selector closes quickly. */
+const cancelAssetsListHydration = (): void => {
+  if (typeof window === 'undefined') return;
+
+  if (assetsListHydrationFrame !== undefined) {
+    window.cancelAnimationFrame(assetsListHydrationFrame);
+    assetsListHydrationFrame = undefined;
+  }
+
+  if (assetsListHydrationTimer !== undefined) {
+    window.clearTimeout(assetsListHydrationTimer);
+    assetsListHydrationTimer = undefined;
+  }
+};
+
+const hydrateAssetsList = (): void => {
+  assetsListHydrationTimer = undefined;
+  isAssetsListHydrated.value = true;
+};
+
+const queueAssetsListHydration = (): void => {
+  assetsListHydrationTimer = window.setTimeout(hydrateAssetsList, 0);
+};
+
+/** Defers the heavy virtual-list data path until after the modal shell can paint. */
+const scheduleAssetsListHydration = (): void => {
+  cancelAssetsListHydration();
+
+  if (typeof window === 'undefined') {
+    isAssetsListHydrated.value = true;
+    return;
+  }
+
+  if (typeof window.requestAnimationFrame !== 'function') {
+    queueAssetsListHydration();
+    return;
+  }
+
+  assetsListHydrationFrame = window.requestAnimationFrame(() => {
+    assetsListHydrationFrame = undefined;
+    queueAssetsListHydration();
+  });
+};
+
+watch(
+  isVisible,
+  async (value) => {
+    cancelAssetsListHydration();
+    isAssetsListHydrated.value = false;
+
+    if (value) {
+      tabValue.value = Tabs.Assets;
+      await nextTick();
+      clearAndFocusSearch();
+      scheduleAssetsListHydration();
+    }
   },
-})
-export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMixin, mixins.LoadingMixin) {
-  @Prop({ default: false, type: Boolean }) readonly connected!: boolean;
-  @Prop({ default: ObjectInit, type: Object }) readonly asset!: Nullable<Asset>;
-  @Prop({ default: false, type: Boolean }) readonly disabledCustom!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly isFirstTokenSelected!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly isAddLiquidity!: boolean;
-  @Prop({ default: () => true, type: Function }) readonly filter!: (value: AccountAsset) => boolean;
-  @Prop({ default: false, type: Boolean }) readonly appendToBody!: boolean;
+  { immediate: true }
+);
 
-  @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
-  @state.wallet.account.assets private assets!: Asset[];
-  @state.wallet.settings.assetsFilter assetsFilter!: WALLET_TYPES.FilterOptions;
-  @state.wallet.account.accountAssets private accountAssets!: AccountAsset[];
-  @state.wallet.account.pinnedAssets pinnedAssetsAddresses!: string[];
+onBeforeUnmount(cancelAssetsListHydration);
 
-  @getter.libraryTheme libraryTheme!: Theme;
-  @getter.assets.whitelistAssets private whitelistAssets!: Array<Asset>;
-  @getter.wallet.account.isLoggedIn private isLoggedIn!: boolean;
-  @getter.wallet.account.whitelist public whitelist!: Whitelist;
-  @getter.wallet.account.whitelistIdsBySymbol public whitelistIdsBySymbol!: WALLET_TYPES.WhitelistIdsBySymbol;
+const searchQuery = computed(() => query.value.trim().toLowerCase());
 
-  @action.wallet.account.addAsset private addAsset!: (address?: string) => Promise<void>;
+const clearSearch = () => {
+  query.value = '';
+};
 
-  readonly tokenTabs = [Tabs.Assets, Tabs.Custom];
+const focusSearchInput = () => {
+  const instance = searchRef.value as { focus?: () => void } | undefined;
+  instance?.focus?.();
+};
 
-  tabValue = first(this.tokenTabs);
+const clearAndFocusSearch = () => {
+  clearSearch();
+  focusSearchInput();
+};
 
-  @Watch('visible')
-  async handleTabReset(value: boolean): Promise<void> {
-    if (!value) return;
+const handleClearSearch = () => {
+  clearAndFocusSearch();
+};
 
-    this.tabValue = first(this.tokenTabs);
+const closeDialog = () => {
+  emit('close');
+  isVisible.value = false;
+};
+
+const shouldBalanceBeHidden = computed(() => settingsStore.shouldBalanceBeHidden);
+const libraryTheme = computed<Nullable<Theme>>(() => settingsStore.libraryTheme);
+const whitelist = computed<Whitelist>(() => walletStore.whitelist ?? {});
+const whitelistIdsBySymbol = computed(() => walletStore.whitelistIdsBySymbol ?? {});
+const isLoggedIn = computed(() => walletStore.isLoggedIn);
+const assets = computed<Asset[]>(() => (walletStore.assets ?? []) as Asset[]);
+const accountAssets = computed<AccountAsset[]>(() => (walletStore.accountAssets ?? []) as AccountAsset[]);
+const pinnedAssetsAddresses = computed(() => walletStore.pinnedAssets ?? []);
+const selectedAssetsFilter = computed<FilterOptions>(
+  () => (settingsStore.assetsFilter as FilterOptions) ?? FilterOptions.All
+);
+
+const nonWhitelistAssets = computed(() => getNonWhitelistDivisibleAssets(assets.value, whitelist.value));
+const nonWhitelistAccountAssets = computed(() => getNonWhitelistDivisibleAssets(accountAssets.value, whitelist.value));
+const mainSourceAddressSet = computed(() => new Set(getSupportedPoolBaseAssetIds()));
+
+const mainLPSources = computed(() => {
+  return assets.value.filter((asset) => mainSourceAddressSet.value.has(asset.address));
+});
+
+/**
+ * Keeps the default assets tab aligned with the verified whitelist while
+ * leaving the custom tab available for manual non-whitelist additions.
+ */
+const filterWhitelistedAssets = <T extends Asset>(items: T[]): T[] => {
+  return items.filter((asset) => api.assets.isWhitelist(asset, whitelist.value));
+};
+
+const whitelistAssets = computed(() => {
+  if (props.isAddLiquidity) {
+    const filtered = props.isFirstTokenSelected
+      ? filterWhitelistedAssets(mainLPSources.value)
+      : filterWhitelistedAssets(assets.value.filter((asset) => asset.address !== XOR.address));
+    return getAssetsSubset(filtered, selectedAssetsFilter.value);
   }
 
-  get nonWhitelistAssets(): Record<string, Asset> {
-    return getNonWhitelistDivisibleAssets(this.assets, this.whitelist);
+  return getAssetsSubset(filterWhitelistedAssets(assets.value), selectedAssetsFilter.value);
+});
+
+const getAssetWithBalance = (address?: string): Nullable<RegisteredAccountAsset> =>
+  assetsStore.assetDataByAddress(address);
+
+const getAssetsWithBalances = (addresses: string[], excludeAddress?: string): RegisteredAccountAsset[] => {
+  return addresses.reduce<RegisteredAccountAsset[]>((buffer, address) => {
+    if (address === excludeAddress) return buffer;
+    const asset = getAssetWithBalance(address);
+    if (asset) buffer.push(asset);
+    return buffer;
+  }, []);
+};
+
+const sortByBalance = (a: AccountAsset | RegisteredAccountAsset, b: AccountAsset | RegisteredAccountAsset): number => {
+  const aEmpty = !isNonEmptyBalance(a);
+  const bEmpty = !isNonEmptyBalance(b);
+
+  if (aEmpty === bEmpty) return sortAssets(a, b);
+  return aEmpty && !bEmpty ? 1 : -1;
+};
+
+const getAssetsWithoutBalances = (items: Asset[], excludeAddress?: string): Asset[] => {
+  return items.filter((asset) => asset.address !== excludeAddress).sort(sortAssets);
+};
+
+const whitelistAssetsList = computed<SelectableAsset[]>(() => {
+  const addresses = whitelistAssets.value.map((asset) => asset.address);
+  const excludeAddress = props.asset?.address;
+
+  if (!props.connected) {
+    return getAssetsWithoutBalances(whitelistAssets.value, excludeAddress);
   }
 
-  get nonWhitelistAccountAssets(): Record<string, AccountAsset> {
-    return getNonWhitelistDivisibleAssets(this.accountAssets, this.whitelist);
+  return getAssetsWithBalances(addresses, excludeAddress).sort(sortByBalance);
+});
+
+const pinnedOrderMap = computed(() => new Map(pinnedAssetsAddresses.value.map((address, index) => [address, index])));
+
+const filteredWhitelistTokens = computed(() => {
+  const filtered = filterAssetsBySearchQuery(whitelistAssetsList.value, searchQuery.value);
+  const orderMap = pinnedOrderMap.value;
+
+  if (!orderMap.size) return filtered;
+
+  return filtered.sort((a, b) => {
+    const aIndex = orderMap.get(a.address);
+    const bIndex = orderMap.get(b.address);
+
+    if (aIndex !== undefined && bIndex !== undefined) return aIndex - bIndex;
+    if (aIndex !== undefined) return -1;
+    if (bIndex !== undefined) return 1;
+    return 0;
+  });
+});
+
+const sortedNonWhitelistAccountAssets = computed<SelectableAsset[]>(() => {
+  const excludeAddress = props.asset?.address;
+
+  if (!props.connected) {
+    return getAssetsWithoutBalances(Object.values(nonWhitelistAssets.value), excludeAddress);
   }
 
-  get whitelistAssetsList(): Array<AccountAsset> {
-    let whiteList: Array<Asset> = [];
+  const addresses = Object.keys(nonWhitelistAccountAssets.value);
+  return getAssetsWithBalances(addresses, excludeAddress).sort(sortByBalance);
+});
 
-    if (this.isAddLiquidity) {
-      whiteList = this.isFirstTokenSelected
-        ? this.mainLPSources
-        : // XOR could be only as base asset
-          this.whitelistAssets.filter((asset) => asset.address !== XOR.address);
-    } else {
-      whiteList = this.whitelistAssets;
-    }
+const isCustomTabActive = computed(() => tabValue.value === Tabs.Custom);
 
-    whiteList = getAssetsSubset(whiteList, this.assetsFilter);
+const activeAssetsList = computed(() => {
+  const list = isCustomTabActive.value ? sortedNonWhitelistAccountAssets.value : filteredWhitelistTokens.value;
+  return list.filter((asset) => props.filter(asset as AccountAsset));
+});
 
-    const assetsAddresses = whiteList.map((asset) => asset.address);
-    const excludeAddress = this.asset?.address;
-    const list = this.getAssetsWithBalances(assetsAddresses, excludeAddress);
-    const orderedList = [...list].sort(this.sortByBalance);
+const activeSearchPlaceholder = computed(() =>
+  t(isCustomTabActive.value ? 'selectToken.custom.search' : 'selectToken.searchPlaceholder')
+);
 
-    return orderedList;
-  }
+const alreadyAttached = computed(() => Boolean(nonWhitelistAccountAssets.value[searchQuery.value]));
+const customAsset = computed<Nullable<Asset>>(() => nonWhitelistAssets.value[searchQuery.value] ?? null);
 
-  get filteredWhitelistTokens(): Array<AccountAsset> {
-    const filteredAssets = this.filterAssetsByQuery(this.whitelistAssetsList)(this.searchQuery) as Array<AccountAsset>;
-    const pinnedOrderMap = new Map(this.pinnedAssetsAddresses.map((address, index) => [address, index]));
-    return filteredAssets.sort((a, b) => {
-      const aPinnedIndex = pinnedOrderMap.get(a.address);
-      const bPinnedIndex = pinnedOrderMap.get(b.address);
-      if (aPinnedIndex !== undefined && bPinnedIndex !== undefined) {
-        return aPinnedIndex - bPinnedIndex;
-      }
-      if (aPinnedIndex !== undefined) {
-        return -1;
-      }
-      if (bPinnedIndex !== undefined) {
-        return 1;
-      }
-      return 0;
+const shouldAssetsListBeShown = computed(
+  () => !(isCustomTabActive.value && !activeAssetsList.value.length && searchQuery.value)
+);
+const hasReadyAssetsForActiveTab = computed(() =>
+  isCustomTabActive.value
+    ? Boolean(sortedNonWhitelistAccountAssets.value.length)
+    : Boolean(whitelistAssetsList.value.length)
+);
+const shouldAssetsListBeRendered = computed(() => {
+  if (!isVisible.value || !isAssetsListHydrated.value) return false;
+  return shouldAssetsListBeShown.value && (Boolean(activeAssetsList.value.length) || hasReadyAssetsForActiveTab.value);
+});
+
+const assetsListSize = computed(() => (isCustomTabActive.value ? 5 : 6));
+
+const selectAsset = (asset: unknown) => {
+  if (!isSelectableAsset(asset)) return;
+
+  clearSearch();
+  emit('select', asset);
+  closeDialog();
+};
+
+const handleAddAsset = async () => {
+  if (!customAsset.value) return;
+
+  if (isLoggedIn.value) {
+    await withLoading(async () => {
+      await walletStore.addAsset(customAsset.value?.address);
     });
+    clearSearch();
+  } else {
+    selectAsset(customAsset.value);
   }
+};
 
-  get isCustomTabActive(): boolean {
-    return this.tabValue === Tabs.Custom;
-  }
+const handleRemoveCustomAsset = (asset: AccountAsset) => {
+  api.assets.removeAccountAsset(asset.address);
+};
 
-  /** Only for empty list for custom tab case when searching */
-  get shouldAssetsListBeShown(): boolean {
-    return !(this.isCustomTabActive && !this.activeAssetsList.length && this.searchQuery);
-  }
+const handleTabChange = (name: Tabs) => {
+  tabValue.value = name;
+  clearAndFocusSearch();
+};
 
-  get assetsListSize(): number {
-    return this.isCustomTabActive ? 5 : 6;
-  }
-
-  get activeAssetsList(): Array<AccountAsset> {
-    const assets = this.isCustomTabActive ? this.sortedNonWhitelistAccountAssets : this.filteredWhitelistTokens;
-    return assets.filter(this.filter);
-  }
-
-  get activeSearchPlaceholder(): string {
-    return this.t(this.isCustomTabActive ? 'selectToken.custom.search' : 'selectToken.searchPlaceholder');
-  }
-
-  get alreadyAttached(): boolean {
-    return !!this.nonWhitelistAccountAssets[this.searchQuery];
-  }
-
-  get customAsset(): Nullable<Asset> {
-    return this.nonWhitelistAssets[this.searchQuery] ?? null;
-  }
-
-  get sortedNonWhitelistAccountAssets(): Array<AccountAsset> {
-    const { asset: excludeAsset } = this;
-    // TODO: we already have balances in nonWhitelistAccountAssets.
-    // Need to improve that logic
-    return this.getAssetsWithBalances(Object.keys(this.nonWhitelistAccountAssets), excludeAsset?.address).sort(
-      this.sortByBalance
-    );
-  }
-
-  private get mainLPSources(): Array<Asset> {
-    const mainSourceAddresses = api.dex.poolBaseAssetsIds;
-
-    return this.assets.filter((asset) => mainSourceAddresses.includes(asset.address));
-  }
-
-  async handleAddAsset(): Promise<void> {
-    if (!this.customAsset) return;
-
-    if (this.isLoggedIn) {
-      await this.withLoading(async () => await this.addAsset((this.customAsset || {}).address));
-      this.handleClearSearch();
-    } else {
-      this.selectAsset(this.customAsset);
-    }
-  }
-
-  handleRemoveCustomAsset(asset: AccountAsset): void {
-    api.assets.removeAccountAsset(asset.address);
-  }
-
-  handleTabChange(name: Tabs): void {
-    this.tabValue = name;
-    this.clearAndFocusSearch();
-  }
-}
+const handleAfterOpen = () => {
+  focusSearchInput();
+};
 </script>
 
 <style lang="scss">
+.dialog-wrapper__modal.asset-select-wrapper.s-modal__modal-transition-enter-from,
+.dialog-wrapper__modal.asset-select-wrapper.s-modal__modal-transition-leave-to {
+  transform: none;
+}
+
+.dialog-card.asset-select,
+.asset-select .el-dialog {
+  overflow: hidden;
+  border-radius: 24px;
+  box-shadow: var(--s-shadow-element-pressed);
+}
+
+.dialog-card.asset-select {
+  display: block;
+}
+
+.dialog-card.asset-select .dialog-card__content,
+.asset-select .el-dialog__body {
+  padding: $inner-spacing-mini 0 $inner-spacing-big !important;
+  max-height: none;
+  overflow: visible;
+}
+
+.dialog-card.asset-select .dialog-card__header,
+.asset-select .el-dialog__header {
+  padding: $inner-spacing-big $inner-spacing-big $inner-spacing-mini;
+  box-shadow: none;
+}
+
+.dialog-card.asset-select .dialog-card__title,
+.dialog-card.asset-select .dialog-card__title-text,
+.asset-select .el-dialog__title {
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 31.2px;
+  letter-spacing: -0.96px;
+}
+
+.dialog-card.asset-select .dialog-card__close,
+.asset-select .el-dialog__headerbtn {
+  width: 42px;
+  min-width: 42px;
+  height: 42px;
+  min-height: 42px;
+  border: 0;
+  border-radius: 50%;
+  background-color: var(--s-color-base-border-secondary);
+  box-shadow: var(--s-shadow-element-pressed);
+  color: var(--s-color-base-content-tertiary);
+
+  .s-button__icon > i {
+    font-size: 16px !important;
+    line-height: 16px !important;
+    opacity: 0.6;
+  }
+}
+
 .asset-select {
-  .el-dialog {
+  .s-tabs--exchange .el-tabs__header {
+    width: calc(100% - 2 * #{$inner-spacing-big}) !important;
+  }
+
+  .s-tabs--exchange .el-tabs__nav-wrap,
+  .s-tabs--exchange .el-tabs__nav-scroll {
+    width: 100%;
+  }
+
+  .s-tabs--exchange .el-tabs__content {
     overflow: hidden;
-    &__body {
-      padding: $inner-spacing-mini 0 $inner-spacing-big !important;
-    }
   }
 
   @include exchange-tabs;
+
+  .s-tabs--exchange {
+    .el-tabs__item {
+      text-transform: uppercase;
+    }
+  }
 }
 </style>
 
 <style lang="scss" scoped>
 .token-search {
-  // TODO: Fix input styles (paddings and icon position)
-  margin-left: $inner-spacing-big;
+  display: flex;
+  justify-content: center;
+  margin: 2px 0 $inner-spacing-medium $inner-spacing-big;
   margin-bottom: $inner-spacing-medium;
   width: calc(100% - 2 * #{$inner-spacing-big});
-  @include focus-outline($withOffset: true);
+  min-height: 58px;
+  padding: 8px $inner-spacing-medium;
+  border-radius: 24px;
+  background-color: var(--s-color-base-background);
+  box-shadow: var(--s-shadow-element);
+  border: 0 solid var(--s-color-base-border-primary);
+  @include focus-outline($focusWithin: true, $withOffset: true);
+
+  // The field always carries a thin outline as part of its look; focus replaces it with the shared focus ring.
+  &.s-focused:not(:focus-within) {
+    outline: 1px solid var(--s-color-outline);
+    outline-offset: -1px;
+  }
+
+  :deep(.s-input__content) {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 21px;
+    margin: auto 0;
+    padding: 0;
+  }
+
+  :deep(.s-input__input) {
+    width: 100%;
+  }
+
+  :deep(.s-input__prefix),
+  :deep(.s-input__suffix) {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+  }
+
+  :deep(.s-input__prefix) {
+    left: 0;
+    color: var(--s-color-base-content-secondary);
+  }
+
+  :deep(.s-input__suffix) {
+    right: 0;
+  }
+
+  :deep(.el-input__inner) {
+    line-height: 21px;
+    padding: 0 26px;
+  }
 }
 
 .token-filter-options {

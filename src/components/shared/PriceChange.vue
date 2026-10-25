@@ -1,51 +1,51 @@
 <template>
   <div :class="classes">
     <s-icon class="price-change-arrow" :name="icon" size="14px" />
-    <formatted-amount :value="formatted" :font-weight-rate="FontWeightRate.MEDIUM">%</formatted-amount>
+    <formatted-amount :value="formatted" :font-weight-rate="FontWeightRate.MEDIUM" :integer-only="integerOnly">
+      %
+    </formatted-amount>
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/sdk';
-import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { computed } from 'vue';
 
-import { toPrecision } from '@/utils';
+import { FontWeightRate } from '@/lib/soraneo-wallet/src/consts';
+import { toPrecision } from '@/utils/fp';
+import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 
-@Component({
+/**
+ * Renders percentage change with an arrow indicator and wallet-styled formatting.
+ */
+defineOptions({
+  name: 'PriceChange',
   components: {
-    FormattedAmount: components.FormattedAmount,
+    FormattedAmount: WalletComponentFormattedAmount,
   },
-})
-export default class PriceChange extends Vue {
-  @Prop({ default: FPNumber.ZERO, type: Object }) readonly value!: FPNumber;
+});
 
-  readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
+const props = defineProps<{
+  value?: FPNumber;
+}>();
 
-  get increased(): boolean {
-    return FPNumber.gte(this.value, FPNumber.ZERO);
-  }
-
-  get icon(): string {
-    return `arrows-arrow-bold-${this.increased ? 'top' : 'bottom'}-24`;
-  }
-
-  get classes(): Array<string> {
-    const baseClass = 'price-change';
-    const cssClasses: Array<string> = [baseClass];
-    if (this.increased) {
-      cssClasses.push(`${baseClass}--increased`);
-    }
-    return cssClasses;
-  }
-
-  get formatted(): string {
-    const value = this.increased ? this.value : this.value.mul(new FPNumber(-1));
-    const number = toPrecision(value, 2);
-
-    return number.toLocaleString();
-  }
-}
+const price = computed(() => props.value ?? FPNumber.ZERO);
+const increased = computed(() => FPNumber.gte(price.value, FPNumber.ZERO));
+const icon = computed(() => `arrows-arrow-bold-${increased.value ? 'top' : 'bottom'}-24`);
+const classes = computed(() => {
+  const baseClass = 'price-change';
+  return increased.value ? [baseClass, `${baseClass}--increased`] : [baseClass];
+});
+const rounded = computed(() =>
+  Number(toPrecision(increased.value ? price.value : price.value.mul(new FPNumber(-1)), 2).toFixed(2))
+);
+const integerOnly = computed(() => Number.isInteger(rounded.value));
+const formatted = computed(() => {
+  return new Intl.NumberFormat(undefined, {
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 0,
+  }).format(rounded.value);
+});
 </script>
 
 <style lang="scss" scoped>
@@ -61,8 +61,10 @@ export default class PriceChange extends Vue {
     color: var(--s-color-theme-secondary-hover);
   }
 
-  &-arrow {
+  :deep(.price-change-arrow) {
     color: inherit;
+    font-size: 14px !important;
+    line-height: 14px !important;
   }
 }
 </style>

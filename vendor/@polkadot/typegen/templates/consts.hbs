@@ -1,0 +1,28 @@
+{{> header }}
+
+// import type lookup before we augment - in some environments
+// this is required to allow for ambient/previous definitions
+import '@polkadot/api-base/types/consts';
+
+{{{ importsAll }}}
+
+export type __AugmentedConst<ApiType extends ApiTypes> = AugmentedConst<ApiType>;
+
+declare module '@polkadot/api-base/types/consts' {
+  interface AugmentedConsts<ApiType extends ApiTypes> {
+    {{#each modules}}
+    {{{name}}}: {
+      {{#each items}}
+      {{> docs}}
+      {{{name}}}: {{{type}}} & AugmentedConst<ApiType>;
+      {{/each}}
+      {{#unless @root.isStrict}}
+      /**
+       * Generic const
+       **/
+      [key: string]: Codec;
+      {{/unless}}
+    };
+    {{/each}}
+  } // AugmentedConsts
+} // declare module

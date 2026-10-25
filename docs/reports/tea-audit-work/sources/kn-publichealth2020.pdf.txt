@@ -1,0 +1,3435 @@
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                                Public Health Act                      CAP. 9.21                    1
+Revision Date: 31 Dec 2020
+
+
+
+
+                             ST. CHRISTOPHER AND NEVIS
+
+                                           CHAPTER 9.21
+                                   PUBLIC HEALTH ACT
+                                       and Subsidiary Legislation
+
+
+                                          Revised Edition
+                               showing the law as at 31 December 2020
+
+            This is a revised edition of the law, prepared by the Law Commission under the authority of the
+            Law Commission Act, Cap. 1.03.
+
+
+This edition contains a consolidation of the following laws—
+                                                                                                              Page
+PUBLIC HEALTH ACT                                                                                               3
+       Act 22 of 1969 … in force 1st December 1970
+       Amended by: Act 7 of 1976
+                      Act 9 of 1986
+                      Act 5 of 2001
+                      Act 15 of 2020
+
+
+
+       PUBLIC HEALTH (ESTABLISHMENT OF A BOARD OF
+          HEALTH) ORDER – Section 6(1)                                                                         20
+       S.R.O. 4/1973
+       PUBLIC HEALTH (NUISANCES) REGULATIONS – Section 11                                                      21
+       S.R.O. 19/1974
+       PUBLIC HEALTH (KEEPING OF ANIMALS) REGULATIONS – Section 11                                             25
+       S.R.O. 20/1974
+        Amended by: S.R.O. 30/1985
+                      S.R.O. 23/1986
+       PUBLIC HEALTH (OFFENSIVE TRADES) REGULATIONS – Section 11                                               27
+       S.R.O. 21/1974
+
+
+                                           Printed under Authority by
+                                      The Regional Law Revision Centre Inc.
+                                                  ANGUILLA
+                                                           LAWS OF SAINT CHRISTOPHER
+2       CAP. 9.21              Public Health Act                   AND NEVIS
+                                                              Revision Date: 31 Dec 2020
+
+
+    PUBLIC HEALTH (COLLECTION AND DISPOSAL OF REFUSE)
+        REGULATIONS – Section 11                                          30
+    S.R.O. 39/1978
+    BAKEHOUSES REGULATIONS – Section 11                                   35
+    S.R.O. 15/1953
+    FOOD REGULATIONS – Section 11                                         37
+    S.R.O. 12/1953
+    HEALTH (SWINE) REGULATIONS – Section 11                               41
+    S.R.O. 12/1929
+    ICE AND AERATED WATER MANUFACTURING (NEVIS)
+      REGULATIONS – Section 11                                            41
+    S.R.O. 15/1939
+    ICE AND AERATED WATER MANUFACTURING
+      (SAINT CHRISTOPHER) REGULATIONS – Section 11                         44
+    S.R.O. 6/1936
+    INFECTIOUS DISEASES (SHIPS) REGULATIONS – Section 11                   46
+    S.R.O. 23/1943
+    INFECTIOUS DISEASES (SURVEILLANCE) REGULATIONS – Section 11            46
+    S.R.O. 22/1926
+    LOCAL AUTHORITIES (POWERS AND DUTIES)
+        REGULATIONS – Section 11                                           47
+    S.R.O. 19/1952
+    MILK REGULATIONS – Section 11                                          50
+    S.R.O. 14/1953
+    MOSQUITO CONTROL REGULATIONS – Section 11                              53
+    S.R.O. 6/1954
+    NIGHT SOIL (SAINT CHRISTOPHER) REGULATIONS – Section 11                57
+    L.I. 1923
+    PUBLIC HEALTH (NEVIS) REGULATIONS – Section 11                         57
+    L.I. 1923
+    PUBLIC HEALTH (NO. 1) (SAINT CHRISTOPHER)
+        REGULATIONS – Section 11                                           59
+    S.R.O. 17/1952
+    PUBLIC HEALTH (NO. 2) (SAINT CHRISTOPHER)
+        REGULATIONS – Section 11                                           61
+    S.R.O. 13/1953
+    ENVIRONMENTAL HEALTH OFFICERS (DUTIES)
+        REGULATIONS – Section 11                                          63
+    S.R.O. 6/1952
+    PUBLIC HEALTH (QUARANTINE) REGULATIONS – Section 11                   66
+    S.R.O. 2/2020
+     Amended by: S.R.O. 8/2020
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                      Public Health Act            CAP. 9.21            3
+Revision Date: 31 Dec 2020
+
+                                      CHAPTER 9.21
+
+                                 PUBLIC HEALTH ACT
+                                 ARRANGEMENT OF SECTIONS
+     1.      Short title
+     2.      Interpretation
+     3.      Duties and functions of the Minister
+     4.      Exercise of the duties, powers and functions of the Minister
+     5.      Establishment of health and sanitation districts
+     6.      Establishment of boards and committees
+     7.      Appointment of Public Health Officers
+     8.      Delegation of Minister’s authority to officers
+     9.      Health Emergency Operating Centre
+    10.      Delegated powers of Local Councils, etc.
+    11.      Regulations
+    12.      Scope of Regulations
+    13.      Publication of Regulations
+    14.      Existing subsidiary legislation
+    15.      Power of Local Councils to make By-Laws
+    16.      Offences and penalties generally
+    17.      Limitation of proceedings
+    18.      Who may lay information
+    19.      Venue of trial
+    20.      Liability of employer
+    21.      References to owner or occupier of premises
+    22.      Service of notices and documents
+    23.      Action may be taken at expense of owner or occupier
+    24.      Remedies by persons aggrieved by notices, etc.
+    25.      Document or writing signed by Minister or officer to be admissible in evidence
+    26.      Onus of proof
+    27.      Exemption from liability of officers acting bona fide
+    28.      Powers under Act, etc., to be additional
+             FIRST SCHEDULE:              Public Health (Establishment Of A Board Of Health)
+                                          Order
+             SECOND SCHEDULE: Public Health (Nuisances) Regulations
+             THIRD SCHEDULE:              Public Health (Keeping of Animals) Regulations
+             FOURTH SCHEDULE: Public Health (Offensive Trades) Regulations
+             FIFTH SCHEDULE:              Public Health (Collection and Disposal of Refuse)
+                                          Regulations
+             SIXTH SCHEDULE:              Bakehouses Regulations
+             SEVENTH SCHEDULE: Food Regulations
+             EIGHTH SCHEDULE:             Health (Swine) Regulations
+             NINTH SCHEDULE:              Ice and Aerated Water Manufacturing (Nevis)
+                                          Regulations
+             TENTH SCHEDULE:              Ice and Aerated Water Manufacturing (Saint
+                                          Christopher) Regulations
+                                                      LAWS OF SAINT CHRISTOPHER
+4   CAP. 9.21              Public Health Act                  AND NEVIS
+                                                         Revision Date: 31 Dec 2020
+
+
+    ELEVENTH SCHEDULE:    Infectious Diseases (Ships) Regulations
+    TWELFTH SCHEDULE:     Infectious Diseases (Surveillance) Regulations
+    THIRTEENTH SCHEDULE:  Local Authorities (Powers and Duties)
+                          Regulations
+    FOURTEENTH SCHEDULE: Milk Regulations
+    FIFTEENTH SCHEDULE:   Mosquito Control Regulations
+    SIXTEENTH SCHEDULE:   Night Soil (Saint Christopher) Regulations
+    SEVENTEENTH SCHEDULE: Public Health (Nevis) Regulations
+    EIGHTEENTH SCHEDULE: Public Health (No. 1) (Saint Christopher)
+                          Regulations
+    NINETEENTH SCHEDULE: Public Health (No. 2) (Saint Christopher)
+                          Regulations
+    TWENTIETH SCHEDULE:   Environmental Health Officers (Duties)
+                          Regulations
+    TWENTY-FIRST SCHEDULE:Public Health (Quarantine) Regulations
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                        Public Health Act              CAP. 9.21      5
+Revision Date: 31 Dec 2020
+
+
+
+                                        CHAPTER 9.21
+                                   PUBLIC HEALTH ACT
+AN ACT TO MAKE PROVISION FOR THE LAW RELATING TO PUBLIC HEALTH, AND TO
+PROVIDE FOR RELATED OR INCIDENTAL MATTERS.
+
+Short title.
+1.        This Act may be cited as the Public Health Act.
+*
+    Interpretation.
+2.        In this Act—
+“building” includes any public or private building, any house or dwelling place and
+       any structure of whatever material constructed, but shall not include a
+       temporary structure of poles and leaves or branches;
+“Community Health Nurse” means a nurse appointed as such under this Act for the
+    performance of duties prescribed by this Act or Regulations made under this
+    Act;
+                                     (Inserted by Act 5 of 2001)
+“Department” means the Ministry of Health;
+“disease” includes any disease which, in any Regulations made under this Act
+       respecting disease control, is listed, described or referred to as an infectious
+       disease which is notifiable;
+“drug” includes any substance or mixture of substances, whether intended for internal
+      or external use, which is manufactured, sold or offered for sale for use in—
+               (a) the diagnosis, treatment, mitigation or prevention of a disease, or the
+                   symptoms thereof, in man or animal;
+               (b) restoring, correcting or modifying organic functions in man or animal;
+                   or
+               (c) disinfection in premises in which food is manufactured, prepared or
+                   kept, or for the control of vermin in such premises;
+“Environmental Health Officer” means any person appointed as such under this Act
+      to perform any of the functions prescribed under this Act or any Regulations
+      made under this Act and includes the Chief Environmental Health Officer;
+                                     (Inserted by Act 5 of 2001)
+“food” includes ice and any article manufactured, sold or offered for sale as food or
+      drink for man, as well as chewing gum and any ingredient that may be mixed
+      with food or drink for any purpose, but shall not include drugs or water;
+“HEOC” means the Health Emergency Operating Centre referred to in section 9;
+                                     (Inserted by Act 15 of 2020)
+“Local Council” means a Local Council established and constituted under the
+      provisions of the Local Government Act, Cap. 2.03;
+“Medical Officer of Health” means a person duly appointed or authorised to act as a
+     Medical Officer of Health under this Act, and includes the Chief Medical
+     Officer;
+
+*
+    “Public Health Inspector” and “Public Health Nurse” deleted by Act 5 of 2001.
+                                                                   LAWS OF SAINT CHRISTOPHER
+6        CAP. 9.21                 Public Health Act                       AND NEVIS
+                                                                      Revision Date: 31 Dec 2020
+
+
+“Minister” means the member of the Cabinet for the time being charged with the
+      subject of Health;
+“National Health Emergency Response Mechanism” refers to the National Health
+      Emergency Response Mechanism that is set out in the National Health
+      Disaster Management Plan;
+                               (Inserted by Act 15 of 2020)
+“nuisance” includes any act not warranted by law, or any omission to discharge a
+      legal duty, which act or omission causes inconvenience or interferes with
+      personal comfort, or is likely to be prejudicial to the public health or public
+      safety;
+“occupier” includes the person in occupation or having the charge, management or
+      control of any premises or building or part thereof, whether on his or her own
+      account or on behalf of another person;
+“offensive trade” includes any trade, business or manufacture from time to time listed
+       or described as such in any Regulations made under this Act dealing with
+       offensive trades and their suppression or control;
+“officer” means the Chief Medical Officer, Medical Officers of Health, District
+       Medical Officers, Community Health Nurses or Environmental Health
+       Officers;
+                              (Substituted by Act 5 of 2001)
+“premises” includes lands, whether public or private, open or enclosed, built on or
+      not, and all buildings, streets, docks, quays, wharves, streams, drains, privies,
+      water closets, baths, sewage systems, ditches, vehicles, aircraft, ships, vessels,
+      boats, hulks and barges;
+“Regulations” means Regulations made under this Act, and unless otherwise
+     specifically provided, a reference herein to this Act shall include reference to
+     the Regulations;
+“State” means the Federation of Saint Christopher and Nevis;
+                              (Substituted by Act 5 of 2001)
+“street” includes any highway, bridge, road, lane, footway, footpath, yard, square,
+       court, alley, or passage, whether a thoroughfare or not.
+
+Duties and functions of the Minister.
+3.     The duties, powers and functions of the Minister shall extend to and include all
+matters relating to the promotion or preservation of the health of the people of the
+State, and without restricting the generality of the foregoing, shall extend to and
+include—
+           (a) the prevention, treatment, limitation and suppression of disease,
+               including the conduct of investigations and inquiries in respect
+               thereof;
+           (b) the publication of reports, information and advice concerning public
+               health, including advice to the Government, and the education of the
+               public in the promotion and preservation of health;
+           (c) the abatement of nuisances and the removal or correction of any
+               condition that may be injurious to the public health;
+           (d) (subject to the provisions of any law dealing with the distribution and
+               price of goods), the importation of foods and drugs, the sale and
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                        Public Health Act          CAP. 9.21             7
+Revision Date: 31 Dec 2020
+
+
+                      conditions of sale of foods and drugs in the interest of public health
+                      and the prevention of fraud or deception, and the seizure and
+                      destruction of foods and drugs which do not comply with the
+                      provisions of this Act or the Regulations or of any other law of the
+                      State; and
+               (e) the administration of this Act.
+
+Exercise of the duties, powers and functions of the Minister.
+4.     (1) In the exercise of his or her duties, powers and functions under section 3 of
+this Act, the Minister shall have power—
+               (a) exercisable through Environmental Health Officers and other officers,
+                   to enter into or upon any premises, with or without the consent of the
+                   owner or occupier, and make such inspection or examination thereof
+                   as may be deemed necessary for the purposes of this Act;
+                                     (Amended by Act 5 of 2001)
+               (b) to enter and inspect public or private institutions utilized for the
+                   physical care or custody of any person accommodated therein whether
+                   by process of law or otherwise, and to ensure that such institutions are
+                   maintained in a proper and sanitary condition as regards public health;
+               (c) to make such orders and issue such directions as he or she deems
+                   advisable for the abatement of a nuisance or the removal of any
+                   condition which, in his or her opinion, is or may become injurious to
+                   the public health, including structural alterations or repairs to premises
+                   necessary therefor or in respect of any other matter that, in his or her
+                   opinion, is necessary for the purpose of this Act.
+       (2) The Minister may, in writing, delegate to a Local Council or other local
+authority power to exercise, carry out and perform within the geographical area of
+such Local Council or such other local authority as aforesaid, such of his or her
+duties, powers and functions under this Act as he or she deems advisable and on such
+terms and conditions as he or she may prescribe.
+
+Establishment of health and sanitation districts.
+5.     The Minister may establish health or sanitation districts for the State, fix the
+boundaries thereof, and assign duties and functions in relation thereto to such officers
+as he or she may deem necessary:
+        Provided however that the health and sanitation districts in existence
+immediately before the coming into force of this Act shall be deemed to be
+established under this Act and shall remain in existence with their existing boundaries
+until further action is taken by the Minister under this section.
+
+Establishment of boards and committees.
+6.    (1) The Minister may establish boards and committees to assist and advise
+him or her on matters relating to his or her duties, powers or functions under this Act.
+       (2) Such boards and committees may be established for the whole of the State
+or for any specified area or areas thereof as he or she may from time to time deem
+necessary, and he or she may delegate to such boards and committees such duties,
+powers and functions as he or she deems advisable.
+      (3) Any board or committee so established shall consist of such persons as in
+the opinion of the Cabinet are representative of some aspect of public health and,
+                                                                          LAWS OF SAINT CHRISTOPHER
+8         CAP. 9.21                    Public Health Act                          AND NEVIS
+                                                                             Revision Date: 31 Dec 2020
+
+
+without limiting the generality of the foregoing, may include representatives of
+agriculture, labour, management, education, women’s organisations, medical or para-
+medical professions and Local Councils and other local authorities.
+       (4) Members of such boards or committees shall be appointed by the Cabinet
+to hold office during pleasure for a period not exceeding three years, but any person
+so appointed shall be eligible for re-appointment.
+
+Appointment of Public Health Officers.
+7.     There shall be appointed in a manner authorised by law for the purposes of this
+Act a Chief Medical Officer for the State as well as such Medical Officers of Health,
+Community Health Nurses, Environmental Health Officers and other public health
+officers as may from time to time be required for the administration of this Act and
+the Regulations.
+                                   (Amended by Act 5 of 2001)
+
+Delegation of Minister’s authority to officers.
+8.     (1) Except as the Minister may otherwise direct, the Chief Medical Officer is
+authorised to carry out, exercise and perform the duties, powers and functions
+conferred on the Minister under this Act, and every Medical Officer of Health,
+Community Health Nurse, Environmental Health Officer or other public health
+officer shall carry out, exercise and perform the duties, powers and functions under
+this Act as may be required by the Minister or the Chief Medical Officer and in so
+doing shall be deemed to act under the authority thereof.
+                                   (Amended by Act 5 of 2001)
+       (2) Subject to the provisions of subsection (1) of this section, such officers
+may take such steps as may be necessary for the execution and administration of this
+Act, the Regulations, and any rules, orders or directives made or given by the
+Minister or the Chief Medical Officer, and such officers may call upon any person to
+lend such assistance as may be necessary in the exercise thereof.
+
+Health Emergency Operating Centre.
+*
+ 9.    (1) The Minister may, on the advice of the Chief Medical Officer, authorise
+the activation of the Health Emergency Operating Centre in the event of a national
+health emergency or disaster as the case may be, whether such emergency or disaster
+is imminent or has occurred.
+     (2) The Health Emergency Operating Centre is a part of the National Health
+Emergency Response Mechanism.
+     (3) Subject to subsection (1), the Health Emergency Operating Centre shall be
+manned by an Executive Committee comprised of the following persons—
+            (a) Chief Medical Officer as Incident Commander;
+            (b) Medical Officer of Health for Nevis;
+            (c) Medical Chief of Staff;
+            (d) the Health Planner;
+            (e) Director of Institutional Nursing Services;
+            (f) Deputy Director of Institutional Nursing Services;
+*
+  Inserted as Section 8A by Act 15 of 2020, renumbered as section 9 and the following sections
+renumbered accordingly.
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                          Public Health Act            CAP. 9.21             9
+Revision Date: 31 Dec 2020
+
+
+               (g) Coordinator of Community Nursing Services;
+               (h) Chief Epidemiologist;
+               (i) Operations Manager Hospital Services;
+               (j) Medical Statistician.
+       (4) Where the Executive Committee is mobilised pursuant to subsection (1),
+its functions shall be as follows—
+               (a) to provide strategic direction and advice in relation to a national health
+                   emergency or disaster;
+               (b) to mobilise key health personnel to provide support and intervention
+                   where necessary;
+               (c) to collect data and statistics and provide medical analysis in respect of
+                   the national health emergency;
+               (d) to provide assistance to the National Emergency Management Agency
+                   as part of the National Disaster Management Plan;
+               (e) to coordinate with the National Emergency Operations Centre.
+                                     (Inserted by Act 15 of 2020)
+
+Delegated powers of Local Councils, etc.
+10. A Local Council or other local authority to which duties, powers and functions
+have been delegated by the Minister under the provisions of this Act shall, subject to
+such terms and conditions as may be specified in such delegation, do all things
+necessary for the carrying out of those duties, powers and functions; and the
+provisions of section 8 of this Act shall mutatis mutandis extend to and include any
+officer in the employ of such Local Council or other local authority who is authorised
+thereby to carry out a duty, power or function so delegated.
+
+Regulations.
+11. The Minister may, with the approval of the Cabinet, make Regulations for the
+proper execution and carrying out of the purposes and provisions of this Act
+generally, and in particular, with respect to the following matters—
+               (a) prescribing forms;
+               (b) respecting the duties and functions of officers and prescribing
+                   qualifications therefor;
+               (c) the prevention, treatment, mitigation and suppression of disease, and,
+                   without limiting the generality of the foregoing—
+                        (i) the listing or scheduling of diseases, including infectious diseases,
+                            notifiable diseases, or other diseases dangerous to the public
+                            health;
+                       (ii) the reporting of cases or suspected cases of infectious or notifiable
+                            diseases;
+                      (iii) the supplying of medical aid, accommodation and medicine and
+                            such other articles or things as may be necessary for preventing,
+                            mitigating, controlling or suppressing an epidemic or any
+                            infectious or other disease;
+                                                             LAWS OF SAINT CHRISTOPHER
+10   CAP. 9.21                Public Health Act                      AND NEVIS
+                                                                Revision Date: 31 Dec 2020
+
+
+         (iv) the removal, isolation or keeping under surveillance of persons
+              living in localities which are declared by the Minister to be
+              infected localities;
+          (v) preventing persons or conveyances from passing from such a
+              locality to any other locality;
+         (vi) detaining for inspection or disinfection persons or conveyances
+              that have been exposed to infection;
+         (vii) the cleansing, purification and disinfection of places and things
+               used by persons suffering from an infectious disease;
+         (viii)the establishment of quarantine or isolation hospitals and the
+               placing therein of persons having an infectious disease or any
+               disease dangerous to the public health;
+         (ix) the treatment of persons who are infected with infectious diseases
+              or diseases dangerous to the public health, including the
+              observation of persons suspected to be so infected and the
+              removal of persons from unhealthy houses or who are living in
+              congested or under unhealthy circumstances;
+          (x) regulating the entry or departure by aircraft, ships, vessels or
+              boats to or from any place in the State, and the landing and
+              disinfection of passengers or cargoes thereon;
+         (xi) the inspections and house to house visitations by officers as may
+              be necessary for the control, prevention, mitigation or suppression
+              of disease;
+         (xii) the compulsory vaccination or inoculation of persons residing in
+               or entering the State not already vaccinated or inoculated or not
+               sufficiently protected by previous vaccination or inoculation, and
+               the supply and quality of vaccine matter and serum;
+         (xiii) the compulsory examination by clinical and bacteriological or
+               other methods and by specified tests of persons and, if necessary,
+               the compulsory detention and treatment of persons infected or
+               suspected of being infected with any infectious or notifiable
+               disease or disease dangerous to the public health;
+         (xiv) the closing of schools, churches and places of public assembly or
+               entertainment for the purpose of preventing or controlling the
+               spread of disease;
+         (xv) the location, construction, inspection, control, licensing, operation
+              and maintenance of nursing homes, maternity homes,
+              convalescent homes, private hospitals, homes for children, for the
+              aged or infirm, and homes for physically or mentally handicapped
+              persons, including the compulsory removal of aged, helpless and
+              uncared-for persons to public institutions;
+         (xvi) the protection of the health of persons exposed to conditions,
+               substances or processes which occur in any industry or occupation
+               and which may be injurious to health;
+         (xvii) quarantine or other measures to be taken by and in respect of
+                persons suffering from any infectious or notifiable disease;
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                          Public Health Act            CAP. 9.21          11
+Revision Date: 31 Dec 2020
+
+
+               (d) for preventing the overcrowding of premises used for human
+                   habitation or business purposes, the amount of floor and air space for
+                   each occupant thereof; and the lighting and ventilation of such
+                   premises;
+               (e) respecting the site, construction, plumbing, sewage disposal and
+                   sanitary conditions of buildings used for human habitation or for
+                   business purposes, and for the periodical inspection thereof;
+               (f) respecting the location and construction of water closets, cesspools,
+                   cesspits, privies, drains, sewage systems and sewers, and their
+                   cleansing;
+               (g) for the inspection, cleansing, purifying, ventilating and disinfecting of
+                   premises by the owners, occupiers and persons having the care and
+                   charge thereof;
+               (h) for the protection of water from contamination and pollution and,
+                   without limiting the generality of the foregoing, for—
+                        (i) the inspection and approval of sources of supply, and the
+                            conditions, if any, on which such approval is granted;
+                       (ii) the testing and analysis of water;
+                      (iii) the construction, alteration, maintenance and purification of water
+                            supplies and water distribution systems;
+                      (iv) the supervision and control of any river, stream, spring or part
+                           thereof contributing to a public water supply;
+                       (v) the regulation and prohibition of persons bathing, washing
+                           clothes, cleansing vehicles, utensils or animals at or in any river,
+                           stream, or spring or part thereof contributing to a public water
+                           supply, or at any part of a domestic water system;
+                      (vi) prescribing or limiting the purpose for which water may be used
+                           and prescribing or defining the manner in which it shall be used
+                           and distributed;
+                     (vii) the disposal of waste water and effluents;
+               (i) respecting matters or conditions which shall be deemed to constitute a
+                   nuisance, the prevention, abatement or removal of nuisances and
+                   unsanitary conditions on public or private property which are or may
+                   become injurious to the public health;
+               (j) the sanitary disposal of garbage and other waste matter including—
+                        (i) the fixing of times for collection and removal;
+                       (ii) the method of removal and disposal;
+                      (iii) the place of disposal;
+                      (iv) the duties of owners and occupiers of premises in relation to the
+                           disposal of garbage and waste matter;
+               (k) respecting the method of the carrying on of a trade, business or
+                   manufacture that may become offensive or that by Regulations is
+                   declared to be offensive or that may affect the public health;
+               (l) respecting the keeping of domestic animals including dogs, poultry,
+                   swine, goats, sheep, horses, mules, donkeys and cattle, and the places
+                                                              LAWS OF SAINT CHRISTOPHER
+12   CAP. 9.21                 Public Health Act                      AND NEVIS
+                                                                 Revision Date: 31 Dec 2020
+
+
+          where such animals or poultry may or may not be kept and the control
+          or supervision to be exercised by the owner;
+      (m) respecting the slaughtering or killing of animals and poultry for use as
+          food for human consumption, the place and manner of slaughter, the
+          construction, conduct, control, cleanliness, maintenance, licensing and
+          inspection of places therefor, including the enclosures thereto or in
+          connection therewith;
+      (n) for the examination of animals and poultry before and after slaughter
+          and of meat thereof and the actions to be taken resulting from such
+          examination;
+      (o) for the medical examination and the registration and licensing of
+          persons engaged in the slaughter of animals and poultry;
+      (p) for the disposal of dead animals, including the imposing on any
+          authority or person the duty of disposing thereof;
+      (q) for the control and destruction of rodents, mosquitoes and other
+          insects, termites, snails, bats and other vermin, and for the licensing
+          and control of persons engaged in the business of their destruction;
+      (r) regulating dairies and any premises where any business in relation to
+          the production, reconstitution, sale, delivery or distribution of milk is
+          carried on, including the construction, equipping, maintenance,
+          licensing and inspection of such places, the medical examination and
+          licensing of persons engaged therein, and the pasteurization and
+          labelling of milk;
+      (s) the inspection and testing of cattle and goats, the milk of which is
+          intended for sale for human consumption;
+      (t) prescribing measures to be taken for the protection of the public health
+          with respect to the production, preparation, manufacture, storage,
+          distribution and sale of food intended for human consumption, and
+          without limiting the generality of the foregoing, for the licensing and
+          inspection of shops, restaurants and other eating establishments,
+          including hotels and all other buildings or premises where any food,
+          cooked or uncooked, is sold or prepared for sale, whether to be
+          consumed on such premises or to be taken therefrom for the purpose
+          of human consumption;
+      (u) prescribing measures to be taken for the protection of the public health
+          with respect to the production, preparation, manufacture, storage,
+          distribution and sale of food intended for human consumption, and
+          without limiting the generality of the foregoing, for the location,
+          construction, furnishing and equipment, cleanliness and maintenance
+          of any building or premises or other place in which any article of food
+          is manufactured, prepared, handled, stored or sold and in particular,
+          without limiting the generality of the foregoing—
+           (i) bakeries, bakeshops and bread shops;
+          (ii) meat and butcher shops;
+          (iii) dairies and milk shops;
+          (iv) grocery and provision shops;
+          (v) markets;
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                          Public Health Act           CAP. 9.21            13
+Revision Date: 31 Dec 2020
+
+
+                      (vi) street vending of foods;
+                     (vii) aerated water factories or plants;
+                     (viii)ice factories and other places where ice is manufactured;
+                      (ix) confectionery and ice cream shops, including places where ice
+                           cream is manufactured;
+               (v) prescribing measures to be taken for the protection of the public health
+                   with respect to the production, preparation, manufacture, storage,
+                   distribution and sale of food intended for human consumption, and
+                   without limiting the generality of the foregoing—
+                        (i) for the licensing and inspection of premises where any article of
+                            food is manufactured, prepared, packed, handled stored or sold;
+                       (ii) regulating and prohibiting the sleeping in bakeries, shops, or
+                            places where food is manufactured, prepared, kept, stored or sold
+                            for human consumption;
+                      (iii) for the medical examination, registration and licensing of persons
+                            engaged in the handling of foods;
+                      (iv) regulating the supply and treatment of water used in any aerated
+                           water factory or ice factory or other place or places in which food
+                           is manufactured, processed, prepared, packed, stored or sold;
+               (w) respecting—
+                        (i) the labelling and packaging and the offering, exposing and
+                            advertising for sale of foods, drugs, cosmetics and devices;
+                       (ii) the sale or condition of sale of any food, drug, cosmetic or device,
+                            and the use of any substance as an ingredient in any food, drug,
+                            cosmetic or device;
+                      (iii) the seizure, forfeiture and destruction of any food, drug, cosmetic
+                            or device, the sale of which would not be in accordance with, or
+                            would be in violation of, the Regulations;
+               (x) prescribing standards of identity, composition, strength, potency,
+                   purity, quality or other property of any article of food, drug, cosmetic
+                   or device;
+               (y) respecting the conditions under which foods, drugs, cosmetics and
+                   devices may be imported into the State, subject to any law relating to
+                   customs, excise or revenue;
+               (z) exempting any food, drug, cosmetic or device from any or all of the
+                   provisions of this Act or of the Regulations, and prescribing the
+                   conditions of such exemptions;
+              (aa) requiring persons who sell foods, drugs, cosmetics or devices to
+                   maintain such books and records as the Minister may consider
+                   necessary for the proper enforcement and administration of this Act
+                   and of the Regulations;
+              (bb) respecting the powers and duties of Environmental Health Officers and
+                   analysts and the taking of samples and the seizure, detention,
+                   forfeiture and disposition of articles;
+                                      (Amended by Act 5 of 2001)
+                                                                  LAWS OF SAINT CHRISTOPHER
+14       CAP. 9.21                 Public Health Act                      AND NEVIS
+                                                                     Revision Date: 31 Dec 2020
+
+
+         (cc) establishing schedules of drugs, the sale of which is subject to special
+              conditions in the interest of the public health;
+         (dd) for the purposes only of the preservation of the public health,
+              respecting the inspection, control, licensing, operation and
+              maintenance of hotels, apartment buildings, motels, boarding houses,
+              lodging houses and other places where accommodation is provided for
+              cash or other consideration;
+         (ee) for the forcible entry into premises to which this Act or the
+              Regulations apply, where the owner or occupier does not give
+              permission for the inspection and examination thereof, or where the
+              owner or occupier cannot be located;
+         (ff) respecting the cleanliness, inspection and licensing of barbers,
+              beauticians, barber shops, hairdressing and beauty shops;
+        (gg) for the inspection and control of bathing beaches and swimming pools,
+             including the sanitation, accommodation, sanitary conveniences and
+             water supply;
+         (hh) for the medical and dental inspection and treatment of school children,
+              the removal of children from school, and the closing of schools in the
+              interest of the public health;
+          (ii) for the interment or other disposal of the dead, the preparation and
+               transportation of dead bodies, the entry of dead bodies from outside
+               the State, the regulation and inspection of undertaking establishments,
+               morgues, crematoria and other places used in connection therewith,
+               the licensing thereof, and the management and maintenance of
+               cemeteries and the conditions under which new cemeteries may be
+               established;
+          (jj) respecting the performance of post-mortem examinations;
+         (kk) prescribing fees for licences granted under this Act or the Regulations;
+          (ll) prescribing penalties not exceeding the sum of eight thousand dollars
+               on summary conviction for the infringement of any Regulations.
+                              (Substituted by Act 5 of 2001)
+
+Scope of Regulations.
+12. Regulations made under this Act may be made to have effect throughout the
+State or be limited to such parts or areas thereof as may be specified and shall, when
+published in the Gazette, have the force of law.
+
+Publication of Regulations.
+13. (1) Notwithstanding section 12 of this Act, where, in the opinion of the
+Minister, the time required for the publication of a regulation in the Gazette will be
+prejudicial to the public health by reason of any epidemic outbreak of disease or any
+other emergency, he or she may, by Order, dispense with such publication and such
+regulation shall be effective immediately but shall be published in the Gazette as soon
+as practicable thereafter, and if it is not so published within thirty days after it is
+made, such regulation shall then cease to have any force or effect, but without
+prejudice however to the power of the Minister to make new regulations concerning
+the same subject matter.
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                      Public Health Act            CAP. 9.21           15
+Revision Date: 31 Dec 2020
+
+
+       (2) Where the Minister finds it necessary to dispense with publication in the
+Gazette as in subsection (1) of this section provided, he or she shall nevertheless
+cause such regulation to be published by radio announcements or newspaper
+publications, or by affixing the same to the doors or walls of public buildings in the
+parts or areas of the State affected by such regulation.
+
+Existing subsidiary legislation.
+14. (1) Any Statutory Rules, Orders, Regulations or Proclamations made under
+the Public Health Act, or preserved thereby, which may be in force at the time of
+coming into operation of this Act, shall be deemed to have been made under this Act
+and shall continue in force until specifically altered, varied, amended, revoked or
+replaced under this Act.
+       (2) Where any such Statutory Rules, Orders, Regulations or Proclamations
+conflict in any way with this Act or with Regulations made thereunder, they shall
+cease to have force and effect in so far as they so conflict, but shall be construed with
+such modifications, adaptations, qualifications and exceptions as may be necessary to
+bring them into conformity with this Act or with Regulations made under this Act.
+
+Power of Local Councils to make By-Laws.
+15. (1) A Local Council or other local authority if otherwise empowered by any
+law to make By-Laws respecting matters relating to public health within the
+geographical area of such Local Council or other local authority as the case may be,
+or whenever so authorised by the Minister, may make such By-Laws not inconsistent
+with this Act or the Regulations as may be necessary for matters relating to public
+health within its geographical area.
+      (2) Such By-Law shall become effective only when approved by the Cabinet
+and published in the Gazette.
+
+Offences and penalties generally.
+16.       Any person who—
+               (a) refuses to answer or knowingly gives an untrue answer to any inquiry
+                   made or addressed to him or her by an officer acting under the
+                   authority of this Act or of the Regulations, or intentionally with-holds
+                   any information from or knowingly furnishes any false information to
+                   such officer;
+               (b) refuses or omits to do any act which he or she is required to do by this
+                   Act or the Regulations, or to carry out any order, instruction or
+                   condition lawfully made, given or imposed by any officer or other
+                   person acting under the authority of this Act or the Regulations;
+               (c) assaults, resists, wilfully obstructs, intimidates, uses abusive language
+                   to or interferes with any officer or other person acting under the
+                   authority of this Act or the Regulations;
+               (d) offers or gives any bribe to an officer or other person acting under the
+                   authority of this Act or the Regulations in connection with his or her
+                   duties or powers thereunder, or being such officer or other person as
+                   aforesaid, demands, solicits or accepts such a bribe;
+               (e) obstructs in any manner an officer in the proper execution or
+                   administration of this Act or the Regulations; or
+                                                                    LAWS OF SAINT CHRISTOPHER
+16       CAP. 9.21                  Public Health Act                       AND NEVIS
+                                                                       Revision Date: 31 Dec 2020
+
+
+           (f) fails or neglects to carry out or infringes any provision of this Act or of
+               the Regulations,
+commits an offence and is liable, upon summary conviction, where no other penalty
+is specifically imposed therefor, to a fine not exceeding ten thousand dollars or to
+imprisonment for a term not exceeding six months, or to both such fine and such
+imprisonment.
+                                (Amended by Act 5 of 2001)
+
+Limitation of proceedings.
+17. A prosecution under section 16 of this Act or under any Regulations made
+thereunder, may be instituted at any time within twelve months from the time the
+subject matter of the prosecution arose or the offence was committed, whichever is
+later.
+
+Who may lay information.
+18. Any information may be laid or prosecution instituted by the Director of
+Public Prosecutions or by or on behalf of the Chief Medical Officer or with the
+consent of the latter, by any other officer, or by an officer authorised in that behalf by
+a Local Council or other local authority in respect of any matter which is within the
+lawful functions of such Local Council or other local authority or which is the subject
+of delegation to such Local Council or other local authority as provided by this Act.
+
+Venue of trial.
+19. A prosecution for an offence under this Act or the Regulations may be
+instituted, heard, tried or determined by the Magistrate in whose district the offence
+was committed or where the subject matter of the prosecution arose, or in any place
+in which the accused is apprehended or happens to be.
+
+Liability of employer.
+20. In a prosecution under this Act or the Regulations, it shall be sufficient proof
+of the offence to establish that it was committed by an employee or agent of the
+accused or by a person ostensibly in his or her employment whether or not he or she
+is identified or has been prosecuted for the offence, and the employer or principal
+may be prosecuted and convicted together with or instead of such employee or agent
+unless he or she proves that the offence was committed without his or her knowledge
+and consent and that he or she exercised all due diligence to prevent the commission
+of the offence.
+
+References to owner or occupier of premises.
+21. Whenever in any notice or any proceedings under the provisions of this Act or
+the Regulations it becomes necessary to mention or refer to the owner or occupier of
+any lands or premises, it shall be sufficient to designate him or her as the “owner” or
+“occupier” of the premises (naming them) without further name or description.
+
+Service of notices and documents.
+22. Any notice, order or other document made or given under this Act or the
+Regulations may be served by delivering the same or a true copy thereof either to the
+person to whom it is addressed or to his or her usual or last known place of abode or
+business or, when addressed to the owner or occupier, then to some adult person on
+the premises, or if there is no such person, then by affixing one copy of the notice or
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                      Public Health Act            CAP. 9.21           17
+Revision Date: 31 Dec 2020
+
+
+other document to some conspicuous part of the premises, and in case of emergency,
+any such notice if verbally given to the person whom this Act or the Regulations
+require to be served or notified, shall be sufficiently given.
+
+Action may be taken at expense of owner or occupier.
+23. (1) If a notice or order requires action to be taken within a time specified
+therein either as regards the structural alteration, demolition or closure of premises, or
+the removal or abatement of a nuisance or other thing required of the owner or
+occupier under this Act or the Regulations and it is not done within the time so
+provided, then, after the expiration of the time specified in the notice, or, if an appeal
+has been made against the notice or order and upon appeal the notice or order has
+been confirmed with or without variation, after the expiration of fourteen days from
+the final determination of the appeal, or of such longer period as the Court in
+determining the appeal may fix, a Medical Officer of Health or an Environmental
+Health Officer may proceed to have the same done at the expense of the owner or
+occupier, as the case may be.
+                                   (Amended by Act 5 of 2001)
+       (2) Any expenses incurred by the Medical Officer of Health or Public Health
+Inspector under this section may, subject as hereinafter provided, be recovered by
+him or her by action or summarily as a civil debt, from the person having control of
+the premises, or if such person receives the rent of the premises as agent or trustee for
+some other person, then either from him or her or from that other person or in part
+from him or her and as to the remainder from that other person:
+          Provided that, if the person having control of the premises proves that he or
+she—
+               (a) is paying rent to such other person or is receiving rent merely as agent
+                   or trustee for such other person; and
+               (b) has not, and since the date of the service on him or her of the notice or
+                   order as aforesaid has not had, in his or her hands on behalf of that
+                   other person sufficient money to discharge the whole demand of the
+                   Medical Officer of Health or Environmental Health Officer,
+his or her liability shall be limited to the total amount of the money which he or she
+has or has had in his or her hands as aforesaid.
+                                   (Amended by Act 5 of 2001)
+       (3) In all proceedings by a Medical Officer of Health or Environmental Health
+Officer for the recovery of any such expenses, the time within which the proceedings
+may be taken shall be reckoned from the date of the demand therefor or, if an appeal
+is made against that demand, from the date on which the demand becomes operative.
+                                   (Amended by Act 5 of 2001)
+      (4) The amount of any expenses and interest thereon due to a Medical Officer
+of Health or Environmental Health Officer under this section shall form a lien or
+charge on the premises in respect of which the expenses were incurred and shall be
+recoverable under the provisions of the Property Tax Act, Cap. 20.32 in the same
+manner as though it had been a tax imposed by that Act.
+                                   (Amended by Act 5 of 2001)
+       (5) No action taken under this section shall prejudice or affect any other
+powers of a Medical Officer of Health or an Environmental Health Officer or any
+remedy available to a tenant against his or her landlord or an agent against his or her
+principal, either at common law or otherwise.
+                                   (Amended by Act 5 of 2001)
+                                                                   LAWS OF SAINT CHRISTOPHER
+18       CAP. 9.21                 Public Health Act                       AND NEVIS
+                                                                       Revision Date: 31 Dec 2020
+
+
+Remedies by persons aggrieved by notices, etc.
+24.    (1) Any person aggrieved by—
+           (a) a notice or order under this Act or the Regulations requiring action to
+               be taken thereon;
+           (b) a demand for the recovery of expenses incurred by a Medical Officer
+               of Health or an Environmental Health Officer in carrying out the
+               action or executing the works specified in such notice or order;
+           (c) an order made by a Medical Officer of Health or an Environmental
+               Health Officer with respect to any such expenses;
+           (d) a demolition order under this Act or the Regulations;
+           (e) a closing order under this Act or the Regulations or a refusal to
+               determine such a closing order; or
+           (f) a withholding of approval in relation to the use for any purpose of
+               premises in respect of which a closing order is in force,
+may, within twenty-one days after the date of the service of the notice, demand or
+order, or after the refusal, as the case may be, appeal therefrom to a Judge of the High
+Court, and, save in an emergency in which the public health is threatened by an
+epidemic of communicable or other disease, no proceedings shall be taken by a
+Medical Officer of Health or an Environmental Health Officer to enforce any notice,
+demand or order in relation to which an appeal is brought, before the appeal is finally
+determined:
+       Provided that on an appeal under paragraph (b) or paragraph (c) hereof, no
+questions shall be raised which might have been raised on an appeal against the
+original notice or order requiring action to be taken by the owner or occupier as
+aforesaid.
+                               (Amended by Act 5 of 2001)
+      (2) On an appeal under this section the Judge may make such order either
+confirming or quashing or varying the notice, demand or order as he or she thinks fit,
+and he or she may, if he or she thinks fit, on an appeal against a notice requiring the
+execution of works to a house, include in his or her judgement a finding whether the
+house can or cannot be rendered fit for human habitation at a reasonable expense.
+       (3) For the purposes of this and the immediately preceding section of this Act,
+the withdrawal of an appeal shall be deemed to be a final determination thereof,
+having the like effect as a decision confirming the notice, demand or order or
+decision appealed against.
+
+Document or writing signed by Minister or officer to be admissible in evidence.
+25. In any proceedings under this Act or the Regulations, any notice, order or
+other document or writing purporting to be signed by the Minister or by an officer
+acting under this Act or the Regulations shall be admissible in evidence in a
+prosecution for a violation of this Act or the Regulations and shall be prima facie
+proof of the statements contained therein; but no such document or writing shall be
+receivable in evidence unless the party intending to produce it has, before the trial,
+given to the party against whom it is intended to be produced, reasonable notice of
+such intention, together, with a copy of the document or writing and the party against
+whom it is produced may require the attendance of the person signing the same for
+the purpose of cross-examination.
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                  Public Health Act         CAP. 9.21           19
+Revision Date: 31 Dec 2020
+
+
+Onus of proof.
+26. Where any act or thing is by this Act or the Regulations prohibited or
+prescribed, the duty of seeing that such prohibition or prescription is complied with
+rests upon the person to whom the prohibition or prescription relates, whether owner,
+occupier, operator or other person, and in any prosecution under this Act or the
+Regulations, the burden of proving that such prohibition or prescription was complied
+with shall rest upon such person.
+
+Exemption from liability of officers acting bona fide.
+27. No action, suit, proceeding or claim shall lie against any officer for anything
+bona fide done, directed or authorised by him or her under this Act or the
+Regulations.
+
+Powers under Act, etc., to be additional.
+28. All powers given by this Act or the Regulations shall be in addition to and not
+in derogation of any other powers conferred by any other Act, or subsidiary
+legislation, and such other powers may be exercised in the same manner as if this Act
+had not been passed; and nothing in this Act or the Regulations shall exempt any
+person from any penalty to which he or she would have been subject if this Act had
+not been passed, but so that no person shall be punished twice for the same offence.
+                                      __________
+                                                                           LAWS OF SAINT CHRISTOPHER
+20          CAP. 9.21                    Public Health Act                         AND NEVIS
+                                                                              Revision Date: 31 Dec 2020
+
+
+
+
+                                      FIRST SCHEDULE
+                                          (Section 6(1))
+                           PUBLIC HEALTH
+              (ESTABLISHMENT OF A BOARD OF HEALTH) ORDER
+
+Citation.
+1.    This Order may be cited as the Public Health (Establishment of a Board of
+Health) Order.
+
+Establishment of a Board of Health.
+2.     There is hereby established a Board to be known as the Board of Health
+(hereinafter referred to as “the Board”).
+
+Composition of Board.
+3.     The Board established under section 2 hereof shall be composed of nine
+members to be appointed by the Cabinet under subsection (3) of section 6 of the
+Public Health Act, Cap. 9.21.
+
+Election of Chairperson.
+4.        The Chief Medical Officer shall be, ex officio, Chairperson of the Board.
+
+Quorum.
+5.   Any question considered by the Board may be resolved by a majority of its
+members.
+*
+    Duties of the Board.
+6.        (1) The Board shall advise the Minister in regard to public health generally.
+          (2) The Board may recommend rules and regulations governing—
+              (a) the operation of public water supplies;
+              (b) the operation of business establishments and factories and markets;
+              (c) accidents and preventive programmes; and
+              (d) recreation programmes.
+                                            __________
+
+
+
+
+*
+    Note: S.R.O. 15/1990 which purports to have amended this Schedule cannot be traced.
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                         Public Health Act           CAP. 9.21         21
+Revision Date: 31 Dec 2020
+
+
+                                      SECOND SCHEDULE
+                                            (Section 11)
+                      PUBLIC HEALTH (NUISANCES) REGULATIONS
+
+
+
+                                               PART I
+                                           PRELIMINARY
+
+Short title.
+1.        These Regulations may be cited as the Public Health (Nuisances) Regulations.
+
+Interpretation.
+2.        (1) In these Regulations—
+“the Act” means the Public Health Act, Cap. 9.21;
+“Dunder” means the lees or dregs of cane juice;
+“Owner” shall apply to every person in possession of or in receipt either of the whole
+     or of any part of the rents or profits of any land or tenement whether in his or
+     her own right or as trustee or personal representative, committee or guardian
+     of any other person, or in the occupation of such land or tenement, other than
+     as a tenant from year to year, or any less term, or as a tenant at will.
+       (2) The expressions “Chief Medical Officer”, “Environment Health Officer”,
+“Medical Officer of Health”, “Minister”, “Occupier”, “Premises”, “Public Health
+Inspector” and “State” have the meanings assigned respectively to those expressions
+in the Act.
+
+
+                                              PART II
+                                             NUISANCES
+
+Enumeration of Nuisances.
+3.     (1) In addition to the nuisances hereinafter specifically enumerated in the
+following sub-paragraphs and in addition to the failing to comply with any
+regulations mentioned in the Act, any act or omission which constitutes a nuisance
+within the meaning of the Act shall for the purposes of these Regulations be deemed
+to be a nuisance.
+          (2) For the purposes of these Regulations, the following shall be nuisances—
+               (a) any place, matter or thing, or deposit, or accumulation of liquid or
+                   solid matter that is so foul, or in such a state, or so placed or made or
+                   left, as to be left insanitary or injurious or dangerous to health, or
+                   likely to become so;
+               (b) (i) the existence of flies or mosquitoes, or other insects capable of
+                       transmitting or causing disease;
+                       (ii) the existence of rodents or other verminous animals;
+                                                             LAWS OF SAINT CHRISTOPHER
+22   CAP. 9.21                Public Health Act                      AND NEVIS
+                                                                Revision Date: 31 Dec 2020
+
+
+      (c) the existence of any condition, matter or thing, which in the opinion of
+          the Minister provides or may provide food for, or harbourage for, or
+          act as a breeding place for insects, rodents or other vermin;
+      (d) any yard or enclosure or other place which by reason of the growth of
+          vegetable matter and by reason of its not being kept properly bushed,
+          dry and cleaned is insanitary or a nuisance or dangerous to health or
+          likely to become so;
+      (e) any gutter or ditch not kept free from bush, grass and weeds, and
+          collections of water;
+      (f) the presence on any premises or in any place, of empty bottles (broken
+          or otherwise), empty tins, coconut shells, uncovered barrels, boxes or
+          anything that will serve as a receptacle for water, or as a breeding
+          place for mosquitoes or other insects;
+      (g) any eaves, gutter, drain or down pipe so constructed that the water
+          cannot drain freely and quickly away or which allows the collection of
+          water at any spot;
+      (h) any tree, or bush, or any erection built after the coming into operation
+          of these Regulations, which interferes with the free ventilation of any
+          neighbouring premises or buildings or is in such a position as to be
+          hazardous to health or safety;
+      (i) any water supply system which is not maintained in a sanitary manner;
+      (j) any water tap, pipe or pump, or other means of obtaining water, which
+          is needlessly allowed to run to waste, or under which water is allowed
+          to accumulate or become stagnant;
+      (k) any water supply system in such a state or condition, that the water
+          passing through therein, when used for domestic purposes, could be
+          injurious to health;
+      (l) any sanitary convenience not constructed and maintained in
+          accordance with any regulation or law or in accordance with any
+          directions lawfully issued;
+      (m) any sanitary convenience so located with regard to any neighbouring
+          house, or for any other reason as to be insanitary, or injurious, or
+          dangerous to health or likely to become so;
+      (n) the discharge of any slop or sullage water, or any rain water from
+          roofs, or any waste water whatsoever, on to any public place, alley or
+          lane, which inconveniences the normal passage of pedestrians;
+      (o) any pollution, save in accordance with a valid permit granted by the
+          Minister, of any stream, water course, or any dunder, industrial waste,
+          or other noxious matters, whether or not a prescriptive right has been
+          acquired to any such pollution;
+      (p) the production of smoke from any combustion or refuse, or any
+          emission from any chimney of a bakery or other place of business, or
+          factory which is excessive or noisome;
+      (q) any dust or ashes noticeably airborne, resulting from any process of
+          combustion;
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                       Public Health Act        CAP. 9.21         23
+Revision Date: 31 Dec 2020
+
+
+               (r) any failure to comply with an order made or direction issued by the
+                   Minister under the Act for the abatement of a nuisance:
+       Provided that any accumulation or deposit necessary for the effectual carrying
+on of any business or manufacture shall not be punishable as a nuisance under these
+Regulations, if it is proved to the satisfaction of the Court that the accumulation or
+deposit has not been kept longer than is necessary for the purposes of the business or
+manufacture, and that the best available means have been taken for preventing injury
+to health thereby.
+
+Persons liable to conviction for an Offence under these Regulations.
+4.    The following persons shall be liable to conviction for an offence against these
+Regulations—
+               (a) any person who commits a nuisance within the meaning of these
+                   Regulations;
+               (b) any person who aids another person in committing a nuisance;
+               (c) any person who procures another person to commit a nuisance;
+               (d) the owner or occupier of any premises who knowingly permits a
+                   nuisance to continue thereon which it is within his or her power to
+                   prevent or abate.
+
+Provisions in these Regulations to be in addition to provisions under any Other
+Law.
+5.     The provisions of these Regulations shall be deemed to be in addition to, and
+not to abridge or affect any right, remedy or proceeding under the Act or under any
+other enactment.
+
+
+                                            PART III
+                        INFORMATION TO MINISTER, NOTICES AND PENALTIES
+
+Notice requiring Abatement of Nuisance.
+6.     (1) On becoming aware of a nuisance liable to be dealt with under these
+Regulations any Medical Officer of Health or any Environmental Health Officer shall
+serve a notice on the person by whose act, default or sufferance the nuisance arises or
+continues, or, if such person cannot be found, on the occupier or owner of the
+premises on which the nuisance arises, or is liable to arise requiring him or her to
+abate the same within the time specified in the notice, and to execute such works and
+do such things as may be necessary for that purpose, and if the Minister thinks it
+desirable (but not otherwise), specifying any works to be executed.
+                                    (Amended by Act 5 of 2001)
+       (2) A Medical Officer of Health or an Environmental Health Officer may also,
+by the same or another notice served on such occupier, owner or person, require him
+or her to do what is necessary for preventing the recurrence of the nuisance, and, if
+the Minister thinks it desirable, specify any works, to be executed for that purpose,
+and may serve that notice notwithstanding that the nuisance may for the time being
+have been abated, if the Minister considers that it is likely to recur on the same
+premises.
+                                    (Amended by Act 5 of 2001)
+                                                                 LAWS OF SAINT CHRISTOPHER
+24       CAP. 9.21                Public Health Act                      AND NEVIS
+                                                                    Revision Date: 31 Dec 2020
+
+
+      (3) Provided that—
+          (a) where the nuisance arises from any want or defect of a structural
+              character, or where the premises are unoccupied, or consist of a
+              tenement yard, the notice shall be served on the owner;
+          (b) where the person causing the nuisance cannot be found, and it is clear
+              that the nuisance does not arise from the act, default, or sufferance of
+              the occupier or owner of the premises, any Medical Officer of Health
+              or any Environmental Health Officer may abate the same and may do
+              what is necessary to prevent the recurrence thereof.
+        (4) Provided also that in the event of immediate action becoming, in the
+opinion of the Minister, necessary to deal with a nuisance the abatement of which is
+certified by the Chief Medical Officer to be urgent, the Minister may direct a Medical
+Officer of Health or any Environmental Health Officer forthwith to take all such steps
+and to do all such things as may be necessary for the purpose of abating such
+nuisance.
+
+Service of Notices.
+7.     (1) Notices authorised to be served under these Regulations may be served by
+delivering the same to or at the residence of the person to whom they are addressed,
+or where addressed to the owner or occupier of premises, by delivering the same or a
+true copy thereof to some person on the premises or if there is no person on the
+premises who can be so served, by affixing the same on some conspicuous part of the
+premises; they may also be served by being sent by registered post and if so served
+by post shall be deemed to have been served not later than the seventh day
+succeeding the day when posted, and in proving such service it shall be sufficient to
+prove that the notice was properly addressed and put into the post.
+      (2) Any notice by these Regulations authorised to be given to the owner or
+occupier of any premises may be addressed by the description of the “owner” or
+“occupier” of the premises (naming them) in respect of which the notice is given
+without further name or description.
+
+Penalty for Person Guilty of an Offence under these Regulations.
+8.      Any person found guilty of any offence against these Regulations shall be
+liable, on summary conviction before a Magistrate, to a fine not exceeding one
+thousand five hundred dollars.
+                              (Amended by Act 9 of 1986)
+                                     __________
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                          Public Health Act              CAP. 9.21        25
+Revision Date: 31 Dec 2020
+
+
+                                       THIRD SCHEDULE
+                                             (Section 11)
+                                       PUBLIC HEALTH
+                             (KEEPING OF ANIMALS) REGULATIONS
+
+Short title.
+1.    These Regulations may be cited as the Public Health (Keeping of Animals)
+Regulations.
+
+Standards for Premises on which animals are kept.
+2.     Every person who keeps or causes to be kept any pig, goat, sheep, cow, horse
+or poultry shall ensure that the premises on which such animals or birds are kept are
+maintained at all times in a clean, wholesome, and sanitary condition, and that no
+pollution of any water course or supply is likely to result or any public health
+nuisance likely to arise.
+
+Restrictions on the Keeping of Animals or Poultry.
+3.     (1) No person shall keep pigs, goats, sheep, cattle, horses, mules, or donkeys
+within either—
+               (a) the limits of Basseterre as defined in the Basseterre Limits Act, Cap.
+                   23.02; or
+               (b) the limits of Charlestown as defined in the Charlestown Limits Act,
+                   Cap. 23.06; or
+               (c) the limits of Sandy Point as defined in the Sandy Point Limits Act,
+                   Cap. 23.28; or
+               (d) one quarter of a mile of any of the limits specified in (a), (b), and (c)
+                   above;
+               (e) Bird Rock Housing Development, Suncrest Housing Project, Harbour
+                   View Housing Project, Paragon Housing Project and Earles Mornes
+                   Housing Development;
+               (f) Wades Gardens,           College      Housing   and      Shadwell   Housing
+                   Development;
+               (g) Cayon Housing Project;
+               (h) Lamberts Housing Project;
+               (i) any housing project as may be designated by the Minister from time to
+                   time,
+except with the approval of the Minister and in accordance with conditions laid down
+by him or her in writing.
+                                (Amended by S.R.O. 30/1985 and 23/1986)
+       (2) If such permission is obtained it shall be lawful to keep in any of the areas
+defined in this paragraph in pigsties, pens, cowsheds, stables or poultry units such
+pigs, sheep, goats, cattle, horses or poultry, subject to the following conditions—
+               (a) the site and construction of the said containing units or hatcheries shall
+                   be subject to the approval of the Minister;
+                                                                   LAWS OF SAINT CHRISTOPHER
+26         CAP. 9.21                Public Health Act                      AND NEVIS
+                                                                      Revision Date: 31 Dec 2020
+
+
+            (b) any permission granted by the Minister under this paragraph may be
+                revoked if the said stables, poultry containing units are found to cause
+                a nuisance.
+
+Service of Notice.
+4.    Notice in writing shall be given by the Chief Environmental Health Officer or
+any authorised officer acting on his or her behalf to any person guilty of a breach of
+these Regulations that he or she is in breach of the Regulations and the person on
+whom such notice is served shall be deemed to commit a separate offence for every
+day during which such breach continues after service of the notice.
+
+Penalty.
+5.     Every person who offends against or fails or neglects to perform any of the
+provisions or conditions of any of these Regulations, or aids or abets or in any way
+instigates any person to offend against them, or to fail or neglect to perform or
+observe any of such provisions or conditions or obstructs or interferes in any manner
+with the performance or observance of such provisions or conditions, commits an
+offence against these Regulations and shall be liable, on summary conviction before a
+Magistrate, to a penalty of five hundred dollars for each offence, and in the case of
+continuing offences, to a further penalty of twenty-four dollars for every day the
+offence continues after written Notice from the Chief Environmental Health Officer:
+      Provided that in the case of continuing offences the limit of the penalties
+payable shall not exceed the sum of one thousand five hundred dollars.
+                                (Amended by Act 9 of 1986)
+                                       __________
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                       Public Health Act          CAP. 9.21        27
+Revision Date: 31 Dec 2020
+
+
+                                    FOURTH SCHEDULE
+                                           (Section 11)
+                                     PUBLIC HEALTH
+                             (OFFENSIVE TRADES) REGULATIONS
+
+Short title.
+1.    These Regulations may be cited as the Public Health (Offensive Trades)
+Regulations.
+
+Interpretation.
+2.        In these Regulations “Offensive Trade” means—
+               (a) blood or offal boiling or treating;
+               (b) bone boiling or crushing;
+               (c) chicken hatcheries, chicken farms or poultry units;
+               (d) candle making, where tallow is rendered on the premises;
+               (e) the curing, tanning or storing of hides;
+               (f) fellmongering;
+               (g) gut scraping;
+               (h) lime making;
+               (i) manufacture of gases;
+               (j) manufacture of material for manure or fertilizers;
+               (k) the slaughtering of animals or poultry;
+               (l) soap boiling or soap manufacture;
+               (m) any other trade, business or manufacture which the Minister may, from
+                   time to time, by notice published in the Gazette, declare to be an
+                   offensive trade.
+
+Restriction on Establishment of Offensive Trades.
+3.     (1) No person shall, without the consent in writing of the Chief Medical
+Officer, establish or carry on any offensive trade.
+       (2) Any person who establishes or carries on an offensive trade, if such
+consent was required by law at the time of establishment, shall be liable, on summary
+conviction before a Magistrate, to a fine not exceeding two hundred dollars, and any
+person who carries on an offensive trade so established shall be liable, on summary
+conviction before a Magistrate, to a fine not exceeding twenty-four dollars for every
+day on which he or she carries on the trade after having been convicted in respect of
+the establishment thereof or, where he or she has not been so convicted, after
+receiving notice from the Chief Medical Officer to discontinue the trade:
+        Provided that in no case shall the penalty payable in respect of the carrying on
+of the trade after conviction or notice from the Chief Medical Officer, as the case may
+be, exceed the sum of five hundred dollars.
+       (3) Any consent of the Chief Medical Officer under this regulation to the
+establishment of an offensive trade may be given so as to authorise the carrying on of
+                                                                   LAWS OF SAINT CHRISTOPHER
+28       CAP. 9.21                  Public Health Act                      AND NEVIS
+                                                                      Revision Date: 31 Dec 2020
+
+
+the trade for a limited period specified in the consent, and for such extension of that
+period as may, from time to time, be granted by the Chief Medical Officer.
+       (4) Any person carrying on the trade after the expiration of the period so
+specified, or any extension thereof, as the case may be, shall be liable, on summary
+conviction before a Magistrate, to a fine not exceeding twenty-four dollars for each
+day on which he or she carries on the trade after notice from the Chief Medical
+Officer stating that the period, or, as the case may be, the period as extended, has
+expired:
+      Provided that in no case shall the penalty payable exceed the sum of five
+hundred dollars.
+       (5) Any person aggrieved by the refusal of the Chief Medical Officer to
+consent under this regulation to the establishment of a trade, or by any time limit
+attached to his or her consent, or by his or her refusal to extend such a time limit, may
+appeal to the Minister in the first instance.
+       (6) Further appeal shall be to a Magistrate of the District in which the
+offensive trade is carried on.
+       (7) For the purposes of this regulation, an offensive trade shall be deemed to
+be established not only when it is established in the first instance, but also if and
+when—
+           (a) it is transferred or extended from the premises on which it is for the
+               time being carried on to other premises;
+           (b) it is resumed on any premises on which it was previously carried on;
+               or
+           (c) the buildings in which it is carried on are enlarged or substantially
+               altered in any way:
+       Provided that in any change of ownership a fresh application shall be deemed
+to be necessary.
+
+Forms of Consent.
+4.     The consent of the Chief Medical Officer for the purpose of these Regulations
+shall be given in the form contained in the Schedule hereto, or in such form as may
+from time to time be approved by the Minister.
+
+Erection or use of Buildings for Offensive Trade.
+5.     No building shall be erected, converted or used for any offensive trade unless
+the location, site, plans and specifications for the offensive trade for which the
+building is to be used have been submitted and approved by the Chief Medical
+Officer.
+
+Offensive hides of animals.
+6.      No person shall have, keep, or receive on any premises owned or occupied by
+him or her the fell or hide of any animal which is offensive or which may injuriously
+affect the health or comfort of individuals or the public.
+
+Duty to carry on Offensive Trades in a reasonable and proper manner.
+7.     Notwithstanding such aforesaid consent in writing from the Chief Medical
+Officer to the establishment or carrying on of an offensive trade, the person so
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                      Public Health Act          CAP. 9.21           29
+Revision Date: 31 Dec 2020
+
+
+licenced shall take all reasonable steps to prevent any gases, vapours or effluvia from
+being a nuisance or being injurious to the public health by—
+               (a) preventing the occurrence of any offensive gases, vapours or effluvia;
+                   or
+               (b) rendering innocuous such gases, vapours or effluvia emitted as a result
+                   of the offensive trade.
+
+General Requirements of the Chief Medical Officer in Respect of Offensive Trades.
+8.     Every building or premises in which any offensive trade is carried on and all
+the utensils and equipments therein shall at all times be kept in a clean and sanitary
+condition and in good repair to the satisfaction of the Chief Medical Officer, or an
+officer duly authorised to act on his or her behalf.
+
+General Penalty.
+9.    Any person who acts in contravention of or fails to comply with the provisions
+of any of these Regulations for which no special penalty is provided shall be liable,
+on summary conviction therefor before a Magistrate, to a fine of one hundred dollars.
+
+Remedies for Nuisance not excluded.
+10. Nothing in these Regulations shall be construed so as to exclude any person
+injured by an offensive trade from pursuing his or her legal or equitable remedies
+therefor as a nuisance if such it is.
+                                          __________
+
+
+
+                             SCHEDULE TO THE REGULATIONS
+                                       (Regulation 4)
+                                  THE PUBLIC HEALTH ACT
+                       CONSENT OF THE CHIEF MEDICAL OFFICER
+                   TO THE ESTABLISHMENT OF AN OFFENSIVE TRADE
+
+To: Mr./Mrs. ………………………….………. of ……………………………………
+      Permission is hereby granted to you to establish and operate the trade of
+….………………………………………..…. situated at …………………….…….. in
+accordance with the requirements of the above mentioned Regulations, subject to
+..……………………………………..………………………………………………….
+for a period of/indefinitely ………………..……………………………………………
+                                                           Chief Medical Officer
+                                          __________
+                                                                  LAWS OF SAINT CHRISTOPHER
+30        CAP. 9.21                Public Health Act                      AND NEVIS
+                                                                     Revision Date: 31 Dec 2020
+
+
+                                FIFTH SCHEDULE
+                                     (Section 11)
+                    PUBLIC HEALTH (COLLECTION AND
+                   DISPOSAL OF REFUSE) REGULATIONS
+
+Short title.
+1.    These regulations may be cited as the Public Health (Collection and Disposal
+of Refuse) Regulations.
+
+Interpretation.
+2.     (1) For the purposes of these regulations—
+“Act” means the Public Health Act, Cap. 9.21 and all amendments thereto;
+“disposal area” means any site or place designated as such by the Minister for the
+      final disposal of refuse;
+“dwelling house” means a building used or constructed or adapted to be used wholly
+      or principally for human habitation;
+“fixed refuse receptacle” means any concrete or metal structure so made or placed on
+       any street or public place to receive and store temporarily refuse for removal;
+“garbage” includes animal or vegetable waste or other matter that attends the
+      preparation, consumption, decay, dealing in or storage of meats, fish, bird,
+      fruit or vegetable including cans, containers or wrappers wasted along with
+      such material;
+“other building” means any room or building in or at which people congregate, work,
+       attend or are housed or accommodated and includes, but is not limited to
+       barracks, common lodging houses, factories, hospitals, hotels, places of
+       entertainment, places of worship, schools, stores, shops and supermarkets;
+“refuse” includes all solid waste derived from garbage, rubbish, swill, trade refuse
+       and other waste matter, but does not include human excrement;
+“rubbish” includes house sweepings, wood, leaves, trimmings from shrubs, sawdust,
+       paper, cardboard, grass, rags, cane and fruit peelings, old shoes, tyres and all
+       other combustible material not included under the term “garbage”;
+“swill” includes such garbage which is wholly or nearly so, edible and usable as a
+       food having food value for animal or birds, accumulating from animal,
+       vegetable or other matter wasted from clubs, hospitals, hotels, restaurants and
+       public eating places;
+“trade refuse” means the waste product of any trade or manufacture not specified as
+       an offensive trade in the Public Health (Offensive Trades) Regulations, but
+       includes the refuse from hotels and other business places;
+“waste matter” includes material composed of soil, earth, stones, wasted concrete
+      blocks, glassware, ashes, metals and other non-combustible material which is,
+      has been or is to be discarded.
+      (2) The expressions “Minister”, “Occupier”, and “Premises” have the
+meanings assigned respectively to those expressions in the Act.
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                          Public Health Act           CAP. 9.21           31
+Revision Date: 31 Dec 2020
+
+
+Operation of Public Cleansing Service.
+3.     (1) The public cleansing service shall, as far as practicable, be made available
+to every dwelling house and other building.
+       (2) Where a public cleansing service is provided, such service shall, if
+practicable, be operated daily and in any case not less frequently than once in every
+seven days.
+      (3) The Minister shall publish in the Official Gazette and issue public
+announcements concerning—
+               (a) the areas and districts for which a public cleansing service is provided,
+                   stating the days and the hours during which refuse collection shall be
+                   carried out and any alteration in any such service shall be notified in
+                   like manner;
+               (b) any charges, whenever such become necessary, to be met by the owner
+                   or occupier of any dwelling house or other building for the collection
+                   and removal of refuse from such premises.
+       (4) The Minister shall cause to be provided sites convenient for the placing of
+fixed refuse receptacles for the deposit of refuse and may require owners and
+occupiers of dwelling houses or other buildings to cause the same to be deposited
+daily or at such times as the Minister may require in such receptacles provided for the
+purpose.
+          (5) The Minister shall prescribe suitable sites for the proper disposal of refuse.
+       (6) The Minister shall cause to be disposed all refuse collected by public and
+other cleansing vehicles in such a manner as to prevent the breeding of flies, rodents
+or other vermin and to prevent the creation of a nuisance or of any situation likely to
+be injurious to the public health or public safety.
+
+Duty to keep Premises clean.
+4.    The owner or occupier of every dwelling house and the owner or person in
+charge of every other building shall—
+               (a) at all times keep his or her premises in every respect clean and free
+                   from offensive matter or refuse and shall collect or cause to be
+                   collected all refuse and place it in the receptacle provided for the
+                   purpose;
+               (b) in respect of each such house or building provide for the storage of
+                   refuse one or more receptacles suitably covered, of reasonable weight,
+                   of a capacity—
+                        (i) in the case of a dwelling house, not exceeding 4 cubic feet; and
+                       (ii) in the case of every other building, not exceeding 30 cubic feet,
+                            and of a type approved by the Minister;
+               (c) in areas or districts where a public cleansing service is available place
+                   for removal of its contents any receptacle provided under paragraph
+                   (b) as near to the adjoining road as possible (but not so as to impede
+                   vehicular traffic) on such days and between such hours as the Minister
+                   may specify.
+                                                                   LAWS OF SAINT CHRISTOPHER
+32       CAP. 9.21                 Public Health Act                       AND NEVIS
+                                                                      Revision Date: 31 Dec 2020
+
+
+Private Arrangements for Disposal of Refuse.
+5.     Notwithstanding paragraph (c) of regulation 4, the owner or occupier of any
+dwelling house or the owner or person in charge of any other building may make his
+or her own arrangements for disposal of refuse from his or her premises provided that
+the method of disposal is approved by the Minister.
+
+Operation of Incinerators.
+6.     The Minister may, on an application made to him or her for the purpose, allow
+the installation and operation of incinerators of a type and size approved by him or
+her and shall specify the conditions under which such incinerators may be operated.
+
+Procedure in areas without Cleansing Service.
+7.     The owner or occupier of every dwelling house and the owner or person in
+charge of every other building situated in any area or district for which no cleansing
+service is provided shall at least once in every seven days dispose of all refuse from
+his or her premises in a manner approved by the Minister.
+
+Restriction on Disposal of certain items.
+8.     No person shall, under any circumstances, deposit or place or cause to be
+deposited or placed any discarded fluorescent lighting tubes or aerosol containers in
+any refuse intended or likely to be burnt, but shall dispose of the same by burial or in
+any other manner at a place approved by the Minister.
+
+Restriction on Disposal of Refuse in a Public Place.
+9.     No person shall place, deposit or cause to be placed or deposited any refuse on
+any pavement, street, road, lane, path, ghaut, ravine, beach or other public place or on
+or about the premises of another person or in any prohibited area defined by the
+Minister by official notice or sign, except on such sites and in such manner and
+during such hours as the Minister may approve for the purpose.
+
+Removal of refuse by Unauthorised Persons Prohibited.
+10.    No person shall, except with the authority of the Minister—
+           (a) disturb, remove or carry away any refuse placed in any receptacle for
+               removal by the public cleansing service; or
+           (b) remove any refuse from a disposal area.
+
+Obstruction of Persons Removing Refuse.
+11. No person shall hinder or obstruct any person lawfully engaged in cleaning or
+removing refuse in any public place or cause obstruction by parked vehicles, push
+carts, trailers, trolleys or in any way whatsoever.
+
+Transportation of Refuse.
+12. (1) No refuse shall be transported along any public street, alleyway, lane or
+highway unless such vehicle be so constructed or loaded so that no refuse can fall
+through or out of such vehicle and unless such vehicle is protected by a closed-in top
+or canvas cover or such refuse be placed in a container or containers kept tightly
+closed.
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                      Public Health Act          CAP. 9.21           33
+Revision Date: 31 Dec 2020
+
+
+       (2) If in the process of removal the contents escape or fall from the vehicle the
+driver of such vehicle shall cause the same to be removed immediately from the
+public street, alleyway, lane or highway.
+
+Sale of refuse Prohibited.
+13. (1) No driver in charge of a public cleansing vehicle shall sell or give away or
+permit to be sold or given away any refuse without the permission of the Minister, or
+place or deposit or cause to be placed or deposited any refuse in any place other than
+at a disposal area approved for the purpose by the Minister.
+       (2) No person shall take or receive any refuse from a public cleansing vehicle
+or induce by any means whatsoever any person to deal with any refuse otherwise than
+as prescribed by these regulations.
+
+Dumping at Disposal Area.
+14. No person shall dump or deposit or cause to be dumped or deposited any
+refuse at a disposal area except in a manner and at such place within the disposal area
+as may be approved by the Minister.
+
+Deposit of refuse Prohibited.
+15. No person shall deposit any refuse or cause or permit the same to be deposited
+upon any street, alleyway, park, beach or other public place or deposit the same in or
+upon any premises or vacant lot or in any drain or waterway.
+
+Discharge liable to affect Drain Prohibited.
+16. No person shall, without the approval of the Minister, discharge or cause to be
+discharged from any factory, bakery, distillery, workshop or workplace or from any
+building or place in which steam, water or mechanical power is employed, into any
+drain any hot water, steam, fumes or any liquid liable to affect the proper working of
+the drain.
+
+Deposit of Disused Vehicle or other matter Prohibited.
+17.       No person shall, except with the approval of the Minister—
+               (a) place or deposit or cause to be placed or deposited in any street or on
+                   any land any disused vehicle or part thereof or any disused household
+                   appliance or part thereof or any trunk or cut branches of trees;
+               (b) place or deposit or cause to be placed or deposited into any drain,
+                   ghaut, or ravine any disused vehicle or part thereof or any disused
+                   household appliance or part thereof or any trunk or cut branches of
+                   trees.
+
+Lighting of Fires in refuse Receptacle or Disposal Area Prohibited.
+18. No person shall, without the approval of the Minister, cause any fire to be lit in
+any fixed refuse receptacle or in any disposal area.
+                                                                  LAWS OF SAINT CHRISTOPHER
+34       CAP. 9.21                Public Health Act                       AND NEVIS
+                                                                     Revision Date: 31 Dec 2020
+
+
+Removal of Waste Matter from Construction Repair or Demolition.
+19. Every owner, agent, building contractor or sub-contractor engaged in the
+construction, repair or demolition of any building or structure or part thereof shall—
+          (a) remove and dispose of in a manner approved by the Minister from any
+              street, drain, alleyway, gutter, park, sidewalk, curb or any premises all
+              waste matter or rubbish deposited thereon in connection with the
+              construction, repair or demolition work under his or her special or
+              general supervision;
+          (b) clean up and remove such waste matter and rubbish within seven days
+              of the final cessation of work.
+
+Restriction on Burning of Refuse and Other Material.
+20.   No person shall—
+          (a) burn refuse at any place or in any manner likely to create a health
+              hazard or a nuisance;
+          (b) burn any material likely to cause excessive smoke or produce a
+              noxious odour or to liberate any toxic substances on combustion likely
+              to affect the occupants of any premises, except under conditions
+              approved by the Minister.
+
+Disposal of Spoiled or Condemned remains or Carcass.
+21. Every person who is the owner or custodian of any animal, bird, livestock or
+game which has died other than by slaughter for food, any offal or putrescible waste
+derived from any place where meat, fish, fowl or poultry are handled or discarded as
+unfit for food or spoiled or condemned, shall dispose of the remains, carcass or parts
+of entrails thereof immediately after such death or accumulation in a sanitary manner
+and in accordance with all requirements and orders of the Minister.
+
+Power to hold, impound or Dispose of Animals.
+22. The Minister or any person authorised by him or her for the purpose may hold,
+impound or dispose of any animal which interferes in any way with refuse deposited
+or disposed of in a manner and at a site approved by the Minister.
+
+Penalty for Person Guilty of an Offence under these Regulations.
+23. Any person who contravenes the provisions of these regulations commits an
+offence and liable, on summary conviction, to a fine not exceeding four hundred
+dollars or to imprisonment for a term not exceeding six months or to both such fine
+and imprisonment.
+                                     __________
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                   Public Health Act           CAP. 9.21            35
+Revision Date: 31 Dec 2020
+
+
+                                  SIXTH SCHEDULE
+                                      (Section 11)
+                             BAKEHOUSES REGULATIONS
+
+Short title.
+1.        These Regulations may be cited as the Bakehouses Regulations.
+
+Interpretation.
+2.        In these Regulations—
+“bakeroom” means any room or part of a bakehouse where the actual preparation or
+      baking of bread is done;
+“bread” includes cake, biscuits, pastry and confectionery;
+“bread seller” means any person who sells bread and includes a person transporting
+      bread in any public place or thoroughfare.
+
+Structure of Floors and Walls.
+3.     (1) The floor of every bakeroom shall be constructed of concrete or tiles and
+shall be of a smooth finish to the satisfaction of the Local Authority.
+        (2) The walls of a bakehouse shall be in a good state of repair and free of open
+joints and crevices.
+
+Cleanliness and Sanitation.
+4.      (1) No person shall be employed in a bakehouse unless he or she is clean both
+in his or her person and in his or her apparel.
+       (2) The floor of a bakehouse shall be scrubbed daily at any time other than
+when bread is prepared, stored or issued for sale, and as often as may be necessary to
+keep it clean.
+       (3) The floor of a bakehouse shall not be dry swept at any time when bread is
+being prepared, stored or issued for sale.
+       (4) Every room of a bakehouse shall be kept free from cobwebs and no objects
+shall be kept in a bakeroom except such as are necessary for the preparation and
+storage of bread for sale.
+      (5) There shall be provided and maintained in every bakehouse for the use of
+employed persons adequate and suitable facilities for washing which shall include
+one wash basin for every ten or less of employed persons and a sufficient supply of
+soap and clean towels, and these facilities shall be conveniently accessible and shall
+be kept in a clean and orderly condition.
+     (6) There shall be provided and maintained in every bakehouse for the use of
+employed persons one latrine for every ten or less of persons employed.
+       (7) There shall be satisfactory and suitable provision made for the drainage of
+slops from a bakehouse.
+       (8) The doors and windows of, and all other openings communicating directly
+with a bakehouse shall be fitted with screen wire to exclude flies to the satisfaction of
+the Local Authority, and such doors and windows shall be hinged to open outward.
+                                                                  LAWS OF SAINT CHRISTOPHER
+36         CAP. 9.21                  Public Health Act                   AND NEVIS
+                                                                     Revision Date: 31 Dec 2020
+
+
+       (9) All equipment in a bakeroom shall be properly washed daily immediately
+after use and shall be stored and shuttered in a section of the bakehouse.
+      (10) All receptacles used in a bakehouse for receiving leaven and mixing dough
+shall be made of metal or shall be lined with metal with smooth interior surfaces to
+the satisfaction of the Local Authority, and no dough or leaven shall be kept in any
+receptacle unless such receptacle is kept in the bakehouse in a fly-proof receptacle
+and is adequately shuttered.
+     (11) No bread for issue for sale shall be kept on any open shelf nor in any
+container which is not—
+            (a) sufficient in size;
+            (b) dust proof; and
+            (c) constructed with a glass top or front.
+
+Collection and Removal of Dust, Ashes and Refuse.
+5.     (1) There shall be sufficient provision made in every bakehouse for the
+collection of dust, ashes and refuse and the receptacle used for such collection shall
+be kept at a reasonable distance apart and away from the bakehouse.
+       (2) No person shall, in cleaning a bakehouse and removing ashes from an
+oven, deposit any dust, ashes or refuse anywhere else than in a suitable receptacle.
+      (3) It shall be the duty of the occupier of a bakehouse to remove from the
+premises promptly after cleaning and before baking again on those premises, all
+accumulations of dust, ashes or refuse.
+      (4) No occupier of a bakehouse shall permit the use of leaves, paper or any
+material other than metal sheets for the purpose of receiving unbaked bread.
+
+Medical Examination.
+6.     (1) Every occupier of, and every person employed at, a bakehouse shall,
+before engaging in the production and issue of bread for sale, obtain a certificate of
+good health (hereinafter called a “baker’s certificate”) issued free of charge by the
+Medical Officer of Health or other medical officer authorised by him or her.
+       (2) Every baker’s certificate shall be valid for three months after the date of
+issue unless cancelled by the Local Authority before the date of expiration.
+       (3) The Local Authority may, whenever in its discretion it deems fit, require
+any person employed in a bakehouse to be examined for the purpose of ascertaining
+the health of that person whether or not a valid baker’s certificate has been issued in
+the name of such person.
+      (4) No person shall enter a bakeroom unless he or she is employed in the
+bakehouse and is in possession of a baker’s certificate issued in his or her name.
+      (5) Every baker’s certificate should be conspicuously posted in the bakehouse
+in which the person is employed, or, if he or she is employed in more than one
+bakehouse, in any one of such bakehouses.
+
+Apparel.
+7.    (1) Every owner or occupier of a bakehouse shall—
+            (a) provide at least two full-length white aprons for each person employed
+                in the bakehouse;
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                       Public Health Act                CAP. 9.21   37
+Revision Date: 31 Dec 2020
+
+
+               (b) not allow any person to be engaged in preparing or selling bread
+                   unless that person is wearing a clean full-length white apron.
+       (2) It shall be the duty of the occupier of every bakehouse to supply, launder
+and store all aprons for use at his or her bakehouse.
+
+Penalty.
+8.    Any person who neglects, disobeys or fails to comply with the requirements of
+any of these regulations shall be liable, on summary conviction, to a fine not
+exceeding three hundred dollars.
+                             (Amended by Acts 7 of 1976 and 9 of 1986)
+                                           __________
+
+
+
+                                   SEVENTH SCHEDULE
+                                           (Section 11)
+                                   FOOD REGULATIONS
+
+Short title.
+1.        These Regulations may be cited as the Food Regulations.
+
+Interpretation.
+2.        In these Regulations—
+“food” means any article used as food or drink for human consumption, other than
+      drugs and water, and includes—
+               (a) any substance which is intended for use in the composition or
+                   preparation of food;
+               (b) any flavouring matter or condiment; and
+               (c) any colouring matter;
+“food handling” means selling or distributing food which is not contained in a sealed
+      container and storing, preserving or preparing food intended for sale for
+      human consumption;
+“stand” means any point, position or location where food handling is carried on in a
+      public place.
+
+Food Handling on a Temporary Basis.
+3.     (1) No person shall engage in food handling at any dance, concert, party or
+similar social gathering which is conducted for money or other payment or reward
+without first applying for and obtaining permission from the Local Authority to
+engage in such food handling.
+       (2) Applications for permission under sub-regulation (1) shall be in writing
+and shall be delivered to the clerk of the Local Authority not less than twelve hours
+before the commencement of the social gathering as aforesaid.
+                                                                    LAWS OF SAINT CHRISTOPHER
+38        CAP. 9.21                 Public Health Act                       AND NEVIS
+                                                                       Revision Date: 31 Dec 2020
+
+
+Granting of Health Permits.
+4.    (1) Except in the cases and for the purposes mentioned in regulation 3, no
+person shall engage in food handling without having first obtained from the Local
+Authority a health permit as hereinafter provided.
+       (2) Applications for licences shall be in writing and shall be signed by the
+persons making them, and the applications shall be delivered to the Local Authority
+not less than fourteen days before the commencement of the food handling business
+to which they relate and shall contain full particulars as to the nature and extent of the
+business and of the place at which the business is to be conducted.
+      (3) A licence granted under the provisions of this regulation may, at any time,
+be cancelled by the Local Authority.
+        (4) A health permit shall be granted by the Medical Officer of Health or any
+other Medical Officer authorised by him or her whenever such Medical Officer is
+satisfied that the person to whom the permit is to be granted is in a sufficiently good
+state of health to engage in food handling without any danger to public health.
+       (5) Health permits may, at any time, be examined by the Local Authority.
+      (6) Every holder of a health permit shall, once in every three months and at
+such other time as the Medical Officer who issued the health permit shall direct,
+present himself or herself to such Medical Officer for examination and instruction.
+       (7) The health permit of any person who fails to comply with any of the
+provisions of sub-regulation (g) of this regulation may be cancelled by the Medical
+Officer who granted such permit.
+
+Stands.
+5.     (1) No stand at which cooked food is sold shall be located at any point less
+than fifty feet from any public sanitary convenience or less than twenty feet from any
+refuse bin.
+        (2) The name or initial of the owner of every barrow, basket, cart, tray or other
+article used at a stand shall be marked upon every such article.
+       (3) The owner of a stand shall provide at such stand arrangements satisfactory
+to the Local Authority for—
+           (a) the storage of food at such stand before such food is prepared for sale;
+           (b) the storage and drainage of all utensils and equipment used at such
+               stand;
+           (c) the washing and cleansing of all utensils used at such stand; and
+           (d) the disposal of refuse and slops therefrom.
+
+Licensing of Rooms Within which Food Handling is Conducted.
+6.    (1) Except in the cases and for the purposes mentioned in regulation 3, no
+room shall be used for food handling unless such room has first been licensed for that
+purpose by the Local Authority.
+        (2) Applications for licences shall be in writing and shall be signed by the
+persons making them, and shall be delivered to the Local Authority not less than
+fourteen days before the commencement of the food handling business to which they
+relate and shall contain full particulars as to the nature and extent of the business and
+of the place at which the business is to be conducted.
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                      Public Health Act            CAP. 9.21           39
+Revision Date: 31 Dec 2020
+
+
+      (3) A licence granted under the provisions of this regulation may, at any time,
+be cancelled by the Local Authority.
+       (4) No room shall be licensed for food handling unless the following
+requirements are satisfied—
+               (a) the floors, inner walls and ceilings shall be of such material and finish
+                   as to permit of their being thoroughly cleansed;
+               (b) except where there is mechanical ventilation satisfactory to the Local
+                   Authority, the ventilation openings of such room shall be of an area of
+                   not less than one-tenth of the area of the floor of such room and they
+                   shall, to the satisfaction of the Local Authority, be arranged in such a
+                   manner as to permit the room being as free from dust as possible;
+               (c) there shall be within such room either such supply of running water or
+                   such arrangements for storage of water as may be approved by the
+                   Local Authority;
+               (d) there shall be in or about such room sufficient sanitary conveniences
+                   and lavatory accommodation to permit of there being one latrine and
+                   one wash-basin for every ten persons to be employed in such room,
+                   one latrine for every fifty persons to be served as customers in such
+                   room and one wash-basin for every twenty persons to be served as
+                   customers in such room;
+               (e) there shall be provision, satisfactory to the Local Authority, for the
+                   drainage of slops and the removal of waste and refuse from such room.
+
+Cleansing of Rooms and Furniture.
+7.     (1) The owner or occupier of any room within which food handling is being
+carried on shall cause the inner walls and ceilings and the surfaces of all doors and
+windows of such room to be cleansed at intervals of not less than once in every three
+months with soap and water or by any other method approved by the Local Authority
+and shall, whenever so directed by the Local Authority, cause such walls, ceilings and
+surfaces to be painted in a light colour or lime-washed.
+       (2) The owner or occupier of every room within which food handling is
+carried on shall cause the floor of such room to be at all times clean, and to be
+cleansed not less than once in every day:
+       Provided that such room shall not be dry-swept at any time whilst food is
+being prepared for sale or sold therein.
+       (3) The owner or occupier of every room in which food handling is carried on
+shall cause all furniture used in such room to be cleansed daily with soap and water or
+by any other means approved by the Local Authority.
+
+Cleansing of Utensils and Equipment.
+8.     (1) Every person engaged in food handling shall cleanse and maintain in a
+sanitary condition all utensils and implements used by such person for food handling
+and such utensils and implements may, at any time, be inspected by the Local
+Authority.
+      (2) A person serving food at any place where food handling is being carried
+on and who is serving such food for the purposes of food handling—
+               (a) shall not use any utensil, piece of crockery or other ware or any other
+                   article in connection with such service unless such article shall have
+                                                                    LAWS OF SAINT CHRISTOPHER
+40         CAP. 9.21                Public Health Act                       AND NEVIS
+                                                                       Revision Date: 31 Dec 2020
+
+
+                been thoroughly washed with soap and either clean running cold water
+                or hot water of a temperature of not less than one hundred and sixty
+                five degrees fahrenheit, or was cleansed in a mechanical washer or by
+                any other means approved by the Local Authority and was, after being
+                cleansed as aforesaid rinsed either in clean running cold water or hot
+                water of a temperature of not less than one hundred and eighty degrees
+                fahrenheit and thereafter allowed to drain and dry by some method
+                approved by the Local Authority;
+            (b) shall not use in connection with such service any cracked or damaged
+                piece of ware or other article which cannot be thoroughly cleansed as
+                aforesaid.
+
+Storage, Exposure and Carriage of Food.
+9.     (1) All food when stored or exposed for sale shall be properly protected from
+rats and other vermin and against soiling.
+       (2) All preserved foods intended for sale, except such as are contained in
+sealed tins, bottles or other containers, shall, where cold store or refrigeration is not
+used, be kept or stored away from moisture and shall be maintained dry by storage
+under dust proof cover in such room or place as the Local Authority may determine.
+       (3) No food other than ground provisions shall be exposed for sale except such
+food is placed in a container and kept at a height of not less than eighteen inches
+above the ground and no butcher’s meat, dressed fish or cooked food intended for
+sale shall be exposed to the public view in the open air or carried through any public
+place except under cover.
+       (4) All vehicles, barrows, trays, or other containers used for the carriage or
+exposure of the foods mentioned in paragraph (c) of this regulation shall be kept by
+the owners thereof in a clean and sanitary condition and in accordance with the
+instructions of the Local Authority.
+
+Penalty.
+10. Any person who wilfully neglects or disobeys any of these regulations
+commits an offence against these regulations and shall be liable, on summary
+conviction, to a fine not exceeding one thousand five hundred dollars.
+                        (Amended by Acts 7 of 1976 and 9 of 1986)
+                                       __________
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                    Public Health Act          CAP. 9.21            41
+Revision Date: 31 Dec 2020
+
+
+                                  EIGHTH SCHEDULE
+                                       (Section 11)
+                             HEALTH (SWINE) REGULATIONS
+
+Short title.
+1.        These Regulations may be cited as the Health (Swine) Regulations.
+
+Swine not to be Slaughtered.
+2.     No swine shall be slaughtered for human consumption without the permission
+of the Government Veterinary Surgeon.
+
+Swine not to be Removed.
+3.    No swine shall be removed from the estate or place where the same is kept
+without the permission of the Government Veterinary Surgeon.
+                                        __________
+
+
+
+                                  NINTH SCHEDULE
+                                       (Section 11)
+                      ICE AND AERATED WATER MANUFACTURING
+                                (NEVIS) REGULATIONS
+
+Short title.
+1.    These Regulations may be cited as the Ice and Aerated Water Manufacturing
+(Nevis) Regulations.
+
+Application for Registration.
+2.     Any person desirous of manufacturing ice or aerated water in the island of
+Nevis shall make application in writing to the Central Board of Health stating in such
+application all matters relating to the sanitary condition of the premises and
+environments wherein it is intended to carry on the said manufacture.
+
+Registration and Grant of Certificate.
+3.     If the Board is satisfied, having regard to the sanitary condition of the premises
+and environments, that premises in respect of which an application is made are
+suitable for the manufacture of ice or aerated water the Board shall register in a book
+kept for the purpose such premises (hereinafter called registered premises) and shall
+grant a certificate to the applicant in the form contained in Schedule 1 to these
+regulations.
+
+Registered Premises Only to be Used.
+4.     No ice or aerated water shall be manufactured in any premises other than
+registered premises.
+                                                                   LAWS OF SAINT CHRISTOPHER
+42         CAP. 9.21                Public Health Act                      AND NEVIS
+                                                                      Revision Date: 31 Dec 2020
+
+
+Employees to be Medically Examined.
+5.      All persons employed in or about any registered premises shall be medically
+examined from time to time as the Board shall think fit but not less often than once in
+every three months and shall produce upon the request of any person authorised by
+the Board a certificate from a qualified Medical Officer or Practitioner in the form
+contained in Schedule 2 to these regulations; and no person shall work or shall be
+employed in or about any registered premises unless he or she is in possession of a
+certificate as aforesaid issued to him or her by a qualified Medical Officer or
+Practitioner within a period of three months:
+      Provided that if the certificate be given by a Government Medical Officer no
+charge shall be made therefor.
+
+Pure Water Supply to be Used.
+6.    All water used in the manufacture of ice or aerated water shall be taken direct
+from a service tap in the registered premises and shall not be allowed to pass through
+pipes or allowed to collect in any vessel made of any material capable of
+contaminating it.
+
+Filters.
+7.     The Board may, at any time, order that all water used for manufacture into ice
+or aerated water shall be distilled or filtered, by any prescribed type of filter, before
+use and no filter shall be used in the manufacture of ice or aerated water without its
+use having been first approved by the Board.
+
+Inspection.
+8.    All Government Medical Officers and Sanitary Inspectors or Officers and all
+persons duly authorised in writing by the Board may enter any premises used for the
+manufacture or sale of ice or aerated water for the purpose of inspecting the same.
+
+Insanitary Premises.
+9.      If any registered premises, or any machine, equipment or utensil therein, or
+any equipment or utensil used for the sale from registered premises of ice or aerated
+water, are found to be in an insanitary condition the Board may withdraw its
+certificate and strike such registered premises off the register:
+       Provided that nothing contained in this regulation shall prohibit a further
+application under regulation 2.
+                                       __________
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                     Public Health Act           CAP. 9.21             43
+Revision Date: 31 Dec 2020
+
+
+                             SCHEDULE 1 TO THE REGULATIONS
+                                      (Regulation 3)
+
+       This is to certify that the premises of Mr. ……………….……………….……..
+situate at ……………………….……. and bounded ……….……..…………………..
+have been examined by the Board and are in a fit and proper sanitary condition for
+the manufacture of ice and/or aerated water.
+          Dated at ……..……… the …………….. day of ………….…….. 20 …………
+
+                                                     ……………………………………….
+                                                     Clerk to the Central Board of Health
+                                         __________
+
+
+
+                             SCHEDULE 2 TO THE REGULATIONS
+                                      (Regulation 5)
+I hereby certify that I examined ……………………………………………………..
+on the ………………………….. day of ………………………………….. and found
+him or her free of any infectious or contagious disease or any disease which renders
+objectionable his or her employment in or about premises registered for the
+manufacture of ice or aerated water.
+          Dated at ……..……… the …………….. day of ………….…….. 20 …………
+
+                                                     ……………………………………….
+                                                           Medical       Officer
+                                                                         Practitioner
+                                         __________
+                                                                   LAWS OF SAINT CHRISTOPHER
+44        CAP. 9.21                 Public Health Act                      AND NEVIS
+                                                                      Revision Date: 31 Dec 2020
+
+
+                                TENTH SCHEDULE
+                                      (Section 11)
+               ICE AND AERATED WATER MANUFACTURING
+                  (SAINT CHRISTOPHER) REGULATIONS
+
+Short title.
+1.     These Regulations may be cited as the Ice and Aerated Water Manufacturing
+(Saint Christopher) Regulations.
+
+Application for Registration.
+2.     Any person desirous of manufacturing ice or aerated water in the island of
+Saint Christopher shall make application in writing to the Central Board of Health
+stating in such application all matters relating to the sanitary condition of the
+premises and environments wherein it is intended to carry on the said manufacture.
+
+Registration and Grant of Certificate.
+3.     If the Board is satisfied, having regard to the sanitary condition of the premises
+and environments, that premises in respect of which an application is made are
+suitable for the manufacture of ice or aerated water the Board shall register in a book
+kept for the purpose such premises (hereinafter called registered premises) and shall
+grant a certificate to the applicant in the form contained in Schedule 1 to these
+regulations.
+
+Registered Premises Only to be Used.
+4.     No ice, or aerated water shall be manufactured in any premises other than
+registered premises.
+
+Employees to be Medically Examined.
+5.      All persons employed in or about any registered premises shall be medically
+examined from time to time as the Board shall think fit but not less often than once in
+every three months and shall produce upon the request of any person authorised by
+the Board a certificate from a qualified Medical Officer or Practitioner in the form
+contained in Schedule 2 to these regulations; and no person shall work or shall be
+employed in or about any registered premises unless he or she is in possession of a
+certificate as aforesaid issued to him or her by a qualified Medical Officer or
+Practitioner within a period of three months:
+      Provided that if the certificate be given by a Government Medical Officer no
+charge shall be made therefor.
+
+Pure Water Supply to be Used.
+6.     All water used in the manufacture of ice or aerated water shall be taken direct
+from a service tap in the registered premises and all water used for manufacture into
+ice or aerated water shall be distilled or filtered before use and shall not be passed
+through pipes or allowed to collect in any vessel made of any material capable of
+contaminating it.
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                     Public Health Act           CAP. 9.21             45
+Revision Date: 31 Dec 2020
+
+
+Filters to be Approved.
+7.    No filter shall be used in the manufacture of ice or aerated water without the
+approval in writing of the Board first had and obtained.
+
+Inspection.
+8.     The Medical Officer of Health or any duly authorised agent of the Board may
+enter any premises used for the manufacture or sale of ice or aerated water for the
+purpose of inspecting the same.
+
+Insanitary Premises.
+9.      If any registered premises, or any machine, equipment or utensil therein, or
+any equipment or utensil used for the sale from registered premises of ice or aerated
+water, are found to be in an insanitary condition the Board may withdraw its
+certificate and strike such registered premises off the register:
+       Provided that nothing contained in this regulation shall prohibit a further
+application under regulation 2.
+                                         __________
+
+
+
+                             SCHEDULE 1 TO THE REGULATIONS
+                                      (Regulation 3)
+
+       This is to certify that the premises of Mr./Mrs ……………………………..…..
+situate at …………………………….. and bounded ……….…………………………
+have been examined by the Board and are in fit and proper sanitary condition for the
+manufacture of ice and/or aerated water.
+          Dated at ……..……… the …………….. day of ………….…….. 20 …………
+
+                                                     ……………………………………….
+                                                     Clerk to the Central Board of Health
+                                         __________
+
+
+
+                             SCHEDULE 2 TO THE REGULATIONS
+
+       I hereby certify that I examined ……………………….…………………..........
+on the ……………………………….. day of …………………………… and found
+him or her free of any infectious or contagious disease or any disease which renders
+objectionable his or her employment in or about premises registered for the
+manufacture of ice or aerated water.
+          Dated at ……..……… the …………….. day of ………….…….. 20 …………
+
+                                                     ……………………………………….
+                                                           Medical       Officer
+                                                                         Practitioner
+                                         __________
+                                                                      LAWS OF SAINT CHRISTOPHER
+46        CAP. 9.21                  Public Health Act                        AND NEVIS
+                                                                         Revision Date: 31 Dec 2020
+
+
+                               ELEVENTH SCHEDULE
+                                       (Section 11)
+               INFECTIOUS DISEASES (SHIPS) REGULATIONS
+
+Short title.
+1.    These Regulations may be cited as the Infectious Diseases (Ships)
+Regulations.
+
+Interpretation.
+2.     In these Regulations—
+“Port Health Officer” means any duly qualified Medical Practitioner;
+“ship” means any ocean-going vessel.
+
+Preventive Measures.
+3.     On arrival in the State of any ship which has, at any time during the preceding
+two months called at any place infected with equine encephalomyelitis, the Harbour
+Master after the ship has been admitted to pratique shall inform the Port Health
+Officer accordingly and it shall be lawful for such Port Health Officer or an
+Environmental Health Officer authorised by him or her in that behalf, together with
+such persons as may be necessary for the purpose to board such ship forthwith and if
+he or she shall think fit to disinfect or cause to be disinfected to his or her satisfaction
+the whole or any part of such ship.
+
+Certificate of Disinfection.
+4.    Whenever the Master of any ship boarded and disinfected as aforesaid shall so
+demand, the Port Health Officer shall furnish him or her a free certificate stating the
+measures which have been applied to the ship.
+                                        __________
+
+
+
+                               TWELFTH SCHEDULE
+                                       (Section 11)
+         INFECTIOUS DISEASES (SURVEILLANCE) REGULATIONS
+
+Short title.
+1.    These Regulations may be cited as the Infectious Diseases (Surveillance)
+Regulations.
+
+Health Officer to Direct Surveillance.
+2.     Every person shall present himself or herself for surveillance at the place and
+at the hour as directed by the Health Officer and any such person while undergoing
+such surveillance may be removed to any hospital or place of reception on the
+instructions of the Health Officer.
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                       Public Health Act                CAP. 9.21   47
+Revision Date: 31 Dec 2020
+
+
+Penalty.
+3.    Every person failing to present himself or herself for surveillance as directed
+by the Environmental Health Officer, or in any way disobeying the orders of the
+Health Officer, shall be liable to a penalty not exceeding five hundred dollars.
+                             (Amended by Acts 7 of 1976 and 9 of 1986)
+                                           __________
+
+
+
+                                THIRTEENTH SCHEDULE
+                                          (Section 11)
+        LOCAL AUTHORITIES (POWERS AND DUTIES) REGULATIONS
+
+Short title.
+1.    These Regulations may be cited as the Local Authorities (Powers and Duties)
+Regulations.
+
+Interpretation.
+2.        In these Regulations “Act” means the Public Health Act.
+
+
+                                         Administration
+
+General.
+3.      It shall be the duty of every Local Authority within their respective district or
+districts, to observe and enforce all the provisions of the Act and of any regulations
+made under the Act.
+
+Powers of Local Authorities.
+4.     (1) Every Local Authority may and, if directed by the Board, shall from time
+to time issue Orders in respect of any matter mentioned in the Act or any regulations
+made under the Act.
+        (2) All such Orders shall be submitted for the approval of the Board, who may
+alter the same or delete any of the provisions thereof.
+      (3) The Board may place at the disposal of a Local Authority such funds as
+may be required for carrying out their duties under the Act and any regulation made
+thereunder.
+
+Term of Office.
+5.      The members of a Local Authority shall hold office during the pleasure of the
+Minister for a period not exceeding three years and shall forfeit their seats upon
+failure to attend meetings of the Local Authority for three consecutive months.
+                                                                   LAWS OF SAINT CHRISTOPHER
+48        CAP. 9.21                Public Health Act                       AND NEVIS
+                                                                      Revision Date: 31 Dec 2020
+
+
+                                      Procedure
+
+Meetings.
+6.    A Local Authority shall hold meetings not less than once in every month.
+
+Place of Meeting.
+7.      The place of meeting of a Local Authority shall be a Health Centre in the
+district or districts for the supervision of which they are responsible or such other
+place as they may determine from time to time.
+
+Quorum.
+8.    At any meeting of a Local Authority three members shall form a quorum.
+
+Voting.
+9.    All decisions at meetings of a Local Authority shall be by the majority of
+members present and voting, and the Chairperson shall have an original and a casting
+vote.
+
+Chairperson.
+10. In the absence of the Chairperson of a Local Authority such member as may
+be elected by the members present shall act as chairperson of the meeting.
+
+
+                                        Duties
+
+Cleansing of Towns and Villages.
+11. Every Local Authority, within the towns and villages in the sanitary district or
+districts under their supervision—
+            (a) shall—
+                 (i) keep the public streets including side paths, gutters, and surface
+                     drains, and all places under the immediate control clean and in a
+                     satisfactory sanitary condition and free from bush and dense
+                     vegetation and collections of water;
+                (ii) keep all sewers, drains, privies, urinals, sinks, siphons, fittings
+                     and other sanitary conveniences and their appurtenances and
+                     accessories under their immediate charge in a sanitary condition
+                     so as not to be a nuisance or injurious or dangerous to health;
+               (iii) cause all collections of water and water containers to be kept in
+                     accordance with law and regulations;
+            (b) shall provide and maintain—
+                 (i) an efficient service of vehicles and scavengers with all necessary
+                     supervision and appliances for the collection and removal of
+                     refuse, night soil and other waste matter from private premises
+                     and public places; or
+                (ii) such numbers of properly constructed vehicles or conveniences of
+                     such description as is approved by the Board for the collection
+                     and carriage of waste and refuse matter; or
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                          Public Health Act           CAP. 9.21            49
+Revision Date: 31 Dec 2020
+
+
+                      (iii) with the approval of the Board, contract for the removal of the
+                            above matter under the same conditions and under such
+                            supervision as the Board may deem necessary;
+               (c) shall—
+                        (i) provide in convenient situations receptacles and places where
+                            sweepings and other waste matter may be deposited temporarily
+                            or permanently or be buried or burnt;
+                       (ii) take such measures as may be prescribed by the Board or by
+                            regulation for preventing such matter if not deeply buried or burnt
+                            from being a nuisance or insanitary or injurious to life and health;
+                      (iii) fix times for emptying of sanitary receptacles and for collection
+                            and conveying all such matters as are mentioned in this section so
+                            as not to cause a nuisance;
+               (d) shall maintain all public latrines, bathrooms, washrooms, and bathing
+                   places within their district or districts;
+               (e) shall in every case provide efficient supervision so that a nuisance or
+                   insanitary condition may not be caused.
+
+Reports.
+12. (1) A Local Authority shall make quarterly reports to the Board on the
+administration of the Act within their respective district or districts and on any other
+matter relating to the public health and may make recommendations to the Board
+when they deem it necessary.
+      (2) In addition, a Local Authority shall inform the Board by special report of
+any matter arising in their district or districts relating to the public health.
+
+Records.
+13. Every Local Authority shall keep satisfactory record books of all action taken
+under the Act and any regulation made thereunder, and these records shall at all
+reasonable times be open to inspection by any member or officer of the Board.
+                                              __________
+                                                                   LAWS OF SAINT CHRISTOPHER
+50         CAP. 9.21               Public Health Act                       AND NEVIS
+                                                                      Revision Date: 31 Dec 2020
+
+
+                            FOURTEENTH SCHEDULE
+                                     (Section 11)
+                               MILK REGULATIONS
+
+Short title.
+1.     These Regulations may be cited as the Milk Regulations.
+
+Interpretation.
+2.     In these Regulations—
+“milk” means the milk of cows and goats intended for sale for human consumption or
+      for use in the manufacture of products for sale for human consumption;
+“adulterated milk” means milk with less than 3% of butter fat and less than 8.5%
+       solids not fat.
+
+Registration.
+3.     No person shall keep cows for the production of milk unless he or she is
+registered by the Local Authority as a cow-keeper.
+
+Licensing of Places in which Cows are Kept for the Sale of Milk.
+4.     No person shall keep cows for the production of milk in any place unless such
+place is licensed by the Local Authority for the keeping of cows for the sale of milk.
+
+Licensing of Dairyperson.
+5.     No person may engage in the occupation of a dairyperson unless he or she is
+licensed in that behalf by the Local Authority.
+
+Restrictions on issue of Licences to Dairypersons.
+6.    The Local Authority shall not issue a licence to any person to engage in the
+occupation of a dairyperson unless such person holds a certificate of good health
+from the Medical Officer of Health or from any other Medical Officer authorised by
+the Medical Officer of Health to grant such a certificate.
+
+Presentation of Health Certificate upon Inspection of Dairies.
+7.      During the inspection of any dairy, the dairyperson in charge thereof shall, at
+the request of the person inspecting the dairy, present to such person the health
+certificates of all persons employed at such dairy.
+
+Dairies.
+8.    (1) Dairies shall, in the discretion of the Local Authority, be supplied with
+adequate running water and washing facilities and their floors shall be concreted.
+      (2) No dairy shall be situate less than twenty feet from any latrine or rubbish
+accumulation and shall be distinct and apart from any dwelling house on the same
+premises.
+        (3) No dairy shall, except with the permission of the Local Authority, be used
+for residential purposes.
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                  Public Health Act            CAP. 9.21           51
+Revision Date: 31 Dec 2020
+
+
+       (4) No articles other than those used in connection with a dairy shall, except
+with the permission of the Local Authority, be kept at a dairy.
+     (5) Dairypersons shall keep their dairies clean and free from manure
+accumulations.
+
+Precautions for Protecting Milk Against Infection or Contamination.
+9.      (1) No milk shall be extracted from an animal by any person unless such
+person holds a certificate of good health from the Medical Officer of Health or from
+any other Medical Officer authorised by the Medical Officer of Health to grant such a
+certificate.
+      (2) Every person extracting milk from animals shall cleanse his or her hands
+before each separate milking of an individual animal and shall be attired in clean
+apparel.
+       (3) No person shall extract milk from any animal unless the flanks, legs, tail
+and udders of such animal are properly clean; the udders and tail of such animal are
+trimmed of undue growths of hair; and the tail of such animal is fastened to one of its
+hind legs.
+      (4) No person shall allow any calf to nose or suck a mother animal already
+prepared for milking either before or during the milking of such animal.
+       (5) No person shall extract milk from any animal unless, at the time of such
+extraction, such person and the animal are outside of any stable or pen enclosure and
+not less than twelve feet from any dusty place, manure accumulation or privy.
+       (6) A person extracting milk from any animal in an open place shall, in the
+event of the falling of rain whilst he or she is milking the animal, cease milking until
+the rain has ceased to fall.
+       (7) No person shall extract milk from any animal at a time less than two weeks
+before or one week after such animal has given birth to young.
+        (8) A person extracting milk from an animal shall waste on the ground the
+first two squirts from individual teats.
+      (9) Whilst extracting milk from animals no person shall apply to his or her
+hands any grease, milk or other substance for the purpose of ease in milking.
+      (10) Mechanical milkers shall not be used on any animal for the purpose of
+extracting milk therefrom unless such milkers are treated to chlorination or some
+other disinfecting process approved by the Local Authority.
+      (11) It shall be lawful for an Environmental Health Officer or other person
+authorised by the Local Authority to enter upon any dairy and to collect samples of
+milk therefrom in order to determine the quality of such milk and to ascertain whether
+or not such milk is adulterated.
+      (12) The Medical Officer of Health or the Local Authority may, at any time,
+stop the sale of any milk which, in the opinion of either or both of them, has been
+exposed to contamination.
+
+Cleanliness of Milk Vessels.
+10. (1) Pails used for conveying milk shall be of the hooded type with well fitting
+covers.
+       (2) Where milk is sold directly from a pail, such pail shall be fitted with a tap
+to draw off the milk contained therein.
+                                                                    LAWS OF SAINT CHRISTOPHER
+52         CAP. 9.21                Public Health Act                       AND NEVIS
+                                                                       Revision Date: 31 Dec 2020
+
+
+       (3) No person whilst conveying milk shall carry on his or her person any
+funnel or milk measure.
+        (4) After the expiration of three months from the date of these regulations no
+milk shall be transported for sale unless such milk is stored in a stopped bottle or in a
+pail of the type prescribed by paragraph (a) of this regulation.
+       (5) No pail which is used for transporting milk shall be used to hold or
+transport any water for the washing of any animal to be prepared for milking.
+      (6) All receptacles used for the collection and delivery of milk shall be
+thoroughly cleansed and sterilized daily by means of steam, boiling water or other
+method approved by the Local Authority.
+
+Cancellation of Licences.
+11. A licence granted under the provisions of these regulations may be cancelled
+by the Local Authority at any time when, in the opinion of the Local Authority, the
+holder of such licence is guilty of a breach of any of these regulations.
+
+Licences and Certificates to be Free of Charge.
+12. All licences and certificates issued or given under the provisions of these
+regulations shall be issued or given free of charge.
+
+Penalty.
+13. Any person who neglects, disobeys or fails to comply with the requirements of
+any of these regulations shall be liable, on summary conviction, to a fine not
+exceeding three hundred dollars.
+                        (Amended by Acts 7 of 1976 and 9 of 1986)
+                                       __________
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                     Public Health Act        CAP. 9.21        53
+Revision Date: 31 Dec 2020
+
+
+                                  FIFTEENTH SCHEDULE
+                                        (Section 11)
+                             MOSQUITO CONTROL REGULATIONS
+
+Short title.
+1.        These Regulations may be cited as the Mosquito Control Regulations.
+
+Interpretation.
+2.        In these Regulations—
+“Department” means the Medical and Health Department of the State;
+“member of the Department” includes the Senior Medical Officer, any other Medical
+     Officer, the Chief Sanitary Inspector, any Sanitary Inspector, any person
+     appointed by the Senior Medical Officer to be Supervisor of the Mosquito
+     Control Programme and any person employed to spray premises by
+     mechanical means;
+“Senior Medical Officer” means the Officer for the time being performing the duties
+      of Head of the Health Department of the State;
+“to inspect premises” means to inspect premises to ascertain the presence of
+      mosquitoes and to examine any water in or upon any premises whether
+      contained in a receptacle or not, for the purpose of ascertaining whether it
+      contains any of the immature stages of the mosquito;
+“to spray premises” means to treat all buildings, and any other structure, and their
+       contents with Dichloro Diphenyl Trichlorethane or any other form of
+       insecticide ordered by the Senior Medical Officer.
+
+Spraying of Premises.
+3.    It shall be lawful for any member of the Department to spray premises when
+ordered by the Senior Medical Officer or any other Medical Officer so to do.
+
+Inspection of Premises.
+4.     When ordered by the Senior Medical Officer or any other Medical Officer so
+to do it shall be lawful for any member of the Department, between the hours of
+seven in the morning and six in the afternoon of any day, to inspect premises and to
+examine all articles likely to contain water found in or upon such premises:
+       Provided that in the case of business premises the said inspection shall take
+place during any period of time in which the business may be in progress.
+
+Notice of Spraying.
+5.     (1) No premises shall be sprayed unless at least twenty-four hours notice in
+writing of such spraying shall have been given to the occupier of such premises:
+      Provided that in the case of perifocal spraying, premises may be sprayed
+without any notice of such spraying being given to the occupier of such premises.
+       (2) In this regulation, the expression “perifocal spraying” means the
+application of Dichloro Diphenyl Trichlorethane or other insecticide approved by the
+Senior Medical Officer and applied by the use of a small hand pump to the inside of
+                                                                    LAWS OF SAINT CHRISTOPHER
+54         CAP. 9.21                 Public Health Act                      AND NEVIS
+                                                                       Revision Date: 31 Dec 2020
+
+
+containers which hold or may hold water and to any surface with which such
+containers may be contiguous.
+
+Duties of Occupiers.
+6.      (1) When notified that premises are to be sprayed, the occupiers thereof shall,
+before the time fixed for spraying, remove all foodstuffs, clothing and any other
+article which they have been warned may be damaged by spraying:
+      Provided that they shall not remove mosquito nets and bedding which shall be
+sprayed.
+        (2) The occupiers of premises which are being sprayed shall extinguish all
+fires and naked flames on the premises during the process of spraying.
+
+Limitations on Spraying.
+7.     (1) Mattresses shall not be sprayed if objection thereto is taken by the owners
+thereof.
+         (2) Only the outside of the backs of food safes shall be sprayed.
+
+Receptacles for Storage of Water.
+8.     (1) The owner or occupier of premises shall place all tanks, drums, vats,
+barrels, or other receptacles intended for the storage of water in such positions that
+they are accessible for inspection of their contents.
+      (2) All wall-tanks shall be placed not less than six inches from the nearest wall
+and not less than fifteen inches from the nearest part of the ceiling or roof:
+       Provided that automatic flushing tanks may be affixed to, or placed within six
+inches of a wall, if inspection of the contents thereof is convenient.
+       (3) When a member of the Department has completed his or her inspection of
+the contents of any tank, drum, vat, barrel, or other receptacle intended for the storage
+of water the owner or occupier of the premises shall forthwith render such receptacle
+mosquito-proof.
+
+Covered Drains and Sewer-traps.
+9.     (1) Each covered drain shall be provided with an inspection chamber which
+shall be placed in a position which is easily accessible for the purpose of inspection.
+       (2) All sewer-traps shall be placed in positions which are easily accessible for
+the purpose of inspection.
+
+Drinking Water for Animals.
+10. All receptacles used to provide drinking water for animals or poultry shall be
+such as can be quickly and completely emptied at any time.
+
+Wells.
+11. All wells shall be rendered and kept mosquito-proof or permanently stocked
+with larvivorous fish of a species to be approved by the Senior Medical Officer.
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                       Public Health Act           CAP. 9.21            55
+Revision Date: 31 Dec 2020
+
+
+Finding of Mosquitoes in Aquatic Stages.
+12. If any member of the Department finds any mosquito in its aquatic stages in
+any water or in any receptacle containing water, he or she shall, according to his or
+her judgment and the circumstances of the case—
+               (a) apply the larvicide used by the Department;
+               (b) require the occupier of the premises to stock the water with
+                   larvivorous fish of a species approved by the Senior Medical Officer;
+               (c) render the receptacle, if it be of little or no commercial value,
+                   incapable of holding water; or
+               (d) report the matter to the Senior Medical Officer or any other Medical
+                   Officer.
+
+Inspection Cards.
+13. Any member of the Department may affix a card or other document to any
+tank or vat, or in any inconspicuous position on any premises for the purpose of
+recording notes or any inspection of a tank or other receptacle containing water, and
+no person may remove or deface any such card or document.
+
+Roof-Gutters.
+14. (1) Roof-gutters shall have sufficient capacity and fall to ensure that the rain
+water will not be retained at any point thereof.
+       (2) Wherever there are roof-gutters, the owner thereof shall arrange that the
+roof-gutters shall be accessible for inspection.
+       (3) If any member of the Department finds mosquitoes in their aquatic stages
+in water collected in a roof-gutter he or she shall give notice thereof in writing to the
+person responsible for the maintenance of the roof-gutter and such person shall
+forthwith take action to prevent the said mosquitoes from being in the roof-gutter.
+      (4) Owners or occupiers of premises shall keep trimmed and free from
+mosquito larvae all trees, shrubs, hedges, and plants, and prevent all trees and shrubs
+from overhanging roof-gutters on their or any other person’s premises.
+
+Storing of Water.
+15. Where no declaration under the Public Health Act, Cap. 9.21 is in force in
+respect of any area the following provisions shall apply to such area—
+               (a) water may be stored in barrels, large vessels, or other similar water
+                   containers;
+               (b) such barrels, large vessels, or other similar containers, shall conform to
+                   models approved from time to time by the Department for the purpose
+                   of such storage;
+               (c) such barrels, large vessels, or other similar water containers, where
+                   used for storing water, shall be mosquito-proofed or kept constantly
+                   stocked with larvivorous fish provided and maintained by the occupier
+                   of the premises, such fish being of a species approved by the
+                   Department;
+                                                                     LAWS OF SAINT CHRISTOPHER
+56         CAP. 9.21                Public Health Act                        AND NEVIS
+                                                                        Revision Date: 31 Dec 2020
+
+
+            (d) artificial ponds, lakes, and basins which contain water shall be stocked
+                with larvivorous fish provided and maintained by the occupier of the
+                premises, such fish being of a species approved by the Department.
+
+Drainage of Water from Buildings and Premises.
+16. (1) No part of any building or premises or of any wall or other structure
+surrounding such building or premises shall be so constructed as to be capable of
+retaining water unless provision is made whereby such water may easily be drained
+therefrom.
+       (2) Upon notice in writing being given by the Department to the owner of any
+building or premises or of any wall or other structure as aforesaid that any part
+thereof is capable of retaining water and that no provision is made whereby such
+water may easily be drained therefrom such owner shall forthwith cause the said part
+to be constructed in accordance with the provisions of paragraph (a) of this
+regulation.
+
+Cemeteries.
+17. (1) Flower vases, jars, jardinières and other ornamental articles in cemeteries
+shall not be allowed to contain water.
+      (2) Any such receptacle shall be permanently filled with sand.
+       (3) Mausoleums, vaults, and burial urns shall be maintained in such a
+condition as not to collect water.
+       (4) The owner or occupier of a cemetery shall be responsible for ensuring that
+water does not collect in excavations or tombs therein.
+
+Stagnant Water.
+18. (1) No person shall expose any empty bottle (broken or otherwise), empty tin,
+coconut shell, uncovered barrel, box or any other article in such manner as to cause
+the same to be a receptacle for stagnant water or a breeding place for mosquitoes.
+       (2) The presence of mosquito larvae in any collection of water shall be proof
+that such water is stagnant.
+
+Hindrance or Obstruction Prohibited.
+19. No person shall hinder or obstruct any member of the Department whilst such
+member is acting in the execution of any duty imposed upon him or her by these
+regulations.
+
+Penalty.
+20. Any person who neglects, disobeys or fails to comply with any of the
+provisions of regulations 6, 8, 9, 10, 11, 13, 14, 15, 16, 17, 18 (1) and 19, shall be
+liable, on summary conviction, to a fine not exceeding three hundred dollars.
+                         (Amended by Acts 7 of 1976 and 9 of 1986)
+                                       __________
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                       Public Health Act        CAP. 9.21           57
+Revision Date: 31 Dec 2020
+
+
+                                   SIXTEENTH SCHEDULE
+                                          (Section 11)
+                 NIGHT SOIL (SAINT CHRISTOPHER) REGULATIONS
+
+Short title.
+1.    These Regulations may be cited as the Night Soil (Saint Christopher)
+Regulations.
+
+Restriction on Transporting Night Soil through Streets.
+2.     No night soil shall be transported through the streets of Basseterre unless the
+same has been previously treated with dry earth and the containers provided with a
+cover.
+                                           __________
+
+
+
+                                  SEVENTEENTH SCHEDULE
+                                          (Section 11)
+                             PUBLIC HEALTH (NEVIS) REGULATIONS
+
+Short title.
+1.        These Regulations may be cited as the Public Health (Nevis) Regulations.
+
+Owners or occupiers to keep houses, etc., clean.
+2.     Owners or occupiers of all houses or other premises in Charlestown and
+throughout the Districts, are required at all times to keep such houses or premises, in
+every respect, clean and free from matter of every kind, which may be offensive to
+persons residing in the neighbourhood, or be detrimental, to the public health.
+
+Owners or occupiers of houses, etc., to clean their houses, etc., daily.
+3.     The owners or occupiers of all houses or other premises in the town of
+Charlestown shall cause their several premises to be cleaned daily (Sundays
+excepted) and the filth, dirt, or rubbish to be removed from the town, or deposited at
+the side of the street nearest their premises in casks, boxes, or other suitable
+receptacles previously to eight o’clock a.m.
+
+Removal of filth, etc.
+4.    All filth, dirt, and rubbish from the streets or other public places of
+Charlestown shall be removed every day (Sundays excepted) by such person or
+persons as the Board shall appoint.
+
+Privies, Pits, etc., to be kept in sanitary condition.
+5.     Owners or occupiers of all houses, or other premises in Charlestown and
+throughout the Districts are required to keep their privies, pits, or other receptacles
+for night-soil, in a sanitary condition, and also in such a state as not to give offence
+by bad smells; and for this purpose they shall, as regards pits, apply thereto dry earth
+or other proper disinfectants in such quantities, and so often, as may be necessary for
+keeping down such smells, and shall remove the contents from such pits as often as is
+                                                                  LAWS OF SAINT CHRISTOPHER
+58       CAP. 9.21                   Public Health Act                    AND NEVIS
+                                                                       Revision Date: 31 Dec 2020
+
+
+necessary for the purpose of keeping such pits in a clean, inoffensive, and sanitary
+condition.
+
+Keeping and collecting of manure.
+6.     No person in the villages throughout the Districts or within thirty feet thereof
+shall keep or collect any manure heap for a longer period than three days.
+
+Throwing and depositing of dead animals, etc., upon a public street prohibited.
+7.     No dead animal, night-soil, manure, rotten or decayed substance or filth of any
+kind, shall be thrown or deposited upon any public street or road, or in any pond or
+running water:
+      Provided that this shall not apply to bonâ fide collections of offal deposited
+temporarily by the side of any road for the purpose of being removed by the public
+scavenger.
+
+Throwing or letting out night-soil, etc., upon any place prohibited.
+8.     No night-soil, washings, kitchen slops, or offensive matter of any kind, shall
+be thrown or let out upon any place where the same may be offensive to persons
+residing in the neighbourhood, or be detrimental to the public health; and in every
+such case the occupier of the premises whence the same issued, or the person
+committing the nuisance, shall be held responsible.
+
+Restriction on keeping of pigs.
+9.     No pig shall be kept by any person in Charlestown and no pig shall be kept by
+any person in the Districts within ten feet of any road or occupied house, and in no
+case shall filth or urine be allowed to remain under or around such pig.
+
+Inspection of fresh meat for sale.
+10. All persons throughout the Districts, offering for sale any fresh meat, shall on
+the application made at a reasonable time and place by a member or authorised
+servant of the Board or any District Board, produce for his or her inspection the
+organs of the animal slaughtered, and in the event of any such person refusing to
+show such organs the carcass shall be deemed unfit for food and destroyed.
+
+Restrictions on sale of animals which die from infectious diseases, etc.
+11. No animal having died or supposed to have died from any infectious or
+contagious disease, shall be opened or skinned except it be necessary for veterinary
+purposes and in that case the skin must be buried with the carcass.
+
+Keeping of disinfectants.
+12. The Central Board of Health shall keep under the care of the Clerk a sufficient
+quantity of disinfectants to be used by the Central and District Boards as the Central
+Board and District Boards or the District Medical Officers shall from time to time
+direct.
+
+Burying of carcasses of animals.
+13. No person shall allow the carcass of any animal which was his or her property
+or in his or her possession to remain unburied.
+                                        __________
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                      Public Health Act         CAP. 9.21         59
+Revision Date: 31 Dec 2020
+
+
+                                  EIGHTEENTH SCHEDULE
+                                         (Section 11)
+                                    PUBLIC HEALTH (NO. 1)
+                             (SAINT CHRISTOPHER) REGULATIONS
+
+Short title.
+1.     These Regulations may be cited as the Public Health (No. 1) (Saint
+Christopher) Regulations.
+
+Interpretation.
+2.        In these Regulations—
+“house refuse” means dust and sweepings of a dwelling house, a common lodging
+      house and a barrack or barrack yard in the ordinary course of living therein,
+      waste paper, broken glass and crockery and includes kitchen refuse and
+      flower-garden refuse when contained in the prescribed refuse receptacle but
+      does not include refuse of any other nature, or refuse in excess of the quantity
+      contained in such prescribed receptacle;
+“trade refuse” means the waste products of any trade or manufactory and includes the
+       refuse from hotels and business places when contained in the prescribed
+       receptacles but does not include refuse of any other nature or refuse in excess
+       of such quantity;
+“small stock” means rabbits, poultry, sheep and goats;
+“large animals” means cattle, horses, mules and donkeys.
+
+
+            Duties of Owners and Occupiers of Premises in Connection with the
+                                Removal of House Refuse
+
+Provision of movable receptacle by occupiers, etc., of houses.
+3.     (1) The occupier of every dwelling house in Basseterre, and the owner of
+every common lodging house and of every barrack or barrack yard in Basseterre shall
+not later than six o’clock in the morning of every day deposit within the gateway of
+such premises in a conveniently accessible position a movable receptacle in which
+shall be placed the house refuse of such premises for the purpose of removal free of
+charge by the Board.
+         (2) The receptacle to be provided shall be of a capacity not exceeding two and
+a half cubic feet and such receptacle shall be provided with a suitable cover and shall
+at all times be kept in good repair and covered while in use.
+
+Movable receptacle to be provided by hotel proprietors, etc.
+4.    (1) The proprietor or manager of every hotel, manufactory or business
+premises in Basseterre shall not later than eight o’clock in the morning of every day
+(except Sundays and public holidays) deposit within the gateway of such premises or
+in some other conveniently accessible position a movable receptacle in which shall be
+placed the trade refuse of such premises for the purpose of removal free of charge by
+the Board.
+                                                                   LAWS OF SAINT CHRISTOPHER
+60       CAP. 9.21                   Public Health Act                     AND NEVIS
+                                                                      Revision Date: 31 Dec 2020
+
+
+       (2) The receptacle to be provided shall be of reasonable weight and of a
+capacity not exceeding twelve cubic feet and such receptacle shall be provided with a
+suitable cover and shall at all times be kept in good repair, and covered while in use.
+
+Removal of refuse, other than house refuse, etc., from premises.
+5.     In the case of all premises in Basseterre, any refuse other than house and trade
+refuse and refuse in excess of the prescribed quantity shall be removed therefrom
+upon payment by the owner or occupier, as the case may be, of such premises of the
+cost of removing such refuse at the rates fixed by the Board from time to time.
+
+Receptacles to be properly kept.
+6.     The occupier of any premises in the town of Basseterre shall keep the said
+receptacles properly covered:
+       Provided that in the case of barracks and barrack yards any person using such
+receptacles shall cover them properly immediately after using them.
+
+Proprietor of hotel, etc., to assist scavengers.
+7.     The proprietor or manager of every hotel, factory, workshop and other
+business premises shall in every case in which the receptacle provided exceeds two
+and a half cubic feet in capacity provide the necessary assistance to the scavengers for
+emptying the contents of such receptacle into the scavenging vehicle.
+
+
+                             Keeping of Animals in Towns
+
+Animals which may be kept in towns.
+8.      The following animals may be kept within the limits of towns in the State-
+cattle, sheep, horses, mules, donkeys, goats, rabbits, poultry, dogs and cats.
+
+Animals to be kept in stables or other stalls.
+9.     Cattle, sheep, horses, mules, donkeys and goats which are kept within the
+limits of any town in the State, shall be kept in stables or other stalls approved by an
+officer of the Central Board of Health or Local Authority:
+       Provided that where such animals are kept at a distance of less than ten yards
+from any dwelling house such stables or other stalls shall be paved and drained either
+by open concrete channel into a public drain or by trapped concrete channel into a
+cesspit approved by an officer of the Central Board of Health or Local Authority.
+
+Paved stables and Paved stalls to be cleaned daily.
+10. Paved stables and paved stalls shall be washed and all other stables and stalls
+shall be cleaned daily in a manner satisfactory to an officer of the Central Board of
+Health or Local Authority.
+
+Distance of stables and stalls from premises.
+11. No stable or other stall in towns shall be less than six feet from any house or
+other premises.
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                              Public Health Act                   CAP. 9.21                  61
+Revision Date: 31 Dec 2020
+
+
+Board to be informed of maximum number of animals to be kept.
+12. Any person keeping animals on any premises in a town shall first intimate to
+the Central Board of Health or Local Authority the maximum number of each kind of
+animal intended to be kept on such premises allowing free space for each kind as
+follows—
+          For small stock ..................................................................... 5 sq. ft. per head.
+          For large animals................................................................... 20 sq. ft. per head.
+
+Removal of droppings and animal litter, etc.
+13. Any person keeping animals in any premises in the town shall collect daily, in
+a receptacle or receptacles provided by himself or herself for the purpose, all
+droppings, animal litter and feeding refuse from such premises for removal, and the
+removal of such collection shall be that person’s responsibility.
+
+Penalty.
+14. Any person who fails to comply with the requirements of any of these
+regulations shall be liable, on summary conviction, to a fine not exceeding three
+hundred dollars.
+                                (Amended by Acts 7 of 1976 and 9 of 1986)
+                                                  __________
+
+
+
+                                     NINETEENTH SCHEDULE
+                                                 (Section 11)
+                                    PUBLIC HEALTH (NO. 2)
+                             (SAINT CHRISTOPHER) REGULATIONS
+
+Short title.
+1.     These Regulations may be cited as the Public Health (No. 2) (Saint
+Christopher) Regulations.
+
+Interpretation.
+2.        In these Regulations—
+“built-up area” means any of the places set forth in the Schedule to these regulations
+       and any other place in the island of St. Christopher outside of the town of
+       Basseterre declared by the Board with the approval of the Minister to be a
+       built-up area;
+“refuse” means dust and sweepings of a dwelling house, a common lodging house,
+       and a barrack or barrack yard in the ordinary course of living therein, waste
+       paper, broken glass and crockery, and includes kitchen refuse, flower-garden
+       refuse, waste products of any trade or manufactory and refuse from hotels and
+       business places, but does not include animal droppings, litter and animal
+       feeding refuse or refuse of any nature not specified above.
+                                                                     LAWS OF SAINT CHRISTOPHER
+62          CAP. 9.21               Public Health Act                        AND NEVIS
+                                                                        Revision Date: 31 Dec 2020
+
+
+Removal of Refuse.
+3.     In built-up areas the occupier of every dwelling house, the owner of every
+common lodging house and every barrack or barrack yard and the proprietor or
+manager of every hotel, manufactory or business premises shall daily not later than 8
+o’clock in the morning of every day deposit the refuse of such premises in a
+receptacle to be provided by the Local Authority for the purpose of removal free of
+charge by the Local Authority.
+
+Keeping of Animals.
+4.     Any person keeping animals on any premises in the island of Saint Christopher
+outside the town of Basseterre shall collect daily and deposit at a place approved by
+the Local Authority the droppings, litter and waste fodder of such animals.
+
+Penalty.
+5.     Any person who fails to comply with the requirements of any of these
+regulations shall be liable, on summary conviction, to a fine not exceeding three
+hundred dollars.
+                         (Amended by Acts 7 of 1976 and 9 of 1986)
+                                       __________
+
+
+
+                        SCHEDULE TO THE REGULATIONS
+                                     (Regulation 2)
+Challengers
+Old Road
+Verchild’s Village
+Middle Island
+Half way Tree
+Godwins
+New Guinea
+Sandy Point
+Newton Ground
+St. Pauls
+Parson’s Village
+Saddlers Village
+Lynches Village
+Lavington Village
+Tabernacle
+Estridge
+Stonecastle
+Belle Vue
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                     Public Health Act          CAP. 9.21            63
+Revision Date: 31 Dec 2020
+
+
+Harris
+Mansion Village
+Phillips
+Molyneux
+Lodge Village
+Bourryeau Village
+Ottleys Village
+Cayon
+Brighton Village
+Whytes Village
+Tank Village
+Stapleton Village
+Parry’s Village
+                                         __________
+
+
+
+                                  TWENTIETH SCHEDULE
+                                        (Section 11)
+                             ENVIRONMENTAL HEALTH OFFICERS
+                                  (DUTIES) REGULATIONS
+
+Short title.
+1.    These Regulations may be cited as the Environmental Health Officers (Duties)
+Regulations.
+
+General.
+2.     An Environmental Health Officer shall perform, under the direction of the
+Medical Officer of Health, all duties imposed upon Sanitary Inspectors by Statute,
+Order or Regulation or by direction of the Board or of the Local Authority for his or
+her district.
+
+Systematic Inspection.
+3.     An Environmental Health Officer shall keep himself or herself fully informed
+on the sanitary condition of his or her district in respect of nuisances needing
+abatement by inspection of his or her district both systematically and at intervals as
+required.
+
+Nuisances.
+4.     An Environmental Health Officer shall, on receiving notice of the existence of
+a nuisance or the non-observance or breach of any law or regulation made for the
+suppression of nuisances in his or her district, visit the spot as soon as practicable and
+inquire into such alleged nuisance or breach of law or regulation.
+                                                                   LAWS OF SAINT CHRISTOPHER
+64         CAP. 9.21               Public Health Act                       AND NEVIS
+                                                                      Revision Date: 31 Dec 2020
+
+
+Water Supply.
+5.     An Environmental Health Officer shall report immediately to the proper
+authority any pollution or wastage of water supplies.
+
+Food Inspection.
+6.     (1) An Environmental Health Officer shall, from time to time, regularly and
+forthwith on complaint visit and inspect dairies, food-shops and other food-handling
+places under the provisions of such Statutes and Regulations dealing with the same
+and shall examine any animal or part thereof and any article of food or drink in such
+establishments intended for human consumption.
+      (2) He or she shall record for report as directed by the Board or Local
+Authority particulars of action taken with respect to such inspections and
+examinations.
+
+Infectious Disease Control.
+7.     (1) An Environmental Health Officer shall give immediate notice to the
+Medical Officer of Health of the occurrence within his or her district of any infectious
+diseases or other serious outbreak of illness, and whenever it appears to him or her
+that the intervention of such officer is necessary in consequence of the existence of
+any nuisance injurious to health or of any overcrowding in a house or of any other
+condition affecting the health of the district forthwith inform the Medical Officer of
+Health of the condition.
+       (2) He or she shall, if so directed by the Medical Officer of Health, remove or
+superintend the removal of patients suffering from infectious diseases to a suitable
+hospital or place and perform or superintend the work of disinfection after the
+occurrence of cases of infectious diseases.
+
+Housing.
+8.      An Environmental Health Officer shall, if so directed by the Board or Local
+Authority, make an inspection of housing conditions in respect of overcrowding,
+latrine accommodation and other sanitary conditions.
+
+Sanitary Works.
+9.     An Environmental Health Officer shall, if so directed by the Central Board or
+Local Authority, supervise the execution of any works which may be undertaken
+under their direction for the prevention, suppression or removal of nuisances and for
+disinfestation by residual spraying.
+
+Offensive Trades.
+10. An Environmental Health Officer shall record from daily inspections for report
+to the Local Authority or Board all non-observance of regulations in respect of
+noxious and offensive trades, businesses and manufactories.
+
+Attendance at Meetings.
+11. An Environmental Health Officer shall attend all meetings of the Local
+Authority.
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                        Public Health Act          CAP. 9.21              65
+Revision Date: 31 Dec 2020
+
+
+Records and Reports.
+12. (1) An Environmental Health Officer shall enter from day to day in a book or
+on separate sheets or cards provided by the Board or Local Authority particulars of all
+his or her inspections and of the action taken by him or her in respect of his or her
+duties.
+       (2) He or she shall keep a book of separate sheets provided by the Board or
+Local Authority so arranged as to form a continuous record of the sanitary conditions
+of each premises in his or her district.
+       (3) He or she shall keep a book provided by the Board or Local Authority so
+arranged as to form a continuous record of all action taken under the Public Health
+Act in respect of any premises in his or her district.
+       (4) He or she shall maintain in form approved by the Medical Officer of
+Health a plan or map of his or her district showing the distribution of premises, any
+works or property under the control of the Board or Local Authority, and any such
+places or localities which are liable to become a nuisance or injurious to the health of
+the public.
+       (5) He or she shall at all reasonable times when requested by the Medical
+Officer of Health, Board or Local Authority produce his or her books or any of them
+and render such information as he or she may be able to furnish with respect to any
+matter to which the duties of the Sanitary Inspector relate.
+      (6) He or she shall furnish the Medical Officer of Health or Local Authority
+with weekly reports in tabular form showing—
+                (a) the number and nature of inspections made by him or her during the
+                    period;
+                (b) the number of notices (statutory or other) served during the period;
+                (c) the result of the services of such notices.
+
+Other Duties.
+13. In matters not specially provided for in these regulations an Environmental
+Health Officer shall observe and execute all lawful orders and directions of the
+Board, of the Local Authority and of the Medical Officer of Health.
+                                            __________
+                                                                LAWS OF SAINT CHRISTOPHER
+66          CAP. 9.21              Public Health Act                    AND NEVIS
+                                                                    Revision Date: 31 Dec 2020
+
+
+                          TWENTY-FIRST SCHEDULE
+                                     (Section 11)
+                        PUBLIC HEALTH (QUARANTINE)
+                                REGULATIONS
+
+Citation.
+1.    These Regulations may be cited as the Public Health (Quarantine) Regulations.
+
+Interpretation.
+2.    In these Regulations—
+“officers” means persons appointed by the Governor-General in the manner provided
+       under section 3 of the Quarantine Act;
+“Public Health Act” means the Public Health Act, Cap. 9.21;
+“Quarantine Act” means the Quarantine Act, Cap. 9.23;
+“Quarantine Authority” means the Chief Medical Officer in accordance with the
+      provisions of section 3 of the Quarantine Act.
+
+Schedule of diseases.
+3.    Pursuant to section 11(c)(i) of the Public Health Act, the diseases listed in
+Schedule 1 to these regulations are infectious, communicable or notifiable diseases
+dangerous to public health to which the provisions of these Regulations apply.
+
+Quarantine Authority establishment and powers.
+4.    (1) The Quarantine Authority established under section 3 of the Quarantine
+Act shall be the Quarantine Authority for the purposes of these Regulations.
+       (2) The Quarantine Authority shall have the powers conferred on him or her
+under the Quarantine Act in exercise of his or her duties under these Regulations.
+
+Appointment of officers, quarantine guards or screening officers.
+5.     (1) Pursuant to the provisions of section 11(b) of the Public Health Act, the
+officers, including, any quarantine guards necessary for giving effect to the
+provisions of these Regulations, shall be appointed by the Governor-General, in
+accordance with the provisions of section 3 of the Quarantine Act.
+      (2) The officers or quarantine guards referred to in sub-regulation (1), shall
+have such duties as are directed by the Quarantine Authority.
+       (3) The screening officers referred to in sub-regulation (1), shall have such
+duties as are directed by the Quarantine Authority.
+
+Duties and powers of the police.
+6.    (1) The police shall have the duties and powers conferred under the
+Quarantine Act for the purposes of these Regulations.
+       (2) Pursuant to section 11(ee) of the Public Health Act, the police may enter,
+with reasonable force if necessary, into any premises where the owner does not give
+permission for the inspection or examination thereof.
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                        Public Health Act    CAP. 9.21           67
+Revision Date: 31 Dec 2020
+
+
+Duties and powers of the Defence Force.
+7.     For the purposes of these Regulations, the St Kitts and Nevis Defence Force
+shall have such duties and powers as may be specified by the Minister, with the
+approval of Cabinet, by Order published in the Gazette.
+
+Reporting cases.
+8.     (1) Pursuant to section 11(c)(ii) of the Public Health Act, a person may make a
+report of cases or suspected cases of infectious, communicable or notifiable diseases
+to the Quarantine Authority.
+       (2) A report shall be in the Communicable Disease Notification Form set out
+in Schedule 2 to these regulations or by telephone call to the Quarantine Authority or
+the officers of the Authority.
+
+Supplies to suppress an epidemic.
+9.     Pursuant to section 11(c)(iii) of the Public Health Act, the emergency supply
+chain action plan will guide the forecasting, procurement, importing, stockpiling or
+issuing of relevant medical supplies necessary for preventing, mitigating, controlling
+or suppressing an epidemic or spread of any infectious, communicable, notifiable or
+other disease.
+
+Screening.
+10. (1) The Quarantine Authority may authorise the establishment of screening
+stations at designated screening sites depending on the nature of the disease.
+      (2) The screening process shall be in accordance with well-defined algorithms
+and specific actions to be taken which shall be explained to each person being
+screened.
+       (3) A person shall submit to the examination, answer questions or other
+requirements of the screening process.
+
+Surveillance, removal, quarantine or isolation.
+11. Pursuant to section 11(c)(iv) of the Public Health Act, the Minister may, in
+consultation with the Quarantine Authority, authorise the surveillance, removal,
+quarantine or isolation of any person at a place or health facility designated by the
+Minister and dependent on the nature of the infectious, communicable or notifiable
+disease.
+
+Preventing persons or conveyances.
+12. Pursuant to section 11(c)(v) of the Public Health Act, the Minister depending
+on the nature of the disease may prevent or restrict persons or conveyances from
+passing from one locality to any other locality in a manner that is necessary for
+preventing, mitigating, controlling or suppressing an epidemic or spread of any
+infectious, communicable, notifiable or other disease.
+
+Detention in another island, state or country.
+13. (1) Pursuant to sections 4, 11(c)(v), 11(c)(vi) and 11(c)(x) of the Public Health
+Act, the Minister may, with the approval of Cabinet—
+               (a) in the national interest;
+               (b) in the interest of public health; or
+                                                                     LAWS OF SAINT CHRISTOPHER
+68       CAP. 9.21                 Public Health Act                         AND NEVIS
+                                                                        Revision Date: 31 Dec 2020
+
+
+          (c) public safety,
+in writing, request a person to remain outside of Saint Christopher and Nevis or
+outside of one either island.
+       (2) The Minister shall specify the terms and conditions of the request and shall
+include—
+          (a) the specified period;
+          (b) the resources to be provided to assist the person during the specified
+              period including—
+                (i) any reasonable provisions for accommodation;
+               (ii) any reasonable provisions for meals;
+               (iii) any reasonable provisions for transportation;
+               (iv) any requirements for receipts.
+      (3) The Minister shall, if the person referred to in sub-regulation (1) makes a
+request in writing, notify the person’s employer in writing of the request and the
+employer shall not reduce or deduct the person’s salary for the specified period.
+
+Social distancing.
+14. (1) Pursuant to section 11(c)(xiv) of the Public Health Act, the Minister may,
+by notice published in the Gazette, authorise—
+          (a) the closing of schools, churches and places of public assembly or
+              entertainment; or
+          (b) any other social distancing interventions that may be appropriate
+              depending on the nature of the infectious, communicable or notifiable
+              disease for the purpose of preventing, controlling or containing the
+              spread of disease.
+
+Offenses and penalties.
+15. Pursuant to section 11(ll) of the Public Health Act, a person who contravenes
+the provisions of these Regulations shall be liable on summary conviction to a fine
+not exceeding eight thousand dollars.
+
+Notice of Quarantine/Isolation.
+16. (1) A person who is subject to quarantine or isolation shall be issued with a
+notice as set out in the form in Schedule 3 to these Regulations, which shall be signed
+in duplicate.
+       (2) Where a person is identified as being subject to quarantine or isolation, he
+or she shall sign the notice and shall retain a copy of the notice.
+       (3) Where the subject of the quarantine or isolation is a child or a person who
+is mentally disabled or otherwise incapacitated, a parent or guardian of the subject of
+the quarantine or isolation shall be issued with the notice and shall sign same on
+behalf of the child or person who is mentally disabled or otherwise incapacitated.
+                               (Inserted by S.R.O. 8/2020)
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                      Public Health Act              CAP. 9.21   69
+Revision Date: 31 Dec 2020
+
+
+                             SCHEDULE 1 TO THE REGULATIONS
+                                       (Regulation 3)
+                     INFECTIOUS, COMMUNICABLE OR NOTIFIABLE DISEASES
+                               FOR QUARANTINE OR ISOLATION
+
+    The provisions of these Regulations shall apply in relation to infectious,
+communicable or notifiable diseases including emerging diseases such as:
+          1. Zika virus
+          2. Chikungunya virus
+          3. Ebola virus
+          4. Novel Coronavirus or COVID-19
+
+
+
+
+                             SCHEDULE 2 TO THE REGULATIONS
+                                       (Regulation 8)
+                                 NOTIFIABLE DISEASES FORM
+
+
+Clinic Health Centre: ………………………………………………………………….
+Hospital: ……………………………………………………………………………….
+Laboratory: …………………………………………………………………………….
+Private Physician: ……………………………………………………………………...
+Health District: ………………………………………………………………………...
+
+
+        Last                            name:
+        ……………………………………………………………………………..
+        First                           name:
+        ……………………………………………………………………………..
+        Alias:
+        …………………………………………………………………………………..
+(circle option) Sex:               M            F          Pregnant
+If less than 1 year, age in months: ………………..
+If more than 1 year, age in years: ………………...
+Address:
+…………………………………………………………………………………………
+…………………………………………………………………………………………
+Area (Region/Distract/Parish): ………………………………………………………..
+Telephone: ……………………(Mobile)……………….(Work)……………..(Ext)
+                                                                           LAWS OF SAINT CHRISTOPHER
+70          CAP. 9.21                  Public Health Act                           AND NEVIS
+                                                                              Revision Date: 31 Dec 2020
+
+
+     (Circle options)
+Is the patient’s occupation:
+          Food Handling                                    Yes                         No
+          Student                                          Yes                         No
+          Agriculture/Farming                              Yes                         No
+          Other: …………………………………………………………………………..
+Name of business/school: ……………………………………………………………..
+Address: ……………………………………………………………………………….
+Area (region/District/Parish): …………………………………………………………
+
+Date first Seen         /   /      Date of onset: /        /
+(check box)
+             Contact of known case _____                         Imported _____
+Status:      Suspected      ____
+             Probable       ____
+             Confirmed      ____                   (Circle Option)
+             Unknown        ____                   Lab Done          Yes        No
+
+
+LIST OF DISEASES                             (circle condition)
+
+
+ Accidental poisoning*                            Leptospirosis +
+ Acquired Immunodeficiency +                      Leprosy +
+ Syndrome / HIV Infection +                       (Hansen’s Disease)
+ Acute Hemorrhagic conjunctivitis +               Malaria +
+ Acute Respiratory Infection < 5 +                Measles +
+ Amoebiasis /                                     Meningitis (other) +
+ Chicken Pox +                                    Meningococcal Meningitis +
+ Chlamydial infection /                           Mumps +
+ Cholera *                                        Ophthalmia neonatorum +
+ Ciguatera poisoning                              Plague *
+ Chikungunya +                                    Poliomyelitis * (paralytic)
+ Congenital Syphilis*                             Pertussis +
+ Dengue Fever and +                               Rubella +
+ Dengue Hemorrhagic Fever +                       Rubella Syndrome (Congenital) *
+ Diphtheria*                                      Rabies *
+ Encephalitis *                                   Smallpox *
+LAWS OF SAINT CHRISTOPHER
+        AND NEVIS                                Public Health Act            CAP. 9.21   71
+Revision Date: 31 Dec 2020
+
+
+
+ Foodborne disease outbreak *                               Salmonellosis /
+ Fever and Rash +                                           Scabies /
+ Gastroenteritis < 5yrs+                                    Shigellosis /
+ Gastroenteritis > 5yrs +                                   Syphilis+
+ Giardiasis/                                                Tetanus+
+ Gonococcal infection +                                     Tuberculosis +
+ Hepatitis A+                                               Typhoid +
+ Hepatitis B +                                              Yellow Fever*
+ Hepatitis (unspecified) /                                  Zika +
+ Influenza*
+ Other
+
+
+(Check box) Outcome                          Treated and discharged
+Referred to higher level clinic ___ Referred to hospital ___ Died ___
+Date of Death:               /   /
+(Print initial, last name and designation)
+Person reporting: ……………………………………………………………………….
+Date of reporting:                   /   /                              Week#: ………………………
+
+
+
+
+                                 SCHEDULE 3 TO THE REGULATIONS
+                                                 (Regulation 17)
+                             NATIONAL/PORT HEALTH SURVEILLANCE
+                                 NOTICE OF QUARANTINE/ISOLATION
+
+Date:
+
+Dear ____________________________
+
+You yourself or a person _______________________ who is a child or who is
+mentally disabled or otherwise incapacitated, for whom you are the parent or legal
+guardian, are hereby required to be placed in QUARANTINE because it has been
+determined that you/they may have been exposed/have been exposed to the COVID-
+19 Virus. This is necessary because of:
+                                                                                                         LAWS OF SAINT CHRISTOPHER
+72            CAP. 9.21                                 Public Health Act                                        AND NEVIS
+                                                                                                             Revision Date: 31 Dec 2020
+
+
+(a) Travel history which indicates that you have traveled to a known territory which
+    has COVID cases
+
+                                                                  OR
+
+(b) You have been exposed to someone who has the disease or exposed to someone
+    who is/was providing care to someone with COVID-19
+
+                                                                  OR
+
+(c) You currently display symptoms consistent with the conditions of being infected
+    with COVID-19
+
+“Isolation” means that you are suffering from the COVID-19 virus and you must be
+completely separated from and must not come into contact with other persons with
+the exception of any medical personnel or public health officers.
+
+“Quarantine” means that you should remain in the confines of your home or other
+approved location for a period of at least 14 days and that you must NOT come into
+contact with other people during this period.
+
+During this period you are also required to comply with all instructions given by the
+Ministry of Health’s Public Health Officers.
+
+A Public Health Officer will be checking in on you periodically to ensure that your
+health remains stable and that you are complying with the requirements in this
+Notice. We shall further advise you when it is safe to return to your normal activities.
+
+It is critical that you DO NOT resume normal activities or interact with other persons
+UNTIL your status has been confirmed by an official from the Ministry of Health. A
+failure to comply with these requirements may result in a fine and you being
+quarantined in a Government facility until the period of confinement is over. Please
+be reminded that this is for your health and the health of others.
+
+Other Specific Instructions for Your Case:
+
+.........................................................................................................................................
+
+Dated this ….. day of …………. 2020.
+
+__________________                                                                              ____________________
+Ministry of Health                                                                              Person Quarantined
+1
+ The remainder of this letter should be modified if being delivered to the parent or
+guardian of dependents. The parent or guardian should be given the choice to be
+quarantined with the dependent. If the parent or guardian does not choose to be
+quarantined with the dependent, then the parent/guardian is responsible for making
+arrangements for the dependent’s care and appropriate level of supervision.
+                           (Inserted by S.R.O. 2/2020 and amended by S.R.O. 8/2020)
+

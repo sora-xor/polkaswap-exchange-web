@@ -18,93 +18,163 @@
               </div>
               <div class="select-node-info__desc s-flex">
                 <div>{{ node.address }}</div>
-                <div v-if="node.location" v-html="formatNodeLocation(node.location)" />
+                <div v-if="node.location" v-html="formatNodeLocation(node.location)"></div>
               </div>
             </div>
             <div class="select-node-badge">
-              <s-button
+              <s-icon
                 v-if="node.address === currentAddressValue && !nodeAddressConnecting"
                 class="select-node-details"
-                type="action"
-                alternative
-                icon="arrows-swap-90-24"
-                @click.stop="handleNode(node)"
-              />
-              <s-icon v-else-if="isConnecting(node.address)" name="el-icon-loading" />
+                name="basic-check-mark-24"
+                size="16px"
+              ></s-icon>
+              <s-icon v-else-if="isConnecting(node.address)" name="el-icon-loading"></s-icon>
             </div>
             <s-button
               class="select-node-details"
               type="action"
               alternative
               icon="arrows-chevron-right-rounded-24"
-              @click.stop="viewNode(node)"
-            />
+              :aria-label="t('assets.details')"
+              @click.stop="viewNode?.(node)"
+            ></s-button>
           </div>
         </s-radio>
       </s-radio-group>
     </s-scrollbar>
-    <s-button class="select-node-button s-typography-button--big" @click.stop="viewNode()">
+    <s-button class="select-node-button s-typography-button--big" @click.stop="viewNode?.()">
       {{ t('selectNodeDialog.addNode') }}
     </s-button>
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, ModelSync } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed, toRefs } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useTranslation } from '@/composables/useTranslation';
 import type { Node } from '@/types/nodes';
+import { escapeHtml, sanitizeHtml } from '@/utils/sanitize';
 
 import { formatLocation } from './utils';
 
-@Component
-export default class SelectNode extends Mixins(TranslationMixin) {
-  @Prop({ default: () => [], type: Array }) readonly nodes!: Array<Node>;
-  @Prop({ default: () => {}, type: Function }) readonly handleNode!: (node?: Node) => void;
-  @Prop({ default: () => {}, type: Function }) readonly viewNode!: (node?: Node) => void;
-  @Prop({ default: '', type: String }) readonly nodeAddressConnecting!: string;
-  @Prop({ default: false, type: Boolean }) readonly disabled!: boolean;
-
-  @ModelSync('value', 'input', { type: String })
-  readonly currentAddressValue!: string;
-
-  formatNodeLocation(code: string): string {
-    const location = formatLocation(code);
-    if (!location) return '';
-    const flag = `<span class="flag-emodji">${location.flag}</span>`;
-    if (!location.name) return flag;
-    return `${location.name} ${flag}`;
+const props = withDefaults(
+  defineProps<{
+    nodes?: Node[];
+    handleNode?: (node?: Node) => void;
+    viewNode?: (node?: Node) => void;
+    nodeAddressConnecting?: string;
+    disabled?: boolean;
+  }>(),
+  {
+    nodes: () => [],
+    handleNode: undefined,
+    viewNode: undefined,
+    nodeAddressConnecting: '',
+    disabled: false,
   }
+);
 
-  isConnecting(address: string) {
-    return address === this.nodeAddressConnecting;
-  }
+const { nodes, nodeAddressConnecting, disabled } = toRefs(props);
+const { t } = useTranslation();
 
-  getTitle(node: Node) {
-    const { name, chain } = node;
+const currentAddressValue = defineModel<string>('value', { default: '' });
 
-    return name && chain ? this.t('selectNodeDialog.nodeTitle', { chain, name }) : name || chain;
-  }
+function formatNodeLocation(code: string): string {
+  const location = formatLocation(code);
+  if (!location) return '';
+  const safeFlag = `<span class="flag-emodji">${escapeHtml(location.flag)}</span>`;
+  const raw = location.name ? `${escapeHtml(location.name)} ${safeFlag}` : safeFlag;
 
-  reconnect(node: Node) {
-    this.$emit('input', node.address);
-  }
+  return sanitizeHtml(raw, {
+    allowedTags: ['span'],
+    allowedAttributes: {
+      span: ['class'],
+    },
+  });
+}
+
+function isConnecting(address: string): boolean {
+  return address === nodeAddressConnecting.value;
+}
+
+function getTitle(node: Node): string {
+  const { name, chain } = node;
+  return name && chain ? t('selectNodeDialog.nodeTitle', { chain, name }) : name || chain || '';
 }
 </script>
 
 <style lang="scss">
-.select-node-list__item.el-radio {
-  &.s-medium {
+.select-node-list__item {
+  &.el-radio,
+  &.s-radio {
     height: initial;
   }
 
-  .el-radio__label {
+  &.s-radio {
+    width: 100%;
+    border-radius: var(--s-border-radius-mini);
+    cursor: pointer;
+    transition:
+      background-color 120ms ease,
+      box-shadow 120ms ease;
+
+    > .flex {
+      display: flex;
+      align-items: stretch;
+      width: 100%;
+      min-width: 0;
+    }
+
+    .s-radio-atom {
+      display: none;
+    }
+
+    > .flex.space-x-2 {
+      column-gap: 0;
+    }
+
+    > .flex.space-x-2 > :not([hidden]) ~ :not([hidden]) {
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+  }
+
+  .el-radio__label,
+  > .flex > label {
+    display: block;
     flex: 1;
+    width: 100%;
+    min-width: 0;
+    cursor: inherit;
+  }
+
+  &[aria-checked='true'] {
+    background: var(--s-color-base-background-hover);
+    box-shadow: inset 3px 0 0 var(--s-color-theme-accent);
+  }
+
+  &:hover:not([aria-disabled='true']):not([aria-checked='true']) {
+    background: var(--s-color-base-background);
   }
 }
+
 .select-node-scrollbar {
-  @include scrollbar(-$inner-spacing-big);
+  @include scrollbar(0, 4px);
+
+  &.el-scrollbar {
+    width: 100%;
+
+    > .el-scrollbar__wrap {
+      max-height: 420px;
+    }
+
+    > .el-scrollbar__bar.is-vertical {
+      bottom: 4px;
+      top: 4px;
+    }
+  }
 }
+
 .select-node {
   .el-button + .el-button {
     margin-left: 0;
@@ -113,8 +183,6 @@ export default class SelectNode extends Mixins(TranslationMixin) {
 </style>
 
 <style lang="scss" scoped>
-$node-list-item-height: 66px;
-$node-list-items: 5;
 $node-desc-spacing: 6px;
 $node-desc-border-radius: 8px;
 
@@ -126,13 +194,13 @@ $node-desc-border-radius: 8px;
   }
 
   &-list {
-    max-height: calc(#{$node-list-item-height} * #{$node-list-items});
     flex-direction: column;
+    gap: $inner-spacing-mini;
 
     &__item {
       margin-right: 0;
       align-items: center;
-      padding: $inner-spacing-small $inner-spacing-big;
+      padding: $inner-spacing-small $inner-spacing-medium;
       white-space: normal;
     }
   }
@@ -140,6 +208,7 @@ $node-desc-border-radius: 8px;
   &-item {
     flex: 1;
     align-items: center;
+    min-width: 0;
   }
 
   &-info {
@@ -159,6 +228,7 @@ $node-desc-border-radius: 8px;
       font-size: var(--s-font-size-mini);
       font-weight: 300;
       line-height: var(--s-line-height-medium);
+
       > div {
         background: var(--s-color-base-background);
         padding: $node-desc-spacing;
@@ -171,6 +241,7 @@ $node-desc-border-radius: 8px;
 
   &-details {
     padding: 0;
+    color: var(--s-color-base-content-tertiary);
   }
 
   &-button {
@@ -183,6 +254,8 @@ $node-desc-border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex: 0 0 var(--s-size-medium);
+    color: var(--s-color-theme-accent);
 
     .el-icon-loading {
       color: var(--s-color-base-content-tertiary);

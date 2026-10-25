@@ -1,0 +1,134 @@
+{
+  "capturedAt": "2026-09-21T02:13:58.704Z",
+  "blockHeight": 27721093,
+  "blockHash": "0x9dd15d4e91088e8436f85a37d98e4ae44aa977fbf292028c989a6b75a553294e",
+  "blockTimestampMilliseconds": "1789956564000",
+  "extrinsicIndex": 1,
+  "txHash": "0x0e302df6e88e4c0a6f208df146a3bab41f1d3d39de0198f6653f2b8dc0749896",
+  "signer": "cnTdP4jfCs6tEHoFTVvCUZtQqxjKXzQwYCNucDCkDsFrc9w6F",
+  "call": {
+    "callIndex": "0x0b02",
+    "args": {
+      "calls": [
+        {
+          "callIndex": "0x1504",
+          "args": {
+            "asset_id": {
+              "code": "0x0200000000000000000000000000000000000000000000000000000000000000"
+            },
+            "amount": "0x00000000000000001bc16d674ec80000"
+          }
+        },
+        {
+          "callIndex": "0x0000",
+          "args": {
+            "remark": "0x7b22617070223a22706f6c6b6173776170222c226b696e64223a22746f6e737761702d786f722d6275726e222c2276657273696f6e223a317d"
+          }
+        }
+      ]
+    }
+  },
+  "events": [
+    {
+      "section": "balances",
+      "method": "Withdraw",
+      "data": [
+        "cnTdP4jfCs6tEHoFTVvCUZtQqxjKXzQwYCNucDCkDsFrc9w6F",
+        "0x00000000000000000a856a9f6bfb3c60"
+      ]
+    },
+    {
+      "section": "balances",
+      "method": "Withdraw",
+      "data": [
+        "cnTdP4jfCs6tEHoFTVvCUZtQqxjKXzQwYCNucDCkDsFrc9w6F",
+        "0x00000000000000001bc16d674ec80000"
+      ]
+    },
+    {
+      "section": "balances",
+      "method": "Rescinded",
+      "data": [
+        "0x00000000000000001bc16d674ec80000"
+      ]
+    },
+    {
+      "section": "assets",
+      "method": "Burn",
+      "data": [
+        "cnTdP4jfCs6tEHoFTVvCUZtQqxjKXzQwYCNucDCkDsFrc9w6F",
+        {
+          "code": "0x0200000000000000000000000000000000000000000000000000000000000000"
+        },
+        "0x00000000000000001bc16d674ec80000"
+      ]
+    },
+    {
+      "section": "utility",
+      "method": "ItemCompleted",
+      "data": []
+    },
+    {
+      "section": "utility",
+      "method": "ItemCompleted",
+      "data": []
+    },
+    {
+      "section": "utility",
+      "method": "BatchCompleted",
+      "data": []
+    },
+    {
+      "section": "xorFee",
+      "method": "FeeWithdrawn",
+      "data": [
+        "cnTdP4jfCs6tEHoFTVvCUZtQqxjKXzQwYCNucDCkDsFrc9w6F",
+        "0x00000000000000000a856a9f6bfb3c60"
+      ]
+    },
+    {
+      "section": "balances",
+      "method": "Rescinded",
+      "data": [
+        "0x000000000000000004550dc92c768246"
+      ]
+    },
+    {
+      "section": "balances",
+      "method": "Rescinded",
+      "data": [
+        "0x000000000000000004f37d7832d094e2"
+      ]
+    },
+    {
+      "section": "balances",
+      "method": "Rescinded",
+      "data": [
+        "0x0000000000000000013cdf5e0cb42538"
+      ]
+    },
+    {
+      "section": "transactionPayment",
+      "method": "TransactionFeePaid",
+      "data": [
+        "cnTdP4jfCs6tEHoFTVvCUZtQqxjKXzQwYCNucDCkDsFrc9w6F",
+        "0x00000000000000000a856a9f6bfb3c60",
+        0
+      ]
+    },
+    {
+      "section": "system",
+      "method": "ExtrinsicSuccess",
+      "data": [
+        {
+          "weight": {
+            "refTime": 758108966,
+            "proofSize": 345083
+          },
+          "class": "Normal",
+          "paysFee": "Yes"
+        }
+      ]
+    }
+  ]
+}

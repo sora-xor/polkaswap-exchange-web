@@ -1,0 +1,115 @@
+{
+  "reviewedAt": "2026-09-30",
+  "files": [
+    {
+      "file": "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/agricultural-peer-review.json",
+      "bytes": 7429,
+      "sha256": "3e113de4b5bdce2b2960d3b55038a1b5a27d545f1d5cbc39c5986eba89477143"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/decree1971-provenance.json",
+      "bytes": 222,
+      "sha256": "caa8f00b21d07871f0d28f646547c496b46ad5d99e3c93a3f250a31768d43c9e"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/efda-food-media-retrieval.json",
+      "bytes": 343,
+      "sha256": "0b26f6db7dbdf77a201ee292a918c5e6c752a42acb74a27897818cab80ee096d"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/efda-food-media.response.txt",
+      "bytes": 212,
+      "sha256": "b0a830be698e02fc34f3c7a312ccc260689d4840950ad1444f8c49834819f83a"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/et-1400-43310.pdf",
+      "bytes": 1139076,
+      "sha256": "745c049aca6134f276e9883ef334a8d3ba864d67e176e57a3b5ebd765829428c"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/et-1400-43311.pdf",
+      "bytes": 1139076,
+      "sha256": "745c049aca6134f276e9883ef334a8d3ba864d67e176e57a3b5ebd765829428c"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/et-1400-43311.txt",
+      "bytes": 157012,
+      "sha256": "809899bc5c8063bba91c9516bb5460ef4f3cd6ff54b00b9cfe12ab73f0d12fb3"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/et-1400-english-column.txt",
+      "bytes": 61226,
+      "sha256": "b53760fec5d2e5a4bacc5f1c18fb25dad7a23ef6458999e0c3774242bd362fe6"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/et-agricultural-proposed-row.json",
+      "bytes": 21278,
+      "sha256": "849bfba1458b256a897d228857a762ac9975de431dfded4243803cc5bcf276b6"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/et-current-p3.png",
+      "bytes": 385806,
+      "sha256": "b19e69d9641bf6eabe188863e8b8bd0ff215ebf7cfd9cc9e33c5003254a05487"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/et-decree56-1971.pdf",
+      "bytes": 5468911,
+      "sha256": "03f6b8a48228d2bbf1d2888274c1b61decb800b3ae910504ce9bb0ed6621bb4b"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/et-decree56-1971.txt",
+      "bytes": 7,
+      "sha256": "9e43591d85d480f056a1e21f8ddfa0de6ca3a31ca1f1bc0428a9e93b52b1f6eb"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/et-decree56-p2.png",
+      "bytes": 2120454,
+      "sha256": "1defc42b51f02a7724ce51ed1acf82e8106e1c96b19c2b99c4800c6540947d99"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/et-reg4-1992.pdf",
+      "bytes": 162089,
+      "sha256": "7191c502730bd59a0e0c9a544464333f05f3f1372ee48134f5cd9a6af0fe7bc8"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/et-reg4-1992.txt",
+      "bytes": 19761,
+      "sha256": "4972c69b038a677c45772727ca337c58e1174615531a6b951e6bdf680c014c6c"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/law-page.response.txt",
+      "bytes": 263889,
+      "sha256": "bd5e94e1cdf5d58bc95675d9fbfc58febcea6103ddb7f54f4ba1e9ad09e87058"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/pdf-retrieval.json",
+      "bytes": 819,
+      "sha256": "fa3486ef89b1216d71f88b7b3af7d0089d81a6207b34e0d91aa84dea7a0aab01"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/reg1992-provenance.json",
+      "bytes": 262,
+      "sha256": "32614f566cb897bf16726b9e459991f0b6c571feb8b572e0021bdf55469e8879"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/retrieval.json",
+      "bytes": 19613,
+      "sha256": "4865ccf1aefbe5207402530b3f09c71962401c66b1436c14eee4d573ee01ebf0"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/wp-law-api.response.txt",
+      "bytes": 1227854,
+      "sha256": "1649241ae86f311779d880738a371b0f95483eff5e18c3b564bbe97fd83c4917"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/wp-media.response.txt",
+      "bytes": 316775,
+      "sha256": "d43528a48b994b20617fcfe5b5fa1f8d569c268c85a429e3c3b891f80b6dae15"
+    },
+    {
+      "file": "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/wp-search.response.txt",
+      "bytes": 2559,
+      "sha256": "6095f29f1d39a461efd6900f1377b3f020e733d854e0b26db82a2810e2e2b51c"
+    }
+  ]
+}

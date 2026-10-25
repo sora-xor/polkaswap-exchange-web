@@ -1,0 +1,24 @@
+{
+  "reviewedAt": "2026-09-30",
+  "mainArraysEdited": false,
+  "scope": "DM CW SX VG TC; industrial100gJapanplainsealedsteam-manufacturedsencha, privatepost, nospecialdocuments",
+  "proposals": {
+    "DM": "conditional supported: domestic pest-capability scope + domestic processing explanation + actual tea manufacturing evidence. Root review required.",
+    "TC": "permit_required/not_supported: conservative actual nonlivingleaf-part statutoryscope; strongest manufacturing/ISPM alternative preserved. Root review required.",
+    "CW": "unchanged unresolved; new2025country/islandindex recovery does not publish missing botanicalscope.",
+    "SX": "unchanged unresolved; recovered2022approvedpolicy identifies historical lackofplantlegislation, cannot overrule currentLVVcontrols without currentscope.",
+    "VG": "unchanged unresolved; actual currentCap93/subsidiarytexts not inpublicDrupalsearch, knownfromcurrentindex."
+  },
+  "sourcesManifest": "sources.json",
+  "exactExcerpts": [
+    "dm-exact-excerpts.txt",
+    "tc-exact-excerpts.txt"
+  ],
+  "fullRowFiles": [
+    "dm-proposed-row.json",
+    "tc-proposed-row.json",
+    "cw-source-only-row.json",
+    "sx-source-only-row.json",
+    "vg-source-only-row.json"
+  ]
+}

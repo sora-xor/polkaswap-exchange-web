@@ -1,0 +1,72 @@
+{
+  "code": "SL",
+  "reviewedAt": "2026-09-30",
+  "outcome": "unresolved",
+  "scope": "Recover the full Plant Phytosanitary (Import) Rules, P.N.66/1974; determine the parent scope and the interaction of Rule 9 with the 1976 cooked-food exception for a paid private postal purchase of 100 g sealed plain industrially steamed, rolled and dried Japanese sencha.",
+  "parentRulesRecovered": false,
+  "newPrimarySource": {
+    "title": "Agricultural Ordinance, Cap 185, 1960 compilation of the 1946 Ordinance",
+    "authority": "Sierra Leone Law Reform Commission",
+    "url": "https://publications.lawreform.gov.sl/download_file/929dedee-5526-48c7-8e0e-f13f1a850535/349",
+    "index": "https://publications.lawreform.gov.sl/laws-sierra-leone/navigate/298/826",
+    "sourceFile": "docs/reports/tea-audit-work/africa-scope-resolution/sl/sl-cap185.pdf",
+    "textFile": "docs/reports/tea-audit-work/africa-scope-resolution/sl/sl-cap185.txt",
+    "pages": 7,
+    "dating": "The website posted the historical compilation on 19 April 2026. That is an upload date, not new enactment. Title page cites Ordinances 23/1946 and 29/1949, commencement 15 September 1946."
+  },
+  "primaryFindings": [
+    {
+      "provision": "Cap 185 s 2 opening, printed 1938/PDF 1",
+      "finding": "Its definitions apply both to the Ordinance and rules made under it, unless the context otherwise requires."
+    },
+    {
+      "provision": "Cap 185 s 2, printed 1939/PDF 2",
+      "finding": "Plant includes leaves and every part, living or dead, severed or attached. Produce includes soil products in raw, partly manufactured and wholly manufactured forms. No risk-qualified manufactured-product definition or ISPM interpretation clause appears in the full seven-page Act."
+    },
+    {
+      "provision": "Cap 185 s 3(1–2),(5–6), printed 1940/PDF 3",
+      "finding": "The Act authorizes plant-pest rules and import/landing regulation. These enabling powers do not themselves impose an import permit on this shipment."
+    },
+    {
+      "provision": "Cap 185 s 3(34), printed 1943/PDF 6",
+      "finding": "The Act authorizes rules exempting agricultural produce. This delegation is not itself an operative exemption."
+    },
+    {
+      "provision": "1976 Notice introductory paragraphs, printed page 252/PDF page 12, previously visually verified",
+      "finding": "The Notice is issued under parent Rule 9 and states the cooked/pickled exclusion applies for purposes of this Notice. Its grammar permits the reading cooked OR (pickled AND bottled/canned). The clause does not on its face amend or waive an independent parent-rule permit duty."
+    }
+  ],
+  "assessment": "The broad default parent definition defeats an automatic manufacturing exclusion from the term plant. It does not prove that tea is prohibited or that a permit is definitely necessary, because the complete 1974 Rules, including exceptions and Rule 9 scope, remain unavailable. Commercial steaming can support a cooked-material argument; no tea-specific agency ruling is intrinsically needed. However, accepting that argument for the 1976 Notice alone does not answer a separate parent permit rule. The result therefore remains unresolved on a defined legal-text/interaction gap, rather than absence of a named tea exemption.",
+  "secondaryLeadOnly": {
+    "url": "https://rspo.org/wp-content/uploads/2_Sierra-Leone-LCT-Review%20%281%29.pdf",
+    "finding": "The RSPO review reproduces a broad 1974 Rule 2 permit requirement for living/dead plants, seeds, soil and soil-mixed material. It was a retrieval lead only; its partial quotation cannot establish all parent exceptions or the legal relationship with the 1976 Notice."
+  },
+  "exhaustedSpecificRoutes": [
+    {
+      "url": "https://gazettes.africa/gazettes/sl/1974",
+      "result": "HTTP 200 index explicitly reports 0 gazettes and no documents. The country inventory has 1972 then 1976, without 1974. The archive/sl/1974 directory separately returned 404."
+    },
+    {
+      "url": "https://publications.lawreform.gov.sl/laws-sierra-leone/navigate/390/826",
+      "result": "The official Commission 1974 Instruments folder is linked from its Instruments index, but explicitly reports No files found. 1975 contains 2 unrelated electoral/tax files; 1976 is also empty."
+    },
+    {
+      "url": "https://publications.lawreform.gov.sl/laws-sierra-leone?keywords=phytosanitary&search=search",
+      "result": "HTTP 200 global document-library keyword search reports No files found. Agricultural search found only 2023 research and 2024 environmental legislation;1974 search exposed folders/unrelated acts, noPN 66."
+    },
+    {
+      "url": "https://sierralii.gov.sl/legislation/all",
+      "result": "All-legislation inventory contains 106 documents and offers years 1972,1976,1977 then modern material, without 1974. No parent rules recovered. The separate search page was a JavaScript shell and was not interpreted as zero results."
+    },
+    {
+      "url": "https://www.ippc.int/en/countries/sierra-leone/reportingobligation/4",
+      "result": "The actual linked phytosanitary legislation category reports No Reporting obligations available. Country membership is not evidence of an exemption."
+    },
+    {
+      "url": "https://www.fao.org/faolex/country-profiles/general-profile/en/?iso3=SLE",
+      "result": "Direct country-profile request returned 403. Exact FAOLEX/title/number indexed searches returned plans/reviews and the already-held 1976 Notice, not the full 1974 Rules. ECOLEX query timed out; no repeat fetch."
+    }
+  ],
+  "remainingQuestion": "Recover the complete operative P.N.66/1974, especially definitions, Rule 2 exceptions and Rule 9 scope, or an authoritative general rule that determines how the 1976 cooked-food exclusion affects the parent import duty. Then apply the cooking clause to industrial steaming and its container qualification. No bespoke tea ruling is required if those generic rules decide the question.",
+  "mainArraysEdited": false
+}

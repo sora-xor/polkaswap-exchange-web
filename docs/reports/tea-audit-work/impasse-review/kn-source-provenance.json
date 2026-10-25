@@ -1,0 +1,37 @@
+[
+  {
+    "path": "kn-requirements2012.doc",
+    "sourceUrl": "https://assets.ippc.int/static/media/files/reportingobligation/2015/04/10/1133187921307_PHYTOSANITARY_REQUIREMENTS_2013042321-18En.doc",
+    "retrievedAt": "2026-09-30",
+    "sha256": "963a69b740cd73da920f1b2a0bfe44078dd011f3ff8b97ddc3210db551f71e9a",
+    "bytes": 19968
+  },
+  {
+    "path": "kn-restrictions2012.doc",
+    "sourceUrl": "https://assets.ippc.int/static/media/files/reportingobligation/2015/04/10/1133187600333_PHYTOSANITARY_RESTRICTIONS_AND_PROHIBITIONS_2013042321-18En.doc",
+    "retrievedAt": "2026-09-30",
+    "sha256": "83aafedc1f2cd3299303ab7205c5676aad9869102aa8d24817a9b52690cf5feb",
+    "bytes": 19968
+  },
+  {
+    "path": "kn-requirements-report.html",
+    "sourceUrl": "https://www.ippc.int/en/countries/saint-kitts-and-nevis/reportingobligation/2012/12/phytosanitary-requirements/",
+    "retrievedAt": "2026-09-30",
+    "sha256": "f3ea3906a99b0c69a604259e68942ffd7ec8dadc700d5554e0e7636c860883bd",
+    "bytes": 75620
+  },
+  {
+    "path": "kn-restrictions-report.html",
+    "sourceUrl": "https://www.ippc.int/en/countries/saint-kitts-and-nevis/reportingobligation/2012/12/phytosanitary-restrictions/",
+    "retrievedAt": "2026-09-30",
+    "sha256": "84352d536cd01e1fc4cbe01d7860a582fb0e2085f95f170cd238302c2bf95534",
+    "bytes": 75637
+  },
+  {
+    "path": "kn-ippc-report-backlink.html",
+    "sourceUrl": "https://www.ippc.int/en/countries/saint-kitts-and-nevis/reportingobligation/4",
+    "retrievedAt": "2026-09-30",
+    "sha256": "9f7b10e5981d3be4187329c9ea19b0895a488b305600d6c83240d11a9a0b4e32",
+    "bytes": 77057
+  }
+]

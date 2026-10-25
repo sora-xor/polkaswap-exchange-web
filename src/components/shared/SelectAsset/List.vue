@@ -2,14 +2,13 @@
   <asset-list
     :assets="assets"
     v-bind="$attrs"
-    v-on="$listeners"
     :selectable="false"
     class="asset-select-list"
     data-test-name="selectToken"
   >
     <template #list-empty>
       <div class="asset-select-list__empty">
-        <span class="empty-results-icon" />
+        <span class="empty-results-icon"></span>
         {{ t('selectToken.emptyListMessage') }}
       </div>
     </template>
@@ -17,25 +16,25 @@
     <template #default="token">
       <div v-if="connected" class="asset__balance-container">
         <button
-          v-if="formatBalance(token) !== FormattedZeroSymbol"
+          v-if="hasFormattedBalance(token)"
           @click.stop="togglePinnedAsset(token)"
           class="pin-button"
           :title="isAssetPinned(token) ? t('addAsset.unpinAsset') : t('addAsset.pinAsset')"
         >
-          <pin-icon :is-pinned="isAssetPinned(token)" />
+          <pin-icon :is-pinned="isAssetPinned(token)"></pin-icon>
         </button>
 
         <formatted-amount-with-fiat-value
-          v-if="formatBalance(token) !== FormattedZeroSymbol"
+          v-if="hasFormattedBalance(token)"
           value-class="asset__balance"
           value-can-be-hidden
-          :value="formatBalance(token)"
+          :value="getFormattedBalance(token)"
           :font-size-rate="FontSizeRate.MEDIUM"
           :has-fiat-value="shouldFiatBeShown(token)"
-          :fiat-value="getFiatBalance(token)"
+          :fiat-value="getFormattedFiatBalance(token)"
           :fiat-font-size-rate="FontSizeRate.MEDIUM"
           :fiat-font-weight-rate="FontWeightRate.MEDIUM"
-        />
+        ></formatted-amount-with-fiat-value>
 
         <span v-else class="asset__balance">
           <button
@@ -43,68 +42,141 @@
             class="pin-button"
             :title="isAssetPinned(token) ? t('addAsset.unpinAsset') : t('addAsset.pinAsset')"
           >
-            <pin-icon :is-pinned="isAssetPinned(token)" />
+            <pin-icon :is-pinned="isAssetPinned(token)"></pin-icon>
           </button>
         </span>
       </div>
-      <slot name="action" v-bind="token" />
+      <slot name="action" v-bind="token"></slot>
     </template>
   </asset-list>
 </template>
 
-<script lang="ts">
-import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { toRef, watch } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { getter, mutation } from '@/store/decorators';
-import { formatAssetBalance } from '@/utils';
+import { useTranslation } from '@/composables/useTranslation';
+import { useAssetFormatting } from '@/composables/useAssetFormatting';
+import { FontSizeRate, FontWeightRate } from '@/lib/soraneo-wallet/src/consts';
+import { useWalletStore } from '@/stores/wallet';
 
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Nullable } from '@/types/common';
+import WalletComponentAssetList from '@/lib/soraneo-wallet/src/components/AssetList.vue';
+import WalletComponentPinIcon from '@/lib/soraneo-wallet/src/components/PinIcon.vue';
+import WalletComponentFormattedAmountWithFiatValue from '@/lib/soraneo-wallet/src/components/FormattedAmountWithFiatValue.vue';
 
-@Component({
+defineOptions({
+  name: 'SelectAssetList',
   components: {
-    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
-    AssetList: components.AssetList,
-    PinIcon: components.PinIcon,
+    AssetList: WalletComponentAssetList,
+    PinIcon: WalletComponentPinIcon,
+    FormattedAmountWithFiatValue: WalletComponentFormattedAmountWithFiatValue,
   },
-})
-export default class SelectAssetList extends Mixins(TranslationMixin, mixins.FormattedAmountMixin) {
-  @Prop({ default: () => [], type: Array }) readonly assets!: AccountAsset;
-  @Prop({ default: false, type: Boolean }) readonly connected!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly shouldBalanceBeHidden!: boolean;
-  @Prop({ default: true, type: Boolean }) readonly isSoraToEvm!: boolean;
+});
 
-  @getter.wallet.account.isAssetPinned isAssetPinned!: (asset: AccountAsset) => boolean;
+const props = withDefaults(
+  defineProps<{
+    assets?: Asset[];
+    connected?: boolean;
+    shouldBalanceBeHidden?: boolean;
+    isSoraToEvm?: boolean;
+  }>(),
+  {
+    assets: () => [],
+    connected: false,
+    shouldBalanceBeHidden: false,
+    isSoraToEvm: true,
+  }
+);
 
-  @mutation.wallet.account.setPinnedAsset setPinnedAsset!: (asset: AccountAsset) => void;
-  @mutation.wallet.account.removePinnedAsset removePinnedAsset!: (asset: AccountAsset) => void;
+const assets = toRef(props, 'assets');
+const connected = toRef(props, 'connected');
 
-  readonly FormattedZeroSymbol = '-';
-  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
-  readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
-  readonly HiddenValue = WALLET_CONSTS.HiddenValue;
+const { t } = useTranslation();
+const { formatAssetBalance, getFiatBalance, getAssetFiatPrice } = useAssetFormatting();
+const walletStore = useWalletStore();
 
-  togglePinnedAsset(asset: AccountAsset): void {
-    if (this.isAssetPinned(asset)) {
-      this.removePinnedAsset(asset);
-    } else {
-      this.setPinnedAsset(asset);
-    }
+const FormattedZeroSymbol = '-';
+type AssetDisplay = {
+  balance: string;
+  fiatBalance: Nullable<string>;
+  hasBalance: boolean;
+  hasFiatValue: boolean;
+};
+type AssetDisplayCacheEntry = {
+  key: string;
+  display: AssetDisplay;
+};
+type AssetDisplayFields = Asset &
+  Partial<AccountAsset> & {
+    externalBalance?: string | null;
+    externalDecimals?: number | null;
+  };
+
+const assetDisplayCache = new Map<string, AssetDisplayCacheEntry>();
+
+watch(assets, () => assetDisplayCache.clear());
+
+const isAssetPinned = (asset: Asset): boolean => {
+  return walletStore.isAssetPinned(asset);
+};
+
+const togglePinnedAsset = (asset: Asset): void => {
+  if (isAssetPinned(asset)) {
+    walletStore.removePinnedAsset(asset);
+  } else {
+    walletStore.setPinnedAsset(asset);
+  }
+};
+
+/** Builds a stable cache key from the fields that affect row amount display. */
+const getAssetDisplayCacheKey = (asset: Asset): string => {
+  const displayAsset = asset as AssetDisplayFields;
+  const balanceFingerprint = props.isSoraToEvm
+    ? `${displayAsset.balance?.transferable ?? ''}:${asset.decimals ?? ''}`
+    : `${displayAsset.externalBalance ?? ''}:${displayAsset.externalDecimals ?? ''}`;
+
+  return [
+    asset.address,
+    props.isSoraToEvm ? 'internal' : 'external',
+    balanceFingerprint,
+    getAssetFiatPrice(asset) ?? '',
+  ].join('|');
+};
+
+/** Formats row balance and fiat values once per asset display state. */
+const getAssetDisplay = (asset: Asset): AssetDisplay => {
+  const key = getAssetDisplayCacheKey(asset);
+  const cached = assetDisplayCache.get(asset.address);
+
+  if (cached?.key === key) {
+    return cached.display;
   }
 
-  formatBalance(token: AccountAsset): string {
-    return formatAssetBalance(token, {
-      internal: this.isSoraToEvm,
-      showZeroBalance: false,
-      formattedZero: this.FormattedZeroSymbol,
-    });
-  }
+  const balance = formatAssetBalance(asset, {
+    internal: props.isSoraToEvm,
+    showZeroBalance: true,
+    formattedZero: FormattedZeroSymbol,
+  });
+  const hasFiatValue = Boolean(props.isSoraToEvm && getAssetFiatPrice(asset));
+  const display: AssetDisplay = {
+    balance,
+    fiatBalance: hasFiatValue ? getFiatBalance(asset as AccountAsset) : null,
+    hasBalance: balance !== FormattedZeroSymbol,
+    hasFiatValue,
+  };
 
-  shouldFiatBeShown(asset: AccountAsset): boolean {
-    return !!this.isSoraToEvm && !!this.getAssetFiatPrice(asset);
-  }
-}
+  assetDisplayCache.set(asset.address, { key, display });
+
+  return display;
+};
+
+const hasFormattedBalance = (asset: Asset): boolean => getAssetDisplay(asset).hasBalance;
+const getFormattedBalance = (asset: Asset): string => getAssetDisplay(asset).balance;
+const getFormattedFiatBalance = (asset: Asset): Nullable<string> => getAssetDisplay(asset).fiatBalance;
+const shouldFiatBeShown = (asset: Asset): boolean => {
+  return getAssetDisplay(asset).hasFiatValue;
+};
 </script>
 
 <style lang="scss">
@@ -123,6 +195,8 @@ export default class SelectAssetList extends Mixins(TranslationMixin, mixins.For
     &__balance {
       line-height: var(--s-line-height-small);
       font-weight: 800;
+
+      @include formatted-amount-tooltip;
     }
 
     &__balance-container {

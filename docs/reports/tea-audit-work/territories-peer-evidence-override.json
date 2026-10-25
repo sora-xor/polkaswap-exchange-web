@@ -1,0 +1,53 @@
+[
+  {
+    "code": "SH",
+    "status": "conditional",
+    "rule": "For St Helena island, government food-import guidance allows commercially preserved, sealed and labelled foods without an import licence unless a specific health standard applies. Ascension's guidance limits extra requirements to listed controlled articles; dried retail tea does not match those categories. Tristan da Cunha has separate biosecurity controls and is not cleared by those findings. The government-hosted consolidated 2021 Biosecurity Ordinance is marked not yet in force; its commencement order was not located, so its specification/licence regime is not asserted to be operative.",
+    "personalMailApplicability": "Destination code SH spans separate island jurisdictions. Use the St Helena/Ascension conclusion only after checking the delivery island; hold Tristan addresses pending its conditions.",
+    "quantityLimit": null,
+    "authority": "St Helena Government; Ascension Island Government; Tristan da Cunha Government",
+    "evidenceUrls": [
+      "https://sthelenapublicservicejobs.sh/wp-content/uploads/2023/06/General-guidelines-for-food-importations-Updated-Oct-2021.pdf",
+      "https://www.ascension.gov.ac/travel-and-shipping/biosecurity",
+      "https://www.sainthelena.gov.sh/app/uploads/gazette/Ordinance-2-Biosecurity-Ordinance-2021-TDC.pdf",
+      "https://www.tristandc.com/visitsships.php",
+      "https://www.tristandc.com/wildlife/biosecurityrules-2025-10-02.php",
+      "https://www.sainthelena.gov.sh/wp-content/uploads/2022/01/Biosecurity-Ordinance.pdf",
+      "https://www.sainthelena.gov.sh/st-helena/government/legislation/laws-of-tristan-da-cunha/alphabetical-list-tristan-da-cunha/",
+      "https://www.sainthelena.gov.sh/gazette/",
+      "https://www.sainthelena.gov.sh/documents/Export-Import-Control-TdC-Ordinance",
+      "https://www.sainthelena.gov.sh/documents/Conservation-etc.-TdaC-Ordinance",
+      "https://www.sainthelena.gov.sh/documents/Island-Council-TdaC-Ordinance",
+      "https://www.sainthelena.gov.sh/documents/Tristan-da-Cunha-Applied-SH-Laws-List-Updated-010418",
+      "https://www.sainthelena.gov.sh/documents/app-of-sh-law-to-tdc-ord-updated-180620/",
+      "https://www.sainthelena.gov.sh/documents/food-safety-ordinance-corrected-2.pdf"
+    ],
+    "remainingQuestion": "Establish operative Tristan biosecurity rules and the published scope of the current live/dead-plants import warning for factory-sealed steamed/dried tea sent by post. The 2021 ordinance commencement and a manufactured-tea condition were not established; Island Council section 15/Schedule 3(f) are enabling powers, with by-laws able to commence by local notice-board publication. Food-business duties cannot be automatically transferred to a private consumer. A published applicable rule could resolve this without a bespoke individual ruling. Do not approve every SH address by country code alone.",
+    "researchAttempts": [
+      "Read St Helena preserved-food guidance, Ascension controlled-article and package guidance, and Tristan's separate ordinance and import warning.",
+      "30 September: checked the government’s 2 October 2025 visiting-vessel biosecurity measures, which address cargo cleanliness, declarations and inspection but do not publish an automatic manufactured-tea import specification under the 2021 ordinance. No country-wide clearance inferred.",
+      "30 September final public-source check: read the consolidated 2021 Biosecurity Ordinance and identified its not-yet-in-force headnote. Checked current official legislation indexes and Gazette listings; no commencement order was established. Sections 8–9 would distinguish existing specifications from licence applications if operative, but must not be treated as current law merely because the text was enacted. The 1976 Export and Import Control Ordinance concerns separately designated/CITES goods; the 2006 conservation law concerns living non-native organisms. Neither supplies a specific current retail-tea condition. The remaining gap is the operative regime as well as any applicable specification.",
+      "2026-09-30: Recovered the current Tristan law and Gazette indexes, local Island Council by-laws, law-application statute and government applied-law guide. The guide excludes St Helena’s Plants Protection Ordinance and lists Food Safety law subject to local suitability. Agriculture by-laws concern land/livestock; Public Health by-law 12 authorizes food inspection. Food Hygiene regulation 4(4) requires notice from food business operators, which does not establish an unqualified private-recipient duty. No 2021 Biosecurity commencement or manufactured-tea specification recovered. The current Biosecurity index link wrongly downloads Ascension’s 2020 law; that document was not substituted for Tristan law.",
+      "2026-09-30 independent scope peer review: Island Council Ordinance section 15(1) and Schedule 3(f) authorize making by-laws controlling potentially diseased living/dead plant and animal imports; they do not themselves enact a blanket import ban or certificate. Section 15(5) allows by-laws to commence by posting on the Administrator’s local public notice board, so the online source record cannot establish that no other operative rule exists. This narrows the significance of the broad plant wording but does not resolve manufactured personal postal tea. St Helena/Ascension findings and unresolved country-wide decision are unchanged."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "Establish operative Tristan biosecurity rules and the published scope of the current live/dead-plants import warning for factory-sealed steamed/dried tea sent by post. The 2021 ordinance commencement and a manufactured-tea condition were not established; Island Council section 15/Schedule 3(f) are enabling powers, with by-laws able to commence by local notice-board publication. Food-business duties cannot be automatically transferred to a private consumer. A published applicable rule could resolve this without a bespoke individual ruling. Do not approve every SH address by country code alone.",
+    "permitFreeSources": [
+      "https://sthelenapublicservicejobs.sh/wp-content/uploads/2023/06/General-guidelines-for-food-importations-Updated-Oct-2021.pdf",
+      "https://www.ascension.gov.ac/travel-and-shipping/biosecurity",
+      "https://www.sainthelena.gov.sh/app/uploads/gazette/Ordinance-2-Biosecurity-Ordinance-2021-TDC.pdf",
+      "https://www.tristandc.com/visitsships.php",
+      "https://www.sainthelena.gov.sh/wp-content/uploads/2022/01/Biosecurity-Ordinance.pdf",
+      "https://www.sainthelena.gov.sh/st-helena/government/legislation/laws-of-tristan-da-cunha/alphabetical-list-tristan-da-cunha/",
+      "https://www.sainthelena.gov.sh/gazette/",
+      "https://www.sainthelena.gov.sh/documents/Export-Import-Control-TdC-Ordinance",
+      "https://www.sainthelena.gov.sh/documents/Conservation-etc.-TdaC-Ordinance",
+      "https://www.sainthelena.gov.sh/documents/Island-Council-TdaC-Ordinance",
+      "https://www.sainthelena.gov.sh/documents/Tristan-da-Cunha-Applied-SH-Laws-List-Updated-010418",
+      "https://www.sainthelena.gov.sh/documents/app-of-sh-law-to-tdc-ord-updated-180620/",
+      "https://www.sainthelena.gov.sh/documents/food-safety-ordinance-corrected-2.pdf",
+      "https://www.tristandc.com/wildlife/biosecurityrules-2025-10-02.php"
+    ]
+  }
+]

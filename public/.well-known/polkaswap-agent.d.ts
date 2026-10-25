@@ -1,0 +1,919 @@
+export type PolkaswapAgentSwapSide = 'input' | 'output';
+export type PolkaswapAgentDexId = 'best' | number;
+export type PolkaswapAgentHistoryItem = Record<string, unknown>;
+export type PolkaswapAgentTransactionLookup = 'local' | 'indexer' | 'chain' | 'any';
+export type PolkaswapAgentTransactionSubscriptionSource = 'local' | 'indexer' | 'all';
+
+export interface PolkaswapAgentAssetRef {
+  address?: string;
+  symbol?: string;
+}
+
+export interface PolkaswapAgentReadyOptions {
+  requireNode?: boolean;
+  requireWallet?: boolean;
+  timeoutMs?: number;
+}
+
+export interface PolkaswapAgentWalletAccountsRequest {
+  source: string;
+}
+
+export interface PolkaswapAgentWalletConnectRequest {
+  source: string;
+  address?: string;
+}
+
+export interface PolkaswapAgentAssetsRequest {
+  query?: string;
+  includeBalances?: boolean;
+}
+
+export interface PolkaswapAgentResolveAssetRequest {
+  asset: PolkaswapAgentAssetRef;
+  includeBalance?: boolean;
+}
+
+export interface PolkaswapAgentSwapRequestBase {
+  assetIn: PolkaswapAgentAssetRef;
+  assetOut: PolkaswapAgentAssetRef;
+  amount: string;
+  quoteTimeoutMs?: number;
+}
+
+/** Omit execution to retain the existing quote/preparation behavior. */
+export interface PolkaswapAgentLegacySwapRequest extends PolkaswapAgentSwapRequestBase {
+  execution?: undefined;
+  side?: PolkaswapAgentSwapSide;
+  slippageTolerance?: string;
+  liquiditySource?: string;
+  dexId?: PolkaswapAgentDexId | string;
+}
+
+/** Exactly these two own data fields; expectedDenominator is a positive canonical u128 string. */
+export interface PolkaswapAgentGoalSwapExecutionRequest {
+  protocol: 'finalized-xyk-native-fee-v1';
+  expectedDenominator: string;
+}
+
+/** KUSD/XOR only, in either direction. These selectors must be supplied explicitly. */
+export interface PolkaswapAgentFinalizedSwapRequest extends PolkaswapAgentSwapRequestBase {
+  execution: PolkaswapAgentGoalSwapExecutionRequest;
+  side: 'input';
+  dexId: 0;
+  liquiditySource: 'XYKPool';
+  slippageTolerance: '0.5';
+}
+
+export type PolkaswapAgentSwapRequest = PolkaswapAgentLegacySwapRequest | PolkaswapAgentFinalizedSwapRequest;
+
+/** Detached evidence, not a provider-owned context or permission to trade. */
+export interface PolkaswapAgentFinalizedCodecBinding {
+  readonly genesisHash: string;
+  readonly blockHash: string;
+  readonly runtimeVersion: Readonly<{ specVersion: number; transactionVersion: number }>;
+  readonly metadataSha256: string;
+  readonly metadataVersion: number;
+  readonly signedExtensions: readonly string[];
+}
+
+/** SCALE envelope used only to estimate a bounded native fee; it contains a placeholder signature. */
+export interface PolkaswapAgentFinalizedFeeEnvelope extends PolkaswapAgentFinalizedCodecBinding {
+  readonly policy: Readonly<Record<string, unknown>>;
+  readonly policySha256: string;
+  readonly policyHashEncoding: 'sha256-json-utf8';
+  readonly assetIn: string;
+  readonly assetOut: string;
+  readonly amountInCodec: string;
+  readonly minimumCodec: string;
+  readonly feeAssetAddress: string;
+  readonly callHex: string;
+  readonly envelopeHex: string;
+  readonly encodedLength: number;
+  readonly envelopeSha256: string;
+  readonly feeQueryDataHex: string;
+  readonly estimation: Readonly<Record<string, unknown>>;
+  readonly signatureVerified: false;
+  readonly feeAdequacyVerified: false;
+  readonly transactionSubmitted: false;
+}
+
+/** Core public fields are typed; nested codec/pool details retain their full immutable JSON evidence. */
+export interface PolkaswapAgentFinalizedExecutionEstimate {
+  readonly status: 'available';
+  readonly context: {
+    readonly kind: 'finalized-browser-execution-context';
+    readonly policy: Readonly<Record<string, unknown>>;
+    readonly genesisHash: string;
+    readonly block: Readonly<{ hash: string; height: number; parentHash: string; timestampMs: number }>;
+    readonly checkedAtMs: number;
+    readonly receivedAtMs: number;
+    readonly expectedDenominator: string;
+    readonly codecBinding: PolkaswapAgentFinalizedCodecBinding;
+    readonly codeHash: string;
+    readonly pool: Readonly<Record<string, unknown>>;
+    readonly finalityAttestation: 'rpc-canonical-finalized';
+    readonly rpcCalls: number;
+    readonly observedFill: false;
+    readonly transactionSubmitted: false;
+  };
+  readonly request: Readonly<{ assetIn: string; assetOut: string; amountInCodec: string }>;
+  readonly checkedAtMs: number;
+  readonly receivedAtMs: number;
+  readonly rpcCalls: number;
+  readonly quote: {
+    readonly amountOutCodec: string;
+    readonly amountWithoutImpactCodec: string;
+    readonly minimumAmountOutCodec: string;
+    readonly poolFeeCodec: string;
+    readonly feeAssetAddress: string;
+    readonly route: readonly string[];
+    readonly dexId: 0;
+    readonly liquiditySource: 'XYKPool';
+    readonly slippageBps: 50;
+  };
+  readonly fee: {
+    readonly assetId: string;
+    readonly amountCodec: string;
+    readonly policy: Readonly<Record<string, unknown>>;
+    readonly policySha256: string;
+    readonly envelope: PolkaswapAgentFinalizedFeeEnvelope;
+    readonly info: Readonly<{ partialFeeCodec: string; rawQueryInfo: unknown }>;
+    readonly details: Readonly<{
+      inclusionFee: Readonly<{ baseFee: string; lenFee: string; adjustedWeightFee: string }> | null;
+      tip: string;
+      inclusionFeeTotal: string;
+      finalFee: string;
+      encodedHex: string;
+    }>;
+  };
+  readonly raw: Readonly<{ quote: unknown; info: unknown; details: unknown }>;
+  readonly feeAdequacyVerified: false;
+  readonly observedFill: false;
+  readonly transactionSubmitted: false;
+}
+
+export interface PolkaswapAgentGoalSwapExecutionEvidence {
+  readonly protocol: 'finalized-xyk-native-fee-v1';
+  readonly estimate: PolkaswapAgentFinalizedExecutionEstimate;
+}
+
+export interface PolkaswapAgentTransferRequest {
+  asset: PolkaswapAgentAssetRef;
+  to: string;
+  amount: string;
+}
+
+export interface PolkaswapAgentPoolInfoRequest {
+  assetA: PolkaswapAgentAssetRef;
+  assetB: PolkaswapAgentAssetRef;
+}
+
+export interface PolkaswapAgentLiquidityPositionsRequest {
+  assetA?: PolkaswapAgentAssetRef;
+  assetB?: PolkaswapAgentAssetRef;
+  timeoutMs?: number;
+}
+
+export interface PolkaswapAgentAddLiquidityRequest {
+  assetA: PolkaswapAgentAssetRef;
+  assetB: PolkaswapAgentAssetRef;
+  amountA?: string;
+  amountB?: string;
+  slippageTolerance?: string;
+  allowPoolCreation?: boolean;
+}
+
+export interface PolkaswapAgentRemoveLiquidityRequest {
+  assetA: PolkaswapAgentAssetRef;
+  assetB: PolkaswapAgentAssetRef;
+  liquidityAmount?: string;
+  percent?: string;
+  slippageTolerance?: string;
+  timeoutMs?: number;
+}
+
+/** The complete and only input accepted by every state-changing execute method. */
+export interface PolkaswapAgentExecutePreparedRequest {
+  intentId: string;
+  clientOrderId: string;
+}
+
+export interface PolkaswapAgentExecuteSwapRequest extends PolkaswapAgentExecutePreparedRequest {}
+export interface PolkaswapAgentExecuteTransferRequest extends PolkaswapAgentExecutePreparedRequest {}
+export interface PolkaswapAgentExecuteAddLiquidityRequest extends PolkaswapAgentExecutePreparedRequest {}
+export interface PolkaswapAgentExecuteRemoveLiquidityRequest extends PolkaswapAgentExecutePreparedRequest {}
+
+export interface PolkaswapAgentMaxAmountRequest {
+  asset: PolkaswapAgentAssetRef;
+}
+
+export interface PolkaswapAgentMaxSwapInputRequest {
+  assetIn: PolkaswapAgentAssetRef;
+  assetOut?: PolkaswapAgentAssetRef;
+}
+
+export interface PolkaswapAgentMaxAddLiquidityRequest {
+  assetA: PolkaswapAgentAssetRef;
+  assetB: PolkaswapAgentAssetRef;
+}
+
+export interface PolkaswapAgentMaxRemoveLiquidityRequest {
+  assetA: PolkaswapAgentAssetRef;
+  assetB: PolkaswapAgentAssetRef;
+  timeoutMs?: number;
+}
+
+export interface PolkaswapAgentTransactionStatusRequest {
+  id?: string;
+  txId?: string;
+  lookup?: PolkaswapAgentTransactionLookup;
+  blockHash?: string;
+  blockHeight?: string | number;
+}
+
+export interface PolkaswapAgentWaitForTransactionRequest extends PolkaswapAgentTransactionStatusRequest {
+  timeoutMs?: number;
+  status?: string;
+}
+
+export interface PolkaswapAgentRecoverTransactionRequest extends PolkaswapAgentTransactionStatusRequest {
+  clientOrderId?: string;
+  intentId?: string;
+  limit?: number;
+}
+
+export interface PolkaswapAgentRecentTransactionsRequest {
+  type?: string;
+  asset?: PolkaswapAgentAssetRef;
+  limit?: number;
+}
+
+export interface PolkaswapAgentTransactionSubscriptionRequest extends PolkaswapAgentRecentTransactionsRequest {
+  source?: PolkaswapAgentTransactionSubscriptionSource;
+  address?: string;
+  pollMs?: number;
+  includeExisting?: boolean;
+}
+
+export interface PolkaswapAgentStatusSubscriptionRequest {
+  pollMs?: number;
+  emitImmediately?: boolean;
+}
+
+export type PolkaswapAgentTransactionListener = (transaction: PolkaswapAgentHistoryItem) => void;
+export type PolkaswapAgentStatusListener = (status: PolkaswapAgentStatus) => void;
+export type PolkaswapAgentUnsubscribe = () => void;
+
+export interface PolkaswapAgentWalletAccount {
+  address: string;
+  name: string;
+  source: string;
+}
+
+export interface PolkaswapAgentWalletProviderStatus {
+  source: string;
+  title: string;
+  installed: boolean;
+  available: boolean;
+  supportsSigning: boolean;
+  requiresUserApproval: boolean;
+  accountsCount?: number;
+}
+
+export interface PolkaswapAgentWalletStatus {
+  loaded: boolean;
+  connected: boolean;
+  address: string;
+  source: string;
+  accountsCount?: number;
+  availableWallets: PolkaswapAgentWalletProviderStatus[];
+}
+
+export interface PolkaswapAgentStatus {
+  version: string;
+  agent: {
+    mode: boolean;
+    disclaimerSuppressed: boolean;
+    queryParam: string;
+  };
+  node: {
+    connected: boolean;
+    endpoint: string;
+    blockNumber: number;
+    genesisHash: string;
+    runtimeSpecVersion: number;
+  };
+  wallet: PolkaswapAgentWalletStatus;
+  settings: {
+    slippageTolerance: string;
+  };
+}
+
+export interface PolkaswapAgentAsset {
+  address: string;
+  symbol: string;
+  name: string;
+  decimals: number;
+  type?: string;
+  isMintable?: boolean;
+  balance?: unknown;
+}
+
+export interface PolkaswapAgentResolvedAsset extends PolkaswapAgentAsset {
+  canonical: boolean;
+}
+
+export interface PolkaswapAgentAssetAmount {
+  asset: PolkaswapAgentAsset;
+  value: string;
+  codec: string;
+  decimals: number;
+  display: string;
+}
+
+export interface PolkaswapAgentRequiredBalance {
+  asset: PolkaswapAgentAsset;
+  required: string;
+  requiredCodec: string;
+  available: string;
+  availableCodec: string;
+  sufficient: boolean;
+  reason: string;
+}
+
+export interface PolkaswapAgentFeeEstimate {
+  operation: string;
+  asset: PolkaswapAgentAsset;
+  amount: string;
+  amountCodec: string;
+  source: 'static' | 'payment-info' | 'finalized-runtime' | 'unavailable';
+}
+
+export type PolkaswapAgentWarningSeverity = 'info' | 'warning' | 'critical';
+
+export interface PolkaswapAgentWarning {
+  code:
+    | 'FEE_UNAVAILABLE'
+    | 'HIGH_PRICE_IMPACT'
+    | 'INSUFFICIENT_BALANCE'
+    | 'LOW_LIQUIDITY'
+    | 'NON_CANONICAL_ASSET'
+    | 'PATH_UNAVAILABLE'
+    | 'POOL_CREATION'
+    | 'SIGNER_NOT_READY'
+    | 'STALE_INTENT'
+    | 'WALLET_NOT_CONNECTED';
+  severity: PolkaswapAgentWarningSeverity;
+  message: string;
+  details?: unknown;
+}
+
+export interface PolkaswapAgentCapabilities {
+  version: string;
+  runtime: 'browser';
+  hosting: 'static-ipfs';
+  global: 'window.PolkaswapAgent';
+  readyEvent: 'polkaswap-agent-ready';
+  methods: string[];
+  capabilities: string[];
+  defaults: {
+    side: PolkaswapAgentSwapSide;
+    slippageTolerance: string;
+    dexId: PolkaswapAgentDexId;
+    allowPoolCreation: boolean;
+  };
+  limits: {
+    slippageTolerance: { min: string; max: string };
+    percent: { min: string; max: string };
+    defaultReadyTimeoutMs: number;
+    defaultQuoteTimeoutMs: number;
+  };
+  security: {
+    middleware: false;
+    samePageOnly: true;
+    postMessage: false;
+    custody: 'caller-provided-wallet';
+  };
+  status: PolkaswapAgentStatus;
+}
+
+export interface PolkaswapAgentSwapQuote {
+  /** Included in quoteDigest and the prepared envelope; not live execution authority. */
+  execution?: PolkaswapAgentGoalSwapExecutionEvidence;
+  /** Non-executable digest of the quote. Only prepare* can return an intentId. */
+  quoteDigest: string;
+  request: {
+    amount: string;
+    side: PolkaswapAgentSwapSide;
+    slippageTolerance: string;
+    liquiditySource?: string;
+    dexId: PolkaswapAgentDexId;
+  };
+  assetIn: PolkaswapAgentAsset;
+  assetOut: PolkaswapAgentAsset;
+  dexId: number;
+  amountIn: string;
+  amountOut: string;
+  amountWithoutImpact: string;
+  amountInMeta: PolkaswapAgentAssetAmount;
+  amountOutMeta: PolkaswapAgentAssetAmount;
+  amountWithoutImpactMeta: PolkaswapAgentAssetAmount;
+  minAmountOut?: string;
+  maxAmountIn?: string;
+  minAmountOutMeta?: PolkaswapAgentAssetAmount;
+  maxAmountInMeta?: PolkaswapAgentAssetAmount;
+  minMaxCodec: string;
+  priceImpact: string;
+  liquidityProviderFee: unknown;
+  rewards: unknown;
+  route: string[];
+  distribution: unknown;
+  liquiditySources: string[];
+  raw: {
+    amount: string;
+    amountWithoutImpact: string;
+    fee: unknown;
+  };
+}
+
+export interface PolkaswapAgentTransactionRef {
+  id: string;
+  txId?: string;
+  status?: string;
+  history: PolkaswapAgentHistoryItem | null;
+}
+
+export interface PolkaswapAgentSwapExecution {
+  intentId: string;
+  quote: PolkaswapAgentSwapQuote;
+  transaction: PolkaswapAgentTransactionRef | null;
+  revalidation: PolkaswapAgentIntentRevalidation;
+  clientOrderId?: string;
+  reusedClientOrder?: boolean;
+}
+
+export interface PolkaswapAgentTransferExecution {
+  intentId: string;
+  asset: PolkaswapAgentAsset;
+  to: string;
+  amount: string;
+  amountMeta: PolkaswapAgentAssetAmount;
+  transaction: PolkaswapAgentTransactionRef | null;
+  revalidation: PolkaswapAgentIntentRevalidation;
+  clientOrderId?: string;
+  reusedClientOrder?: boolean;
+}
+
+export interface PolkaswapAgentPoolInfo {
+  assetA: PolkaswapAgentAsset;
+  assetB: PolkaswapAgentAsset;
+  poolToken: PolkaswapAgentAsset | null;
+  exists: boolean;
+  reserveA: string;
+  reserveB: string;
+  reserveACodec: string;
+  reserveBCodec: string;
+  totalSupply: string;
+  totalSupplyCodec: string;
+  priceAInB: string;
+  priceBInA: string;
+}
+
+export interface PolkaswapAgentLiquidityPosition {
+  assetA: PolkaswapAgentAsset;
+  assetB: PolkaswapAgentAsset;
+  poolToken: PolkaswapAgentAsset;
+  liquidityAmount: string;
+  liquidityAmountCodec: string;
+  amountA: string;
+  amountB: string;
+  amountACodec: string;
+  amountBCodec: string;
+  poolShare: string;
+  totalSupply: string;
+  totalSupplyCodec: string;
+}
+
+export interface PolkaswapAgentAddLiquidityQuote {
+  quoteDigest: string;
+  pool: PolkaswapAgentPoolInfo;
+  createsPool: boolean;
+  amountA: string;
+  amountB: string;
+  amountACodec: string;
+  amountBCodec: string;
+  amountAMeta: PolkaswapAgentAssetAmount;
+  amountBMeta: PolkaswapAgentAssetAmount;
+  minAmountA: string;
+  minAmountB: string;
+  minAmountACodec: string;
+  minAmountBCodec: string;
+  minAmountAMeta: PolkaswapAgentAssetAmount;
+  minAmountBMeta: PolkaswapAgentAssetAmount;
+  mintedLiquidity: string;
+  mintedLiquidityCodec: string;
+  mintedLiquidityMeta: PolkaswapAgentAssetAmount | null;
+  shareOfPool: string;
+  slippageTolerance: string;
+  warnings: PolkaswapAgentWarning[];
+}
+
+export interface PolkaswapAgentAddLiquidityExecution {
+  intentId: string;
+  quote: PolkaswapAgentAddLiquidityQuote;
+  transaction: PolkaswapAgentTransactionRef | null;
+  revalidation: PolkaswapAgentIntentRevalidation;
+  clientOrderId?: string;
+  reusedClientOrder?: boolean;
+}
+
+export interface PolkaswapAgentRemoveLiquidityQuote {
+  quoteDigest: string;
+  pool: PolkaswapAgentPoolInfo;
+  liquidityAmount: string;
+  liquidityAmountCodec: string;
+  liquidityAmountMeta: PolkaswapAgentAssetAmount | null;
+  percentOfPosition?: string;
+  amountA: string;
+  amountB: string;
+  amountACodec: string;
+  amountBCodec: string;
+  amountAMeta: PolkaswapAgentAssetAmount;
+  amountBMeta: PolkaswapAgentAssetAmount;
+  minAmountA: string;
+  minAmountB: string;
+  minAmountACodec: string;
+  minAmountBCodec: string;
+  minAmountAMeta: PolkaswapAgentAssetAmount;
+  minAmountBMeta: PolkaswapAgentAssetAmount;
+  shareOfPool: string;
+  slippageTolerance: string;
+  warnings: PolkaswapAgentWarning[];
+}
+
+export interface PolkaswapAgentRemoveLiquidityExecution {
+  intentId: string;
+  quote: PolkaswapAgentRemoveLiquidityQuote;
+  transaction: PolkaswapAgentTransactionRef | null;
+  revalidation: PolkaswapAgentIntentRevalidation;
+  clientOrderId?: string;
+  reusedClientOrder?: boolean;
+}
+
+export interface PolkaswapAgentCallPreview {
+  operation: string;
+  sdkCall: string;
+  stateChanging: true;
+  signer: {
+    address: string;
+    source: string;
+    connected: boolean;
+  };
+  args: Record<string, unknown>;
+  summary: string;
+}
+
+export type PolkaswapAgentIntentAction = 'swap' | 'transfer' | 'add-liquidity' | 'remove-liquidity';
+
+export interface PolkaswapAgentPreparedNetwork {
+  genesisHash: string;
+  runtimeSpecVersion: number;
+}
+
+export interface PolkaswapAgentPreparedSigner {
+  address: string;
+  source: string;
+}
+
+export interface PolkaswapAgentPreparedCall {
+  operation: string;
+  sdkCall: string;
+  encoding: 'polkaswap-sdk-call-v1';
+  /** Hex-encoded canonical SDK invocation, not a SCALE extrinsic. */
+  encodedCall: string;
+  args: Record<string, unknown>;
+}
+
+export interface PolkaswapAgentFeeCeiling {
+  assetAddress: string;
+  amountCodec: string;
+}
+
+/** Immutable, versioned authorization material issued only by prepare*. */
+export interface PolkaswapAgentPreparedEnvelope {
+  schemaVersion: 1;
+  action: PolkaswapAgentIntentAction;
+  nonce: string;
+  network: PolkaswapAgentPreparedNetwork;
+  signer: PolkaswapAgentPreparedSigner;
+  preparedAt: number;
+  expiresAt: number;
+  preparedAtBlock: number;
+  expiresAtBlock: number;
+  request: Record<string, unknown>;
+  quote: Record<string, unknown>;
+  quoteDigest: string;
+  call: PolkaswapAgentPreparedCall;
+  callDigest: string;
+  feeCeilings: PolkaswapAgentFeeCeiling[];
+  intentId: string;
+}
+
+export interface PolkaswapAgentIntentRevalidation {
+  valid: boolean;
+  requiresReapproval: boolean;
+  reasons: string[];
+  checkedAt: number;
+  currentBlock: number;
+  currentNetwork: PolkaswapAgentPreparedNetwork;
+}
+
+export interface PolkaswapAgentPreparedBase {
+  intentId: string;
+  envelope: PolkaswapAgentPreparedEnvelope;
+  revalidation: PolkaswapAgentIntentRevalidation;
+}
+
+export interface PolkaswapAgentIdempotencyRecord {
+  clientOrderId: string;
+  intentId: string;
+  action: 'swap' | 'transfer' | 'add-liquidity' | 'remove-liquidity';
+  status: 'pending' | 'submitted';
+  createdAt: number;
+  updatedAt: number;
+  preview?: PolkaswapAgentCallPreview;
+  transaction?: PolkaswapAgentTransactionRef | null;
+}
+
+export interface PolkaswapAgentExportedIdempotencyRecord extends PolkaswapAgentIdempotencyRecord {
+  result?: unknown;
+}
+
+export interface PolkaswapAgentStateExport {
+  version: string;
+  exportedAt: number;
+  idempotency: PolkaswapAgentExportedIdempotencyRecord[];
+}
+
+export interface PolkaswapAgentExportStateRequest {
+  redacted?: boolean;
+}
+
+export interface PolkaswapAgentImportStateRequest {
+  state: PolkaswapAgentStateExport;
+  merge?: boolean;
+}
+
+export interface PolkaswapAgentClearStateRequest {
+  clientOrderId?: string;
+}
+
+export interface PolkaswapAgentStateImportResult {
+  imported: number;
+  skipped: number;
+  records: PolkaswapAgentExportedIdempotencyRecord[];
+}
+
+/** Account-independent SDK-call metadata; not a signing authorization or SCALE extrinsic. */
+export interface PolkaswapAgentSwapPlan {
+  mode: 'unsigned';
+  canExecute: false;
+  requiresWallet: false;
+  quote: PolkaswapAgentSwapQuote;
+  preview: Omit<PolkaswapAgentCallPreview, 'signer'>;
+  fees: PolkaswapAgentFeeEstimate[];
+  warnings: PolkaswapAgentWarning[];
+  plannedAt: number;
+  expiresAt: number;
+  network: PolkaswapAgentPreparedNetwork & { blockNumber: number };
+}
+
+export interface PolkaswapAgentPreparedSwap extends PolkaswapAgentPreparedBase {
+  canExecute: boolean;
+  quote: PolkaswapAgentSwapQuote;
+  preview: PolkaswapAgentCallPreview;
+  fees: PolkaswapAgentFeeEstimate[];
+  requiredBalances: PolkaswapAgentRequiredBalance[];
+  warnings: PolkaswapAgentWarning[];
+}
+
+export interface PolkaswapAgentPreparedTransfer extends PolkaswapAgentPreparedBase {
+  canExecute: boolean;
+  asset: PolkaswapAgentAsset;
+  to: string;
+  amount: string;
+  amountMeta: PolkaswapAgentAssetAmount;
+  preview: PolkaswapAgentCallPreview;
+  fees: PolkaswapAgentFeeEstimate[];
+  requiredBalances: PolkaswapAgentRequiredBalance[];
+  warnings: PolkaswapAgentWarning[];
+}
+
+export interface PolkaswapAgentPreparedAddLiquidity extends PolkaswapAgentPreparedBase {
+  canExecute: boolean;
+  quote: PolkaswapAgentAddLiquidityQuote;
+  preview: PolkaswapAgentCallPreview;
+  fees: PolkaswapAgentFeeEstimate[];
+  requiredBalances: PolkaswapAgentRequiredBalance[];
+  warnings: PolkaswapAgentWarning[];
+}
+
+export interface PolkaswapAgentPreparedRemoveLiquidity extends PolkaswapAgentPreparedBase {
+  canExecute: boolean;
+  quote: PolkaswapAgentRemoveLiquidityQuote;
+  preview: PolkaswapAgentCallPreview;
+  fees: PolkaswapAgentFeeEstimate[];
+  requiredBalances: PolkaswapAgentRequiredBalance[];
+  warnings: PolkaswapAgentWarning[];
+}
+
+export interface PolkaswapAgentMaxAmount {
+  asset: PolkaswapAgentAsset;
+  amount: string;
+  amountCodec: string;
+  quote?: PolkaswapAgentSwapQuote;
+  fees: PolkaswapAgentFeeEstimate[];
+  warnings: PolkaswapAgentWarning[];
+}
+
+export interface PolkaswapAgentMaxAddLiquidity {
+  assetA: PolkaswapAgentAsset;
+  assetB: PolkaswapAgentAsset;
+  amountA: string;
+  amountB: string;
+  amountACodec: string;
+  amountBCodec: string;
+  fees: PolkaswapAgentFeeEstimate[];
+  warnings: PolkaswapAgentWarning[];
+}
+
+export interface PolkaswapAgentMaxRemoveLiquidity {
+  position: PolkaswapAgentLiquidityPosition | null;
+  liquidityAmount: string;
+  liquidityAmountCodec: string;
+  percent: string;
+  warnings: PolkaswapAgentWarning[];
+}
+
+export interface PolkaswapAgentRiskPolicy {
+  maxPriceImpact?: string;
+  requireCanExecute?: boolean;
+  allowWarnings?: PolkaswapAgentWarning['code'][];
+}
+
+export type PolkaswapAgentSwapAssessmentRequest = PolkaswapAgentSwapRequest & {
+  policy?: PolkaswapAgentRiskPolicy;
+  maxPriceImpact?: string;
+  requireCanExecute?: boolean;
+  allowWarnings?: PolkaswapAgentWarning['code'][];
+};
+
+export interface PolkaswapAgentPolicyAssessment {
+  approved: boolean;
+  reasons: PolkaswapAgentWarning[];
+  prepared: PolkaswapAgentPreparedSwap;
+  policy: {
+    maxPriceImpact?: string;
+    requireCanExecute: boolean;
+    allowWarnings: PolkaswapAgentWarning['code'][];
+  };
+}
+
+export interface PolkaswapAgentTransactionStatus {
+  id: string;
+  lookup: PolkaswapAgentTransactionLookup;
+  source: 'local' | 'indexer' | 'chain' | 'idempotency' | 'none';
+  transaction: PolkaswapAgentHistoryItem | null;
+  idempotency?: PolkaswapAgentIdempotencyRecord;
+}
+
+export interface PolkaswapAgentErrorShape {
+  code:
+    | 'AGENT_API_UNAVAILABLE'
+    | 'ASSET_AMBIGUOUS'
+    | 'ASSET_NOT_FOUND'
+    | 'INVALID_AMOUNT'
+    | 'INVALID_ASSET_REF'
+    | 'INVALID_AGENT_STATE'
+    | 'INVALID_CLIENT_ORDER_ID'
+    | 'INVALID_DEX_ID'
+    | 'IDEMPOTENCY_CONFLICT'
+    | 'INTENT_ALREADY_USED'
+    | 'INTENT_EXPIRED'
+    | 'INTENT_INTEGRITY_FAILED'
+    | 'INTENT_NOT_FOUND'
+    | 'INTENT_REQUIRED'
+    | 'INTENT_MISMATCH'
+    | 'INVALID_LIQUIDITY_SOURCE'
+    | 'INVALID_PERCENT'
+    | 'INVALID_POOL_PAIR'
+    | 'INVALID_RECIPIENT'
+    | 'INVALID_SLIPPAGE'
+    | 'INVALID_SUBSCRIPTION_SOURCE'
+    | 'INVALID_SWAP_SIDE'
+    | 'INVALID_TRANSACTION_ID'
+    | 'INVALID_WALLET_SOURCE'
+    | 'NODE_NOT_READY'
+    | 'NETWORK_CONTEXT_UNAVAILABLE'
+    | 'PATH_UNAVAILABLE'
+    | 'POOL_UNAVAILABLE'
+    | 'QUOTE_TIMEOUT'
+    | 'SIGNING_CANCELLED'
+    | 'WALLET_ACCOUNT_NOT_FOUND'
+    | 'WALLET_ACCOUNT_REQUIRED'
+    | 'WALLET_NOT_CONNECTED'
+    | 'WALLET_NOT_FOUND';
+  message: string;
+  details?: unknown;
+}
+
+export interface PolkaswapAgentApi {
+  readonly version: string;
+  capabilities(): PolkaswapAgentCapabilities;
+  ready(options?: PolkaswapAgentReadyOptions): Promise<PolkaswapAgentStatus>;
+  status(): PolkaswapAgentStatus;
+  refreshWallets(): Promise<PolkaswapAgentWalletProviderStatus[]>;
+  walletAccounts(request: PolkaswapAgentWalletAccountsRequest): Promise<PolkaswapAgentWalletAccount[]>;
+  connectWallet(request: PolkaswapAgentWalletConnectRequest): Promise<PolkaswapAgentWalletStatus>;
+  assets(request?: PolkaswapAgentAssetsRequest): Promise<PolkaswapAgentAsset[]>;
+  resolveAsset(request: PolkaswapAgentResolveAssetRequest): Promise<PolkaswapAgentResolvedAsset>;
+  commonAssets(request?: PolkaswapAgentAssetsRequest): Promise<PolkaswapAgentResolvedAsset[]>;
+  quoteSwap(request: PolkaswapAgentSwapRequest): Promise<PolkaswapAgentSwapQuote>;
+  planSwap(request: PolkaswapAgentSwapRequest): Promise<PolkaswapAgentSwapPlan>;
+  prepareSwap(request: PolkaswapAgentSwapRequest): Promise<PolkaswapAgentPreparedSwap>;
+  assessSwap(request: PolkaswapAgentSwapAssessmentRequest): Promise<PolkaswapAgentPolicyAssessment>;
+  /** Rejects finalized-xyk-native-fee-v1 intents with INTENT_MISMATCH pending guarded bot execution. */
+  executeSwap(request: PolkaswapAgentExecuteSwapRequest): Promise<PolkaswapAgentSwapExecution>;
+  prepareTransfer(request: PolkaswapAgentTransferRequest): Promise<PolkaswapAgentPreparedTransfer>;
+  executeTransfer(request: PolkaswapAgentExecuteTransferRequest): Promise<PolkaswapAgentTransferExecution>;
+  poolInfo(request: PolkaswapAgentPoolInfoRequest): Promise<PolkaswapAgentPoolInfo>;
+  liquidityPositions(request?: PolkaswapAgentLiquidityPositionsRequest): Promise<PolkaswapAgentLiquidityPosition[]>;
+  quoteAddLiquidity(request: PolkaswapAgentAddLiquidityRequest): Promise<PolkaswapAgentAddLiquidityQuote>;
+  prepareAddLiquidity(request: PolkaswapAgentAddLiquidityRequest): Promise<PolkaswapAgentPreparedAddLiquidity>;
+  executeAddLiquidity(request: PolkaswapAgentExecuteAddLiquidityRequest): Promise<PolkaswapAgentAddLiquidityExecution>;
+  quoteRemoveLiquidity(request: PolkaswapAgentRemoveLiquidityRequest): Promise<PolkaswapAgentRemoveLiquidityQuote>;
+  prepareRemoveLiquidity(request: PolkaswapAgentRemoveLiquidityRequest): Promise<PolkaswapAgentPreparedRemoveLiquidity>;
+  executeRemoveLiquidity(
+    request: PolkaswapAgentExecuteRemoveLiquidityRequest
+  ): Promise<PolkaswapAgentRemoveLiquidityExecution>;
+  maxTransferAmount(request: PolkaswapAgentMaxAmountRequest): Promise<PolkaswapAgentMaxAmount>;
+  maxSwapInput(request: PolkaswapAgentMaxSwapInputRequest): Promise<PolkaswapAgentMaxAmount>;
+  maxAddLiquidity(request: PolkaswapAgentMaxAddLiquidityRequest): Promise<PolkaswapAgentMaxAddLiquidity>;
+  maxRemoveLiquidity(request: PolkaswapAgentMaxRemoveLiquidityRequest): Promise<PolkaswapAgentMaxRemoveLiquidity>;
+  transactionStatus(request: PolkaswapAgentTransactionStatusRequest): PolkaswapAgentTransactionStatus;
+  lookupTransaction(request: PolkaswapAgentTransactionStatusRequest): Promise<PolkaswapAgentTransactionStatus>;
+  recoverTransaction(request: PolkaswapAgentRecoverTransactionRequest): Promise<PolkaswapAgentTransactionStatus>;
+  waitForTransaction(request: PolkaswapAgentWaitForTransactionRequest): Promise<PolkaswapAgentTransactionStatus>;
+  recentTransactions(request?: PolkaswapAgentRecentTransactionsRequest): Promise<PolkaswapAgentHistoryItem[]>;
+  subscribeTransactions(
+    request: PolkaswapAgentTransactionSubscriptionRequest,
+    listener: PolkaswapAgentTransactionListener
+  ): Promise<PolkaswapAgentUnsubscribe>;
+  subscribeStatus(
+    request: PolkaswapAgentStatusSubscriptionRequest,
+    listener: PolkaswapAgentStatusListener
+  ): PolkaswapAgentUnsubscribe;
+  exportState(request?: PolkaswapAgentExportStateRequest): PolkaswapAgentStateExport;
+  importState(request: PolkaswapAgentImportStateRequest): PolkaswapAgentStateImportResult;
+  clearState(request?: PolkaswapAgentClearStateRequest): PolkaswapAgentStateExport;
+}
+
+export interface PolkaswapAgentClientApi {
+  readonly api: PolkaswapAgentApi;
+  readonly version: string;
+  ready(options?: PolkaswapAgentReadyOptions): Promise<PolkaswapAgentStatus>;
+  prepareAndExecuteSwap(
+    request: PolkaswapAgentSwapRequest,
+    options: { clientOrderId: string }
+  ): Promise<PolkaswapAgentSwapExecution>;
+  prepareAndExecuteTransfer(
+    request: PolkaswapAgentTransferRequest,
+    options: { clientOrderId: string }
+  ): Promise<PolkaswapAgentTransferExecution>;
+  prepareAndExecuteAddLiquidity(
+    request: PolkaswapAgentAddLiquidityRequest,
+    options: { clientOrderId: string }
+  ): Promise<PolkaswapAgentAddLiquidityExecution>;
+  prepareAndExecuteRemoveLiquidity(
+    request: PolkaswapAgentRemoveLiquidityRequest,
+    options: { clientOrderId: string }
+  ): Promise<PolkaswapAgentRemoveLiquidityExecution>;
+  waitForTransaction(request: PolkaswapAgentWaitForTransactionRequest): Promise<PolkaswapAgentTransactionStatus>;
+}
+
+export interface PolkaswapAgentClientGlobal {
+  attach(options?: { timeoutMs?: number }): Promise<PolkaswapAgentClientApi>;
+  createClient(api: PolkaswapAgentApi): PolkaswapAgentClientApi;
+}
+
+declare global {
+  interface Window {
+    PolkaswapAgent?: PolkaswapAgentApi;
+    PolkaswapAgentClient?: PolkaswapAgentClientGlobal;
+  }
+
+  interface WindowEventMap {
+    'polkaswap-agent-ready': CustomEvent<{ api: PolkaswapAgentApi; version: string }>;
+  }
+}

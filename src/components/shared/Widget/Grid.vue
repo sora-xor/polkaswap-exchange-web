@@ -1,7 +1,14 @@
 <template>
   <grid-layout
     ref="grid"
-    class="widgets-grid"
+    :class="[
+      'widgets-grid',
+      {
+        'widgets-grid--auto-resize': autoResize,
+        'widgets-grid--editing': draggable || resizable,
+        'widgets-grid--layout-settling': autoResize && !layoutMotionReady,
+      },
+    ]"
     responsive
     :layout="layout"
     :responsive-layouts="layouts"
@@ -16,10 +23,19 @@
     :use-css-transforms="false"
     @breakpoint-changed="onBreakpointChanged"
     @layout-updated="onLayoutUpdate"
+    @layout-ready="onLayoutReady"
   >
-    <div v-if="lines" class="grid-lines" :style="gridLinesStyle" />
-    <transition-group name="list" tag="div">
-      <grid-item v-for="widget in layout" :key="widget.i" :is-resizable="isResizable(widget)" v-bind="widget">
+    <div v-if="lines" class="grid-lines" :style="gridLinesStyle"></div>
+    <transition-group name="list" tag="div" class="widgets-grid-content">
+      <grid-item
+        v-for="widget in layout"
+        :key="widget.i"
+        :data-widget-id="widget.i"
+        :is-resizable="isResizable(widget)"
+        v-bind="widget"
+        @moved="onUserLayoutEdit"
+        @resized="onUserLayoutEdit"
+      >
         <slot
           :name="widget.i"
           v-bind="{
@@ -30,46 +46,33 @@
             onResize,
             reset,
           }"
-        />
+        ></slot>
       </grid-item>
     </transition-group>
   </grid-layout>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import cloneDeep from 'lodash/fp/cloneDeep';
 import isEmpty from 'lodash/fp/isEmpty';
 import isEqual from 'lodash/fp/isEqual';
 import omit from 'lodash/fp/omit';
-import { GridLayout, GridItem } from 'vue-grid-layout';
-import { Component, Emit, Prop, Vue, Watch, Ref } from 'vue-property-decorator';
+import { computed, nextTick, onMounted, ref, toRaw, watch } from 'vue';
+import type { ComponentPublicInstance } from 'vue';
 
+import { GridLayout, GridItem } from '@/lib/grid';
+
+import { normalizeLayoutsWithDefaults } from '@/components/shared/Widget/grid.utils';
 import { Breakpoint, BreakpointKey } from '@/consts/layout';
 import type {
   Layout,
   LayoutConfig,
-  ResponsiveLayouts,
   LayoutWidget,
-  WidgetsVisibilityModel,
+  ResponsiveLayouts,
   Size,
+  WidgetsVisibilityModel,
 } from '@/types/layout';
 import { layoutsStorage } from '@/utils/storage';
-
-const DEFAULT_BREAKPOINTS: LayoutConfig = {
-  [BreakpointKey.lg]: Breakpoint.HugeDesktop, // 2092
-  [BreakpointKey.md]: Breakpoint.LargeDesktop, // 1440
-  [BreakpointKey.sm]: Breakpoint.Desktop, // 1024
-  [BreakpointKey.xs]: Breakpoint.Tablet, // 900
-  [BreakpointKey.xss]: 0,
-};
-
-const DEFAULT_COLS: LayoutConfig = {
-  [BreakpointKey.lg]: 24, // 2092
-  [BreakpointKey.md]: 16, // 1440
-  [BreakpointKey.sm]: 12, // 1024
-  [BreakpointKey.xs]: 8, // 900
-  [BreakpointKey.xss]: 4,
-};
 
 function findWidgetInLayout(layout: Nullable<Layout>, widgetId: string) {
   return layout?.find((widget: LayoutWidget) => widget.i === widgetId);
@@ -85,9 +88,7 @@ function shallowDiff<T extends Record<string, boolean>>(a: T, b: T): Partial<T> 
 function sortBreakpoints(breakpoints: LayoutConfig): BreakpointKey[] {
   const keys = Object.keys(breakpoints) as BreakpointKey[];
 
-  return keys.sort(function (a, b) {
-    return breakpoints[a] - breakpoints[b];
-  });
+  return keys.sort((first, second) => breakpoints[first] - breakpoints[second]);
 }
 
 function getBreakpointFromWidth(breakpoints: LayoutConfig, width: number): BreakpointKey {
@@ -100,218 +101,337 @@ function getBreakpointFromWidth(breakpoints: LayoutConfig, width: number): Break
   return matching;
 }
 
-@Component({
+function getGridStorageKey(gridId: string): string {
+  if (!gridId) return '';
+  if (typeof window === 'undefined') return gridId;
+
+  const pathname = window.location?.pathname ?? '';
+  const cidMatch = pathname.match(/\/ipfs\/([^/?#]+)/i);
+  const cid = cidMatch?.[1];
+
+  if (!cid) return gridId;
+
+  return `${cid}::${gridId}`;
+}
+
+function parseLayoutsValue(value: string): ResponsiveLayouts | null {
+  try {
+    const parsed = JSON.parse(value) as unknown;
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return null;
+    return parsed as ResponsiveLayouts;
+  } catch {
+    return null;
+  }
+}
+
+defineOptions({
+  name: 'WidgetsGrid',
   components: {
     GridLayout,
     GridItem,
   },
-})
-export default class WidgetsGrid extends Vue {
-  @Ref('grid') readonly widgetsGrid!: Vue;
+});
 
-  /** Layout ID to sync it with storage */
-  @Prop({ default: '', type: String }) readonly gridId!: string;
-  /** Default layouts */
-  @Prop({ default: () => ({}), type: Object }) readonly defaultLayouts!: ResponsiveLayouts;
+const props = withDefaults(
+  defineProps<{
+    gridId?: string;
+    defaultLayouts?: ResponsiveLayouts;
+    /** Optional page-specific migration applied before generic layout normalization. */
+    migrateStoredLayouts?: (layouts: ResponsiveLayouts) => ResponsiveLayouts;
+    /** Prevents responsive/content layout events from saving presentation-only geometry. */
+    persistOnlyUserEdits?: boolean;
+    rowHeight?: number;
+    margin?: number;
+    autoResize?: boolean;
+    draggable?: boolean;
+    resizable?: boolean;
+    compact?: boolean;
+    lines?: boolean;
+    cols?: LayoutConfig;
+    breakpoints?: LayoutConfig;
+    loading?: boolean;
+    flat?: boolean;
+    modelValue?: WidgetsVisibilityModel;
+    value?: WidgetsVisibilityModel;
+  }>(),
+  {
+    gridId: '',
+    defaultLayouts: () => ({}) as ResponsiveLayouts,
+    rowHeight: 10,
+    margin: 16,
+    autoResize: false,
+    persistOnlyUserEdits: false,
+    draggable: false,
+    resizable: false,
+    compact: true,
+    lines: false,
+    cols: () => ({
+      [BreakpointKey.lg]: 24,
+      [BreakpointKey.md]: 16,
+      [BreakpointKey.sm]: 12,
+      [BreakpointKey.xs]: 8,
+      [BreakpointKey.xss]: 4,
+    }),
+    breakpoints: () => ({
+      [BreakpointKey.lg]: Breakpoint.HugeDesktop,
+      [BreakpointKey.md]: Breakpoint.LargeDesktop,
+      [BreakpointKey.sm]: Breakpoint.Desktop,
+      [BreakpointKey.xs]: Breakpoint.Tablet,
+      [BreakpointKey.xss]: 0,
+    }),
+    loading: false,
+    flat: false,
+    modelValue: undefined,
+    value: () => ({}) as WidgetsVisibilityModel,
+  }
+);
 
-  @Prop({ default: 10, type: Number }) readonly rowHeight!: number;
-  @Prop({ default: 16, type: Number }) readonly margin!: number;
-  @Prop({ default: false, type: Boolean }) readonly draggable!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly resizable!: boolean;
-  @Prop({ default: true, type: Boolean }) readonly compact!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly lines!: boolean;
-  @Prop({ default: () => DEFAULT_COLS, type: Object }) readonly cols!: LayoutConfig;
-  @Prop({ default: () => DEFAULT_BREAKPOINTS, type: Object }) readonly breakpoints!: LayoutConfig;
+const emit = defineEmits<{
+  (event: 'update:modelValue', value: WidgetsVisibilityModel): void;
+}>();
 
-  @Prop({ default: false, type: Boolean }) readonly loading!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly flat!: boolean;
+const grid = ref<ComponentPublicInstance | null>(null);
+const breakpoint = ref<BreakpointKey>(BreakpointKey.lg);
+const layouts = ref<ResponsiveLayouts>(cloneDeep(toRaw(props.defaultLayouts)));
+const layout = ref<Layout>((cloneDeep(layouts.value[breakpoint.value]) as Layout) ?? []);
+const layoutMotionReady = ref(!props.autoResize);
+let hasUserLayoutEdit = false;
+const widgetsModel = computed<WidgetsVisibilityModel>(() => props.modelValue ?? props.value);
+const defaultValue = ref<WidgetsVisibilityModel>(cloneDeep(widgetsModel.value));
+const storageKey = computed(() => getGridStorageKey(props.gridId));
 
-  /** Widgets visibility by widget ID */
-  @Prop({ default: () => ({}), type: Object }) readonly value!: WidgetsVisibilityModel;
-  /** Update layouts depends on widgets visibility */
-  @Watch('value')
-  private updateLayoutWidgetsByModel(curr: WidgetsVisibilityModel, prev: WidgetsVisibilityModel): void {
-    const diff = shallowDiff(curr, prev);
+const responsiveLayout = computed(() => layouts.value[breakpoint.value]);
 
-    if (isEmpty(diff)) return;
+const gridLinesStyle = computed(() => {
+  const rowHeight = props.rowHeight;
+  const marginHalf = props.margin / 2;
+  const columns = props.cols[breakpoint.value];
 
-    this.updateLayoutsByWidgetsModel(this.layouts, diff, true);
+  return {
+    backgroundSize: `calc(calc(100% - ${marginHalf}px) / ${columns}) ${rowHeight + marginHalf * 2}px`,
+    height: `calc(100% - ${marginHalf}px)`,
+    width: `calc(100% - ${marginHalf}px)`,
+    margin: `${marginHalf}px`,
+  };
+});
+
+const saveLayoutsToStorage = () => {
+  if (!storageKey.value) return;
+  layoutsStorage.set(storageKey.value, JSON.stringify(layouts.value));
+};
+
+const clearLayoutsFromStorage = () => {
+  if (!storageKey.value) return;
+  layoutsStorage.remove(storageKey.value);
+};
+
+const updateLayout = () => {
+  const targetLayout = responsiveLayout.value ?? props.defaultLayouts[breakpoint.value];
+
+  if (!targetLayout) {
+    layout.value = [];
+    return;
   }
 
-  private defaultValue: WidgetsVisibilityModel = {};
-  private breakpoint: BreakpointKey = BreakpointKey.lg;
+  if (isEqual(layout.value)(targetLayout)) return;
 
-  public layouts: ResponsiveLayouts = {};
-  public layout: Layout = [];
+  layout.value = cloneDeep(targetLayout) as Layout;
+};
 
-  get responsiveLayout(): Layout | undefined {
-    return this.layouts[this.breakpoint];
+const saveLayouts = (layoutsToSave: ResponsiveLayouts, saveToStorage = true) => {
+  layouts.value = cloneDeep(layoutsToSave);
+  updateLayout();
+
+  if (saveToStorage) {
+    saveLayoutsToStorage();
   }
+};
 
-  get gridLinesStyle() {
-    const r = this.rowHeight;
-    const m = this.margin / 2;
-    const c = this.cols[this.breakpoint];
+const updateWidgetsModelByLayout = () => {
+  const initialModel = Object.keys(widgetsModel.value).reduce<WidgetsVisibilityModel>(
+    (acc, key) => ({ ...acc, [key]: false }),
+    {}
+  );
 
-    return {
-      backgroundSize: `calc(calc(100% - ${m}px) / ${c}) ${r + m * 2}px`,
-      height: `calc(100% - ${m}px)`,
-      width: `calc(100% - ${m}px)`,
-      margin: `${m}px`,
-    };
-  }
-
-  created(): void {
-    // save initial model for reset availability
-    this.defaultValue = cloneDeep(this.value);
-  }
-
-  mounted(): void {
-    // detect initial breakpoint
-    this.breakpoint = getBreakpointFromWidth(this.breakpoints, this.widgetsGrid.$el.clientWidth);
-    this.init();
-  }
-
-  private async init(): Promise<void> {
-    const storedLayouts = layoutsStorage.get(this.gridId);
-
-    if (storedLayouts) {
-      this.saveLayouts(JSON.parse(storedLayouts), false);
-    } else {
-      this.updateLayoutsByWidgetsModel(this.defaultLayouts, this.defaultValue, false); // don't save in storage initial layout
+  const model = layout.value.reduce<WidgetsVisibilityModel>((acc, widget) => {
+    if (widget.i in acc) {
+      acc[widget.i] = true;
     }
+    return acc;
+  }, initialModel);
 
-    this.updateWidgetsModelByLayout();
-  }
+  emit('update:modelValue', model);
+};
 
-  private updateLayout(): void {
-    if (isEqual(this.layout)(this.responsiveLayout)) return;
+const updateLayoutsByWidgetsModel = (
+  layoutsToUpdate: ResponsiveLayouts,
+  diff: Partial<WidgetsVisibilityModel>,
+  save: boolean
+) => {
+  const nextLayouts = cloneDeep(toRaw(layoutsToUpdate));
 
-    this.layout = cloneDeep(this.responsiveLayout) as Layout;
-  }
+  for (const [widgetId, visibilityFlag] of Object.entries(diff)) {
+    for (const breakpointKey of Object.keys(nextLayouts) as BreakpointKey[]) {
+      nextLayouts[breakpointKey] = nextLayouts[breakpointKey] ?? [];
 
-  private saveLayouts(layouts: ResponsiveLayouts, saveToStorage = true): void {
-    this.layouts = cloneDeep(layouts);
-    this.updateLayout();
-    // update layouts in storage
-    if (saveToStorage) {
-      this.saveLayoutsToStorage();
-    }
-  }
+      if (visibilityFlag) {
+        const currentWidget = findWidgetInLayout(nextLayouts[breakpointKey], widgetId);
+        if (currentWidget) continue;
 
-  private saveLayoutsToStorage(): void {
-    if (this.gridId) {
-      layoutsStorage.set(this.gridId, JSON.stringify(this.layouts));
-    }
-  }
-
-  private clearLayoutsFromStorage(): void {
-    if (this.gridId) {
-      layoutsStorage.remove(this.gridId);
-    }
-  }
-
-  reset(): void {
-    this.clearLayoutsFromStorage();
-    this.init();
-  }
-
-  onBreakpointChanged(newBreakpoint: BreakpointKey): void {
-    this.breakpoint = newBreakpoint;
-    this.updateLayout();
-  }
-
-  onLayoutUpdate(updated: Layout): void {
-    this.layout = updated;
-
-    const prepared = this.layout.map((widget: LayoutWidget) => omit('moved')(widget)) as Layout;
-
-    if (isEqual(prepared)(this.responsiveLayout)) return;
-
-    this.saveLayouts({ ...this.layouts, [this.breakpoint]: prepared });
-  }
-
-  isResizable(widget: LayoutWidget): boolean {
-    if (!this.resizable) return false;
-
-    const { maxW, maxH, minW, minH } = widget;
-    const fixed = maxW === minW && maxH === minH;
-
-    return !fixed;
-  }
-
-  /**
-   * Calculate widget layout height
-   * Occurs after widget emits resize event with new own rect coordinates
-   */
-  onResize(widgetId: string, rect: Size): void {
-    const layout = cloneDeep(this.layout);
-    const widget = findWidgetInLayout(layout, widgetId);
-
-    if (!widget) return;
-
-    const { height } = rect;
-    // `height = h * (rowHeight + margin) - margin` - library calculates grid-item height (px)
-    // `h = (height + margin) / (rowHeight + margin)`
-    const calculatedH = Math.ceil((height + this.margin) / (this.rowHeight + this.margin));
-    const updatedH = Math.max(widget.minH ?? 1, calculatedH);
-    // mutate local layout
-    widget.h = updatedH;
-    // update component layout
-    this.layout = layout;
-  }
-
-  /**
-   * Emits widgets visibility model update.
-   * Occurs after component created and initial layout is loaded from storage.
-   */
-  @Emit('input')
-  private updateWidgetsModelByLayout() {
-    // create initial model, where widgets are not visible
-    const initialModel = Object.keys(this.value).reduce((acc, key) => ({ ...acc, [key]: false }), {});
-    // mark widgets from layout as visible in model
-    return this.layout.reduce<WidgetsVisibilityModel>((acc, widget) => {
-      if (widget.i in acc) {
-        acc[widget.i] = true;
-      }
-      return acc;
-    }, initialModel);
-  }
-
-  private updateLayoutsByWidgetsModel(
-    layoutsToUpdate: ResponsiveLayouts,
-    diff: Partial<WidgetsVisibilityModel>,
-    save: boolean
-  ): void {
-    const layouts = cloneDeep(layoutsToUpdate);
-
-    for (const [widgetId, visibilityFlag] of Object.entries(diff)) {
-      for (const breakpoint in layouts) {
-        if (visibilityFlag) {
-          const currentWidget = findWidgetInLayout(layouts[breakpoint], widgetId);
-
-          if (currentWidget) continue;
-
-          const defaultWidget = findWidgetInLayout(this.defaultLayouts[breakpoint], widgetId);
-
-          if (defaultWidget) {
-            layouts[breakpoint].push(defaultWidget);
-          }
-        } else {
-          layouts[breakpoint] = layouts[breakpoint].filter((widget: LayoutWidget) => widget.i !== widgetId);
+        const defaultWidget = findWidgetInLayout(props.defaultLayouts[breakpointKey], widgetId);
+        if (defaultWidget) {
+          nextLayouts[breakpointKey].push(defaultWidget);
         }
+      } else {
+        nextLayouts[breakpointKey] = nextLayouts[breakpointKey].filter((widget) => widget.i !== widgetId);
       }
     }
-
-    this.saveLayouts(layouts, save);
   }
-}
+
+  saveLayouts(nextLayouts, save);
+};
+
+const updateLayoutWidgetsByModel = (curr: WidgetsVisibilityModel, prev: WidgetsVisibilityModel) => {
+  const diff = shallowDiff(curr, prev);
+  if (isEmpty(diff)) return;
+
+  // Visibility is a user edit. Preserve the active geometry, including measured
+  // content heights that deliberately have not been persisted by auto-resize.
+  const currentLayouts = { ...layouts.value, [breakpoint.value]: layout.value };
+  updateLayoutsByWidgetsModel(currentLayouts, diff, true);
+};
+
+const init = async () => {
+  const storedLayouts = storageKey.value ? layoutsStorage.get(storageKey.value) : null;
+
+  if (storedLayouts) {
+    const parsedLayouts = parseLayoutsValue(storedLayouts);
+
+    if (parsedLayouts) {
+      const migratedLayouts = props.migrateStoredLayouts?.(parsedLayouts) ?? parsedLayouts;
+      const normalizedLayouts = normalizeLayoutsWithDefaults(migratedLayouts, props.defaultLayouts, props.cols);
+      const layoutsChanged = !isEqual(normalizedLayouts)(parsedLayouts);
+
+      saveLayouts(normalizedLayouts, layoutsChanged);
+    } else {
+      clearLayoutsFromStorage();
+      updateLayoutsByWidgetsModel(props.defaultLayouts, defaultValue.value, false);
+    }
+  } else {
+    updateLayoutsByWidgetsModel(props.defaultLayouts, defaultValue.value, false);
+  }
+
+  updateWidgetsModelByLayout();
+};
+
+const reset = () => {
+  clearLayoutsFromStorage();
+  void init();
+};
+
+const onBreakpointChanged = (newBreakpoint: BreakpointKey) => {
+  hasUserLayoutEdit = false;
+  breakpoint.value = newBreakpoint;
+  updateLayout();
+};
+
+const onLayoutReady = () => {
+  if (layoutMotionReady.value) return;
+
+  layoutMotionReady.value = true;
+};
+
+/** Marks the next settled layout as the result of a widget drag or resize gesture. */
+const onUserLayoutEdit = (): void => {
+  hasUserLayoutEdit = props.draggable || props.resizable;
+};
+
+const onLayoutUpdate = (updated: Layout) => {
+  const shouldPersist = !props.persistOnlyUserEdits || hasUserLayoutEdit;
+  hasUserLayoutEdit = false;
+  const prepared = updated.map((widget) => omit('moved')(widget)) as Layout;
+
+  // GridLayout emits `layout-updated` during mount while it is still settling responsive breakpoints.
+  // In that phase, `breakpoint.value` may already be updated, but the emitted layout can still be from
+  // a previous breakpoint. Persisting such a layout corrupts storage and causes widgets to overlap.
+  const colsForBreakpoint = props.cols[breakpoint.value] ?? 0;
+  const exceedsBreakpointCols = prepared.some((widget) => {
+    const x = widget.x ?? 0;
+    const w = widget.w ?? 0;
+    return x + w > colsForBreakpoint;
+  });
+
+  if (exceedsBreakpointCols) {
+    // Keep current layout and force-sync from the responsive layouts for the active breakpoint.
+    updateLayout();
+    return;
+  }
+
+  // Keep the layout reference emitted by GridLayout to avoid triggering extra prop-change cycles.
+  layout.value = updated;
+
+  if ((!props.draggable && !props.resizable) || !shouldPersist) return;
+
+  if (isEqual(prepared)(responsiveLayout.value)) return;
+
+  saveLayouts({ ...layouts.value, [breakpoint.value]: prepared });
+};
+
+const isResizable = (widget: LayoutWidget): boolean => {
+  if (!props.resizable) return false;
+
+  const { maxW, maxH, minW, minH } = widget;
+  const fixed = maxW === minW && maxH === minH;
+
+  return !fixed;
+};
+
+const onResize = (widgetId: string, rect: Size): void => {
+  if (!(props.resizable || props.autoResize)) return;
+
+  const nextLayout = cloneDeep(layout.value);
+  const widget = findWidgetInLayout(nextLayout, widgetId);
+
+  if (!widget) return;
+
+  const { height } = rect;
+  const calculatedH = Math.ceil((height + props.margin) / (props.rowHeight + props.margin));
+  const updatedH = Math.max(widget.minH ?? 1, calculatedH);
+  if (widget.h === updatedH) return;
+
+  widget.h = updatedH;
+  layout.value = nextLayout;
+};
+
+watch(
+  widgetsModel,
+  (curr, prev) => {
+    if (!curr || !prev) return;
+    updateLayoutWidgetsByModel(curr, prev);
+  },
+  { deep: true }
+);
+
+onMounted(() => {
+  nextTick(() => {
+    const width =
+      (grid.value?.$el as HTMLElement | undefined)?.clientWidth ?? window?.innerWidth ?? Breakpoint.HugeDesktop;
+    breakpoint.value = getBreakpointFromWidth(props.breakpoints, width);
+    void init();
+  });
+});
 </script>
 
 <style lang="scss">
 $line: var(--s-color-base-border-secondary);
 
 .widgets-grid {
+  &.widgets-grid--layout-settling {
+    .vue-grid-item {
+      transition: none !important;
+    }
+  }
+
   .vue-grid-item {
     transition-property: opacity, scale;
     transition-duration: 0.3s;
@@ -347,15 +467,23 @@ $line: var(--s-color-base-border-secondary);
 
   .grid-lines {
     position: absolute;
-    background-image: linear-gradient(to right, $line 1px, transparent 1px), linear-gradient($line 1px, transparent 1px);
+    background-image:
+      linear-gradient(to right, $line 1px, transparent 1px), linear-gradient($line 1px, transparent 1px);
     background-repeat: repeat;
   }
 
   // animation
-  .list-enter,
+  .list-enter-from,
   .list-leave-to {
     opacity: 0;
-    scale: 0.8;
+    transform: scale(0.8);
+  }
+
+  &.widgets-grid--editing {
+    .vue-grid-item {
+      touch-action: none;
+      will-change: auto;
+    }
   }
 }
 </style>

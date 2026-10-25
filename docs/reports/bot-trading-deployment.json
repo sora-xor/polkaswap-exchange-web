@@ -1,0 +1,130 @@
+{
+  "status": "deployed-verified",
+  "production": {
+    "cid": "QmQmNgwnmru83UPqS5pmZaaUzdevEg1cVFHbu8MJkgZnen",
+    "cidV1": "bafybeibebtd3umenxx4zwwzx6oyihiefja4p652uwoeocbkwr73djrlpom",
+    "origin": "https://mof.sora.org/ipfs/bafybeibebtd3umenxx4zwwzx6oyihiefja4p652uwoeocbkwr73djrlpom",
+    "hostHeader": "mof.sora.org"
+  },
+  "testnet": {
+    "cid": "QmQzdckTyD2Tcs4eNYMfnaiRyv3ThqDTW9tHFCnUPh5rmt",
+    "cidV1": "bafybeibhoi2z7y7zcegqqntgysijplqri6ykhffdymhqmbjk5qcwtvynf4"
+  },
+  "previousProductionCidV1": "bafybeigktwhg5y3fhjsvl4hlqcd3mp6qxoui32id7wsgciwk4ni3r24uve",
+  "replication": "Both DAGs imported, recursively pinned, and all remote pins verified ok.",
+  "sshVerification": "Strict host checking against pre-existing trusted IP HostKeyAlias 207.254.29.218; no trust-file changes.",
+  "originChecks": [
+    {
+      "path": "index.html",
+      "status": 200,
+      "bytes": 4529,
+      "sha256": "5c6e2191cad151bed0ab41d24332d1743ad2bd261f939fd1dfe84a4262d5476f",
+      "contentType": "Content-Type: text/html"
+    },
+    {
+      "path": "assets/index-Uv3XzYRX.js",
+      "status": 200,
+      "bytes": 138599,
+      "sha256": "65087719f724ddfba45a53b5e3ad6ab07f9ecd0c87769bb59f86a696da8dfd28",
+      "contentType": "Content-Type: text/javascript; charset=utf-8"
+    },
+    {
+      "path": "assets/style-156CtAJl.css",
+      "status": 200,
+      "bytes": 673079,
+      "sha256": "8d0d1d8aa31027b9c731f487115d1d2113c7f5ece384cd36817338f100a46d21",
+      "contentType": "Content-Type: text/css; charset=utf-8"
+    },
+    {
+      "path": "assets/BotsPage-0gaWJqYl.js",
+      "status": 200,
+      "bytes": 80217,
+      "sha256": "5091bf980f26132c86632db7e01c999338e14ff6baf1c7844d3723d78d69ee96",
+      "contentType": "Content-Type: text/javascript; charset=utf-8"
+    }
+  ],
+  "cdnSaved": true,
+  "cdnPurged": true,
+  "liveWebkitVerified": true,
+  "indexer": {
+    "status": "deployed-verified",
+    "sourceCommit": "a69482ac386468749d11f13a9b61482cad26a102",
+    "release": "release-2026-09-14.bot-history.a69482a",
+    "host": "pi.soramitsu.io",
+    "tests": 971,
+    "skipped": 25,
+    "receipt": "/Users/takemiyamakoto/dev/polkaswap-indexer/build/reports/bot-history-deployment-20260914.json",
+    "receiptSha256": "845a8b9fc11a6dfaa8444ed7e39b76c2468fa81d345e46f5eef1227f0268f470",
+    "historyCoverage": "New CLOSE metadata only; old closed snapshots remain null."
+  },
+  "resume": {
+    "warmer": "/tmp/polkaswap-bots-warm.py",
+    "warmList": "/tmp/polkaswap-bots-warm-initial.txt",
+    "finalWebkit": "/tmp/polkaswap-bots-final-webkit.cjs",
+    "officialWebkit": "IPFS_CHECK_SETTLE_MS=30000 node scripts/ipfs/check-browser.js --url https://polkaswap.io/#/swap --no-spawn-gateway --browser=webkit",
+    "sequence": "Validate Bunny settings and edge rules, save final production origin, observe success, purge, confirm root CID and entry assets, warm sequentially, run official and supplemental WebKit checks."
+  },
+  "validation": {
+    "applicationTests": 4696,
+    "scriptTests": 270,
+    "totalTests": 4966,
+    "staticBuild": "passed",
+    "translationCheck": "13 passed before pagination-only correction; no locale changes since",
+    "unitLog": "/tmp/polkaswap-bots-unit-deployment.log"
+  },
+  "cdnVerification": {
+    "checkedAt": "2026-09-13T17:54:30.228448+00:00",
+    "zoneId": 5860217,
+    "zone": "polkaswap",
+    "method": "Authenticated Bunny Safari UI",
+    "originSave": "Success toast observed",
+    "purge": "Full Pull Zone purge submitted; confirmation dialog closed, live root fetched with CDN-cache MISS and final CID, user confirmed Bots visible.",
+    "liveRootStatus": 200,
+    "liveRootCidV1": "bafybeibebtd3umenxx4zwwzx6oyihiefja4p652uwoeocbkwr73djrlpom",
+    "htmlCacheControl": "no-cache",
+    "verifyOriginSsl": true,
+    "forwardHostHeader": false,
+    "followRedirects": true,
+    "smartCache": true,
+    "cacheErrorResponses": false,
+    "edgeRules": [
+      "RawDwebOriginHeaders",
+      "SetPolkaswapCSP"
+    ]
+  },
+  "warmup": {
+    "assets": 265,
+    "exactBytes": true,
+    "result": "passed",
+    "evidence": "/tmp/polkaswap-bots-warm-results.json"
+  },
+  "officialWebkit": {
+    "result": "passed",
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "actualSwapUi": true,
+    "evidence": "/tmp/polkaswap-bots-official-webkit.log"
+  },
+  "supplementalWebkit": [
+    {
+      "route": "swap",
+      "title": "Swap - Polkaswap",
+      "pass": true,
+      "cid": "bafybeibebtd3umenxx4zwwzx6oyihiefja4p652uwoeocbkwr73djrlpom",
+      "failedRequests": 0,
+      "httpErrors": 0,
+      "consoleErrors": 0,
+      "pageErrors": 0
+    },
+    {
+      "route": "bots",
+      "title": "Bots - Polkaswap",
+      "pass": true,
+      "cid": "bafybeibebtd3umenxx4zwwzx6oyihiefja4p652uwoeocbkwr73djrlpom",
+      "failedRequests": 0,
+      "httpErrors": 0,
+      "consoleErrors": 0,
+      "pageErrors": 0
+    }
+  ]
+}

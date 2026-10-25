@@ -1,18 +1,14 @@
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/sdk';
-import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { SubqueryIndexer, SubsquidIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
+import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { gql } from '@urql/core';
+
+import { isJsonRecord, parseIndexerJson } from '@/utils/indexerParsing';
 
 import type { OrderBookDealData, OrderBookUpdateData } from '@/types/orderBook';
 
-import type { SubquerySubscriptionPayload } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subquery/types';
-import type {
-  OrderBookEntity,
-  OrderBookDealEntity,
-  QueryData,
-  SubscriptionPayload,
-} from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
+import type { PolkaswapSubscriptionPayload } from '@/lib/soraneo-wallet/src/services/indexer/polkaswap/types';
+import type { OrderBookEntity, QueryData } from '@/lib/soraneo-wallet/src/services/indexer/types';
 
 type OrderBookEntityMutation = {
   price: string;
@@ -22,40 +18,59 @@ type OrderBookEntityMutation = {
   last_deals: string;
 };
 
-const { IndexerType } = WALLET_CONSTS;
-
 const parseSide = (isBuy: boolean): PriceVariant => {
   return isBuy ? PriceVariant.Buy : PriceVariant.Sell;
 };
-const parseTimestamp = (unixTimestamp: number) => {
-  return unixTimestamp * 1000;
-};
-const parseDeals = (lastDeals?: string): OrderBookDealData[] => {
-  const deals = (lastDeals ? JSON.parse(lastDeals) : []) as OrderBookDealEntity[];
 
-  return deals.map((deal) => ({
-    price: new FPNumber(deal.price ?? 0),
-    amount: new FPNumber(deal.amount ?? 0),
-    side: parseSide(deal.isBuy),
-    timestamp: parseTimestamp(deal.timestamp),
-  }));
-};
+const MAX_SAFE_UNIX_TIMESTAMP = Math.floor(Number.MAX_SAFE_INTEGER / 1000);
 
-const SubqueryOrderBookDataQuery = gql<QueryData<OrderBookEntity>>`
-  query SubqueryOrderBookDataQuery($id: String!) {
-    data: orderBook(id: $id) {
-      price
-      priceChangeDay
-      volumeDayUSD
-      status
-      lastDeals
-    }
+/** Converts indexer seconds to safe milliseconds or rejects invalid timestamps. */
+const parseTimestamp = (unixTimestamp: unknown): Nullable<number> =>
+  typeof unixTimestamp === 'number' &&
+  Number.isSafeInteger(unixTimestamp) &&
+  unixTimestamp >= 0 &&
+  unixTimestamp <= MAX_SAFE_UNIX_TIMESTAMP
+    ? unixTimestamp * 1000
+    : null;
+
+/** Normalizes indexer financial values to finite FP numbers, defaulting invalid values to zero. */
+const parseFinancialValue = (value: unknown, allowNegative = false): FPNumber => {
+  if (
+    (typeof value !== 'string' && typeof value !== 'number') ||
+    (typeof value === 'string' && !value.trim()) ||
+    (typeof value === 'number' && !Number.isFinite(value))
+  ) {
+    return FPNumber.ZERO;
   }
-`;
 
-const SubsquidOrderBookDataQuery = gql<QueryData<OrderBookEntity>>`
-  query SubsquidOrderBookDataQuery($id: String!) {
-    data: orderBookById(id: $id) {
+  const parsed = new FPNumber(value);
+  return parsed.isFinity() && (allowNegative || !parsed.isLtZero()) ? parsed : FPNumber.ZERO;
+};
+
+const isJsonArray = (value: unknown): value is unknown[] => Array.isArray(value);
+
+/** Invalid or wrong-shape deal payloads are treated as an empty recent-trades list. */
+const parseDeals = (lastDeals?: string): OrderBookDealData[] => {
+  const deals = parseIndexerJson(lastDeals, [] as unknown[], isJsonArray);
+
+  return deals.filter(isJsonRecord).flatMap((deal) => {
+    const timestamp = parseTimestamp(deal.timestamp);
+    if (timestamp === null) return [];
+
+    return [
+      {
+        price: parseFinancialValue(deal.price),
+        amount: parseFinancialValue(deal.amount),
+        side: parseSide(deal.isBuy === true),
+        timestamp,
+      },
+    ];
+  });
+};
+
+const PolkaswapOrderBookDataQuery = gql<QueryData<OrderBookEntity>>`
+  query PolkaswapOrderBookDataQuery($id: String!) {
+    data: orderBook(id: $id) {
       price
       priceChangeDay
       volumeDayUSD
@@ -77,33 +92,21 @@ const parseOrderBookResponse =
         quote,
       },
       stats: {
-        price: new FPNumber(price ?? 0),
-        priceChange: new FPNumber(priceChangeDay ?? 0),
-        volume: new FPNumber(volumeDayUSD ?? 0),
+        price: parseFinancialValue(price),
+        priceChange: parseFinancialValue(priceChangeDay, true),
+        volume: parseFinancialValue(volumeDayUSD),
         status,
       },
       deals: parseDeals(lastDeals),
     };
   };
 
-const SubqueryOrderBookDataSubscription = gql<SubquerySubscriptionPayload<OrderBookEntityMutation>>`
-  subscription SubqueryOrderBookDataSubscription($id: [ID!]) {
+const PolkaswapOrderBookDataSubscription = gql<PolkaswapSubscriptionPayload<OrderBookEntityMutation>>`
+  subscription PolkaswapOrderBookDataSubscription($id: [ID!]) {
     payload: orderBooks(id: $id, mutation: [UPDATE]) {
       id
       mutation_type
       _entity
-    }
-  }
-`;
-
-const SubsquidOrderBookDataSubscription = gql<SubscriptionPayload<OrderBookEntity>>`
-  subscription SubsquidOrderBookDataSubscription($id: String!) {
-    payload: orderBookById(id: $id) {
-      price
-      priceChangeDay
-      volumeDayUSD
-      status
-      lastDeals
     }
   }
 `;
@@ -120,33 +123,12 @@ const parseOrderBookMutation =
         quote,
       },
       stats: {
-        price: new FPNumber(price ?? 0),
-        priceChange: new FPNumber(price_change_day ?? 0),
-        volume: new FPNumber(volume_day_u_s_d ?? 0),
+        price: parseFinancialValue(price),
+        priceChange: parseFinancialValue(price_change_day, true),
+        volume: parseFinancialValue(volume_day_u_s_d),
         status,
       },
       deals: parseDeals(last_deals),
-    };
-  };
-
-const parseOrderBookUpdate =
-  (dexId: number, base: string, quote: string) =>
-  (item: OrderBookEntity): OrderBookUpdateData => {
-    const { price, priceChangeDay, volumeDayUSD, status, lastDeals } = item;
-
-    return {
-      id: {
-        dexId,
-        base,
-        quote,
-      },
-      stats: {
-        price: new FPNumber(price ?? 0),
-        priceChange: new FPNumber(priceChangeDay ?? 0),
-        volume: new FPNumber(volumeDayUSD ?? 0),
-        status,
-      },
-      deals: parseDeals(lastDeals),
     };
   };
 
@@ -157,51 +139,20 @@ export async function subscribeOnOrderBookUpdates(
 ): Promise<Nullable<FnWithoutArgs>> {
   const [dex, baseAssetId, quoteAssetId] = orderBookId.split('-');
   const dexId = Number(dex);
-  const variables = { id: orderBookId };
-  const indexer = getCurrentIndexer();
+  const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
+  const parseQuery = parseOrderBookResponse(dexId, baseAssetId, quoteAssetId);
+  const response = await polkaswapIndexer.services.explorer.request(PolkaswapOrderBookDataQuery, { id: orderBookId });
 
-  switch (indexer.type) {
-    case IndexerType.SUBQUERY: {
-      const subqueryIndexer = indexer as SubqueryIndexer;
-      const parseQuery = parseOrderBookResponse(dexId, baseAssetId, quoteAssetId);
-      const response = await subqueryIndexer.services.explorer.request(SubqueryOrderBookDataQuery, variables);
+  if (!response) return null;
 
-      if (!response) return null;
+  handler(parseQuery(response));
 
-      handler(parseQuery(response));
-
-      const parseSubscription = parseOrderBookMutation(dexId, baseAssetId, quoteAssetId);
-      const subscription = subqueryIndexer.services.explorer.createEntitySubscription(
-        SubqueryOrderBookDataSubscription,
-        variables,
-        parseSubscription,
-        handler,
-        errorHandler
-      );
-
-      return subscription;
-    }
-    case IndexerType.SUBSQUID: {
-      const subsquidIndexer = indexer as SubsquidIndexer;
-      const parseQuery = parseOrderBookResponse(dexId, baseAssetId, quoteAssetId);
-      const response = await subsquidIndexer.services.explorer.request(SubsquidOrderBookDataQuery, variables);
-
-      if (!response) return null;
-
-      handler(parseQuery(response));
-
-      const parseSubscription = parseOrderBookUpdate(dexId, baseAssetId, quoteAssetId);
-      const subscription = subsquidIndexer.services.explorer.createEntitySubscription(
-        SubsquidOrderBookDataSubscription,
-        variables,
-        parseSubscription,
-        handler,
-        errorHandler
-      );
-
-      return subscription;
-    }
-  }
-
-  return null;
+  const parseSubscription = parseOrderBookMutation(dexId, baseAssetId, quoteAssetId);
+  return polkaswapIndexer.services.explorer.createEntitySubscription(
+    PolkaswapOrderBookDataSubscription,
+    { id: [orderBookId] },
+    parseSubscription,
+    handler,
+    errorHandler
+  );
 }

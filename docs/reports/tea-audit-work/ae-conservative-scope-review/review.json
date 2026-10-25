@@ -1,0 +1,47 @@
+{
+  "reviewedAt": "2026-09-30",
+  "code": "AE",
+  "proposedDecision": "not_supported",
+  "confidence": "moderate legal-scope inference",
+  "mainArraysEdited": false,
+  "affirmativeChain": [
+    "Article1 plants expressly includes live or dead plants/parts (English PDFp2; original Arabicp2).",
+    "Article1 agricultural consignment separately includes plants (same pages); Article1 importer includes natural persons/consignees (Englishp4;Arabicp3).",
+    "Article3 covers cases specified by the Law and executive regulations (Englishp6;Arabicp4); Article5(2) is a direct all-imported-consignment certificate duty (Englishp8;Arabicp6), not only a later designated list.",
+    "Physical rolled/dried sencha leaf parts are conservatively included; documentary duty therefore prevents the no-certificate route."
+  ],
+  "analysis": {
+    "actualCategory": "The product remains identifiable physical tea leaves after steaming, rolling, hot-air drying and finishing. Article1 expressly covers dead plants/parts; the Arabic original confirms that wording. This is a stronger textual dead-material inclusion than TC's plant-parts definition without a living qualification. It does not mean every chemically derived plant ingredient is necessarily a plant part.",
+    "affirmativeDuty": "Article1 agricultural consignment includes plants, plant products, or other regulated materials. Article5(2) then imposes certification on every imported/transit agricultural consignment. The final qualification concerning other regulated materials does not textually convert the separately enumerated plants limb into a future-designated-only category. Article3 limits application to cases specified by the Law and its executive regulations; Article5 is itself such an operative case. Article1's reference to a single certificate where appropriate describes consignment documentation and does not cancel the express all-consignment duty.",
+    "strongestContrary": "Article1 definitions apply unless context requires otherwise. The more specific manufactured-product limb regulates manufactured materials only when their nature/processing can introduce/spread pests. MAFF-described sencha manufacture plus ISPM32 Category1 tea is strong factual evidence of sufficient processing. Reading finished tea exclusively in that product limb avoids overlapping definitions and fits Article2 pest-prevention purpose and Article4(1)(i)/(o) standards-related duties. This is a plausible favorable reading, not dismissed simply because tea is unnamed. It nevertheless requires the independent explicit dead-plant-part limb to yield; no provision in the full Act states that allocation. The conservative proposal retains the express dead-parts wording rather than claiming technical pest risk proved.",
+    "designationCheck": "Article4 gives regulatory powers and Article14 permits further prohibitions/restrictions. Those powers are not the source of the proposed certificate duty; Article5(2) already supplies it directly for the defined consignment. Do not infer duty from mere enabling powers or customs tax-table absence.",
+    "exceptions": "Article5(5)(c) is an administrative power to cancel prescribed conditions based on risk within the listed Ministry measures; it does not state a self-executing manufactured-food exemption. Article27(2) preserves older regulations only so far as compatible. The saved JKI partial German translation of Decision248/2003 Article2 uses living plants, but cannot narrow the newer Act's express live/dead definition. Its Article15(5) personal exception concerns traveler permits and Article25 small-quantity certificate exception concerns carried fruit/cut flowers/bulbs/tubers; neither establishes an automatic Japan postal-tea waiver. That partial translation is supplementary, not proof of absence of every possible older rule.",
+    "japanGuidance": "Fresh original MAFF PDF page1 is dated21April2026 and has UAE Q*11 in the manufactured-green-tea column. Q means export with phytosanitary certificate; *11 warns some items may fall outside quarantine with neither permit nor certificate. JETRO August2025 separately states processed dried tea/matcha may be exempt subject to UAE confirmation; it predates the new Act. These are qualified corroboration, not an unconditional national duty or waiver.",
+    "privateFood": "Existing personal-food registration exemption and unaccompanied-personal-food guidance are preserved. Their quantity/category gaps are not used as an independent certificate barrier. No commercial food documentation list is imported into private-post scope.",
+    "confidence": "Moderate legal-scope inference supporting conservative operational exclusion; not a definitive tea-specific administrative determination.",
+    "comparisonWithTC": "Both laws have an independent broad plant-parts limb and an affirmative document duty, despite a separate manufactured-product risk limb. AE additionally says dead expressly. TC uses prior permit sections34–35; AE uses Article5(2) certificate. This supplies a substantive consistent distinction from BH/MV/KN/VC living-plant-plus-risk-manufacture regimes."
+  },
+  "sourceFiles": [
+    "../ae-bh-recovery/ae-law2025-jki.pdf",
+    "../ae-bh-recovery/ae-law2025-jki.txt",
+    "../ae-bh-recovery/ae-law2025-dm-ar.pdf",
+    "../ae-bh-recovery/ae-law2025-dm-ar.txt",
+    "../ae-bh-recovery/ae-regs2003-jki.pdf",
+    "../ae-bh-recovery/ae-regs2003-jki.txt",
+    "maff-postal-current.pdf",
+    "maff-postal-current.txt"
+  ],
+  "primaryUrls": [
+    "https://uaelegislation.gov.ae/en/legislations/3995",
+    "https://pflanzengesundheit.julius-kuehn.de/index.php?downloadid=3294&menuid=28&reporeid=110",
+    "https://dmpmedia.dm.gov.ae/uploads/2026/07/قانون-اتحادي-رقم-7-لسنة-2025-بشأن-الحجر-الزراعي.pdf",
+    "https://www.maff.go.jp/pps/j/search/e_hayami_yubin.pdf?d=1702",
+    "https://www.jetro.go.jp/world/middle_east/ae/foods/exportguide/greentea.html"
+  ],
+  "freshAccessLimits": "UAE legislation portal returned403; complete authoritative copies already recovered and read. No repeated commodity lookup failures or new generic searches used.",
+  "notConclusion": "No claim of categorical tea prohibition, no proven botanical pest risk, no claim every processed plant ingredient is a plant part, and no automatic legal effect attributed to ISPM32.",
+  "independentPeerReview": {
+    "agent": "/root/tea_asia_finish",
+    "assessment": "Independently read current AE law previously; no further operative condition identified that defeats Article1 dead-part / consignment plus Article5(2) certificate chain. Contextual overlap and MAFF/JETRO possible exemptions are material contrary evidence, not a recovered controlling domestic waiver. Agrees moderate expressly conservative certificate-required leaf-part inference is defensible if applied consistently; no general permit conclusion."
+  }
+}

@@ -1,0 +1,29 @@
+[
+  {
+    "url": "https://pflanzengesundheit.julius-kuehn.de/index.php?downloadid=3294&menuid=28&reporeid=110",
+    "status": "200",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/ae-bh-recovery/ae-law2025-jki.pdf",
+    "retrievedAt": "2026-09-30T07:09:16.604593+00:00",
+    "bytes": 329716,
+    "sha256": "dd81c9e5336af78f8744263aa7ca849f968052ca0899b758adce97ecf7c487e7"
+  },
+  {
+    "url": "https://pflanzengesundheit.julius-kuehn.de/index.php?downloadid=2097&menuid=28&reporeid=110",
+    "status": "200",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/ae-bh-recovery/ae-regs2003-jki.pdf",
+    "retrievedAt": "2026-09-30T07:09:16.717530+00:00",
+    "bytes": 254529,
+    "sha256": "560e076a5d1faea9a1b35479582bdec751e8d25d30afa2904c0ee3df76b21c93"
+  },
+  {
+    "url": "https://www.dm.gov.ae/documents/federal-law-no-7-regarding-agricultural-quarantine/",
+    "status": "200",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/ae-bh-recovery/ae-dm-law-page.html",
+    "retrievedAt": "2026-09-30T07:09:14.233010+00:00",
+    "bytes": 56228,
+    "sha256": "29f4eec6b847e241dd112876f48752399db756006c67ba5cb48c09df38dc2e6c"
+  }
+]

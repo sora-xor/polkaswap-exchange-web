@@ -6,7 +6,7 @@
     icon="basic-more-vertical-24"
     placement="bottom-end"
   >
-    <template slot="menu">
+    <template #menu>
       <a
         v-for="link in links"
         :key="link.type"
@@ -16,23 +16,55 @@
         rel="nofollow noopener"
       >
         <s-dropdown-item class="s-dropdown-menu__item">
-          {{ t('transaction.viewIn', { explorer: link.type }) }}
+          {{ t('transaction.viewIn', { explorer: getExplorerLabel(link.type) }) }}
         </s-dropdown-item>
       </a>
     </template>
   </s-dropdown>
 </template>
 
-<script lang="ts">
-import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import type { ExplorerLink } from '@/consts';
+import { useTranslation } from '@/composables/useTranslation';
+import { toSafeExternalLink } from '@/utils/externalLinks';
 
-@Component
-export default class LinksDropdown extends Mixins(TranslationMixin) {
-  @Prop({ default: () => [], type: Array }) readonly links!: Array<WALLET_CONSTS.ExplorerLink>;
-}
+const props = withDefaults(
+  defineProps<{
+    links?: Array<ExplorerLink>;
+  }>(),
+  {
+    links: () => [],
+  }
+);
+
+const { t } = useTranslation();
+
+const explorerLabels: Record<string, string> = {
+  etherscan: 'Etherscan',
+  polkadot: 'Polkadot',
+  sorametrics: 'SoraMetrics',
+  sorascan: 'SORAScan',
+  subscan: 'Subscan',
+};
+
+const links = computed(() =>
+  props.links.reduce<Array<ExplorerLink>>((result, link) => {
+    const href = toSafeExternalLink(link?.value);
+    if (href) {
+      result.push({ ...link, value: href });
+    }
+    return result;
+  }, [])
+);
+
+const getExplorerLabel = (type: string): string => explorerLabels[type.toLowerCase()] ?? type;
+
+defineExpose({
+  getExplorerLabel,
+  links,
+});
 </script>
 
 <style lang="scss">

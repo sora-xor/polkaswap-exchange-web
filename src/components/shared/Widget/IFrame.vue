@@ -1,30 +1,75 @@
 <template>
   <div class="widget-container" :class="{ 'widget-container--bordered': withBorder }" v-loading="widgetLoading">
-    <iframe v-if="src" class="widget" :src="src" @load="onLoadWidget" />
+    <iframe
+      v-if="safeSrc"
+      class="widget"
+      :src="safeSrc"
+      :sandbox="sandbox"
+      referrerpolicy="no-referrer"
+      loading="lazy"
+      @load="onLoadWidget"
+    ></iframe>
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed, ref, watch } from 'vue';
 
-@Component
-export default class IFrameWidget extends Vue {
-  @Prop({ default: '', type: String }) readonly src!: string;
-  @Prop({ default: false, type: Boolean }) readonly withBorder!: boolean;
-
-  @Watch('src', { immediate: true })
-  private onChangeSrc(value) {
-    if (value) {
-      this.widgetLoading = true;
-    }
+const props = withDefaults(
+  defineProps<{
+    src?: string;
+    withBorder?: boolean;
+    allowedOrigins?: string[];
+    sandbox?: string;
+  }>(),
+  {
+    src: '',
+    withBorder: false,
+    allowedOrigins: () => [],
+    // Needed for embedded purchase flows.
+    // Note: kept inline because `defineProps()` defaults are hoisted out of `<script setup>`.
+    sandbox:
+      'allow-forms allow-popups allow-popups-to-escape-sandbox allow-scripts allow-same-origin allow-top-navigation-by-user-activation',
   }
+);
 
-  widgetLoading = false;
+const widgetLoading = ref(false);
 
-  onLoadWidget(): void {
-    this.widgetLoading = false;
+const safeSrc = computed(() => {
+  const raw = props.src?.trim();
+  if (!raw) return '';
+
+  if (typeof window === 'undefined') return raw;
+
+  try {
+    const url = new URL(raw, window.location.origin);
+    const isSameOrigin = url.origin === window.location.origin;
+
+    if (isSameOrigin) return url.toString();
+    if (url.protocol !== 'https:') return '';
+
+    const allowed = new Set(props.allowedOrigins.map((origin) => origin.toLowerCase()));
+    return allowed.has(url.origin.toLowerCase()) ? url.toString() : '';
+  } catch {
+    return '';
   }
+});
+
+watch(
+  safeSrc,
+  (value) => {
+    widgetLoading.value = Boolean(value);
+  },
+  { immediate: true }
+);
+
+function onLoadWidget(): void {
+  widgetLoading.value = false;
 }
+
+defineExpose({
+  widgetLoading,
+});
 </script>
 
 <style lang="scss">

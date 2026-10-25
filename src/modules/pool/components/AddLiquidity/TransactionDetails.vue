@@ -5,12 +5,12 @@
       <info-line
         :label="t('firstPerSecond', { first: firstTokenSymbol, second: secondTokenSymbol })"
         :value="formattedPrice"
-      />
+      ></info-line>
       <info-line
         :label="t('firstPerSecond', { first: secondTokenSymbol, second: firstTokenSymbol })"
         :value="formattedPriceReversed"
-      />
-      <info-line v-if="strategicBonusApy" :label="t('pool.strategicBonusApy')" :value="strategicBonusApy" />
+      ></info-line>
+      <info-line v-if="strategicBonusApy" :label="t('pool.strategicBonusApy')" :value="strategicBonusApy"></info-line>
       <info-line
         is-formatted
         :label="t('networkFeeText')"
@@ -18,7 +18,7 @@
         :value="formattedFee"
         :asset-symbol="XOR_SYMBOL"
         :fiat-value="getFiatAmountByCodecString(networkFee)"
-      />
+      ></info-line>
     </div>
 
     <div class="info-line-container">
@@ -29,88 +29,112 @@
         :label="firstTokenSymbol"
         :value="formattedFirstTokenPosition"
         :fiat-value="fiatFirstTokenPosition"
-      />
+      ></info-line>
       <info-line
         is-formatted
         value-can-be-hidden
         :label="secondTokenSymbol"
         :value="formattedSecondTokenPosition"
         :fiat-value="fiatSecondTokenPosition"
-      />
-      <info-line value-can-be-hidden :label="t('createPair.shareOfPool')" :value="`${shareOfPool}%`" />
+      ></info-line>
+      <info-line value-can-be-hidden :label="t('createPair.shareOfPool')" :value="`${shareOfPool}%`"></info-line>
     </div>
   </transaction-details>
 </template>
 
-<script lang="ts">
-import { FPNumber, CodecString } from '@sora-substrate/sdk';
-import { components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+<script setup lang="ts">
+import { FPNumber } from '@sora-substrate/sdk';
+import TransactionDetails from '@/components/shared/TransactionDetails.vue';
+import { computed, toRef } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components } from '@/consts';
-import BaseTokenPairMixin from '@/modules/pool/mixins/BaseTokenPair';
-import PoolApyMixin from '@/modules/pool/mixins/PoolApy';
-import { lazyComponent } from '@/router';
-import { getter } from '@/store/decorators';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useTranslation } from '@/composables/useTranslation';
+import { usePoolTokenPair } from '@/modules/pool/composables/usePoolTokenPair';
+import { usePoolApy } from '@/modules/pool/composables/usePoolApy';
+import { usePoolStore } from '@/stores/pool';
 
+import type { CodecString } from '@sora-substrate/sdk';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
+import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 
-@Component({
-  components: {
-    InfoLine: components.InfoLine,
-    TransactionDetails: lazyComponent(Components.TransactionDetails),
-  },
-})
-export default class AddLiquidityTransactionDetails extends Mixins(TranslationMixin, BaseTokenPairMixin, PoolApyMixin) {
-  @getter.addLiquidity.liquidityInfo private liquidityInfo!: Nullable<AccountLiquidity>;
-  @getter.addLiquidity.shareOfPool shareOfPool!: string;
+type Props = {
+  infoOnly?: boolean;
+};
 
-  @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
+const props = withDefaults(defineProps<Props>(), {
+  infoOnly: true,
+});
 
-  get firstTokenPosition(): FPNumber {
-    return this.getTokenPosition(this.liquidityInfo?.firstBalance, this.firstTokenValue);
+const infoOnly = toRef(props, 'infoOnly');
+const { t } = useTranslation();
+const poolTokenPair = usePoolTokenPair();
+const { getFiatAmountByCodecString, getFiatAmountByFPNumber, getFPNumberFromCodec, Hundred } = useFormattedAmount();
+const { getPoolApy } = usePoolApy();
+const poolStore = usePoolStore();
+
+const liquidityInfo = computed(() => poolStore.addLiquidityLiquidityInfo as Nullable<AccountLiquidity>);
+const shareOfPool = computed(() => poolStore.addLiquidityShareOfPool);
+
+const getTokenPosition = (
+  liquidityInfoBalance: string | undefined,
+  tokenValue: string | CodecString | number
+): FPNumber => {
+  const previousPosition = FPNumber.fromCodecValue(liquidityInfoBalance ?? 0);
+  if (!poolTokenPair.emptyAssets.value) {
+    return previousPosition.add(new FPNumber(tokenValue));
   }
 
-  get secondTokenPosition(): FPNumber {
-    return this.getTokenPosition(this.liquidityInfo?.secondBalance, this.secondTokenValue);
-  }
+  return previousPosition;
+};
 
-  get strategicBonusApy(): Nullable<string> {
-    // It won't be in template when not defined
-    const strategicBonusApy = this.getPoolApy(this.firstToken?.address, this.secondToken?.address);
-    if (!strategicBonusApy) {
-      return null;
-    }
-    return `${this.getFPNumberFromCodec(strategicBonusApy).mul(this.Hundred).toLocaleString()}%`;
-  }
+const firstTokenPosition = computed(() =>
+  getTokenPosition(liquidityInfo.value?.firstBalance, poolTokenPair.firstTokenValue.value)
+);
 
-  get formattedFirstTokenPosition(): string {
-    return this.firstTokenPosition.toLocaleString();
-  }
+const secondTokenPosition = computed(() =>
+  getTokenPosition(liquidityInfo.value?.secondBalance, poolTokenPair.secondTokenValue.value)
+);
 
-  get formattedSecondTokenPosition(): string {
-    return this.secondTokenPosition.toLocaleString();
-  }
+const strategicBonusApy = computed(() => {
+  const apy = getPoolApy(
+    poolTokenPair.firstToken.value?.address ?? null,
+    poolTokenPair.secondToken.value?.address ?? null
+  );
+  if (!apy) return null;
 
-  get fiatFirstTokenPosition(): Nullable<string> {
-    if (!this.firstToken) return null;
+  return `${getFPNumberFromCodec(apy).mul(Hundred).toLocaleString()}%`;
+});
 
-    return this.getFiatAmountByFPNumber(this.firstTokenPosition, this.firstToken);
-  }
+const formattedFirstTokenPosition = computed(() => firstTokenPosition.value.toLocaleString());
+const formattedSecondTokenPosition = computed(() => secondTokenPosition.value.toLocaleString());
 
-  get fiatSecondTokenPosition(): Nullable<string> {
-    if (!this.secondToken) return null;
+const fiatFirstTokenPosition = computed(() =>
+  poolTokenPair.firstToken.value
+    ? getFiatAmountByFPNumber(firstTokenPosition.value, poolTokenPair.firstToken.value)
+    : null
+);
 
-    return this.getFiatAmountByFPNumber(this.secondTokenPosition, this.secondToken);
-  }
+const fiatSecondTokenPosition = computed(() =>
+  poolTokenPair.secondToken.value
+    ? getFiatAmountByFPNumber(secondTokenPosition.value, poolTokenPair.secondToken.value)
+    : null
+);
 
-  getTokenPosition(liquidityInfoBalance: string | undefined, tokenValue: string | CodecString | number): FPNumber {
-    const prevPosition = FPNumber.fromCodecValue(liquidityInfoBalance ?? 0);
-    if (!this.emptyAssets) {
-      return prevPosition.add(new FPNumber(tokenValue));
-    }
-    return prevPosition;
-  }
-}
+const firstTokenSymbol = computed(() => poolTokenPair.firstToken.value?.symbol ?? '');
+const secondTokenSymbol = computed(() => poolTokenPair.secondToken.value?.symbol ?? '');
+
+const InfoLine = WalletComponentInfoLine;
+
+const {
+  XOR_SYMBOL,
+  firstToken,
+  secondToken,
+  firstTokenValue,
+  secondTokenValue,
+  formattedPrice,
+  formattedPriceReversed,
+  formattedFee,
+  networkFee,
+  emptyAssets,
+} = poolTokenPair;
 </script>

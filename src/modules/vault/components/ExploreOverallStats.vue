@@ -9,13 +9,15 @@
       :md="4"
       :lg="3"
     >
-      <s-card class="stats-card" size="small" border-radius="mini" primary>
-        <div slot="header" class="stats-card-title">
-          <span>{{ title }}</span>
-          <s-tooltip border-radius="mini" :content="tooltip">
-            <s-icon name="info-16" size="14px" />
-          </s-tooltip>
-        </div>
+      <s-card class="stats-card" size="small" border-radius="mini" shadow="never" primary>
+        <template #header>
+          <div class="stats-card-title">
+            <span>{{ title }}</span>
+            <s-tooltip border-radius="mini" :content="tooltip">
+              <s-icon name="info-16" size="14px"></s-icon>
+            </s-tooltip>
+          </div>
+        </template>
         <div class="stats-card-data">
           <formatted-amount
             class="stats-card-value"
@@ -33,114 +35,133 @@
   </s-row>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/math';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { computed } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { state, getter } from '@/store/decorators';
+import { FontSizeRate, FontWeightRate } from '@/consts';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useTranslation } from '@/composables/useTranslation';
+import { useAssetsStore } from '@/stores/assets';
+import { useVaultStore } from '@/stores/vault';
+import { useWalletStore } from '@/stores/wallet';
 import { formatAmountWithSuffix } from '@/utils';
+import { getKensetsuFiatAmount } from '@/modules/vault/utils/fiat';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { Collateral, StablecoinInfo } from '@sora-substrate/sdk/build/kensetsu/types';
+import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 
-@Component({
-  components: {
-    FormattedAmount: components.FormattedAmount,
-  },
-})
-export default class ExploreOverallStats extends Mixins(TranslationMixin, mixins.FormattedAmountMixin) {
-  @state.vault.collaterals private collateralsObj!: Record<string, Collateral>;
-  @state.vault.stablecoinInfos private stablecoinInfos!: Record<string, StablecoinInfo>;
+const FormattedAmount = WalletComponentFormattedAmount;
 
-  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
-  @getter.wallet.settings.exchangeRate private exchangeRate!: number;
-  @getter.wallet.settings.currencySymbol currencySymbol!: string;
+const { t } = useTranslation();
+const { getFPNumberFiatAmountByFPNumber } = useFormattedAmount();
+const assetsStore = useAssetsStore();
+const vaultStore = useVaultStore();
+const walletStore = useWalletStore();
 
-  private get collaterals() {
-    return Object.values(this.collateralsObj);
-  }
+const collaterals = computed(() => Object.values(vaultStore.collaterals as Record<string, Collateral>));
+const stablecoinInfos = computed(() => vaultStore.stablecoinInfos as Record<string, StablecoinInfo>);
 
-  get badDebt(): FPNumber {
-    return Object.entries(this.stablecoinInfos).reduce((acc, [id, info]) => {
-      const debtAsset = this.getAsset(id);
-      if (!debtAsset) return acc;
+const getAsset = assetsStore.assetDataByAddress as (addr?: string) => Nullable<RegisteredAccountAsset>;
+const exchangeRate = computed(() => walletStore.exchangeRate);
+const currencySymbol = computed(() => walletStore.currencySymbol);
 
-      const value = this.getFPNumberFiatAmountByFPNumber(info.badDebt, debtAsset);
-      if (!value) return acc;
+const badDebt = computed(() =>
+  Object.entries(stablecoinInfos.value).reduce((acc, [id, info]) => {
+    const debtAsset = getAsset(id);
+    if (!debtAsset) return acc;
 
-      return acc.add(value.mul(this.exchangeRate));
-    }, FPNumber.ZERO);
-  }
+    const value = getKensetsuFiatAmount(info.badDebt, debtAsset, getFPNumberFiatAmountByFPNumber);
+    if (!value) return acc;
 
-  private get total(): { debt: FPNumber; collateral: FPNumber; available: FPNumber } {
-    return this.collaterals.reduce(
-      (acc, { totalLocked, lockedAssetId, debtSupply, debtAssetId, riskParams: { hardCap } }) => {
-        const lockedAsset = this.getAsset(lockedAssetId);
-        if (lockedAsset) {
-          const fiatLocked = this.getFPNumberFiatAmountByFPNumber(totalLocked, lockedAsset);
-          if (fiatLocked) {
-            acc.collateral = acc.collateral.add(fiatLocked.mul(this.exchangeRate));
-          }
+    return acc.add(value.mul(exchangeRate.value));
+  }, FPNumber.ZERO)
+);
+
+const total = computed(() =>
+  collaterals.value.reduce(
+    (acc, { totalLocked, lockedAssetId, debtSupply, debtAssetId, riskParams: { hardCap } }) => {
+      const lockedAsset = getAsset(lockedAssetId);
+      if (lockedAsset) {
+        const fiatLocked = getKensetsuFiatAmount(totalLocked, lockedAsset, getFPNumberFiatAmountByFPNumber);
+        if (fiatLocked) {
+          acc.collateral = acc.collateral.add(fiatLocked.mul(exchangeRate.value));
         }
+      }
 
-        const debtAsset = this.getAsset(debtAssetId);
-        if (debtAsset) {
-          const fiatDebt = this.getFPNumberFiatAmountByFPNumber(debtSupply, debtAsset);
-          if (fiatDebt) {
-            acc.debt = acc.debt.add(fiatDebt.mul(this.exchangeRate));
-          }
-          const fiatAvailable = this.getFPNumberFiatAmountByFPNumber(hardCap.sub(debtSupply), debtAsset);
+      const debtAsset = getAsset(debtAssetId);
+      if (debtAsset) {
+        const fiatDebt = getKensetsuFiatAmount(debtSupply, debtAsset, getFPNumberFiatAmountByFPNumber);
+        if (fiatDebt) {
+          acc.debt = acc.debt.add(fiatDebt.mul(exchangeRate.value));
+        }
+        const available = hardCap.sub(debtSupply);
+        if (available.isGtZero()) {
+          const fiatAvailable = getKensetsuFiatAmount(available, debtAsset, getFPNumberFiatAmountByFPNumber);
           if (fiatAvailable) {
-            acc.available = acc.available.add(fiatAvailable.mul(this.exchangeRate));
+            acc.available = acc.available.add(fiatAvailable.mul(exchangeRate.value));
           }
         }
+      }
 
-        return acc;
-      },
-      { debt: FPNumber.ZERO, collateral: FPNumber.ZERO, available: FPNumber.ZERO }
-    );
-  }
+      return acc;
+    },
+    { debt: FPNumber.ZERO, collateral: FPNumber.ZERO, available: FPNumber.ZERO }
+  )
+);
 
-  get columns() {
-    return [
-      {
-        title: this.t('kensetsu.overallTotalCollateral'),
-        tooltip: this.t('kensetsu.overallTotalCollateralDescription'),
-        amount: this.total.collateral,
-      },
-      {
-        title: this.t('kensetsu.overallTotalDebt'),
-        tooltip: this.t('kensetsu.overallTotalDebtDescription'),
-        amount: this.total.debt,
-      },
-      {
-        title: this.t('kensetsu.overallAvailable'),
-        tooltip: this.t('kensetsu.overallAvailableDescription'),
-        amount: this.total.available,
-      },
-      {
-        title: this.t('kensetsu.overallBadDebt'),
-        tooltip: this.t('kensetsu.overallBadDebtDescription'),
-        amount: this.badDebt,
-      },
-    ];
-  }
+const columns = computed(() => [
+  {
+    title: t('kensetsu.overallTotalCollateral'),
+    tooltip: t('kensetsu.overallTotalCollateralDescription'),
+    amount: total.value.collateral,
+  },
+  {
+    title: t('kensetsu.overallTotalDebt'),
+    tooltip: t('kensetsu.overallTotalDebtDescription'),
+    amount: total.value.debt,
+  },
+  {
+    title: t('kensetsu.overallAvailable'),
+    tooltip: t('kensetsu.overallAvailableDescription'),
+    amount: total.value.available,
+  },
+  {
+    title: t('kensetsu.overallBadDebt'),
+    tooltip: t('kensetsu.overallBadDebtDescription'),
+    amount: badDebt.value,
+  },
+]);
 
-  get statsColumns() {
-    return this.columns.map(({ amount, title, tooltip }) => {
-      const value = formatAmountWithSuffix(amount);
-      return { title, tooltip, value };
-    });
-  }
-}
+const statsColumns = computed(() =>
+  columns.value.map(({ amount, title, tooltip }) => ({
+    title,
+    tooltip,
+    value: formatAmountWithSuffix(amount),
+  }))
+);
 </script>
 
 <style lang="scss" scoped>
+.stats-column {
+  border-style: none;
+}
+
 .stats-card {
+  padding: $inner-spacing-mini $inner-spacing-small;
   margin-bottom: $inner-spacing-big;
   box-shadow: var(--s-shadow-element-pressed);
+
+  :deep(.el-card__header) {
+    border-bottom: 1px solid transparent;
+    padding: 0;
+  }
+
+  :deep(.el-card__body) {
+    border-style: none;
+    padding: 0;
+  }
 
   &-title {
     display: flex;

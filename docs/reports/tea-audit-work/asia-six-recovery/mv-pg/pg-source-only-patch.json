@@ -1,0 +1,26 @@
+{
+  "code": "PG",
+  "decisionChanged": false,
+  "permitFreeDecision": "unresolved",
+  "newFinding": "Recovered the official Parliament’s new public legislation application and its public REST search. Its unfiltered index contains 550 records, including certified 2025 enactments. The documented application filter textSearch=Biosecurity, and broader textSearch=bio, returned zero records; textSearch=2025 returned 39, proving that the text filter operates. The date-year filter is based on administrative bill_date and cannot establish a complete legislative year. This source recovery does not supply the enacted Biosecurity Act text or commencement; a zero search result is not proof that it was not enacted. No legislative or tea-document outcome changes follow.",
+  "remainingQuestion": "Current binding Biosecurity Act text/commencement and any carried-forward import product definitions, commodity requirements or exceptions, plus the operative restriction attached to tariff HS09021000 P&R. The 2017 draft and the 2025 passage announcement cannot settle these controls.",
+  "researchAttempts": [
+    "Read the current PG row and previous tariff/food/source access trail. Recovered the newly migrated official Parliament page and public JavaScript. Followed its documented wp-json/parliament-pg/v1/get-bills endpoint and exact textSearch filter. Saved unfiltered and filtered official responses without authentication. Biosecurity/bio searches returned zero while a 2025 title search returned 39 records. Did not retry the already failed 509 tariff paths or apply business-food registration to a private parcel."
+  ],
+  "evidenceUrls": [
+    "https://parliament.gov.pg/bills-legislations/",
+    "https://parliament.gov.pg/wp-json/parliament-pg/v1/get-bills",
+    "https://parliament.gov.pg/wp-json/parliament-pg/v1/get-bills?textSearch=Biosecurity",
+    "https://parliament.gov.pg/wp-json/parliament-pg/v1/get-bills?textSearch=bio",
+    "https://parliament.gov.pg/wp-json/parliament-pg/v1/get-bills?textSearch=2025"
+  ],
+  "sourceFiles": [
+    "asia-six-recovery/mv-pg/pg-parliament-index.html",
+    "asia-six-recovery/mv-pg/pg-parliament-public.js",
+    "asia-six-recovery/mv-pg/pg-bills.json",
+    "asia-six-recovery/mv-pg/pg-biosecurity-filter.json",
+    "asia-six-recovery/mv-pg/pg-bio-search.json",
+    "asia-six-recovery/mv-pg/pg-bills2025-title.json"
+  ],
+  "reviewedAt": "2026-09-30"
+}

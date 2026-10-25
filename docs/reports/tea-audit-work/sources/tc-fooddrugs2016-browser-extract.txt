@@ -1,0 +1,15 @@
+Public primary source inspected 2026-09-30 in Chrome through Attorney General public Google viewer. Direct PDF retrieval returned HTTP403; not a locally saved full PDF.
+Official index: https://gov.tc/agc/2016-ordinances
+Official document: https://gov.tc/agc/component/edocman/07-of-2016-food-and-drugs-ordinance-2016/viewdocument/725?Itemid=
+PDF URL exposed by official viewer: https://gov.tc/agc/component/edocman/07-of-2016-food-and-drugs-ordinance-2016/fdocument?Itemid=9999
+Viewer: https://docs.google.com/viewer?url=https://gov.tc/agc/component/edocman/07-of-2016-food-and-drugs-ordinance-2016/fdocument?Itemid=9999
+Title: Food and Drugs Ordinance 2016, Ordinance7 of2016,25pages.
+Page5 s2: Food includes processed, semi-processed or raw substances intended for human consumption, drink, chewing gum and substances used in manufacture/preparation/treatment of food.
+Page6 s2: Importer includes owner,consignee,agent or broker possessing or entitled to custody/control of imported article.
+Page7 s3(1): Food provisions cover production,processing,manufacture,handling,sale,import,export and related activity.
+Page7 s3(2)(a) exact: "food that is produced, imported or exported for private consumption;"
+Page7 s3(2) opening exact: "Notwithstanding the generality of subsection (1), this Ordinance shall not apply to—"
+Other s3(2) exclusions: ship/aircraft stores for onboard persons; transit not intended for local sale/consumption; activities regulated under AnimalHealth,PlantHealth or other DepartmentofAgriculture enactment; animal-raising/slaughter governed by AnimalHealth.
+Page8 s5(1): Except providedbyregulations, imported food/drug/cosmetic/device must conform to origin-countrylaw and have prescribed certificate confirming lawfuloriginmanufacture and sale.
+Conclusion: s5 cannot be applied to private-consumption tea because s3(2)(a) expressly excludes it from Ordinance. This is not an exemption from independent PlantHealthOrdinance. Finished-tea pest-risk classification remains unresolved.
+Page 4 subsequently inspected: assent 2 March 2016; Gazette publication 4 March 2016. Section 1 makes commencement subject to Governor Notice in Gazette. Such a commencement notice was not independently verified during this pass. Accordingly the private-consumption exclusion is the enacted Ordinance's textual scope, not independent proof of its commencement or an exemption from other legislation.

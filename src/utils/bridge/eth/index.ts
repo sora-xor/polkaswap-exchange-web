@@ -1,14 +1,17 @@
 import { Operation } from '@sora-substrate/sdk';
-import { beforeTransactionSign, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
-import store from '@/store';
+import pinia from '@/plugins/pinia';
+import { useAssetsStore } from '@/stores/assets';
+import { useBridgeStore } from '@/stores/bridge';
+import { useWalletStore } from '@/stores/wallet';
 import { Bridge } from '@/utils/bridge/common/classes';
 import type { GetBridgeHistoryInstance, IBridgeConstructorOptions, SignExternal } from '@/utils/bridge/common/types';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import type { EthBridgeHistory } from '@/utils/bridge/eth/classes/history';
 import { EthBridgeOutgoingReducer, EthBridgeIncomingReducer } from '@/utils/bridge/eth/classes/reducers';
 import type { EthBridgeReducer } from '@/utils/bridge/eth/classes/reducers';
-import { getTransaction, updateTransaction } from '@/utils/bridge/eth/utils';
+import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/constants';
+import { getTransaction as getEthBridgeTransaction, updateTransaction } from '@/utils/bridge/eth/utils';
 
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 
@@ -20,7 +23,8 @@ interface EthBridgeConstructorOptions extends IBridgeConstructorOptions<EthHisto
 
 type EthBridge = Bridge<EthHistory, EthBridgeReducer, EthBridgeConstructorOptions>;
 
-const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
+const resolveWalletStore = () => useWalletStore(pinia);
+const resolveBridgeStore = () => useBridgeStore(pinia);
 
 const ethBridge: EthBridge = new Bridge({
   reducers: {
@@ -38,23 +42,27 @@ const ethBridge: EthBridge = new Bridge({
     },
   },
   // assets
-  addAsset: (assetAddress: string) => store.dispatch.wallet.account.addAsset(assetAddress),
-  getAssetByAddress: (address: string) => store.getters.assets.assetDataByAddress(address),
+  addAsset: (assetAddress: string) => resolveWalletStore().addAsset(assetAddress),
+  getAssetByAddress: (address: string) => useAssetsStore().assetDataByAddress(address),
   // transaction
-  getTransaction,
+  getTransaction: (id: string) =>
+    getEthBridgeTransaction(id, resolveBridgeStore().getHistoryTransaction(id) as EthHistory | null),
   updateTransaction,
   // ui integration
-  showNotification: (tx: EthHistory) => store.commit.bridge.setNotificationData(tx as any),
-  addTransactionToProgress: (id: string) => store.commit.bridge.addTxIdInProgress(id),
-  removeTransactionFromProgress: (id: string) => store.commit.bridge.removeTxIdFromProgress(id),
-  updateHistory: () => store.dispatch.bridge.updateInternalHistory(),
-  getActiveTransaction: () => store.getters.bridge.historyItem as EthHistory,
+  showNotification: (tx: EthHistory) => resolveBridgeStore().setNotificationData(tx as any),
+  addTransactionToProgress: (id: string) => resolveBridgeStore().addTransactionToProgress(id),
+  removeTransactionFromProgress: (id: string) => resolveBridgeStore().removeTransactionFromProgress(id),
+  isTransactionInProgress: (id: string) => !!resolveBridgeStore().inProgressIds[id],
+  updateHistory: () => resolveBridgeStore().updateInternalHistory(),
+  getActiveTransaction: () => resolveBridgeStore().activeTransaction as EthHistory,
   // transaction signing
-  beforeTransactionSign: (...args: any[]) => beforeTransactionSign(store.original, ethBridgeApi, ...args),
+  beforeTransactionSign: (...args: any[]) => resolveBridgeStore().beforeTransactionSign(ethBridgeApi, ...args),
   // custom
-  getBridgeHistoryInstance: () => store.dispatch.bridge.getEthBridgeHistoryInstance(),
-  signExternalOutgoing: (id: string) => store.dispatch.bridge.signEthBridgeOutgoingEvm(id),
-  signExternalIncoming: (id: string) => store.dispatch.bridge.signEthBridgeIncomingEvm(id),
+  getBridgeHistoryInstance: () => resolveBridgeStore().getEthBridgeHistoryInstance() as Promise<EthBridgeHistory>,
+  signExternalOutgoing: (id, recordSubmission) =>
+    resolveBridgeStore().signEthBridgeOutgoingEvm(id, recordSubmission) as Promise<unknown>,
+  signExternalIncoming: (id, recordSubmission) =>
+    resolveBridgeStore().signEthBridgeIncomingEvm(id, recordSubmission) as Promise<unknown>,
 });
 
 export default ethBridge;

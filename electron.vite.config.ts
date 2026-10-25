@@ -1,26 +1,27 @@
 import { fileURLToPath, URL } from 'node:url';
 
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite';
-import { createVuePlugin as vue } from 'vite-plugin-vue2';
+import viteConfig from './vite.config.mjs';
 
 export default defineConfig({
   main: {
     plugins: [externalizeDepsPlugin()],
     build: {
       lib: {
-        entry: 'src/main.ts',
+        entry: 'electron/main/index.ts',
       },
     },
-  },
-  preload: {
-    plugins: [externalizeDepsPlugin()],
   },
   renderer: {
-    resolve: {
-      alias: {
-        '@': fileURLToPath(new URL('./src', import.meta.url)),
+    build: {
+      rollupOptions: {
+        input: {
+          index: 'src/renderer/index.html',
+        },
       },
     },
-    plugins: [vue()],
+    css: viteConfig.css,
+    resolve: viteConfig.resolve,
+    plugins: viteConfig.plugins,
   },
 });

@@ -1,0 +1,678 @@
+import { FPNumber } from '@sora-substrate/math';
+import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { EvmNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/evm/consts';
+import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
+import { createPinia, setActivePinia } from 'pinia';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+const shared = vi.hoisted(() => ({
+  assetsStoreState: {
+    getRegisteredAssets: vi.fn(async () => undefined),
+    updateRegisteredAssets: vi.fn(async () => undefined),
+  },
+  bridgeStoreState: {
+    autoselectedAssetAddress: null as string | null,
+    setAssetAddress: vi.fn(async () => undefined),
+    subBridgeConnector: null as any,
+  },
+  connectEvmProviderMock: vi.fn(),
+  disconnectEvmProviderMock: vi.fn(),
+  getContractMock: vi.fn(),
+  getDenominatorMock: vi.fn(),
+  getEvmNetworkIdMock: vi.fn(),
+  getListAppsMock: vi.fn(),
+  getProvidersListMock: vi.fn(),
+  getSelectedBridgeTypeMock: vi.fn(),
+  getSelectedNetworkMock: vi.fn(),
+  hexToNumberMock: vi.fn((value: string) => Number.parseInt(value, 16)),
+  isAppStorageSourceMock: vi.fn(() => false),
+  isNativeEvmTokenAddressMock: vi.fn(() => false),
+  loginApiMock: vi.fn(async () => undefined),
+  logoutApiMock: vi.fn(),
+  storeSelectedBridgeTypeMock: vi.fn(),
+  storeSelectedNetworkMock: vi.fn(),
+  subNetworksConnectorNodes: {} as Record<string, any[]>,
+  switchOrAddChainMock: vi.fn(),
+  walletStoreState: {
+    isDesktop: false,
+  },
+  watchEthereumMock: vi.fn(),
+}));
+
+vi.mock('@tests/stubs/walletRuntime', async () => {
+  const { createWalletMock, withWalletMock } = await import('@tests/stubs/createWalletMock');
+  const wallet = await createWalletMock();
+
+  return withWalletMock(wallet, {
+    api: {
+      ...wallet.api,
+      bridgeProxy: {
+        ...(wallet.api?.bridgeProxy ?? {}),
+        getListApps: shared.getListAppsMock,
+      },
+      system: {
+        ...(wallet.api?.system ?? {}),
+        getDenominator: shared.getDenominatorMock,
+      },
+    },
+    accountUtils: {
+      ...(wallet.accountUtils ?? {}),
+      isAppStorageSource: shared.isAppStorageSourceMock,
+      loginApi: shared.loginApiMock,
+      logoutApi: shared.logoutApiMock,
+    },
+  });
+});
+
+vi.mock('@/stores/assets', () => ({
+  useAssetsStore: () => shared.assetsStoreState,
+}));
+
+vi.mock('@/stores/bridge', () => ({
+  useBridgeStore: () => shared.bridgeStoreState,
+}));
+
+vi.mock('@/stores/wallet', () => ({
+  useWalletStore: () => shared.walletStoreState,
+}));
+
+vi.mock('@/utils/bridge/sub/classes/adapter', () => ({
+  SubNetworksConnector: class {
+    static get nodes() {
+      return shared.subNetworksConnectorNodes;
+    }
+
+    static set nodes(nodes: Record<string, any[]>) {
+      shared.subNetworksConnectorNodes = nodes;
+    }
+  },
+}));
+
+vi.mock('@/utils/connection/evm/providers', () => ({
+  FearlessWalletProvider: { uuid: 'Fearless Wallet', name: 'Fearless Wallet', icon: 'fearless.svg' },
+  MetamaskProvider: { uuid: 'MetaMask', name: 'MetaMask', icon: 'metamask.svg' },
+  WalletConnectProvider: { uuid: 'WalletConnect', name: 'WalletConnect', icon: 'wc.svg' },
+  getProvidersList: shared.getProvidersListMock,
+}));
+
+vi.mock('@/utils/ethers-util', () => ({
+  __esModule: true,
+  default: {
+    connectEvmProvider: shared.connectEvmProviderMock,
+    disconnectEvmProvider: shared.disconnectEvmProviderMock,
+    getContract: shared.getContractMock,
+    getEvmNetworkId: shared.getEvmNetworkIdMock,
+    getSelectedBridgeType: shared.getSelectedBridgeTypeMock,
+    getSelectedNetwork: shared.getSelectedNetworkMock,
+    hexToNumber: shared.hexToNumberMock,
+    isNativeEvmTokenAddress: shared.isNativeEvmTokenAddressMock,
+    storeSelectedBridgeType: shared.storeSelectedBridgeTypeMock,
+    storeSelectedNetwork: shared.storeSelectedNetworkMock,
+    switchOrAddChain: shared.switchOrAddChainMock,
+    watchEthereum: shared.watchEthereumMock,
+  },
+  PROVIDER_ERROR: { DisconnectedFromChain: 4901 },
+}));
+
+import { useWeb3Store } from '@/stores/web3';
+
+describe('useWeb3Store', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia());
+    vi.clearAllMocks();
+    shared.assetsStoreState.getRegisteredAssets.mockResolvedValue(undefined);
+    shared.assetsStoreState.updateRegisteredAssets.mockResolvedValue(undefined);
+    shared.bridgeStoreState.autoselectedAssetAddress = null;
+    shared.bridgeStoreState.setAssetAddress.mockResolvedValue(undefined);
+    shared.bridgeStoreState.subBridgeConnector = null;
+    shared.getDenominatorMock.mockResolvedValue(new FPNumber('1000000'));
+    shared.getEvmNetworkIdMock.mockResolvedValue(8453);
+    shared.getListAppsMock.mockResolvedValue({
+      [BridgeNetworkType.Eth]: {},
+      [BridgeNetworkType.Evm]: {},
+      [BridgeNetworkType.Sub]: [],
+    });
+    shared.getSelectedBridgeTypeMock.mockReturnValue(null);
+    shared.getSelectedNetworkMock.mockReturnValue(null);
+    shared.isAppStorageSourceMock.mockReturnValue(false);
+    shared.loginApiMock.mockResolvedValue(undefined);
+    shared.logoutApiMock.mockReset();
+    shared.subNetworksConnectorNodes = {};
+    shared.walletStoreState.isDesktop = false;
+    shared.watchEthereumMock.mockResolvedValue(vi.fn());
+  });
+
+  it('keeps mutation-backed UI and bridge config state locally', () => {
+    const web3Store = useWeb3Store();
+
+    web3Store.setSelectNetworkDialogVisibility(true);
+    web3Store.setSelectProviderDialogVisibility(true);
+    web3Store.setSelectSubNodeDialogVisibility(true);
+    web3Store.setSubAccountDialogVisibility(true);
+    web3Store.setSoraAccountDialogVisibility(true);
+    web3Store.setEvmNetworksApp([EvmNetworkId.EthereumSepolia] as any);
+    web3Store.setSubNetworkApps({ kusama: true } as any);
+    web3Store.setEthBridgeSettings({
+      evmNetwork: EvmNetworkId.EthereumSepolia,
+      address: {
+        XOR: '0xxor-local',
+        VAL: '0xval-local',
+        OTHER: '0xother-local',
+      },
+    } as any);
+
+    expect(web3Store.selectNetworkDialogVisibility).toBe(true);
+    expect(web3Store.selectProviderDialogVisibility).toBe(true);
+    expect(web3Store.selectSubNodeDialogVisibility).toBe(true);
+    expect(web3Store.subAccountDialogVisibility).toBe(true);
+    expect(web3Store.soraAccountDialogVisibility).toBe(true);
+    expect(web3Store.evmNetworkApps).toEqual([EvmNetworkId.EthereumSepolia]);
+    expect(web3Store.subNetworkApps).toEqual({ kusama: true });
+    expect(web3Store.ethBridgeSettings).toEqual({
+      evmNetwork: EvmNetworkId.EthereumSepolia,
+      address: {
+        XOR: '0xxor-local',
+        VAL: '0xval-local',
+        OTHER: '0xother-local',
+      },
+    });
+  });
+
+  it('selects external networks locally and bootstraps bridge dependencies through Pinia stores', async () => {
+    const stopMock = vi.fn(async () => undefined);
+    shared.bridgeStoreState.autoselectedAssetAddress = '0xasset';
+    shared.bridgeStoreState.subBridgeConnector = {
+      stop: stopMock,
+    };
+
+    const web3Store = useWeb3Store();
+
+    await web3Store.selectExternalNetwork({
+      id: EvmNetworkId.EthereumSepolia,
+      type: BridgeNetworkType.Eth,
+    });
+
+    expect(stopMock).toHaveBeenCalledTimes(1);
+    expect(shared.storeSelectedBridgeTypeMock).toHaveBeenCalledWith(BridgeNetworkType.Eth);
+    expect(shared.storeSelectedNetworkMock).toHaveBeenCalledWith(EvmNetworkId.EthereumSepolia);
+    expect(shared.getDenominatorMock).toHaveBeenCalledTimes(1);
+    expect(shared.assetsStoreState.getRegisteredAssets).toHaveBeenCalledTimes(1);
+    expect(shared.bridgeStoreState.setAssetAddress).toHaveBeenCalledWith('0xasset');
+    expect(web3Store.networkType).toBe(BridgeNetworkType.Eth);
+    expect(web3Store.networkSelected).toBe(EvmNetworkId.EthereumSepolia);
+    expect(web3Store.denominator.toString()).toBe('1000000');
+  });
+
+  it('opens Liberland before supported bridge apps install the Sub node catalog', async () => {
+    const openMock = vi.fn(async () => undefined);
+    const stopMock = vi.fn(async () => undefined);
+    shared.bridgeStoreState.subBridgeConnector = {
+      connectionState: {
+        network: null,
+        connection: null,
+      },
+      open: openMock,
+      stop: stopMock,
+    };
+
+    const web3Store = useWeb3Store();
+    web3Store.setSubNetworkApps({ [SubNetworkId.Liberland]: true });
+
+    await web3Store.selectExternalNetwork({
+      id: SubNetworkId.Liberland,
+      type: BridgeNetworkType.Sub,
+    });
+
+    expect(shared.getListAppsMock).not.toHaveBeenCalled();
+    expect(shared.subNetworksConnectorNodes[SubNetworkId.Liberland]).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: 'Dwellir',
+          address: 'wss://liberland-rpc.n.dwellir.com',
+        }),
+      ])
+    );
+    expect(openMock).toHaveBeenCalledTimes(1);
+    expect(openMock).toHaveBeenCalledWith(SubNetworkId.Liberland);
+  });
+
+  it('coalesces concurrent recovery attempts for the selected Sub network', async () => {
+    let finishOpen!: () => void;
+    const opening = new Promise<void>((resolve) => {
+      finishOpen = resolve;
+    });
+    const openMock = vi.fn(() => opening);
+    shared.bridgeStoreState.subBridgeConnector = {
+      connectionState: {
+        network: null,
+        connection: null,
+      },
+      open: openMock,
+    };
+
+    const web3Store = useWeb3Store();
+    web3Store.setSubNetworkApps({ [SubNetworkId.Liberland]: true });
+    web3Store.networkType = BridgeNetworkType.Sub;
+    web3Store.networkSelected = SubNetworkId.Liberland;
+
+    const first = web3Store.connectSelectedSubNetwork();
+    const second = web3Store.connectSelectedSubNetwork();
+
+    await vi.waitFor(() => expect(openMock).toHaveBeenCalledTimes(1));
+    finishOpen();
+    await Promise.all([first, second]);
+
+    expect(openMock).toHaveBeenCalledWith(SubNetworkId.Liberland);
+  });
+
+  it('recovers an already-selected Sub network after supported apps install its node catalog', async () => {
+    const openMock = vi.fn(async () => undefined);
+    shared.bridgeStoreState.subBridgeConnector = {
+      connectionState: {
+        network: SubNetworkId.Liberland,
+        connection: null,
+      },
+      open: openMock,
+    };
+    shared.getListAppsMock.mockResolvedValue({
+      [BridgeNetworkType.Eth]: {},
+      [BridgeNetworkType.Evm]: {},
+      [BridgeNetworkType.Sub]: [SubNetworkId.Liberland],
+    });
+
+    const web3Store = useWeb3Store();
+    web3Store.setSubNetworkApps({ [SubNetworkId.Liberland]: true });
+    web3Store.networkType = BridgeNetworkType.Sub;
+    web3Store.networkSelected = SubNetworkId.Liberland;
+
+    await web3Store.getSupportedApps();
+
+    expect(shared.subNetworksConnectorNodes[SubNetworkId.Liberland]).toEqual(
+      expect.arrayContaining([expect.objectContaining({ name: 'Dwellir' })])
+    );
+    expect(openMock).toHaveBeenCalledTimes(1);
+    expect(openMock).toHaveBeenCalledWith(SubNetworkId.Liberland);
+  });
+
+  it('reopens an attached Liberland adapter after its connection becomes idle', async () => {
+    const connection = {};
+    const openMock = vi.fn(async () => undefined);
+    shared.bridgeStoreState.subBridgeConnector = {
+      connectionState: {
+        network: SubNetworkId.Liberland,
+        connection,
+        connecting: false,
+        ready: false,
+      },
+      network: {
+        subNetwork: SubNetworkId.Liberland,
+        subNetworkConnection: connection,
+      },
+      open: openMock,
+    };
+
+    const web3Store = useWeb3Store();
+    web3Store.setSubNetworkApps({ [SubNetworkId.Liberland]: true });
+    web3Store.networkType = BridgeNetworkType.Sub;
+    web3Store.networkSelected = SubNetworkId.Liberland;
+
+    await web3Store.connectSelectedSubNetwork();
+
+    expect(openMock).toHaveBeenCalledTimes(1);
+    expect(openMock).toHaveBeenCalledWith(SubNetworkId.Liberland);
+  });
+
+  it('does not restart the selected Liberland adapter while it is actively connecting', async () => {
+    const connection = {};
+    const openMock = vi.fn(async () => undefined);
+    shared.bridgeStoreState.subBridgeConnector = {
+      connectionState: {
+        network: SubNetworkId.Liberland,
+        connection,
+        connecting: true,
+        ready: false,
+      },
+      network: {
+        subNetwork: SubNetworkId.Liberland,
+        subNetworkConnection: connection,
+      },
+      open: openMock,
+    };
+
+    const web3Store = useWeb3Store();
+    web3Store.setSubNetworkApps({ [SubNetworkId.Liberland]: true });
+    web3Store.networkType = BridgeNetworkType.Sub;
+    web3Store.networkSelected = SubNetworkId.Liberland;
+
+    await web3Store.connectSelectedSubNetwork();
+
+    expect(openMock).not.toHaveBeenCalled();
+  });
+
+  it('retries a routed selection after a stale adapter and pre-catalog failure', async () => {
+    const oldConnection = {};
+    const connector = {
+      connectionState: {
+        network: SubNetworkId.PolkadotAstar,
+        connection: oldConnection,
+      },
+      network: {
+        subNetwork: SubNetworkId.Liberland,
+        subNetworkConnection: oldConnection,
+      },
+      getRequiredNetworks: vi.fn(() => [SubNetworkId.PolkadotSora, SubNetworkId.Polkadot, SubNetworkId.PolkadotAstar]),
+      open: vi.fn(async () => {
+        if (shared.getListAppsMock.mock.calls.length === 0) {
+          throw new Error('Bridge app catalog is not ready');
+        }
+
+        const connection = {};
+        connector.network = {
+          subNetwork: SubNetworkId.PolkadotAstar,
+          subNetworkConnection: connection,
+        };
+        connector.connectionState = {
+          network: SubNetworkId.PolkadotAstar,
+          connection,
+        };
+      }),
+    };
+    shared.bridgeStoreState.subBridgeConnector = connector;
+    shared.getListAppsMock.mockResolvedValue({
+      [BridgeNetworkType.Eth]: {},
+      [BridgeNetworkType.Evm]: {},
+      [BridgeNetworkType.Sub]: [SubNetworkId.PolkadotAstar],
+    });
+
+    const web3Store = useWeb3Store();
+    web3Store.setSubNetworkApps({ [SubNetworkId.PolkadotAstar]: true });
+    web3Store.networkType = BridgeNetworkType.Sub;
+    web3Store.networkSelected = SubNetworkId.PolkadotAstar;
+
+    await expect(web3Store.connectSelectedSubNetwork()).rejects.toThrow('Bridge app catalog is not ready');
+
+    expect(connector.open).toHaveBeenCalledTimes(1);
+    expect(connector.network.subNetwork).toBe(SubNetworkId.Liberland);
+
+    await web3Store.getSupportedApps();
+
+    expect(connector.open).toHaveBeenCalledTimes(2);
+    expect(connector.network.subNetwork).toBe(SubNetworkId.PolkadotAstar);
+    expect(shared.subNetworksConnectorNodes[SubNetworkId.PolkadotSora]).toEqual(
+      expect.arrayContaining([expect.objectContaining({ name: 'Soramitsu' })])
+    );
+    expect(shared.subNetworksConnectorNodes[SubNetworkId.Polkadot]).toEqual(
+      expect.arrayContaining([expect.objectContaining({ name: 'Parity' })])
+    );
+    expect(shared.subNetworksConnectorNodes[SubNetworkId.PolkadotAstar]).toEqual(
+      expect.arrayContaining([expect.objectContaining({ name: 'Astar' })])
+    );
+  });
+
+  it('connects an EVM provider locally and registers the watcher cleanup', async () => {
+    const unsubscribe = vi.fn();
+    const provider = { uuid: 'wallet-connect', name: 'WalletConnect', icon: 'wc.svg' };
+    const web3Store = useWeb3Store();
+
+    shared.connectEvmProviderMock.mockResolvedValue('0xABC');
+    shared.getEvmNetworkIdMock.mockResolvedValue(8453);
+    shared.watchEthereumMock.mockResolvedValue(unsubscribe);
+
+    await web3Store.selectEvmProvider(provider as any);
+
+    expect(shared.connectEvmProviderMock).toHaveBeenCalledWith(provider, {
+      chains: [web3Store.ethBridgeEvmNetwork],
+      optionalChains: [],
+    });
+    expect(shared.assetsStoreState.updateRegisteredAssets).toHaveBeenCalledTimes(1);
+    expect(web3Store.evmAddress).toBe('0xabc');
+    expect(web3Store.evmProvider).toEqual(provider);
+    expect(web3Store.evmProviderNetwork).toBe(8453);
+    expect(web3Store.evmProviderSubscription).toBe(unsubscribe);
+    expect(web3Store.evmProviderLoading).toBeNull();
+  });
+
+  it('returns an empty EVM token address without logging expected unregistered assets', async () => {
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const web3Store = useWeb3Store();
+    const sidechainTokens = vi.fn().mockResolvedValue('0xNativeToken');
+
+    try {
+      web3Store.setEthBridgeSettings({
+        evmNetwork: EvmNetworkId.EthereumMainnet,
+        address: {
+          XOR: '',
+          VAL: '',
+          OTHER: '0xBridge',
+        },
+      } as any);
+      shared.getContractMock.mockResolvedValue({ _sidechainTokens: sidechainTokens });
+      shared.isNativeEvmTokenAddressMock.mockReturnValue(true);
+
+      await expect(web3Store.getEvmTokenAddressByAssetId('0xAsset')).resolves.toBe('');
+
+      expect(shared.getContractMock).toHaveBeenCalled();
+      expect(sidechainTokens).toHaveBeenCalledWith('0xAsset');
+      expect(consoleErrorSpy).not.toHaveBeenCalled();
+    } finally {
+      consoleErrorSpy.mockRestore();
+    }
+  });
+
+  it('subscribes on discovered EVM providers without duplicating providers or discovery listeners', async () => {
+    const unsubscribe = vi.fn();
+    const web3Store = useWeb3Store();
+    let callback!: (event: {
+      detail: {
+        info: { uuid: string; name: string; icon: string };
+        provider: unknown;
+      };
+    }) => void;
+
+    shared.getProvidersListMock.mockImplementation((handler) => {
+      callback = handler;
+      return unsubscribe;
+    });
+
+    const result = await web3Store.subscribeOnEvmProviders();
+    const secondResult = await web3Store.subscribeOnEvmProviders();
+
+    callback({
+      detail: {
+        info: { uuid: 'provider-1', name: 'Provider 1', icon: 'provider.svg' },
+        provider: {},
+      },
+    });
+    callback({
+      detail: {
+        info: { uuid: 'provider-1', name: 'Provider 1', icon: 'provider.svg' },
+        provider: {},
+      },
+    });
+
+    expect(shared.getProvidersListMock).toHaveBeenCalledTimes(1);
+    expect(unsubscribe).not.toHaveBeenCalled();
+
+    result?.();
+    result?.();
+
+    expect(unsubscribe).not.toHaveBeenCalled();
+
+    secondResult?.();
+
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
+    expect(web3Store.evmProviders).toHaveLength(1);
+    expect(web3Store.evmProviders[0]).toEqual(
+      expect.objectContaining({
+        uuid: 'provider-1',
+        name: 'Provider 1',
+        icon: 'provider.svg',
+        installed: true,
+      })
+    );
+  });
+
+  it('logs into the selected Sub account through the bridge Pinia connector', async () => {
+    const changeAccountNameMock = vi.fn();
+    const connector = {
+      connectionState: {
+        network: SubNetworkId.Liberland,
+        ready: true,
+      },
+      accountApi: {
+        changeAccountName: changeAccountNameMock,
+        connection: { api: { registry: { chainSS58: 42 } } },
+        formatAddress: vi.fn((address: string, withPrefix = true) =>
+          withPrefix ? `fmt:${address}` : `raw:${address}`
+        ),
+      },
+      network: {
+        connection: { api: { registry: { chainSS58: 42 } } },
+        subNetworkConnection: {
+          nodeIsConnected: true,
+        },
+      },
+    };
+
+    shared.bridgeStoreState.subBridgeConnector = connector;
+
+    const web3Store = useWeb3Store();
+    web3Store.networkSelected = SubNetworkId.Liberland;
+    const account = {
+      address: '5SubAccount',
+      name: 'Liberland',
+      source: 'polkadot-js',
+    };
+
+    await web3Store.selectSubAccount(account as any);
+    await web3Store.changeSubAccountName({ address: '5SubAccount', name: 'Renamed' });
+
+    expect(shared.loginApiMock).toHaveBeenCalledWith(connector.accountApi, account, false);
+    expect(changeAccountNameMock).toHaveBeenCalledWith('5SubAccount', 'Renamed');
+    expect(web3Store.subAccount).toEqual({
+      address: '5SubAccount',
+      name: 'Renamed',
+      source: 'polkadot-js',
+    });
+  });
+
+  it('rejects a ready connector that belongs to a previously selected Sub network', async () => {
+    shared.bridgeStoreState.subBridgeConnector = {
+      connectionState: {
+        network: SubNetworkId.Polkadot,
+        ready: true,
+      },
+      accountApi: {},
+    };
+
+    const web3Store = useWeb3Store();
+    web3Store.networkSelected = SubNetworkId.Liberland;
+    web3Store.setSubAccountDialogVisibility(true);
+
+    await web3Store.selectSubAccount({
+      address: '5SubAccount',
+      name: 'Liberland',
+      source: 'polkadot-js',
+    } as any);
+
+    expect(shared.loginApiMock).not.toHaveBeenCalled();
+    expect(web3Store.subAccountDialogVisibility).toBe(false);
+    expect(web3Store.selectSubNodeDialogVisibility).toBe(true);
+    expect(web3Store.subAccount).toBeNull();
+  });
+
+  it('redirects Sub account selection to node selection when the bridge network registry is missing', async () => {
+    const connector = {
+      connectionState: {
+        ready: false,
+      },
+      accountApi: {
+        connection: { api: { registry: { chainSS58: 42 } } },
+      },
+      network: {
+        connection: { api: {} },
+        subNetworkConnection: {
+          nodeIsConnected: true,
+        },
+      },
+    };
+
+    shared.bridgeStoreState.subBridgeConnector = connector;
+
+    const web3Store = useWeb3Store();
+
+    web3Store.setSubAccountDialogVisibility(true);
+    await web3Store.selectSubAccount({
+      address: '5SubAccount',
+      name: 'Liberland',
+      source: 'polkadot-js',
+    } as any);
+
+    expect(shared.loginApiMock).not.toHaveBeenCalled();
+    expect(web3Store.subAccountDialogVisibility).toBe(false);
+    expect(web3Store.selectSubNodeDialogVisibility).toBe(true);
+    expect(web3Store.subAccount).toBeNull();
+  });
+
+  it('redirects Sub account selection to node selection when the account API registry is missing', async () => {
+    shared.bridgeStoreState.subBridgeConnector = {
+      connectionState: {
+        ready: false,
+      },
+      accountApi: {
+        connection: { api: {} },
+      },
+      network: {
+        connection: { api: { registry: { chainSS58: 42 } } },
+        subNetworkConnection: {
+          nodeIsConnected: true,
+        },
+      },
+    };
+
+    const web3Store = useWeb3Store();
+
+    web3Store.setSubAccountDialogVisibility(true);
+    await web3Store.selectSubAccount({
+      address: '5SubAccount',
+      name: 'Liberland',
+      source: 'polkadot-js',
+    } as any);
+
+    expect(shared.loginApiMock).not.toHaveBeenCalled();
+    expect(web3Store.subAccountDialogVisibility).toBe(false);
+    expect(web3Store.selectSubNodeDialogVisibility).toBe(true);
+    expect(web3Store.subAccount).toBeNull();
+  });
+
+  it('redirects Sub account selection to node selection when the selected Sub node is disconnected', async () => {
+    shared.bridgeStoreState.subBridgeConnector = {
+      connectionState: {
+        ready: false,
+      },
+      accountApi: {
+        connection: { api: { registry: { chainSS58: 42 } } },
+      },
+      network: {
+        connection: { api: { registry: { chainSS58: 42 } } },
+        subNetworkConnection: {
+          nodeIsConnected: false,
+        },
+      },
+    };
+
+    const web3Store = useWeb3Store();
+
+    web3Store.setSubAccountDialogVisibility(true);
+    await web3Store.selectSubAccount({
+      address: '5SubAccount',
+      name: 'Liberland',
+      source: 'polkadot-js',
+    } as any);
+
+    expect(shared.loginApiMock).not.toHaveBeenCalled();
+    expect(web3Store.subAccountDialogVisibility).toBe(false);
+    expect(web3Store.selectSubNodeDialogVisibility).toBe(true);
+    expect(web3Store.subAccount).toBeNull();
+  });
+});

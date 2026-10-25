@@ -1,7 +1,7 @@
+import { ApiPromise, WsProvider } from '@polkadot/api';
 import { Connection } from '@sora-substrate/connection';
 import { WithConnectionApi, FPNumber, Storage } from '@sora-substrate/sdk';
 import { formatBalance } from '@sora-substrate/sdk/build/assets';
-import { ApiPromise, WsProvider } from 'polkadotApi';
 
 import { ZeroStringValue } from '@/consts';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
@@ -12,6 +12,42 @@ import type { ISubmittableResult } from '@polkadot/types/types';
 import type { CodecString } from '@sora-substrate/sdk';
 import type { RegisteredAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
+
+/**
+ * Accepts only decimal codec strings from Substrate balance providers.
+ */
+const normalizeCodecString = (value: unknown): CodecString => {
+  if (typeof value !== 'string') return ZeroStringValue;
+  if (!/^\d+(?:\.\d+)?$/.test(value)) return ZeroStringValue;
+
+  return value as CodecString;
+};
+
+const normalizeStorageKeyPart = (value: unknown): string | number | null => {
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    return trimmed || null;
+  }
+  if (typeof value === 'number' && Number.isFinite(value)) return value;
+
+  return null;
+};
+
+const normalizeAccountAddress = (value: unknown): string | null => {
+  if (typeof value !== 'string') return null;
+
+  const trimmed = value.trim();
+  return trimmed || null;
+};
+
+const resolveAssetId = (asset: RegisteredAsset): string | number | null => {
+  return (
+    normalizeStorageKeyPart(asset.externalAddress) ??
+    normalizeStorageKeyPart((asset as any).assetId) ??
+    normalizeStorageKeyPart((asset as any).id) ??
+    normalizeStorageKeyPart(asset.address)
+  );
+};
 
 class BaseSubAdapter extends WithConnectionApi {
   public readonly subNetwork!: SubNetwork;
@@ -60,7 +96,7 @@ class BaseSubAdapter extends WithConnectionApi {
   }
 
   public async stop(): Promise<void> {
-    await this.subNetworkConnection.closeConnection();
+    await this.subNetworkConnection.stopConnection();
   }
 
   public getParachainId(): number | undefined {
@@ -87,21 +123,100 @@ class BaseSubAdapter extends WithConnectionApi {
   }
 
   public async getTokenBalance(accountAddress: string, asset: RegisteredAsset): Promise<CodecString> {
+    const normalizedAccountAddress = normalizeAccountAddress(accountAddress);
+    if (!normalizedAccountAddress) return ZeroStringValue;
+
     return await this.withConnection(async () => {
       return asset.symbol === this.chainSymbol
-        ? await this.getAccountBalance(accountAddress)
-        : await this.getAccountAssetBalance(accountAddress, asset);
+        ? await this.getAccountBalance(normalizedAccountAddress)
+        : await this.getAccountAssetBalance(normalizedAccountAddress, asset);
     }, ZeroStringValue);
   }
 
+  /** Batch balances for mixed native/ERC20-like assets using queryMulti */
+  public async getTokenBalancesBatch(
+    pairs: Array<{ accountAddress: string; asset?: RegisteredAsset }>
+  ): Promise<CodecString[]> {
+    const balancePairs = Array.isArray(pairs) ? pairs : [];
+
+    return await this.withConnection(
+      async () => {
+        const queries: any[] = [];
+        const meta: Array<{ native: boolean; idx: number; assetId?: any; account: string }> = [];
+        const out: CodecString[] = balancePairs.map(() => ZeroStringValue);
+        balancePairs.forEach((p, idx) => {
+          if (!p || typeof p !== 'object') {
+            return;
+          }
+
+          const accountAddress = normalizeAccountAddress((p as any).accountAddress);
+          if (!accountAddress) {
+            return;
+          }
+
+          const asset = (p as any).asset as RegisteredAsset | undefined;
+          const isNative = !asset || asset.symbol === this.chainSymbol;
+          if (isNative) {
+            queries.push([this.api.query.system.account, accountAddress]);
+            meta.push({ native: true, idx, account: String(accountAddress) });
+          } else {
+            const assetId = resolveAssetId(asset);
+            if (assetId === null) {
+              return;
+            }
+
+            queries.push([(this.api.query.assets as any).account, [assetId, accountAddress]]);
+            meta.push({ native: false, idx, assetId, account: String(accountAddress) });
+          }
+        });
+
+        if (!queries.length) {
+          return out;
+        }
+
+        const res = await this.api.queryMulti(queries);
+        if (!Array.isArray(res)) {
+          return out;
+        }
+
+        res.forEach((val: any, i: number) => {
+          const m = meta[i];
+          if (!m) return;
+
+          try {
+            if (m.native) {
+              const balance = formatBalance(val.data, this.chainDecimals);
+              out[m.idx] = normalizeCodecString(balance.transferable);
+            } else {
+              if (val?.isEmpty || typeof val?.unwrap !== 'function') {
+                out[m.idx] = ZeroStringValue;
+              } else {
+                const data = val.unwrap();
+                out[m.idx] =
+                  data?.status?.isLiquid && typeof data?.balance?.toString === 'function'
+                    ? normalizeCodecString(data.balance.toString())
+                    : ZeroStringValue;
+              }
+            }
+          } catch {
+            out[m.idx] = ZeroStringValue;
+          }
+        });
+        return out;
+      },
+      balancePairs.map(() => ZeroStringValue)
+    );
+  }
+
   protected async getAccountBalance(accountAddress: string): Promise<CodecString> {
-    if (!accountAddress) return ZeroStringValue;
+    const normalizedAccountAddress = normalizeAccountAddress(accountAddress);
+    if (!normalizedAccountAddress) return ZeroStringValue;
 
     return await this.withConnection(async () => {
-      const accountInfo = await this.api.query.system.account(accountAddress);
+      const accountInfo = await this.api.query.system.account(normalizedAccountAddress);
       const balance = formatBalance((accountInfo as any).data, this.chainDecimals);
 
-      return balance.transferable;
+      return normalizeCodecString(balance.transferable);
     }, ZeroStringValue);
   }
 
@@ -143,10 +258,11 @@ class BaseSubAdapter extends WithConnectionApi {
 
 export class SubAdapter extends BaseSubAdapter {
   protected async assetsAccountRequest(accountAddress: string, assetId: number | string): Promise<CodecString> {
-    if (!accountAddress) return ZeroStringValue;
+    const normalizedAccountAddress = normalizeAccountAddress(accountAddress);
+    if (!normalizedAccountAddress) return ZeroStringValue;
 
     return await this.withConnection(async () => {
-      const result = await (this.api.query.assets as any).account(assetId, accountAddress);
+      const result = await (this.api.query.assets as any).account(assetId, normalizedAccountAddress);
 
       if (result.isEmpty) return ZeroStringValue;
 
@@ -154,7 +270,7 @@ export class SubAdapter extends BaseSubAdapter {
 
       if (!data.status.isLiquid) return ZeroStringValue;
 
-      return data.balance.toString();
+      return normalizeCodecString(data.balance.toString());
     }, ZeroStringValue);
   }
 

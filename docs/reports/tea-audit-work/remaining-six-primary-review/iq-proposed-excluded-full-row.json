@@ -1,0 +1,80 @@
+{
+  "code": "IQ",
+  "status": "permit_required",
+  "rule": "Iraq Agricultural Quarantine Law 76/2012, consolidated by the Ministry of Justice with the 2020 amendment, Article 1(4) covers plant-origin products prepared without diverting them from their plant nature. The original Arabic gazette uses طبيعتها النباتية. Factory sencha remains dried plant leaves after steaming and drying, so coverage is a reasonable conservative legal-scope inference. Article 7(1) requires an import licence for covered plant-product consignments. Article 9(1) expressly waives the phytosanitary certificate for qualifying non-agricultural consignments received by post up to 10 kg; Article 9(2) separately waives the import licence only for specified seed-registration samples. The described tea parcel is therefore unsuitable for the store’s no-permit route under this reading, rather than prohibited tea.",
+  "personalMailApplicability": "Post offices are expressly included in Article 1(18); Article 9(1) expressly addresses mail as well as travellers and shipped consignments. The certificate-only waiver can plausibly cover this 100 g personal beverage parcel, but the separate import licence remains under the conservative plant-nature reading.",
+  "quantityLimit": {
+    "netGrams": 10000,
+    "inclusive": true,
+    "kind": "conditional certificate-exemption threshold",
+    "scope": "Article 9(1) certificate exemption only for qualifying non-agricultural-purpose consignments; not an import-licence waiver or permission to ship.",
+    "weightBasisCaveat": "Law says weight of materials, without expressly defining net or gross."
+  },
+  "authority": "Destination agricultural/food authority; Japan MAFF Plant Protection Station where cited",
+  "evidenceUrls": [
+    "https://www.moj.gov.iq/upload/pdf/%D9%82%D8%A7%D9%86%D9%88%D9%86%20%D8%A7%D9%84%D8%AD%D8%AC%D8%B1%20%D8%A7%D9%84%D8%B2%D8%B1%D8%A7%D8%B9%D9%8A.pdf",
+    "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/iq_2012-76cons2020_pqact_en.pdf",
+    "https://www.cosqc.gov.iq/files/Guide_files/9.pdf",
+    "https://cosqc.gov.iq/files/Guide_files/10.pdf",
+    "https://www.cosqc.gov.iq/wan/ns/f/58_1.pdf",
+    "https://www.moj.gov.iq/upload/pdf/%D9%82%D8%A7%D9%86%D9%88%D9%86%20%D9%86%D8%B8%D8%A7%D9%85%20%D8%A7%D9%84%D8%A7%D8%BA%D8%AF%D9%8A%D8%A9%20-%20Copy.pdf",
+    "https://www.eia.krd/english/about-eia/health-department",
+    "https://www.moj.gov.iq/upload/pdf/قانون الحجر الزراعي.pdf",
+    "https://www.uomosul.edu.iq/public/files/datafolder_40/oldUo_20190816_054913_19_816.pdf"
+  ],
+  "remainingQuestion": "No additional fact is needed to apply the conservative no-permit exclusion. A current published exclusion of manufactured tea from plant products or a separate applicable postal import-licence waiver would reverse it. The strongest contrary interpretation is that steaming/rolling/drying sufficiently transforms plant nature; the recovered law does not define the threshold or specifically classify sencha. This uncertainty is recorded rather than presented as an official tea determination.",
+  "researchAttempts": [
+    "Read Iraqi Justice Ministry English consolidated law Articles 1, 7 and 9 and 2020 amendment references.",
+    "Cross-checked independent German NPPO consolidated translation of Article 9.",
+    "Searched for tea-specific agricultural import designation; postal tea composition rules alone do not answer it.",
+    "30 September final review: downloaded and reread the German NPPO-hosted consolidated 2012/2020 English law, including definitions and complete Articles 7 and 9. Unlike the GCC laws, it uses a biological-nature processing test, not an explicit manufactured-product pest-risk test. The Article 9(1) postal concession is certificate-only; the separate licence waiver in Article 9(2) is limited to seed samples.",
+    "Targeted official searches did not locate a tea-specific classification, non-agricultural-use interpretation or licence exemption. Retained unresolved instead of assuming that ordinary drinking use establishes a complete no-document route.",
+    "30 September bounded independent-food follow-up: Pursued the independent COSQC conformity route through official guides 9/10 and the 13 December 2023 food commodity list. Indexed official text confirms a pre-shipment programme; direct published guide/list URLs returned 404, and personal-use search results only addressed vehicles. Without the complete applicable scope/exemptions and current green-tea entry, did not infer a blanket personal food CoC requirement. The separate agricultural biological-nature classification/licence question remains unchanged.",
+    "30 September fresh official online recovery: downloaded the complete14-page Ministry of Justice English Food RegulationNo29/1982 with amendments. Article1(17) uses an intention-to-sell qualification in its sale definition; Article11 ties admission/health clearance to matching producer packaging and label; Article12(4) treats a laboratory/inspector examination certificate as evidence and12(5) describes border inspection and local health-certificate issue. These provisions do not establish that the Japanese sender must procure an origin certificate for a100g personal parcel. Kept local routine inspection/clearance separate from a special origin-document obligation.",
+    "Located current official Erbil Airport Health Department personal-food guidance for1–20kg. It expressly concerns passenger-carried food and a regional airport; it cannot establish a nationwide postal concession. No traveller exemption applied to post.",
+    "30 September primary-language scope review: downloaded the full 21-page Iraqi Justice Ministry consolidated English translation (2020) and original Arabic Gazette 4273 from the public University of Mosul archive. Visually checked original Article 1(4), gazette p.1/PDF p.3. It says plant nature (طبيعتها النباتية), corroborated by Ministry English PDF p.3, rather than JKI’s biological-nature wording. Read Articles 7–9 (Ministry PDF pp.11–12) and amendment notes p.18. Proposed conservative permit-required/no-doc exclusion for finished leaf tea with moderate-confidence inference and explicit contrary processing interpretation. Did not infer an origin food certificate from a locally issued inspection release."
+  ],
+  "reviewedAt": "2026-09-30",
+  "permitFreeDecision": "not_supported",
+  "permitFreeReason": "Conservative exclusion based on the domestic plant-nature definition plus the explicit distinction between the postal certificate waiver and the seed-only licence waiver. Steaming can inactivate pests without turning the finished dried leaf into something other than a plant-origin product retaining plant nature. This is a moderate-confidence interpretation of the general law, not a tea-specific administrative ruling. ISPM32 Category1 is technical pest-risk evidence and does not itself replace Iraq’s differently worded scope or its permit requirement.",
+  "permitFreeSources": [
+    "https://www.moj.gov.iq/upload/pdf/%D9%82%D8%A7%D9%86%D9%88%D9%86%20%D8%A7%D9%84%D8%AD%D8%AC%D8%B1%20%D8%A7%D9%84%D8%B2%D8%B1%D8%A7%D8%B9%D9%8A.pdf",
+    "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/iq_2012-76cons2020_pqact_en.pdf",
+    "https://www.cosqc.gov.iq/files/Guide_files/9.pdf",
+    "https://cosqc.gov.iq/files/Guide_files/10.pdf",
+    "https://www.cosqc.gov.iq/wan/ns/f/58_1.pdf",
+    "https://www.moj.gov.iq/upload/pdf/قانون الحجر الزراعي.pdf",
+    "https://www.uomosul.edu.iq/public/files/datafolder_40/oldUo_20190816_054913_19_816.pdf"
+  ],
+  "requiredDocument": "Import licence under Article 7(1), applying the statutory plant-product definition to finished sencha as an explicit legal-scope inference. Article 9(1) may remove the origin phytosanitary certificate for the small non-agricultural postal parcel, but does not remove the licence.",
+  "paperworkType": "import_permit",
+  "foodImportReview": "New full Ministry of Justice Food RegulationNo29/1982 translation adds actual operative inspection/label provisions, including locally issued health clearance, but does not demonstrate a sender-origin-certificate or advance-private-registration requirement for this personal parcel. The independent COSQC programme remains unverified for small private postal food and is not treated as a blocker without its applicable scope. Agricultural Law76/2012 biological-nature classification and its separate licence still determine the unresolved route.",
+  "permitFreeReviewedAt": "2026-09-30",
+  "urls": [
+    "https://www.cosqc.gov.iq/service/goods-department/2YLYs9mFINmF2LfYp9io2YLYqSDYp9mE2LPZhNi5INin2YTZhdiz2KrZiNix2K/YqQ%3D%3D",
+    "https://www.cosqc.gov.iq/service/service-completion/imported-products-requirements"
+  ],
+  "files": [
+    "iq-cosqc-current.html",
+    "iq-import-requirements.html",
+    "iq-import-requirements.txt"
+  ],
+  "finding": "Recovered current COSQC imported-goods department and followed actual technical-requirements link. It returned a phone/password login form, not specifications. No login attempted. Old guide routes remain 404. Commercial attestation procedures are not imposed on private recipients.",
+  "remainingGap": "Public operative processed-tea condition/exemption. Technical schedule requires account access; existing small-post certificate waiver does not waive a permit if the commodity is regulated.",
+  "outcome": "unresolved",
+  "decisionChanged": false,
+  "evidenceFiles": [
+    "docs/reports/tea-audit-work/asia-six-recovery/iq-foodlaw-official-en.pdf",
+    "docs/reports/tea-audit-work/asia-six-recovery/iq-foodlaw-official-en.pdf.txt",
+    "docs/reports/tea-audit-work/asia-six-recovery/iq-jo-provenance.json"
+  ],
+  "decisionConfidence": "moderate; explicit legal-scope inference, not a tea-specific ruling",
+  "contraryInterpretation": "Factory manufacturing could be regarded as diverting tea from plant nature. Unlike an explicit pest-risk-qualified manufactured-products definition, this requires interpreting a different statutory phrase; pest freedom alone does not establish the exclusion. No published current tea exemption or general postal licence waiver was found.",
+  "scopeInference": true,
+  "sourceFiles": [
+    "remaining-six-primary-review/iq-moj-law.pdf",
+    "remaining-six-primary-review/iq-moj-law.txt",
+    "remaining-six-primary-review/iq-gazette4273-original.pdf",
+    "remaining-six-primary-review/iq-gazette4273-definition.png"
+  ]
+}

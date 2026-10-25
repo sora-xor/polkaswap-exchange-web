@@ -1,0 +1,600 @@
+       C T
+
+PLANT QUARANTINE ACT
+
+
+
+
+    1988 Revised Edition
+Plant Quarantine Act                                                    CAP. 127 Arrangement of Sections
+
+
+
+
+                         PLANT QUARANTINE ACT
+                                                 C     T
+
+
+
+
+Arrangement of Sections
+Section
+
+PART I.—PRELIMINARY                                                                                                          5
+1        Short title.......................................................................................................... 5
+2        Definition. ........................................................................................................ 5
+3        Minister is authorized to administer the Act.................................................... 7
+4        Money to be appropriated to carry out Act. ..................................................... 7
+5        Establishing necessary facilities and services.................................................. 7
+6        Protection against claims. ................................................................................ 8
+7        Exporters and importers are charged for services. ........................................... 8
+
+PART II.—INSPECTORS                                                                                                          8
+8        Appointment of Inspectors............................................................................... 8
+9        Inspector authorized access.............................................................................. 8
+10       Inspectors may examine documents. ............................................................... 8
+11       Inspectors may search, retain and apply treatments......................................... 9
+12       Importers required to open shipment. .............................................................. 9
+13       Inspectors may certify...................................................................................... 9
+14       Interfering with an Inspector is an offence. ..................................................... 9
+
+PART III.—IMPORTATION                                                                                                        9
+15       Minister may prohibit entry. ............................................................................ 9
+16       Minister may limit entry of plants. .................................................................. 9
+17       Permits required............................................................................................. 10
+18       Inspection authorized for plant importations. ................................................ 10
+19       Inspection authorized for in-transit or trans-shipments. ................................ 10
+
+
+to
+                                            1988 Revised Edition                                                    Page 3
+Arrangement of Sections CAP. 127                                                               Plant Quarantine Act
+
+20       Smuggling or unauthorized possession is an offence.....................................10
+21       Prohibited materials authorized importation by Government. .......................10
+22       Conveyances may be inspected and treated. ..................................................11
+23       Port authorized for entry of restricted materials.............................................11
+24       Passengers required to declare plant material, etc..........................................11
+25       Permission must be obtained to import regulated items.................................11
+26       Packages must be marked. .............................................................................11
+27       Importers must furnish notice on imports of Plant Quarantine concern.........12
+28       Customs and Harbour Master must retain restricted materials under
+         control. ...........................................................................................................12
+29       Customs and Post Office services must assist in carrying out Act.................12
+30       Importers required to comply with orders within time limits.........................12
+31       Inspectors may take quarantine actions..........................................................12
+32       Inspectors may destroy regulated material. ....................................................12
+33       Living cultures and other organisms require permits. ....................................13
+34       Noxious weeds. ..............................................................................................13
+35       Garbage regulated. .........................................................................................13
+
+PART IV.—DOMESTIC QUARANTINE CONTROL                                                                                      13
+36       Domestic regulations authorized. ...................................................................13
+37       Minister may establish quarantines for control. .............................................13
+38       Minister may declare pest emergency. ...........................................................14
+39       Persons may be reimbursed for losses............................................................14
+40       Export certificates. .........................................................................................14
+
+PART V.—OFFENCES AND PUNISHMENT                                                                                           14
+41       Persons must comply with orders...................................................................14
+42       Misuse of document is an offence..................................................................15
+43       Falsifying is an offence. .................................................................................15
+44       Police and Director required to prosecute violations. ....................................15
+45       Repeal and savings. ........................................................................................15
+
+
+
+
+                                                                                                          to
+Page 4                                      1988 Revised Edition
+Plant Quarantine Act                                               CAP. 127 Section 1
+
+
+
+
+                                     C  T
+
+                     PLANT QUARANTINE ACT
+
+                     Acts Nos. 24 of 1981, 22 of 1986 and 46 of 1988
+
+ AN ACT TO REVISE THE LAW RELATING TO THE QUARANTINE
+                       OF PLANTS
+
+
+                                                 Commencement [31st August, 1982]
+
+
+
+
+                          PART I.—PRELIMINARY
+
+
+1     Short title.
+      This Act may be cited as the Plant Quarantine Act.
+
+
+2     Definition.
+      In this Act, unless the context otherwise requires:
+            “Contaminate” means infestation or infection by plant pests or having in
+            association with it unauthorized plant materials or soil adhering to or with
+            the articles;
+            “Conveyance” means any carrier such as a vessel, aircraft, lighter, truck,
+            van, transport or shipping container;
+
+
+
+
+to
+                                  1988 Revised Edition                          Page 5
+Section 2 CAP. 127                                                 Plant Quarantine Act
+
+           “Declaration” refers to an oral or written statement certifying as to plants,
+           plant materials or other prohibited or restricted articles under the Act
+           which accompanied a person on their arrival from abroad;
+           “Director” means Director of Agriculture, Forests and Fisheries;
+           “Export” means to take a thing or cause it to be sent out of the country by
+           any means of conveyance;
+           “Garbage” means mixed refuse waste material derived in whole or in part
+           from plants, fruits, vegetables, meats or other plant or animal material or
+           other refuse of any character whatsoever that has been associated with any
+           fruits, vegetables, meats or other plant or animal material;
+           “Import” means to bring a thing or cause it be brought into the country
+           from any place outside of the country by any conveyance;
+           “Infected” means a condition caused by a plant pest;
+           “Infested” means the presence of plant pest other than plant disease
+           pathogen;
+           “Inspector” means an employee of the Government appointed by the
+           Minister to carry out functions under this Act;
+           “Land” includes any surface area, building, wharf, or port facility;
+           “Minister” means the Minister in charge of the Ministry of Agriculture
+           Forests and Fisheries or his authorized representative;
+           “Noxious Weed” means a plant declared by notice of the Minister to be
+           harmful and subject to quarantine control;
+           “Permit” means a written authorization issued by the Minister or the
+           Director for the movement into or through the country of any plant, plant
+           pest, soil, or other regulated article;
+           “Person” shall be construed to mean both the singular and plural and shall
+           include individuals, corporations, companies, associations and societies;
+           “Phytosanitary Certificate” means a form substantially in the format of
+           the Model Certificate of the International Plant Protection Convention
+           (held in Rome on 6th December 1951) for signature of an appropriate
+           Officer of the Plant Quarantine Service of the country of origin where the
+           plants were grown, attesting the plant or plants to which it refers is free of
+           agricultural pests and substantially free from other injurious plant pests;
+           “Plant” means all species, varieties and types of plants or parts thereof
+           whether living or dead including stems, branches, tubers, bulbs, corms,
+           stocks, budwood, cuttings, layers, slips, suckers, roots, leaves, flowers,
+           fruits, sap, seed and any other plant growth other than items manufactured
+           wholly or in part from plants or its part;
+
+
+
+                                                                          to
+Page 6                          1988 Revised Edition
+Plant Quarantine Act                                                CAP. 127 Section 3
+
+            “Plant Material” means all materials of plant origin;
+            “Plant Pest” means an organism of animal or plant origin, such as insect,
+            nematode, snail, fungus, bacterium, virus; including noxious weed known,
+            suspected or liable to be harmful to plants;
+            “Quarantine” means a restriction, imposed by duly constituted
+            authorities, whereby the production, movement or existence of plants,
+            plant materials, animals, animal products or any other article or material
+            or the normal activity of persons is brought under regulation, or in order
+            that the introduction or spread of a pest may be prevented or limited or in
+            order that a pest already introduced may be controlled or eradicated,
+            thereby reducing or avoiding losses that would otherwise occur through
+            damage done by the pest or through a continuing of control measures;
+            “Soil” means the loose surface material of the earth in which plants grow
+            and which may serve to harbour plant pests, in most cases consisting of
+            disintegrated rock with an admixture of organic material and soluble salts;
+            including among other things, gravel, rock, compost, clay, sand, silt,
+            vermiculite;
+            “Treatment” means the employment of remedial measures to ensure
+            removal of objectionable materials, or the elimination, sterilization or
+            killing of any plant pest, to destroy or eliminate contamination including
+            among other measures the cleaning, incineration, disinfection,
+            disinfestation and re-exportation.
+
+
+3     Minister is authorized to administer the Act.
+      The authority for administering this Act is conferred on the Minister of
+      Agriculture Forests and Fisheries who may from time to time by order with the
+      consent of the Privy Council make regulations to better carry out the provisions
+      of this Act.
+
+
+4     Money to be appropriated to carry out Act.
+      The Minister shall include in the Estimates of the Ministry of Agriculture
+      Forests and Fisheries such adequate funds for salaries, overtime or other pay,
+      equipment, travel, office space, and materials to carry out this Act and to provide
+      an emergency fund for use by the Minister when the Minister determines a state
+      of plant pest emergency.
+
+
+5     Establishing necessary facilities and services.
+      The Minister may establish under regulations temporary quarantine stations and
+      checkpoints, quarantine stations, required equipment to operate such stations,
+
+
+
+to
+                                 1988 Revised Edition                            Page 7
+Section 6 CAP. 127                                                 Plant Quarantine Act
+
+     post-entry stations and services related thereto to carry out the purpose of
+     this Act.
+
+
+6    Protection against claims.
+     The Government, and the authorized officers and Inspectors, shall not be liable
+     for any loss or damage resulting from the exercise of a power conferred by this
+     Act unless the loss or damage is caused otherwise than in reasonable exercise of
+     those powers.
+
+
+7    Exporters and importers are charged for services.
+     Fees or other charges may be assessed to importers and exporters or other
+     persons for permits, phytosanitary certificates, or for services of an Inspector, or
+     for space used in quarantine facilities, or for the application of treatment under
+     this Act.
+
+
+                         PART II.—INSPECTORS
+
+
+8    Appointment of Inspectors.
+     (1)   The Minister shall appoint from time to time such Inspectors as may be
+           necessary to carry out the purposes of this Act.
+     (2)   Inspectors shall be provided with suitable identification.
+
+
+9    Inspector authorized access.
+     In the exercise of his powers the Inspector may, for sufficient reasons of which
+     he shall inform the occupier at the time of entry and at a reasonable hour during
+     daylight hours, enter any conveyance, land or building other than a dwelling-
+     house, for the purposes of searching for plants, plant materials, plant pest, soil,
+     garbage or any other regulated article or material under this Act, for the purpose
+     of pest control or elimination of pests and to otherwise carry out his functions
+     under the provisions of this Act.
+
+
+10   Inspectors may examine documents.
+     An Inspector may enter any conveyance and examine any log, manifest, cargo
+     stowage plan, passenger list, crew list or other necessary document in carrying
+     out his functions under this Act.
+
+
+
+
+                                                                           to
+Page 8                          1988 Revised Edition
+Plant Quarantine Act                                                CAP. 127 Section 11
+
+11    Inspectors may search, retain and apply treatments.
+      An Inspector may examine cargo, mail, baggage, conveyances, containers, or
+      where they have been stored, to search for plants places, plant materials, plant
+      pests, soil, or any other regulated article or material under this Act; and carry out
+      such treatment necessary for plant pest control.
+
+
+12    Importers required to open shipment.
+      An Inspector may cause the importer to open any mail, box, case, receptacle,
+      space or container and to require its opening at the importer's expense when he
+      fails to do so.
+
+
+13    Inspectors may certify.
+      An Inspector may sample, inspect, and certify any shipment of plants or plant
+      materials, which he believes meets the import regulations of the
+      importing country.
+
+
+14    Interfering with an Inspector is an offence.
+      Any person who directly or indirectly obstructs, hinders, interrupts, threatens, or
+      assaults an Inspector in the performance of his duty under this Act is guilty of an
+      offence against this Act.
+
+
+                        PART III.—IMPORTATION
+
+
+15    Minister may prohibit entry.
+      It shall be lawful for the Minister at any time to prohibit by regulation the
+      importation of any plant, plant material, plant pest, soil, insects or garbage and
+      the power so conferred upon the Minister shall extend to authorize the
+      prohibition of these things generally or specifically from any specified place.
+
+
+16    Minister may limit entry of plants.
+      The Minister is authorized to limit entry of plants from foreign countries under
+      such rules and regulations as he may deem necessary, including the requirement,
+      if necessary, that such plants be grown under post-entry quarantine by or under
+      supervision of the Ministry of Agriculture Forests and Fisheries for the purpose
+      of determining whether such imported plants may be infested or infected with
+      plant pests not discernable by port-of-entry inspection, and if such imported
+
+
+
+to
+                                 1988 Revised Edition                              Page 9
+Section 17 CAP. 127                                              Plant Quarantine Act
+
+     plants are found to be infested or infected with plant pests, he is authorized to
+     apply treatment as he may deem necessary to prevent the spread thereof.
+
+
+17   Permits required.
+     It shall be unlawful for any person to import into Tonga any plant unless a
+     permit has been issued by the Minister under such conditions and regulations as
+     the Minister may prescribe. Unless such plants shall be accompanied by a
+     Phytosanitary Certificate, special conditions may be prescribed.
+
+
+18   Inspection authorized for plant importations.
+     Removal, treatment or disposal.
+     On the arrival from any places outside Tonga of any conveyance at any port of
+     entry, an Inspector may inspect any plants and plant material therein intended for
+     importation or any such material which has been landed from the conveyance,
+     and if found contaminated with plant pests or unauthorized material the
+     Inspector may require re-exportation under conditions which he may specify, or
+     that it be treated in such manner to eliminate the contamination prior to release
+     from plant quarantine jurisdiction, or that it be disposed of in a manner
+     prescribed by the Inspector.
+
+
+19   Inspection authorized for in-transit or trans-shipments.
+     When a conveyance carrying plants and or plant material from a place outside of
+     the Kingdom of Tonga arrives at a first port of entry, the importer of such plants
+     shall land all or any such plants as the Inspector may direct for examination, and
+     treatment if required, and such imported plants shall not be moved, trans-shipped
+     or diverted for examination or treatment or discharge at a second destination or
+     port of entry except as authorized under regulations which the Minister
+     may prescribe.
+
+
+20   Smuggling or unauthorized possession is an offence.
+     Any person who imports plants and/or plant material or other regulated articles
+     in circumvention of this Act or takes from the control of plant quarantine any
+     plant and/or plant regulated article under this Act shall be guilty of an offence
+     under this Act.
+
+
+21   Prohibited materials authorized importation by Government.
+     Any prohibited materials under the provisions of the Act or regulations, may be
+     introduced for scientific research purposes by the Ministry of Agriculture
+
+
+                                                                         to
+Page 10                        1988 Revised Edition
+Plant Quarantine Act                                              CAP. 127 Section 22
+
+      Forests and Fisheries upon such conditions and under such regulations as the
+      Minister may prescribe.
+
+
+22    Conveyances may be inspected and treated.
+      On the arrival of any conveyance, an Inspector may enter and inspect the
+      conveyance and apply seals, treatment, or other measures commensurate with
+      any pest risk that could result in the spread of plant pests.
+
+
+23    Port authorized for entry of restricted materials.
+      No plant, plant material or other regulated article under this Act may be
+      imported into Tonga except at ports of entry so named by notice of the Minister,
+      and such importations are limited to those ports of entry where facilities are
+      available for the treatment of plants.
+
+
+24    Passengers required to declare plant material, etc.
+      Persons arriving in Tonga shall declare in writing on the Plant Quarantine form
+      or other form which the Minister may prescribe by regulation, their intention to
+      import plants, plant materials and plant pests, or other items regulated under this
+      Act, and it shall be the duty of the Inspector at the time of importation of such
+      regulated materials to obtain such written declaration from each person.
+
+
+25    Permission must be obtained to import regulated items.
+      It shall be unlawful for any person to import or offer for entry into Tonga any
+      plant, plant material or other regulated articles until a written permit has been
+      issued by the Minister under such conditions and regulations as the Ministry
+      may determine.
+
+
+26    Packages must be marked.
+      No person shall import or offer for entry any plant material unless the case, box,
+      package, crate, container or bundle shall be plainly and correctly marked to
+      show the general nature and contents, the country and locality of origin, name
+      and address of shippers and name and address of consignee.
+
+
+
+
+to
+                                 1988 Revised Edition                           Page 11
+Section 27 CAP. 127                                               Plant Quarantine Act
+
+27   Importers must furnish notice on imports of Plant Quarantine
+     concern.
+     It shall be the duty of the importers, customs agent of conveyance and Harbour
+     Master to notify the Minister of the intended arrival of regulated articles under
+     this Act, providing such information as the Minister may require.
+
+
+28   Customs and Harbour Master must retain restricted materials under
+     control.
+     Except by notification by an Inspector, no regulated article under this Act shall
+     be taken from control of the Customs and Harbour Master, and they shall retain
+     under their control when so ordered by an Inspector any such regulated article,
+     until such time as the Inspector notifies the Customs and Harbour Master of
+     compliance of the importation with the regulations under this Act.
+
+
+29   Customs and Post Office services must assist in carrying out Act.
+     It shall be the duty of the Customs and Postal Services to notify the Director
+     whenever foreign mail arrives in the Kingdom of Tonga containing any
+     regulated article under this Act, and to retain such material until notification of
+     compliance with this Act by an Inspector.
+
+
+30   Importers required to comply with orders within time limits.
+     The Inspector may set a time limit by which Customs and the importer must
+     carry out treatments for regulated articles. When such time limit expires, the
+     inspector may destroy or cause to be destroyed the regulated article at the
+     importers expense.
+
+
+31   Inspectors may take quarantine actions.
+     Plant, plant material, plant pests, soil and other items imported together with
+     anything else which may be contaminated contrary to the provisions of this Act
+     or regulations thereunder, may be seized by an Inspector and be inspected,
+     treated or disposed of as deemed necessary by the Inspector.
+
+
+32   Inspectors may destroy regulated material.
+     An Inspector shall destroy or cause to be destroyed when there is no less drastic
+     measure available, any imported plant or plant material, soil, garbage or
+     anything else which may be contaminated or in contravention of this Act or
+     regulations thereunder and no legal proceedings of any nature shall lie in respect
+     of such destruction.
+
+
+                                                                          to
+Page 12                         1988 Revised Edition
+Plant Quarantine Act                                             CAP. 127 Section 33
+
+33    Living cultures and other organisms require permits.
+      No person shall import into Tonga any living culture or organism including
+      parasites, predators, arachnids, molluscs, insects, nematodes, fungus, bacterium,
+      virus or plant parasitic organism, mycoplasma, honeybee or plant pest unless a
+      written permit has been issued by the Minister in advance of the importation and
+      in compliance with conditions required under the permit.
+
+
+34    Noxious weeds.
+      No person shall import or move within Tonga any noxious weed identified in a
+      regulation promulgated by the Minister unless the importation or movement is
+      authorized by permit and under conditions which the Minister may prescribe.
+
+
+35    Garbage regulated.
+      No garbage shall be discharged from any vessel or aircraft within the Kingdom
+      except in accordance with conditions prescribed by the Minister. The master or
+      captain of any vessel or aircraft from which any garbage is discharged in
+      contravention of this section or conditions prescribed shall be guilty of an
+      offence under this Act.
+
+
+       PART IV.—DOMESTIC QUARANTINE CONTROL
+
+
+36    Domestic regulations authorized.
+      No person shall import or move from one part of Tonga into another part of the
+      Kingdom any plant material, plant pest, soil, conveyance or contaminated article
+      declared by the Minister to be quarantined, or from an infected area to a non-
+      infected area without first obtaining authorization for its movement under
+      conditions which the Minister may regulate.
+
+
+37    Minister may establish quarantines for control.
+      (1)   When it shall be determined by the Minister that any land, place,
+            conveyance, article or substance is infected or infested, written notice
+            thereof shall be given to the owner who shall forthwith control or
+            eradicate and prevent dissemination of such plant pests and shall comply
+            with such notice within the time and manner required by such notice or by
+            the regulations under this Act.
+      (2)   Whenever the owner cannot be found or shall fail, neglect, or refuse to
+            comply with the requirements so ordered by the Minister within the time
+
+
+
+to
+                                1988 Revised Edition                          Page 13
+Section 38 CAP. 127                                               Plant Quarantine Act
+
+           period prescribed, it shall be lawful and required for the Inspector to carry
+           out the work or cause the work specified in the notice to be done at the
+           expense of the owner.
+
+
+38   Minister may declare pest emergency.
+     (1)   The Minister may during a state of plant pest emergency declare any area
+           within Tonga to be infected or infested and shall thereafter have the
+           authority to issue emergency regulations by notice in the Gazette to
+           become effective for not more than 6 months, and such regulations may
+           be revoked or extended before or after 6 months by notice in the Gazette.
+           (Amended by Act 46 of 1988.)
+     (2)   In addition to any other power conferred upon him, the Minister may at
+           any time take such action as he considers necessary to prevent the
+           establishment or spread of specific plant pests or the eradication of
+           specific plant pests in Tonga. (Inserted by Act 46 of 1988.)
+
+
+39   Persons may be reimbursed for losses.
+     The Minister may pay out from Government Revenue to the owner, or any other
+     person sustaining loss as a result of any measure under section 38 an amount by
+     way of compensation for loss incurred as determined by the Minister.
+
+
+40   Export certificates.
+     (1)   Persons on application to the Minister and payment of the fee shall have
+           domestic plants or plant materials inspected and shall receive a certificate
+           covering such plants or plant materials if the shipment conforms to the
+           current phytosanitary regulations of the importing country and all other
+           requirements of the Government.
+     (2)   Any person who exports any plant or plant material without a certificate
+           issued under subsection (1) of this section commits an offence under this
+           Act. (Substituted by Act 22 of 1986.)
+
+
+           PART V.—OFFENCES AND PUNISHMENT
+
+
+41   Persons must comply with orders.
+     Any duty, obligation or requirement imposed on any person by any instrument
+     under this Act may be enforced against the said person and any person who fails,
+
+
+
+
+                                                                          to
+Page 14                        1988 Revised Edition
+Plant Quarantine Act                                                CAP. 127 Section 42
+
+      neglects, or refuses to comply with or observe such duty, obligation or
+      requirement commits an offence against this Act.
+
+
+42    Misuse of document is an offence.
+      Anyone who forges, counterfeits, alters, defaces, or destroys a document or
+      order or other instrument in contravention of this Act is guilty of an offence
+      against this Act.
+
+
+43    Falsifying is an offence.
+      Every person who makes any false declaration or gives false certification under
+      this Act commits an offence against this Act.
+
+
+44    Police and Director required to prosecute violations.
+      (1)   It shall be the duty of the Police, with the Director, to prosecute violations
+            against any provision of this Act or any regulation made thereunder.
+      (2)   Any person who is guilty of an offence against this Act or any regulation
+            made thereunder shall be liable to a fine not less than $10 and not
+            exceeding $2000 or to imprisonment for a term not exceeding one year or
+            to both such fine and imprisonment as the court may direct.
+
+
+45    Repeal and savings.
+      The Diseases of Plants Act is hereby repealed. Subsidiary legislation made by
+      virtue of that Act shall remain in force if it is not inconsistent with the provisions
+      of this Act and shall be deemed for all purposes to have been made under the
+      provisions of this Act until the subsidiary legislation is revoked or repealed.
+
+
+
+
+to
+                                  1988 Revised Edition                            Page 15
+

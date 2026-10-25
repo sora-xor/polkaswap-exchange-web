@@ -1,0 +1,48 @@
+[
+  {
+    "code": "AE",
+    "reviewedAt": "2026-09-30",
+    "decisionChanged": false,
+    "outcome": "unresolved",
+    "titleCorrection": {
+      "old": "Federal Decree-Law 7/2025",
+      "new": "Federal Law No. (7) of 2025"
+    },
+    "additionalEvidenceUrls": [
+      "https://pflanzengesundheit.julius-kuehn.de/index.php?downloadid=3294&menuid=28&reporeid=110",
+      "https://www.dm.gov.ae/documents/federal-law-no-7-regarding-agricultural-quarantine/",
+      "https://dmpmedia.dm.gov.ae/uploads/2026/07/قانون-اتحادي-رقم-7-لسنة-2025-بشأن-الحجر-الزراعي.pdf",
+      "https://portal.sharjahcustoms.gov.ae/en/tools/tariff-search",
+      "https://icp.gov.ae/en/central-customs-tariff-system/",
+      "https://uaelegislation.gov.ae/en/legislations/2710/regulations",
+      "https://uaelegislation.gov.ae/en/legislations/2710/download"
+    ],
+    "appendResearchAttempts": [
+      "30 September narrow commodity-table recovery: obtained exact HS090210000000 green-tea result through Sharjah Customs public live UI, but the visible columns are tax01–tax16 only. ICP central tariff-system page describes restriction/agency lookup but publishes no working commodity-lookup link in its retrieved page. Dubai Customs procedure guide points to a retired restricted-goods page (404); its policy distinguishes restricted goods requiring approval from food subject to routine inspection. No inference from zero duty to no agricultural certificate.",
+      "Recovered full 16-page English Federal Law No. (7) of 2025 via official German NPPO JKI mirror and original Arabic PDF directly from Dubai Municipality. Article 4(1)(i) requires periodic measure reviews in line with international standards; 4(1)(o) concerns pest reporting/monitoring under ISPMs. Neither expressly adopts ISPM32 Category1 or supplies an automatic processed-food exemption. Article 1 retains the manufactured-product risk qualification; Article 5(2) certificate default remains conditional on scope. Corrected source title is Federal Law, not Federal Decree-Law.",
+      "Located previously unrecorded Cabinet Resolution 123/2024 and official annex landing page adopting GCC prohibited/restricted lists. Official indexed adopting text is available; English and Arabic annex/download routes returned 403, and browser recovery was unavailable. A secondary-host 45-page facsimile was recovered for source discovery only: it has no HS0902 row and no agency-allocation column, and does not establish an exhaustive exemption from later national agricultural law. Kept this mirror separate from decision evidence."
+    ],
+    "customsCommodityReview": "The exact tea tariff code is verified; the agricultural control/agency allocation remains unverified. International-standard review duties do not by themselves enact an ISPM32 commodity waiver.",
+    "remainingGap": "Obtain the current UAE HS090210 agricultural-control/agency entry or an operative general processing exemption. Cabinet Resolution123/2024 official annex is a specific inaccessible source, but even its secondary facsimile does not establish all later national phytosanitary measures. Receiving-emirate personal-food quantity classification remains separately unresolved."
+  },
+  {
+    "code": "BH",
+    "reviewedAt": "2026-09-30",
+    "decisionChanged": false,
+    "outcome": "unresolved",
+    "additionalEvidenceUrls": [
+      "https://lloc.gov.bh/OG/3800A.pdf",
+      "https://tfadatabase.org/en/members/bahrain-kingdom-of/publication-of-information-for-governments-and-traders",
+      "https://www.bahraincustoms.gov.bh/ar/tariff-finder",
+      "https://www.customs.gov.bh/en/tariff-finder",
+      "https://assets.ippc.int/static/media/files/eventreporting/2017/10/23/plant_quarantine_law_-_English.pdf"
+    ],
+    "appendResearchAttempts": [
+      "30 September narrow commodity-table recovery: downloaded full official Gazette supplement3800A (13 March2025), Decision29/2025, replacing19/2022 and effective day after publication. Exact HS090210000000 retail green tea is 0% duty with a blank procedure/action cell on PDF p66 (tariff printed p71). The same action column is blank for live horses/cattle and planting material0601/0602, while it marks some prohibited goods; this is not demonstrated to enumerate all national import-permit controls. No duty exemption was treated as a phytosanitary waiver.",
+      "Bahrain government notification to WTO identifies the official Tariff Finder as displaying HS codes, rates and the related Regulatory Authority if a permit is required. Current bahraincustoms.gov.bh HTTPS and HTTP routes timed out; old customs.gov.bh route returned403 and browser navigation timed out. This is the precise unavailable agency-allocation source, rather than a need for a bespoke ruling.",
+      "Reviewed NPPO-submitted Plant Quarantine Law Article31(1), PDF p10: implementing measures and procedures must conform to IPPC and WTO-SPS standards/guidelines/recommendations. This is a regulatory compatibility duty, not express automatic domestic adoption of ISPM32 Category1. Read with Article2 pest-risk-qualified manufactured products and Article15(3) ministerial waiver power, it does not classify retail steamed/dried tea."
+    ],
+    "customsCommodityReview": "Official current tariff confirms classification and 0% duty, with blank procedure cell, but does not provide an exhaustive permit-agency determination. The government-notified Tariff Finder with that function is inaccessible.",
+    "remainingGap": "Current Bahrain Tariff Finder control-agency/permit entry for HS090210000000 or an operative national manufactured-food processing exemption. Routine personal-food undertaking/labels remain ordinary recipient clearance and are not the blocker."
+  }
+]

@@ -6,7 +6,6 @@
     "jsx": "preserve",
     "importHelpers": true,
     "moduleResolution": "node",
-    "experimentalDecorators": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -14,32 +13,16 @@
     "noImplicitAny": false,
     "resolveJsonModule": true,
     "baseUrl": ".",
-    "types": [
-      "node",
-      "element-ui",
-      "telegram-web-app"
-    ],
+    "types": ["node", "telegram-web-app"],
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"],
+      "@stubs/*": ["tests/stubs/*"],
+      "@tests/*": ["tests/*"],
+      "@/lib/soraneo-wallet/lib/soraneo-wallet-web.css": ["src/lib/soraneo-wallet/lib/soraneo-wallet-web.css"],
+      "@/lib/soraneo-wallet/src/core": ["src/lib/soraneo-wallet/src/core.ts"]
     },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ]
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "tests/**/*.ts",
-    "tests/**/*.tsx",
-    "electron/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "tests/**/*.ts", "tests/**/*.tsx", "electron/**/*.ts", "scripts/**/*.ts"],
+  "exclude": ["node_modules"]
 }

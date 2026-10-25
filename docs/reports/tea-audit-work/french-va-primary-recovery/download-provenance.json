@@ -1,0 +1,26 @@
+[
+  {
+    "file": "va-treaty1929-1930.pdf",
+    "url": "https://presidenza.governo.it/USRI/ufficio_studi/normativa/L.810_27.05.1929.pdf",
+    "error": "HTTPSConnectionPool(host='presidenza.governo.it', port=443): Max retries exceeded with url: /USRI/ufficio_studi/normativa/L.810_27.05.1929.pdf (Caused by ConnectTimeoutError(<HTTPSConnection(host='presidenza.governo.it', port=443) at 0x108e80550>, 'Connection to presidenza.governo.it timed out. (connect timeout=18)'))"
+  },
+  {
+    "file": "mq-newsletter2014.pdf",
+    "url": "https://daaf.martinique.agriculture.gouv.fr/IMG/pdf/PHYTOVOTRE2014-11-20141_cle85efe1.pdf",
+    "error": "HTTPSConnectionPool(host='daaf.martinique.agriculture.gouv.fr', port=443): Max retries exceeded with url: /IMG/pdf/PHYTOVOTRE2014-11-20141_cle85efe1.pdf (Caused by ConnectTimeoutError(<HTTPSConnection(host='daaf.martinique.agriculture.gouv.fr', port=443) at 0x108e84050>, 'Connection to daaf.martinique.agriculture.gouv.fr timed out. (connect timeout=18)'))"
+  },
+  {
+    "file": "va-adm2007-index.html",
+    "url": "https://www.adm.gov.it/portale/lagenzia/dogane-comunica/comunicati-stampa/anni-precedenti/2007/febbraio",
+    "status": 404,
+    "bytes": 9397,
+    "type": "text/html; charset=UTF-8"
+  },
+  {
+    "file": "va-customs-interview2025.html",
+    "url": "https://vaticanstate.va/it/novita/2968-intervista-al-dott-gianni-lasaracina-coordinatore-dei-servizi-doganali-del-governatorato.html",
+    "status": 404,
+    "bytes": 1006,
+    "type": "text/html; charset=utf-8"
+  }
+]

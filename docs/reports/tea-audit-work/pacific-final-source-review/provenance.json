@@ -1,0 +1,88 @@
+{
+  "retrievedAt": "2026-09-30",
+  "purpose": "Bounded final Pacific commodity-source review; no contacts and no edits to regional arrays",
+  "sources": [
+    {
+      "code": "GU",
+      "urls": [
+        "https://doag.guam.gov/resource/"
+      ],
+      "retrieval": "200; saved gu-resource.html"
+    },
+    {
+      "code": "MP",
+      "urls": [
+        "https://www.finance.gov.mp/faq.php",
+        "https://www.finance.gov.mp/cus-import-requirements.php"
+      ],
+      "retrieval": "Existing official guidance reappeared in search; no new controlling source"
+    },
+    {
+      "code": "WF",
+      "urls": [
+        "https://www.wallis-et-futuna.gouv.fr/Demarches/Formalites-SIVAP-Service-de-l-Inspection-Veterinaire-Alimentaire-et-Phytosanitaire",
+        "https://www.sia.aviation-civile.gouv.fr/media/dvd/eAIP_19_MAR_2026/PAC-N/AIRAC-2026-01-22/pdf/FR-GEN-1.4-fr-FR.pdf"
+      ],
+      "retrieval": "SIVAP official page connection closed remotely; indexed 2026 AIP copies retain the already-reviewed text"
+    },
+    {
+      "code": "PF",
+      "urls": [
+        "https://www.service-public.pf/biosecurite/18-03-2026-nouvelle-reglementation-concernant/",
+        "https://lexpol.cloud.pf/LexpolAfficheTexte.php?texte=1037079&lang=fr"
+      ],
+      "retrieval": "Announcement HTTP 503 (18,423 bytes; error page saved); Lexpol connection timeout at 20 seconds. No Annex 5 text in either result"
+    },
+    {
+      "code": "CK",
+      "urls": [
+        "https://agriculture.gov.ck/biosecurity/",
+        "https://agriculture.gov.ck/wp-content/uploads/2021/01/Update-Import-Specification-6-January-2021..pdf",
+        "https://www.ports.gov.ck/biosecurity"
+      ],
+      "retrieval": "PDF HTTP 200, 58,458 bytes; PDF page 4 visually checked. Ports page HTTP 200, no tea waiver"
+    },
+    {
+      "code": "KI",
+      "urls": [
+        "https://agriculture.melad.gov.ki/",
+        "https://www.ippc.int/en/countries/kiribati/reportingobligation/"
+      ],
+      "retrieval": "Agriculture HTTP 200 (98,682 bytes); attempted IPPC route HTTP 404 (3,984 bytes)"
+    },
+    {
+      "code": "TO",
+      "urls": [
+        "https://maff.gov.to/qqmd/"
+      ],
+      "retrieval": "Ministry quarantine page HTTP 403 (115 bytes; saved)"
+    },
+    {
+      "code": "PG",
+      "urls": [
+        "https://facilitation.nto.gov.pg/pngba/",
+        "https://www.customs.gov.pg/pdf/legislation/HS%202022%20Import%20%26%20Export%20Tariff%20Act.pdf"
+      ],
+      "retrieval": "NTO HTTP 200 (132,872 bytes; saved). Customs PDF web retrieval timed out; direct connection timeout at 15 seconds"
+    }
+  ],
+  "fileHashes": {
+    "gu-resource.txt": "43052ec38852b4c33bfccf49716af6781ac720e42b07a839a6df11c58b9036c4",
+    "ck-import-specification2021.pdf": "450c79fb7cc52f7b16a18361f6ac805a0bc3c77fef32f49aaedd82f5e672601b",
+    "pf-announcement503.txt": "8b0a63e1ec8d415bb92972d9e3610f79303bd59575e2cea1815eb230507c975f",
+    "ck-source-override.json": "2b876966801f1620923a0c11edb22077c1940689123458c79cf93c5ff200ea8b",
+    "ki-ippc404.txt": "41a0fb8a1c921fcb67b0455f6305803e0b79cb63790cbc9f8111de56be6e9129",
+    "review-result.json": "c6b11eb4be10c81d5fa043093cb2a1645a96df36fe30e2d7b57c3e0ec57ab99c",
+    "ck-import-specification2021.txt": "48b6d32f0c38a5ae8ca29a70fae9a46e9266cdd075f49273171a0fb30079f9bc",
+    "ki-ippc404.html": "7b0f8454e93038726eef38295531a6371e708cfe880fdd552a547d2bb0c25a9d",
+    "pg-trade-authority.txt": "5d052bf7c3513fa99be30c44321c5d4a7246332964cd47e94c7f87800c862128",
+    "pg-trade-authority.html": "85e275b0fbf21733430dfa3e1ffef72583def7bf8ceccabccc7917514dad0ec8",
+    "ki-current-agriculture.txt": "ee4fc423ba4fee91cb23211e01f3e72a69d69c72f97fc471ba682d7d961a89c2",
+    "to-quarantine403.txt": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "ck-import-specification2021-page4.png": "a89c475359c88f451eadb6e95a03b6721b1e1e10db714b5a1dc64a132b385fe8",
+    "ki-current-agriculture.html": "ac2fb1f6cd7f2606971f5b6870757cd8e050d8918d1f82964eb0cd8e5ee242eb",
+    "gu-resource.html": "36ed88a6a9843f49e138f49fe5198853d9ec04cc5dd990b1eb356445bccd00c5",
+    "to-quarantine403.html": "e7784badca42c35a01d784750a01220e5138e82b3afceb7f349a55c0e09e01bb",
+    "pf-announcement503.html": "78a4d90deb4ea0472fa51acbf0db9dcb2687b6ec8dac6435da62dcc27f858d7a"
+  }
+}

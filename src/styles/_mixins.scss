@@ -1,5 +1,8 @@
 // This file includes mixins for usage in different components
-$button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0, 0, 0.05);
+@use './layout' as *;
+$button-custom-shadow:
+  -1px -1px 5px rgba(0, 0, 0, 0.05),
+  1px 1px 5px rgba(0, 0, 0, 0.05);
 
 // TODO 4 alexnatalia: Right now this is just a mixin because there are no appropriate focus behaviour for some elements (tabs for example) and we need more time to investigate the problem
 @mixin focus {
@@ -188,6 +191,10 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
         width: calc(100% - 2 * #{$inner-spacing-big});
 
         #{$tabs-class}__nav-wrap {
+          margin-bottom: -1px;
+          border-radius: 24px;
+          box-shadow: var(--s-shadow-element);
+          color: var(--s-color-base-content-primary);
           #{$tabs-class}__item {
             padding-right: $inner-spacing-medium;
             padding-left: $inner-spacing-medium;
@@ -197,6 +204,11 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
             text-align: center;
             overflow: hidden;
             text-overflow: ellipsis;
+            &.is-active {
+              border-radius: 24px;
+              background-color: var(--s-color-utility-surface);
+              box-shadow: var(--s-shadow-element-pressed);
+            }
             &.is-focus:not(.is-active) {
               box-shadow: none !important;
             }
@@ -215,6 +227,9 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
         &-wrap {
           background-color: var(--s-color-base-background);
         }
+      }
+      &__active-bar {
+        background-color: var(--s-color-theme-accent);
       }
       &__content {
         min-height: calc(#{$select-asset-item-height} * 6);
@@ -344,6 +359,12 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 
       @if $hideVerticalScroll == true {
         width: 0;
+      }
+    }
+
+    @if $withHorizontalScroll == false {
+      & > .el-scrollbar__bar.is-horizontal {
+        display: none;
       }
     }
   }
@@ -501,7 +522,8 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 
     &:not(.el-table--border) {
       tr {
-        td, th {
+        td,
+        th {
           & > .cell {
             padding: $inner-spacing-tiny $inner-spacing-mini;
           }
@@ -515,7 +537,8 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
       }
     }
 
-    &, &.el-table--enable-row-hover {
+    &,
+    &.el-table--enable-row-hover {
       .el-table__body,
       .el-table__header {
         tr,
@@ -580,6 +603,61 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     }
 
     .cell {
+      word-break: normal;
+    }
+  }
+
+  .explore-table.s-table {
+    background: transparent;
+    color: var(--s-color-base-content-primary);
+    font-size: var(--s-font-size-medium);
+    font-weight: 400;
+
+    .s-table__th {
+      height: 49px;
+      color: var(--s-color-base-content-secondary);
+      font-size: var(--s-font-size-small);
+      font-weight: 500;
+      letter-spacing: var(--s-letter-spacing-mini);
+      text-transform: uppercase;
+      background-color: var(--s-color-utility-surface);
+    }
+
+    .s-table__td {
+      height: 70px;
+      background-color: var(--s-color-utility-surface);
+    }
+
+    .s-table__header-cell {
+      padding: 4px 8px;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 23px;
+    }
+
+    .s-table__th:first-child .s-table__header-cell {
+      padding-left: $inner-spacing-medium;
+    }
+
+    .s-table__th:last-child .s-table__header-cell {
+      padding-right: $inner-spacing-medium;
+    }
+
+    .s-table-cell-default {
+      padding: 4px 8px;
+      font-size: 16px;
+      line-height: 23px;
+    }
+
+    .s-table__td:first-child .s-table-cell-default {
+      padding-left: $inner-spacing-medium;
+    }
+
+    .s-table__td:last-child .s-table-cell-default {
+      padding-right: $inner-spacing-medium;
+    }
+
+    .s-table-cell-default__content {
       word-break: normal;
     }
   }

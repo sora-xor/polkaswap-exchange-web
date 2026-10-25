@@ -1,0 +1,1071 @@
+body #backtotop {left: 10px; }
+/* @see https://github.com/aFarkas/lazysizes#broken-image-symbol */.js img.lazyload:not([src]) { visibility: hidden; }/* @see https://github.com/aFarkas/lazysizes#automatically-setting-the-sizes-attribute */.js img.lazyloaded[data-sizes=auto] { display: block; width: 100%; }/* Transition effect. */.js .lazyload, .js .lazyloading { opacity: 0; }.js .lazyloaded { opacity: 1; -webkit-transition: opacity 2000ms; transition: opacity 2000ms; }
+div#sliding-popup, div#sliding-popup .eu-cookie-withdraw-banner, .eu-cookie-withdraw-tab {background: #326da8} div#sliding-popup.eu-cookie-withdraw-wrapper { background: transparent; } #sliding-popup h1, #sliding-popup h2, #sliding-popup h3, #sliding-popup p, #sliding-popup label, #sliding-popup div, .eu-cookie-compliance-more-button, .eu-cookie-compliance-secondary-button, .eu-cookie-withdraw-tab { color: #ffffff;} .eu-cookie-withdraw-tab { border-color: #ffffff;}
+window.a2a_config=window.a2a_config||{};a2a_config.callbacks=[];a2a_config.overlays=[];a2a_config.templates={};a2a_config.icon_color = "transparent";
+وزارة شؤون البلديات والزراعة |
+Skip to main content
+Top Menu
+خارطة الموقع
+الأسئلة الشائعة
+رأيك يهمنا
+تسجيل الدخول
+حالة الطقس
+الصفحة الرئيسية
+document.addEventListener('DOMContentLoaded', function() {
+    const weatherLink = document.querySelector('.weather-popup-trigger');
+    if (weatherLink) {
+      weatherLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const popup = document.getElementById('weather-popup');
+        if (popup) {
+          popup.style.display = 'block';
+        }
+      });
+    }
+  });
+English
+عربي
+Toggle navigation
+الخدمات الإلكترونية
+الوزارة
+عن الوزارة
+إطلالة على تاريخ البلدية
+الإدارة التنفيذية
+الهيكل التنظيمي
+سياسة الجودة
+استراتيجية الوزارة
+كلمة سعادة الوزير
+القوانين والتشريعات
+الرؤية والرسالة والقيم
+أهداف التنمية المستدامة
+جوائز الوزارة
+الشركاء
+برنامج التحول الوطني 2030
+دليل الخدمات الشامل
+سياسة الخصوصية
+الميزانية المعتمدة
+تحديث بيانات آبار المياه الجوفية
+تعميم بشأن تحديث بيانات آبار المياه الجوفية
+مواصفات عداد تدفق المياه
+استبيانات
+استبيان تقييم رضا العملاء للحدائق والمنتزهات
+تقييم قياس رضا العملاء عن الخدمات الالكترونية
+قطاعات الوزارة
+شؤون البلديات
+أمانة العاصمة
+بلدية المحرق
+بلدية المنطقة الشمالية
+بلدية المنطقة الجنوبية
+المجالس البلدية
+وكالة
+المركز الإعلامي
+الأخبار
+الفعاليات
+دراسات وتقارير
+أبحاث ومطبوعات
+مكتبة الوسائط المتعددة
+الإرشاد والتوعية
+إحصائيات ومؤشرات
+بنك المعلومات
+خدمة RSS
+المشاريع والمبادرات
+مشاريع رائدة
+المشاريع
+الفرص الاستثمارية
+المناقصات والمزايدات
+تواصل معنا
+Menu
+- اختر القطاع -
+شؤون البلديات
+أمانة العاصمة
+بلدية المحرق
+بلدية المنطقة الشمالية
+بلدية المنطقة الجنوبية
+المجلس البلدي لأمانة العاصمة
+المجلس البلدي لبلدية المحرق
+المجلس البلدي لبلدية المنطقة الشمالية
+المجلس البلدي لبلدية المنطقة الجنوبية
+وكالة الزراعة والثروة البحرية
+المركز البلدي الشامل
+@media (max-width: 768px) {
+  .page-node-type-news .bs-region--left {
+  width:100%;
+  }
+https://s3.eu-west-1.amazonaws.com/staticbh.mun.gov.bh-ire/2026/50/docs/Municip…
+إستراتيجية جديدة لبناء مستقبل أكثر نماء
+تطوير عمراني متوازن يُعزز جودة الحياة
+تعرف على رؤية الوزارة
+رؤية الوزارة
+تحقيق  الإنماء الحضري المتوازن عبر تأسيس بيئة إدارية متكاملة لتنفيذ المخطط الهيكلي الإستراتيجي الوطني وتلبي طموحات الرؤية الإقتصادية للملكة 2030 .
+المزيد
+Previous
+next
+الخدمات الشائعة
+نقدم لكم باقة من الخدمات المتنوعة المصممة لتلبية احتياجاتكم بكل سهولة
+الدفع الإلكتروني
+تصريح التخييم
+طلب ترخيص بناء / ترخيص RED
+إصدار لوحة إعلانية
+حدائق البحرين
+خدمة عربات بيع الأطعمة
+الاستعلام عن استحقاق أكياس القمامة
+المركز الافتراضي لخدمات النظافة
+نظام الإستيراد والتصدير الزراعي
+شهادة إثبات سكن
+خدمة دفع ايجار أملاك البلدية
+أكياس القمامة
+جميع الخدمات
+آخر الأخبار والفعاليات
+الاخبار
+الفعاليات
+مكتبة الصور
+.mainPageNews .field--type-datetime:first-child {
+    color: #ffffff !important;
+    background-color: #326da8;
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    padding: 15px 5px;
+    position: relative;
+    color: white;
+    text-align: center;
+    left: 0;
+    right: 0;
+    float: left;
+    top: -50px;
+    font-size: 13px;
+    bottom: 0;
+    z-index: 100000;
+    text-align-last: center;
+    direction:ltr;
+}
+.mainPageNews.box{
+overflow: visible !important;
+min-height:234px;
+padding:0px;
+}
+.node--type-event.node--view-mode-news-homepage .container-box {
+    min-height: 215px;
+}
+img.img-fluid.image-style-news-home-page-desktop {
+    filter: brightness(1) !important;
+}
+.event-ch h3 {
+    margin-left: 10px !important;
+    padding-left: 8px !important;
+    padding-right: 35px !important;
+}
+.node--type-event.node--view-mode-news-homepage .field--type-datetime {
+direction:ltr;
+}
+.mainPageNews img.img-fluid.image-style-_14x252 {
+    width: -webkit-fill-available;
+}
+.node--view-mode-box .div-box{
+    padding:24px;
+}
+.mainPageNews.box {
+    background: white;
+}
+21 Sep, 2026
+رؤساء تحرير عدد من الصحف المحلية وممثلوها يزورون  مبنى بلدية المنامة التاريخي ويطّلعون على المعرض البلدي
+زار عدد من رؤساء ومديري تحرير الصحف المحلية وممثليها مبنى بلدية المنامة التاريخي، بحضور سعادة المهندس وائل بن ناصر...
+20 Sep, 2026
+بمناسبة اليوم العالمي للنظافة .. وزير شؤون البلديات والزراعة يعلن إطلاق «أسبوع النظافة» بالتعاون بين أمانة العاصمة والبلديات والمجالس البلدية
+أعلن سعادة المهندس وائل بن ناصر المبارك وزير شؤون البلديات والزراعة، إطلاق مبادرة "أسبوع النظافة" بالتعاون بين أمانة...
+17 Sep, 2026
+وزير شؤون البلديات والزراعة يفتتح ممشى عالي بالمحافظة الشمالية بعد تطويره
+افتتح سعادة المهندس وائل بن ناصر المبارك وزير شؤون البلديات والزراعة، مشروع تطوير ممشى عالي في المحافظة الشمالية، وذلك...
+Previous
+Next
+.node--type-event.node--view-mode-news-homepage .field--name-body{
+    text-transform: capitalize;
+    font-size: 14px !important;
+    color: #7C7676;
+    letter-spacing: 0.36px;
+}
+
+.node--type-event.node--view-mode-news-homepage .field--type-datetime{
+    margin: 10px 0;
+    font-size: 11px;
+    color: #626266 !important;
+}
+.node--type-event.node--view-mode-news-homepage .container-box {
+    padding: 0 24px;
+}
+.node--type-event.node--view-mode-news-homepage .box.mainPageNews {
+    background: white;
+    position: relative;
+    padding: 0;
+}
+.view-display-id-attachment_1 .view-header {
+    padding: 0 !important;
+}
+.node--type-event.node--view-mode-news-homepage .div-box{
+    display: flex;
+    align-items: baseline;
+}
+
+.event-ch h3::before {
+    position: absolute;
+    right: 15px;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+    content: "";
+    top: 6px;
+    left: 7px;
+    color: #ffffff;
+}
+.event-ch h3{
+    color: #ffffff;
+    position: relative;
+    border-radius: 8px;
+    border: 1px solid #326da8;
+    background-color: #326da8;
+    transition: all 1s ease-out;
+    margin-right: 10px;
+    padding-top: 4px;
+    padding-bottom: 7px;
+    padding-left: 26px;
+    padding-right: 8px;
+    font-size: 11px;}
+.box .field--name-node-title a{
+font-size:17px;
+}
+الفعاليات
+15 Oct, 2025
+وزير شؤون البلديات والزراعة يفتتح ورشة العمل الإقليمية للمنظمة العالمية للصحة الحيوانية  حول “تطبيق الصحة الواحدة من خلال خطة العمل المشتركة”
+افتتح سعادة المهندس وائل بن ناصر المبارك، وزير شؤون البلديات والزراعة، ورشة...
+الأخبار
+13 Sep, 2026
+وزير شؤون البلديات والزراعة يستقبل منسق المكتب شبه الإقليمي لمنظمة الأغذية والزراعة للأمم المتحدة (الفاو)
+استقبل سعادة المهندس وائل بن ناصر المبارك وزير شؤون البلديات والزراعة، بحضور المهندس عاصم عبداللطيف...
+الأخبار
+10 Sep, 2026
+مملكة البحرين تترأس الاجتماع التاسع والعشرين لأصحاب المعالي والسعادة الوزراء المعنيين بشؤون البلديات بدول مجلس التعاون لدول الخليج العربية
+في إطار رئاسة مملكة البحرين للدورة السادسة والأربعين لمجلس التعاون لدول الخليج العربية، ترأس سعادة...
+الأخبار
+09 Sep, 2026
+رئيس مجلس النواب يزور مبنى بلدية المنامة التاريخي ويطّلع على المعرض البلدي
+قام معالي السيد أحمد بن سلمان المسلم رئيس مجلس النواب بزيارة إلى مبنى بلدية المنامة...
+المشاريع والمبادرات
+حديقة أبو غزال
+بعد إعادة تأهيلها، أصبحت حديقة أبو غزال متنفسًا ترفيهيا متكاملا لأهالي المنطقة، حيث شملت أعمال...
+ممشى سافرة
+يُعد ممشى سافرة متنفسا رياضيا وترفيهيا لأهالي المنطقة الجنوبية، ويهدف إلى تشجيع أفراد المجتمع على...
+حديقة سار 525
+تم افتتاح
+حديقة سار
+رسمياً في أكتوبر 2024 بمجمع 525، وتعتبر من المرافق...
+المزيد
+الوزارة بالارقام
+24
+عدد المماشي في البحرين
+12
+عدد الأسواق المركزية
+175
+عدد الحدائق في مملكة البحرين
+43
+عدد الخدمات الالكترونية
+5
+عدد مراكز خدمة العملاء
+89165
+عدد الطلبات الإلكترونية المُستلمة من 1 يناير 2025 إلى 30 يونيو 2026
+تطبيق جديد لخدمتكم
+..قريباً
+بث التواصل الاجتماعي
+تواصل معنا
+قنوات التواصل الاجتماعي
+اقتراحات و ملاحظات
+تواصل
+أهم الروابط
+وزارة شئون الشباب
+وزارة الموصلات والاتصالات – شئون الموانئ والملاحة البحرية
+بوابة البحرين للبيانات المفتوحة
+هيئة الكهرباء والماء
+وزارة الإسكان والتخطيط العمراني
+وزارة قوة دفاع البحرين
+البوابة الوطنية للحكومة الالكترونية
+الحوكمة وتبادل البيانات
+ديوان الرقابة المالية والادارية
+المزيد
+.st0{fill:#FFFFFF;}
+.st0{fill:#FFFFFF;}
+MHAltaitoon Weather Pop-up Block
+#weather-popup {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    z-index: 9999;
+  }
+
+  #weather-popup.show {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  #weather-popup-en {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    z-index: 9999;
+  }
+
+  #weather-popup-en.show {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  #block-mhaltaitoonweatherpopupblock{
+    display : none;
+  }
+
+  .weather-popup-inner {
+    background: white;
+    max-width: 400px;
+    width: 90%; /* Responsive width */
+    margin: 10% auto;
+    padding: 30px 20px 20px 20px;
+    border-radius: 10px;
+    position: relative;
+    text-align: right;
+    direction: rtl;
+    z-index: 10000;
+    /*box-shadow: 0 10px 30px rgba(0,0,0,0.3);*/
+    overflow: hidden; /* Ensure nothing overflows */
+  }
+
+  /* Close Button */
+  .weather-popup-close {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    font-size: 28px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #444;
+    z-index: 10001;
+  }
+  
+  .weatherwidget-io {
+    pointer-events: none;
+  }
+
+  .weather-popup-close:hover {
+    color: #000;
+  }
+
+  /* Make popup responsive */
+  @media (max-width: 600px) {
+    .weather-popup-inner {
+      max-width: 95%; /* Make it 95% of screen width */
+      padding: 20px; /* Reduce padding on mobile */
+    }
+
+    .weather-popup-close {
+      top: 5px;
+      left: 5px;
+      font-size: 24px; /* Smaller close button */
+    }
+  }
+
+  /* New widget weather ******************************************************************/
+
+  /* Overall container styling */
+  .weather-widget-container {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 15px;
+    /*background: #f7f7f7;*/
+    border-radius: 12px;
+    /*box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);*/
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    color: #333;
+  }
+ 
+  /* Title of the widget */
+  .weather-widget-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+  }
+ 
+  /* Location display */
+  .weather-widget-location {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+  }
+ 
+  /* Temperature display */
+  .weather-widget-temp {
+    font-size: 40px;
+    font-weight: bold;
+    color: #e67e22;
+    margin-bottom: 10px;
+    display: block; /* Ensures it stays on a separate line */
+  }
+ 
+  /* Weather condition text */
+  .weather-widget-condition {
+    font-size: 18px;
+    color: #777;
+    margin-bottom: 20px;
+  }
+ 
+  /* Icon styling */
+  .weather-widget-icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px; /* Space between icon and temperature */
+  }
+ 
+  /* Styling for each weather element in the widget */
+  .weather-details {
+    text-align: center;
+    margin-top: 15px;
+  }
+  
+  .footer_bg .f_first img {
+      
+    /*Change To fix MUN footer logo*/
+    /*   width: auto !important;*/
+    /*height: 60px !important;*/
+}
+}
+ 
+  /* Apply gradient background */
+  /*.weather-widget-container {*/
+  /*  background: linear-gradient(to top, #fff, #f7f7f7);*/
+  /*}*/
+ 
+  /* Responsive Design */
+  @media (max-width: 600px) {
+    .weather-widget-container {
+      max-width: 90%;
+      padding: 10px;
+    }
+    .weather-widget-temp {
+      font-size: 30px;
+    }
+    .weather-widget-title {
+      font-size: 20px;
+    }
+    .weather-widget-icon {
+      width: 60px;
+      height: 60px;
+    }
+  }
+×
+حالة الطقس
+function getWeatherData(lat, lon, lang = 'ar') {
+          const apiKey = '231ab8924a185762323f4246df16544c'; // OpenWeather API key
+          const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=${lang}`;
+       
+          // Log the API URL to the browser console (REMINDER: Remove this line later)
+          console.log('API URL:', apiUrl);
+       
+          // Fetch weather data from OpenWeather API
+          fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+              const weatherDetailsContainer = document.getElementById('weather-widget-details');
+              const locationContainer = document.getElementById('weather-widget-location');
+       
+              // Prepare weather details to display
+              const location = `${data.name}, ${data.sys.country}`; // Country may still be in English
+              const temperature = `${data.main.temp}°C`;
+              const condition = data.weather[0].description;
+              const iconCode = data.weather[0].icon; // OpenWeather icon code
+       
+              const weatherIcon = `<img src="http://openweathermap.org/img/wn/${iconCode}.png" alt="${condition}" class="weather-widget-icon">`;
+       
+              // Add data to the widget container
+              locationContainer.innerHTML = location; // Display Location
+              weatherDetailsContainer.innerHTML = `
+                ${weatherIcon}
+      <div class="weather-widget-temp">${temperature}</div>
+      <div class="weather-widget-condition">${condition}</div>
+              `;
+            })
+            .catch(err => {
+              console.error('Failed to fetch weather data:', err);
+              const weatherDetailsContainer = document.getElementById('weather-widget-details');
+              const locationContainer = document.getElementById('weather-widget-location');
+       
+              locationContainer.innerHTML = 'Location not found';
+              weatherDetailsContainer.innerHTML = '<p>Weather data is not available at this time.</p>';
+            });
+        }
+       
+        // Check for user's geolocation
+        document.addEventListener('DOMContentLoaded', function() {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+              const lat = position.coords.latitude;
+              const lon = position.coords.longitude;
+       
+              // Get weather data for the user's location
+              getWeatherData(lat, lon, 'ar'); // Use 'ar' for Arabic language
+            });
+          } else {
+            console.log('Geolocation is not supported by this browser.');
+          }
+        });
+×
+Current Weather
+function getWeatherDataEn(lat, lon, lang = 'en') {
+          const apiKey = '231ab8924a185762323f4246df16544c'; // OpenWeather API key
+          const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=${lang}`;
+       
+          // Log the API URL to the browser console (REMINDER: Remove this line later)
+          console.log('API URL:', apiUrl);
+       
+          // Fetch weather data from OpenWeather API
+          fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+              const weatherDetailsContainer = document.getElementById('weather-widget-details-en');
+              const locationContainer = document.getElementById('weather-widget-location-en');
+       
+              // Prepare weather details to display
+              const location = `${data.name}, ${data.sys.country}`; // Country may still be in English
+              const temperature = `${data.main.temp}°C`;
+              const condition = data.weather[0].description;
+              const iconCode = data.weather[0].icon; // OpenWeather icon code
+       
+              const weatherIcon = `<img src="http://openweathermap.org/img/wn/${iconCode}.png" alt="${condition}" class="weather-widget-icon">`;
+       
+              // Add data to the widget container
+              locationContainer.innerHTML = location; // Display Location
+              weatherDetailsContainer.innerHTML = `
+                ${weatherIcon}
+      <div class="weather-widget-temp">${temperature}</div>
+      <div class="weather-widget-condition">${condition}</div>
+              `;
+            })
+            .catch(err => {
+              console.error('Failed to fetch weather data:', err);
+              const weatherDetailsContainer = document.getElementById('weather-widget-details-en');
+              const locationContainer = document.getElementById('weather-widget-location-en');
+       
+              locationContainer.innerHTML = 'Location not found';
+              weatherDetailsContainer.innerHTML = '<p>Weather data is not available at this time.</p>';
+            });
+        }
+       
+        // Check for user's geolocation
+        document.addEventListener('DOMContentLoaded', function() {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+              const lat = position.coords.latitude;
+              const lon = position.coords.longitude;
+       
+              // Get weather data for the user's location
+              getWeatherDataEn(lat, lon, 'en'); // Use 'en' for english language
+            });
+          } else {
+            console.log('Geolocation is not supported by this browser.');
+          }
+        });
+document.addEventListener('DOMContentLoaded', function() {
+    const weatherLink = document.querySelector('.weather-popup-trigger');
+    if (weatherLink) {
+      weatherLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const popup = document.getElementById('weather-popup');
+        if (popup) {
+          popup.classList.add('show');
+        }
+      });
+    }
+  });
+  
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    const weatherLink = document.querySelector('.weather-popup-trigger-en');
+    if (weatherLink) {
+      weatherLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const popup = document.getElementById('weather-popup-en');
+        if (popup) {
+          popup.classList.add('show');
+        }
+      });
+    }
+  });
+معلومات
+Second Footer
+إطلالة على تاريخ البلدية
+كلمة سعادة الوزير
+الرؤية والرسالة و القيم
+البلديات
+Third Footer
+أمانة العاصمة
+بلدية المحرق
+بلدية المنطقة الشمالية
+بلدية المنطقة الجنوبية
+روابط مهمة
+Fourth Footer
+منصة استثمار الأراضي الحكومية
+الحكومة الإلكترونية
+الجريدة الرسمية
+تواصل معنا
+contact@mun.gov.bh
+17989898
+ص.ب.53
+المنامة -مملكة البحرين
+.LastUpdate2025 {
+            color: #fff; display: none;
+           
+        }
+        .view-mh-last-updated-content h3 { display: none;}
+        
+        .view-mh-last-updated-content .item-list li {margin: 0px; list-style: none; font-size: 10px;}
+        
+        
+         .agree-button {padding: 5px 5px 5px 5px; border: 1px solid #fff; border-radius: 5px; }
+         .sliding-popup-bottom {z-index: 100000000000;}
+         
+         .terms {font-size: 10px;}
+جميع الحقوق محفوظة 2025 - وزارة شؤون البلديات والزراعة
+ - مملكة البحرين
+تنويه
+-
+الأحكام والشروط
+-
+سهولة الوصول
+-
+حقوق النشر
+-
+سياسة الخصوصية
+-
+الأسئلة الشائعة
+-
+آخر تحديث:
+0
+2026-09-24
+2026-09-24
+شاركنا رأيك بالموقع
+document.querySelector('.target').innerHTML = 
+    document.querySelector('.LastUpdate2025').innerHTML;
+.st0 {
+                                fill-rule: evenodd;
+                                clip-rule: evenodd;
+                                fill: #FFFFFF;
+                            }
+تواصل معنا
+.st0 {
+                                fill-rule: evenodd;
+                                clip-rule: evenodd;
+                                fill: #FFFFFF;
+                            }
+الأسئلة الشائعة
+.st0 {
+                                fill-rule: evenodd;
+                                clip-rule: evenodd;
+                                fill: #FFFFFF;
+                            }
+أراء و مقترحات
+قيمنا
+window.interdeal = { "sitekey": "11271b25385014e74f7f99a222287ed3", "Position": "Right", "Menulang": "AR", "domains": { "js": "https://cdn.equalweb.com/", "acc": "https://access.equalweb.com/" }, "btnStyle": { "vPosition": [ "80%", null ], "scale": [ "0.6", "0.6" ], "color": { "main": "#326da8", "second": "" }, "icon": { "type": 11, "shape": "circle", "outline": false } } }; (function(doc, head, body){ var coreCall = doc.createElement('script'); coreCall.src = 'https://cdn.equalweb.com/core/4.4.0/accessibility.js'; coreCall.defer = true; coreCall.integrity = 'sha512-3lGJBcuai1J0rGJHJj4e4lYOzm7K08oEHsg1Llt7x24OOsa/Ca0wwbSi9HhWUn92FKN3fylaq9xmIKVZnUsT3Q=='; coreCall.crossOrigin = 'anonymous'; coreCall.setAttribute('data-cfasync', true ); body? body.appendChild(coreCall) : head.appendChild(coreCall); })(document, document.head, document.body);
+#chatbot-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #406fa6;
+      color: white;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      /*font-size: 30px;*/
+      text-align: center;
+      line-height: 45px;
+      cursor: pointer;
+      z-index: 1000;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    #chatbot-box {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      width: 90vw;
+    max-width: 360px;
+    min-width: 280px;
+
+      max-height: 80vh;
+
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      display: none;
+      flex-direction: column;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    z-index: 9999999999;
+
+    }
+
+    #chatbot-messages {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-message {
+      margin: 8px 0;
+      padding: 8px 12px;
+      background: #f1f1f1;
+      border-radius: 10px;
+      max-width: 90%;
+      word-wrap: break-word;
+    }
+
+    .chat-bot {
+      background: #e8f0fe;
+      align-self: flex-start;
+    }
+
+    .chat-user {
+      background: #dcf8c6;
+      align-self: flex-end;
+    }
+
+    .chat-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-top: 10px;
+    }
+
+    .chat-buttons button {
+      padding: 6px 10px;
+      background-color: #f0f0f0;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      text-align: left;
+      white-space: normal;
+    }
+
+    .chat-buttons button:hover {
+      background-color: #e0e0e0;
+    }
+
+    #chatbot-input {
+      border-top: 1px solid #ccc;
+      padding: 8px;
+      display: flex;
+      gap: 8px;
+    }
+
+    #chatbot-input input {
+      flex: 1;
+      padding: 6px 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    #chatbot-input button {
+      background-color: #406fa6;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    
+#chatbot-header {
+  background-color: #406fa6;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: bold;
+  direction: rtl;
+}
+
+.chatbot-title {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+#chatbot-close {
+  cursor: pointer;
+  font-size: 18px;
+  padding-left: 10px;
+}
+وزارة شؤون البلديات والزراعة
+Ministry of Municipalities Affairs
+✖
+➤
+const chatbotToggle = document.getElementById('chatbot-toggle');
+    const chatbotBox = document.getElementById('chatbot-box');
+    const chatbotMessages = document.getElementById('chatbot-messages');
+    const chatInput = document.getElementById('chat-input');
+
+    let currentStep = 'language';
+    let currentLang = '';
+    let initiated = false;
+    chatbotBox.style.display = 'none'
+    chatbotToggle.onclick = () => {
+      chatbotBox.style.display = chatbotBox.style.display === 'none' ? 'flex' : 'none';
+      if (!initiated) {
+        initiated = true;
+        typeMessage(
+            '💬 وزارة شؤون البلديات والزراعة ترحب بكم في خدمة المجيب الآلي.<br>Ministry of Municipalities Affairs welcomes you to the chatbot service.<br><br>Please choose your language / الرجاء اختيار اللغة:',
+          () => addButtonGroup(['العربية', 'English'], handleLanguage, false)
+        );
+      }
+    };
+
+    function typeMessage(text, callback, sender = 'bot') {
+      let index = 0;
+      const msg = document.createElement('div');
+      msg.className = `chat-message chat-${sender}`;
+      chatbotMessages.appendChild(msg);
+
+      function typeChar() {
+        if (index < text.length) {
+          msg.innerHTML = text.slice(0, index + 1);
+          index++;
+          chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+          setTimeout(typeChar, 25); // slower animation
+        } else if (callback) {
+          callback();
+        }
+      }
+      typeChar();
+    }
+
+    function addButtonGroup(buttons, callback, addBack = true) {
+      const container = document.createElement('div');
+      container.className = 'chat-buttons';
+      buttons.forEach(label => {
+        const btn = document.createElement('button');
+        btn.innerText = label;
+        btn.onclick = () => callback && callback(label);
+        container.appendChild(btn);
+      });
+      // Improved back logic for all steps
+      if (addBack && currentStep !== 'language') {
+        const backBtn = document.createElement('button');
+        backBtn.innerText = currentLang === 'ar' ? '🔙 رجوع' : '🔙 Back';
+        backBtn.onclick = () => {
+          if (
+            currentStep === 'info' ||
+            currentStep === 'eservices-section' ||
+            currentStep === 'faq-section' ||
+            currentStep === 'contact-section'
+          ) {
+            currentStep = 'municipality';
+            showMunicipalities();
+          } else if (currentStep === 'municipality') {
+            currentStep = 'language';
+            typeMessage(
+              '🤖 وزارة شؤون البلديات والزراعة ترحب بكم في خدمة المجيب الآلي.<br>Ministry of Municipalities Affairs welcomes you to the chatbot service.<br><br>Please choose your language / الرجاء اختيار اللغة:',
+              () => addButtonGroup(['العربية', 'English'], handleLanguage, false)
+            );
+          }
+        };
+        container.appendChild(backBtn);
+      }
+      chatbotMessages.appendChild(container);
+      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+
+    function handleLanguage(lang) {
+      currentLang = lang === 'العربية' ? 'ar' : 'en';
+      currentStep = 'municipality';
+      chatbotMessages.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
+      showMunicipalities();
+    }
+
+    function showMunicipalities() {
+      currentStep = 'municipality';
+      typeMessage(
+        currentLang === 'ar'
+          ? 'يرجى الإختيار:'
+          : 'Please choose an option',
+        () => addButtonGroup(
+          currentLang === 'ar'
+            ? [
+                'أمانة العاصمة',
+                'بلدية المحرق',
+                'بلدية المنطقة الشمالية',
+                'بلدية المنطقة الجنوبية',
+                'الخدمات الإلكترونية',
+                'الأسئلة الشائعة',
+                'اتصل بنا'
+              ]
+            : [
+                'Capital Municipality',
+                'Muharraq Municipality',
+                'Northern Municipality',
+                'Southern Municipality',
+                'E-Services',
+                'FAQ',
+                'Contact Us'
+              ],
+          handleMunicipalityOrEServicesOrFAQOrContact
+        )
+      );
+    }
+
+    function handleMunicipalityOrEServicesOrFAQOrContact(option) {
+      if (
+        (currentLang === 'ar' && option === 'الخدمات الإلكترونية') ||
+        (currentLang === 'en' && option === 'E-Services')
+      ) {
+        showEServicesSection();
+      } else if (
+        (currentLang === 'ar' && option === 'الأسئلة الشائعة') ||
+        (currentLang === 'en' && option === 'FAQ')
+      ) {
+        showFAQSection();
+      } else if (
+        (currentLang === 'ar' && option === 'اتصل بنا') ||
+        (currentLang === 'en' && option === 'Contact Us')
+      ) {
+        showContactSection();
+      } else {
+        showMunicipalityInfo(option);
+      }
+    }
+
+    function showEServicesSection() {
+      currentStep = 'eservices-section';
+      const url = currentLang === 'ar'
+        ? 'https://www.mun.gov.bh/newportal/ar/municipal-affairs/services'
+        : 'https://www.mun.gov.bh/newportal/en/municipal-affairs/services';
+      const label = currentLang === 'ar'
+        ? 'يمكنك تصفح جميع الخدمات الإلكترونية عبر الرابط التالي: <a href="' + url + '" target="_blank">الخدمات الإلكترونية</a>'
+        : 'You can browse all e-services at: <a href="' + url + '" target="_blank">E-Services</a>';
+      typeMessage(label, () => addButtonGroup([], null));
+    }
+
+    function showFAQSection() {
+      currentStep = 'faq-section';
+      const url = currentLang === 'ar'
+        ? 'https://www.mun.gov.bh/newportal/newportal/ar/municipal-affairs/faqs'
+        : 'https://www.mun.gov.bh/newportal/newportal/en/municipal-affairs/faqs';
+      const label = currentLang === 'ar'
+        ? 'يمكنك تصفح الأسئلة الشائعة عبر الرابط التالي: <a href="' + url + '" target="_blank">الأسئلة الشائعة</a>'
+        : 'You can browse the FAQ at: <a href="' + url + '" target="_blank">FAQ</a>';
+      typeMessage(label, () => addButtonGroup([], null));
+    }
+
+    function showContactSection() {
+      currentStep = 'contact-section';
+      const url = currentLang === 'ar'
+        ? 'https://www.mun.gov.bh/newportal/ar/municipal-affairs/contact-us'
+        : 'https://www.mun.gov.bh/newportal/en/municipal-affairs/contact-us';
+      const label = currentLang === 'ar'
+        ? 'يمكنك التواصل معنا عبر الرابط التالي: <a href="' + url + '" target="_blank">اتصل بنا</a>'
+        : 'You can contact us at: <a href="' + url + '" target="_blank">Contact Us</a>';
+      typeMessage(label, () => addButtonGroup([], null));
+    }
+
+    function showMunicipalityInfo(muni) {
+      currentStep = 'info';
+      const links = {
+        'Capital Municipality': ['https://www.mun.gov.bh/newportal/en/capital-municipality', 'https://www.mun.gov.bh/newportal/en/capital-municipality/contact-us'],
+        'Muharraq Municipality': ['https://www.mun.gov.bh/newportal/en/muharraq-municipality', 'https://www.mun.gov.bh/newportal/en/muharraq-municipality/contact-us'],
+        'Northern Municipality': ['https://www.mun.gov.bh/newportal/en/north-area-municipality', 'https://www.mun.gov.bh/newportal/en/north-area-municipality/contact-us'],
+        'Southern Municipality': ['https://www.mun.gov.bh/newportal/en/southern-area-municipality', 'https://www.mun.gov.bh/newportal/en/southern-area-municipality/contact-us'],
+        'أمانة العاصمة': ['https://www.mun.gov.bh/newportal/ar/capital-municipality', 'https://www.mun.gov.bh/newportal/ar/capital-municipality/contact-us'],
+        'بلدية المحرق': ['https://www.mun.gov.bh/newportal/ar/muharraq-municipality', 'https://www.mun.gov.bh/newportal/ar/muharraq-municipality/contact-us'],
+        'بلدية المنطقة الشمالية': ['https://www.mun.gov.bh/newportal/ar/north-area-municipality', 'https://www.mun.gov.bh/newportal/ar/north-area-municipality/contact-us'],
+        'بلدية المنطقة الجنوبية': ['https://www.mun.gov.bh/newportal/ar/southern-area-municipality', 'https://www.mun.gov.bh/newportal/ar/southern-area-municipality/contact-us']
+      };
+      const [site, contact] = links[muni];
+      const msg = currentLang === 'ar'
+        ? `<strong>${muni}</strong><br>الموقع الإلكتروني: <a href="${site}" target="_blank">الرابط</a><br>معلومات الاتصال: <a href="${contact}" target="_blank">تواصل</a>`
+        : `<strong>${muni}</strong><br>Website: <a href="${site}" target="_blank">Link</a><br>Contact Info: <a href="${contact}" target="_blank">Contact</a>`;
+
+      typeMessage(msg, () => addButtonGroup([], null));
+    }
+
+function sendMessage() {
+  const value = chatInput.value.trim();
+  if (!value) return;
+  addMessage(value, 'user');
+  chatInput.value = '';
+
+  // Auto-detect language if language step
+  if (currentStep === 'language') {
+    currentLang = isArabic(value) ? 'ar' : 'en';
+    currentStep = 'municipality';
+    showMunicipalities();
+    return;
+  }
+
+  if (currentStep === 'municipality' || currentStep === 'info') {
+    typeMessage(
+      currentLang === 'ar' ? 'يرجى الاختيار من الخيارات المتاحة:' : 'Please choose from the provided options:',
+      showMunicipalities
+    );
+  }
+}
+    
+    function isArabic(text) {
+  const arabicRegex = /[\u0600-\u06FF]/;
+  return arabicRegex.test(text);
+}
+
+document.getElementById('chatbot-close').onclick = () => {
+  chatbotBox.style.display = 'none';
+};
+
+    function addMessage(text, sender) {
+      const msg = document.createElement('div');
+      msg.className = `chat-message chat-${sender}`;
+      msg.innerText = text;
+      chatbotMessages.appendChild(msg);
+      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+
+    chatInput.addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        sendMessage();
+        event.preventDefault();
+      }
+    });
+{"path":{"baseUrl":"\/newportal\/newportal\/","scriptPath":null,"pathPrefix":"ar\/","currentPath":"node\/9","currentPathIsAdmin":false,"isFront":true,"currentLanguage":"ar"},"pluralDelimiter":"\u0003","suppressDeprecationErrors":true,"gtm":{"tagId":"GTM-WPMTGQFZ","settings":[]},"gtag":{"tagId":"","otherIds":[],"events":[],"additionalConfigInfo":[]},"ajaxPageState":{"libraries":"addtoany\/addtoany.front,asset_injector\/css.project_page_2025,asset_injector\/css.test,back_to_top\/back_to_top_icon,back_to_top\/back_to_top_js,better_exposed_filters\/general,blazy\/blazy,blazy\/classlist,blazy\/load,blazy\/loading,blazy\/polyfill,blazy\/promise,blazy\/raf,blazy\/webp,bootstrap5\/base,bootstrap5\/bootstrap5-js-latest,bootstrap5\/global-styling,bootstrap5\/messages,bootstrap5\/node,bootstrap_styles\/plugin.background_color.build,bootstrap_styles\/plugin.border.build,bootstrap_styles\/plugin.margin.build,bootstrap_styles\/plugin.padding.build,bootstrap_styles\/plugin.scroll_effects.build,bootstrap_styles\/plugin.text_alignment.build,bootstrap_styles\/plugin.text_color.build,core\/normalize,core\/picturefill,eu_cookie_compliance\/eu_cookie_compliance_default,extlink\/drupal.extlink,fontawesome\/fontawesome.webfonts.shim,fontawesome\/fontawesome.webfonts.thin,google_tag\/gtag,google_tag\/gtag.ajax,google_tag\/gtm,layout_discovery\/onecol,lazy\/lazy,mwmaup\/countup,mwmaup\/global-scripts,mwmaup\/global-styling,mwmaup\/global-styling-rtl,mwmaup\/mobile_block,mwmaup\/slick,paragraphs\/drupal.paragraphs.unpublished,poll\/drupal.poll-links,simple_popup_blocks\/simple_popup_blocks,slick\/slick.css,slick\/slick.load,slick\/slick.main.default,slick\/slick.theme,slick_carousel_slider\/slick,system\/base,ultimenu\/ajax,ultimenu\/hamburger,ultimenu\/offcanvas.slidein,ultimenu\/skin.basic,views\/views.module","theme":"mwmaup","theme_token":null},"ajaxTrustedUrl":{"\/newportal\/newportal\/ar\/search":true},"back_to_top":{"back_to_top_button_trigger":100,"back_to_top_prevent_on_mobile":false,"back_to_top_prevent_in_admin":false,"back_to_top_button_type":"image","back_to_top_button_text":"Back to top"},"lazy":{"lazysizes":{"lazyClass":"lazyload","loadedClass":"lazyloaded","loadingClass":"lazyloading","preloadClass":"lazypreload","errorClass":"lazyerror","autosizesClass":"lazyautosizes","srcAttr":"data-src","srcsetAttr":"data-srcset","sizesAttr":"data-sizes","minSize":40,"customMedia":[],"init":true,"expFactor":1.5,"hFac":0.8,"loadMode":2,"loadHidden":true,"ricTimeout":0,"throttleDelay":125,"plugins":[]},"placeholderSrc":"","preferNative":false,"minified":true,"libraryPath":"\/newportal\/libraries\/lazysizes"},"simple_popup_blocks":{"settings":[{"identifier":"block-views-block-popup-block-popup","uid":"popub","type":"0","css_selector":"1","layout":"4","visit_counts":"0","overlay":"1","trigger_method":"0","trigger_selector":"#custom-css-id","enable_escape":"1","delay":"3","minimize":"0","close":"1","use_time_frequency":"0","time_frequency":"3600","show_minimized_button":"0","width":"536","cookie_expiry":"100","status":"1","trigger_width":""}]},"data":{"extlink":{"extTarget":false,"extTargetNoOverride":false,"extNofollow":false,"extNoreferrer":true,"extFollowNoOverride":false,"extClass":"ext","extLabel":"(link is external)","extImgClass":false,"extSubdomains":true,"extExclude":"","extInclude":"","extCssExclude":"","extCssExplicit":"","extAlert":false,"extAlertText":"This link will take you to an external web site. We are not responsible for their content.Ar","mailtoClass":"mailto","mailtoLabel":"(link sends email)","extUseFontAwesome":false,"extIconPlacement":"append","extFaLinkClasses":"fa fa-external-link","extFaMailtoClasses":"fa fa-envelope-o","whitelistedDomains":[]}},"eu_cookie_compliance":{"cookie_policy_version":"1.0.0","popup_enabled":true,"popup_agreed_enabled":false,"popup_hide_agreed":false,"popup_clicking_confirmation":false,"popup_scrolling_confirmation":false,"popup_html_info":"\u003Cdiv aria-labelledby=\u0022popup-text\u0022  class=\u0022eu-cookie-compliance-banner eu-cookie-compliance-banner-info eu-cookie-compliance-banner--opt-in\u0022\u003E\n  \u003Cdiv class=\u0022popup-content info eu-cookie-compliance-content\u0022\u003E\n        \u003Cdiv id=\u0022popup-text\u0022 class=\u0022eu-cookie-compliance-message\u0022 role=\u0022document\u0022\u003E\n      \u003Cdiv class=\u0022cookies2025\u0022\u003E\u003Cbr\u003E\u003Cp\u003E   \u0646\u062d\u0646 \u0646\u0633\u062a\u062e\u062f\u0645 \u0645\u0644\u0641\u0627\u062a \u062a\u0639\u0631\u064a\u0641 \u0627\u0644\u0627\u0631\u062a\u0628\u0627\u0637 \u0639\u0644\u0649 \u0647\u0630\u0627 \u0627\u0644\u0645\u0648\u0642\u0639 \u0644\u062a\u062d\u0633\u064a\u0646 \u062a\u062c\u0631\u0628\u062a\u0643 \u0643\u0645\u0633\u062a\u062e\u062f\u0645. \u0628\u0627\u0644\u0636\u063a\u0637 \u0639\u0644\u0649 \u0632\u0631 \u0642\u0628\u0648\u0644\u060c \u0641\u0625\u0646\u0643 \u062a\u0648\u0627\u0641\u0642 \u0639\u0644\u0649 \u0627\u0633\u062a\u062e\u062f\u0627\u0645\u0646\u0627 \u0644\u0647\u0627.    \u003C\/p\u003E        \u003C\/div\u003E\n          \u003C\/div\u003E\n\n    \n    \u003Cdiv id=\u0022popup-buttons\u0022 class=\u0022eu-cookie-compliance-buttons\u0022\u003E\n            \u003Cbutton type=\u0022button\u0022 class=\u0022agree-button eu-cookie-compliance-secondary-button\u0022\u003E\u0645\u0648\u0627\u0641\u0642\u003C\/button\u003E\n              \u003Cbutton type=\u0022button\u0022 class=\u0022decline-button eu-cookie-compliance-default-button\u0022\u003E\u0644\u0627\u060c \u0634\u0643\u0631\u0627\u064b\u003C\/button\u003E\n          \u003C\/div\u003E\n  \u003C\/div\u003E\n\u003C\/div\u003E","use_mobile_message":false,"mobile_popup_html_info":"\u003Cdiv aria-labelledby=\u0022popup-text\u0022  class=\u0022eu-cookie-compliance-banner eu-cookie-compliance-banner-info eu-cookie-compliance-banner--opt-in\u0022\u003E\n  \u003Cdiv class=\u0022popup-content info eu-cookie-compliance-content\u0022\u003E\n        \u003Cdiv id=\u0022popup-text\u0022 class=\u0022eu-cookie-compliance-message\u0022 role=\u0022document\u0022\u003E\n      \n          \u003C\/div\u003E\n\n    \n    \u003Cdiv id=\u0022popup-buttons\u0022 class=\u0022eu-cookie-compliance-buttons\u0022\u003E\n            \u003Cbutton type=\u0022button\u0022 class=\u0022agree-button eu-cookie-compliance-secondary-button\u0022\u003E\u0645\u0648\u0627\u0641\u0642\u003C\/button\u003E\n              \u003Cbutton type=\u0022button\u0022 class=\u0022decline-button eu-cookie-compliance-default-button\u0022\u003E\u0644\u0627\u060c \u0634\u0643\u0631\u0627\u064b\u003C\/button\u003E\n          \u003C\/div\u003E\n  \u003C\/div\u003E\n\u003C\/div\u003E","mobile_breakpoint":768,"popup_html_agreed":false,"popup_use_bare_css":false,"popup_height":"auto","popup_width":"100%","popup_delay":1000,"popup_link":"\/newportal\/newportal\/ar","popup_link_new_window":true,"popup_position":false,"fixed_top_position":true,"popup_language":"ar","store_consent":false,"better_support_for_screen_readers":false,"cookie_name":"","reload_page":false,"domain":"","domain_all_sites":false,"popup_eu_only":false,"popup_eu_only_js":false,"cookie_lifetime":100,"cookie_session":0,"set_cookie_session_zero_on_disagree":0,"disagree_do_not_show_popup":false,"method":"opt_in","automatic_cookies_removal":true,"allowed_cookies":"","withdraw_markup":"\u003Cbutton type=\u0022button\u0022 class=\u0022eu-cookie-withdraw-tab\u0022\u003EPrivacy settings\u003C\/button\u003E\n\u003Cdiv aria-labelledby=\u0022popup-text\u0022 class=\u0022eu-cookie-withdraw-banner\u0022\u003E\n  \u003Cdiv class=\u0022popup-content info eu-cookie-compliance-content\u0022\u003E\n    \u003Cdiv id=\u0022popup-text\u0022 class=\u0022eu-cookie-compliance-message\u0022 role=\u0022document\u0022\u003E\n      \u003Cp\u003E\u0646\u062d\u0646 \u0646\u0633\u062a\u062e\u062f\u0645 \u0645\u0644\u0641\u0627\u062a \u062a\u0639\u0631\u064a\u0641 \u0627\u0644\u0627\u0631\u062a\u0628\u0627\u0637 \u0639\u0644\u0649 \u0647\u0630\u0627 \u0627\u0644\u0645\u0648\u0642\u0639 \u0644\u062a\u062d\u0633\u064a\u0646 \u062a\u062c\u0631\u0628\u062a\u0643 \u0643\u0645\u0633\u062a\u062e\u062f\u0645. \u0628\u0627\u0644\u0636\u063a\u0637 \u0639\u0644\u0649 \u0632\u0631 \u0022\u0642\u0628\u0648\u0644\u0022\u060c \u0641\u0625\u0646\u0643 \u062a\u0648\u0627\u0641\u0642 \u0639\u0644\u0649 \u0627\u0633\u062a\u062e\u062f\u0627\u0645\u0646\u0627 \u0644\u0647\u0627.\u003C\/p\u003E\n    \u003C\/div\u003E\n    \u003Cdiv id=\u0022popup-buttons\u0022 class=\u0022eu-cookie-compliance-buttons\u0022\u003E\n      \u003Cbutton type=\u0022button\u0022 class=\u0022eu-cookie-withdraw-button \u0022\u003EWithdraw consent\u003C\/button\u003E\n    \u003C\/div\u003E\n  \u003C\/div\u003E\n\u003C\/div\u003E","withdraw_enabled":false,"reload_options":0,"reload_routes_list":"","withdraw_button_on_info_popup":false,"cookie_categories":[],"cookie_categories_details":[],"enable_save_preferences_button":true,"cookie_value_disagreed":"0","cookie_value_agreed_show_thank_you":"1","cookie_value_agreed":"2","containing_element":"body","settings_tab_enabled":false,"olivero_primary_button_classes":"","olivero_secondary_button_classes":"","close_button_action":"close_banner","open_by_default":true,"modules_allow_popup":true,"hide_the_banner":false,"geoip_match":true},"field_group":{"html_element":{"mode":"box","context":"view","settings":{"classes":"box","show_empty_fields":false,"id":"","element":"div","show_label":false,"label_element":"h3","label_element_classes":"","attributes":"","effect":"none","speed":"fast","description":"Event","open":"1"}}},"blazy":{"loadInvisible":false,"offset":100,"saveViewportOffsetDelay":50,"validateDelay":25,"container":"","loader":true,"unblazy":false},"blazyIo":{"disconnect":false,"rootMargin":"0px","threshold":[0,0.25,0.5,0.75,1]},"slick":{"accessibility":true,"adaptiveHeight":false,"autoplay":false,"pauseOnHover":true,"pauseOnDotsHover":false,"pauseOnFocus":true,"autoplaySpeed":3000,"arrows":true,"downArrow":false,"downArrowTarget":"","downArrowOffset":0,"centerMode":false,"centerPadding":"50px","dots":false,"dotsClass":"slick-dots","draggable":true,"fade":false,"focusOnSelect":false,"infinite":true,"initialSlide":0,"lazyLoad":"ondemand","mouseWheel":false,"randomize":false,"rtl":false,"rows":1,"slidesPerRow":1,"slide":"","slidesToShow":1,"slidesToScroll":1,"speed":500,"swipe":true,"swipeToSlide":false,"edgeFriction":0.35,"touchMove":true,"touchThreshold":5,"useCSS":true,"cssEase":"ease","cssEaseBezier":"","cssEaseOverride":"","useTransform":true,"easing":"linear","variableWidth":false,"vertical":false,"verticalSwiping":false,"waitForAnimate":true},"ultimenu":{"canvasOff":"#header","canvasOn":"#main-wrapper, .featured-top, .site-footer"},"user":{"uid":0,"permissionsHash":"948201ab120f6d3603434e20af1418f5912d00306f56747ce5521426ee0c8458"}}

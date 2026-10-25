@@ -1,209 +1,266 @@
 <template>
-  <dialog-base class="validators-dialog" :visible.sync="isVisible">
-    <staking-header class="header" :has-back-button="hasBackButton" @back="handleBack">
+  <DialogBase class="validators-dialog" v-model:visible="isVisible">
+    <StakingHeader class="header" :has-back-button="hasBackButton" @back="handleBack">
       {{ title }}
-    </staking-header>
+    </StakingHeader>
     <div v-if="!isSelectingEditingMode" class="content">
       <s-tabs v-if="hasTabs" class="tabs" v-model="mode" type="rounded">
-        <s-tab v-for="tab in tabs" :key="tab" :label="t(`soraStaking.validatorsDialog.tabs.${tab}`)" :name="tab" />
+        <s-tab
+          v-for="tab in tabs"
+          :key="tab"
+          :label="t(`soraStaking.validatorsDialog.tabs.${tab}`)"
+          :name="tab"
+        ></s-tab>
       </s-tabs>
-      <validators-list :mode="mode" @update:selected="selectValidators" />
+      <ValidatorsList :mode="mode" @update:selected="selectValidators"></ValidatorsList>
       <div v-if="showConfirmButton" class="bottom">
         <s-button
           class="confirm"
           type="primary"
-          :loading="parentLoading || loading"
+          :loading="buttonLoading"
           :disabled="confirmDisabled"
           @click="handleConfirm"
         >
           {{ confirmText }}
         </s-button>
         <div class="info" v-if="isEditMode">
-          <info-line
+          <InfoLine
             :label="t('networkFeeText')"
             :label-tooltip="t('networkFeeTooltipText')"
             :value="networkFeeFormatted"
             :asset-symbol="xor?.symbol"
-            :fiat-value="getFiatAmountByCodecString(networkFee)"
+            :fiat-value="networkFeeFiat"
             is-formatted
-          />
+          ></InfoLine>
         </div>
       </div>
     </div>
-    <select-validators-mode v-else @recommended="handleRecommendedMode" @selected="handleSelectedMode" />
-  </dialog-base>
+    <SelectValidatorsMode
+      v-else
+      @recommended="handleRecommendedMode"
+      @selected="handleSelectedMode"
+    ></SelectValidatorsMode>
+  </DialogBase>
 </template>
 
-<script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+<script setup lang="ts">
+import { computed, ref, watch } from 'vue';
+import { useTranslation } from '@/composables/useTranslation';
 
-import { mutation, action } from '@/store/decorators';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import SelectValidatorsMode from '@/modules/staking/sora/components/SelectValidatorsMode.vue';
+import StakingHeader from '@/modules/staking/sora/components/StakingHeader.vue';
+import { useTransaction } from '@/composables/useTransaction';
+import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
+import ValidatorsList from '@/modules/staking/sora/components/ValidatorsList.vue';
+import { ValidatorsListMode } from '@/modules/staking/sora/consts';
+import { hasInsufficientXorForFee } from '@/utils';
 
-import { soraStakingLazyComponent } from '../../router';
-import { SoraStakingComponents, ValidatorsListMode } from '../consts';
-import StakingMixin from '../mixins/StakingMixin';
+import type { CodecString } from '@sora-substrate/sdk';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 
-import type { MyStakingInfo } from '@sora-substrate/sdk/build/staking/types';
+const props = defineProps<{
+  parentLoading?: boolean;
+}>();
 
-@Component({
-  components: {
-    DialogBase: components.DialogBase,
-    StakingHeader: soraStakingLazyComponent(SoraStakingComponents.StakingHeader),
-    ValidatorsList: soraStakingLazyComponent(SoraStakingComponents.ValidatorsList),
-    SelectValidatorsMode: soraStakingLazyComponent(SoraStakingComponents.SelectValidatorsMode),
-    InfoLine: components.InfoLine,
-  },
-})
-export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.TransactionMixin) {
-  @mutation.staking.setStakingInfo setStakingInfo!: (stakingInfo: MyStakingInfo) => void;
+const emit = defineEmits<{
+  (event: 'close'): void;
+  (event: 'confirm'): void;
+}>();
 
-  @action.staking.getStakingInfo getStakingInfo!: AsyncFnWithoutArgs;
-  @action.staking.getNominateNetworkFee getNominateNetworkFee!: () => Promise<string>;
+const isVisible = defineModel<boolean>('visible', { default: false });
+const { t } = useTranslation();
+const { getFiatAmountByCodecString } = useFormattedAmount();
 
-  ValidatorsListMode = ValidatorsListMode;
+const {
+  stakingInfo,
+  validators,
+  selectedValidators,
+  selectValidators,
+  maxNominations,
+  xor,
+  formatCodecNumber,
+  nominate,
+  getNominateNetworkFee,
+  setStakingInfo,
+  stash,
+} = useSoraStaking();
 
-  mode: ValidatorsListMode = ValidatorsListMode.USER;
-  isSelectingEditingMode = false;
-  nominateNetworkFee: string | null = null;
+const { loading, withNotifications, withApi } = useTransaction({
+  parentLoading: () => Boolean(props.parentLoading),
+});
 
-  @Watch('selectedValidators')
-  async handleSelectedValidatorsChange() {
-    this.withApi(async () => {
-      this.nominateNetworkFee = await this.getNominateNetworkFee();
+const DialogBase = WalletComponentDialogBase;
+const InfoLine = WalletComponentInfoLine;
+
+const mode = ref<ValidatorsListMode>(ValidatorsListMode.USER);
+const isSelectingEditingMode = ref(false);
+const nominateNetworkFee = ref<string | null>(null);
+let nominateFeeRequestId = 0;
+
+const tabs = [ValidatorsListMode.USER, ValidatorsListMode.ALL];
+
+const networkFee = computed<CodecString>(() => (nominateNetworkFee.value ?? '0') as CodecString);
+const networkFeeFormatted = computed(() => formatCodecNumber(networkFee.value));
+const networkFeeFiat = computed(() => (xor.value ? getFiatAmountByCodecString(networkFee.value, xor.value) : null));
+const insufficientXorForFee = computed(() =>
+  xor.value ? hasInsufficientXorForFee(xor.value, networkFee.value) : false
+);
+
+const title = computed(() =>
+  hasTabs.value ? t('soraStaking.info.validators') : t('soraStaking.validatorsDialog.title.edit')
+);
+const hasTabs = computed(() => tabs.includes(mode.value));
+const isEditMode = computed(() => [ValidatorsListMode.RECOMMENDED, ValidatorsListMode.SELECT].includes(mode.value));
+const hasBackButton = computed(() => isEditMode.value || isSelectingEditingMode.value);
+
+const hasChanges = computed(() => {
+  const selected = selectedValidators.value.map((validator) => validator.address);
+  const userValidators = stakingInfo.value?.myValidators;
+  if (!userValidators) return false;
+  const sameLength = selected.length === userValidators.length;
+  const sameContent = selected.every((address) => userValidators.includes(address));
+  return !(sameLength && sameContent);
+});
+
+const tooManySelected = computed(
+  () => selectedValidators.value.length > (maxNominations.value ?? Number.POSITIVE_INFINITY)
+);
+
+const confirmText = computed(() => {
+  switch (mode.value) {
+    case ValidatorsListMode.USER:
+      return t('soraStaking.validators.change');
+    case ValidatorsListMode.RECOMMENDED:
+      return insufficientXorForFee.value
+        ? t('insufficientBalanceText', { tokenSymbol: xor.value?.symbol ?? '' })
+        : hasChanges.value
+          ? t('soraStaking.validators.save')
+          : t('soraStaking.validators.alreadyNominated');
+    case ValidatorsListMode.SELECT:
+      return insufficientXorForFee.value
+        ? t('insufficientBalanceText', { tokenSymbol: xor.value?.symbol ?? '' })
+        : hasChanges.value
+          ? tooManySelected.value
+            ? t('soraStaking.validators.tooManyValidators')
+            : t('soraStaking.validators.selected', {
+                selected: selectedValidators.value.length,
+                total: validators.value.length,
+              })
+          : t('soraStaking.validators.alreadyNominated');
+    default:
+      return '';
+  }
+});
+
+const showConfirmButton = computed(() => mode.value !== ValidatorsListMode.ALL && !isSelectingEditingMode.value);
+
+const confirmDisabled = computed(() => {
+  if (isEditMode.value && nominateNetworkFee.value === null) return true;
+  if (insufficientXorForFee.value && mode.value !== ValidatorsListMode.USER) return true;
+  if (mode.value === ValidatorsListMode.RECOMMENDED) return !hasChanges.value;
+  if (mode.value === ValidatorsListMode.SELECT) {
+    return selectedValidators.value.length === 0 || !hasChanges.value || tooManySelected.value;
+  }
+  return false;
+});
+
+const buttonLoading = computed(() => Boolean(props.parentLoading) || loading.value);
+
+const setMode = (nextMode: ValidatorsListMode) => {
+  mode.value = nextMode;
+  isSelectingEditingMode.value = false;
+};
+
+/**
+ * Identifies every input that can change the fee returned for a nomination.
+ */
+const getNominateFeeRequestKey = () =>
+  JSON.stringify({
+    visible: isVisible.value,
+    stash: stash.value ?? '',
+    validators: selectedValidators.value.map((validator) => validator.address),
+  });
+
+/**
+ * Retrieves the nomination fee and ignores responses for superseded inputs.
+ */
+const updateNominateFee = async () => {
+  const requestId = ++nominateFeeRequestId;
+  const requestKey = getNominateFeeRequestKey();
+  nominateNetworkFee.value = null;
+
+  if (!isVisible.value) return;
+
+  try {
+    await withApi(async () => {
+      const fee = await getNominateNetworkFee();
+
+      if (requestId === nominateFeeRequestId && requestKey === getNominateFeeRequestKey()) {
+        nominateNetworkFee.value = fee;
+      }
     });
-  }
-
-  @Watch('visible')
-  private resetMode() {
-    if (this.visible) {
-      this.setMode(ValidatorsListMode.USER);
-      this.selectValidators([]);
+  } catch (error) {
+    if (requestId === nominateFeeRequestId && requestKey === getNominateFeeRequestKey()) {
+      console.error('Failed to fetch nominate network fee', error);
+      nominateNetworkFee.value = null;
     }
   }
+};
 
-  get networkFee() {
-    return this.nominateNetworkFee ?? '0';
+watch([selectedValidators, stash, isVisible], updateNominateFee, { immediate: true });
+
+watch(isVisible, (visible) => {
+  if (visible) {
+    setMode(ValidatorsListMode.USER);
+    selectValidators([]);
+  }
+});
+
+const handleBack = () => {
+  if (isSelectingEditingMode.value) {
+    setMode(ValidatorsListMode.USER);
+  } else {
+    isSelectingEditingMode.value = true;
+  }
+};
+
+const handleRecommendedMode = () => {
+  setMode(ValidatorsListMode.RECOMMENDED);
+};
+
+const handleSelectedMode = () => {
+  setMode(ValidatorsListMode.SELECT);
+};
+
+/**
+ * Applies the chosen validator set, performing an on-chain nomination when required.
+ */
+const handleConfirm = async () => {
+  if (confirmDisabled.value) return;
+
+  if (mode.value === ValidatorsListMode.USER) {
+    isSelectingEditingMode.value = true;
+    return;
   }
 
-  get title(): string {
-    return this.hasTabs ? this.t('soraStaking.info.validators') : this.t('soraStaking.validatorsDialog.title.edit');
-  }
+  await withNotifications(async () => {
+    await nominate();
 
-  get hasBackButton(): boolean {
-    return this.isEditMode || this.isSelectingEditingMode;
-  }
-
-  get isEditMode(): boolean {
-    return [ValidatorsListMode.RECOMMENDED, ValidatorsListMode.SELECT].includes(this.mode);
-  }
-
-  get hasTabs(): boolean {
-    return this.tabs.includes(this.mode);
-  }
-
-  get tabs() {
-    return [ValidatorsListMode.USER, ValidatorsListMode.ALL];
-  }
-
-  get hasChanges(): boolean {
-    const selectedValidators = this.selectedValidators.map((validator) => validator.address);
-    const userValidators = this.stakingInfo?.myValidators;
-    if (!userValidators) {
-      return false;
+    if (!stakingInfo.value) {
+      throw new Error('There is no staking info');
     }
-    return !(
-      selectedValidators.every((address) => userValidators.includes(address)) &&
-      selectedValidators.length === userValidators.length
-    );
-  }
 
-  get tooManySelected() {
-    return this.selectedValidators.length > this.maxNominations;
-  }
+    setStakingInfo({
+      ...stakingInfo.value,
+      myValidators: selectedValidators.value.map((validator) => validator.address),
+    });
 
-  get confirmText(): string {
-    switch (this.mode) {
-      case ValidatorsListMode.USER:
-        return this.t('soraStaking.validators.change');
-      case ValidatorsListMode.RECOMMENDED:
-        return this.isInsufficientXorForFee
-          ? this.t('insufficientBalanceText', { tokenSymbol: this.xor?.symbol ?? '' })
-          : this.hasChanges
-            ? this.t('soraStaking.validators.save')
-            : this.t('soraStaking.validators.alreadyNominated');
-      case ValidatorsListMode.SELECT:
-        return this.isInsufficientXorForFee
-          ? this.t('insufficientBalanceText', { tokenSymbol: this.xor?.symbol ?? '' })
-          : this.hasChanges
-            ? this.tooManySelected
-              ? this.t('soraStaking.validators.tooManyValidators')
-              : this.t('soraStaking.validators.selected', {
-                  selected: this.selectedValidators.length,
-                  total: this.validators.length,
-                })
-            : this.t('soraStaking.validators.alreadyNominated');
-      default:
-        return '';
-    }
-  }
-
-  get showConfirmButton(): boolean {
-    return this.mode !== ValidatorsListMode.ALL && !this.isSelectingEditingMode;
-  }
-
-  get confirmDisabled(): boolean {
-    if (this.isInsufficientXorForFee && this.mode !== ValidatorsListMode.USER) {
-      return true;
-    }
-    if (this.mode === ValidatorsListMode.RECOMMENDED) {
-      return !this.hasChanges;
-    } else if (this.mode === ValidatorsListMode.SELECT) {
-      return this.selectedValidators.length === 0 || !this.hasChanges || this.tooManySelected;
-    }
-    return false;
-  }
-
-  handleBack(): void {
-    if (this.isSelectingEditingMode) {
-      this.setMode(ValidatorsListMode.USER);
-    } else {
-      this.isSelectingEditingMode = true;
-    }
-  }
-
-  async handleConfirm(): Promise<void> {
-    if (this.mode === ValidatorsListMode.USER) {
-      this.isSelectingEditingMode = true;
-    } else {
-      await this.withNotifications(async () => {
-        await this.nominate();
-
-        if (!this.stakingInfo) throw new Error('There is no staking info');
-
-        this.setStakingInfo({
-          ...this.stakingInfo,
-          myValidators: this.selectedValidators.map((v) => v.address),
-        });
-
-        this.mode = ValidatorsListMode.USER;
-      });
-    }
-  }
-
-  private setMode(mode: ValidatorsListMode): void {
-    this.mode = mode;
-    this.isSelectingEditingMode = false;
-  }
-
-  handleRecommendedMode(): void {
-    this.setMode(ValidatorsListMode.RECOMMENDED);
-  }
-
-  handleSelectedMode(): void {
-    this.setMode(ValidatorsListMode.SELECT);
-  }
-}
+    setMode(ValidatorsListMode.USER);
+    emit('confirm');
+  });
+};
 </script>
 
 <style lang="scss">

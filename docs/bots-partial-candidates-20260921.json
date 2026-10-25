@@ -1,0 +1,118 @@
+{
+  "kind": "unregistered-partial-inventory-research-proposal",
+  "version": 1,
+  "qualified": false,
+  "studyRegistered": false,
+  "studyWindow": null,
+  "runtimeProfile": null,
+  "constraints": {
+    "initialKusdCodec": "10000000000000000000",
+    "initialFeeReserveXorCodec": "1000000000000000000",
+    "maximumTradeKusdCodec": "5000000000000000000",
+    "maximumTradeXorCodec": "1000000000000000000",
+    "durationMs": 86400000,
+    "targetPercent": "5",
+    "maximumDrawdownPercent": "5",
+    "intervalMs": 21600000,
+    "signals": "completed-hour-only",
+    "executionPolicy": "unchanged-finalized-xyk-qualification-v2"
+  },
+  "candidates": [
+    {
+      "id": "partial-level-trend-24h",
+      "strategy": {
+        "kind": "rules",
+        "amount": "5",
+        "intervalMs": 21600000,
+        "threshold": "0",
+        "direction": "above",
+        "fastWindow": 6,
+        "slowWindow": 24,
+        "prompt": "",
+        "rules": {
+          "version": 1,
+          "entry": {
+            "operator": "all",
+            "conditions": [
+              {
+                "kind": "trend",
+                "window": 24,
+                "direction": "above"
+              }
+            ]
+          },
+          "exit": {
+            "operator": "all",
+            "conditions": [
+              {
+                "kind": "trend",
+                "window": 24,
+                "direction": "below"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "partial-restoring-pullback-24h",
+      "strategy": {
+        "kind": "rules",
+        "amount": "5",
+        "intervalMs": 21600000,
+        "threshold": "0",
+        "direction": "above",
+        "fastWindow": 6,
+        "slowWindow": 24,
+        "prompt": "",
+        "rules": {
+          "version": 1,
+          "entry": {
+            "operator": "all",
+            "conditions": [
+              {
+                "kind": "trend",
+                "window": 24,
+                "direction": "below"
+              },
+              {
+                "kind": "restoring",
+                "window": 24,
+                "direction": "above",
+                "threshold": "0"
+              },
+              {
+                "kind": "restoring",
+                "window": 24,
+                "direction": "below",
+                "threshold": "100"
+              }
+            ]
+          },
+          "exit": {
+            "operator": "any",
+            "conditions": [
+              {
+                "kind": "trend",
+                "window": 24,
+                "direction": "above"
+              },
+              {
+                "kind": "restoring",
+                "window": 24,
+                "direction": "below",
+                "threshold": "0"
+              },
+              {
+                "kind": "restoring",
+                "window": 24,
+                "direction": "above",
+                "threshold": "100"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

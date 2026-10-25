@@ -1,0 +1,129 @@
+{
+  "code": "ER",
+  "status": "conditional",
+  "rule": "Explicit combined-source legal interpretation: Proclamation 156/2006 Articles 3(20–22,27) covers living plants, risk-capable manufactured plant products and pest-capable regulated articles. Articles 4(2)(g–h) require restricted lists and phytosanitary measures to be based/justified on PRA or applicable international standards; Article 17 repeats that standard for restrictions. Applied with current-linked ISPM32 Category1 tea evidence and the actual industrial steaming/rolling/drying, clean sealed retail sencha is inferred outside the product class triggering Articles 11,14–15 permits/certificates. The law is confirmed current by the Ministry of Information in May2026. This is a national-law/processing interpretation, not an individual Eritrean tea ruling.",
+  "personalMailApplicability": "The product-scope conclusion applies to private paid post, not just travelers. Article 11(4) expressly covers the post office when goods are regulated. Ordinary customs declarations, lawful arrival inspection and action against actual/suspected contamination remain. The private recipient is an end consumer, not a commercial dealer/importer under the separately reviewed trade law.",
+  "quantityLimit": null,
+  "authority": "Eritrea plant-quarantine legislation, FAOLEX copy",
+  "evidenceUrls": [
+    "https://faolex.fao.org/docs/pdf/eri68047.pdf",
+    "https://shabait.com/2026/05/13/international-day-of-plant-health-observed-at-national-and-international-levels/",
+    "https://shabait.com/2025/05/29/encouraging-results-in-ensuring-health-of-agricultural-production/",
+    "https://www.ippc.int/en/countries/eritrea/reportingobligation/4",
+    "https://shabait.com/2026/07/12/workshop-on-developing-national-food-control-policy/",
+    "https://shabait.com/2010/03/26/maintaining-a-standard-of-products-to-secure-national-interests/",
+    "https://tile.loc.gov/storage-services/service/ll/lleritrea/eritrean-notice-78-2003/eritrean-notice-78-2003.pdf",
+    "https://faolex.fao.org/docs/pdf/eri42427E.pdf",
+    "https://mojeritrea.net/wp-content/uploads/2023/05/Thematic-Categorization-of-Domestic-Legislations-of-the-State-of-Eritrea.pdf",
+    "https://tile.loc.gov/storage-services/service/ll/lleritrea/eritrean-notice-76-2003/eritrean-notice-76-2003.pdf",
+    "https://tile.loc.gov/storage-services/service/ll/lleritrea/eritrean-proc-125-2002/eritrean-proc-125-2002.pdf",
+    "https://tile.loc.gov/storage-services/service/ll/lleritrea/eritrean-notice-100-2005/eritrean-notice-100-2005.pdf",
+    "https://www.ippc.int/en/publications/587/",
+    "https://assets.ippc.int/static/media/files/publications/ru/1366800159_ISPM_32_2009_Ru_2012-12-10.pdf"
+  ],
+  "remainingQuestion": null,
+  "researchAttempts": [
+    "Read statutory definition and articles 14–15; searched implementing exemptions and tea import requirements.",
+    "Checked current 2026 Ministry of Information plant-health report, 2025 regulatory-service update and NPPO legislation filings for implementing exemptions. The 2026 report confirms Proclamation 156/2006 remains in force but supplies no manufactured-tea or personal-post determination.",
+    "30 September independent food/conformity pass: Current Ministry of Information report of 12 July 2026 describes an inception workshop for drafting a National Food Control Policy, intended to guide a future national food law. This is not enacted mandatory certificate legislation. An older official standards-institution interview describes inspecting imports upon arrival and assigning quality certificates, without a separate pre-shipment document/application requirement. Official Ministry of Information indexed reports read. The 2026 policy-drafting report is current but not a law; the 2010 interview is historical operational context only.",
+    "30 September fresh official-online recovery: Recovered original L.N.78/2003: Article 3 requires a separate permit for each commercial-goods consignment; Article 5 lists tea as a price-controlled article. Recovered parent Proclamation 125/2002: Article 3(b) defines dealer by commercial activity and 3(c) defines importer as a dealer. Recovered L.N.100/2005 (1 January 2005): it removes the franco-valuta definition and replaces Article 4(2) with banks checking import permits before import services, and 4(3) with ministry permission for development/basic-consumer/other important goods after case-by-case examination, payment per Bank regulations. It leaves Article 3 commercial-goods language unchanged. Read parent definition visually on PDF page 8 (printed 18) and amendment entire page. These linked commercial/banking provisions are not automatically applied to a private recipient. Original L.N.76/2003 Articles 3–4 remit customs duty/tax on mail up to 200 Nakfa subject to exclusions; that is not an SPS/permit waiver.",
+    "30 September common-definition review: Recovered full Proclamation 156/2006. Article 3(22) risk-qualifies manufactured plant products. Article 4(2)(g–h) requires prohibited/restricted lists and the justification of phytosanitary measures to be based on PRA or applicable international standards; Article 17 repeats that standard for new restrictions. This is an operative standards reference, not merely IPPC membership. It supports the manufactured-tea exclusion interpretation, but its immediate subject is list-making/justification rather than a general interpretation rule or an all-inspection compliance command. No contrary tea measure was recovered. The pass does not demand a bespoke ruling and submits this distinction for peer review.",
+    "30 September second scope review: peer-read every relevant Plant Quarantine Proclamation156/2006 definition, international-standard/list-making clause, storage/transport duty, suspicion power and import provision. Articles4(2)(g–h)/17 supply an operative domestic standards basis, not merely IPPC membership. Current-linked ISPM32 tea Category1 supplies actual commodity evidence and industrial manufacturing supplies the factual application. Potential later contamination does not make all clean Category1 goods regulated ab initio; actual/suspected pest controls remain. Recovered and OCRed the full English part of parent Trade Proclamation125/2002 from the official Library of Congress PDF and downloaded/read L.N.100/2005 in full. Their commercial-dealer/bank context does not create an unqualified private tea duty. The new combined interpretation supersedes the earlier demand for an individual tea classification.",
+    "Additional root peer challenge addressed packaging as a separately enumerated regulated article under3(27). Read3(15) and3(5) to determine their defined scope; the packaging classification depends on containing or previously carrying plant material/regulated articles, not any object sold in a packet. Retained clean new packing and contamination conditions rather than asserting ISPM32 covers storage/contaminating pests."
+  ],
+  "reviewedAt": "2026-09-30",
+  "permitFreeDecision": "supported",
+  "permitFreeReason": "Supported conditionally for the stated 100g sealed industrially steamed, rolled and dried plain Japanese Camellia tea by the domestic risk-qualified definition and operative PRA/international-standard provisions together with ISPM32 tea Category1. Storage/transport surveillance in Articles 4(2)(c) and7 and suspicion powers in Article8 do not themselves require permits for every manufactured object; Article3(27) still requires pest-carrying capability. Require clean sealed packaging without soil, seeds or raw plant additives. Separate L.N.78/2003 Article3 commercial import permits and its L.N.100/2005 banking/amended permission provisions are read in the commercial-dealer context of parent Proclamation125/2002 Article3(b–c), rather than extended solely because the private order was paid. Tea price-control listing is not a separate personal import certificate. Ordinary food safety/arrival inspection remain. Article3(15) defines packaging material by use to pack/contain/keep plant material or regulated articles, and3(5) defines containers by covered goods they carry or have carried. Clean new packaging enclosing nonregulated manufactured tea is therefore not automatically that defined packaging category. This domestic definition chain, rather than an ISPM32 waiver of post-processing contamination, limits the route. Reused agricultural containers, wood/soil contamination or actual pest-capable material can change the conclusion.",
+  "permitFreeSources": [
+    "https://faolex.fao.org/docs/pdf/eri68047.pdf",
+    "https://shabait.com/2026/05/13/international-day-of-plant-health-observed-at-national-and-international-levels/",
+    "https://shabait.com/2025/05/29/encouraging-results-in-ensuring-health-of-agricultural-production/",
+    "https://www.ippc.int/en/countries/eritrea/reportingobligation/4",
+    "https://shabait.com/2026/07/12/workshop-on-developing-national-food-control-policy/",
+    "https://shabait.com/2010/03/26/maintaining-a-standard-of-products-to-secure-national-interests/",
+    "https://tile.loc.gov/storage-services/service/ll/lleritrea/eritrean-notice-78-2003/eritrean-notice-78-2003.pdf",
+    "https://faolex.fao.org/docs/pdf/eri42427E.pdf",
+    "https://mojeritrea.net/wp-content/uploads/2023/05/Thematic-Categorization-of-Domestic-Legislations-of-the-State-of-Eritrea.pdf",
+    "https://tile.loc.gov/storage-services/service/ll/lleritrea/eritrean-notice-76-2003/eritrean-notice-76-2003.pdf",
+    "https://tile.loc.gov/storage-services/service/ll/lleritrea/eritrean-proc-125-2002/eritrean-proc-125-2002.pdf",
+    "https://tile.loc.gov/storage-services/service/ll/lleritrea/eritrean-notice-100-2005/eritrean-notice-100-2005.pdf",
+    "https://www.ippc.int/en/publications/587/",
+    "https://assets.ippc.int/static/media/files/publications/ru/1366800159_ISPM_32_2009_Ru_2012-12-10.pdf"
+  ],
+  "independentFoodConformityRule": "Read full Proclamation125/2002 English text from the official Library of Congress scan: Article3(b) dealer means a person engaged in commercial activity, and3(c) importer means a dealer importing goods. L.N.78/2003 Article3(1) requires permits for commercial goods; Article5 designates tea for price control. L.N.100/2005 changes Article4(2) bank checks and4(3) case-by-case permission for development/basic-consumer/other important goods, but does not remove Article3 commercial scope; Article4 remains mode-of-using-import-permit. In context these provisions do not impose a dealer licence or commercial import permission on the private end consumer solely because the shipment is purchased. The July2026 national food-policy workshop is not enacted certificate legislation; the official standards description concerns arrival inspection/issued quality certificates, not a separately imposed private pre-shipment document.",
+  "foodConformitySourceFiles": [
+    "docs/reports/tea-audit-work/food-conformity-second-sources/eight-country-food-scope-review.json"
+  ],
+  "foodConformityAccessNotes": "Official Ministry of Information indexed reports read. The 2026 policy-drafting report is current but not a law; the 2010 interview is historical operational context only.",
+  "officialOnlineRecovery": {
+    "code": "ER",
+    "outcome": "unresolved",
+    "outcomeChanged": false,
+    "finding": "Recovered original L.N.78/2003: Article 3 requires a separate permit for each commercial-goods consignment; Article 5 lists tea as a price-controlled article. Recovered parent Proclamation 125/2002: Article 3(b) defines dealer by commercial activity and 3(c) defines importer as a dealer. Recovered L.N.100/2005 (1 January 2005): it removes the franco-valuta definition and replaces Article 4(2) with banks checking import permits before import services, and 4(3) with ministry permission for development/basic-consumer/other important goods after case-by-case examination, payment per Bank regulations. It leaves Article 3 commercial-goods language unchanged. Read parent definition visually on PDF page 8 (printed 18) and amendment entire page. These linked commercial/banking provisions are not automatically applied to a private recipient. Original L.N.76/2003 Articles 3–4 remit customs duty/tax on mail up to 200 Nakfa subject to exclusions; that is not an SPS/permit waiver.",
+    "remainingEvidence": null,
+    "sources": [
+      "er-importnotice2003.pdf",
+      "er-importnotice2003-fao.pdf",
+      "er-lawindex2023.pdf",
+      "eritrean-notice-76-2003.pdf",
+      "eritrean-proc-125-2002.pdf",
+      "eritrean-proc-125-2002-ocr.txt",
+      "eritrean-notice-100-2005.pdf",
+      "er-amendment2005-p1.png"
+    ],
+    "supersededBy": "africa-scope-resolution/er-proposed-override.json"
+  },
+  "officialOnlineRecoveryFiles": [
+    "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/er-importnotice2003.pdf",
+    "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/er-importnotice2003-fao.pdf",
+    "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/er-lawindex2023.pdf",
+    "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/eritrean-notice-76-2003.pdf",
+    "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/eritrean-proc-125-2002.pdf",
+    "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/eritrean-proc-125-2002-ocr.txt",
+    "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/eritrean-notice-100-2005.pdf",
+    "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/er-amendment2005-p1.png"
+  ],
+  "definitionReview": {
+    "code": "ER",
+    "outcome": "unresolved",
+    "finding": "Recovered full Proclamation 156/2006. Article 3(22) risk-qualifies manufactured plant products. Article 4(2)(g–h) requires prohibited/restricted lists and the justification of phytosanitary measures to be based on PRA or applicable international standards; Article 17 repeats that standard for new restrictions. This is an operative standards reference, not merely IPPC membership. It supports the manufactured-tea exclusion interpretation, but its immediate subject is list-making/justification rather than a general interpretation rule or an all-inspection compliance command. No contrary tea measure was recovered. The pass does not demand a bespoke ruling and submits this distinction for peer review.",
+    "remainingEvidence": "Determine whether the operative list-making/measure-justification standard, together with Article 3(22) and ISPM 32 tea Category 1, adequately determines nonregulated manufacturing scope under the general import clauses; the current public material does not expose the applicable list. Existing general trade-notice applicability to a paid own-consumption postal purchase also remains recorded.",
+    "sourceFiles": [
+      "docs/reports/tea-audit-work/africa-definition-review/er-plant2006.pdf",
+      "docs/reports/tea-audit-work/africa-definition-review/er-plant2006.txt"
+    ],
+    "sources": [
+      "https://faolex.fao.org/docs/pdf/eri68047.pdf",
+      "https://shabait.com/2026/05/13/international-day-of-plant-health-observed-at-national-and-international-levels/"
+    ],
+    "classificationNote": "A positive combined-source inference remains a peer-review question, not ruled out simply for lack of tea naming.",
+    "reviewedAt": "2026-09-30"
+  },
+  "manufacturingInterpretation": {
+    "basis": "Explicit combined-source legal-scope inference",
+    "domesticProvisions": [
+      "Proclamation156/2006 Article3(20–22,27)",
+      "Articles4(2)(c,g,h),7–8,11,14–15,17"
+    ],
+    "standard": "Current-linked ISPM32 Category1 tea illustration is reference-only, not a binding standalone exemption. The normative Category1 principle is interpreted through operative national PRA/standards provisions and the actual industrial process.",
+    "foodTradeProvisions": [
+      "Proclamation125/2002 Article3(b–c),4–5",
+      "Legal Notice78/2003 Articles3–5",
+      "Legal Notice100/2005 Article2"
+    ],
+    "conditions": [
+      "Factory-sealed, clean plain industrially steam-manufactured Camellia tea; no soil, seeds or raw/unmanufactured additions.",
+      "Private end-consumer postal shipment, not import for resale/distribution.",
+      "Ordinary customs declaration and lawful arrival inspection remain; actual or suspected pests may trigger controls.",
+      "Use clean new retail and outer packaging; do not reuse agricultural containers or add untreated wood, soil or raw plant packing."
+    ],
+    "sourceFiles": [
+      "docs/reports/tea-audit-work/africa-definition-review/er-plant2006.pdf",
+      "docs/reports/tea-audit-work/africa-scope-resolution/er-trade125-2002.pdf",
+      "docs/reports/tea-audit-work/africa-scope-resolution/er-trade125-english-ocr.txt",
+      "docs/reports/tea-audit-work/africa-scope-resolution/er-notice100-2005.pdf",
+      "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/er-importnotice2003-fao.pdf"
+    ],
+    "packagingScope": "Article3(15) defines packaging material by use to pack/contain/keep plant material or regulated articles, and3(5) defines containers by covered goods they carry or have carried. Clean new packaging enclosing nonregulated manufactured tea is therefore not automatically that defined packaging category. This domestic definition chain, rather than an ISPM32 waiver of post-processing contamination, limits the route. Reused agricultural containers, wood/soil contamination or actual pest-capable material can change the conclusion."
+  }
+}

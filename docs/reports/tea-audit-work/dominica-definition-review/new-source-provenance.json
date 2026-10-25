@@ -1,0 +1,29 @@
+[
+  {
+    "url": "https://faolex.fao.org/docs/pdf/dmi87508.pdf",
+    "file": "docs/reports/tea-audit-work/dominica-definition-review/dm-sro51-1997.pdf",
+    "status": "200",
+    "error": "",
+    "retrievedAt": "2026-09-30T07:23:59.728851+00:00",
+    "bytes": 72180,
+    "sha256": "c870b7f2cc8fc92ebe20a5a4a3d40777dd8bc90947bc469fc1b865bacba458a5"
+  },
+  {
+    "url": "https://www.ippc.int/en/publications/587/",
+    "file": "docs/reports/tea-audit-work/dominica-definition-review/ispm32-publication.html",
+    "status": "200",
+    "error": "",
+    "retrievedAt": "2026-09-30T07:24:02.255378+00:00",
+    "bytes": 78876,
+    "sha256": "26fcea3452802fb0ad52861029c00870c0a517262d3d1d8d97efa5ed19e65b11"
+  },
+  {
+    "url": "https://pressroomopm.gov.dm/parliament-passes-food-safety-bill-to-strengthen-public-health-and-protect-consumers/",
+    "file": "docs/reports/tea-audit-work/dominica-definition-review/dm-food-passage2026.html",
+    "status": "200",
+    "error": "",
+    "retrievedAt": "2026-09-30T07:24:03.504669+00:00",
+    "bytes": 106107,
+    "sha256": "c247b96410a8ad15325deb5c28ad1ae6571f95cdedc5e08fbffd2b19b709a33e"
+  }
+]

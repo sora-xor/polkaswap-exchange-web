@@ -1,4 +1,3 @@
-import { WC } from '@soramitsu/soraneo-wallet-web';
 import { EthereumProvider } from '@walletconnect/ethereum-provider';
 
 import type {
@@ -7,6 +6,87 @@ import type {
   EthereumProviderOptions,
 } from '@walletconnect/ethereum-provider/dist/types/EthereumProvider';
 import type { SessionTypes } from '@walletconnect/types';
+import type { AppKit } from '@reown/appkit';
+
+import { ensureAppKit } from './appkit';
+import {
+  getWalletConnectProjectId as resolveWalletConnectProjectId,
+  resetWalletConnectProjectIdCache,
+} from './walletconnectProject';
+
+const DEFAULT_CHAIN_ID = 1;
+const Z_INDEX_VARIABLE = '--wcm-z-index';
+
+const withDefaultChainProps = (chainProps?: ChainsProps): ChainsProps => {
+  if (chainProps && ('chains' in chainProps ? chainProps.chains?.length : chainProps.optionalChains?.length)) {
+    return chainProps;
+  }
+  return { chains: [DEFAULT_CHAIN_ID] };
+};
+
+const getProbeChainId = (chainProps: ChainsProps): number => {
+  if ('chains' in chainProps && Array.isArray(chainProps.chains) && chainProps.chains.length > 0) {
+    return chainProps.chains[0] ?? DEFAULT_CHAIN_ID;
+  }
+  if (
+    'optionalChains' in chainProps &&
+    Array.isArray(chainProps.optionalChains) &&
+    chainProps.optionalChains.length > 0
+  ) {
+    return chainProps.optionalChains[0] ?? DEFAULT_CHAIN_ID;
+  }
+  return DEFAULT_CHAIN_ID;
+};
+
+type ModalState = { open: boolean };
+
+const isPromiseLike = (value: unknown): value is PromiseLike<unknown> => {
+  return typeof (value as PromiseLike<unknown> | undefined)?.then === 'function';
+};
+
+/**
+ * Guard signer disconnect calls against SDK implementations that throw when
+ * no session has been established yet.
+ */
+export const safeDisconnectSigner = async (signer: unknown): Promise<void> => {
+  const disconnect = (signer as { disconnect?: unknown } | undefined)?.disconnect;
+
+  if (typeof disconnect !== 'function') return;
+
+  try {
+    const result = disconnect.call(signer);
+    if (isPromiseLike(result)) {
+      await result.catch(() => undefined);
+    }
+  } catch {
+    // Ignore best-effort disconnect failures.
+  }
+};
+
+/**
+ * WalletConnect modal integrations can expose incompatible shapes in certain
+ * runtimes. Guard subscription wiring so connection flow does not hard-crash.
+ */
+export const safeSubscribeModal = (modal: unknown, callback: (state: ModalState) => void): (() => void) => {
+  const subscribeModal = (modal as { subscribeModal?: unknown } | undefined)?.subscribeModal;
+
+  if (typeof subscribeModal !== 'function') {
+    return () => undefined;
+  }
+
+  const unsub = subscribeModal.call(modal, callback);
+  return typeof unsub === 'function' ? unsub : () => undefined;
+};
+
+const attachModal = (provider: EthereumProvider, modal: AppKit): void => {
+  Object.assign(provider, { modal });
+};
+
+export { resetWalletConnectProjectIdCache };
+
+export const getWalletConnectProjectId = (): Promise<string> => {
+  return resolveWalletConnectProjectId();
+};
 
 export class WcEthereumProvider extends EthereumProvider {
   /**
@@ -58,53 +138,82 @@ export class WcEthereumProvider extends EthereumProvider {
         console.info(
           `[${this.constructor.name}]: pairing not active: "${pairingTopic}". Session "${session.topic}" deleted.`
         );
-        this.signer.client.disconnect({
-          topic: session.topic,
-          reason: {
-            code: 6000, // https://specs.walletconnect.com/2.0/specs/clients/sign/error-codes#reason
-            message: 'Disconnected by dApp',
-          },
-        });
+        try {
+          const result = this.signer.client.disconnect({
+            topic: session.topic,
+            reason: {
+              code: 6000, // https://specs.walletconnect.com/2.0/specs/clients/sign/error-codes#reason
+              message: 'Disconnected by dApp',
+            },
+          });
+
+          if (isPromiseLike(result)) {
+            void result.catch(() => undefined);
+          }
+        } catch {
+          // Ignore best-effort disconnect failures.
+        }
       }
     }
   }
 
   public override async connect(opts?: ConnectOps): Promise<void> {
-    // eslint-disable-next-line
-    await new Promise<void>(async (resolve, reject) => {
-      const unsub = this.modal?.subscribeModal((state: { open: boolean }) => {
+    await new Promise<void>((resolve, reject) => {
+      let settled = false;
+      let unsubscribe = () => undefined;
+
+      const finish = (callback: () => void): void => {
+        if (settled) return;
+
+        settled = true;
+        unsubscribe();
+        callback();
+      };
+
+      const registeredUnsubscribe = safeSubscribeModal(this.modal, (state: ModalState) => {
         // This is the fix of modal close handler to check only ethereum session
         if (
           !state.open &&
           (!this.signer.session || !Object.keys(this.signer.session.namespaces).includes(this.namespace))
         ) {
-          unsub();
           this.signer.abortPairingAttempt();
-          reject(new Error('Connection request reset. Please try again.'));
+          finish(() => reject(new Error('Connection request reset. Please try again.')));
         }
       });
 
-      try {
-        await this.restoreAppSession();
+      unsubscribe = registeredUnsubscribe;
 
-        if (!this.session) {
-          await super.connect(opts);
-
-          this.setAppSession(this.signer.session);
-        }
-
-        resolve();
-      } catch (error) {
-        await this.signer.disconnect();
-        reject(error);
+      // Some modal implementations publish their current state synchronously.
+      if (settled) {
+        unsubscribe();
+        return;
       }
+
+      void (async () => {
+        try {
+          await this.restoreAppSession();
+
+          if (!this.session) {
+            await super.connect(opts);
+
+            await this.setAppSession(this.signer.session);
+          }
+
+          finish(resolve);
+        } catch (error) {
+          await safeDisconnectSigner(this.signer);
+          finish(() => reject(error));
+        }
+      })();
     });
   }
 }
 
 export const checkWalletConnectAvailability = async (chainProps?: ChainsProps): Promise<void> => {
-  const chainIdCheck = chainProps?.chains?.[0] ?? 1;
-  const url = `https://rpc.walletconnect.com/v1/?chainId=eip155:${chainIdCheck}&projectId=${WC.WcProvider.projectId}`;
+  const resolvedProps = withDefaultChainProps(chainProps);
+  const projectId = await resolveWalletConnectProjectId();
+  const chainIdCheck = getProbeChainId(resolvedProps);
+  const url = `https://rpc.walletconnect.com/v1/?chainId=eip155:${chainIdCheck}&projectId=${projectId}`;
 
   await fetch(url, {
     method: 'POST',
@@ -116,20 +225,24 @@ export const getWcEthereumProvider = async (
   chainProps?: ChainsProps
 ): Promise<InstanceType<typeof EthereumProvider>> => {
   try {
-    const props = chainProps ?? { chains: [1] };
+    const resolvedProps = withDefaultChainProps(chainProps);
 
-    await checkWalletConnectAvailability(props);
+    await checkWalletConnectAvailability(resolvedProps);
+
+    const [projectId, appKit] = await Promise.all([resolveWalletConnectProjectId(), ensureAppKit(resolvedProps)]);
 
     const ethereumProvider = await WcEthereumProvider.init({
-      projectId: WC.WcProvider.projectId,
+      projectId,
       showQrModal: true,
       qrModalOptions: {
         themeVariables: {
-          '--wcm-z-index': '9999',
+          [Z_INDEX_VARIABLE]: '9999',
         },
       },
-      ...props,
+      ...resolvedProps,
     });
+
+    attachModal(ethereumProvider, appKit);
 
     return ethereumProvider;
   } catch (error) {

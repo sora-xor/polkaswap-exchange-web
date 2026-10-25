@@ -1,0 +1,101 @@
+{
+  "scope": "Japan-origin 100 g sealed manufactured steamed/dried pure sencha, paid personal postal purchase; ordinary customs/post declarations and arrival inspection allowed, no separate agency application/approval, origin certificate or registration.",
+  "reviewedAt": "2026-09-30",
+  "boundedPassComplete": true,
+  "countriesNewlyResolved": 0,
+  "outcomesUnchanged": [
+    "CG",
+    "ER",
+    "GN",
+    "GQ",
+    "GW",
+    "KM",
+    "MZ",
+    "SL",
+    "TG",
+    "UG"
+  ],
+  "newEvidenceCountries": [
+    "GN"
+  ],
+  "interpretation": "This bounded research pass is complete; no country in this batch is newly verified. A narrower missing question is not a completed country.",
+  "records": [
+    {
+      "code": "CG",
+      "finding": "The saved ACONOQ programme guide expressly exempts e-commerce postal parcels and low-value imports from PCEC. This is a genuine scope exception, so conformity cannot justify exclusion.",
+      "gap": "No newly located operative plant-product definition/commodity condition settles manufactured tea and personal post. WTO generic plant-product authorization is insufficient."
+    },
+    {
+      "code": "ER",
+      "finding": "Saved 2026 official report confirms Proclamation156/2006 remains applicable. Its manufactured-product scope depends on pest risk; later food-policy work is still drafting.",
+      "gap": "No new operative national classification or personal-food import rule; inspection and certificates issued at arrival alone do not breach the constraint."
+    },
+    {
+      "code": "GN",
+      "finding": "The signed Order A/2024/920/MCIPME/CAB/SGG of 10 June 2024 is now recovered from the official BNIQ library. Article 2 includes imports for final-consumer use; Article 3 limits its stated scope to merchandise transported in containers, trucks and other international rolling transport. Article 4 begins with an exemption statement, then says samples, gifts, objects not intended for sale and other noncommercial articles may be exempt. Article 5 excludes Article 4 goods from its separate electronic inspection declaration. For covered imports Article 6 requires foreign quality or quality-assurance certificates and, for plants and their products, origin official quarantine certificates. These are independent origin-document duties, unlike the positive arrival inspection report issued under Articles 10–12. The order does not expressly settle its Article 3 transport scope or Article 4 exception for a paid private air-post tea parcel. Its own plant-product provision also does not define manufactured tea. The BNIQ manual describes company registration with RCCM and NIF, not a private-post procedure.",
+      "gap": "The new signed 2024 BNIQ order establishes a special declaration/origin-document route for covered goods, but Article 3 transport scope and the Article 4 non-sale/noncommercial exception leave applicability to this paid private postal order unresolved. Independent plant-law pest-risk classification remains missing. Do not infer a private certificate duty from the company-only platform manual, or infer a plant-health waiver from an inspection exception."
+    },
+    {
+      "code": "GQ",
+      "finding": "Existing NPPO/UPU and border material does not supply the missing operative finished-tea rule.",
+      "gap": "A current national food or plant-product import provision reaching this personal postal commodity remains unavailable. No unsupported waiver or blanket duty inferred."
+    },
+    {
+      "code": "GW",
+      "finding": "Decree-Law4/99 covers unprocessed or simply prepared plant products; Decree62-E/1992 delegates food-import documentary conditions and certification to implementing regulation.",
+      "gap": "No new operative implementing condition or processing category for steamed/dried tea. Enabling powers alone cannot establish private certificate duty."
+    },
+    {
+      "code": "KM",
+      "finding": "Food Law17-005/AU expressly includes personal food, but the examined certificate clauses concern animal goods/import businesses. Foreign-trade Law21-013/AU delegates product lists and technical-control methods.",
+      "gap": "No adopted implementing list/method settling manufactured tea; the blank-number/date2022 drafts remain excluded as enactment evidence."
+    },
+    {
+      "code": "MZ",
+      "finding": "Enacted DM98/2023 Article4 excludes postal parcels from PAC without a separate application. This excludes a conformity-based refusal.",
+      "gap": "Decree5/2009 manufactured-product pest-risk scope is not resolved by the unrelated PAC waiver, propagation entries, or empty public commodity-search results."
+    },
+    {
+      "code": "SL",
+      "finding": "The actual1976 Notice includes dried materials but has a potentially relevant cooked-material exception and ambiguous container qualifier. The available2017 food Bill is not the authenticated final2018 Act referenced in subsequent enacted law.",
+      "gap": "Whether steaming satisfies the Notice exception, and the final private-import food duty, remain open. No unsupported correction of item64 or extension of business/import-for-sale provisions."
+    },
+    {
+      "code": "TG",
+      "finding": "The2011 fee schedule expressly includes tea, but an inspection fee is not a special-document requirement. Actual2020 prior declaration order requires annual company/operator data.",
+      "gap": "No private postal implementation or exemption recovered; company-focused annual approval cannot be applied automatically to the private recipient."
+    },
+    {
+      "code": "UG",
+      "finding": "Regulation7 offers destination inspection without a pre-export CoC; Regulation8 accepts customs declarations and makes an exemption letter conditional. Therefore the low-value exemption letter alone is not a sound exclusion while that alternate route remains.",
+      "gap": "Private-post operation of the destination-inspection path and independent manufactured-tea pest-risk classification remain unresolved. No repeat of the previously exhausted official PDF403 retrieval."
+    }
+  ],
+  "sourcesReviewed": [
+    "africa.json",
+    "africa-food-conformity-overrides.json",
+    "africa-food-conformity-second-overrides.json",
+    "africa-final-scope-notes.json",
+    "food-conformity-second-sources/eight-country-food-scope-review.json",
+    "food-conformity-sources/ug-regulations2022-indexed-extract.txt"
+  ],
+  "newSourceReview": {
+    "GN": {
+      "orderArticles": "1–6, 8–13",
+      "signatureDate": "2024-06-10",
+      "manualPrintedPages": [
+        5,
+        8,
+        44,
+        45,
+        46
+      ],
+      "manualLimit": "Company account and NIF/RCCM requirements do not prove that private recipients must register. Some import-form labels repeat export terminology, so screenshots are not treated as precise legal scope.",
+      "newsUrl": "https://www.bniq.gov.gn/20260212-2/",
+      "newsDate": "2026-02-12",
+      "newsFinding": "Reports20/23January2026 procedure-consensus meetings and continuing finalization/training/pilot preparation. This does not suspend the order's stated effective date; it prevents assuming full operational rollout."
+    }
+  },
+  "noContacts": true,
+  "mainArraysEdited": false
+}

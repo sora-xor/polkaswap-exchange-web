@@ -1,0 +1,50 @@
+{
+  "code": "KY",
+  "reviewedAt": "2026-09-30",
+  "outcome": "Current supported decision retained; new future-regime caveat.",
+  "criticalFinding": "September publication does not mean commencement: the Act and Regulations take effect on 1 November2026.",
+  "currentLaw": {
+    "source": "https://legislation.gov.ky/cms/images/LEGISLATION/PRINCIPAL/1983/1983-0029/1983-0029.pdf",
+    "provisions": [
+      "1997 Act sections2-4 cover the defined plant class and permissions. Definition does not expressly include all manufactured plant products.",
+      "The currently published authority FAQ specifically allows processed tea commercially packaged, with declaration and arrival inspection. Web placement is Import/Export rather than Travel; PDF page4 has the same tea answer.",
+      "The department link labeled 2014 revision is actually Amendment Law13of2014. Its changes concern institutional names and live/viable alien plants, not a new manufactured-tea definition."
+    ]
+  },
+  "incomingLaw": {
+    "commencement": {
+      "source": "https://gov.ky/documents/35692/0/PlantProtectionAct2023%28Commencement%29Order2026_MADE.pdf/38f453eb-ffb3-c44c-a7f9-d8da8397ab7b?t=1790010790398",
+      "cite": "paragraph2, printed/PDF page3",
+      "effectiveDate": "2026-11-01"
+    },
+    "regulations": {
+      "source": "https://gov.ky/documents/35692/0/PlantProtectionRegulations2026_MADE.pdf/76eafe43-f892-f897-e542-cc9ed529849f?t=1790010649002",
+      "cites": [
+        "Reg1(2) immediate commencement after Act2023",
+        "Reg2 and Schedule1 p10 list other regulated articles, none specifically tea",
+        "Reg4(b) requires business licence only where permit is used for trade/business",
+        "Schedule2 p11-12 is a fee table, not an exhaustive plant-product exemption list"
+      ],
+      "finding": "No tea-specific rule or personal postal waiver appears. Its absence alone does not establish future permission."
+    },
+    "act": {
+      "source": "https://legislation.gov.ky/cms/images/LEGISLATION/PRINCIPAL/2023/2023-0010/2023-0010.pdf",
+      "cites": [
+        "Section2 p9: living plant category; unmanufactured materials and manufactured products capable of pest risk are plant products",
+        "Section3 p10: other regulated article definition requires pest capacity and regulatory prescription",
+        "Sections15-16 pp12-13: covered imports require permit and phytosanitary certificate, subject to Director exemption powers",
+        "Section53 p29: 1997 Act repeal and savings for existing permits/certificates"
+      ],
+      "finding": "Manufactured tea is not automatically included merely because derived from leaves. Nor is the statute itself a categorical processed-tea exemption. Existing authority tea guidance supports the current decision; no firm future-regime classification recovered."
+    }
+  },
+  "scopeInference": "The current specific processed-tea guidance is unqualified as to mode; postal scope follows from that general commodity guidance, not from a baggage exemption.",
+  "futureQuestion": "Whether existing packaged-tea allowance continues as classification or exemption under new Act from1November. No bespoke ruling inherently needed if the authority publishes generally applicable guidance.",
+  "visualVerification": [
+    "ky-commencement2026-p3.png",
+    "ky-regulations2026-p10.png",
+    "ky-act2023-p9.png",
+    "ky-act2023-p13.png"
+  ],
+  "mainArraysModified": false
+}

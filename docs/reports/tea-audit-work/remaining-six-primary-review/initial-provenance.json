@@ -1,0 +1,39 @@
+[
+  {
+    "file": "ck-media-import-403.html",
+    "url": "https://agriculture.gov.ck/wp-json/wp/v2/media?search=import&per_page=100",
+    "finalUrl": "https://agriculture.gov.ck/wp-json/wp/v2/media?search=import&per_page=100",
+    "status": 403,
+    "bytes": 1084,
+    "type": "text/html"
+  },
+  {
+    "file": "ck-media-tea-403.html",
+    "url": "https://agriculture.gov.ck/wp-json/wp/v2/media?search=tea&per_page=100",
+    "finalUrl": "https://agriculture.gov.ck/wp-json/wp/v2/media?search=tea&per_page=100",
+    "status": 403,
+    "bytes": 1084,
+    "type": "text/html"
+  },
+  {
+    "file": "ck-act2008-ministry.pdf",
+    "url": "https://agriculture.gov.ck/wp-content/uploads/2019/11/Biosecurity-Act-2008.pdf",
+    "finalUrl": "https://agriculture.gov.ck/wp-content/uploads/2019/11/Biosecurity-Act-2008.pdf",
+    "status": 200,
+    "bytes": 448326,
+    "type": "application/pdf"
+  },
+  {
+    "file": "pg-naqia-home.html",
+    "url": "https://www.naqia.gov.pg/",
+    "error": "HTTPSConnectionPool(host='www.naqia.gov.pg', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1082)')))"
+  },
+  {
+    "file": "pg-gazette-home.html",
+    "url": "https://www.gpo.gov.pg/",
+    "finalUrl": "https://www.gpo.gov.pg/",
+    "status": 406,
+    "bytes": 226,
+    "type": "text/html; charset=iso-8859-1"
+  }
+]

@@ -1,0 +1,47 @@
+{
+  "reviewedAt": "2026-09-30",
+  "files": [
+    {
+      "file": "mg-food2018-final.pdf",
+      "url": "https://www.pic.commerce.mg/sites/default/files/2023-01/L2017-048-VF.pdf",
+      "description": "Final official PIC-hosted CNLEGIS law, decisive; complete enactment metadata. Plaintext companion mg-food2018-final.txt.",
+      "sha256": "cf70384dece843a6603307d716608a2051e44fd9f450b766c191554dcbbdb322"
+    },
+    {
+      "file": "mg-control2018-592.pdf",
+      "url": "https://textes.lexxika.com/wp-content/uploads/2024/05/Decret-2018-592-28-Juin-2018-Regissant-les-controles-sanitaires-officiels-des-denrees-alimentaires-dorigine-vegetale.pdf",
+      "description": "CNLEGIS decree mirrored by Lexxika: incoming-consignment controls articles38–43 corroborate the import finding; distinguish earlier export chapters. Final Law article12 remains the decisive independent origin-certificate duty.",
+      "sha256": "a1c46d3781b97fa386f28e80d5a2a813e7bd9fb7946c012adeb9967f0a99adf6"
+    },
+    {
+      "file": "mw-gazette2016.pdf",
+      "url": "https://mbsmw.org/files/Cess-gazette-2016.pdf",
+      "description": "Official MBS PDF linked by current public website; visual QA pages1,4,5; operative paragraphs3,4,8 and item91Tea; registrationform.",
+      "sha256": "5fc1e53edb50e6384f088a6fa1be03fd3a823cd163b24a74c5556068cb485091"
+    },
+    {
+      "file": "mz-pac98-2023.pdf",
+      "url": "https://faolex.fao.org/docs/pdf/moz221794.pdf",
+      "description": "Full Gazette Diploma98/2023,14July2023; article4 postal PAC exception. OfficialINNOQ link was accessed but blocked.",
+      "sha256": "150c6446db2c48135c3d9dfc195ee46cc572890ecd55ff6ebf1d962e05aa3ada"
+    },
+    {
+      "file": "sl-food2017.pdf",
+      "url": "https://faolex.fao.org/docs/pdf/sie216530.pdf",
+      "description": "Public2017 bill, not verified final promulgated version; sections30/33 commercial scope.",
+      "sha256": "c0c4d89256c4d1f4c0b2b0f91cf0c8a6ed5d95c1ddfe4fd3eda87621533b09e9"
+    },
+    {
+      "file": "ug-pvoc2023-bv.pdf",
+      "url": "https://verigates.bureauveritas.com/sites/verigates/files/2023-07/UGANDA%20%28PVoC%29%20Datasheet%20Rev%2011.1.pdf",
+      "description": "Full authorized programme-provider datasheet July2023; pages1–2 exemptions/authorityletter. Primary law/current official index provenance separate.",
+      "sha256": "d732bf1d1d80db123623831e84b566ebc89108e123008663eeb707f83bd56ce6"
+    }
+  ],
+  "notEvidence": {
+    "mg-food2018-fao.pdf": "Earlier draft-like metadata; replaced by final official law.",
+    "mz-pac2023.html": "Blocked access page, not document.",
+    "mz-faq2024.html": "Blocked access page, not document.",
+    "mw-iqms.html": "Migrated React shell, not former article content."
+  }
+}

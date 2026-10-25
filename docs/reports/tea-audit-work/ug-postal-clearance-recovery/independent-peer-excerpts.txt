@@ -1,0 +1,461 @@
+Full primary URLs and SHA256 hashes in independent-peer-review.json.
+
+SI112/2022, regulations4–13
+
+      “used motor vehicle” means a motor vehicle that has previously
+           been registered in Uganda or elsewhere.
+
+           Part II—Inspection and Clearance of Imports
+
+4.   Commodities to conform to compulsory standard
+     specifications
+     (1) A person shall not import into Uganda any commodity for
+which compulsory standard specifications have been declared by the
+bureau, where the commodity does not meet the requirements of the
+compulsory standard specifications.
+
+      (2) Subject to section 14A of the Act, a person shall not release
+or facilitate the release of any imported commodity into Uganda, where
+the commodity does not meet the requirements of the compulsory
+standard specifications.
+
+5.     Commodities to be accompanied by certificate of conformity
+       or certificate of road worthiness
+       (1) The commodities specified in Part 1 of Schedule 1 to these
+Regulations shall, prior to being imported into Uganda, be subjected
+to Pre-export Verification of Conformity to Standards in the country of
+origin or export, upon the payment of the fees prescribed in Schedule
+2 to these Regulations.
+                                6119
+
+      (2) The commodities specified in Part 2 of Schedule 1 to these
+Regulations are exempted from Pre-export Verification of Conformity
+to Standards.
+
+       (3) A certificate of conformity or a certificate of road worthiness
+shall accompany the commodities referred to in subregulation (1).
+
+     (4) A certificate of road worthiness shall be valid for twelve
+months from the date of issue for each customs entry.
+
+      (5)   Notwithstanding subregulation (1)—
+
+      (a)   where the commodities specified in Part 1 of Schedule 1 to
+            these Regulations qualify to be classified as commodities
+            specified in Part 2 of Schedule 1 to these Regulations, the
+            commodities shall be exempt from Pre-export Verification
+            of Conformity to Standards;
+
+      (b)   where the commodities specified in Part 1 of Schedule 1
+            to these Regulations have been profiled as low risk, the
+            commodities may be exempt from Pre-export Verification
+            of Conformity to Standards; and
+
+      (c)   where the commodities specified in Part 1 of Schedule 1
+            to these Regulations are imported by an importer profiled
+            as low risk and registered as an Authorised Economic
+            Operator (AEO), the commodities may be exempt from
+            Pre-export Verification of Conformity to Standards
+            (PVOC).
+
+6.    Assessment of imported commodities
+The bureau shall, at a port of entry into Uganda or at entry into the
+single customs territory, carry out conformity assessment of the
+commodities specified in subregulation (1), to assess the compliance
+of the commodities to the compulsory standard specifications, whether
+the commodities are for trade or for personal use.
+                                  6120
+
+7.    Commodities not accompanied by certificate of conformity
+      or certificate of road worthiness
+      (1) Notwithstanding regulation 5, where the commodities
+specified in Part 1 of Schedule 1 to these Regulations are not
+accompanied by a certificate of conformity or a certificate of road
+worthiness, the commodities shall be subjected to destination
+inspection.
+
+      (2) For purposes of subregulation (1), the importer shall pay the
+inspection fees and the charges prescribed in paragraph 2 of Schedule
+2 to these Regulations, as applicable, a surcharge of fifteen per cent
+of the Cost, Insurance and Freight (CIF) value of the commodities
+subjected to inspection clearance and any other fee prescribed in
+Schedule 2, as may be applicable.
+
+      (3) Where the commodities referred to in subregulation (1)
+comply with the compulsory standard specifications, the standards
+inspector shall issue an import clearance certificate in respect of the
+commodities.
+      (4) Where the commodities referred to in subregulation
+(1) do not conform to the requirements of the compulsory standard
+specifications, the bureau shall issue a notice to the importer to take
+corrective action or to destroy or re-export the commodities, depending
+on the risk of the commodities to the environment and in accordance
+with regulation 15.
+
+8.    Application for import clearance certificate
+      (1) An importer of commodities specified in Schedule 1 to
+these Regulations shall apply to the bureau for clearance and issuance
+of an import clearance certificate by submitting an accurate customs
+declaration through the electronic single window, prior to or upon the
+arrival of the commodities at a port of entry into Uganda or at entry to
+the single customs territory.
+
+      (2)   The application in subregulation (1) shall be accompanied
+by—
+                                 6121
+
+      (a)   the bill of lading or airway bill;
+      (b)   the packing list;
+      (c)   the invoice;
+      (d)   the customs declaration;
+      (e)   the customs transit document;
+      (f)   the certificate of conformity or certificate of road
+            worthiness, where applicable;
+      (g)   a valid product certification permit for commodities
+            that originate from a Partner State of the East African
+            Community, or commodities to which regulation 14
+            applies;
+      (h)   an export certificate, in the case of motor vehicles;
+      (i)   an exemption letter from the bureau in accordance with
+            regulation 5 (5), where applicable;
+      (j)   the passport bio data page and other supporting
+            documentation for returning residents, where applicable;
+            and
+      (k)   a diplomatic note endorsed by the Ministry responsible for
+            foreign affairs, in the case of persons seeking exemption
+            for diplomatic cargo.
+
+      (3) Where commodities are accompanied by a certificate of
+conformity or a certificate of road worthiness, the standards inspector
+shall verify the commodities to confirm that the commodities match
+the declaration in the application and in the certificate of conformity or
+the certificate of road worthiness.
+9.     Issuance of import clearance certificate
+A standards inspector shall issue an import clearance certificate where
+the commodities, after verification, are found to conform with the
+certificate of conformity or certificate of road worthiness, respectively.
+                                   6122
+
+10.   Destination inspection
+      (1) The following commodities are subject to destination
+inspection—
+      (a) commodities in Part 1 of Schedule 1 to these Regulations,
+           which arrive at the port of entry or at entry to the single
+           customs territory without a certificate of conformity or a
+           certificate of road worthiness;
+      (b)   commodities in Part 1 of Schedule 1 to these Regulations
+            which arrive at the port of entry or at entry to the single
+            customs territory with a certificate of conformity or a
+            certificate of road worthiness but in respect of which, upon
+            verification, the standards inspector—
+            (i)    has reason to believe that the commodities do
+                   not conform with the certificate of conformity or
+                   certificate of road worthiness, respectively; or
+            (ii)   finds reason to doubt the compliance of the
+                   commodities with the relevant compulsory standard
+                   specifications;
+      (c)   commodities in Part 3 of Schedule 1 to these Regulations
+            which have a valid product certification permit and
+            commodities to which regulation 14 applies, where the
+            standards inspector has reason to doubt the quality of
+            those commodities;
+      (d)   commodities under regulation 5(5)(b) and 5(5)(c); and
+      (e)   commodities which are re-exported from a Partner State of
+            the East African Community and which are accompanied
+            by a valid certificate of conformity.
+
+
+     (2) A standards inspector shall, in order to determine
+conformity with the compulsory standard specifications, inspect the
+commodities subject to destination inspection.
+
+                                 6123
+
+      (3) An standards inspector may take a sample of the
+commodities subject to destination inspection for laboratory analysis,
+to determine conformity with the relevant compulsory standards
+specifications.
+
+      (4) An importer of commodities to which this regulation applies
+shall pay a destination inspection fee and, where the commodities are
+subject to sampling and laboratory analysis, the   relevant test charges,
+as required in paragraph 3 of Schedule 2 to these Regulations and any
+other fees required under regulation 7(2).
+
+      (5) The importer of commodities subject to destination
+inspection shall be responsible for the cost of storage and any other
+incidental charges incurred during destination inspection.
+
+     (6) An standards inspector shall, where the commodities
+conform to the relevant compulsory standard specifications, issue an
+import clearance certificate.
+
+       (7) Where the standards inspector determines that commodities
+which are subjected to destination inspection do not conform to the
+relevant compulsory standard specifications, the standards inspector
+shall notify the importer through issuance of a seizure notice copied to
+the relevant authorities and, where the goods are still under customs
+control, notify the Uganda Revenue Authority, and may—
+
+      (a)   refuse entry of the commodities into Uganda;
+
+      (b)   issue a notice to the importer to take corrective action or to
+            destroy or re-export the commodities; or
+
+      (c)   refuse to release the commodities, where the commodities
+            are in a customs bonded warehouse or a storage facility
+            under seal of the bureau.
+
+
+                                  6124
+
+11.    Standards inspector to verify shelf life of commodities prior
+       to issuance of import clearance certificate
+       (1) Where commodities have a definite shelf life, the standards
+inspector shall, before issuing an import clearance certificate, determine
+that the commodities have a defined and marked shelf life of at least—
+      (a)   75% of the shelf life from the date of manufacture, in the
+            case of food products at the port of entry or, in the case of
+            food products with a shelf-life of more than 18 months, at
+            least 12 months at the port of entry; and
+
+      (b)   50% of the shelf life from the date of manufacture, for all
+            other commodities.
+
+     (2) In the case of cosmetics, the “best before” or “period after
+opening” (PAO) shall apply for purposes of verification.
+
+12.   Standards inspector not to release commodities without
+      import clearance certificate
+A standards inspector shall not release commodities from a port of
+entry into Uganda or entry into the single customs territory, other than
+to a customs bonded warehouse or to a storage facility under seal of
+the bureau, unless the importer of the commodities has been issued
+with an import clearance certificate.
+
+13.   Commodities to conform with standards and bear distinctive
+      mark
+      (1) A person shall not import, distribute, sale or have in his or
+her possession or control for sale or distribution, any commodity for
+which compulsory standard specifications have been declared, unless
+the commodity conforms to the compulsory standard specifications.
+      (2) A person shall not distribute, sale or control for distribution
+or sale, any imported commodity for which compulsory standard
+specifications have been declared and which is specified in Part II of
+Schedule 3 to the Uganda National Bureau Standards (Certification)
+Regulations, 2021, unless the commodity bears a digital conformity
+mark.
+                                6125
+
+      (3) An importer of a commodity for which compulsory standard
+specifications have been declared and which is specified in Part II of
+
+SI112/2022 Schedules1–2
+
+     (2) The bureau shall review the request submitted under
+subregulation (1) and may grant or reject it.
+
+     (3) The importer shall pay the verification fees specified in
+paragraph 7 of Schedule 2 to these Regulations.
+
+20. Revocation of S.I. No. 69 of 2021
+The Uganda National Bureau of Standards (Inspection and Clearance
+of Import) Regulations, 2021 are revoked.
+
+
+
+
+                                6130
+
+                             SCHEDULES
+
+                             SCHEDULE 1
+
+                                         Regulations 5(1), 7(1), 8(1) and 10
+
+                                     PART 1
+
+       CATEGORIES OF COMMODITIES SUBJECT TO PRE-
+       EXPORT VERIFICATION OF CONFORMITY TO
+       STANDARDS.
+
+1.    Group I      Toys.
+2. Group II        Electricals and electronics; including solar panels and
+		                 systems.
+3.    Group III    Automotive products and inputs.
+4.    Group IV     Chemical commodities.
+5.    Group V      Mechanical materials and gas appliances; including
+                   construction materials and items.
+6.    Group VI     Textiles, leather, plastic and rubber.
+7.    Group VII    Furniture; including wood and metal articles.
+8.    Group VIII   Paper and stationery.
+9.    Group IX     Protective safety equipment.
+10.   Group X      Food and food products.
+11.   Group XI     Used commodities; including used motor vehicles.
+
+
+
+
+                                  6131
+
+                                      PART 2
+                                                            Regulation 5 (2)
+
+COMMODITIES EXEMPT FROM PRE-EXPORT VERIFICATION
+         OF CONFORMITY TO STANDARDS
+
+1.    A consignment whose Free on Board (FOB) value does not exceed
+      US$ 2000, except for used motor vehicles.
+2.    Consignments of commodities profiled as low risk.
+3.    Consignments of imports by importers profiled as low risk and
+      registered as Authorised Economic Operators (AEO).
+4.    Government project specific commodities whose procurement has
+      an inbuilt or demonstrated quality assurance system that guarantees
+      conformity to national standards.
+5.    Raw materials and direct inputs used in the manufacturing process,
+      including packaging material imported for use in a manufacturing
+      process and not for sale.
+6.    Diplomatic cargo.
+7.    Personal effects of returning residents and expatriates.
+8.    Commodities manufactured in or originating from a Partner State of
+      the East African Community.
+9.    Industrial machinery and accessories; including spare parts for a
+      manufacturing process and not for re-sale.
+10.   Farm machinery, agro processing equipment and spare parts not for
+      resale.
+11.   Mining equipment and spares not for resale.
+12.   Branded or engraved hospitality and tourism industry equipment;
+      excluding vehicles.
+13.   Classified military, police, prisons and State House cargo.
+14.   Religious books and literature such as Bibles, Qurans and other related
+      printed matter.
+                                   6132
+
+                                       PART 3
+
+                                                          Regulation 10 (1) (c)
+
+ COMMODITIES EXEMPT FROM DESTINATION INSPECTION
+
+1.   Commodities whose Cost Insurance and Freight (CIF) value does not
+     exceed   US$   1300 with   the   exception   of   food,   baby products,
+     sanitary pads, cosmetics,  tungsten  filament  bulbs,  electric cables,   
+     compact   fluorescent   lamps,   portable   socket outlets or extension
+     sockets, flat irons, electric kettles, solar    lanterns, energy    saving   
+     bulbs,   solar   battery chargers,  solar  panels,  electric  plugs,  water  
+     heaters, electric  sockets,  electric  switches,  electric  blenders, shovels,
+     garden hoes, pick axes, machetes and cement.
+
+2.   Raw materials and direct inputs in a manufacturing process; including
+     packaging material imported for use in a manufacturing process and
+     not for sale.
+
+3.   Industrial machinery and accessories; including spare parts brought in
+     for a manufacturing process and not for re-sale.
+
+4.   Farm machinery, agro processing equipment, and spare parts not for
+     resale.
+
+5.   Diplomatic cargo accompanied by a diplomatic note and which is
+     clearly for personal or office use.
+
+6.   Personal   effects of returning residents and expatriates.
+
+7.   Commodities manufactured in a Partner State of the East African
+     Community with a valid certification permit and bearing a notified
+     product certification mark.
+
+8.   Classified military, police, prisons and State House cargo.
+
+9.   Religious books and literature such as Bibles, Qurans and other related
+     printed matter.
+
+                                    6133
+
+                                SCHEDULE 2
+
+                                      Regulations 5(1), 7(2), 10(4), 16(7),
+                                                   17(5), 18(3) and 19(3)
+
+     FEES AND CHARGES FOR IMPORT INSPECTION AND
+                    CLEARENCE
+
+1.   The inspection fees and charges shall be based on the Free On Board
+     (FOB) value of the import shipment as follows—
+
+     (a)   fees for unregistered commodities: 0.500% of Free on Board
+           (FOB) value but in any case not less than USD 235 and not
+           more that USD 3,000;
+
+     (b)   fees for registered commodities: 0.45% of Free on Board (FOB)
+           value but in any case not less than USD 235 and not more that
+           USD 3,000;
+
+     (c)   Fees for licensed commodities: 0.25% of Free on Board (FOB)
+           value but in any case not less than USD 235 and not more that
+
+SI68/2021 Schedule3
+2       Non-Conformances Raised (where applicable)
+        Confirm whether non-conformances arising out of the previous audit
+        were satisfactorily closed.
+        (Specify number of non-conformances raised, complete the table be-
+        low and attach CAR forms)
+
+                                                        Adequacy of corrective
+      Non-conformity            Corrective action
+                                                              actions
+
+
+
+3       Audit Conclusion
+
+4       Recommendation
+        Is product(s) recommended for certification? If no, specify reasons.
+
+5         Authentication:
+      Audit Team                    Name                    Signature
+Lead Auditor
+Auditor
+
+
+
+
+                                      1543
+
+                               SCHEDULE 3
+                                                                         Regulation 5
+
+          PERMIT FEES FOR CERTIFICATION MARK
+
+                                      PART I
+                     Category of           Amount
+     Type of Fee                                              Fees billed
+                     Enterprises           (UGX)
+
+                     Micro and small       Shs. 500,000
+                     enterprises           per year           Per permit issued to a
+                                                              commodity/product and
+                                                              per brand
+
+                                                              *This fees are exclusive
+
+SI108/2022 section13
+13. Amendment of Schedule 3 to principal Regulations
+The principal Regulations are amended in Part II of Schedule 3 by substituting
+for the words “Shs. 18 per unit of commodity”, the words “Shs. 21 per unit
+of commodity”.
+
+
+
+
+                                   6059
+       HON. FRANCIS MWEBESA,
+        Minister of Trade, Industries
+                  and Cooperatives.
+
+
+
+6060
+6061
+6062
+

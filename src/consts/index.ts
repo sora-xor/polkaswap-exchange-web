@@ -1,7 +1,17 @@
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import {
+  FontSizeRate as WalletFontSizeRateEnum,
+  FontWeightRate as WalletFontWeightRateEnum,
+  HiddenValue as WalletHiddenValue,
+  IndexerType as WalletIndexerEnum,
+  LogoSize as WalletLogoSizeEnum,
+} from '@/lib/soraneo-wallet/src/consts';
 import invert from 'lodash/fp/invert';
 
+import { PageNames } from './navigation';
+import botsIconUrl from '@/assets/img/navigation/bots.svg?url&no-inline';
+import storeBagIconUrl from '@/assets/img/navigation/store.svg?url&no-inline';
+import polkamarktLogoUrl from '@/assets/img/polkamarkt/pm_logo.svg?url';
 import { DashboardPageNames } from '@/modules/dashboard/consts';
 import { PoolPageNames } from '@/modules/pool/consts';
 import { StakingPageNames } from '@/modules/staking/consts';
@@ -9,54 +19,40 @@ import { VaultPageNames } from '@/modules/vault/consts';
 
 import pkg from '../../package.json';
 
-import type { Alert } from '@soramitsu/soraneo-wallet-web/lib/types/common';
+export { app, TranslationConsts } from './app';
+export { Language, Languages } from './language';
+export { BridgeChildPages, PageNames, RouteNames } from './navigation';
+export { LOCAL_STORAGE_LIMIT_PERCENTAGE, LOCAL_STORAGE_MAX_SIZE, listOfRemoveForLocalStorage } from './storage';
+export { WalletPermissions } from './wallet';
 
-export const app = {
-  version: pkg.version,
-  name: 'Polkaswap',
-  email: 'jihoon@tutanota.de',
-  title: 'Polkaswap — The DEX for the Interoperable Future.',
-};
+export {
+  AddAssetTabs,
+  AppWallet,
+  AccountActionTypes,
+  PassphraseTimeout,
+  PassphraseTimeoutDuration,
+  DefaultPassphraseTimeout,
+  WalletFilteringOptions,
+  type WalletAssetFilters,
+  type NetworkFeeWarningOptions,
+  PaginationButton,
+  SoraNetwork,
+  TokenTabs,
+  HashType,
+  ExplorerType,
+  type ExplorerLink,
+  MAX_ALERTS_NUMBER,
+  syntheticAssetRegexp,
+  kensetsuAssetRegexp,
+} from '@/lib/soraneo-wallet/src/consts';
 
-export const WalletPermissions = {
-  sendAssets: true, // enable 'send' button in assets list
-  swapAssets: true, // enable 'swap' button in assets list
-};
+import type { Alert } from '@/lib/soraneo-wallet/src/types/common';
 
-/**
- * `navigator.language` values, f.e. ('es', 'eu-ES')
- */
-export enum Language {
-  EN = 'en',
-  RU = 'ru',
-  CS = 'cs',
-  DE = 'de',
-  ES = 'es',
-  FR = 'fr',
-  ID = 'id',
-  IT = 'it',
-  NL = 'nl',
-  PL = 'pl',
-  SR = 'sr',
-  VI = 'vi',
-  ZH_CN = 'zh-CN',
-}
-
-export const Languages = [
-  { key: Language.EN, value: 'English', name: 'English (UK)' },
-  { key: Language.ZH_CN, value: 'Chinese Simplified', name: '简体中文' },
-  { key: Language.CS, value: 'Czech', name: 'Čeština' },
-  { key: Language.NL, value: 'Dutch', name: 'Nederlands' },
-  { key: Language.FR, value: 'French', name: 'Français' },
-  { key: Language.DE, value: 'German', name: 'Deutsch' },
-  { key: Language.ID, value: 'Indonesian', name: 'bahasa Indonesia' },
-  { key: Language.IT, value: 'Italian', name: 'Italiano' },
-  { key: Language.PL, value: 'Polish', name: 'Polski' },
-  { key: Language.RU, value: 'Russian', name: 'Русский' },
-  { key: Language.SR, value: 'Serbian', name: 'Српски' },
-  { key: Language.ES, value: 'Spanish', name: 'Español' },
-  { key: Language.VI, value: 'Vietnamese', name: 'Tiếng Việt' },
-];
+export const IndexerType = WalletIndexerEnum;
+export const LogoSize = WalletLogoSizeEnum;
+export const FontSizeRate = WalletFontSizeRateEnum;
+export const FontWeightRate = WalletFontWeightRateEnum;
+export const HiddenValue = WalletHiddenValue;
 
 export const Links = {
   about: {
@@ -71,7 +67,6 @@ export const Links = {
   privacy: 'https://wiki.sora.org/polkaswap/privacy',
   releaseNotes: pkg.repository.url.replace('.git', '/releases/latest'),
   demeterFarmingPlatform: 'https://farming.deotoken.io/',
-  soraCardSupportChannel: 'https://t.me/soracardofficial',
 };
 
 export const ObjectInit = () => null;
@@ -81,18 +76,6 @@ export const ZeroStringValue = '0';
 export const HundredNumber = 100;
 
 export const DefaultSlippageTolerance = '0.5';
-
-export const LOCAL_STORAGE_MAX_SIZE = 4 * 1024 * 1024;
-
-export const LOCAL_STORAGE_LIMIT_PERCENTAGE = 95;
-
-export const listOfRemoveForLocalStorage = [
-  '.assetsAddresses',
-  '.history',
-  '.ethBridgeHistory',
-  '.evmHistory',
-  '.subHistory',
-];
 
 export enum MarketAlgorithms {
   SMART = 'SMART',
@@ -113,44 +96,9 @@ export const LiquiditySourceForMarketAlgorithm = {
 
 export const MarketAlgorithmForLiquiditySource = invert(LiquiditySourceForMarketAlgorithm);
 
-export enum PageNames {
-  Swap = 'Swap',
-  Pool = 'Pool',
-  Stats = 'Stats',
-  Wallet = 'Wallet',
-  AddLiquidity = 'AddLiquidity',
-  Farming = 'Farming',
-  Rewards = 'Rewards',
-  ReferralProgram = 'ReferralProgram',
-  PointSystemWrapper = 'PointSystemWrapper',
-  RewardsTabs = 'RewardsTabs',
-  ReferralBonding = 'ReferralBonding',
-  ReferralUnbonding = 'ReferralUnbonding',
-  BridgeContainer = 'BridgeContainer',
-  Bridge = 'Bridge',
-  BridgeTransaction = 'BridgeTransaction',
-  BridgeTransactionsHistory = 'BridgeTransactionsHistory',
-  Tokens = 'Tokens',
-  DepositOptions = 'DepositOptions',
-  DepositTxHistory = 'DepositTxHistory',
-  CedeStore = 'CedeStore',
-  StakingContainer = 'StakingContainer',
-  // just for router name & different titles
-  ExploreContainer = 'Explore/Container',
-  ExploreTokens = 'Explore/Tokens',
-  ExploreDemeter = 'Explore/Demeter',
-  ExploreFarming = 'Explore/Farming',
-  ExploreStaking = 'Explore/Staking',
-  ExplorePools = 'Explore/Pools',
-  ExploreBooks = 'Explore/Books',
-  //
-  OrderBook = 'OrderBook',
-  LimitOrderBuy = 'OrderBook/LimitOrderBuy',
-  LimitOrderSell = 'OrderBook/LimitOrderSell',
-  SoraCard = 'SoraCard',
-  AssetOwnerContainer = 'AssetOwnerContainer',
-  VaultsContainer = 'VaultsContainer',
-  Burn = 'Burn',
+export enum Theme {
+  Light = 'light',
+  Dark = 'dark',
 }
 
 export enum Components {
@@ -163,7 +111,6 @@ export enum Components {
   AppBrowserNotifsLocalStorageOverride = 'App/BrowserNotification/LocalStorageOverride',
   AppBrowserNotifsBlockedRotatePhone = 'App/BrowserNotification/BlockedRotatePhone',
   AppBrowserMstNotificationTrxs = 'App/BrowserNotification/MstNotificationTrxs',
-  AppBrowserMSTWarningBridge = 'App/BrowserNotification/MSTWarningBridge',
   Alerts = 'App/Alerts/Alerts',
   AlertList = 'App/Alerts/AlertList',
   CreateAlert = 'App/Alerts/CreateAlert',
@@ -181,22 +128,6 @@ export enum Components {
   SelectNodeDialog = 'App/Settings/Node/SelectNodeDialog',
   SelectNode = 'App/Settings/Node/SelectNode',
   NodeInfo = 'App/Settings/Node/NodeInfo',
-  // SORA Card
-  Dashboard = 'pages/SoraCard/Dashboard/Dashboard',
-  BalanceIndicator = 'pages/SoraCard/common/BalanceIndicator',
-  SoraCardIntroPage = 'pages/SoraCard/SoraCardIntroPage',
-  SoraCardKYC = 'pages/SoraCard/SoraCardKYC',
-  ConfirmationInfo = 'pages/SoraCard/ConfirmationInfo',
-  TermsAndConditions = 'pages/SoraCard/steps/TermsAndConditions',
-  ToSDialog = 'pages/SoraCard/steps/ToSDialog',
-  SelectCountryDialog = 'pages/SoraCard/steps/SelectCountryDialog',
-  Phone = 'pages/SoraCard/steps/Phone',
-  Email = 'pages/SoraCard/steps/Email',
-  Payment = 'pages/SoraCard/steps/Payment',
-  Guidance = 'pages/SoraCard/steps/Guidance',
-  KycView = 'pages/SoraCard/steps/KycView',
-  // Paywings
-  PaywingsDialog = 'SoraCard/Paywings/PaywingsDialog',
   // Bridge Page
   BridgeTransactionDetails = 'pages/Bridge/TransactionDetails',
   BridgeTransferNotification = 'pages/Bridge/TransferNotification',
@@ -212,16 +143,6 @@ export enum Components {
   MoonpayNotification = 'pages/Moonpay/Notification',
   MoonpayConfirmation = 'pages/Moonpay/Confirmation',
   MoonpayHistory = 'pages/Moonpay/MoonpayHistory',
-  // Swap Page
-  SwapFormWidget = 'pages/Swap/Widget/Form',
-  SwapTransactionsWidget = 'pages/Swap/Widget/Transactions',
-  SwapDistributionWidget = 'pages/Swap/Widget/Distribution',
-  SwapTransactionDetailsWidget = 'pages/Swap/Widget/TransactionDetails',
-  SwapConfirm = 'pages/Swap/Confirm',
-  SwapStatusActionBadge = 'pages/Swap/StatusActionBadge',
-  SwapTransactionDetails = 'pages/Swap/TransactionDetails',
-  SwapSettings = 'pages/Swap/Settings/Settings',
-  SwapLossWarningDialog = 'pages/Swap/LossWarningDialog',
   // Order Book
   BookWidget = 'pages/OrderBook/BookWidget',
   SetLimitOrderWidget = 'pages/OrderBook/SetLimitOrderWidget',
@@ -240,15 +161,6 @@ export enum Components {
   // Referrals Page
   ReferralsConfirmBonding = 'pages/Referrals/ConfirmBonding',
   ReferralsConfirmInviteUser = 'pages/Referrals/ConfirmInviteUser',
-  // Rewards Page
-  RewardsAmountHeader = 'pages/Rewards/AmountHeader',
-  RewardsAmountTable = 'pages/Rewards/AmountTable',
-  RewardsGradientBox = 'pages/Rewards/GradientBox',
-  // Point System Page
-  PointCard = 'pages/PointSystem/PointCard',
-  TaskCard = 'pages/PointSystem/TaskCard',
-  FirstTxCard = 'pages/PointSystem/FirstTxCard',
-  TaskDialog = 'pages/PointSystem/TaskDialog',
   // Shared
   GenericPageHeader = 'shared/GenericPageHeader',
   LinksDropdown = 'shared/LinksDropdown',
@@ -316,6 +228,8 @@ export interface NumberedAlert extends Alert {
 
 export interface SidebarMenuItem {
   icon?: string;
+  /** Optional asset URL for menu items that use branded SVG artwork instead of an icon font glyph. */
+  iconSrc?: string;
   title: string;
   disabled?: boolean;
   /**
@@ -331,77 +245,121 @@ export interface SidebarMenuItemLink extends SidebarMenuItem {
   href?: string;
 }
 
+/** Sidebar icon names must stay aligned with the live polkaswap.io menu. */
+export const SidebarIcon = {
+  Swap: 'arrows-swap-90-24',
+  Store: 'shopping-bag-24',
+  Trade: 'music-CD-24',
+  Bots: 'software-terminal-24',
+  Polkamarkt: 'various-lightbulb-24',
+  Rewards: 'basic-circle-star-24',
+  Pool: 'basic-drop-24',
+  Staking: 'basic-layers-24',
+  Bridge: 'grid-block-distribute-vertically-24',
+  Account: 'finance-wallet-24',
+  Burn: 'basic-flame-24',
+  Kensetsu: 'call-phone-16',
+  Explore: 'various-items-24',
+  Statistics: 'various-planet-24',
+  AssetOwner: 'various-rocket-24',
+  About: 'finance-PSWAP-24',
+  Info: 'info-16',
+} as const;
+
+export const PolkamarktLogo = polkamarktLogoUrl;
+/** Custom sidebar artwork, served as external SVG masks for IPFS and CSP compatibility. */
+export const BotsIcon = botsIconUrl;
+export const StoreBagIcon = storeBagIconUrl;
+
 const MainMenu: Array<SidebarMenuItemLink> = [
   {
-    icon: 'arrows-swap-90-24',
+    icon: SidebarIcon.Store,
+    iconSrc: StoreBagIcon,
+    title: PageNames.Store,
+    href: '#/store',
+  },
+  {
+    icon: SidebarIcon.Swap,
     title: PageNames.Swap,
-    href: '/#/swap',
+    href: '#/swap',
   },
   {
-    icon: 'music-CD-24',
+    icon: SidebarIcon.Account,
+    title: PageNames.BuyXor,
+    href: '#/buy-xor',
+  },
+  {
+    icon: SidebarIcon.Trade,
     title: PageNames.OrderBook,
-    href: '/#/trade',
+    href: '#/trade',
   },
   {
-    icon: 'basic-circle-star-24',
+    icon: SidebarIcon.Bots,
+    iconSrc: BotsIcon,
+    title: PageNames.Bots,
+    href: '#/bots',
+  },
+  {
+    icon: SidebarIcon.Polkamarkt,
+    iconSrc: PolkamarktLogo,
+    title: PageNames.Polkamarkt,
+    href: '#/polkamarkt',
+  },
+  {
+    icon: SidebarIcon.Rewards,
     title: PageNames.Rewards,
-    href: '/#/points',
+    href: '#/points',
   },
   {
-    icon: 'basic-drop-24',
+    icon: SidebarIcon.Pool,
     title: PoolPageNames.Pool,
-    href: '/#/pool',
+    href: '#/pool',
   },
   {
-    icon: 'basic-layers-24',
+    icon: SidebarIcon.Staking,
     title: PageNames.StakingContainer,
-    href: '/#/staking',
+    href: '#/staking',
     index: StakingPageNames.Staking,
   },
   {
-    icon: 'grid-block-distribute-vertically-24',
+    icon: SidebarIcon.Bridge,
     title: PageNames.Bridge,
-    href: '/#/bridge',
+    href: '#/bridge',
   },
   {
-    icon: 'finance-wallet-24',
+    icon: SidebarIcon.Account,
     title: PageNames.Wallet,
-    href: '/#/wallet',
+    href: '#/wallet',
   },
   {
-    icon: 'call-phone-16',
+    icon: SidebarIcon.Burn,
+    title: PageNames.Burn,
+    href: '#/burn',
+  },
+  {
+    icon: SidebarIcon.Kensetsu,
     title: VaultPageNames.VaultsContainer,
-    href: '/#/kensetsu',
+    href: '#/kensetsu',
     index: VaultPageNames.Vaults,
   },
 ];
 
 const OtherPagesMenu: Array<SidebarMenuItemLink> = [
   {
-    icon: 'various-items-24',
+    icon: SidebarIcon.Explore,
     title: PageNames.ExploreContainer,
-    href: '/#/explore',
+    href: '#/explore',
     index: PageNames.ExploreTokens,
   },
   {
-    icon: 'various-planet-24',
+    icon: SidebarIcon.Statistics,
     title: PageNames.Stats,
-    href: '/#/stats',
+    href: '#/stats',
   },
-  // {
-  //   icon: 'basic-flame-24',
-  //   title: PageNames.Burn,
-  //   href: '/#/burn',
-  // },
-  // {
-  //   icon: 'music-eject-24',
-  //   title: PageNames.SoraCard,
-  //   href: '/#/card',
-  // },
   {
-    icon: 'various-rocket-24',
+    icon: SidebarIcon.AssetOwner,
     title: PageNames.AssetOwnerContainer,
-    href: '/#/dashboard/owner',
+    href: '#/dashboard/owner',
     index: DashboardPageNames.AssetOwner,
   },
 ];
@@ -444,22 +402,6 @@ export const StoreLinks = {
   GooglePlay: 'https://play.google.com/store/apps/details?id=jp.co.soramitsu.sora',
 };
 
-export const TosExternalLinks = {
-  Terms: `https://soracard.com/terms/en/polkaswap/`,
-  Privacy: `https://soracard.com/privacy/en/polkaswap/`,
-  getLinks: function (darkMode = 'light') {
-    return darkMode === 'dark'
-      ? {
-          Terms: this.Terms.concat('?dark'),
-          Privacy: this.Privacy.concat('?dark'),
-        }
-      : {
-          Terms: this.Terms,
-          Privacy: this.Privacy,
-        };
-  },
-};
-
 export const FaucetLink: SidebarMenuItemLink = {
   icon: 'software-terminal-24',
   title: 'faucet',
@@ -467,7 +409,33 @@ export const FaucetLink: SidebarMenuItemLink = {
 
 export const SidebarMenuGroups = [...MainMenu, ...OtherPagesMenu];
 
-export const BridgeChildPages = [PageNames.BridgeTransaction, PageNames.BridgeTransactionsHistory];
+/** Visible navigation sections keep Swap first and preserve the flat route catalog. */
+export const SidebarMenuSections: ReadonlyArray<{ id: string; titleKey?: string; pages: readonly string[] }> = [
+  {
+    id: 'primary',
+    pages: [
+      PageNames.Swap,
+      PageNames.BuyXor,
+      PageNames.OrderBook,
+      PageNames.Bots,
+      PageNames.Polkamarkt,
+      PageNames.Bridge,
+      PageNames.Store,
+    ],
+  },
+  {
+    id: 'account',
+    titleKey: 'ux.navigation.account',
+    pages: [PageNames.Wallet, PageNames.Burn, PageNames.AssetOwnerContainer],
+  },
+  {
+    id: 'earn',
+    titleKey: 'ux.navigation.earn',
+    pages: [PoolPageNames.Pool, PageNames.StakingContainer, PageNames.Rewards, VaultPageNames.VaultsContainer],
+  },
+  { id: 'explore', titleKey: 'ux.navigation.explore', pages: [PageNames.ExploreContainer, PageNames.Stats] },
+];
+
 export const PoolChildPages = [PageNames.AddLiquidity];
 export const RewardsChildPages = [
   PageNames.PointSystemWrapper,
@@ -500,28 +468,3 @@ export const AboutTopics = [
 
 export const MaxUint256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
 export const EthAddress = '0x0000000000000000000000000000000000000000';
-
-export const TranslationConsts = {
-  // extending consts
-  ...WALLET_CONSTS.TranslationConsts,
-  AppName: app.name,
-  Ceres: 'Ceres',
-  APR: 'APR', // Annual percentage rate
-  APY: 'APY',
-  TVL: 'TVL',
-  EVM: 'EVM',
-  Substrate: 'Substrate',
-  Kusama: 'Kusama',
-  ROI: 'ROI', // Return of investment
-  mbps: 'mbps',
-  online: 'Online',
-  offline: 'Offline',
-  XCM: 'XCM',
-  Max: 'Max.',
-  XOR: 'XOR',
-  VAL: 'VAL',
-  Kensetsu: 'Kensetsu',
-  LTV: 'LTV',
-  Telegram: 'Telegram',
-  DEX: 'DEX',
-} as const;

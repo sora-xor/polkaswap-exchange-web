@@ -1,0 +1,1116 @@
+                             CAYMAN ISLANDS
+
+
+
+
+      PLANT PROTECTION ACT, 2023
+                                (Act 10 of 2023)
+
+Supplement No. 2 published with Legislation Gazette No. 32 dated 6th October, 2023.
+PUBLISHING DETAILS
+
+
+
+
+Page 2               Act 10 of 2023
+                                      c
+Plant Protection Act, 2023                                                                                    Arrangement of Sections
+
+
+
+                                                     CAYMAN ISLANDS
+
+
+
+
+                     PLANT PROTECTION ACT, 2023
+                                                        (Act 10 of 2023)
+
+
+Arrangement of Sections
+Section                                                                                                                                   Page
+
+                                                PART 1 - PRELIMINARY
+1.    Short title and commencement ..................................................................................................7
+2.    Interpretation .............................................................................................................................7
+3.    Meaning of "regulated article" ..................................................................................................10
+
+                               PART 2 - ADMINISTRATION OF THIS ACT
+4.    Establishment of NPPO ...........................................................................................................10
+5.    Powers and functions of NPPO................................................................................................10
+6.    Director of NPPO .....................................................................................................................10
+7.    Delegation of powers and functions of NPPO ..........................................................................10
+8.    Phytosanitary inspectors ..........................................................................................................11
+9.    Official laboratories ..................................................................................................................11
+10.   Reference laboratories.............................................................................................................11
+11.   NPPO Committees ..................................................................................................................12
+12.   Principles for phytosanitary measures .....................................................................................12
+13.   Designation of quarantine stations and other places ................................................................12
+14.   Approved forms .......................................................................................................................12
+
+                                                     PART 3 - IMPORTS
+15.   Requirements for import ..........................................................................................................12
+16.   Exempt and prohibited imports ................................................................................................13
+17.   Import permits..........................................................................................................................13
+
+
+
+
+c                                                            Act 10 of 2023                                                             Page 3
+Arrangement of Sections                                                                                     Plant Protection Act, 2023
+
+18.     Inspection of imports................................................................................................................ 14
+19.     Phytosanitary actions on imports ............................................................................................. 14
+20.     Release of imports ................................................................................................................... 15
+21.     Designated points of entry ....................................................................................................... 15
+
+                        PART 4 - EXPORTS, RE-EXPORTS AND TRANSITS
+22.     Requirements for export of certain plants................................................................................. 16
+23.     Export permits ......................................................................................................................... 16
+24.     Export phytosanitary certificate ................................................................................................ 16
+25.     Re-export phytosanitary certificate ........................................................................................... 17
+26.     Transit authorisation ................................................................................................................ 18
+
+                                           PART 5 - CONTROL OF PESTS
+Division 1 - Pest declarations                                                                                                               19
+27. Declaration of pests ................................................................................................................. 19
+28. Declaration of pest free or low pest prevalence area................................................................ 19
+29. Declaration of pest free place of production or production site ................................................. 20
+Division 2 - Quarantine and emergency declarations                                                                                           20
+30. Notification by inspector ........................................................................................................... 20
+31. Declaration of provisional quarantine area ............................................................................... 21
+32. Declaration of quarantine area ................................................................................................. 21
+33. Declaration of phytosanitary emergency .................................................................................. 22
+34. Phytosanitary emergency measures ........................................................................................ 23
+35. Revocation or amendment of quarantine or emergency declaration ......................................... 23
+Division 3 - Offences relating to control of pests                                                                                           24
+36. Notification of pest ................................................................................................................... 24
+37. Prevention of infestation and spread ........................................................................................ 24
+38. Requirements for dealing with infested plant, product or article................................................ 24
+
+                                                PART 6 - ENFORCEMENT
+Division 1 - Power and procedures of inspectors                                                                                                 24
+39. Powers of inspectors ............................................................................................................... 24
+40. Restrictions on power of entry.................................................................................................. 25
+41. Identity card ............................................................................................................................. 26
+42. Dealing with seized items ........................................................................................................ 26
+43. Report to Director .................................................................................................................... 26
+44. Inspector may be assisted ....................................................................................................... 27
+Division 2 - General offences                                                                                                                   27
+45. Obstruction and failing to comply with requirement of inspector ............................................... 27
+46. False or misleading information ............................................................................................... 27
+Division 3 - Proceedings for offences                                                                                                           28
+47. Administrative penalties ........................................................................................................... 28
+48. Forfeiture of items and proceeds ............................................................................................. 28
+
+                                    PART 7 - ADMINISTRATIVE MATTERS
+49      Protection from liability............................................................................................................. 28
+
+Page 4                                                        Act 10 of 2023
+                                                                                                                                           c
+Plant Protection Act, 2023                                                                                  Arrangement of Sections
+
+50.   Evidentiary certificate...............................................................................................................28
+51.   Review of decision of inspector................................................................................................29
+52.   Regulations .............................................................................................................................29
+53.   Repeal, savings and transitional provisions .............................................................................29
+
+
+
+
+c                                                           Act 10 of 2023                                                            Page 5
+     Plant Protection Act, 2023                                                          Section 1
+
+
+                                                                                  (Act 10 of 2023)
+                                       CAYMAN ISLANDS
+                                                                                         I Assent,
+
+
+
+
+                                                                                     Jane Owen
+                                                                                      Governor
+
+                                                                           Date: 6th October, 2023
+
+
+
+                     PLANT PROTECTION ACT, 2023
+                                         (Act 10 of 2023)
+
+     AN ACT TO PREVENT THE INTRODUCTION OF PLANT PESTS; TO CONTROL THE
+     SPREAD OF PLANT PESTS; TO PROTECT PLANT RESOURCES; TO FACILITATE
+     TRADE IN PLANTS, PLANT PRODUCTS AND OTHER REGULATED ARTICLES; AND
+     FOR INCIDENTAL AND CONNECTED PURPOSES
+
+
+     ENACTED by the Legislature of the Cayman Islands.
+
+
+
+                                  PART 1 - PRELIMINARY
+1.   Short title and commencement
+     1.    (1) This Act may be cited as the Plant Protection Act, 2023.
+           (2) This Act comes into force on such date as may be appointed by Order made by
+               the Cabinet and different dates may be appointed for different provisions of this
+               Act and in relation to different matters.
+2.   Interpretation
+     2.    In this Act —
+                 “approved form” means a form approved by the Director under section 14;
+                 “area” includes premises;
+                 “consignment” means a consignment of one or more plants, plant products or
+                 other regulated articles;
+
+
+
+     c                                      Act 10 of 2023                                 Page 7
+Section 2                                                              Plant Protection Act, 2023
+
+
+            “corresponding authority” means the national plant protection authority of
+            another country established by a corresponding law of the country;
+            “designated point of entry” means an air or sea port designated under
+            section 21;
+            “Director” means the Director of the NPPO mentioned in section 6;
+            “endangered area” means an area where ecological factors favour the
+            establishment of a pest whose presence in the area will result in economically
+            important loss;
+            “import” means import into the Cayman Islands;
+            “import permit” means a permit issued under section 17;
+            “inspector” means a person authorised to be a phytosanitary inspector under
+            section 8;
+            “international standards” means international standards adopted under Article
+            X of the International Plant Protection Convention, done at Rome on 3rd April,
+            1952, as in force from time to time;
+            “National Conservation Council” means the National Conservation Council
+            established by section 3 of the National Conservation Act, 2013;
+            “national pest of concern” means a pest declared to be a national pest of
+            concern under section 27(1)(c);
+            “NPPO” means the National Plant Protection Organisation established by
+            section 4;
+            “official laboratory” means a laboratory authorised to be an official laboratory
+            under section 9;
+            “pest” means a species, strain or biotype of a plant, animal or pathogenic agent
+            injurious to plants or plant products;
+            “pest risk analysis” means the process of evaluating biological or other
+            scientific evidence, or economic evidence, to determine whether a pest should
+            be regulated and the strength of any phytosanitary measures to be taken against
+            it;
+            “pest status”, of a place, means the status of the place in relation to the presence
+            or absence in the place of a pest, and the distribution of that pest;
+            “phytosanitary certificate” means a certificate that —
+            (a) attests that a consignment meets the phytosanitary requirements for import
+                  into a country; and
+            (b) is issued by —
+                  (i) the NPPO under section 24 or 25; or
+                  (ii) a corresponding authority;
+
+
+
+Page 8                                   Act 10 of 2023
+                                                                                           c
+Plant Protection Act, 2023                                                         Section 2
+
+
+            “phytosanitary emergency” means a phytosanitary emergency declared under
+            section 33;
+            “phytosanitary emergency measure” means a phytosanitary measure imposed
+            under a declaration of a provisional quarantine area, a quarantine area or a
+            phytosanitary emergency, as mentioned in section 34;
+            “phytosanitary measure” means a measure imposed, including by way of
+            legislation, procedure or policy, to —
+            (a) prevent the introduction into the Cayman Islands of a quarantine pest;
+            (b) prevent the spread of a quarantine pest in the Cayman Islands; or
+            (c) limit the economic impact of a regulated non-quarantine pest;
+            “phytosanitary risk” means a likelihood of the introduction or spread of a pest;
+            “place” includes premises;
+            “place of production” means any place or collection of places operated as a
+            single production or farming unit;
+            “plant” means a living plant or part of a living plant, including seeds and
+            germplasm;
+            “plant product” means —
+            (a) unmanufactured material of plant origin, including grain; or
+            (b) a manufactured product that, by its nature or the nature of its processing,
+                  may create a risk of the introduction or spread of a pest;
+            “production site” means a defined part of a place of production that is managed
+            as a separate unit for phytosanitary purposes;
+            “provisional quarantine area” means an area declared to be a provisional
+            quarantine area under section 31;
+            “quarantine area” means an area declared to be a quarantine area under
+            section 32;
+            “quarantine pest”, in relation to an endangered area, means a pest declared to
+            be a quarantine pest under section 27(1)(a);
+            “regulated article” has the meaning given in section 3;
+            “regulated non-quarantine pest” means a pest declared to be a regulated non-
+            quarantine pest under section 27(1)(b);
+            “regulated pest” means a quarantine pest or a regulated non-quarantine pest;
+            “surveillance” means an official process of collecting and recording data on
+            pest presence or absence by survey, monitoring or other procedures;
+            “transit authorisation” means a transit authorisation issued under section 26.
+
+
+
+
+c                                      Act 10 of 2023                                Page 9
+     Section 3                                                             Plant Protection Act, 2023
+
+
+3.   Meaning of "regulated article"
+     3.   (1) A “regulated article” is a plant, plant product, storage place, packaging,
+              conveyance, container, soil or any other organism, object or material, including
+              a beneficial organism, that is —
+                 (a) capable of harbouring or spreading pests; and
+                 (b) prescribed by regulation to be a regulated article.
+          (2) The Minister, acting on the advice of the NPPO, may declare an organism to be
+              a beneficial organism for subsection (1) if the organism is beneficial to flora or
+              agricultural production.
+
+
+                     PART 2 - ADMINISTRATION OF THIS ACT
+4.   Establishment of NPPO
+     4.   (1) The National Plant Protection Organisation is established.
+          (2) The department responsible for agriculture is responsible for exercising the
+              powers and performing the functions of the NPPO.
+5.   Powers and functions of NPPO
+     5.   (1) The NPPO is responsible for the general administration of this Act.
+          (2) Without limiting subsection (1), the NPPO has the functions and powers
+              conferred on it by this Act or another law.
+          (3) The NPPO may do anything necessary or convenient to enable it to exercise its
+              powers and perform its functions.
+6.   Director of NPPO
+     6.   (1) The Director of the department responsible for agriculture is the Director of the
+              NPPO.
+          (2) The Director —
+              (a) is responsible for the day-to-day management of the NPPO;
+              (b) unless a contrary intention appears, may exercise the powers and perform
+                  the functions of the NPPO; and
+              (c) is responsible for ensuring the powers and functions of the NPPO are
+                  exercised and performed in accordance with this Act.
+7.   Delegation of powers and functions of NPPO
+     7.   (1) Subject to subsection (2), the Director may, in writing, delegate any of the
+              powers or functions of the NPPO to an individual or body with appropriate
+              qualifications or expertise.
+
+
+     Page 10                                 Act 10 of 2023
+                                                                                               c
+      Plant Protection Act, 2023                                                          Section 8
+
+
+            (2) The Director may only delegate the following powers or functions to an
+                inspector —
+                (a) the power to issue a phytosanitary certificate; and
+                (b) the power to issue an import or export permit.
+            (3) A written delegation under this section shall specify —
+                (a) the period that the delegation remains in force; and
+                (b) the conditions of the delegation, including conditions about supervision of
+                     the delegate in the exercise of the delegated powers or the performance of
+                     the delegated functions.
+8.    Phytosanitary inspectors
+      8.    (1) The Director may, in writing, authorise an officer of the NPPO with appropriate
+                qualifications to be a phytosanitary inspector.
+            (2) An inspector has the functions and powers conferred on an inspector by this Act
+                or another law, subject to any restrictions specified in the inspector’s instrument
+                of authorisation.
+            (3) In exercising powers or performing functions under this Act, an inspector shall
+                comply with the directions of the Director.
+            (4) The Director may exercise the powers and perform the functions of an inspector.
+9.    Official laboratories
+      9.    (1) The Director may, in writing, authorise a laboratory to be an official laboratory
+                for the purpose of conducting tests required to be done under this Act.
+            (2) The authorisation shall specify the tests or testing procedures that may be
+                performed by the laboratory.
+            (3) An official laboratory may be located within or outside the Cayman Islands.
+10.   Reference laboratories
+      10. (1) The Director may, in writing, designate a laboratory to be a reference laboratory
+              for the purpose of —
+                  (a) conducting comparative testing in the case of conflicting or contested
+                      results received from an official laboratory; and
+                  (b) providing scientific and technical assistance and advice to the NPPO,
+                      including advice relating to testing procedures.
+            (2) The designation shall specify the tests or testing procedures that may be
+                performed by the laboratory.
+            (3) A reference laboratory may be located within or outside the Cayman Islands.
+
+
+
+
+      c                                       Act 10 of 2023                               Page 11
+      Section 11                                                          Plant Protection Act, 2023
+
+
+11.   NPPO Committees
+      11. The NPPO may establish ad hoc or permanent committees to provide advice to the
+          NPPO in relation to phytosanitary matters or other matters related to the functions of
+          the NPPO or the administration of this Act.
+12.   Principles for phytosanitary measures
+      12. (1) In the approval and implementation of phytosanitary measures under this Act,
+              the NPPO shall take into consideration the following principles —
+                   (a) phytosanitary measures should be harmonised with international
+                       standards;
+                   (b) risk analysis shall be based on science; and
+                   (c) phytosanitary measures shall be proportionate to the risk they are intended
+                       to address and shall not unjustifiably restrict international trade.
+           (2) Phytosanitary measures shall be based on —
+               (a) pest risk analysis conducted by the NPPO; or
+               (b) if no pest risk analysis has been conducted, existing regional or
+                    international standards.
+           (3) The NPPO may negotiate bilateral or multilateral agreements for the evaluation
+               and possible acceptance of alternative phytosanitary measures proposed by an
+               exporting country’s corresponding authority as being equivalent to the
+               phytosanitary measures required under this Act.
+13.   Designation of quarantine stations and other places
+      13. The NPPO may —
+                   (a) designate places as plant quarantine stations where plants, plant products
+                       or other regulated articles may be kept for phytosanitary observation,
+                       research, inspection, testing, treatment, detention or destruction; and
+                   (b) require that imported plants, plant products or other regulated articles be
+                       kept at a plant quarantine station or other designated place.
+14.   Approved forms
+      14. The Director may approve forms for use under this Act.
+
+
+                                       PART 3 - IMPORTS
+15.   Requirements for import
+      15. (1) A person shall not import a plant, plant product or regulated article except —
+                   (a)   subject to section 16 —
+
+
+      Page 12                                 Act 10 of 2023
+                                                                                              c
+      Plant Protection Act, 2023                                                         Section 16
+
+
+                      (i) in accordance with an import permit; and
+                      (ii) if accompanied by a phytosanitary certificate issued by the country
+                            of export;
+                  (b) in compliance with all applicable phytosanitary measures established by
+                      the NPPO;
+                  (c) at a designated point of entry; and
+                  (d) in accordance with any other prescribed requirements.
+            (2) A person who imports a plant, plant product or regulated article in contravention
+                of subsection (1) commits an offence and is liable on conviction to a fine of fifty
+                thousand dollars or imprisonment for two years, or both.
+16.   Exempt and prohibited imports
+      16. (1) The Director may —
+                  (a) exempt specified plants, plant products and other regulated articles from
+                      the requirement for an import permit, a phytosanitary certificate, or
+                      both; and
+                  (b) prohibit or restrict the import of specified plants, plant products and other
+                      regulated articles.
+            (2) An exemption, prohibition or restriction may be —
+                (a) ongoing or temporary in nature; and
+                (b) subject to conditions.
+17.   Import permits
+      17. (1) A person may apply to the NPPO for an import permit to import a plant, plant
+              product or other regulated article.
+            (2) The application shall be —
+                (a) made in the approved form; and
+                (b) accompanied by the prescribed fee and prescribed documents.
+            (3) The NPPO shall assess the phytosanitary risk associated with the
+                importation and either —
+                (a) issue the permit if satisfied that the level of risk is acceptable or can be
+                    successfully managed or mitigated; or
+                (b) refuse the application and give the applicant written notice of the refusal,
+                    including the reasons for it.
+            (4) In addition, if the application is for a permit to import a live or viable specimen
+                of an alien or genetically altered plant, the NPPO shall consult the National
+                Conservation Council before granting the permit.
+
+
+
+
+      c                                       Act 10 of 2023                               Page 13
+      Section 18                                                          Plant Protection Act, 2023
+
+
+           (5) The permit is subject to any prescribed conditions and any additional conditions
+               specified in the permit.
+           (6) The NPPO may vary or revoke an import permit by written notice to the holder
+               of the permit if —
+               (a) the type or quantity of the items imported does not correspond with the
+                     description specified in the permit;
+               (b) the pest status of the country of export changes; or
+               (c) the country of origin of the items to be imported changes.
+           (7) In addition, the NPPO shall revoke an import permit by written notice to the
+               holder of the permit if satisfied that —
+               (a) the holder of the permit contravened section 46 when applying for the
+                    permit; or
+               (b) the holder of the permit has failed to comply with a condition of the permit;
+                    or
+               (c) the level of phytosanitary risk associated with the importation is no longer
+                    acceptable.
+18.   Inspection of imports
+      18. (1) The importer of a plant, plant product or other regulated article shall produce it
+              for inspection by an inspector —
+                   (a) at its designated point of entry;
+                   (b) at a quarantine station; or
+                   (c) at a place approved by the Director under subsection (2).
+           (2) The Director may, on application by the importer, approve the inspection being
+               conducted at a place other than the designated point of entry if the imported item
+               is transported and kept at all times before the inspection in a sealed container.
+           (3) The importer shall pay the prescribed fee for the inspection.
+           (4) An importer who fails to produce an item for inspection as required under
+               subsection (1) commits an offence and is liable on conviction to a fine of fifty
+               thousand dollars or imprisonment for two years, or both.
+19.   Phytosanitary actions on imports
+      19. (1) This section applies if, on an inspection conducted under section 18, an
+              inspector determines that an imported plant, plant product or regulated article —
+                   (a) has not been imported in accordance with the requirements of this Act; or
+                   (b) poses a phytosanitary risk.
+           (2) The inspector may detain the imported item and —
+
+
+
+      Page 14                                 Act 10 of 2023
+                                                                                              c
+      Plant Protection Act, 2023                                                       Section 20
+
+
+                  (a) if the inspector considers that the item does not pose an immediate
+                      phytosanitary risk, give written notice to the importer requiring the
+                      importer to produce a specified document or take other specified action
+                      within a specified time; or
+                  (b) if the inspector considers that the item poses an immediate phytosanitary
+                      risk, do any of the following —
+                      (i) test the item;
+                      (ii) treat the item;
+                      (iii) confiscate and destroy the item;
+                      (iv) return the item to its country of origin; or
+                      (v) move the item to a quarantine station for further observation and
+                            analysis to determine the final course of action.
+            (3) The inspector shall give the importer written reasons for any action taken under
+                subsection (2)(b).
+            (4) The importer is liable for the cost of any action taken under subsection (2)(b).
+20.   Release of imports
+      20. An inspector may release an imported plant, plant product or regulated article to the
+          importer or the authority responsible for customs in the following circumstances —
+                  (a) if, on an inspection conducted under section 18, the inspector determines
+                      that the item —
+                      (i) has been imported in accordance with the requirements of this
+                            Act; and
+                      (ii) does not pose a phytosanitary risk;
+                  (b) if, having been given a notice under section 19(2)(a), the importer has
+                      complied with the notice; or
+                  (c) if the inspector has taken action under section 19(2)(b) —
+                      (i) the item no longer poses a phytosanitary risk; and
+                      (ii) the importer has paid the cost of the action.
+21.   Designated points of entry
+      21. The Cabinet may designate points of entry at which plants, plant products and other
+          regulated articles may be imported into the Cayman Islands.
+
+
+
+
+      c                                      Act 10 of 2023                              Page 15
+      Section 22                                                            Plant Protection Act, 2023
+
+
+                PART 4 - EXPORTS, RE-EXPORTS AND TRANSITS
+22.   Requirements for export of certain plants
+      22. (1)      A person shall not export a prescribed a plant, plant product or regulated article
+                   except in accordance with an export permit.
+           (2) A person who exports a prescribed plant, plant product or regulated article in
+               contravention of subsection (1) commits an offence and is liable on conviction
+               to a fine of fifty thousand dollars or imprisonment for two years, or both.
+23.   Export permits
+      23. (1) A person may apply to the NPPO for an export permit to export a prescribed
+              plant, plant product or other regulated article.
+           (2) The application shall be —
+               (a) made in the approved form; and
+               (b) accompanied by the prescribed fee and prescribed documents.
+           (3) An export permit is subject to any prescribed conditions and any additional
+               conditions specified in the permit.
+           (4) The NPPO shall revoke an export permit by written notice to the holder of the
+               permit if satisfied that —
+               (a) the holder of the permit contravened section 46 when applying for the
+                   permit; or
+               (b) the holder of the permit has failed to comply with a condition of the permit.
+24.   Export phytosanitary certificate
+      24. (1) This section applies if a country requires a phytosanitary certificate to
+              accompany a plant, plant product or other regulated article being exported to the
+              country from the Cayman Islands.
+           (2) The exporter may apply to the NPPO for the phytosanitary certificate for export.
+           (3) The application shall be —
+               (a) made in the approved form; and
+               (b) accompanied by the prescribed fee and the documents required by the
+                    country to which the plant, plant product or other regulated article will be
+                    exported.
+           (4) The exporter shall make the plant, plant product or other regulated article
+               available for inspection by the NPPO.
+           (5) Following the inspection, the NPPO shall —
+               (a) issue the certificate if the consignment —
+
+
+
+      Page 16                                  Act 10 of 2023
+                                                                                                c
+      Plant Protection Act, 2023                                                         Section 25
+
+
+                        (i) meets the documentary and other phytosanitary requirements of the
+                            country to which it will be exported; and
+                      (ii) meets any phytosanitary requirements for export from the Cayman
+                            Islands imposed by the NPPO; and
+                      (iii) meets any other requirements for export from the Cayman Islands
+                            imposed under any other law; or
+                  (b) otherwise – refuse the application and give the applicant written notice of
+                      the refusal, including the reasons for it.
+            (6) A phytosanitary certificate for export is valid only if the exporter exports the
+                consignment in compliance with the instructions of the NPPO to maintain the
+                phytosanitary security and integrity of the consignment.
+25.   Re-export phytosanitary certificate
+      25. (1) This section applies if —
+                  (a) a plant, plant product or other regulated article is imported to the Cayman
+                      Islands;
+                  (b) since being imported, the plant, plant product or other regulated article has
+                      not been grown or processed in a way that changes its nature;
+                  (c) the plant, plant product or other regulated article is to be re-exported to
+                      another country; and
+                  (d) the other country requires a phytosanitary certificate to accompany the
+                      plant, plant product or other regulated article.
+            (2) The re-exporter may apply to the NPPO for a phytosanitary certificate for re-
+                export.
+            (3) The application shall be —
+                (a) made in the approved form; and
+                (b) accompanied by the prescribed fee and the prescribed documents.
+            (4) The re-exporter shall make the plant, plant product or other regulated article
+                available for inspection by the NPPO.
+            (5) Following the inspection, the NPPO shall either —
+                (a) issue the certificate if the consignment —
+                     (i) meets the documentary and other phytosanitary requirements of the
+                           country to which it will be re-exported;
+                     (ii) has not been exposed to infestation or contamination by a pest; and
+                     (iii) is not infested or contaminated by a pest; or
+                (b) refuse the application and give the applicant written notice of the refusal,
+                     including the reasons for it.
+
+
+
+      c                                       Act 10 of 2023                               Page 17
+      Section 26                                                          Plant Protection Act, 2023
+
+
+           (6) The NPPO may issue the certificate even if the consignment has been re-packed,
+               stored, split or combined with another consignment.
+           (7) A phytosanitary certificate for re-export is valid only if the re-exporter
+               re-exports the consignment in compliance with the instructions of the NPPO to
+               maintain the phytosanitary security and integrity of the consignment.
+26.   Transit authorisation
+      26. (1) A person shall not transit a plant, plant product or regulated article through the
+              Cayman Islands except in accordance with a transit authorisation.
+           (2) The person may apply to the NPPO for the transit authorisation.
+           (3) The application shall be —
+               (a) made in the approved form; and
+               (b) accompanied by the prescribed fee and the prescribed documents.
+           (4) The NPPO shall assess the phytosanitary risk associated with the transit and —
+               (a) issue the authorisation if satisfied that the level of risk is acceptable or can
+                   be successfully managed or mitigated; or
+               (b) otherwise, refuse the application and give the applicant written notice of
+                   the refusal, including the reasons for it.
+           (5) No additional phytosanitary requirements may be imposed by the NPPO if the
+               consignment —
+               (a) has been packed in such a way that there is no risk of the spread of any
+                    regulated pest that may be present in the consignment;
+               (b) meets the documentary and other phytosanitary requirements of the
+                    country of destination; and
+               (c) is accompanied by the phytosanitary certificate issued by the country of
+                    origin.
+           (6) A person who imports a plant, plant product or regulated article in contravention
+               of subsection (1) commits an offence and is liable on conviction to a fine of fifty
+               thousand dollars or imprisonment for two years, or both.
+           (7) For the purposes of this section, a person transits an item through the Cayman
+               Islands if the person moves the item through the Islands without importing it.
+
+
+
+
+      Page 18                                Act 10 of 2023
+                                                                                              c
+      Plant Protection Act, 2023                                                            Section 27
+
+
+                               PART 5 - CONTROL OF PESTS
+
+                                   Division 1 - Pest declarations
+27.   Declaration of pests
+      27. (1) The NPPO may declare a pest to be —
+                  (a) a quarantine pest in relation to an endangered area, if the NPPO is satisfied
+                      that the pest is —
+                      (i) of potential economic importance to the area; and
+                      (ii) not yet present in the area, or is present but not widely distributed and
+                            being officially controlled;
+                  (b) a regulated non-quarantine pest, if the NPPO is satisfied, based on pest risk
+                      analysis, that —
+                      (i) the pest is not a quarantine pest; and
+                      (ii) the presence of the pest in a plant intended to be planted, remain
+                            planted or be replanted would affect the intended use of the plant with
+                            an economically unacceptable impact; or
+                  (c) a national pest of concern, if the NPPO is satisfied, based on surveillance,
+                      that —
+                      (i) the pest has a significant economic impact; and
+                      (ii) the epidemiological characteristics of the pest necessitate the
+                            management of the pest by the NPPO.
+            (2) The NPPO shall ensure that —
+                (a) an up-to-date list of regulated pests and national pests of concern is
+                    published on its website; and
+                (b) the list is provided on request to any corresponding authority.
+28.   Declaration of pest free or low pest prevalence area
+      28. (1) The NPPO may declare an area to be —
+                  (a) a pest free area in relation to a specific pest, if the NPPO is satisfied that —
+                      (i) the pest is not present in the area;
+                      (ii) phytosanitary measures have been implemented to keep the area free
+                            of the pest; and
+                      (iii) a surveillance system has been instituted to verify that the area
+                            remains free of the pest; or
+                  (b) a low pest prevalence area in relation to a specific pest, if the NPPO is
+                      satisfied that —
+
+
+
+      c                                        Act 10 of 2023                                 Page 19
+      Section 29                                                             Plant Protection Act, 2023
+
+
+                        (i) the pest is present in low levels in the area;
+                        (ii) phytosanitary measures have been implemented to keep the pest
+                              levels low; and
+                        (iii) a surveillance system has been instituted to verify that the pest levels
+                              remain low.
+           (2) The declaration may prohibit, restrict or impose requirements on entry into the
+               area by anyone or anything.
+           (3) The NPPO shall ensure that an up-to-date list of pest free areas and low pest
+               prevalence areas is published on its website.
+29.   Declaration of pest free place of production or production site
+      29. (1) The NPPO may declare a place of production or a production site to be pest free
+              in relation to a specific pest if the NPPO is satisfied that —
+                   (a) the pest is not present in the place or site;
+                   (b) phytosanitary measures have been implemented to keep the place or site
+                       free of the pest; and
+                   (c) a surveillance system has been instituted to verify that the place or site
+                       remains free of the pest.
+           (2) The declaration may prohibit, restrict or impose requirements on entry into the
+               place or site by anyone or anything.
+           (3) The NPPO shall ensure that an up-to-date list of pest free places of production
+               and production sites is published on its website.
+
+
+                   Division 2 - Quarantine and emergency declarations
+30.   Notification by inspector
+      30. (1) If an inspector reasonably believes that a quarantine pest may be present in an
+              area, the inspector may —
+                   (a) enter the area, subject to the requirements of section 40;
+                   (b) inspect any plant, plant product or other regulated article in the area; and
+                   (c) take any samples the inspector considers necessary to verify whether the
+                       pest is present in the area.
+           (2) The inspector shall, as soon as reasonably practicable, notify the Director in
+               writing of —
+               (a) the possible presence of the quarantine pest; and
+               (b) the actions taken by the inspector to verify the presence of the pest.
+
+
+
+
+      Page 20                                  Act 10 of 2023
+                                                                                                 c
+      Plant Protection Act, 2023                                                         Section 31
+
+
+31.   Declaration of provisional quarantine area
+      31. (1) After receiving a written report under section 30, the NPPO —
+                  (a) may declare the area to be a provisional quarantine area; and
+                  (b) shall, whether or not the area is declared to be a provisional quarantine
+                      area, conduct an investigation to verify whether a quarantine pest is present
+                      in the area.
+            (2) A declaration of a provisional quarantine area —
+                (a) shall be made by written notice —
+                     (i) given to each owner and occupier of the area or part of the area (if
+                            known);
+                     (ii) displayed in a prominent position at or near each entrance to the area;
+                            and
+                     (iii) published in the Gazette and in news media of general circulation in
+                            the Islands;
+                (b) shall specify the quarantine pest and the boundaries of the provisional
+                     quarantine area;
+                (c) shall specify the phytosanitary emergency measures that apply in relation
+                     to the provisional quarantine area; and
+                (d) expires seven days after the date of the notice unless it is revoked before
+                     that time by the NPPO.
+            (3) A person who contravenes the declaration commits an offence and is liable on
+                conviction to a fine of fifty thousand dollars or imprisonment for two years, or
+                both.
+32.   Declaration of quarantine area
+      32. (1) If the NPPO determines that a quarantine pest is present in an area, whether or
+              not the area has been declared to be a provisional quarantine area, the NPPO
+              shall advise the Minister to declare the area to be a quarantine area.
+            (2) After receiving the advice of the NPPO, the Minister shall declare the area to be
+                a quarantine area.
+            (3) The declaration shall —
+                (a) be made by written notice —
+                     (i) given to each owner and occupier of the area or part of the area (if
+                           known);
+                     (ii) displayed in a prominent position at or near each entrance to the area;
+                           and
+                     (iii) published in the Gazette and in news media of general circulation in
+                           the Islands;
+
+
+      c                                       Act 10 of 2023                               Page 21
+      Section 33                                                          Plant Protection Act, 2023
+
+
+                   (b) specify the quarantine pest and the boundaries of the quarantine area;
+                   (c) specify the phytosanitary emergency measures that apply in relation to the
+                       quarantine area; and
+                   (d) specify the period that the declaration remains in force.
+           (4) The declaration may be renewed more than once on the advice of the NPPO if
+               the quarantine pest remains present in the area on the expiry of the declaration.
+           (5) A person who contravenes the declaration commits an offence and is liable on
+               conviction to a fine of fifty thousand dollars or imprisonment for two years, or
+               both.
+33.   Declaration of phytosanitary emergency
+      33. (1) This section applies if the NPPO reasonably believes, on the basis of pest risk
+              analysis or evidence obtained from an inspection, sample or analysis conducted
+              under this Act, that there is a grave threat to plant resources or food security in
+              the Islands.
+           (2) The NPPO shall advise the Minister of the belief, the basis for the belief and the
+               recommended measures to respond to the threat.
+           (3) The Minister may, if satisfied that the threat exists, declare a phytosanitary
+               emergency in relation to all or a specified area of the Islands.
+           (4) The declaration may be made whether or not a quarantine area has been declared
+               for the area of the phytosanitary emergency declaration.
+           (5) The declaration shall —
+               (a) be made by written notice published in the Gazette and in news media of
+                    general circulation in the Islands;
+               (b) be given to anyone required to take any specified action under the
+                    declaration;
+               (c) specify the reasons for making the declaration and the area to which it
+                    applies;
+               (d) specify the phytosanitary emergency measures that apply under the
+                    declaration; and
+               (e) specify the period the declaration remains in force.
+           (6) The declaration may be renewed more than once on the advice of the NPPO if
+               the grave threat remains on the expiry of the declaration.
+           (7) A person who contravenes the declaration commits an offence and is liable on
+               conviction to a fine of fifty thousand dollars or imprisonment for two years, or
+               both.
+
+
+
+
+      Page 22                                 Act 10 of 2023
+                                                                                              c
+      Plant Protection Act, 2023                                                        Section 34
+
+
+34.   Phytosanitary emergency measures
+      34. (1) A declaration of provisional quarantine area, a quarantine area or a
+              phytosanitary emergency may impose any phytosanitary emergency measures
+              that the NPPO considers necessary in the circumstances.
+            (2) Without limiting subsection (1), a declaration may do any of the following —
+                (a) authorise the NPPO to inspect, treat or dispose of any plant, plant product
+                    or other regulated article;
+                (b) require the owner or occupier of an area subject to the declaration to treat
+                    or dispose of any plant, plant product or other regulated article in the area;
+                (c) prohibit, restrict or impose requirements in relation to any of the
+                    following —
+                    (i) entry into an area subject to the declaration by anyone or anything;
+                    (ii) the movement of anyone or anything within the area;
+                    (iii) the departure from the area of anyone or anything; or
+                    (iv) the cultivation of plants or the carrying out of any other activity in
+                          the area.
+            (3) If the declaration requires a person to treat or dispose of a plant, plant product
+                or other regulated article and the person fails to do so, the NPPO may —
+                (a) direct an inspector to treat, or dispose of the plant, plant product or other
+                      regulated article; and
+                (b) recover the expenses for the treatment or disposal from the person.
+35.   Revocation or amendment of quarantine or emergency declaration
+      35. (1) During the period a declaration of a quarantine area or phytosanitary emergency
+              remains in force, the NPPO shall —
+                  (a) conduct regular assessments to determine if the declaration continues to be
+                      necessary or if it requires amendment; and
+                  (b) if the NPPO considers it appropriate to revoke or amend the declaration,
+                      advise the Minister to do so.
+            (2) The Minister, acting on the advice of the NPPO, may revoke or amend the
+                declaration.
+            (3) The revocation or amendment shall be made, published and distributed in the
+                same way as the original declaration.
+
+
+
+
+      c                                      Act 10 of 2023                               Page 23
+      Section 36                                                            Plant Protection Act, 2023
+
+
+                         Division 3 - Offences relating to control of pests
+36.   Notification of pest
+      36. (1) The owner or occupier of a place who knows or suspects that a regulated pest
+              or a pest of national concern is present in the place shall notify the NPPO as
+              soon as practicable.
+           (2) A person who contravenes subsection (1) commits an offence and is liable on
+               conviction to a fine of fifty thousand dollars or imprisonment for two years, or
+               both.
+37.   Prevention of infestation and spread
+      37. (1) A person shall not recklessly or intentionally —
+                   (a) introduce or allow the introduction of a regulated pest or a pest of national
+                       concern to the Islands; or
+                   (b) spread or allow the spread of a regulated pest or a pest of national concern
+                       to the Islands.
+           (2) A person who contravenes subsection (1) commits an offence and is liable on
+               conviction to a fine of fifty thousand dollars or imprisonment for two years, or
+               both.
+38.   Requirements for dealing with infested plant, product or article
+      38. (1) A person shall not —
+                   (a) propagate or grow a plant that the person knows or reasonably suspects is
+                       infested by a regulated pest or a pest of national concern; or
+                   (b) sell, offer for sale, transport or distribute a plant, plant product or other
+                       regulated article that the person knows or reasonably suspects is infested
+                       by a regulated pest or a pest of national concern.
+           (2) A person who contravenes subsection (1) commits an offence and is liable on
+               conviction to a fine of fifty thousand dollars or imprisonment for two years, or
+               both.
+
+
+                                   PART 6 - ENFORCEMENT
+
+                          Division 1 - Power and procedures of inspectors
+39.   Powers of inspectors
+      39. (1) An inspector may exercise any of the powers mentioned in subsections (2)
+              and (3) if the inspector reasonably believes it is necessary to do so for —
+
+
+      Page 24                                  Act 10 of 2023
+                                                                                                c
+      Plant Protection Act, 2023                                                       Section 40
+
+
+                  (a) the control of a pest;
+                  (b) monitoring compliance with this Act; or
+                  (c) the exercise of a power or the performance of a function of an inspector
+                      under this Act.
+            (2) Subject to section 40, the inspector may do any of the following in relation to a
+                place —
+                (a) enter, inspect and search the place;
+                (b) require a person at the place to give the inspector specified information
+                     (including documents) about specified plants, plant products or other
+                     regulated articles;
+                (c) inspect, take samples of, or seize, any plant, plant product or other
+                     regulated article found in the place for a specified examination or
+                     treatment;
+                (d) apply, or require a person having the control of the place to apply, a
+                     specified treatment to the place;
+                (e) install, inspect and retrieve a device at the place for controlling or
+                     monitoring a pest;
+                (f) if required under a declaration of a provisional quarantine area, a
+                     quarantine area or a phytosanitary emergency, prohibit entry to, departure
+                     from or movement within the place; and
+                (g) make a record in relation to an exercise of a power for this subsection
+                     (including, for example, by making a copy of a document, taking a
+                     photograph or making a video recording).
+            (3) In addition, the inspector may do any of the following —
+                (a) require a person in control of a plant, plant product or other regulated
+                     article or to do any of the following —
+                     (i) apply a specified treatment to the plant, plant product or other
+                           regulated article;
+                     (ii) surrender the plant, plant product or other regulated article for a
+                           specified examination or treatment; or
+                     (iii) dispose of the plant or material as specified by the inspector;
+                (b) stop and search a vehicle, on land or at sea;
+                (c) inspect a consignment being imported or exported; and
+                (d) inspect passenger luggage being imported or exported.
+40.   Restrictions on power of entry
+      40. (1) This section applies if an inspector intends to enter a place under section 39(2).
+
+
+
+
+      c                                      Act 10 of 2023                              Page 25
+      Section 41                                                         Plant Protection Act, 2023
+
+
+           (2) If the place is not a residence, the inspector shall, as far as practicable, give
+               notice to the owner of the place of the inspector’s intention to enter the place
+               before doing so.
+           (3) If the place is a residence, the inspector shall not enter the place unless —
+               (a) the inspector has given written notice to the owner of the place of the
+                     inspector’s intention to enter the place; and
+               (b) the inspector —
+                     (i) is permitted by the owner (whether orally or in writing) to enter the
+                           place; or
+                     (ii) is authorised to enter the place under a warrant issued by a
+                           Magistrate.
+           (4) A Magistrate may issue the warrant only if satisfied the warrant is reasonably
+               required in the circumstances.
+41.   Identity card
+      41. (1) In exercising a power or performing a function under this Act, an inspector shall
+              carry an identity card provided by the Director.
+           (2) If an inspector purports to exercise a power under this Act without producing
+               the inspector’s identity card when requested to do so —
+               (a) the inspector is not authorised to exercise the power; and
+               (b) a person is not required to comply with a requirement made by the
+                     inspector.
+42.   Dealing with seized items
+      42. (1) An inspector shall give a receipt to a person for anything the inspector seizes or
+              receives from the person under this Act.
+           (2) The Director has the control of anything seized or surrendered under this Act.
+           (3) If the Director considers a plant, plant product or other regulated article seized
+               or surrendered poses a phytosanitary risk, the Director shall destroy or treat it.
+           (4) The Director may retain anything seized or surrendered under this Act that is
+               relevant to the prosecution of an offence under this Act until the proceedings for
+               the offence have ended.
+43.   Report to Director
+      43. (1) An inspector shall give a report to the Director about the exercise of a power, or
+              the performance of a function, by the inspector under this Act.
+           (2) The inspector shall do so as soon as practicable after the exercise of the power
+               or performance of the function.
+           (3) This section has effect subject to any direction of the Director.
+
+      Page 26                               Act 10 of 2023
+                                                                                             c
+      Plant Protection Act, 2023                                                         Section 44
+
+
+44.   Inspector may be assisted
+      44. An inspector exercising a power or performing a function under this Act may be
+          assisted by —
+                  (a) a customs and border control officer appointed under the Customs and
+                      Border Control Act (2022 Revision); or
+                  (b) a constable.
+
+
+                                   Division 2 - General offences
+45.   Obstruction and failing to comply with requirement of inspector
+      45. (1) A person who obstructs an inspector, or another person assisting an inspector,
+              who is exercising a power or performing a function under this Act commits an
+              offence and is liable on conviction to a fine of ten thousand dollars or
+              imprisonment for six months, or both.
+            (2) A person who fails to comply with a requirement given to the person by an
+                inspector, or another person assisting an inspector, who is exercising a power or
+                performing a function under this Act commits an offence and is liable on
+                conviction to a fine of ten thousand dollars or imprisonment for six months, or
+                both.
+46.   False or misleading information
+      46. (1) A person who gives false or misleading information to the NPPO or an inspector
+              who is exercising a power or performing a function under this Act commits an
+              offence and is liable on conviction to a fine of ten thousand dollars or
+              imprisonment for six months, or both.
+            (2) Subsection (1) does not apply if the person —
+                (a) gives the false or misleading information in a document; and
+                (b) when giving the document, the person —
+                     (i) draws the misleading aspect of the document to the attention of the
+                          person receiving it; and
+                     (ii) to the extent to which the person can reasonably do so, gives the
+                          information necessary to correct the document.
+            (3) For the purposes of this section, information is false or misleading if it is false
+                or misleading in a material particular because it does not include relevant
+                information or includes misinformation.
+
+
+
+
+      c                                       Act 10 of 2023                               Page 27
+      Section 47                                                            Plant Protection Act, 2023
+
+
+                             Division 3 - Proceedings for offences
+47.   Administrative penalties
+      47. The Regulations may provide for the payment of an administrative penalty instead of
+          a penalty that could otherwise be imposed for an offence against this Act, including
+          by prescribing the following —
+                   (a)   the offences for which an administrative penalty may be imposed;
+                   (b)   the amount of the administrative penalty;
+                   (c)   the procedure for imposing an administrative penalty; and
+                   (d)   the procedure for disputing the imposition of the administrative penalty.
+48.   Forfeiture of items and proceeds
+      48. If a person is convicted of an offence under this Act, the court may, in addition to any
+          other penalty imposed, order that any plant, plant product or other regulated article in
+          relation to which the offence was committed be —
+                   (a) forfeited to the Crown;
+                   (b) detained until any fine imposed for the offence is paid;
+                   (c) sold and the proceeds of the sale up to the amount of any fine imposed
+                       forfeited to the Crown; or
+                   (d) destroyed at the expense of the person.
+
+
+                          PART 7 - ADMINISTRATIVE MATTERS
+49    Protection from liability
+      49. A person is not civilly or criminally liable for an act done or omitted to be done by
+          the person in good faith in the exercise of a power or performance of a function as
+          any of the following —
+                   (a) the Director;
+                   (b) an inspector; or
+                   (c) someone assisting the Director or an inspector in exercising a power or
+                       performing a function under this Act.
+50.   Evidentiary certificate
+      50. In a proceeding for an offence against this Act, a certificate signed by the Director
+          stating any of the following matters is evidence of the matter in the absence of proof
+          to the contrary —
+                   (a)   a specified person was an inspector having specified powers under this Act
+                         at a specified time;
+
+
+      Page 28                                  Act 10 of 2023
+                                                                                                c
+      Plant Protection Act, 2023                                                       Section 51
+
+
+                  (b) a specified notice or other document was made or given at a specified time;
+                  (c) a specified thing has been identified as stated in the certificate; or
+                  (d) a specified thing has been affected by a specified pest as stated in the
+                      certificate.
+51.   Review of decision of inspector
+      51. (1) A person whose interests are or might be affected by a decision of an inspector
+              under this Act may apply to the Director for review of the decision.
+            (2) The application shall be made within twenty-eight days after the person receives
+                notice of the decision.
+            (3) The Director shall, within twenty-eight days after receiving the application,
+                review the decision.
+            (4) The application does not affect the operation or implementation of the decision.
+            (5) However, the Director may make another decision staying or otherwise
+                affecting the operation or implementation of so much of the decision as the
+                Director considers appropriate to effectively decide the application.
+            (6) The Director shall give a written notice of the decision on review to the
+                applicant, specifying the reasons for the decision.
+52.   Regulations
+      52. The Cabinet may make regulations prescribing all matters that are required or
+          permitted by this Act to be prescribed, or are necessary to be prescribed for giving
+          effect to the purposes of this Act.
+53.   Repeal, savings and transitional provisions
+      53. (1) The Plants (Importation and Exportation) Act (1997 Revision) is repealed.
+            (2) A permit or certificate issued under the repealed Act and in force immediately
+                before the commencement of this Act continues in force as if it had been issued
+                under this Act.
+
+
+
+
+      c                                      Act 10 of 2023                              Page 29
+Section 53                                                     Plant Protection Act, 2023
+
+
+     (3) The Plants (Importation and Exportation) (Fees) Regulations, 2009 continue in
+         force as if they had been made under this Act until repealed and replaced by
+         regulations made under this Act.
+
+
+
+                          Passed by the Parliament the 20th day of September, 2023.
+
+
+
+                                                      Hon. Katherine Ebanks-Wilks
+                                                                          Speaker
+
+
+
+                                                                  Zena Merren-Chin
+                                                               Clerk of the Parliament
+
+
+
+
+Page 30                             Act 10 of 2023
+                                                                                   c
+

@@ -1,0 +1,30 @@
+[
+  {
+    "file": "er-trade125-2002.pdf",
+    "url": "https://tile.loc.gov/storage-services/service/ll/lleritrea/eritrean-proc-125-2002/eritrean-proc-125-2002.pdf",
+    "status": 200,
+    "bytes": 2354380,
+    "isPdf": true
+  },
+  {
+    "file": "er-notice100-2005.pdf",
+    "url": "https://tile.loc.gov/storage-services/service/ll/lleritrea/eritrean-notice-100-2005/eritrean-notice-100-2005.pdf",
+    "status": 200,
+    "bytes": 111346,
+    "isPdf": true
+  },
+  {
+    "file": "gn-documents.html",
+    "url": "https://www.bniq.gov.gn/documents/",
+    "status": 403,
+    "bytes": 5479,
+    "isPdf": false
+  },
+  {
+    "file": "tristan-biosecurity2025.html",
+    "url": "https://www.tristandc.com/wildlife/biosecurityrules-2025-10-02.php",
+    "status": 200,
+    "bytes": 23050,
+    "isPdf": false
+  }
+]

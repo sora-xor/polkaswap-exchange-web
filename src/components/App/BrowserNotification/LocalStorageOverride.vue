@@ -2,7 +2,7 @@
   <dialog-base
     class="browser-notification"
     :title="t('browserNotificationLocalStorageOverride.title')"
-    :visible.sync="isVisible"
+    v-model:visible="isVisible"
   >
     <div class="browser-notification-dialog">
       <p class="browser-notification-dialog__info">
@@ -20,26 +20,35 @@
   </dialog-base>
 </template>
 
-<script lang="ts">
-import { mixins, components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { ref } from 'vue';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { useTranslation } from '@/composables/useTranslation';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 
-@Component({
+defineOptions({
   components: {
-    DialogBase: components.DialogBase,
+    DialogBase: WalletComponentDialogBase,
   },
-})
-export default class AppBrowserNotifsLocalStorageOverride extends Mixins(
-  TranslationMixin,
-  mixins.DialogMixin,
-  mixins.LoadingMixin
-) {
-  agree(): void {
-    this.closeDialog();
-    this.$emit('delete-data-local-storage', true);
-  }
+});
+
+const emit = defineEmits<{
+  (e: 'close'): void;
+  (e: 'delete-data-local-storage', value: boolean): void;
+}>();
+
+const isVisible = defineModel<boolean>('visible', { default: false });
+const { t } = useTranslation();
+const loading = ref(false);
+
+const closeDialog = (): void => {
+  emit('close');
+  isVisible.value = false;
+};
+
+function agree(): void {
+  closeDialog();
+  emit('delete-data-local-storage', true);
 }
 </script>
 

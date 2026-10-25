@@ -5,7 +5,7 @@
     </template>
     <template v-if="hasItems">
       <div class="details-history__items s-flex-column" v-loading="loadingState">
-        <div v-for="(item, index) in items" :key="index" class="history-item s-flex-column">
+        <div v-for="item in items" :key="item.id" class="history-item s-flex-column">
           <div class="history-item-info s-flex">
             <div class="history-item-operation ch3" :data-type="item.type">{{ getTitle(item.type) }}</div>
             <div class="history-item-title p4">{{ getOperationMessage(item) }}</div>
@@ -20,146 +20,267 @@
         :total="total"
         :last-page="lastPage"
         @pagination-click="handlePaginationClick"
-      />
+      ></history-pagination>
     </template>
     <div v-else v-loading="loadingState" class="details-history__empty p4">{{ t('noDataText') }}</div>
   </s-card>
 </template>
 
-<script lang="ts">
-import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
+<script lang="ts" setup>
+import { computed, onBeforeUnmount, ref, watch } from 'vue';
 
-import IndexerDataFetchMixin from '@/components/mixins/IndexerDataFetchMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { ObjectInit } from '@/consts';
+import { useLoading } from '@/composables/useLoading';
+import { useTranslation } from '@/composables/useTranslation';
+import { HiddenValue, ObjectInit, PaginationButton } from '@/consts';
 import { fetchVaultEvents } from '@/indexer/queries/vault/events';
 import { VaultEventTypes } from '@/modules/vault/consts';
 import type { VaultEvent, VaultEventType } from '@/modules/vault/types';
-import { state } from '@/store/decorators';
-import { type FetchVariables } from '@/types/indexers';
+import { useWalletStore } from '@/stores/wallet';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import WalletComponentHistoryPagination from '@/lib/soraneo-wallet/src/components/HistoryPagination.vue';
 
-@Component({
-  components: {
-    HistoryPagination: components.HistoryPagination,
-  },
-})
-export default class VaultDetailsHistory extends Mixins(TranslationMixin, IndexerDataFetchMixin) {
-  private readonly HiddenValue = WALLET_CONSTS.HiddenValue;
-  /** Date format without seconds */
-  readonly DateFormat = 'll LT';
+const HistoryPagination = WalletComponentHistoryPagination;
 
-  @Prop({ default: undefined, type: Number }) readonly id!: number;
-  @Prop({ default: ObjectInit, type: Object }) readonly lockedAsset!: Nullable<RegisteredAccountAsset>;
-  @Prop({ default: ObjectInit, type: Object }) readonly debtAsset!: Nullable<RegisteredAccountAsset>;
-
-  @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
-
-  @Watch('id', { immediate: true })
-  private async updateHistory(curr: number, prev: number) {
-    this.checkTriggerUpdate(curr, prev);
+const props = withDefaults(
+  defineProps<{
+    id?: number;
+    lockedAsset?: Nullable<RegisteredAccountAsset>;
+    debtAsset?: Nullable<RegisteredAccountAsset>;
+  }>(),
+  {
+    id: undefined,
+    lockedAsset: ObjectInit,
+    debtAsset: ObjectInit,
   }
+);
 
-  pageAmount = 5; // override PaginationSearchMixin
+const pageAmount = 5;
+const fetchAmount = 5;
+const updateInterval = 24_000;
+const DateFormat = 'll LT';
 
-  get lockedAssetSymbol(): string {
-    return this.lockedAsset?.symbol ?? '';
+const currentPage = ref(1);
+const totalCount = ref(0);
+const rawItems = ref<readonly VaultEvent[]>([]);
+const intervalId = ref<Nullable<ReturnType<typeof setInterval>>>(null);
+let requestGeneration = 0;
+let activePollGeneration: Nullable<number> = null;
+let isUnmounted = false;
+
+const { t, formatDate } = useTranslation();
+const { loading, withLoading } = useLoading();
+const walletStore = useWalletStore();
+
+const loadingState = computed(() => loading.value);
+const shouldBalanceBeHidden = computed(() => walletStore.shouldBalanceBeHidden);
+const lockedAssetSymbol = computed(() => props.lockedAsset?.symbol ?? '');
+const debtAssetSymbol = computed(() => props.debtAsset?.symbol ?? '');
+
+const fetchPage = computed(() => Math.ceil((pageAmount * currentPage.value) / fetchAmount));
+const total = computed(() => totalCount.value);
+const lastPage = computed(() => (total.value ? Math.ceil(total.value / pageAmount) : 1));
+const hasItems = computed(() => total.value > 0);
+
+const offset = computed(() => pageAmount * (currentPage.value - 1));
+const dataVariables = computed(() => ({
+  id: props.id,
+  first: pageAmount,
+  offset: offset.value,
+}));
+
+const visibleItems = computed(() => {
+  const currentFetchPage = fetchPage.value;
+  const offsetWithinFetch = fetchAmount * (currentFetchPage - 1);
+  const start = Math.max(pageAmount * (currentPage.value - 1) - offsetWithinFetch, 0);
+  const end = start + pageAmount;
+  return rawItems.value.slice(start, end);
+});
+
+const items = visibleItems;
+
+function resetDataSubscription(): void {
+  if (intervalId.value) {
+    clearInterval(intervalId.value);
   }
+  intervalId.value = null;
+}
 
-  get debtAssetSymbol(): string {
-    return this.debtAsset?.symbol ?? '';
-  }
+function resetData(): void {
+  requestGeneration += 1;
+  activePollGeneration = null;
+  rawItems.value = [];
+  totalCount.value = 0;
+  resetDataSubscription();
+}
 
-  // override IndexerDataFetchMixin
-  get dataVariables(): FetchVariables {
-    return {
-      id: this.id,
-      first: this.pageAmount,
-      offset: this.pageAmount * (this.currentPage - 1),
-    };
-  }
+/** Returns whether an async response still belongs to the mounted component's active data request. */
+const isCurrentRequest = (generation: number): boolean => !isUnmounted && generation === requestGeneration;
 
-  // override IndexerDataFetchMixin
-  get updateVariables(): FetchVariables {
-    return {
-      id: this.id,
-      fromTimestamp: this.intervalTimestamp,
-    };
-  }
+/**
+ * Refreshes the first page from an authoritative snapshot while preventing overlapping polls.
+ * A full first-page refresh avoids timestamp cursor gaps and keeps the indexer's total count authoritative.
+ */
+async function applyPollingData(generation: number): Promise<void> {
+  if (!isCurrentRequest(generation) || activePollGeneration === generation) return;
 
-  // override IndexerDataFetchMixin
-  getItemTimestamp(item: Nullable<VaultEvent>): number {
-    return item?.timestamp ?? 0;
-  }
+  activePollGeneration = generation;
 
-  // override IndexerDataFetchMixin
-  async requestData(variables: FetchVariables): Promise<{ items: VaultEvent[]; totalCount: number }> {
-    return await fetchVaultEvents(variables);
-  }
+  try {
+    const { items: fetchedItems, totalCount: count } = await fetchVaultEvents({
+      id: props.id,
+      first: fetchAmount,
+      offset: 0,
+    });
 
-  getTitle(type: VaultEventType): string {
-    switch (type) {
-      case VaultEventTypes.Created:
-        return this.t('operations.CreateVault');
-      case VaultEventTypes.Closed:
-        return this.t('operations.CloseVault');
-      case VaultEventTypes.DebtIncreased:
-        return this.t('operations.BorrowVaultDebt');
-      case VaultEventTypes.CollateralDeposit:
-        return this.t('operations.DepositCollateral');
-      case VaultEventTypes.DebtPayment:
-        return this.t('operations.RepayVaultDebt');
-      case VaultEventTypes.Liquidated:
-        return this.t('kensetsu.liquidated');
-      default:
-        return '';
-    }
-  }
+    if (!isCurrentRequest(generation)) return;
 
-  private getAmount(hidden: boolean, item: VaultEvent): string {
-    return hidden ? this.HiddenValue : (item.amount?.toLocaleString() ?? '');
-  }
-
-  getOperationMessage(item: VaultEvent): string {
-    const hidden = this.shouldBalanceBeHidden;
-    switch (item.type) {
-      case VaultEventTypes.Created:
-        return this.t('operations.finalized.CreateVault', {
-          symbol: this.debtAssetSymbol,
-          symbol2: this.lockedAssetSymbol,
-        });
-      case VaultEventTypes.Closed:
-        return this.t('operations.finalized.CloseVault', {
-          symbol: this.debtAssetSymbol,
-          symbol2: this.lockedAssetSymbol,
-        });
-      case VaultEventTypes.DebtIncreased:
-        return this.t('operations.finalized.BorrowVaultDebt', {
-          symbol: this.debtAssetSymbol,
-          amount: this.getAmount(hidden, item),
-        });
-      case VaultEventTypes.CollateralDeposit:
-        return this.t('operations.finalized.DepositCollateral', {
-          symbol: this.lockedAssetSymbol,
-          amount: this.getAmount(hidden, item),
-        });
-      case VaultEventTypes.DebtPayment:
-        return this.t('operations.finalized.RepayVaultDebt', {
-          symbol: this.debtAssetSymbol,
-          amount: this.getAmount(hidden, item),
-        });
-      case VaultEventTypes.Liquidated:
-        return this.t('kensetsu.liquidatedMessage', {
-          symbol: this.lockedAssetSymbol,
-          amount: this.getAmount(hidden, item),
-        });
-      default:
-        return '';
+    rawItems.value = Object.freeze(fetchedItems) as VaultEvent[];
+    totalCount.value = count;
+  } catch (error) {
+    console.error(error);
+  } finally {
+    if (activePollGeneration === generation) {
+      activePollGeneration = null;
     }
   }
 }
+
+async function applyPageData(): Promise<void> {
+  resetDataSubscription();
+  activePollGeneration = null;
+  const generation = ++requestGeneration;
+
+  if (!props.id) {
+    rawItems.value = [];
+    totalCount.value = 0;
+    return;
+  }
+
+  await withLoading(async () => {
+    const { items: fetchedItems, totalCount: count } = await fetchVaultEvents(dataVariables.value);
+
+    if (!isCurrentRequest(generation)) return;
+
+    rawItems.value = Object.freeze(fetchedItems) as VaultEvent[];
+    totalCount.value = count;
+  });
+
+  if (!isCurrentRequest(generation)) return;
+
+  if (fetchPage.value === 1 && hasItems.value) {
+    intervalId.value = setInterval(() => {
+      void applyPollingData(generation);
+    }, updateInterval);
+  }
+}
+
+watch(
+  () => props.id,
+  (current, previous) => {
+    if (current === previous) return;
+    currentPage.value = 1;
+    resetData();
+    applyPageData().catch((error) => console.error(error));
+  },
+  { immediate: true }
+);
+
+watch(currentPage, (current, previous) => {
+  if (current === previous) return;
+  applyPageData().catch((error) => console.error(error));
+});
+
+watch(lastPage, (value) => {
+  if (currentPage.value > value) {
+    currentPage.value = value;
+  }
+});
+
+onBeforeUnmount(() => {
+  isUnmounted = true;
+  requestGeneration += 1;
+  activePollGeneration = null;
+  resetDataSubscription();
+});
+
+const handlePaginationClick = (button: PaginationButton) => {
+  switch (button) {
+    case PaginationButton.Prev:
+      currentPage.value = Math.max(currentPage.value - 1, 1);
+      break;
+    case PaginationButton.Next:
+      currentPage.value = Math.min(currentPage.value + 1, lastPage.value);
+      break;
+    case PaginationButton.Last:
+      currentPage.value = lastPage.value;
+      break;
+    default:
+      currentPage.value = 1;
+  }
+};
+
+const getTitle = (type: VaultEventType): string => {
+  switch (type) {
+    case VaultEventTypes.Created:
+      return t('operations.CreateVault');
+    case VaultEventTypes.Closed:
+      return t('operations.CloseVault');
+    case VaultEventTypes.DebtIncreased:
+      return t('operations.BorrowVaultDebt');
+    case VaultEventTypes.CollateralDeposit:
+      return t('operations.DepositCollateral');
+    case VaultEventTypes.DebtPayment:
+      return t('operations.RepayVaultDebt');
+    case VaultEventTypes.Liquidated:
+      return t('kensetsu.liquidated');
+    default:
+      return '';
+  }
+};
+
+const getAmount = (hidden: boolean, item: VaultEvent): string => {
+  return hidden ? HiddenValue : (item.amount?.toLocaleString() ?? '');
+};
+
+const getOperationMessage = (item: VaultEvent): string => {
+  const hidden = shouldBalanceBeHidden.value;
+
+  switch (item.type) {
+    case VaultEventTypes.Created:
+      return t('operations.finalized.CreateVault', {
+        symbol: debtAssetSymbol.value,
+        symbol2: lockedAssetSymbol.value,
+      });
+    case VaultEventTypes.Closed:
+      return t('operations.finalized.CloseVault', {
+        symbol: debtAssetSymbol.value,
+        symbol2: lockedAssetSymbol.value,
+      });
+    case VaultEventTypes.DebtIncreased:
+      return t('operations.finalized.BorrowVaultDebt', {
+        symbol: debtAssetSymbol.value,
+        amount: getAmount(hidden, item),
+      });
+    case VaultEventTypes.CollateralDeposit:
+      return t('operations.finalized.DepositCollateral', {
+        symbol: lockedAssetSymbol.value,
+        amount: getAmount(hidden, item),
+      });
+    case VaultEventTypes.DebtPayment:
+      return t('operations.finalized.RepayVaultDebt', {
+        symbol: debtAssetSymbol.value,
+        amount: getAmount(hidden, item),
+      });
+    case VaultEventTypes.Liquidated:
+      return t('kensetsu.liquidatedMessage', {
+        symbol: lockedAssetSymbol.value,
+        amount: getAmount(hidden, item),
+      });
+    default:
+      return '';
+  }
+};
 </script>
 
 <style lang="scss">
