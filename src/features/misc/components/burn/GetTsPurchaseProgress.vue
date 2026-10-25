@@ -128,6 +128,15 @@ function transactionUrl(reference?: string): string | undefined {
   [data-status='confirmed'] .purchase-progress__marker {
     color: var(--s-color-status-success);
   }
+  /* A stage that is waiting on the buyer or on the network beats like a pulse, so the list looks alive while it waits. */
+  @media (prefers-reduced-motion: no-preference) {
+    [data-status='current'] .purchase-progress__marker,
+    [data-status='pending'] .purchase-progress__marker,
+    [data-status='check'] .purchase-progress__marker {
+      display: inline-block;
+      animation: purchase-progress-beat 1.4s ease-in-out infinite;
+    }
+  }
   p {
     font-size: 12px;
     line-height: 1.5;
@@ -174,6 +183,13 @@ function transactionUrl(reference?: string): string | undefined {
     li {
       flex-basis: calc(50% - 24px);
     }
+  }
+}
+
+@keyframes purchase-progress-beat {
+  50% {
+    opacity: 0.45;
+    transform: scale(1.7);
   }
 }
 </style>

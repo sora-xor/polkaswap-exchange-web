@@ -9,6 +9,7 @@ import {
   type TransactionHistoryLookup,
 } from '@/lib/soraneo-wallet/src/composables/transactionHistory';
 import { delay } from '@/lib/soraneo-wallet/src/util';
+import { beginTransactionSigningContext } from '@/lib/substrate/sdk/transactionSigningContext';
 import pinia from '@/plugins/pinia';
 import { useWalletStore } from '@/stores/wallet';
 
@@ -116,23 +117,31 @@ export function useTransaction(options?: Parameters<typeof useLoading>[0]) {
     await withChainApi(api, async () => {
       await notification
         .withAppNotification(async () => {
-          await walletStore.beforeTransactionSign(api);
-          const time = Date.now();
-          const historyLookup = beginTransactionHistoryLookup(api, api.historyList, time);
-
+          const signingPair = api.signer ? null : api.accountPair;
+          const finishSigningContext = beginTransactionSigningContext(api);
           try {
-            await handler();
-            notification.showAppNotification(t('transactionSubmittedText'), 'info');
-            const tx = await waitForLastTransaction(historyLookup);
+            await walletStore.beforeTransactionSign(api);
+            const time = Date.now();
+            const historyLookup = beginTransactionHistoryLookup(api, api.historyList, time);
 
-            if (tx) {
-              addActiveTransaction(tx.id as string);
-              result = { submitted: true, submittedAt: time, transaction: tx };
-            } else {
-              result = { submitted: true, submittedAt: time, historyTimedOut: true };
+            try {
+              await handler();
+              notification.showAppNotification(t('transactionSubmittedText'), 'info');
+              const tx = await waitForLastTransaction(historyLookup);
+
+              if (tx) {
+                addActiveTransaction(tx.id as string);
+                result = { submitted: true, submittedAt: time, transaction: tx };
+              } else {
+                result = { submitted: true, submittedAt: time, historyTimedOut: true };
+              }
+            } finally {
+              finishTransactionHistoryLookup(historyLookup);
             }
           } finally {
-            finishTransactionHistoryLookup(historyLookup);
+            finishSigningContext();
+            // Failed preflight and rejected signing must not retain an unlocked local key.
+            if (signingPair && !signingPair.isLocked) signingPair.lock();
           }
         }, true)
         .catch((error: unknown) => {

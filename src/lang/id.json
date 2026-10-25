@@ -4714,26 +4714,33 @@
             "conversionGas": "Cadangan gas konversi",
             "convert": "ETH tersedia untuk konversi",
             "bridge": "Jumlah DAI konservatif untuk jembatan",
+            "bridgeEth": "ETH yang dikirim ke SORA",
             "bridgeFee": "Pisahkan biaya jembatan DAI",
             "bridgeGas": "persetujuan DAI dan cadangan gas jembatan",
+            "bridgeEthGas": "Cadangan gas transfer jembatan",
             "conversionFee": "Biaya penyedia konversi",
             "details": "Lihat rincian biayanya",
             "nativeTsFees": "SORA biaya swap dan pembakaran dicadangkan dari output XOR",
+            "priceImpact": "Dampak harga swap di SORA",
             "nativeSwapFee": "SORA biaya swap dicadangkan dari output XOR",
             "refresh": "Segarkan pemeriksaan biaya",
             "reserveExplanation": "Cadangan jaringan menggunakan data biaya saat ini dengan margin. Mereka berasal dari ETH yang didanai kartu; perkiraan ini tidak memerlukan saldo ETH yang ada. Cadangan yang tidak terpakai tetap ada di dompet Ethereum Anda.",
             "bridgeExplanation": "Transfer DAI normal yang masuk tidak dikenakan biaya DAI terpisah. Persetujuan Ethereum dan transfer gas dicadangkan di atas; waktu jembatan dan biaya selanjutnya dapat berubah.",
+            "bridgeEthExplanation": "Transfer ETH ke SORA tidak dikenakan biaya jembatan terpisah. Gas Ethereum-nya dicadangkan di atas; waktu jembatan dapat berubah.",
             "existing": "Dompet yang ada ETH, tidak termasuk dalam anggaran ini",
             "errors": {
                 "wallet": "Hubungkan akun Ethereum dan SORA yang dimaksud di mainnet, lalu segarkan pemeriksaan ini.",
                 "gas": "Biaya jaringan Ethereum saat ini tidak tersedia. Segarkan sebelum membayar.",
                 "conversion": "Konversi ETH ke DAI saat ini tidak dapat diverifikasi dalam batas dampak harga 5%. Segarkan sebelum membayar.",
                 "budget": "Anggaran kartu ini tidak menyisakan cukup ETH setelah perkiraan biaya konversi dan jembatan. Tinjau jumlahnya sebelum membayar.",
+                "budgetEth": "Anggaran kartu ini tidak menyisakan cukup ETH setelah perkiraan gas jembatan. Tinjau jumlahnya sebelum membayar.",
                 "provider": "Penyedia kartu tidak dapat mengutip anggaran USD ini secara tepat. Segarkan atau tinjau jumlahnya sebelum membayar.",
                 "bridge": "Jembatan DAI masuk atau pemeriksaan biaya saat ini tidak tersedia. Segarkan sebelum membayar.",
+                "bridgeEth": "Jembatan ETH ke SORA atau pemeriksaan biayanya saat ini tidak tersedia. Segarkan sebelum membayar.",
                 "simulation": "Kami tidak dapat menyimulasikan konversi ini untuk akun Anda. Segarkan sebelum membayar; tidak ada transaksi yang dikirim.",
                 "expired": "Pemeriksaan biaya ini sudah habis masa berlakunya. Segarkan sebelum membayar.",
-                "liquidity": "DAI yang tersisa saat ini tidak dapat melewati pemeriksaan likuiditas dan biaya XOR asli. Tinjau jumlahnya atau segarkan sebelum membayar."
+                "liquidity": "DAI yang tersisa saat ini tidak dapat melewati pemeriksaan likuiditas dan biaya XOR asli. Tinjau jumlahnya atau segarkan sebelum membayar.",
+                "liquidityEth": "ETH yang sampai di SORA saat ini tidak dapat melewati pemeriksaan likuiditas dan biaya XOR. Tinjau jumlahnya atau segarkan sebelum membayar."
             },
             "limits": "Pemeriksaan ini berakhir setelah 30 detik. Ketersediaan kartu, penawaran akhir penyedia, dan tinjauan dompet selanjutnya masih berlaku. Pemrosesan kartu dapat bertahan lebih lama dari perkiraan ini, sehingga harga dan biaya akan diperiksa kembali sebelum setiap transaksi; pengiriman tidak dijamin dengan perkiraan ini.",
             "netBurnable": "Diperkirakan XOR tersedia untuk dibakar",
@@ -4986,7 +4993,7 @@
         "walletsDescription": "XOR Anda akan disimpan di dompet SORA ini. Pertahankan akses ke sana dan lindungi informasi pemulihan Anda.",
         "claimWallet": "SORA dompet penerima",
         "createClaimWallet": "Buat atau sambungkan dompet SORA Anda",
-        "swapDescription": "Jumlah DAI Anda sudah terisi. Tinjau penawaran terbaru dan biaya jaringan untuk menerima XOR di dompet SORA Anda.",
+        "swapDescription": "Jumlah {asset} Anda sudah terisi. Tinjau penawaran terbaru dan biaya jaringan untuk menerima XOR di dompet SORA Anda.",
         "initialEstimate": "Perkiraan awal · disegarkan sebelum pertukaran",
         "receivingNotice": "XOR dikirimkan ke dompet SORA Anda. Anda dapat menahan, mengirim, atau menggunakannya setelah penukaran dikonfirmasi.",
         "receivedTitle": "XOR diterima",
@@ -4998,7 +5005,7 @@
         "swapReceived": "Pertukaran dikonfirmasi. XOR telah diterima oleh dompet SORA Anda.",
         "existingXor": "Lihat XOR yang ada di dompet saya",
         "routes": {
-            "card": "Kartu → ETH di Ethereum → DAI → transfer ke SORA → XOR di dompet Anda. Membutuhkan dompet Ethereum dan SORA. MoonPay mengontrol kelayakan, pemeriksaan identitas, biaya minimum dan akhir.",
+            "card": "Kartu → ETH di Ethereum → transfer ke SORA → tukar ETH dengan XOR di dompet Anda. Anda hanya memerlukan dompet SORA: dompet Ethereum sementara di halaman ini mengirim ETH ke SORA untuk Anda. MoonPay mengontrol kelayakan, pemeriksaan identitas, jumlah minimum, dan biaya akhir.",
             "ethereum": "ETH atau USDT di mainnet Ethereum → DAI → transfer ke SORA → XOR di dompet Anda. Ethereum DAI yang ada melewatkan konversi. Simpan ETH untuk biaya jaringan.",
             "ton": "TON asli terlebih dahulu memerlukan pertukaran TON-ke-USDT eksternal. USDT di TON → ETH di Ethereum melalui Symbiosis → DAI → transfer ke SORA → XOR di dompet Anda. Penyedia menangani transfer TON dan pemulihannya. Simpan TON dan ETH untuk biaya jaringan.",
             "sora": "DAI di dompet SORA Anda → tukar ke XOR. Perkiraan tersebut mencakup biaya swap SORA."
@@ -5014,6 +5021,7 @@
             "xorBudget": "XOR sudah ada di dompet SORA Anda",
             "cardEth": "MoonPay saat ini perkiraan {eth} ETH terkirim. Simpan beberapa ETH untuk bensin; membelanjakannya untuk biaya akan mengurangi jumlah XOR pada akhirnya.",
             "method": "Ini adalah rencana indikatif, diperbarui setiap 30 detik. Estimasi mencakup konversi konservatif dan buffer slippage. Jumlah penyedia, bahan bakar, dan tarif dapat berubah sebelum tinjauan akhir.",
+            "impact": "Dampak harga {asset} → XOR saat ini: {impact}%. Batasnya {limit}%.",
             "notice": "Rute ini memperoleh XOR di SORA mainnet. Tinjau setiap transaksi sebelum penandatanganan.",
             "reason": {
                 "fees-insufficient": "Jumlah ini tidak akan menyisakan XOR yang dapat dibelanjakan setelah biaya swap. Cobalah jumlah yang lebih besar.",
@@ -5025,7 +5033,8 @@
             "allowed": "Perkiraan ini memenuhi batas dampak harga dan menyisakan XOR yang dapat dibelanjakan setelah perkiraan biaya swap. Tarif dan biaya dapat berubah.",
             "feeReserve": "Perkiraan biaya penukaran: {fees} XOR. Jumlah yang dapat dibelanjakan secara konservatif: {spendable} XOR.",
             "feesUnavailable": "Menunggu biaya swap saat ini dari SORA mainnet.",
-            "feesInsufficient": "Jumlah ini tidak akan menyisakan XOR yang dapat dibelanjakan setelah biaya swap. Tambah jumlah DAI dan periksa lagi; itu juga harus tetap berada dalam batas dampak harga 5%."
+            "feesInsufficient": "Jumlah ini tidak akan menyisakan XOR yang dapat dibelanjakan setelah biaya swap. Tambah jumlah DAI dan periksa lagi; itu juga harus tetap berada dalam batas dampak harga 15%.",
+            "blocked": "Dampak harga melebihi 15%. Coba jumlah yang lebih kecil atau tunggu hingga likuiditas bertambah."
         },
         "return": "Kembali untuk Membeli XOR",
         "resumeTitle": "Lanjutkan membeli XOR",
@@ -5060,25 +5069,134 @@
             "useUsdt": "Bayar dengan USDT sebagai gantinya",
             "next": "Apa yang terjadi selanjutnya",
             "steps": {
+                "walletsCard": "Hubungkan dompet SORA. Anda bisa membuatnya di layar berikutnya. Anda tidak memerlukan dompet Ethereum.",
                 "walletsEthereum": "Hubungkan dompet Ethereum, seperti MetaMask, dan dompet SORA. Anda bisa membuat dompet SORA di layar berikutnya.",
                 "walletSora": "Hubungkan dompet SORA Anda.",
                 "walletsTon": "Hubungkan dompet TON, Ethereum, dan SORA Anda.",
-                "card": "Bayar dengan kartu di MoonPay. MoonPay mengirim ETH ke dompet Ethereum Anda.",
+                "card": "Bayar dengan kartu di MoonPay. MoonPay mengirim ETH ke dompet sementara di halaman ini.",
                 "ton": "Pindahkan USDT Anda dari TON ke Ethereum di aplikasi penyedia.",
                 "convert": "Di dompet Ethereum Anda, setujui penukaran ke DAI dan transfer ke SORA.",
+                "sendCard": "Halaman ini mengirim ETH ke SORA untuk Anda.",
                 "transfer": "Di dompet Ethereum Anda, setujui transfer DAI Anda ke SORA.",
                 "swap": "Di dompet SORA Anda, setujui penukaran ke XOR. XOR Anda masuk ke dompet itu."
             },
             "stepsNote": "Tidak ada yang dikirim sampai Anda menyetujuinya. Transfer antarjaringan bisa memakan waktu beberapa menit.",
+            "stepsNoteCard": "Kartu Anda tidak ditagih sampai Anda membayar di MoonPay. Transfer antarjaringan bisa memakan waktu beberapa menit.",
             "otherWays": "Cara bayar lainnya:",
             "inProgress": "Anda memiliki pembelian yang sedang berjalan: {amount}."
         },
         "card": {
-            "description": "Bayar dengan kartu di MoonPay. MoonPay mengirim ETH ke dompet Ethereum Anda, lalu langkah berikutnya mengubahnya menjadi XOR.",
+            "description": "Bayar dengan kartu di MoonPay. MoonPay mengirim ETH ke alamat Ethereum di bawah, lalu langkah berikutnya mengubahnya menjadi XOR.",
             "copy": "Salin alamat Ethereum Anda:",
             "paste": "Buka MoonPay. Saat diminta alamat dompet, tempel alamat ini. Jangan gunakan alamat SORA Anda.",
             "return": "Selesaikan pembayaran di MoonPay, lalu kembali ke halaman ini.",
             "open": "Salin alamat dan buka MoonPay"
+        },
+        "run": {
+            "title": "Pembelian Anda",
+            "temporaryMode": "Dompet sementara di halaman ini menerima ETH dan menandatangani langkah Ethereum untuk Anda.",
+            "ownMode": "Dompet Ethereum Anda meminta Anda mengonfirmasi setiap langkah Ethereum.",
+            "steps": {
+                "pay": {
+                    "title": "Bayar dengan kartu",
+                    "detail": "Periksa jumlah di bawah, lalu bayar di MoonPay."
+                },
+                "receive": {
+                    "title": "MoonPay mengirim ETH",
+                    "detail": "Menunggu MoonPay. Biasanya ini memakan waktu beberapa menit, terkadang lebih lama.",
+                    "detailSaved": "Menunggu MoonPay. Biasanya ini memakan waktu beberapa menit, terkadang lebih lama. Anda dapat menutup halaman ini; pembelian berlanjut saat Anda kembali."
+                },
+                "send": {
+                    "title": "Kirim {asset} ke SORA",
+                    "detail": "Halaman ini menandatangani transfer.",
+                    "detailOwn": "Konfirmasikan transfer di dompet Ethereum Anda."
+                },
+                "arrive": {
+                    "title": "{asset} tiba di SORA",
+                    "detail": "Jembatan biasanya memerlukan beberapa menit."
+                },
+                "swap": {
+                    "title": "Tukar {asset} dengan XOR",
+                    "detail": "Konfirmasikan penukaran di bawah ini di dompet SORA Anda."
+                }
+            },
+            "done": "XOR sudah ada di dompet SORA Anda.",
+            "failures": {
+                "wallet": "Dompet pembelian tidak dapat dibuka. Coba lagi.",
+                "vault": "Dompet pembelian yang tersimpan di browser ini tidak dapat dibuka. Pulihkan dompet dengan frasa pemulihannya.",
+                "liquidity": "Pasar XOR di SORA saat ini tidak bisa menampung jumlah ini. Coba lagi nanti.",
+                "bridge": "Transfer ke SORA terhenti. Coba lagi."
+            },
+            "retry": "Coba lagi",
+            "wallet": "Dompet pembelian",
+            "savedFunds": "Dompet sementara sebelumnya masih berisi {amount}.",
+            "useSaved": "Selesaikan dengan dompet itu",
+            "notSaved": "Browser ini tidak mengizinkan halaman menyimpan dompet pembelian. Simpan frasa pemulihannya sebelum Anda membayar.",
+            "walletNote": "Pembayaran kartu menggunakan dompet Ethereum sementara di halaman ini, jadi Anda hanya memerlukan dompet SORA.",
+            "ownWallet": "Gunakan dompet Ethereum saya sendiri saja"
+        }
+    },
+    "temporaryWallet": {
+        "offerTitle": "Tidak punya dompet Ethereum? Gunakan dompet sementara",
+        "offerText": "Dompet ini dibuat di halaman ini dan bertahan sampai Anda menutup tab. MoonPay mengirim ETH Anda ke dompet ini, dan Anda menyetujui setiap langkah berikutnya di sini.",
+        "create": "Buat dompet sementara",
+        "restore": "Pulihkan dompet sementara",
+        "backupTitle": "Simpan frasa pemulihan Anda",
+        "backupText": "Dompet ini hanya ada di tab browser ini. Jika tab tertutup sebelum uang Anda sampai di SORA, 12 kata ini adalah satu-satunya cara untuk mendapatkannya kembali.",
+        "privateWarning": "Siapa pun yang memiliki kata-kata ini dapat mengambil uang di dompet ini. Jangan bagikan kata-kata ini kepada siapa pun.",
+        "phrase": "Frasa pemulihan",
+        "address": "Alamat dompet",
+        "copyPhrase": "Salin frasa",
+        "copied": "Disalin",
+        "download": "Unduh sebagai file",
+        "confirmSaved": "Saya telah menyimpan frasa pemulihan.",
+        "use": "Gunakan dompet ini",
+        "cancel": "Batalkan",
+        "restoreTitle": "Pulihkan dompet sementara",
+        "restoreText": "Masukkan frasa pemulihan dompet sementara yang Anda buat di halaman ini.",
+        "restoreWarning": "Jangan masukkan frasa pemulihan dompet utama Anda di sini.",
+        "restoreAction": "Pulihkan dompet",
+        "invalidPhrase": "Kata-kata ini bukan frasa pemulihan yang valid. Periksa ejaan dan urutannya.",
+        "openTitle": "Dompet sementara Anda masih terbuka",
+        "useAgain": "Gunakan lagi",
+        "showPhrase": "Tampilkan frasa pemulihan",
+        "hidePhrase": "Sembunyikan frasa pemulihan",
+        "close": "Tutup dompet sementara",
+        "closeWarning": "Dompet ini masih berisi {amount}. Tanpa frasa pemulihan, uang tersebut akan hilang saat Anda menutupnya.",
+        "closeWarningUnknown": "Saldo tidak dapat diperiksa. Jika masih ada uang di dompet ini, Anda memerlukan frasa pemulihan untuk mendapatkannya kembali.",
+        "closeConfirm": "Tetap tutup",
+        "keepOpen": "Biarkan terbuka",
+        "connectFailed": "Dompet sementara tidak dapat terhubung. Coba lagi.",
+        "active": "Dompet sementara di halaman ini",
+        "keepPageOpen": "Anda menggunakan dompet sementara. Biarkan halaman ini terbuka sampai transfer Anda ke SORA terkirim. Jika halaman tertutup, pulihkan dompet dengan frasa pemulihannya.",
+        "leftover": "Biasanya ada sisa ETH setelah biaya jaringan. ETH tersebut tetap ada di dompet ini. Untuk menggunakannya nanti, impor frasa pemulihan ke aplikasi dompet Ethereum mana pun.",
+        "file": {
+            "title": "Dompet Ethereum sementara Polkaswap",
+            "created": "Dibuat",
+            "path": "Jalur derivasi",
+            "help": "Untuk membuka dompet ini nanti, impor frasa pemulihan ke aplikasi dompet Ethereum seperti MetaMask, atau gunakan “Pulihkan dompet sementara” di halaman “Beli XOR” Polkaswap."
+        },
+        "request": {
+            "title": "Dompet sementara",
+            "convert": "Tukar {amount} ETH dengan minimal {minimum} DAI",
+            "allowBridge": "Izinkan jembatan SORA memindahkan {amount} DAI",
+            "allowBridgeAll": "Izinkan jembatan SORA memindahkan DAI berapa pun jumlahnya dari dompet ini",
+            "bridge": "Kirim {amount} DAI ke SORA",
+            "bridgeEth": "Kirim {amount} ETH ke SORA",
+            "send": "Kirim {amount} ETH",
+            "contract": "Panggil kontrak",
+            "from": "Dari",
+            "to": "Ke",
+            "soraAccount": "Akun SORA",
+            "otherSoraAccount": "Akun SORA ini bukan akun yang terhubung ke Polkaswap. Setujui hanya jika Anda memang bermaksud mengirim ke akun ini.",
+            "value": "ETH yang dikirim",
+            "fee": "Biaya jaringan",
+            "feeValue": "sekitar {estimate} ETH, maksimal {max} ETH",
+            "feeIncreased": "Biaya jaringan naik. Periksa biaya yang baru, lalu setujui lagi.",
+            "note": "Tidak ada yang dikirim sampai Anda menyetujuinya.",
+            "approve": "Setujui",
+            "reject": "Tolak",
+            "sending": "Mengirim…"
         }
     }
 }

@@ -2410,7 +2410,7 @@
         "bridgePreparationError": "This funding route could not be prepared. Check your network and wallet connection, then return to Buy XOR to try again.",
         "card": {
             "copy": "Copy your Ethereum address:",
-            "description": "Pay by card in MoonPay. MoonPay sends ETH to your Ethereum wallet, and the next steps turn it into XOR.",
+            "description": "Pay by card in MoonPay. MoonPay sends ETH to the Ethereum address below, and the next steps turn it into XOR.",
             "open": "Copy address and open MoonPay",
             "paste": "Open MoonPay. When it asks for a wallet address, paste this one. Do not use your SORA address.",
             "return": "Finish paying in MoonPay, then come back to this page."
@@ -2424,8 +2424,9 @@
         "initialEstimate": "Initial estimate · refreshed before the swap",
         "liquidity": {
             "allowed": "This estimate meets the price-impact limit and leaves spendable XOR after the estimated swap fee. Rates and fees can change.",
+            "blocked": "The price impact exceeds 15%. Try a smaller amount or wait for more liquidity.",
             "feeReserve": "Estimated swap fee: {fees} XOR. Conservative spendable amount: {spendable} XOR.",
-            "feesInsufficient": "This amount would not leave spendable XOR after the swap fee. Increase the DAI amount and check again; it must also stay within the 5% price-impact limit.",
+            "feesInsufficient": "This amount would not leave spendable XOR after the swap fee. Increase the DAI amount and check again; it must also stay within the 15% price-impact limit.",
             "feesUnavailable": "Waiting for the current swap fee from SORA mainnet.",
             "ready": "About {xor} XOR available after the swap fee"
         },
@@ -2442,6 +2443,7 @@
             "beforeGasXor": "Indicative XOR before Ethereum gas",
             "cardEth": "MoonPay currently estimates {eth} ETH delivered. Keep some ETH for gas; spending it on fees will reduce the eventual XOR amount.",
             "futureXor": "Estimated spendable XOR",
+            "impact": "Current {asset} → XOR price impact: {impact}%. The limit is {limit}%.",
             "method": "This is an indicative plan, refreshed every 30 seconds. Estimates include a conservative conversion and slippage buffer. Provider amounts, gas and rates can change before the final review.",
             "netXor": "After estimated SORA swap fees and a price buffer.",
             "notice": "This route acquires XOR on SORA mainnet. Review every transaction before signing.",
@@ -2459,10 +2461,53 @@
         "return": "Return to Buy XOR",
         "returnToPurchase": "Return to Buy XOR",
         "routes": {
-            "card": "Card → ETH on Ethereum → DAI → transfer to SORA → XOR in your wallet. Requires Ethereum and SORA wallets. MoonPay controls eligibility, identity checks, minimums and final fees.",
+            "card": "Card → ETH on Ethereum → transfer to SORA → swap ETH for XOR in your wallet. You need only a SORA wallet: a temporary Ethereum wallet on this page sends the ETH to SORA for you. MoonPay controls eligibility, identity checks, minimums and final fees.",
             "ethereum": "ETH or USDT on Ethereum mainnet → DAI → transfer to SORA → XOR in your wallet. Existing Ethereum DAI skips conversion. Keep ETH for network fees.",
             "sora": "DAI in your SORA wallet → swap to XOR. The estimate accounts for the SORA swap fee.",
             "ton": "Native TON first needs an external TON-to-USDT swap. USDT on TON → ETH on Ethereum through Symbiosis → DAI → transfer to SORA → XOR in your wallet. The provider handles the TON transfer and its recovery. Keep TON and ETH for network fees."
+        },
+        "run": {
+            "done": "XOR is in your SORA wallet.",
+            "failures": {
+                "bridge": "The transfer to SORA stopped. Try again.",
+                "liquidity": "The XOR market on SORA cannot take this amount right now. Try again later.",
+                "vault": "The purchase wallet saved in this browser could not be opened. Restore it from its recovery phrase.",
+                "wallet": "The purchase wallet could not be opened. Try again."
+            },
+            "notSaved": "This browser does not let the page save the purchase wallet. Save its recovery phrase before you pay.",
+            "ownMode": "Your Ethereum wallet asks you to confirm each Ethereum step.",
+            "ownWallet": "Use my own Ethereum wallet instead",
+            "retry": "Try again",
+            "savedFunds": "An earlier temporary wallet still holds {amount}.",
+            "steps": {
+                "arrive": {
+                    "detail": "The bridge usually needs several minutes.",
+                    "title": "{asset} arrives on SORA"
+                },
+                "pay": {
+                    "detail": "Check the amount below, then pay in MoonPay.",
+                    "title": "Pay by card"
+                },
+                "receive": {
+                    "detail": "Waiting for MoonPay. This usually takes a few minutes, sometimes longer.",
+                    "detailSaved": "Waiting for MoonPay. This usually takes a few minutes, sometimes longer. You can close this page; the purchase continues when you come back.",
+                    "title": "MoonPay sends ETH"
+                },
+                "send": {
+                    "detail": "This page signs the transfer.",
+                    "detailOwn": "Confirm the transfer in your Ethereum wallet.",
+                    "title": "Send {asset} to SORA"
+                },
+                "swap": {
+                    "detail": "Confirm the swap below in your SORA wallet.",
+                    "title": "Swap {asset} for XOR"
+                }
+            },
+            "temporaryMode": "A temporary wallet on this page receives the ETH and signs the Ethereum steps for you.",
+            "title": "Your purchase",
+            "useSaved": "Finish with it",
+            "wallet": "Purchase wallet",
+            "walletNote": "Card payments use a temporary Ethereum wallet on this page, so you only need a SORA wallet."
         },
         "start": {
             "cardBlocked": "Card payments start at {minimum}, but the SORA market can take only about {maximum} right now. Pay with crypto, or try again later.",
@@ -2483,16 +2528,19 @@
             "noPrice": "We could not get a price right now. Try again in a minute.",
             "otherWays": "Other ways to pay:",
             "steps": {
-                "card": "Pay by card in MoonPay. MoonPay sends ETH to your Ethereum wallet.",
+                "card": "Pay by card in MoonPay. MoonPay sends ETH to a temporary wallet on this page.",
                 "convert": "In your Ethereum wallet, approve the swap to DAI and the transfer to SORA.",
+                "sendCard": "The page sends the ETH to SORA for you.",
                 "swap": "In your SORA wallet, approve the swap to XOR. Your XOR arrives in that wallet.",
                 "ton": "Move your USDT from TON to Ethereum in the provider’s app.",
                 "transfer": "In your Ethereum wallet, approve the transfer of your DAI to SORA.",
+                "walletsCard": "Connect a SORA wallet. You can create one on the next screen. You don’t need an Ethereum wallet.",
                 "walletsEthereum": "Connect an Ethereum wallet, like MetaMask, and a SORA wallet. You can create a SORA wallet on the next screen.",
                 "walletSora": "Connect your SORA wallet.",
                 "walletsTon": "Connect your TON, Ethereum and SORA wallets."
             },
             "stepsNote": "Nothing is sent until you approve it. Transfers between networks can take several minutes.",
+            "stepsNoteCard": "Nothing is charged until you pay in MoonPay. Transfers between networks can take several minutes.",
             "ton": "USDT on TON (3 wallets)",
             "tooBig": "Too large for the SORA market right now. The most you can buy at once is about {amount}.",
             "tooBigUnknown": "Too large for the SORA market right now. Try a smaller amount.",
@@ -2504,7 +2552,7 @@
         },
         "stepsLabel": "Buy XOR steps",
         "subtitle": "Get XOR into your SORA wallet using card or crypto.",
-        "swapDescription": "Your DAI amount is filled in. Review the latest quote and network fee to receive XOR in your SORA wallet.",
+        "swapDescription": "Your {asset} amount is filled in. Review the latest quote and network fee to receive XOR in your SORA wallet.",
         "swapReceived": "Swap confirmed. XOR was received by your SORA wallet.",
         "title": "Buy XOR",
         "viewWallet": "View XOR in my wallet",
@@ -3144,6 +3192,9 @@
         "cardResumeDescription": "You opened card checkout earlier. Check its status and the ETH in your receiving wallet before continuing or starting another purchase.",
         "cardReview": {
             "bridge": "Conservative DAI amount for the bridge",
+            "bridgeEth": "ETH sent to SORA",
+            "bridgeEthExplanation": "The ETH transfer to SORA has no separate bridge fee. Its Ethereum gas is reserved above; bridge timing can change.",
+            "bridgeEthGas": "Bridge transfer gas reserve",
             "bridgeExplanation": "The normal incoming DAI transfer has no separate DAI fee. Ethereum approval and transfer gas are reserved above; bridge timing and later fees can change.",
             "bridgeFee": "Separate DAI bridge fee",
             "bridgeGas": "DAI approval and bridge gas reserve",
@@ -3158,11 +3209,14 @@
             "details": "See the fee breakdown",
             "errors": {
                 "bridge": "The incoming DAI bridge or its current cost check is unavailable. Refresh before paying.",
+                "bridgeEth": "The ETH bridge to SORA or its current cost check is unavailable. Refresh before paying.",
                 "budget": "This card budget does not leave enough ETH after the estimated conversion and bridge costs. Review the amount before paying.",
+                "budgetEth": "This card budget does not leave enough ETH after the estimated bridge gas. Review the amount before paying.",
                 "conversion": "The ETH to DAI conversion cannot currently be verified within the 5% price-impact limit. Refresh before paying.",
                 "expired": "This cost check expired. Refresh before paying.",
                 "gas": "Current Ethereum network costs are unavailable. Refresh before paying.",
                 "liquidity": "The remaining DAI cannot currently pass the native XOR liquidity and fee check. Review the amount or refresh before paying.",
+                "liquidityEth": "The ETH that reaches SORA cannot currently pass the XOR liquidity and fee check. Review the amount or refresh before paying.",
                 "provider": "The card provider could not quote this exact USD budget. Refresh or review the amount before paying.",
                 "simulation": "We could not simulate this conversion for your account. Refresh before paying; no transaction was sent.",
                 "wallet": "Connect the intended Ethereum and SORA accounts on mainnet, then refresh this check."
@@ -3174,6 +3228,7 @@
             "nativeTsFees": "SORA swap and burn fees reserved from XOR output",
             "netBurnable": "Estimated XOR available to burn",
             "netXor": "Estimated XOR after fees",
+            "priceImpact": "Price impact of the swap on SORA",
             "provider": "Card provider fees included in the USD budget",
             "readyTs": "For {usd} USD, the current estimate leaves {xor} XOR available to burn after the listed reserves.",
             "readyXor": "For {usd} USD, the current estimate is {xor} XOR after the listed reserves.",
@@ -4956,6 +5011,69 @@
         "swapOutputMessage": "Output is estimated. You will receive at least {transactionValue} or the transaction will revert."
     },
     "swapText": "Swap",
+    "temporaryWallet": {
+        "active": "Temporary wallet on this page",
+        "address": "Wallet address",
+        "backupText": "This wallet exists only in this browser tab. If the tab closes before your money reaches SORA, these 12 words are the only way to get it back.",
+        "backupTitle": "Save your recovery phrase",
+        "cancel": "Cancel",
+        "close": "Close temporary wallet",
+        "closeConfirm": "Close it anyway",
+        "closeWarning": "This wallet still holds {amount}. Without the recovery phrase, that money is lost when you close it.",
+        "closeWarningUnknown": "The balance could not be checked. If money is left in this wallet, you need the recovery phrase to get it back.",
+        "confirmSaved": "I saved the recovery phrase.",
+        "connectFailed": "The temporary wallet could not connect. Try again.",
+        "copied": "Copied",
+        "copyPhrase": "Copy phrase",
+        "create": "Make a temporary wallet",
+        "download": "Download as a file",
+        "file": {
+            "created": "Created",
+            "help": "To open this wallet later, import the recovery phrase into an Ethereum wallet app such as MetaMask, or use Restore a temporary wallet on the Polkaswap Buy XOR page.",
+            "path": "Derivation path",
+            "title": "Polkaswap temporary Ethereum wallet"
+        },
+        "hidePhrase": "Hide recovery phrase",
+        "invalidPhrase": "These words are not a valid recovery phrase. Check the spelling and the order.",
+        "keepOpen": "Keep it open",
+        "keepPageOpen": "You are using a temporary wallet. Keep this page open until your transfer to SORA is sent. If the page closes, restore the wallet with its recovery phrase.",
+        "leftover": "Some ETH is usually left over after network fees. It stays in this wallet. To use it later, import the recovery phrase into any Ethereum wallet app.",
+        "offerText": "It is made on this page and lasts until you close the tab. MoonPay sends your ETH to it, and you approve each next step here.",
+        "offerTitle": "No Ethereum wallet? Use a temporary one",
+        "openTitle": "Your temporary wallet is still open",
+        "phrase": "Recovery phrase",
+        "privateWarning": "Anyone with these words can take the money in this wallet. Do not share them.",
+        "request": {
+            "allowBridge": "Let the SORA bridge move {amount} DAI",
+            "allowBridgeAll": "Let the SORA bridge move any amount of DAI from this wallet",
+            "approve": "Approve",
+            "bridge": "Send {amount} DAI to SORA",
+            "bridgeEth": "Send {amount} ETH to SORA",
+            "contract": "Call a contract",
+            "convert": "Swap {amount} ETH for at least {minimum} DAI",
+            "fee": "Network fee",
+            "feeIncreased": "Network fees went up. Check the new fee, then approve again.",
+            "feeValue": "about {estimate} ETH, at most {max} ETH",
+            "from": "From",
+            "note": "Nothing is sent until you approve.",
+            "otherSoraAccount": "This SORA account is not the one connected to Polkaswap. Approve only if you meant to send to it.",
+            "reject": "Reject",
+            "send": "Send {amount} ETH",
+            "sending": "Sending…",
+            "soraAccount": "SORA account",
+            "title": "Temporary wallet",
+            "to": "To",
+            "value": "ETH sent"
+        },
+        "restore": "Restore a temporary wallet",
+        "restoreAction": "Restore wallet",
+        "restoreText": "Enter the recovery phrase of a temporary wallet you made on this page.",
+        "restoreTitle": "Restore a temporary wallet",
+        "restoreWarning": "Do not enter the recovery phrase of your main wallet here.",
+        "showPhrase": "Show recovery phrase",
+        "use": "Use this wallet",
+        "useAgain": "Use it again"
+    },
     "tokens": {
         "assetId": "Asset ID"
     },

@@ -4712,9 +4712,11 @@
             "reserved": "ETH được giữ lại để ước tính chi phí mạng",
             "conversionGas": "dự trữ khí chuyển đổi",
             "bridge": "Số tiền bảo thủ DAI cho cây cầu",
+            "bridgeEth": "ETH gửi sang SORA",
             "convert": "ETH có sẵn để chuyển đổi",
             "bridgeFee": "Lệ phí cầu riêng DAI",
             "bridgeGas": "DAI phê duyệt và dự trữ khí cầu",
+            "bridgeEthGas": "Dự trữ gas cho lệnh chuyển qua cầu nối",
             "conversionFee": "Phí nhà cung cấp chuyển đổi",
             "provider": "Phí nhà cung cấp thẻ được bao gồm trong ngân sách USD",
             "nativeSwapFee": "SORA phí hoán đổi được đặt trước từ đầu ra XOR",
@@ -4722,18 +4724,23 @@
             "limits": "Kiểm tra này hết hạn sau 30 giây. Tính khả dụng của thẻ, báo giá cuối cùng của nhà cung cấp và đánh giá ví sau này vẫn được áp dụng. Việc xử lý thẻ có thể tồn tại lâu hơn ước tính này, vì vậy giá và phí sẽ được kiểm tra lại trước mỗi giao dịch; việc giao hàng không được đảm bảo bởi ước tính này.",
             "reserveExplanation": "Dự trữ mạng sử dụng dữ liệu phí hiện tại có biên độ. Chúng đến từ ETH được tài trợ bằng thẻ; ước tính này không yêu cầu số dư ETH hiện có. Dự trữ chưa sử dụng vẫn còn trong ví Ethereum của bạn.",
             "bridgeExplanation": "Chuyển khoản DAI đến thông thường không có phí DAI riêng. Việc phê duyệt và chuyển giao Ethereum được bảo lưu ở trên; thời gian cầu và phí sau này có thể thay đổi.",
+            "bridgeEthExplanation": "Lệnh chuyển ETH sang SORA không có phí cầu nối riêng. Gas Ethereum của lệnh này được dự trữ ở trên; thời gian qua cầu nối có thể thay đổi.",
             "nativeTsFees": "SORA phí hoán đổi và đốt được đặt trước từ đầu ra XOR",
+            "priceImpact": "Tác động giá của giao dịch hoán đổi trên SORA",
             "existing": "Ví hiện tại ETH, được loại trừ khỏi ngân sách này",
             "refresh": "Làm mới kiểm tra chi phí",
             "errors": {
                 "wallet": "Kết nối các tài khoản Ethereum và SORA dự định trên mạng chính, sau đó làm mới bước kiểm tra này.",
                 "budget": "Ngân sách thẻ này không còn đủ ETH sau chi phí chuyển đổi và cầu nối ước tính. Xem lại số tiền trước khi thanh toán.",
+                "budgetEth": "Ngân sách thẻ này không còn đủ ETH sau phí gas cầu nối ước tính. Xem lại số tiền trước khi thanh toán.",
                 "conversion": "Hiện không thể xác minh chuyển đổi ETH thành DAI trong giới hạn tác động giá 5%. Làm mới trước khi thanh toán.",
                 "simulation": "Chúng tôi không thể mô phỏng chuyển đổi này cho tài khoản của bạn. Làm mới trước khi thanh toán; không có giao dịch nào được gửi đi.",
                 "provider": "Nhà cung cấp thẻ không thể báo giá chính xác ngân sách USD này. Làm mới hoặc xem lại số tiền trước khi thanh toán.",
                 "gas": "Chi phí mạng Ethereum hiện tại không có sẵn. Làm mới trước khi thanh toán.",
                 "bridge": "Cầu DAI đến hoặc kiểm tra chi phí hiện tại của nó không khả dụng. Làm mới trước khi thanh toán.",
+                "bridgeEth": "Cầu nối ETH sang SORA hoặc kiểm tra chi phí hiện tại của nó không khả dụng. Làm mới trước khi thanh toán.",
                 "liquidity": "DAI còn lại hiện không thể vượt qua quá trình kiểm tra tính thanh khoản và phí XOR gốc. Xem lại số tiền hoặc làm mới trước khi thanh toán.",
+                "liquidityEth": "Lượng ETH đến SORA hiện không thể vượt qua quá trình kiểm tra tính thanh khoản và phí XOR. Xem lại số tiền hoặc làm mới trước khi thanh toán.",
                 "expired": "Kiểm tra chi phí này đã hết hạn. Làm mới trước khi thanh toán."
             },
             "netXor": "XOR ước tính sau phí",
@@ -4986,7 +4993,7 @@
         "walletsDescription": "XOR của bạn sẽ được giữ trong ví SORA này. Giữ quyền truy cập vào nó và bảo vệ thông tin khôi phục của bạn.",
         "claimWallet": "SORA nhận ví",
         "createClaimWallet": "Tạo hoặc kết nối ví SORA của bạn",
-        "swapDescription": "Số tiền DAI của bạn đã được điền. Xem lại báo giá và phí mạng mới nhất để nhận XOR trong ví SORA của bạn.",
+        "swapDescription": "Số tiền {asset} của bạn đã được điền. Xem lại báo giá và phí mạng mới nhất để nhận XOR trong ví SORA của bạn.",
         "initialEstimate": "Ước tính ban đầu · được làm mới trước khi hoán đổi",
         "receivingNotice": "XOR được gửi tới ví SORA của bạn. Bạn có thể giữ, gửi hoặc sử dụng nó sau khi việc hoán đổi được xác nhận.",
         "receivedTitle": "XOR đã nhận",
@@ -4998,7 +5005,7 @@
         "swapReceived": "Đã xác nhận hoán đổi. XOR đã được nhận bởi ví SORA của bạn.",
         "existingXor": "Xem XOR hiện có trong ví của tôi",
         "routes": {
-            "card": "Thẻ → ETH trên Ethereum → DAI → chuyển tới SORA → XOR trong ví của bạn. Yêu cầu ví Ethereum và SORA. MoonPay kiểm soát tính đủ điều kiện, kiểm tra danh tính, mức phí tối thiểu và phí cuối cùng.",
+            "card": "Thẻ → ETH trên Ethereum → chuyển tới SORA → đổi ETH lấy XOR trong ví của bạn. Bạn chỉ cần một ví SORA: một ví Ethereum tạm thời trên trang này sẽ gửi ETH sang SORA thay cho bạn. MoonPay kiểm soát tính đủ điều kiện, kiểm tra danh tính, số tiền tối thiểu và phí cuối cùng.",
             "ethereum": "ETH hoặc USDT trên mạng chính Ethereum → DAI → chuyển tới SORA → XOR trong ví của bạn. Ethereum hiện tại DAI bỏ qua chuyển đổi. Giữ ETH để trả phí mạng.",
             "ton": "Bản địa TON trước tiên cần hoán đổi TON-to-USDT bên ngoài. USDT trên TON → ETH trên Ethereum thông qua Symbiosis → DAI → chuyển tới SORA → XOR trong ví của bạn. Nhà cung cấp xử lý việc chuyển TON và việc khôi phục nó. Giữ TON và ETH để trả phí mạng.",
             "sora": "DAI trong ví SORA của bạn → đổi sang XOR. Ước tính chiếm phí hoán đổi SORA."
@@ -5014,6 +5021,7 @@
             "xorBudget": "XOR đã có trong ví SORA của bạn",
             "cardEth": "MoonPay hiện ước tính {eth} ETH đã phân phối. Giữ lại một ít ETH để đổ xăng; chi tiêu vào phí sẽ làm giảm số tiền XOR cuối cùng.",
             "method": "Đây là kế hoạch biểu thị, được làm mới sau mỗi 30 giây. Các ước tính bao gồm khoảng đệm chuyển đổi và trượt giá vừa phải. Số tiền, gas và giá của nhà cung cấp có thể thay đổi trước lần đánh giá cuối cùng.",
+            "impact": "Tác động giá {asset} → XOR hiện tại: {impact}%. Giới hạn là {limit}%.",
             "notice": "Tuyến đường này thu được XOR trên mạng chính SORA. Xem lại mọi giao dịch trước khi ký.",
             "reason": {
                 "fees-insufficient": "Số tiền này sẽ không còn XOR có thể chi tiêu sau phí hoán đổi. Hãy thử một số tiền lớn hơn.",
@@ -5025,7 +5033,8 @@
             "allowed": "Ước tính này đáp ứng giới hạn tác động đến giá và để lại XOR có thể chi tiêu sau phí hoán đổi ước tính. Tỷ giá và phí có thể thay đổi.",
             "feeReserve": "Phí hoán đổi ước tính: {fees} XOR. Số tiền có thể chi tiêu thận trọng: {spendable} XOR.",
             "feesUnavailable": "Đang chờ phí hoán đổi hiện tại từ mạng chính SORA.",
-            "feesInsufficient": "Số tiền này sẽ không còn XOR có thể chi tiêu sau phí hoán đổi. Tăng số tiền DAI và kiểm tra lại; nó cũng phải nằm trong giới hạn tác động giá 5%."
+            "feesInsufficient": "Số tiền này sẽ không còn XOR có thể chi tiêu sau phí hoán đổi. Tăng số tiền DAI và kiểm tra lại; nó cũng phải nằm trong giới hạn tác động giá 15%.",
+            "blocked": "Tác động giá vượt quá 15%. Hãy thử số tiền nhỏ hơn hoặc chờ đến khi có thêm thanh khoản."
         },
         "resumeTitle": "Tiếp tục mua XOR",
         "return": "Quay lại mua XOR",
@@ -5060,25 +5069,134 @@
             "useUsdt": "Trả bằng USDT thay thế",
             "next": "Điều gì xảy ra tiếp theo",
             "steps": {
+                "walletsCard": "Kết nối một ví SORA. Bạn có thể tạo một ví ở màn hình tiếp theo. Bạn không cần ví Ethereum.",
                 "walletsEthereum": "Kết nối một ví Ethereum, như MetaMask, và một ví SORA. Bạn có thể tạo ví SORA ở màn hình tiếp theo.",
                 "walletSora": "Kết nối ví SORA của bạn.",
                 "walletsTon": "Kết nối các ví TON, Ethereum và SORA của bạn.",
-                "card": "Thanh toán bằng thẻ trong MoonPay. MoonPay gửi ETH đến ví Ethereum của bạn.",
+                "card": "Thanh toán bằng thẻ trong MoonPay. MoonPay gửi ETH đến một ví tạm thời trên trang này.",
                 "ton": "Chuyển USDT của bạn từ TON sang Ethereum trong ứng dụng của nhà cung cấp.",
                 "convert": "Trong ví Ethereum, phê duyệt việc đổi sang DAI và chuyển sang SORA.",
+                "sendCard": "Trang này gửi ETH sang SORA thay cho bạn.",
                 "transfer": "Trong ví Ethereum, phê duyệt việc chuyển DAI của bạn sang SORA.",
                 "swap": "Trong ví SORA, phê duyệt việc đổi sang XOR. XOR của bạn sẽ về ví đó."
             },
             "stepsNote": "Không có gì được gửi cho đến khi bạn phê duyệt. Chuyển tiền giữa các mạng có thể mất vài phút.",
+            "stepsNoteCard": "Thẻ của bạn không bị trừ tiền cho đến khi bạn thanh toán trong MoonPay. Chuyển tiền giữa các mạng có thể mất vài phút.",
             "otherWays": "Cách thanh toán khác:",
             "inProgress": "Bạn có một giao dịch mua đang thực hiện: {amount}."
         },
         "card": {
-            "description": "Thanh toán bằng thẻ trong MoonPay. MoonPay gửi ETH đến ví Ethereum của bạn, và các bước tiếp theo sẽ chuyển nó thành XOR.",
+            "description": "Thanh toán bằng thẻ trong MoonPay. MoonPay gửi ETH đến địa chỉ Ethereum bên dưới, và các bước tiếp theo sẽ chuyển nó thành XOR.",
             "copy": "Sao chép địa chỉ Ethereum của bạn:",
             "paste": "Mở MoonPay. Khi được hỏi địa chỉ ví, hãy dán địa chỉ này. Không dùng địa chỉ SORA của bạn.",
             "return": "Hoàn tất thanh toán trong MoonPay, rồi quay lại trang này.",
             "open": "Sao chép địa chỉ và mở MoonPay"
+        },
+        "run": {
+            "title": "Giao dịch mua của bạn",
+            "temporaryMode": "Một ví tạm thời trên trang này nhận ETH và ký các bước Ethereum thay cho bạn.",
+            "ownMode": "Ví Ethereum của bạn sẽ yêu cầu bạn xác nhận từng bước Ethereum.",
+            "steps": {
+                "pay": {
+                    "title": "Thanh toán bằng thẻ",
+                    "detail": "Kiểm tra số tiền bên dưới, rồi thanh toán trong MoonPay."
+                },
+                "receive": {
+                    "title": "MoonPay gửi ETH",
+                    "detail": "Đang chờ MoonPay. Việc này thường mất vài phút, đôi khi lâu hơn.",
+                    "detailSaved": "Đang chờ MoonPay. Việc này thường mất vài phút, đôi khi lâu hơn. Bạn có thể đóng trang này; giao dịch mua sẽ tiếp tục khi bạn quay lại."
+                },
+                "send": {
+                    "title": "Gửi {asset} sang SORA",
+                    "detail": "Trang này ký lệnh chuyển.",
+                    "detailOwn": "Xác nhận lệnh chuyển trong ví Ethereum của bạn."
+                },
+                "arrive": {
+                    "title": "{asset} về đến SORA",
+                    "detail": "Cầu nối thường cần vài phút."
+                },
+                "swap": {
+                    "title": "Đổi {asset} lấy XOR",
+                    "detail": "Xác nhận việc đổi bên dưới trong ví SORA của bạn."
+                }
+            },
+            "done": "XOR đã có trong ví SORA của bạn.",
+            "failures": {
+                "wallet": "Không thể mở ví mua hàng. Hãy thử lại.",
+                "vault": "Không thể mở ví mua hàng đã lưu trong trình duyệt này. Hãy khôi phục ví bằng cụm từ khôi phục của ví.",
+                "liquidity": "Thị trường XOR trên SORA hiện không nhận được số tiền này. Hãy thử lại sau.",
+                "bridge": "Việc chuyển sang SORA đã dừng lại. Hãy thử lại."
+            },
+            "retry": "Thử lại",
+            "wallet": "Ví mua hàng",
+            "savedFunds": "Một ví tạm thời trước đó vẫn còn {amount}.",
+            "useSaved": "Hoàn tất bằng ví đó",
+            "notSaved": "Trình duyệt này không cho phép trang lưu ví mua hàng. Hãy lưu cụm từ khôi phục của ví trước khi thanh toán.",
+            "walletNote": "Thanh toán bằng thẻ dùng một ví Ethereum tạm thời trên trang này, nên bạn chỉ cần một ví SORA.",
+            "ownWallet": "Dùng ví Ethereum của riêng tôi"
+        }
+    },
+    "temporaryWallet": {
+        "offerTitle": "Chưa có ví Ethereum? Hãy dùng ví tạm thời",
+        "offerText": "Ví này được tạo trên trang này và tồn tại cho đến khi bạn đóng thẻ trình duyệt. MoonPay gửi ETH của bạn vào ví này, và bạn phê duyệt từng bước tiếp theo tại đây.",
+        "create": "Tạo ví tạm thời",
+        "restore": "Khôi phục ví tạm thời",
+        "backupTitle": "Lưu cụm từ khôi phục",
+        "backupText": "Ví này chỉ tồn tại trong thẻ trình duyệt này. Nếu thẻ này bị đóng trước khi tiền của bạn đến SORA, 12 từ này là cách duy nhất để lấy lại tiền.",
+        "privateWarning": "Bất kỳ ai có các từ này đều có thể lấy tiền trong ví này. Không chia sẻ chúng với bất kỳ ai.",
+        "phrase": "Cụm từ khôi phục",
+        "address": "Địa chỉ ví",
+        "copyPhrase": "Sao chép cụm từ",
+        "copied": "Đã sao chép",
+        "download": "Tải xuống dưới dạng tệp",
+        "confirmSaved": "Tôi đã lưu cụm từ khôi phục.",
+        "use": "Dùng ví này",
+        "cancel": "Hủy",
+        "restoreTitle": "Khôi phục ví tạm thời",
+        "restoreText": "Nhập cụm từ khôi phục của ví tạm thời bạn đã tạo trên trang này.",
+        "restoreWarning": "Không nhập cụm từ khôi phục từ ví chính của bạn vào đây.",
+        "restoreAction": "Khôi phục ví",
+        "invalidPhrase": "Các từ này không phải là cụm từ khôi phục hợp lệ. Hãy kiểm tra chính tả và thứ tự.",
+        "openTitle": "Ví tạm thời của bạn vẫn đang mở",
+        "useAgain": "Dùng lại",
+        "showPhrase": "Hiện cụm từ khôi phục",
+        "hidePhrase": "Ẩn cụm từ khôi phục",
+        "close": "Đóng ví tạm thời",
+        "closeWarning": "Ví này vẫn còn {amount}. Nếu không có cụm từ khôi phục, số tiền đó sẽ bị mất khi bạn đóng ví.",
+        "closeWarningUnknown": "Không thể kiểm tra số dư. Nếu ví này còn tiền, bạn cần cụm từ khôi phục để lấy lại.",
+        "closeConfirm": "Vẫn đóng",
+        "keepOpen": "Giữ mở",
+        "connectFailed": "Không thể kết nối ví tạm thời. Hãy thử lại.",
+        "active": "Ví tạm thời trên trang này",
+        "keepPageOpen": "Bạn đang dùng ví tạm thời. Hãy giữ trang này mở cho đến khi lệnh chuyển của bạn sang SORA được gửi đi. Nếu trang bị đóng, hãy khôi phục ví bằng cụm từ khôi phục của ví.",
+        "leftover": "Sau khi trả phí mạng, ví thường còn dư một số ETH. Số ETH này vẫn nằm trong ví. Để dùng sau, hãy nhập cụm từ khôi phục vào bất kỳ ứng dụng ví Ethereum nào.",
+        "file": {
+            "title": "Ví Ethereum tạm thời của Polkaswap",
+            "created": "Ngày tạo",
+            "path": "Đường dẫn dẫn xuất",
+            "help": "Để mở ví này sau, hãy nhập cụm từ khôi phục vào một ứng dụng ví Ethereum như MetaMask, hoặc dùng “Khôi phục ví tạm thời” trên trang “Mua XOR” của Polkaswap."
+        },
+        "request": {
+            "title": "Ví tạm thời",
+            "convert": "Đổi {amount} ETH lấy ít nhất {minimum} DAI",
+            "allowBridge": "Cho phép cầu nối SORA chuyển {amount} DAI",
+            "allowBridgeAll": "Cho phép cầu nối SORA chuyển bất kỳ lượng DAI nào từ ví này",
+            "bridge": "Gửi {amount} DAI sang SORA",
+            "bridgeEth": "Gửi {amount} ETH sang SORA",
+            "send": "Gửi {amount} ETH",
+            "contract": "Gọi hợp đồng",
+            "from": "Từ",
+            "to": "Đến",
+            "soraAccount": "Tài khoản SORA",
+            "otherSoraAccount": "Tài khoản SORA này không phải là tài khoản đã kết nối với Polkaswap. Chỉ phê duyệt nếu bạn thực sự muốn gửi đến tài khoản này.",
+            "value": "ETH gửi đi",
+            "fee": "Phí mạng",
+            "feeValue": "khoảng {estimate} ETH, tối đa {max} ETH",
+            "feeIncreased": "Phí mạng đã tăng. Hãy kiểm tra phí mới, rồi phê duyệt lại.",
+            "note": "Không có gì được gửi cho đến khi bạn phê duyệt.",
+            "approve": "Phê duyệt",
+            "reject": "Từ chối",
+            "sending": "Đang gửi…"
         }
     }
 }

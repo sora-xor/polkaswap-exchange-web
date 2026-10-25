@@ -34,6 +34,7 @@
     :set-visibility="setSignTxDialogVisibility"
   ></confirm-dialog>
   <select-sora-account-dialog v-if="showSoraAccountDialog"></select-sora-account-dialog>
+  <temporary-wallet-request-dialog v-if="temporaryWalletSession.request"></temporary-wallet-request-dialog>
   <app-browser-notifs-local-storage-override
     v-if="showWalletOverlays && showErrorLocalStorageExceed"
     v-model:visible="showErrorLocalStorageExceed"
@@ -56,7 +57,9 @@ import {
   NotificationEnablingPage,
   ReferralsConfirmInviteUser,
   SelectSoraAccountDialog,
+  TemporaryWalletRequestDialog,
 } from './components';
+import { temporaryWalletSession } from '@/utils/connection/evm/temporaryWalletSession';
 
 const {
   account,

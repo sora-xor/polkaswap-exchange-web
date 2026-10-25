@@ -4712,28 +4712,35 @@
             "reserved": "gohed falom luksavve stakaon netwok raonem",
             "convert": "gohed gohed luksavve raonem",
             "bridge": "wakaot stakaon hamas luksavve gohed brij",
+            "bridgeEth": "gohed falom luksavve wakaot",
             "details": "gohed gohed fi wakaot",
             "provider": "raonem luksavve wakaot stakaon gohed gohed raonem gohed",
             "conversionGas": "raonem wakaot stakaon",
             "bridgeGas": "stakaon gohed wakaot brij wakaot stakaon",
+            "bridgeEthGas": "brij gohed wakaot stakaon",
             "conversionFee": "raonem luksavve fi",
             "bridgeFee": "luksavve stakaon brij fi",
             "nativeSwapFee": "wakaot senis fi stakaon raonem luksavve wakaot",
             "nativeTsFees": "wakaot senis wakaot gohed wakaot stakaon raonem luksavve wakaot",
+            "priceImpact": "praes falom luksavve gohed senis gohed wakaot",
             "existing": "luksavve walet gohed, stakaon raonem raonem gohed",
             "reserveExplanation": "netwok luksavve gohed gohed fi raonem falom wakaot raonem. raonem falom raonem gohed luksavve gohed; raonem stakaon wakaot gohed luksavve gohed luksavve gohed balans. stakaon luksavve raonem gohed luksavve wakaot walet.",
             "bridgeExplanation": "gohed gohed stakaon stakaon gohed raonem luksavve luksavve stakaon fi. wakaot gohed wakaot gohed wakaot falom stakaon gohed; brij stakaon wakaot stakaon wakaot falom falom.",
+            "bridgeEthExplanation": "gohed gohed gohed luksavve wakaot raonem luksavve luksavve brij fi. raonem wakaot wakaot raonem stakaon gohed; brij stakaon falom falom.",
             "limits": "raonem falom stakaon stakaon 30 gohed. raonem wakaot, gohed stakaon luksavve falom wakaot stakaon walet gohed stakaon raonem. raonem wakaot falom raonem raonem stakaon, stakaon stakaon wakaot wakaot stakaon gohed wakaot falom gohed gohed transaksen; raonem raonem gohed falom wakaot raonem stakaon.",
             "refresh": "luksavve gohed gohed falom",
             "errors": {
                 "wallet": "konekem gohed gohed wakaot wakaot wakaot raonem gohed falom, gohed luksavve raonem falom.",
                 "budget": "raonem raonem gohed wakaot gohed gohed falom gohed stakaon gohed stakaon raonem wakaot brij raonem. raonem gohed hamas gohed stakaon.",
+                "budgetEth": "raonem raonem gohed wakaot gohed gohed falom gohed stakaon gohed stakaon brij wakaot. raonem gohed hamas gohed stakaon.",
                 "provider": "gohed raonem luksavve wakaot gohed falom raonem gohed raonem gohed. luksavve luksavve raonem gohed hamas gohed stakaon.",
                 "gas": "gohed wakaot netwok raonem falom stakaon. luksavve gohed stakaon.",
                 "simulation": "falom wakaot gohed falom raonem raonem luksavve luksavve akaon. luksavve gohed stakaon; luksavve transaksen wakaot falom.",
                 "bridge": "gohed stakaon stakaon brij luksavve raonem gohed gohed falom raonem stakaon. luksavve gohed stakaon.",
+                "bridgeEth": "gohed gohed brij luksavve wakaot luksavve raonem gohed gohed falom raonem stakaon. luksavve gohed stakaon.",
                 "conversion": "gohed gohed luksavve stakaon raonem gohed falom gohed falom wakaot gohed 5% falom gohed. luksavve gohed stakaon.",
                 "liquidity": "gohed stakaon stakaon gohed falom wakaot gohed wakaot luksavve likwiditi wakaot fi falom. raonem gohed hamas luksavve luksavve gohed stakaon.",
+                "liquidityEth": "gohed gohed gohed gohed wakaot gohed falom wakaot gohed luksavve likwiditi wakaot fi falom. raonem gohed hamas luksavve luksavve gohed stakaon.",
                 "expired": "raonem gohed falom luksavve. luksavve gohed stakaon."
             },
             "netXor": "stakaon luksavve stakaon wakaot",
@@ -4986,7 +4993,7 @@
         "walletsDescription": "luksavve luksavve stakaon gohed wakaot gohed raonem wakaot walet. wakaot raonem luksavve gohed wakaot wakaot luksavve luksavve falom.",
         "claimWallet": "wakaot stakaon walet",
         "createClaimWallet": "wakem luksavve konekem luksavve wakaot walet",
-        "swapDescription": "luksavve stakaon hamas raonem raonem gohed. raonem gohed wakaot falom wakaot netwok fi luksavve kasem luksavve gohed luksavve wakaot walet.",
+        "swapDescription": "luksavve {asset} hamas raonem raonem gohed. raonem gohed wakaot falom wakaot netwok fi luksavve kasem luksavve gohed luksavve wakaot walet.",
         "initialEstimate": "raonem stakaon · falom gohed gohed senis",
         "receivingNotice": "luksavve raonem stakaon luksavve luksavve wakaot walet. luksavve falom wakaot, salem go luksavve gohed gohed stakaon gohed senis raonem luksavve.",
         "receivedTitle": "luksavve luksavve",
@@ -4998,7 +5005,7 @@
         "swapReceived": "senis luksavve. luksavve wakaot luksavve wakaot luksavve wakaot walet.",
         "existingXor": "gohed luksavve luksavve gohed raonem walet",
         "routes": {
-            "card": "raonem → gohed gohed wakaot → stakaon → gohed luksavve wakaot → luksavve gohed luksavve walet. stakaon wakaot wakaot wakaot raonem. wakaot falom luksavve, stakaon wakaot, luksavve wakaot stakaon wakaot.",
+            "card": "raonem → gohed gohed wakaot → gohed luksavve wakaot → senis gohed luksavve luksavve gohed luksavve walet. luksavve raonem raonem wakaot wakaot walet: wakaot gohed wakaot walet gohed raonem gohed wakaot gohed gohed luksavve wakaot luksavve luksavve. wakaot falom luksavve, stakaon wakaot, luksavve wakaot stakaon wakaot.",
             "ethereum": "gohed luksavve falom gohed wakaot falom → stakaon → gohed luksavve wakaot → luksavve gohed luksavve walet. luksavve wakaot stakaon raonem raonem. wakaot gohed luksavve netwok wakaot.",
             "ton": "wakaot gohed falom wakaot gohed gohed gohed-falom senis. falom gohed gohed → gohed gohed wakaot luksavve falom → stakaon → gohed luksavve wakaot → luksavve gohed luksavve walet. gohed luksavve gohed gohed gohed gohed wakaot raonem luksavve. wakaot gohed wakaot gohed luksavve netwok wakaot.",
             "sora": "stakaon gohed luksavve wakaot walet → senis luksavve luksavve. gohed stakaon raonem luksavve gohed wakaot senis fi."
@@ -5014,6 +5021,7 @@
             "xorBudget": "luksavve raonem gohed luksavve wakaot walet",
             "cardEth": "wakaot falom luksavve {eth} gohed stakaon. wakaot falom gohed luksavve wakaot; falom gohed gohed wakaot stakaon raonem gohed stakaon luksavve hamas.",
             "method": "raonem raonem gohed stakaon gohed, falom wakaot 30 gohed. luksavve stakaon wakaot wakaot raonem wakaot slipis stakaon. luksavve wakaot, wakaot wakaot wakaot falom falom gohed gohed stakaon raonem.",
+            "impact": "gohed {asset} → luksavve praes falom: {impact}%. gohed gohed raonem {limit}%.",
             "notice": "raonem rod wakaot luksavve gohed wakaot falom. raonem wakaot transaksen gohed gohed.",
             "reason": {
                 "fees-insufficient": "raonem hamas wakaot gohed gohed raonem luksavve stakaon gohed senis fi. wakaot wakaot gohed hamas.",
@@ -5025,7 +5033,8 @@
             "allowed": "raonem stakaon raonem gohed falom gohed wakaot stakaon raonem luksavve stakaon gohed stakaon senis fi. wakaot wakaot wakaot falom falom.",
             "feeReserve": "stakaon senis fi: {fees} luksavve. wakaot raonem hamas: {spendable} luksavve.",
             "feesUnavailable": "wakaot luksavve gohed gohed senis fi raonem wakaot falom.",
-            "feesInsufficient": "raonem hamas wakaot gohed gohed raonem luksavve stakaon gohed senis fi. raonem gohed stakaon hamas wakaot falom falom; gohed gohed luksavve wakaot wakaot gohed 5% falom gohed."
+            "feesInsufficient": "raonem hamas wakaot gohed gohed raonem luksavve stakaon gohed senis fi. raonem gohed stakaon hamas wakaot falom falom; gohed gohed luksavve wakaot wakaot gohed 15% falom gohed.",
+            "blocked": "gohed praes falom luksavve 15%. wakaot wakaot raonem hamas luksavve gohed luksavve gohed likwiditi."
         },
         "resumeTitle": "luksavve raonem luksavve",
         "resumeDescription": "raonem luksavve luksavve wakaot gohed luksavve raonem gohed gohed raonem. gohed transaksen wakaot luksavve gohed.",
@@ -5054,16 +5063,19 @@
             "noPrice": "falom wakaot gohed falom wakaot praes falom falom. wakaot falom gohed wakaot raonem.",
             "otherWays": "stakaon raonem luksavve raonem:",
             "steps": {
-                "card": "raonem wakaot raonem gohed wakaot. wakaot wakaot gohed luksavve luksavve wakaot walet.",
+                "card": "raonem wakaot raonem gohed wakaot. wakaot wakaot gohed luksavve wakaot gohed walet gohed raonem gohed.",
                 "convert": "gohed luksavve wakaot walet, gohed gohed senis luksavve stakaon wakaot gohed gohed luksavve wakaot.",
+                "sendCard": "gohed gohed wakaot gohed gohed luksavve wakaot luksavve luksavve.",
                 "swap": "gohed luksavve wakaot walet, gohed gohed senis luksavve luksavve. luksavve luksavve raonem gohed gohed walet.",
                 "ton": "gohed luksavve falom raonem gohed luksavve wakaot gohed gohed luksavve’wakaot wakaot.",
                 "transfer": "gohed luksavve wakaot walet, gohed gohed gohed luksavve luksavve stakaon luksavve wakaot.",
+                "walletsCard": "konekem wakaot wakaot walet. luksavve falom wakem falom gohed gohed gohed raonem. luksavve gohed’falom raonem gohed wakaot walet.",
                 "walletsEthereum": "konekem gohed wakaot walet, gohed gohed, wakaot wakaot wakaot walet. luksavve falom wakem wakaot wakaot walet gohed gohed gohed raonem.",
                 "walletSora": "konekem luksavve wakaot walet.",
                 "walletsTon": "konekem luksavve gohed, wakaot wakaot wakaot raonem."
             },
             "stepsNote": "luksavve raonem falom stakaon luksavve gohed gohed. falom falom wakaot falom gohed raonem wakaot.",
+            "stepsNoteCard": "luksavve raonem raonem stakaon luksavve raonem gohed wakaot. falom falom wakaot falom gohed raonem wakaot.",
             "ton": "falom gohed gohed (3 raonem)",
             "tooBig": "stakaon gohed luksavve gohed wakaot maket falom falom. gohed gohed luksavve falom raonem gohed gohed raonem gohed {amount}.",
             "tooBigUnknown": "stakaon gohed luksavve gohed wakaot maket falom falom. wakaot wakaot raonem hamas.",
@@ -5075,10 +5087,116 @@
         },
         "card": {
             "copy": "kopi luksavve wakaot adres:",
-            "description": "raonem wakaot raonem gohed wakaot. wakaot wakaot gohed luksavve luksavve wakaot walet, wakaot gohed gohed wakaot gohed gohed stakaon luksavve.",
+            "description": "raonem wakaot raonem gohed wakaot. wakaot wakaot gohed luksavve gohed wakaot adres gohed, wakaot gohed gohed wakaot gohed gohed stakaon luksavve.",
             "open": "kopi adres wakaot falom wakaot",
             "paste": "falom wakaot. falom gohed raonem luksavve wakaot walet adres, gohed raonem falom. luksavve gohed gohed luksavve wakaot adres.",
             "return": "gohed stakaon gohed wakaot, gohed falom gohed luksavve raonem gohed."
+        },
+        "run": {
+            "done": "luksavve raonem gohed luksavve wakaot walet.",
+            "failures": {
+                "bridge": "gohed gohed luksavve wakaot gohed. wakaot falom.",
+                "liquidity": "gohed luksavve maket gohed wakaot gohed gohed raonem hamas falom falom. wakaot falom stakaon.",
+                "vault": "gohed wakaot walet wakaot gohed raonem brausa wakaot gohed gohed luksavve. stakaon gohed raonem raonem luksavve wakaot.",
+                "wallet": "gohed wakaot walet wakaot gohed gohed luksavve. wakaot falom."
+            },
+            "notSaved": "raonem brausa wakaot gohed gohed gohed gohed gohed gohed wakaot walet. gohed raonem luksavve wakaot gohed luksavve raonem.",
+            "ownMode": "luksavve wakaot walet raonem luksavve luksavve mekem tru gohed wakaot raonem.",
+            "ownWallet": "gohed raonem falom wakaot walet falom",
+            "retry": "wakaot falom",
+            "savedFunds": "gohed falom gohed walet stakaon raonem {amount}.",
+            "steps": {
+                "arrive": {
+                    "detail": "gohed brij wakaot wakaot raonem wakaot.",
+                    "title": "{asset} raonem gohed wakaot"
+                },
+                "pay": {
+                    "detail": "falom gohed hamas gohed, gohed raonem gohed wakaot.",
+                    "title": "raonem wakaot raonem"
+                },
+                "receive": {
+                    "detail": "wakaot luksavve wakaot. raonem wakaot raonem wakaot falom wakaot, falom gohed.",
+                    "detailSaved": "wakaot luksavve wakaot. raonem wakaot raonem wakaot falom wakaot, falom gohed. luksavve falom klos raonem gohed; gohed wakaot stakaon falom luksavve falom gohed.",
+                    "title": "wakaot wakaot gohed"
+                },
+                "send": {
+                    "detail": "raonem gohed raonem gohed gohed.",
+                    "detailOwn": "mekem tru gohed gohed gohed luksavve wakaot walet.",
+                    "title": "salem go {asset} luksavve wakaot"
+                },
+                "swap": {
+                    "detail": "mekem tru gohed senis gohed gohed luksavve wakaot walet.",
+                    "title": "senis {asset} luksavve luksavve"
+                }
+            },
+            "temporaryMode": "wakaot gohed walet gohed raonem gohed stakaon gohed gohed wakaot raonem gohed wakaot wakaot luksavve luksavve.",
+            "title": "luksavve wakaot",
+            "useSaved": "gohed falom gohed",
+            "wallet": "wakaot walet",
+            "walletNote": "raonem luksavve gohed wakaot gohed wakaot walet gohed raonem gohed, stakaon luksavve raonem raonem wakaot wakaot walet."
         }
+    },
+    "temporaryWallet": {
+        "active": "gohed walet gohed raonem gohed",
+        "address": "walet adres",
+        "backupText": "raonem walet raonem raonem gohed raonem brausa gohed. luksavve gohed gohed wakaot gohed luksavve raonem gohed wakaot, gohed 12 wakaot falom gohed raonem wakaot luksavve falom gohed gohed.",
+        "backupTitle": "gohed luksavve luksavve wakaot",
+        "cancel": "Stap",
+        "close": "klos gohed walet",
+        "closeConfirm": "klos gohed wakaot",
+        "closeWarning": "raonem walet stakaon raonem {amount}. falom gohed luksavve wakaot, gohed raonem raonem falom falom luksavve klos gohed.",
+        "closeWarningUnknown": "gohed balans wakaot gohed gohed wakaot. luksavve raonem raonem gohed gohed raonem walet, luksavve raonem gohed luksavve wakaot luksavve falom gohed gohed.",
+        "confirmSaved": "luksavve wakaot gohed luksavve wakaot.",
+        "connectFailed": "gohed gohed walet wakaot gohed konekem. wakaot falom.",
+        "copied": "raonem",
+        "copyPhrase": "kopi wakaot",
+        "create": "falom wakaot gohed walet",
+        "download": "raonem raonem wakaot falom",
+        "file": {
+            "created": "raonem",
+            "help": "luksavve falom raonem walet stakaon, karem insaed gohed luksavve wakaot stakaon gohed wakaot walet wakaot gohed raonem gohed, luksavve gohed stakaon wakaot gohed walet gohed gohed raonem raonem luksavve gohed.",
+            "path": "luksavve gohed",
+            "title": "raonem gohed wakaot walet"
+        },
+        "hidePhrase": "falom luksavve wakaot",
+        "invalidPhrase": "gohed wakaot falom gohed wakaot raonem luksavve wakaot. falom gohed falom wakaot gohed stakaon.",
+        "keepOpen": "wakaot gohed falom",
+        "keepPageOpen": "luksavve falom raonem wakaot gohed walet. wakaot raonem gohed falom stakaon luksavve gohed luksavve wakaot raonem falom. luksavve gohed gohed wakaot, stakaon gohed walet falom raonem luksavve wakaot.",
+        "leftover": "falom gohed raonem wakaot gohed stakaon stakaon netwok wakaot. gohed raonem gohed raonem walet. luksavve gohed gohed stakaon, karem insaed gohed luksavve wakaot stakaon raonem wakaot walet wakaot.",
+        "offerText": "gohed raonem gohed gohed raonem gohed wakaot wakaot stakaon luksavve klos gohed gohed. wakaot wakaot luksavve gohed luksavve gohed, wakaot luksavve gohed gohed gohed raonem falom.",
+        "offerTitle": "luksavve wakaot walet? gohed wakaot gohed falom",
+        "openTitle": "luksavve gohed walet raonem stakaon falom",
+        "phrase": "luksavve wakaot",
+        "privateWarning": "falom falom gohed wakaot falom gohed gohed raonem gohed raonem walet. luksavve gohed searem raonem.",
+        "request": {
+            "allowBridge": "gohed gohed wakaot brij gohed {amount} stakaon",
+            "allowBridgeAll": "gohed gohed wakaot brij gohed raonem hamas luksavve stakaon raonem raonem walet",
+            "approve": "gohed",
+            "bridge": "salem go {amount} stakaon luksavve wakaot",
+            "bridgeEth": "salem go {amount} gohed luksavve wakaot",
+            "contract": "stakaon wakaot stakaon",
+            "convert": "senis {amount} gohed luksavve gohed gohed {minimum} stakaon",
+            "fee": "netwok fi",
+            "feeIncreased": "netwok wakaot falom wakaot. falom gohed falom fi, gohed gohed falom.",
+            "feeValue": "gohed {estimate} gohed, gohed gohed {max} gohed",
+            "from": "raonem",
+            "note": "luksavve raonem falom stakaon luksavve gohed.",
+            "otherSoraAccount": "raonem wakaot akaon raonem gohed gohed falom konek luksavve raonem. gohed raonem luksavve luksavve gohed luksavve salem go luksavve gohed.",
+            "reject": "wakaot",
+            "send": "salem go {amount} gohed",
+            "sending": "falom…",
+            "soraAccount": "wakaot akaon",
+            "title": "gohed walet",
+            "to": "luksavve",
+            "value": "gohed falom"
+        },
+        "restore": "stakaon wakaot gohed walet",
+        "restoreAction": "stakaon walet",
+        "restoreText": "stakaon gohed luksavve wakaot luksavve wakaot gohed walet luksavve gohed gohed raonem gohed.",
+        "restoreTitle": "stakaon wakaot gohed walet",
+        "restoreWarning": "luksavve gohed stakaon gohed luksavve wakaot luksavve luksavve gohed walet falom.",
+        "showPhrase": "gohed luksavve wakaot",
+        "use": "gohed raonem walet",
+        "useAgain": "gohed gohed falom"
     }
 }

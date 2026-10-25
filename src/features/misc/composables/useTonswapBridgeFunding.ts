@@ -93,10 +93,13 @@ export function useTonswapBridgeFunding() {
     prepared.value = null;
   }
 
-  /** Refreshes authoritative registration and the XOR coefficient before populating an incoming transfer. */
+  /**
+   * Refreshes authoritative registration and the XOR coefficient before populating an incoming transfer.
+   * `initialAmount` prefills a DAI or ETH transfer (Buy XOR card purchases move ETH).
+   */
   async function prepareEthereumFunding(
     symbol: TonswapEthereumFundingSymbol,
-    initialDaiAmount = ''
+    initialAmount = ''
   ): Promise<PreparedTonswapBridgeFunding | null> {
     const request = ++generation;
     status.value = 'preparing';
@@ -112,8 +115,8 @@ export function useTonswapBridgeFunding() {
     try {
       if (!Object.prototype.hasOwnProperty.call(TONSWAP_ETHEREUM_FUNDING_ASSETS, symbol))
         return fail('asset-unavailable');
-      const initialAmount = initialDaiAmount ? normalizeGetTsAmount(initialDaiAmount) : '';
-      if (initialDaiAmount && (symbol !== 'DAI' || !initialAmount)) return fail('preparation-failed');
+      const prefill = initialAmount ? normalizeGetTsAmount(initialAmount) : '';
+      if (initialAmount && ((symbol !== 'DAI' && symbol !== 'ETH') || !prefill)) return fail('preparation-failed');
       const definition = TONSWAP_ETHEREUM_FUNDING_ASSETS[symbol];
       if (!definition) return fail('asset-unavailable');
       const chainApi = api.connection?.api;
@@ -167,7 +170,7 @@ export function useTonswapBridgeFunding() {
         return fail('selection-changed');
       }
       if (api.connection?.api !== chainApi || !chainApi.isConnected) return fail('connection-unavailable');
-      if (initialAmount) await bridge.setSendedAmount(initialAmount);
+      if (prefill) await bridge.setSendedAmount(prefill);
       if (request !== generation) return null;
       prepared.value = { symbol, ...definition, denominator };
       status.value = 'ready';

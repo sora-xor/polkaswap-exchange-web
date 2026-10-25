@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { evaluateTonswapLiquidity, isTonswapFundingAmount } from '@/features/misc/lib/tonswapLiquidity';
+import {
+  getTsMaxPriceImpact,
+  evaluateTonswapLiquidity,
+  isTonswapFundingAmount,
+} from '@/features/misc/lib/tonswapLiquidity';
 
 const fees = { swapFeeCodec: '10000000000000000', burnFeeCodec: '20000000000000000', slippageTolerance: '0.5' };
 
@@ -54,10 +58,25 @@ describe('Get TS liquidity preflight', () => {
       )
     ).toMatchObject({ allowed: false, reason: 'fees-unavailable' });
   });
-  it('preserves the generic XOR impact and precise positive-output fee limits', () => {
+  it('allows Buy XOR up to 15% price impact while TS purchases keep 5%', () => {
+    expect(getTsMaxPriceImpact('xor')).toBe('15');
+    expect(getTsMaxPriceImpact('ts')).toBe('5');
+    // Just over 5%: blocked for TS, fine for Buy XOR.
+    expect(evaluateTonswapLiquidity('10', '949999999999999999', '1000000000000000000', fees, 1000, 'ts')).toMatchObject(
+      { allowed: false, reason: 'price-impact' }
+    );
     expect(
       evaluateTonswapLiquidity('10', '949999999999999999', '1000000000000000000', fees, 1000, 'xor')
+    ).toMatchObject({ allowed: true });
+    // Exactly 15% passes; anything more is blocked.
+    expect(
+      evaluateTonswapLiquidity('10', '850000000000000000', '1000000000000000000', fees, 1000, 'xor')
+    ).toMatchObject({ allowed: true, impact: '15' });
+    expect(
+      evaluateTonswapLiquidity('10', '849999999999999999', '1000000000000000000', fees, 1000, 'xor')
     ).toMatchObject({ allowed: false, reason: 'price-impact' });
+  });
+  it('preserves the generic XOR precise positive-output fee limits', () => {
     const genericFees = { swapFeeCodec: '98', slippageTolerance: '0' };
     expect(evaluateTonswapLiquidity('1', '101', '101', genericFees, 1000, 'xor')).toMatchObject({
       allowed: false,

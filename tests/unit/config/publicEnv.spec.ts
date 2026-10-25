@@ -113,7 +113,7 @@ describe('public env config', () => {
       DEFAULT_NETWORKS?: Array<{ address?: string }>;
     };
 
-    expect(parsed.POLKASWAP_INDEXER_ENDPOINT).toBe('https://mof.sora.org/graphql');
+    expect(parsed.POLKASWAP_INDEXER_ENDPOINT).toBe('https://pi.soramitsu.io/graphql');
     expect(parsed.SORAMETRICS_API_ENDPOINT).toBe('https://sorametrics.org');
     expect(parsed.DEFAULT_NETWORKS?.map((node) => node.address)).toEqual(['wss://ws.mof.sora.org']);
   });

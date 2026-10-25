@@ -4712,7 +4712,9 @@
             "charge": "支付金额",
             "delivery": "由卡提供商提供的估计 ETH",
             "bridgeGas": "DAI 批准和过渡气体储备",
+            "bridgeEthGas": "桥接转账 Gas 储备",
             "bridge": "桥梁的保守 DAI 金额",
+            "bridgeEth": "发送到 SORA 的 ETH",
             "provider": "卡提供商费用包含在 USD 预算中",
             "bridgeFee": "单独的 DAI 过桥费",
             "nativeSwapFee": "从 XOR 输出中保留 SORA 掉期费用",
@@ -4721,20 +4723,25 @@
             "details": "查看费用明细",
             "existing": "现有钱包 ETH，不包括在此预算中",
             "nativeTsFees": "SORA 从 XOR 输出中保留的交换和销毁费用",
+            "priceImpact": "SORA 上兑换的价格影响",
             "refresh": "刷新成本检查",
             "limits": "此检查将在 30 秒后过期。卡的可用性、最终提供商报价和后来的钱包审查仍然适用。卡处理的持续时间可能会超过此估计，因此每次交易前都会再次检查价格和费用；此估算不保证交货。",
             "bridgeExplanation": "正常的 DAI 传入转账没有单独的 DAI 费用。上面预留了以太坊审批和转账gas；过桥时间和后期费用可能会发生变化。",
+            "bridgeEthExplanation": "转至 SORA 的 ETH 转账没有单独的桥接费用。其 Ethereum Gas 已在上方预留；桥接时间可能会变化。",
             "reserveExplanation": "网络储备使用当前费用数据并留有余量。他们来自卡资助的 ETH；此估算不需要现有的 ETH 余额。未使用的储备金仍保留在您的以太坊钱包中。",
             "errors": {
                 "wallet": "连接主网上预期的以太坊和 SORA 帐户，然后刷新此检查。",
                 "budget": "在估计转换和桥接成本之后，该卡预算没有留下足够的ETH。付款前请检查金额。",
+                "budgetEth": "扣除估算的桥接 Gas 后，该卡预算没有留下足够的 ETH。付款前请检查金额。",
                 "provider": "卡提供商无法提供准确的 USD 预算。付款前刷新或查看金额。",
                 "gas": "目前的以太坊网络成本无法得知。付款前刷新一下。",
                 "bridge": "传入的 DAI 桥或其当前成本检查不可用。付款前刷新一下。",
+                "bridgeEth": "通往 SORA 的 ETH 桥或其当前成本检查不可用。付款前请刷新。",
                 "simulation": "我们无法为您的帐户模拟此转化。付款前刷新；没有发送任何交易。",
                 "conversion": "目前无法在 5% 的价格影响限制内验证 ETH 到 DAI 的转换。付款前刷新一下。",
                 "expired": "该费用支票已过期。付款前刷新一下。",
-                "liquidity": "剩余的 DAI 目前无法通过原生 XOR 流动性和费用检查。付款前查看金额或刷新。"
+                "liquidity": "剩余的 DAI 目前无法通过原生 XOR 流动性和费用检查。付款前查看金额或刷新。",
+                "liquidityEth": "到达 SORA 的 ETH 目前无法通过 XOR 流动性和费用检查。付款前请检查金额或刷新。"
             },
             "netXor": "扣除费用后预计获得的 XOR",
             "netBurnable": "预计可销毁的 XOR",
@@ -4986,7 +4993,7 @@
         "walletsDescription": "您的 XOR 将保存在这个 SORA 钱包中。保持对其的访问并保护您的恢复信息。",
         "claimWallet": "SORA 接收钱包",
         "createClaimWallet": "创建或连接您的 SORA 钱包",
-        "swapDescription": "您的 DAI 金额已填写。查看最新报价和网络费用，以便在您的 SORA 钱包中接收 XOR。",
+        "swapDescription": "您的 {asset} 金额已填写。查看最新报价和网络费用，以便在您的 SORA 钱包中接收 XOR。",
         "initialEstimate": "初步估计 · 交换前刷新",
         "receivingNotice": "XOR 已发送至您的 SORA 钱包。兑换确认后您可以保留、发送或使用。",
         "receivedTitle": "XOR 已收到",
@@ -4998,7 +5005,7 @@
         "swapReceived": "兑换已确认。您的 SORA 钱包收到了 XOR。",
         "existingXor": "查看我的钱包中现有的 XOR",
         "routes": {
-            "card": "卡→以太坊上的ETH→DAI→转账到钱包中的SORA→XOR。需要以太坊和 SORA 钱包。 MoonPay 控制资格、身份检查、最低费用和最终费用。",
+            "card": "银行卡 → Ethereum 上的 ETH → 转账到 SORA → 在你的钱包中将 ETH 兑换为 XOR。你只需要一个 SORA 钱包：此页面上的临时 Ethereum 钱包会替你将 ETH 发送到 SORA。MoonPay 决定购买资格、身份验证、最低金额和最终费用。",
             "ethereum": "以太坊主网上的 ETH 或 USDT → DAI → 转入钱包中的 SORA → XOR。现有的以太坊 DAI 跳过转换。保留 ETH 作为网络费用。",
             "ton": "本机 TON 首先需要外部 TON 到 USDT 交换。 TON 上的 USDT → 以太坊上的 ETH 通过 Symbiosis → DAI → 转账到钱包中的 SORA → XOR。提供者处理 TON 传输及其恢复。保留 TON 和 ETH 作为网络费用。",
             "sora": "DAI 在您的 SORA 钱包中 → 交换到 XOR。该估算考虑了 SORA 掉期费用。"
@@ -5014,6 +5021,7 @@
             "xorBudget": "XOR 已在您的 SORA 钱包中",
             "cardEth": "MoonPay 目前估计已交付 {eth} ETH。保留一些 ETH 作为气体；将其用于费用将减少最终的 XOR 金额。",
             "method": "这是一个指示性计划，每 30 秒刷新一次。估计包括保守的转换和滑点缓冲。在最终审核之前，提供商的金额、天然气和费率可能会发生变化。",
+            "impact": "当前 {asset} → XOR 价格影响：{impact}%。限制为 {limit}%。",
             "notice": "该路由在 SORA 主网上获取 XOR。签署前检查每笔交易。",
             "reason": {
                 "fees-insufficient": "在交换费用之后，该金额不会留下可花费的 XOR 。尝试更大的量。",
@@ -5025,7 +5033,8 @@
             "allowed": "此估算满足价格影响限制，并在估算掉期费用后留下可支出的 XOR 。费率和费用可能会发生变化。",
             "feeReserve": "预计掉期费用：{fees} XOR。保守可支出金额：{spendable} XOR。",
             "feesUnavailable": "等待 SORA 主网的当前交换费用。",
-            "feesInsufficient": "在交换费用之后，该金额不会留下可花费的 XOR 。增加 DAI 金额并再次检查；它还必须保持在 5% 的价格影响限制之内。"
+            "feesInsufficient": "在交换费用之后，该金额不会留下可花费的 XOR 。增加 DAI 金额并再次检查；它还必须保持在 15% 的价格影响限制之内。",
+            "blocked": "价格影响超过 15%。尝试减少金额或等待更多流动性。"
         },
         "return": "返回购买 XOR",
         "resumeTitle": "继续购买 XOR",
@@ -5060,25 +5069,134 @@
             "useUsdt": "改用 USDT 付款",
             "next": "接下来会发生什么",
             "steps": {
+                "walletsCard": "连接一个 SORA 钱包。可以在下一个页面创建一个。你不需要 Ethereum 钱包。",
                 "walletsEthereum": "连接一个 Ethereum 钱包（例如 MetaMask）和一个 SORA 钱包。你可以在下一个页面创建 SORA 钱包。",
                 "walletSora": "连接你的 SORA 钱包。",
                 "walletsTon": "连接你的 TON、Ethereum 和 SORA 钱包。",
-                "card": "在 MoonPay 中用银行卡付款。MoonPay 会将 ETH 发送到你的 Ethereum 钱包。",
+                "card": "在 MoonPay 中用银行卡付款。MoonPay 会将 ETH 发送到此页面上的临时钱包。",
                 "ton": "在服务商的应用中将你的 USDT 从 TON 转到 Ethereum。",
                 "convert": "在你的 Ethereum 钱包中，批准兑换为 DAI 以及转账到 SORA。",
+                "sendCard": "此页面会替你将 ETH 发送到 SORA。",
                 "transfer": "在你的 Ethereum 钱包中，批准将你的 DAI 转账到 SORA。",
                 "swap": "在你的 SORA 钱包中，批准兑换为 XOR。XOR 将到达该钱包。"
             },
             "stepsNote": "未经你批准，不会发送任何资金。跨网络转账可能需要几分钟。",
+            "stepsNoteCard": "在 MoonPay 中付款前，不会从你的银行卡扣款。跨网络转账可能需要几分钟。",
             "otherWays": "其他付款方式：",
             "inProgress": "你有一笔进行中的购买：{amount}。"
         },
         "card": {
-            "description": "在 MoonPay 中用银行卡付款。MoonPay 会将 ETH 发送到你的 Ethereum 钱包，后续步骤会将其换成 XOR。",
+            "description": "在 MoonPay 中用银行卡付款。MoonPay 会将 ETH 发送到下方的 Ethereum 地址，后续步骤会将其换成 XOR。",
             "copy": "复制你的 Ethereum 地址：",
             "paste": "打开 MoonPay。当它要求填写钱包地址时，粘贴此地址。不要使用你的 SORA 地址。",
             "return": "在 MoonPay 中完成付款，然后回到此页面。",
             "open": "复制地址并打开 MoonPay"
+        },
+        "run": {
+            "title": "本次购买",
+            "temporaryMode": "此页面上的临时钱包会接收 ETH，并替你签署 Ethereum 步骤。",
+            "ownMode": "你的 Ethereum 钱包会请你确认每个 Ethereum 步骤。",
+            "steps": {
+                "pay": {
+                    "title": "用银行卡付款",
+                    "detail": "请核对下方金额，然后在 MoonPay 中付款。"
+                },
+                "receive": {
+                    "title": "MoonPay 发送 ETH",
+                    "detail": "正在等待 MoonPay。通常需要几分钟，有时会更久。",
+                    "detailSaved": "正在等待 MoonPay。通常需要几分钟，有时会更久。你可以关闭此页面，回来后购买会继续进行。"
+                },
+                "send": {
+                    "title": "将 {asset} 发送到 SORA",
+                    "detail": "此页面会签署这笔转账。",
+                    "detailOwn": "请在你的 Ethereum 钱包中确认转账。"
+                },
+                "arrive": {
+                    "title": "{asset} 到达 SORA",
+                    "detail": "桥接通常需要几分钟。"
+                },
+                "swap": {
+                    "title": "将 {asset} 兑换为 XOR",
+                    "detail": "请在你的 SORA 钱包中确认下方的兑换。"
+                }
+            },
+            "done": "XOR 已存入你的 SORA 钱包。",
+            "failures": {
+                "wallet": "无法打开购买钱包。请再试一次。",
+                "vault": "无法打开保存在此浏览器中的购买钱包。请使用助记词恢复该钱包。",
+                "liquidity": "SORA 上的 XOR 市场目前无法承接这个金额。请稍后再试。",
+                "bridge": "转至 SORA 的转账已中断。请再试一次。"
+            },
+            "retry": "再试一次",
+            "wallet": "购买钱包",
+            "savedFunds": "之前的临时钱包中仍有 {amount}。",
+            "useSaved": "用它完成购买",
+            "notSaved": "当前浏览器不允许此页面保存购买钱包。付款前请先保存其助记词。",
+            "walletNote": "银行卡付款会使用此页面上的临时 Ethereum 钱包，因此你只需要一个 SORA 钱包。",
+            "ownWallet": "改用我自己的 Ethereum 钱包"
+        }
+    },
+    "temporaryWallet": {
+        "offerTitle": "还没有 Ethereum 钱包？使用临时钱包",
+        "offerText": "临时钱包在此页面上创建，在您关闭标签页前一直有效。MoonPay 会将您的 ETH 发送到该钱包，之后的每一步都由您在这里批准。",
+        "create": "创建临时钱包",
+        "restore": "恢复临时钱包",
+        "backupTitle": "保存您的助记词",
+        "backupText": "此钱包仅存在于当前浏览器标签页中。如果在您的资金到达 SORA 之前标签页被关闭，这 12 个单词是找回资金的唯一方式。",
+        "privateWarning": "任何人只要拥有这些单词，就能取走此钱包中的资金。切勿与任何人分享。",
+        "phrase": "助记词",
+        "address": "钱包地址",
+        "copyPhrase": "复制助记词",
+        "copied": "已复制",
+        "download": "下载为文件",
+        "confirmSaved": "我已保存助记词。",
+        "use": "使用此钱包",
+        "cancel": "取消",
+        "restoreTitle": "恢复临时钱包",
+        "restoreText": "输入您在此页面上创建的临时钱包的助记词。",
+        "restoreWarning": "请勿在此输入您主钱包的助记词。",
+        "restoreAction": "恢复钱包",
+        "invalidPhrase": "这些单词不是有效的助记词。请检查拼写和顺序。",
+        "openTitle": "您的临时钱包仍处于打开状态",
+        "useAgain": "再次使用",
+        "showPhrase": "显示助记词",
+        "hidePhrase": "隐藏助记词",
+        "close": "关闭临时钱包",
+        "closeWarning": "此钱包中仍有 {amount}。如果没有助记词，关闭后这些资金将会丢失。",
+        "closeWarningUnknown": "无法查询余额。如果此钱包中还有资金，您需要助记词才能找回。",
+        "closeConfirm": "仍然关闭",
+        "keepOpen": "保持打开",
+        "connectFailed": "临时钱包无法连接。请再试一次。",
+        "active": "此页面上的临时钱包",
+        "keepPageOpen": "您正在使用临时钱包。请保持此页面打开，直到您转至 SORA 的转账发出。如果页面关闭，请使用助记词恢复该钱包。",
+        "leftover": "支付网络费用后，通常会有一部分 ETH 剩余。这些 ETH 会留在此钱包中。如需日后使用，请将助记词导入任意 Ethereum 钱包应用。",
+        "file": {
+            "title": "Polkaswap 临时 Ethereum 钱包",
+            "created": "创建时间",
+            "path": "派生路径",
+            "help": "如需日后打开此钱包，请将助记词导入 MetaMask 等 Ethereum 钱包应用，或在 Polkaswap 的“购买 XOR”页面上使用“恢复临时钱包”。"
+        },
+        "request": {
+            "title": "临时钱包",
+            "convert": "将 {amount} ETH 兑换为至少 {minimum} DAI",
+            "allowBridge": "允许 SORA 桥转移 {amount} DAI",
+            "allowBridgeAll": "允许 SORA 桥从此钱包转移任意数量的 DAI",
+            "bridge": "将 {amount} DAI 发送到 SORA",
+            "bridgeEth": "将 {amount} ETH 发送到 SORA",
+            "send": "发送 {amount} ETH",
+            "contract": "调用合约",
+            "from": "从",
+            "to": "至",
+            "soraAccount": "SORA 账户",
+            "otherSoraAccount": "此 SORA 账户不是已连接到 Polkaswap 的账户。仅当您确实要发送到该账户时才批准。",
+            "value": "发送的 ETH",
+            "fee": "网络费用",
+            "feeValue": "约 {estimate} ETH，最多 {max} ETH",
+            "feeIncreased": "网络费用已上涨。请查看新的费用，然后重新批准。",
+            "note": "在您批准之前，不会发送任何内容。",
+            "approve": "批准",
+            "reject": "拒绝",
+            "sending": "正在发送…"
         }
     }
 }

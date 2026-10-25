@@ -4712,28 +4712,35 @@
             "reserved": "ETH mantenuto per i costi di rete stimati",
             "convert": "ETH disponibile per la conversione",
             "bridge": "Importo conservativo DAI per il ponte",
+            "bridgeEth": "ETH inviato a SORA",
             "conversionGas": "Riserva gas di conversione",
             "nativeSwapFee": "SORA commissione di swap riservata dall'output XOR",
             "provider": "Commissioni del fornitore della carta incluse nel budget USD",
             "details": "Vedi la ripartizione delle tariffe",
             "conversionFee": "Commissione del fornitore di conversione",
             "bridgeGas": "Omologazione DAI e riserva gas ponte",
+            "bridgeEthGas": "Riserva gas per il trasferimento tramite ponte",
             "bridgeFee": "Tariffa ponte DAI separata",
             "nativeTsFees": "SORA commissioni di swap e burn riservate dall'output XOR",
+            "priceImpact": "Impatto sul prezzo dello scambio su SORA",
             "existing": "Portafoglio esistente ETH, escluso da questo budget",
             "reserveExplanation": "Le riserve di rete utilizzano i dati tariffari attuali con un margine. Provengono dalla carta finanziata ETH; questa stima non richiede un saldo ETH esistente. Le riserve inutilizzate rimangono nel tuo portafoglio Ethereum.",
             "limits": "Questo controllo scade dopo 30 secondi. Si applicano comunque la disponibilità della carta, il preventivo finale del fornitore e le successive revisioni del portafoglio. L'elaborazione della carta può durare più a lungo di questa stima, quindi i prezzi e le commissioni verranno controllati nuovamente prima di ogni transazione; la consegna non è garantita da questa stima.",
             "bridgeExplanation": "Il normale trasferimento in entrata DAI non prevede commissioni DAI separate. L'approvazione di Ethereum e il trasferimento del gas sono riservati sopra; i tempi del ponte e le tariffe successive possono cambiare.",
+            "bridgeEthExplanation": "Il trasferimento di ETH a SORA non prevede una commissione ponte separata. Il relativo gas Ethereum è riservato sopra; i tempi del ponte possono cambiare.",
             "refresh": "Aggiorna il controllo dei costi",
             "errors": {
                 "wallet": "Collega gli account Ethereum e SORA desiderati sulla rete principale, quindi aggiorna questo controllo.",
                 "budget": "Il budget di questa carta non lascia abbastanza ETH dopo i costi stimati di conversione e ponte. Controlla l'importo prima di pagare.",
+                "budgetEth": "Il budget di questa carta non lascia abbastanza ETH dopo il gas stimato per il ponte. Controlla l'importo prima di pagare.",
                 "provider": "Il fornitore della carta non ha potuto indicare questo budget esatto di USD. Aggiorna o rivedi l'importo prima di pagare.",
                 "bridge": "Il ponte DAI in entrata o il relativo controllo dei costi correnti non sono disponibili. Aggiorna prima di pagare.",
+                "bridgeEth": "Il ponte ETH verso SORA o il relativo controllo dei costi correnti non sono disponibili. Aggiorna prima di pagare.",
                 "simulation": "Non è stato possibile simulare questa conversione per il tuo account. Aggiorna prima di pagare; nessuna transazione è stata inviata.",
                 "gas": "I costi attuali della rete Ethereum non sono disponibili. Aggiorna prima di pagare.",
                 "expired": "Questo controllo dei costi è scaduto. Aggiorna prima di pagare.",
                 "liquidity": "Il rimanente DAI attualmente non può superare il controllo nativo di liquidità e commissioni XOR. Controlla l'importo o aggiornalo prima di pagare.",
+                "liquidityEth": "L'ETH che arriva su SORA attualmente non può superare il controllo di liquidità e commissioni XOR. Controlla l'importo o aggiorna prima di pagare.",
                 "conversion": "Al momento non è possibile verificare la conversione da ETH a DAI entro il limite di impatto del prezzo del 5%. Aggiorna prima di pagare."
             },
             "netBurnable": "XOR stimati disponibili per la masterizzazione",
@@ -4986,7 +4993,7 @@
         "walletsDescription": "Il tuo XOR sarà conservato in questo SORA portafoglio. Mantieni l'accesso e proteggi le tue informazioni di ripristino.",
         "claimWallet": "SORA riceve il portafoglio",
         "createClaimWallet": "Crea o collega il tuo portafoglio SORA",
-        "swapDescription": "Il tuo importo DAI è stato compilato. Controlla l'ultimo preventivo e la tariffa di rete per ricevere XOR nel tuo portafoglio SORA.",
+        "swapDescription": "Il tuo importo {asset} è stato compilato. Controlla l'ultimo preventivo e la tariffa di rete per ricevere XOR nel tuo portafoglio SORA.",
         "initialEstimate": "Stima iniziale · aggiornata prima dello scambio",
         "receivingNotice": "XOR viene consegnato al tuo portafoglio SORA. Puoi trattenerlo, inviarlo o utilizzarlo dopo la conferma dello scambio.",
         "receivedTitle": "XOR ricevuto",
@@ -4998,7 +5005,7 @@
         "swapReceived": "Scambio confermato. XOR è stato ricevuto dal tuo SORA portafoglio.",
         "existingXor": "Visualizza i XOR esistenti nel mio portafoglio",
         "routes": {
-            "card": "Carta → ETH su Ethereum → DAI → trasferisci su SORA → XOR nel tuo portafoglio. Richiede Ethereum e portafogli SORA. MoonPay controlla l'idoneità, i controlli di identità, i minimi e le tariffe finali.",
+            "card": "Carta → ETH su Ethereum → trasferisci su SORA → scambia ETH con XOR nel tuo portafoglio. Ti serve solo un portafoglio SORA: un portafoglio Ethereum temporaneo in questa pagina invia per te l’ETH a SORA. MoonPay controlla l’idoneità, i controlli di identità, i minimi e le tariffe finali.",
             "ethereum": "ETH o USDT sulla rete principale di Ethereum → DAI → trasferisci su SORA → XOR nel tuo portafoglio. L'Ethereum esistente DAI salta la conversione. Conserva ETH per le tariffe di rete.",
             "ton": "Il TON nativo necessita innanzitutto di uno scambio TON-to-USDT esterno. USDT su TON → ETH su Ethereum tramite Symbiosis → DAI → trasferisci su SORA → XOR nel tuo portafoglio. Il fornitore gestisce il trasferimento TON e il suo recupero. Conserva TON e ETH per le tariffe di rete.",
             "sora": "DAI nel tuo portafoglio SORA → passa a XOR. La stima tiene conto della commissione di scambio SORA."
@@ -5014,6 +5021,7 @@
             "xorBudget": "XOR già nel tuo SORA portafoglio",
             "cardEth": "MoonPay attualmente stima che {eth} ETH sia stato consegnato. Conserva un po' di ETH per il gas; spenderlo in commissioni ridurrà l'eventuale importo XOR.",
             "method": "Questo è un piano indicativo, aggiornato ogni 30 secondi. Le stime includono una conversione conservativa e un buffer di slittamento. Gli importi del fornitore, il gas e le tariffe possono cambiare prima della revisione finale.",
+            "impact": "Impatto attuale sul prezzo {asset} → XOR: {impact}%. Il limite è del {limit}%.",
             "notice": "Questo percorso acquisisce XOR sulla rete principale SORA. Rivedi ogni transazione prima di firmare.",
             "reason": {
                 "fees-insufficient": "Questo importo non rimarrebbe spendibile XOR dopo la commissione di scambio. Prova una quantità maggiore.",
@@ -5025,7 +5033,8 @@
             "allowed": "Questa stima soddisfa il limite di impatto sul prezzo e rimane spendibile XOR dopo la commissione di scambio stimata. Tariffe e commissioni possono cambiare.",
             "feeReserve": "Commissione di scambio stimata: {fees} XOR. Importo spendibile conservativo: {spendable} XOR.",
             "feesUnavailable": "In attesa della tariffa di swap attuale dalla rete principale SORA.",
-            "feesInsufficient": "Questo importo non rimarrebbe spendibile XOR dopo la commissione di scambio. Aumenta l'importo DAI e controlla di nuovo; deve inoltre rimanere entro il limite del 5% di impatto sui prezzi."
+            "feesInsufficient": "Questo importo non rimarrebbe spendibile XOR dopo la commissione di scambio. Aumenta l'importo DAI e controlla di nuovo; deve inoltre rimanere entro il limite del 15% di impatto sui prezzi.",
+            "blocked": "L’impatto sul prezzo supera il 15%. Prova un importo più piccolo o attendi più liquidità."
         },
         "return": "Torna all'acquisto XOR",
         "resumeDescription": "Torna al piano di acquisto per rivedere il passaggio successivo. Ogni transazione necessita della tua approvazione.",
@@ -5060,25 +5069,134 @@
             "useUsdt": "Paga invece con USDT",
             "next": "Cosa succede dopo",
             "steps": {
+                "walletsCard": "Collega un wallet SORA. Puoi crearne uno nella schermata successiva. Non ti serve un wallet Ethereum.",
                 "walletsEthereum": "Collega un wallet Ethereum, come MetaMask, e un wallet SORA. Puoi creare un wallet SORA nella schermata successiva.",
                 "walletSora": "Collega il tuo wallet SORA.",
                 "walletsTon": "Collega i tuoi wallet TON, Ethereum e SORA.",
-                "card": "Paga con carta su MoonPay. MoonPay invia ETH al tuo wallet Ethereum.",
+                "card": "Paga con carta su MoonPay. MoonPay invia ETH a un portafoglio temporaneo in questa pagina.",
                 "ton": "Sposta i tuoi USDT da TON a Ethereum nell’app del fornitore.",
                 "convert": "Nel tuo wallet Ethereum, approva lo scambio in DAI e il trasferimento a SORA.",
+                "sendCard": "Questa pagina invia per te l’ETH a SORA.",
                 "transfer": "Nel tuo wallet Ethereum, approva il trasferimento dei tuoi DAI a SORA.",
                 "swap": "Nel tuo wallet SORA, approva lo scambio in XOR. I tuoi XOR arrivano in quel wallet."
             },
             "stepsNote": "Nulla viene inviato finché non lo approvi. I trasferimenti tra reti possono richiedere diversi minuti.",
+            "stepsNoteCard": "Nulla viene addebitato finché non paghi su MoonPay. I trasferimenti tra reti possono richiedere diversi minuti.",
             "otherWays": "Altri modi per pagare:",
             "inProgress": "Hai un acquisto in corso: {amount}."
         },
         "card": {
-            "description": "Paga con carta su MoonPay. MoonPay invia ETH al tuo wallet Ethereum e i passaggi successivi lo trasformano in XOR.",
+            "description": "Paga con carta su MoonPay. MoonPay invia ETH all’indirizzo Ethereum qui sotto e i passaggi successivi lo trasformano in XOR.",
             "copy": "Copia il tuo indirizzo Ethereum:",
             "paste": "Apri MoonPay. Quando chiede un indirizzo del wallet, incolla questo. Non usare il tuo indirizzo SORA.",
             "return": "Completa il pagamento su MoonPay, poi torna a questa pagina.",
             "open": "Copia l’indirizzo e apri MoonPay"
+        },
+        "run": {
+            "title": "Il tuo acquisto",
+            "temporaryMode": "Un portafoglio temporaneo in questa pagina riceve l’ETH e firma per te i passaggi su Ethereum.",
+            "ownMode": "Il tuo wallet Ethereum ti chiede di confermare ogni passaggio su Ethereum.",
+            "steps": {
+                "pay": {
+                    "title": "Paga con carta",
+                    "detail": "Controlla l’importo qui sotto, poi paga su MoonPay."
+                },
+                "receive": {
+                    "title": "MoonPay invia ETH",
+                    "detail": "In attesa di MoonPay. Di solito servono alcuni minuti, a volte di più.",
+                    "detailSaved": "In attesa di MoonPay. Di solito servono alcuni minuti, a volte di più. Puoi chiudere questa pagina: l’acquisto riprende quando torni."
+                },
+                "send": {
+                    "title": "Invia {asset} a SORA",
+                    "detail": "Questa pagina firma il trasferimento.",
+                    "detailOwn": "Conferma il trasferimento nel tuo wallet Ethereum."
+                },
+                "arrive": {
+                    "title": "{asset} arriva su SORA",
+                    "detail": "Di solito il ponte richiede diversi minuti."
+                },
+                "swap": {
+                    "title": "Scambia {asset} con XOR",
+                    "detail": "Conferma lo scambio qui sotto nel tuo wallet SORA."
+                }
+            },
+            "done": "Gli XOR sono nel tuo wallet SORA.",
+            "failures": {
+                "wallet": "Non è stato possibile aprire il portafoglio per l’acquisto. Riprova.",
+                "vault": "Non è stato possibile aprire il portafoglio per l’acquisto salvato in questo browser. Ripristinalo con la sua frase di recupero.",
+                "liquidity": "Al momento il mercato di XOR su SORA non può assorbire questo importo. Riprova più tardi.",
+                "bridge": "Il trasferimento a SORA si è interrotto. Riprova."
+            },
+            "retry": "Riprova",
+            "wallet": "Portafoglio per l’acquisto",
+            "savedFunds": "Un portafoglio temporaneo precedente contiene ancora {amount}.",
+            "useSaved": "Completa l’acquisto con questo",
+            "notSaved": "Questo browser non consente alla pagina di salvare il portafoglio per l’acquisto. Salva la sua frase di recupero prima di pagare.",
+            "walletNote": "I pagamenti con carta usano un portafoglio Ethereum temporaneo in questa pagina, quindi ti serve solo un wallet SORA.",
+            "ownWallet": "Usa invece il mio wallet Ethereum"
+        }
+    },
+    "temporaryWallet": {
+        "offerTitle": "Non hai un portafoglio Ethereum? Usane uno temporaneo",
+        "offerText": "Viene creato in questa pagina e resta attivo finché non chiudi la scheda. MoonPay invia il tuo ETH a questo portafoglio e qui approvi ogni passaggio successivo.",
+        "create": "Crea un portafoglio temporaneo",
+        "restore": "Ripristina un portafoglio temporaneo",
+        "backupTitle": "Salva la tua frase di recupero",
+        "backupText": "Questo portafoglio esiste solo in questa scheda del browser. Se la scheda si chiude prima che il tuo denaro arrivi su SORA, queste 12 parole sono l’unico modo per recuperarlo.",
+        "privateWarning": "Chiunque abbia queste parole può prendere il denaro in questo portafoglio. Non condividerle con nessuno.",
+        "phrase": "Frase di recupero",
+        "address": "Indirizzo del portafoglio",
+        "copyPhrase": "Copia frase",
+        "copied": "Copiato",
+        "download": "Scarica come file",
+        "confirmSaved": "Ho salvato la frase di recupero.",
+        "use": "Usa questo portafoglio",
+        "cancel": "Annulla",
+        "restoreTitle": "Ripristina un portafoglio temporaneo",
+        "restoreText": "Inserisci la frase di recupero di un portafoglio temporaneo che hai creato in questa pagina.",
+        "restoreWarning": "Non inserire qui la frase di recupero del tuo portafoglio principale.",
+        "restoreAction": "Ripristina portafoglio",
+        "invalidPhrase": "Queste parole non sono una frase di recupero valida. Controlla l’ortografia e l’ordine.",
+        "openTitle": "Il tuo portafoglio temporaneo è ancora aperto",
+        "useAgain": "Usalo di nuovo",
+        "showPhrase": "Mostra frase di recupero",
+        "hidePhrase": "Nascondi frase di recupero",
+        "close": "Chiudi portafoglio temporaneo",
+        "closeWarning": "Questo portafoglio contiene ancora {amount}. Senza la frase di recupero, quel denaro andrà perso quando chiudi il portafoglio.",
+        "closeWarningUnknown": "Non è stato possibile verificare il saldo. Se in questo portafoglio è rimasto del denaro, ti serve la frase di recupero per riaverlo.",
+        "closeConfirm": "Chiudi comunque",
+        "keepOpen": "Lascialo aperto",
+        "connectFailed": "Il portafoglio temporaneo non è riuscito a connettersi. Riprova.",
+        "active": "Portafoglio temporaneo in questa pagina",
+        "keepPageOpen": "Stai usando un portafoglio temporaneo. Tieni aperta questa pagina finché il tuo trasferimento a SORA non viene inviato. Se la pagina si chiude, ripristina il portafoglio con la sua frase di recupero.",
+        "leftover": "Di solito, dopo le commissioni di rete, rimane dell’ETH. Viene conservato in questo portafoglio. Per usarlo in seguito, importa la frase di recupero in qualsiasi app di portafoglio Ethereum.",
+        "file": {
+            "title": "Portafoglio Ethereum temporaneo di Polkaswap",
+            "created": "Data di creazione",
+            "path": "Percorso di derivazione",
+            "help": "Per aprire questo portafoglio in seguito, importa la frase di recupero in un’app di portafoglio Ethereum come MetaMask, oppure usa «Ripristina un portafoglio temporaneo» nella pagina Acquista XOR di Polkaswap."
+        },
+        "request": {
+            "title": "Portafoglio temporaneo",
+            "convert": "Scambia {amount} ETH con almeno {minimum} DAI",
+            "allowBridge": "Consenti al ponte SORA di spostare {amount} DAI",
+            "allowBridgeAll": "Consenti al ponte SORA di spostare qualsiasi importo di DAI da questo portafoglio",
+            "bridge": "Invia {amount} DAI a SORA",
+            "bridgeEth": "Invia {amount} ETH a SORA",
+            "send": "Invia {amount} ETH",
+            "contract": "Chiama un contratto",
+            "from": "Da",
+            "to": "A",
+            "soraAccount": "Account SORA",
+            "otherSoraAccount": "Questo account SORA non è quello connesso a Polkaswap. Approva solo se volevi davvero inviare fondi a questo account.",
+            "value": "ETH inviato",
+            "fee": "Commissione di rete",
+            "feeValue": "circa {estimate} ETH, al massimo {max} ETH",
+            "feeIncreased": "Le commissioni di rete sono aumentate. Controlla la nuova commissione, poi approva di nuovo.",
+            "note": "Nulla viene inviato finché non approvi.",
+            "approve": "Approva",
+            "reject": "Rifiuta",
+            "sending": "Invio in corso…"
         }
     }
 }

@@ -4715,25 +4715,32 @@
             "details": "Podívejte se na rozpis poplatků",
             "provider": "Poplatky poskytovatele karet zahrnuté v rozpočtu USD",
             "bridgeGas": "DAI schválení a překlenovací rezerva plynu",
+            "bridgeEthGas": "Rezerva plynu pro převod přes most",
             "bridge": "Konzervativní částka DAI za most",
+            "bridgeEth": "ETH odeslané na SORA",
             "conversionFee": "Poplatek poskytovatele konverze",
             "nativeTsFees": "SORA poplatky za výměnu a vypalování vyhrazené z výstupu XOR",
+            "priceImpact": "Cenový dopad směny na SORA",
             "reserveExplanation": "Rezervy sítě využívají aktuální údaje o poplatcích s marží. Pocházejí z ETH financovaného kartou; tento odhad nevyžaduje stávající zůstatek ETH. Nevyužité rezervy zůstávají ve vaší peněžence Ethereum.",
             "existing": "Stávající peněženka ETH, vyloučena z tohoto rozpočtu",
             "bridgeFee": "Samostatný překlenovací poplatek DAI",
             "nativeSwapFee": "SORA swapovací poplatek rezervován z výstupu XOR",
             "bridgeExplanation": "Normální příchozí převod DAI nemá žádný zvláštní poplatek DAI. Schválení Etherea a přenos plynu jsou vyhrazeny výše; načasování mostu a pozdější poplatky se mohou změnit.",
+            "bridgeEthExplanation": "Převod ETH na SORA nemá samostatný poplatek za most. Plyn v síti Ethereum je pro něj rezervován výše; načasování mostu se může změnit.",
             "refresh": "Obnovte kontrolu nákladů",
             "errors": {
                 "wallet": "Připojte zamýšlené účty Ethereum a SORA na hlavní síť a poté obnovte tuto kontrolu.",
                 "provider": "Poskytovatel karty nemohl uvést tento přesný rozpočet USD. Před zaplacením obnovte nebo zkontrolujte částku.",
                 "budget": "Tento rozpočet karty nezanechává dostatek ETH po odhadovaných nákladech na konverzi a přemostění. Před zaplacením zkontrolujte částku.",
+                "budgetEth": "Tento rozpočet karty nezanechává dostatek ETH po odečtení odhadovaného plynu pro most. Před zaplacením zkontrolujte částku.",
                 "expired": "Platnost této kontroly nákladů vypršela. Před zaplacením se obnovte.",
                 "gas": "Současné náklady na síť Ethereum nejsou k dispozici. Před zaplacením se obnovte.",
                 "simulation": "Tuto konverzi se nám pro váš účet nepodařilo simulovat. Před zaplacením obnovit; nebyla odeslána žádná transakce.",
                 "bridge": "Příchozí most DAI nebo jeho aktuální kontrola nákladů není k dispozici. Před zaplacením se obnovte.",
+                "bridgeEth": "Most ETH na SORA nebo jeho aktuální kontrola nákladů není k dispozici. Před zaplacením kontrolu obnovte.",
                 "conversion": "Převod ETH na DAI nelze v současné době ověřit v rámci 5% limitu cenového dopadu. Před zaplacením se obnovte.",
-                "liquidity": "Zbývající DAI aktuálně nemohou projít nativní kontrolou likvidity a poplatků XOR. Před zaplacením zkontrolujte částku nebo ji obnovte."
+                "liquidity": "Zbývající DAI aktuálně nemohou projít nativní kontrolou likvidity a poplatků XOR. Před zaplacením zkontrolujte částku nebo ji obnovte.",
+                "liquidityEth": "ETH, které dorazí na SORA, aktuálně nemůže projít kontrolou likvidity a poplatků XOR. Před zaplacením zkontrolujte částku nebo kontrolu obnovte."
             },
             "limits": "Tato kontrola vyprší po 30 sekundách. Stále platí dostupnost karty, konečná nabídka poskytovatele a pozdější kontroly peněženky. Zpracování karty může tento odhad přetrvat, takže ceny a poplatky budou před každou transakcí znovu kontrolovány; dodání není tímto odhadem zaručeno.",
             "netXor": "Odhadované XOR po poplatcích",
@@ -4986,7 +4993,7 @@
         "walletsDescription": "Vaše XOR bude uloženo v této SORA peněžence. Mějte k němu přístup a chraňte své informace pro obnovení.",
         "claimWallet": "SORA přijímající peněženka",
         "createClaimWallet": "Vytvořte nebo připojte svou SORA peněženku",
-        "swapDescription": "Vaše částka DAI je vyplněna. Prohlédněte si nejnovější nabídku a síťový poplatek a získejte XOR do své SORA peněženky.",
+        "swapDescription": "Vaše částka {asset} je vyplněna. Prohlédněte si nejnovější nabídku a síťový poplatek a získejte XOR do své SORA peněženky.",
         "initialEstimate": "Počáteční odhad · obnoven před výměnou",
         "receivingNotice": "XOR je doručeno do vaší peněženky SORA. Po potvrzení swapu jej můžete podržet, odeslat nebo použít.",
         "receivedTitle": "XOR přijato",
@@ -4998,7 +5005,7 @@
         "swapReceived": "Výměna potvrzena. XOR bylo přijato do vaší peněženky SORA.",
         "existingXor": "Zobrazit existující XOR v mé peněžence",
         "routes": {
-            "card": "Karta → ETH na Ethereum → DAI → převod na SORA → XOR v peněžence. Vyžaduje Ethereum a SORA peněženky. MoonPay kontroluje způsobilost, kontroly identity, minimální a konečné poplatky.",
+            "card": "Karta → ETH na Ethereum → převod na SORA → výměna ETH za XOR v peněžence. Stačí vám peněženka SORA: ETH na SORA za vás odešle dočasná peněženka Ethereum na této stránce. MoonPay kontroluje způsobilost, kontroly identity, minimální částky a konečné poplatky.",
             "ethereum": "ETH nebo USDT v síti Ethereum → DAI → přenést do SORA → XOR v peněžence. Stávající Ethereum DAI přeskočí konverzi. Ponechte si ETH pro síťové poplatky.",
             "ton": "Nativní TON nejprve potřebuje externí odkládací zařízení TON-to-USDT. USDT na TON → ETH na Ethereum prostřednictvím Symbiosis → DAI → převod na SORA → XOR ve vaší peněžence. Poskytovatel zajišťuje přenos TON a jeho obnovu. Ponechte si TON a ETH pro síťové poplatky.",
             "sora": "DAI ve vaší SORA peněžence → vyměňte za XOR. Odhad zahrnuje SORA swapovací poplatek."
@@ -5014,6 +5021,7 @@
             "xorBudget": "XOR již ve vaší peněžence SORA",
             "cardEth": "MoonPay aktuálně odhaduje doručení {eth} ETH. Ponechte si nějaké ETH na plyn; jejich vynaložením na poplatky se sníží případná částka XOR.",
             "method": "Toto je orientační plán, který se obnovuje každých 30 sekund. Odhady zahrnují konzervativní převod a vyrovnávací paměť skluzu. Částky poskytovatele, plyn a sazby se mohou před závěrečnou kontrolou změnit.",
+            "impact": "Aktuální cenový dopad {asset} → XOR: {impact} %. Limit je {limit} %.",
             "notice": "Tato trasa získává XOR na SORA mainnetu. Před podpisem zkontrolujte každou transakci.",
             "reason": {
                 "fees-insufficient": "Tato částka by po zaplacení swapovacího poplatku nezůstala utratit XOR. Zkuste větší množství.",
@@ -5025,7 +5033,8 @@
             "allowed": "Tento odhad splňuje limit cenového dopadu a po odhadovaném swapovacím poplatku zbývá utratit XOR. Sazby a poplatky se mohou změnit.",
             "feeReserve": "Odhadovaný swapový poplatek: {fees} XOR. Konzervativní utratitelná částka: {spendable} XOR.",
             "feesUnavailable": "Čeká se na aktuální swapovací poplatek z SORA mainnetu.",
-            "feesInsufficient": "Tato částka by po zaplacení swapovacího poplatku nezůstala utratit XOR. Zvyšte částku DAI a znovu zkontrolujte; musí také zůstat v rámci 5% limitu cenového dopadu."
+            "feesInsufficient": "Tato částka by po zaplacení swapovacího poplatku nezůstala utratit XOR. Zvyšte částku DAI a znovu zkontrolujte; musí také zůstat v rámci 15% limitu cenového dopadu.",
+            "blocked": "Cenový dopad přesahuje 15 %. Zkuste menší částku nebo počkejte na více likvidity."
         },
         "return": "Zpět na Koupit XOR",
         "resumeTitle": "Pokračovat v nákupu XOR",
@@ -5060,25 +5069,134 @@
             "useUsdt": "Zaplatit raději v USDT",
             "next": "Co bude dál",
             "steps": {
+                "walletsCard": "Připojte peněženku SORA. Na další obrazovce si ji můžete vytvořit. Peněženku Ethereum nepotřebujete.",
                 "walletsEthereum": "Připojte peněženku Ethereum, například MetaMask, a peněženku SORA. Peněženku SORA můžete vytvořit na další obrazovce.",
                 "walletSora": "Připojte svou peněženku SORA.",
                 "walletsTon": "Připojte své peněženky TON, Ethereum a SORA.",
-                "card": "Zaplaťte kartou v MoonPay. MoonPay pošle ETH do vaší peněženky Ethereum.",
+                "card": "Zaplaťte kartou v MoonPay. MoonPay pošle ETH do dočasné peněženky na této stránce.",
                 "ton": "Přesuňte své USDT z TON na Ethereum v aplikaci poskytovatele.",
                 "convert": "V peněžence Ethereum schvalte směnu na DAI a převod na SORA.",
+                "sendCard": "Tato stránka za vás odešle ETH na SORA.",
                 "transfer": "V peněžence Ethereum schvalte převod svých DAI na SORA.",
                 "swap": "V peněžence SORA schvalte směnu na XOR. Vaše XOR dorazí do této peněženky."
             },
             "stepsNote": "Nic se neodešle, dokud to neschválíte. Převody mezi sítěmi mohou trvat několik minut.",
+            "stepsNoteCard": "Z karty se vám nic nestrhne, dokud nezaplatíte v MoonPay. Převody mezi sítěmi mohou trvat několik minut.",
             "otherWays": "Další způsoby platby:",
             "inProgress": "Máte rozpracovaný nákup: {amount}."
         },
         "card": {
-            "description": "Zaplaťte kartou v MoonPay. MoonPay pošle ETH do vaší peněženky Ethereum a další kroky z něj udělají XOR.",
+            "description": "Zaplaťte kartou v MoonPay. MoonPay pošle ETH na níže uvedenou adresu Ethereum a další kroky z něj udělají XOR.",
             "copy": "Zkopírujte svou adresu Ethereum:",
             "paste": "Otevřete MoonPay. Až se zeptá na adresu peněženky, vložte tuto. Nepoužívejte svou adresu SORA.",
             "return": "Dokončete platbu v MoonPay a pak se vraťte na tuto stránku.",
             "open": "Zkopírovat adresu a otevřít MoonPay"
+        },
+        "run": {
+            "title": "Váš nákup",
+            "temporaryMode": "Dočasná peněženka na této stránce přijme ETH a podepíše za vás kroky v síti Ethereum.",
+            "ownMode": "Vaše peněženka Ethereum vás požádá o potvrzení každého kroku v síti Ethereum.",
+            "steps": {
+                "pay": {
+                    "title": "Zaplatit kartou",
+                    "detail": "Zkontrolujte částku níže a pak zaplaťte v MoonPay."
+                },
+                "receive": {
+                    "title": "MoonPay pošle ETH",
+                    "detail": "Čekání na MoonPay. Obvykle to trvá několik minut, někdy i déle.",
+                    "detailSaved": "Čekání na MoonPay. Obvykle to trvá několik minut, někdy i déle. Tuto stránku můžete zavřít. Nákup bude pokračovat, až se vrátíte."
+                },
+                "send": {
+                    "title": "Odeslat {asset} na SORA",
+                    "detail": "Tato stránka podepisuje převod.",
+                    "detailOwn": "Potvrďte převod ve své peněžence Ethereum."
+                },
+                "arrive": {
+                    "title": "{asset} dorazí na SORA",
+                    "detail": "Most obvykle potřebuje několik minut."
+                },
+                "swap": {
+                    "title": "Vyměnit {asset} za XOR",
+                    "detail": "Potvrďte směnu níže ve své peněžence SORA."
+                }
+            },
+            "done": "XOR je ve vaší peněžence SORA.",
+            "failures": {
+                "wallet": "Peněženku pro nákup se nepodařilo otevřít. Zkuste to znovu.",
+                "vault": "Peněženku pro nákup uloženou v tomto prohlížeči se nepodařilo otevřít. Obnovte ji pomocí její fráze pro obnovení.",
+                "liquidity": "Trh s XOR na SORA teď tuto částku nezvládne. Zkuste to později.",
+                "bridge": "Převod na SORA se zastavil. Zkuste to znovu."
+            },
+            "retry": "Zkusit znovu",
+            "wallet": "Peněženka pro nákup",
+            "savedFunds": "V dřívější dočasné peněžence je stále {amount}.",
+            "useSaved": "Dokončit nákup s ní",
+            "notSaved": "Tento prohlížeč stránce nedovolí uložit peněženku pro nákup. Před zaplacením si uložte její frázi pro obnovení.",
+            "walletNote": "Platby kartou používají dočasnou peněženku Ethereum na této stránce, takže potřebujete jen peněženku SORA.",
+            "ownWallet": "Použít místo toho vlastní peněženku Ethereum"
+        }
+    },
+    "temporaryWallet": {
+        "offerTitle": "Nemáte peněženku Ethereum? Použijte dočasnou",
+        "offerText": "Vytvoří se na této stránce a vydrží, dokud nezavřete kartu. MoonPay do ní pošle vaše ETH a každý další krok schválíte tady.",
+        "create": "Vytvořit dočasnou peněženku",
+        "restore": "Obnovit dočasnou peněženku",
+        "backupTitle": "Uložte si frázi pro obnovení",
+        "backupText": "Tato peněženka existuje jen na této kartě prohlížeče. Pokud se karta zavře dřív, než vaše peníze dorazí na SORA, získáte je zpět jen pomocí těchto 12 slov.",
+        "privateWarning": "Kdokoli, kdo zná tato slova, si může vzít peníze z této peněženky. Nesdílejte je s nikým.",
+        "phrase": "Fráze pro obnovení",
+        "address": "Adresa peněženky",
+        "copyPhrase": "Kopírovat frázi",
+        "copied": "Zkopírováno",
+        "download": "Stáhnout jako soubor",
+        "confirmSaved": "Frázi pro obnovení mám uloženou.",
+        "use": "Použít tuto peněženku",
+        "cancel": "Zrušit",
+        "restoreTitle": "Obnovit dočasnou peněženku",
+        "restoreText": "Zadejte frázi pro obnovení dočasné peněženky, kterou jste vytvořili na této stránce.",
+        "restoreWarning": "Nezadávejte sem frázi pro obnovení své hlavní peněženky.",
+        "restoreAction": "Obnovit peněženku",
+        "invalidPhrase": "Tato slova nejsou platná fráze pro obnovení. Zkontrolujte pravopis a pořadí.",
+        "openTitle": "Vaše dočasná peněženka je stále otevřená",
+        "useAgain": "Použít znovu",
+        "showPhrase": "Zobrazit frázi pro obnovení",
+        "hidePhrase": "Skrýt frázi pro obnovení",
+        "close": "Zavřít dočasnou peněženku",
+        "closeWarning": "V této peněžence je stále {amount}. Bez fráze pro obnovení o tyto peníze po jejím zavření přijdete.",
+        "closeWarningUnknown": "Zůstatek se nepodařilo ověřit. Pokud v této peněžence zůstaly peníze, potřebujete k jejich získání zpět frázi pro obnovení.",
+        "closeConfirm": "Přesto zavřít",
+        "keepOpen": "Nechat otevřenou",
+        "connectFailed": "Dočasnou peněženku se nepodařilo připojit. Zkuste to znovu.",
+        "active": "Dočasná peněženka na této stránce",
+        "keepPageOpen": "Používáte dočasnou peněženku. Nechte tuto stránku otevřenou, dokud nebude odeslán váš převod na SORA. Pokud se stránka zavře, obnovte peněženku pomocí její fráze pro obnovení.",
+        "leftover": "Po síťových poplatcích obvykle nějaké ETH zbude. Zůstane v této peněžence. Pokud ho chcete použít později, importujte frázi pro obnovení do libovolné aplikace peněženky Ethereum.",
+        "file": {
+            "title": "Polkaswap: dočasná peněženka Ethereum",
+            "created": "Vytvořeno",
+            "path": "Derivační cesta",
+            "help": "Pokud chcete tuto peněženku otevřít později, importujte frázi pro obnovení do aplikace peněženky Ethereum, například MetaMask, nebo použijte „Obnovit dočasnou peněženku“ na stránce Koupit XOR v Polkaswapu."
+        },
+        "request": {
+            "title": "Dočasná peněženka",
+            "convert": "Vyměnit {amount} ETH za alespoň {minimum} DAI",
+            "allowBridge": "Povolit mostu SORA přesunout {amount} DAI",
+            "allowBridgeAll": "Povolit mostu SORA přesunout z této peněženky libovolné množství DAI",
+            "bridge": "Odeslat {amount} DAI na SORA",
+            "bridgeEth": "Odeslat {amount} ETH na SORA",
+            "send": "Odeslat {amount} ETH",
+            "contract": "Volání kontraktu",
+            "from": "Z",
+            "to": "Na",
+            "soraAccount": "Účet SORA",
+            "otherSoraAccount": "Tento účet SORA není ten, který je připojený k Polkaswapu. Zvolte „Schválit“, jen pokud jste na něj opravdu chtěli poslat prostředky.",
+            "value": "Odesílané ETH",
+            "fee": "Síťový poplatek",
+            "feeValue": "asi {estimate} ETH, nejvýše {max} ETH",
+            "feeIncreased": "Síťové poplatky se zvýšily. Zkontrolujte nový poplatek a pak znovu schvalte.",
+            "note": "Nic se neodešle, dokud to neschválíte.",
+            "approve": "Schválit",
+            "reject": "Odmítnout",
+            "sending": "Odesílání…"
         }
     }
 }
