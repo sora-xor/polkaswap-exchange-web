@@ -4,6 +4,7 @@ import {
   readRuntimeDispatchFixture,
   readRuntimeQuoteFeeFixture,
 } from '../../../fixtures/bots/runtime-artifacts';
+import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { Metadata, TypeRegistry } from '@polkadot/types';
@@ -18,6 +19,8 @@ import {
 } from '../../../../scripts/bots/goal-target-runtime-state';
 import { acquireGoalTargetRuntimeState } from '../../../../scripts/bots/goal-target-runtime-transport';
 
+const sha = (text: string) => createHash('sha256').update(text).digest('hex');
+const encode = (bytes: Uint8Array) => `0x${Buffer.from(bytes).toString('hex')}`;
 const metadataHex = readRuntimeMetadataHexSync;
 const pinned = { sourceMetadataHex: metadataHex(130), targetMetadataHex: metadataHex(131) };
 const codec = createGoalTargetRuntimeStateCodec(pinned);
