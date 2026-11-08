@@ -2,6 +2,9 @@ import { describe, expect, it } from 'vitest';
 
 import {
   buildBridgeAddressAriaLabel,
+  ETH_BRIDGE_APPROVAL_ALLOWANCE_MS,
+  formatBridgeCountdown,
+  getEthBridgeApprovalDelayProgress,
   isBridgeWaitingForSoraConfirmation,
   requiresBridgeExternalAccountMatch,
   requiresBridgeExternalNetworkMatch,
@@ -133,5 +136,77 @@ describe('bridgeTransactionPage.utils', () => {
         externalNetworkName: 'Ethereum',
       })
     ).toBe('Ethereum');
+  });
+
+  describe('getEthBridgeApprovalDelayProgress', () => {
+    const delayMs = 120_000;
+    const totalMs = delayMs + ETH_BRIDGE_APPROVAL_ALLOWANCE_MS;
+
+    it('counts SORA blocks since registration against the delay plus the allowance', () => {
+      expect(getEthBridgeApprovalDelayProgress({ delayMs, submissionHeight: 100, currentBlockNumber: 100 })).toEqual({
+        percent: 0,
+        remainingMs: totalMs,
+      });
+      expect(getEthBridgeApprovalDelayProgress({ delayMs, submissionHeight: 100, currentBlockNumber: 110 })).toEqual({
+        percent: 40,
+        remainingMs: totalMs - 60_000,
+      });
+    });
+
+    it('stops at 100% with nothing remaining once the estimate has passed', () => {
+      expect(getEthBridgeApprovalDelayProgress({ delayMs, submissionHeight: 100, currentBlockNumber: 125 })).toEqual({
+        percent: 100,
+        remainingMs: 0,
+      });
+      expect(getEthBridgeApprovalDelayProgress({ delayMs, submissionHeight: 100, currentBlockNumber: 5_000 })).toEqual({
+        percent: 100,
+        remainingMs: 0,
+      });
+    });
+
+    it('treats a live block behind the registration height as no progress', () => {
+      expect(getEthBridgeApprovalDelayProgress({ delayMs, submissionHeight: 100, currentBlockNumber: 90 })).toEqual({
+        percent: 0,
+        remainingMs: totalMs,
+      });
+    });
+
+    it('honours custom block time and allowance', () => {
+      expect(
+        getEthBridgeApprovalDelayProgress({
+          delayMs: 60_000,
+          submissionHeight: 10,
+          currentBlockNumber: 13,
+          blockTimeMs: 10_000,
+          allowanceMs: 0,
+        })
+      ).toEqual({ percent: 50, remainingMs: 30_000 });
+    });
+
+    it('returns null without a delay, a registration height or a live block', () => {
+      expect(
+        getEthBridgeApprovalDelayProgress({ delayMs: 0, submissionHeight: 100, currentBlockNumber: 110 })
+      ).toBeNull();
+      expect(getEthBridgeApprovalDelayProgress({ delayMs, submissionHeight: 0, currentBlockNumber: 110 })).toBeNull();
+      expect(getEthBridgeApprovalDelayProgress({ delayMs, submissionHeight: 100, currentBlockNumber: 0 })).toBeNull();
+      expect(
+        getEthBridgeApprovalDelayProgress({ delayMs: Number.NaN, submissionHeight: 100, currentBlockNumber: 110 })
+      ).toBeNull();
+    });
+  });
+
+  describe('formatBridgeCountdown', () => {
+    it('formats minutes and zero-padded seconds, rounding up', () => {
+      expect(formatBridgeCountdown(150_000)).toBe('2:30');
+      expect(formatBridgeCountdown(59_001)).toBe('1:00');
+      expect(formatBridgeCountdown(5_000)).toBe('0:05');
+      expect(formatBridgeCountdown(1)).toBe('0:01');
+    });
+
+    it('never goes below 0:00', () => {
+      expect(formatBridgeCountdown(0)).toBe('0:00');
+      expect(formatBridgeCountdown(-3_000)).toBe('0:00');
+      expect(formatBridgeCountdown(Number.NaN)).toBe('0:00');
+    });
   });
 });

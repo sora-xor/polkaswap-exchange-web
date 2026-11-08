@@ -74,6 +74,8 @@ const createMocks = () => {
   const waitingForActionState = ref(false);
   const failedState = ref(false);
   const successState = ref(false);
+  const approvalDelayMs = ref(0);
+  const approvalDelayProgress = ref<{ percent: number; remainingMs: number } | null>(null);
 
   const navigateToBridge = vi.fn();
   const viewHistory = vi.fn();
@@ -143,6 +145,8 @@ const createMocks = () => {
     waitingForActionState,
     failedState,
     successState,
+    approvalDelayMs,
+    approvalDelayProgress,
     navigateToBridge,
     viewHistory,
     connectEvmWallet,
@@ -293,6 +297,13 @@ vi.mock('@/composables/useFormattedAmount', () => ({
     formatCodecNumber: (value: string) => `formatted:${value}`,
     getFiatAmountByString: () => 'fiat:value',
     getFiatAmountByCodecString: () => 'fiat:value',
+  }),
+}));
+
+vi.mock('@/composables/useEthBridgeApprovalDelay', () => ({
+  useEthBridgeApprovalDelay: () => ({
+    delayMs: mocks.approvalDelayMs,
+    progress: mocks.approvalDelayProgress,
   }),
 }));
 
@@ -1124,6 +1135,47 @@ describe(
         wrapper.unmount();
       }
     );
+
+    it('shows the validators signing delay while an outgoing Hashi transfer waits for approvals', async () => {
+      const transaction = createTransaction({
+        type: 'EthBridgeOutgoing',
+        externalNetworkType: 'Eth',
+        transactionState: ETH_BRIDGE_STATES.SORA_PENDING,
+      });
+      mocks.historyItem.value = transaction;
+      mocks.externalNetworkType.value = 'Eth';
+      mocks.approvalDelayMs.value = 120_000;
+      mocks.approvalDelayProgress.value = { percent: 40, remainingMs: 90_000 };
+      bridgeStore.history.internal = { [transaction.id]: transaction } as any;
+      bridgeStore.history.id = transaction.id;
+
+      const wrapper = mountBridgeTransactionPage();
+      await flushBridgePromises();
+
+      const panel = wrapper.find('[data-testid="bridge-approval-delay"]');
+      expect(panel.exists(), wrapper.html()).toBe(true);
+      expect(panel.text()).toContain('bridgeTransaction.approvalDelay.title');
+      expect(panel.text()).toContain('bridgeTransaction.approvalDelay.description');
+      expect(panel.find('[data-testid="bridge-approval-delay-time"]').text()).toBe(
+        'bridgeTransaction.approvalDelay.timeLeft'
+      );
+      const bar = panel.find('progress');
+      expect(bar.attributes('max')).toBe('100');
+      expect(bar.attributes('value')).toBe('40');
+
+      // After the estimate the bar keeps moving instead of freezing at 100%.
+      mocks.approvalDelayProgress.value = { percent: 100, remainingMs: 0 };
+      await nextTick();
+      expect(panel.find('progress').exists()).toBe(false);
+      expect(panel.find('[role="progressbar"]').exists()).toBe(true);
+      expect(panel.find('[data-testid="bridge-approval-delay-time"]').exists()).toBe(false);
+      expect(panel.text()).toContain('bridgeTransaction.approvalDelay.collecting');
+
+      mocks.approvalDelayProgress.value = null;
+      await nextTick();
+      expect(wrapper.find('[data-testid="bridge-approval-delay"]').exists()).toBe(false);
+      wrapper.unmount();
+    });
 
     it('keeps a declined Ethereum network change retryable without processing the bridge transaction', async () => {
       const recipient = `0x${'1'.repeat(40)}`;

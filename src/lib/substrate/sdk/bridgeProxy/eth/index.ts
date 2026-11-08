@@ -189,13 +189,30 @@ export class EthBridgeApi<T> extends ApiAccount<T> {
   }
 
   public async getSoraBlockHashByRequestHash(requestHash: string): Promise<string> {
-    const soraBlockNumber = (
-      await this.api.query.ethBridge.requestSubmissionHeight(this.externalNetwork, requestHash)
-    ).toNumber();
+    const soraBlockNumber = await this.getRequestSubmissionHeight(requestHash);
 
     const soraBlockHash = (await this.api.rpc.chain.getBlockHash(soraBlockNumber)).toString();
 
     return soraBlockHash;
+  }
+
+  /**
+   * Returns the SORA block number at which a bridge request was registered
+   * @param requestHash Bridge request hash
+   */
+  public async getRequestSubmissionHeight(requestHash: string): Promise<number> {
+    return (await this.api.query.ethBridge.requestSubmissionHeight(this.externalNetwork, requestHash)).toNumber();
+  }
+
+  /**
+   * How long, in milliseconds, each bridge peer waits before signing an outgoing request.
+   * Runtimes without this delay do not expose the `outgoingApprovalDelayMs` constant; they return 0.
+   */
+  public getOutgoingApprovalDelayMs(): number {
+    const consts = this.api.consts.ethBridge as Record<string, { toNumber?: () => number } | undefined> | undefined;
+    const delay = consts?.outgoingApprovalDelayMs?.toNumber?.() ?? 0;
+
+    return Number.isFinite(delay) && delay > 0 ? delay : 0;
   }
 
   public async getAssetKind(assetAddress: string): Promise<EthAssetKind | null> {

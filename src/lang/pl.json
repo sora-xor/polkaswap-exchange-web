@@ -2179,6 +2179,12 @@
     "bridgeText": "Most",
     "bridgeTransaction": {
         "allowToken": "Zezwól {AppName} na użycie Twojego {tokenSymbol}",
+        "approvalDelay": {
+            "collecting": "Zbieranie podpisów walidatorów...",
+            "description": "Walidatorzy mostu czekają {seconds} sekund, zanim podpiszą transfer wychodzący. To normalne: Twój transfer jest w toku.",
+            "timeLeft": "Pozostało około {time}",
+            "title": "Opóźnienie bezpieczeństwa"
+        },
         "approveToken": "Pamiętaj, że wystarczy raz zatwierdzić token. Jeśli Twoje rozszerzenie otrzymuje wiele żądań o zatwierdzenie tokena, pamiętaj, by potwierdzić tylko ostatnią, a pozostałe odrzucić.",
         "blocksLeft": "pozostało {count} bloków...",
         "for": " do ",

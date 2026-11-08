@@ -2179,6 +2179,12 @@
     "bridgeText": "ድልድይ",
     "bridgeTransaction": {
         "allowToken": "{AppName} የእርስዎን {tokenSymbol} እንዲጠቀም ይፍቀዱ",
+        "approvalDelay": {
+            "collecting": "የአረጋጋጮች ፊርማዎች በመሰብሰብ ላይ...",
+            "description": "የድልድዩ አረጋጋጮች ወደ ውጭ የሚሄድ ዝውውርን ከመፈረማቸው በፊት {seconds} ሰከንድ ይጠብቃሉ። ይህ የሚጠበቅ ነው፤ ዝውውርዎ በሂደት ላይ ነው።",
+            "timeLeft": "በግምት {time} ቀርቷል",
+            "title": "የደህንነት መዘግየት"
+        },
         "approveToken": "ቶከኑን አንድ ጊዜ ብቻ ማጽደቅ ያስፈልጋል። ብዙ ጥያቄዎች ካሉ መጨረሻውን ብቻ ያረጋግጡ እና ቀሪዎቹን ውድቅ ያድርጉ።",
         "blocksLeft": "{count} ብሎኮች ቀርተዋል...",
         "for": " ለ ",

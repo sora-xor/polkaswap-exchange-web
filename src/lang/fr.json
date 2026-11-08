@@ -2179,6 +2179,12 @@
     "bridgeText": "Pont",
     "bridgeTransaction": {
         "allowToken": "Autoriser {AppName} à utiliser votre {tokenSymbol}",
+        "approvalDelay": {
+            "collecting": "Collecte des signatures des validateurs...",
+            "description": "Les validateurs du pont attendent {seconds} secondes avant de signer un transfert sortant. C'est normal : votre transfert est en cours.",
+            "timeLeft": "Il reste environ {time}",
+            "title": "Délai de sécurité"
+        },
         "approveToken": "Veuillez noter qu'il n'est nécessaire d'approuver le jeton qu'une seule fois. Si votre extension a plusieurs demandes d'approbation de jetons, assurez-vous de ne confirmer que la dernière tout en rejetant le reste.",
         "blocksLeft": "{count} blocs restants...",
         "for": " pour ",

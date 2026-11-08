@@ -1,4 +1,17 @@
-import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/constants';
+import { BLOCK_PRODUCE_TIME_MS, ETH_BRIDGE_STATES } from '@/utils/bridge/eth/constants';
+
+/**
+ * Time added to the peers' signing delay for the request's block to finalize (peers start their
+ * timers only then) and for the signatures to reach a block.
+ */
+export const ETH_BRIDGE_APPROVAL_ALLOWANCE_MS = 30_000;
+
+export type EthBridgeApprovalDelayProgress = {
+  /** Expected share of the wait that has passed, 0-100. */
+  percent: number;
+  /** Expected milliseconds until the peers have signed; 0 once that estimate has passed. */
+  remainingMs: number;
+};
 
 const soraPendingStates = new Set<unknown>([ETH_BRIDGE_STATES.SORA_SUBMITTED, ETH_BRIDGE_STATES.SORA_PENDING]);
 const externalPendingStates = new Set<unknown>([ETH_BRIDGE_STATES.EVM_SUBMITTED, ETH_BRIDGE_STATES.EVM_PENDING]);
@@ -84,4 +97,47 @@ export function resolveBridgePendingNetworkName({
   if (externalPendingStates.has(transactionState)) return externalName || internalName;
 
   return isOutgoing ? internalName : externalName || internalName;
+}
+
+/**
+ * Estimates how far an outgoing Hashi request is through the bridge peers' signing delay.
+ * Elapsed time is counted in SORA blocks since the request was registered, so neither the
+ * browser clock nor block timestamps are involved. Returns `null` when there is nothing to show:
+ * no delay on the connected runtime, or an unknown request or block height.
+ */
+export function getEthBridgeApprovalDelayProgress({
+  delayMs,
+  submissionHeight,
+  currentBlockNumber,
+  blockTimeMs = BLOCK_PRODUCE_TIME_MS,
+  allowanceMs = ETH_BRIDGE_APPROVAL_ALLOWANCE_MS,
+}: {
+  delayMs: number;
+  submissionHeight: number;
+  currentBlockNumber: number;
+  blockTimeMs?: number;
+  allowanceMs?: number;
+}): EthBridgeApprovalDelayProgress | null {
+  if (!(delayMs > 0 && submissionHeight > 0 && currentBlockNumber > 0 && blockTimeMs > 0)) return null;
+
+  const totalMs = delayMs + Math.max(allowanceMs, 0);
+  const elapsedMs = Math.max(currentBlockNumber - submissionHeight, 0) * blockTimeMs;
+  const remainingMs = Math.max(totalMs - elapsedMs, 0);
+
+  return {
+    percent: Math.min(Math.floor((elapsedMs * 100) / totalMs), 100),
+    remainingMs,
+  };
+}
+
+/**
+ * Formats a countdown as `m:ss`, rounding up to whole seconds so it reaches `0:00` only when
+ * the wait is over.
+ */
+export function formatBridgeCountdown(ms: number): string {
+  const totalSeconds = Number.isFinite(ms) ? Math.max(Math.ceil(ms / 1000), 0) : 0;
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+
+  return `${minutes}:${String(seconds).padStart(2, '0')}`;
 }

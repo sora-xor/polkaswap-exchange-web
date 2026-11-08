@@ -2179,6 +2179,12 @@
     "bridgeText": "桥",
     "bridgeTransaction": {
         "allowToken": "允许 {AppName} 使用您的{tokenSymbol}",
+        "approvalDelay": {
+            "collecting": "正在收集验证者签名...",
+            "description": "桥接验证者会在签署转出交易前等待 {seconds} 秒。这是正常现象：您的转账正在进行中。",
+            "timeLeft": "约剩 {time}",
+            "title": "安全延迟"
+        },
         "approveToken": "请注意，只需要批准一次代币。如果您的扩展程序中有多个代币批准请求，请确保仅确认最后一个并拒绝其余请求。",
         "blocksLeft": "{count}个区块等待确认...",
         "for": " 给 ",

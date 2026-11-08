@@ -2179,6 +2179,12 @@
     "bridgeText": "Jembatan",
     "bridgeTransaction": {
         "allowToken": "Izinkan {AppName} untuk menggunakan {tokenSymbol}",
+        "approvalDelay": {
+            "collecting": "Mengumpulkan tanda tangan validator...",
+            "description": "Validator bridge menunggu {seconds} detik sebelum menandatangani transfer keluar. Ini memang wajar: transfer Anda sedang diproses.",
+            "timeLeft": "Sekitar {time} lagi",
+            "title": "Penundaan keamanan"
+        },
         "approveToken": "Harap dicatat bahwa itu hanya diperlukan untuk menyetujui token sekali. Jika ekstensi Anda memiliki beberapa permintaan persetujuan token, pastikan untuk hanya mengonfirmasi yang terakhir sambil menolak sisanya.",
         "blocksLeft": "{count} blok kiri...",
         "for": " untuk ",

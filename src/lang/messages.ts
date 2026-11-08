@@ -938,6 +938,13 @@ export default {
       waitingForConfirmation: 'Waiting for confirmation...',
     },
     blocksLeft: '{count} blocks left...',
+    approvalDelay: {
+      title: 'Security delay',
+      description:
+        'Bridge validators wait {seconds} seconds before they sign an outgoing transfer. This is expected: your transfer is in progress.',
+      timeLeft: 'About {time} left',
+      collecting: 'Collecting validator signatures...',
+    },
     transactionHash: 'Transaction hash',
     networkInfo: {
       status: 'Status',
