@@ -33,7 +33,19 @@ Ethereum transaction hashes are not erased by missing explorer records, and fres
 history searches prefer a successful claim over failed duplicate attempts. The
 existing submission lock serializes wallet broadcasts across tabs.
 
+## Validator signing delay
+
+When the runtime exposes the `ethBridge.outgoingApprovalDelayMs` constant (SORA sets 120 s),
+each bridge peer waits that long before signing an outgoing request. While a transfer waits
+for approvals in `SORA_PENDING`, the transaction page shows a **Security delay** panel with a
+progress bar and the time left, so the wait does not look like a stalled transfer.
+`useEthBridgeApprovalDelay` reads the request's `requestSubmissionHeight` and counts SORA
+blocks (6 s each) up to the live block number. It allows an extra 30 s for finality and for
+the signatures to reach a block, and it never reads the browser clock or block timestamps.
+Once that estimate has passed, the bar becomes an indeterminate "Collecting validator
+signatures..." state until `ApprovalsReady`. Runtimes without the constant show no panel.
+
 Regression coverage lives in `tests/unit/utils/bridge/eth`,
 `tests/unit/lib/substrate/sdk/bridgeProxy/eth`, `tests/unit/stores/bridge/index.spec.ts`,
-and the BridgeTransaction page suites. Unit tests mock wallet, chain, and explorer
+`tests/unit/composables/useEthBridgeApprovalDelay.spec.ts`, and the BridgeTransaction page suites. Unit tests mock wallet, chain, and explorer
 responses; they never submit financial transactions or depend on network services.

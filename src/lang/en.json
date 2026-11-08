@@ -2179,6 +2179,12 @@
     "bridgeText": "Bridge",
     "bridgeTransaction": {
         "allowToken": "Allow {AppName} to use your {tokenSymbol}",
+        "approvalDelay": {
+            "collecting": "Collecting validator signatures...",
+            "description": "Bridge validators wait {seconds} seconds before they sign an outgoing transfer. This is expected: your transfer is in progress.",
+            "timeLeft": "About {time} left",
+            "title": "Security delay"
+        },
         "approveToken": "Please note that it is only needed to approve the token once. If your extension has multiple token approval requests, make sure to only confirm the last one while rejecting the rest.",
         "blocksLeft": "{count} blocks left...",
         "for": " for ",

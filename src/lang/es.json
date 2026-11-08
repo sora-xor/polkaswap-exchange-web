@@ -2179,6 +2179,12 @@
     "bridgeText": "Puente",
     "bridgeTransaction": {
         "allowToken": "Permitir que {AppName} utilice su {tokenSymbol}",
+        "approvalDelay": {
+            "collecting": "Recopilando firmas de los validadores...",
+            "description": "Los validadores del puente esperan {seconds} segundos antes de firmar una transferencia saliente. Es lo esperado: tu transferencia está en curso.",
+            "timeLeft": "Quedan unos {time}",
+            "title": "Retraso de seguridad"
+        },
         "approveToken": "Tenga en cuenta que sólo es necesario aprobar el token una vez. Si su extensión tiene varias solicitudes de aprobación de tokens, asegúrese de confirmar solo la última y rechazar el resto.",
         "blocksLeft": "{count} bloques faltantes",
         "for": " por ",

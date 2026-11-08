@@ -2179,6 +2179,12 @@
     "bridgeText": "Brug",
     "bridgeTransaction": {
         "allowToken": "Sta {AppName} toe om je {tokenSymbol}",
+        "approvalDelay": {
+            "collecting": "Handtekeningen van validators verzamelen...",
+            "description": "Bridge-validators wachten {seconds} seconden voordat ze een uitgaande overdracht ondertekenen. Dit is normaal: je overdracht wordt verwerkt.",
+            "timeLeft": "Nog ongeveer {time}",
+            "title": "Beveiligingsvertraging"
+        },
         "approveToken": "Houd er rekening mee dat het slechts één keer nodig is om het token goed te keuren. Als uw extensie meerdere goedkeuringsverzoeken voor tokens heeft, moet u ervoor zorgen dat u alleen de laatste bevestigt en de rest afwijst.",
         "blocksLeft": "{count} blokken over...",
         "for": " voor ",

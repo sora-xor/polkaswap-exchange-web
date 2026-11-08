@@ -2179,6 +2179,12 @@
     "bridgeText": "Brij",
     "bridgeTransaction": {
         "allowToken": "gohed {AppName} luksavve gohed luksavve {tokenSymbol}",
+        "approvalDelay": {
+            "collecting": "falom luksavve luksavve...",
+            "description": "luksavve wakaot {seconds} gohed raonem luksavve. raonem gohed falom.",
+            "timeLeft": "{time} gohed",
+            "title": "wakaot stakaon"
+        },
         "approveToken": "raonem falom gohed gohed raonem raonem luksavve luksavve gohed gohed token gohed. luksavve luksavve gohed raonem raonem token gohed stakaon, falom gohed luksavve raonem mekem tru gohed falom falom gohed wakaot gohed falom.",
         "blocksLeft": "{count} raonem gohed...",
         "for": "luksavve",

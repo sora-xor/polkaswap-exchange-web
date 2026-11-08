@@ -2179,6 +2179,12 @@
     "bridgeText": "Most",
     "bridgeTransaction": {
         "allowToken": "Povolit {AppName} používat vaše {tokenSymbol}",
+        "approvalDelay": {
+            "collecting": "Shromažďování podpisů validátorů...",
+            "description": "Validátoři bridge čekají {seconds} sekund, než podepíší odchozí převod. Je to očekávané: váš převod probíhá.",
+            "timeLeft": "Zbývá přibližně {time}",
+            "title": "Bezpečnostní prodleva"
+        },
         "approveToken": "Upozorňujeme, že token je nutné schválit pouze jednou. Pokud má vaše rozšíření více žádostí o schválení tokenu, nezapomeňte potvrdit pouze poslední a zbytek odmítnout.",
         "blocksLeft": "Zbývá {count} bloků...",
         "for": " pro ",

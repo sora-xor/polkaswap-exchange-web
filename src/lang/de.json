@@ -2179,6 +2179,12 @@
     "bridgeText": "Brücke",
     "bridgeTransaction": {
         "allowToken": "Erlaube {AppName}, deine {tokenSymbol} zu verwenden",
+        "approvalDelay": {
+            "collecting": "Validatorsignaturen werden gesammelt...",
+            "description": "Die Bridge-Validatoren warten {seconds} Sekunden, bevor sie eine ausgehende Überweisung signieren. Das ist so vorgesehen: Ihre Überweisung wird bearbeitet.",
+            "timeLeft": "Noch etwa {time}",
+            "title": "Sicherheitsverzögerung"
+        },
         "approveToken": "Bitte beachte, dass du den Token nur einmal genehmigen musst. Wenn deine Erweiterung mehrere Token-Genehmigungsanfragen hat, stell bitte sicher, dass du nur die Letzte bestätigst und die Übrigen ablehnst.",
         "blocksLeft": "{count} Blöcke übrig...",
         "for": " zu ",

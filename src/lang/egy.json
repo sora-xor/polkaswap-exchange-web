@@ -2179,6 +2179,12 @@
     "bridgeText": "𓊪𓂋𓏏",
     "bridgeTransaction": {
         "allowToken": "𓄿𓎛 {AppName} 𓅱𓂋 𓄿𓎛 𓅱𓂋 {tokenSymbol}",
+        "approvalDelay": {
+            "collecting": "𓅱𓂋 𓅱𓂋 𓋴𓏏𓊪...",
+            "description": "𓅱𓂋 {seconds} 𓄿𓎛 𓉐𓏤 𓅱𓂋. 𓎛𓂋 𓄿𓎛 𓋴𓏏𓊪.",
+            "timeLeft": "{time} 𓎛𓂋 𓄿𓎛",
+            "title": "𓉐𓏤 𓎛𓂋"
+        },
         "approveToken": "𓎛𓂋 𓋴𓏏𓊪 𓄿𓎛 𓄿𓎛 𓎛𓂋 𓎛𓂋 𓅱𓂋 𓅱𓂋 𓄿𓎛 𓄿𓎛 𓋴𓏏𓊪 𓄿𓎛. 𓅱𓂋 𓅱𓂋 𓄿𓎛 𓎛𓂋 𓎛𓂋 𓋴𓏏𓊪 𓄿𓎛 𓂋𓏤𓈖, 𓋴𓏏𓊪 𓄿𓎛 𓅱𓂋 𓎛𓂋 𓋴𓐍𓏏 𓄿𓎛 𓋴𓏏𓊪 𓋴𓏏𓊪 𓄿𓎛 𓉐𓏤 𓄿𓎛 𓋴𓏏𓊪.",
         "blocksLeft": "{count} 𓎛𓂋 𓄿𓎛...",
         "for": "𓅱𓂋",

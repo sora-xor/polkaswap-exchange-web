@@ -2179,6 +2179,12 @@
     "bridgeText": "Cầu nối",
     "bridgeTransaction": {
         "allowToken": "Cho phép {AppName} được dùng {tokenSymbol} của bạn",
+        "approvalDelay": {
+            "collecting": "Đang thu thập chữ ký của validator...",
+            "description": "Các validator của cầu nối chờ {seconds} giây trước khi ký một giao dịch chuyển ra ngoài. Điều này là bình thường: giao dịch của bạn đang được xử lý.",
+            "timeLeft": "Còn khoảng {time}",
+            "title": "Thời gian chờ bảo mật"
+        },
         "approveToken": "Xin lưu ý rằng chỉ cần phê duyệt token một lần. Nếu tiện ích mở rộng của bạn có nhiều yêu cầu phê duyệt token, hãy đảm bảo chỉ xác nhận yêu cầu cuối cùng trong khi từ chối phần còn lại.",
         "blocksLeft": "{count} block còn lại...",
         "for": " cho ",

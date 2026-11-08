@@ -71,6 +71,37 @@
         :label="t('bridgeTransaction.networkInfo.status')"
         :value="transactionStatus"
       ></info-line>
+      <div v-if="approvalDelayProgress" class="transaction-approval-delay" data-testid="bridge-approval-delay">
+        <div class="transaction-approval-delay__header">
+          <strong class="transaction-approval-delay__title">{{ t('bridgeTransaction.approvalDelay.title') }}</strong>
+          <span
+            v-if="approvalDelayProgress.remainingMs"
+            class="transaction-approval-delay__time"
+            data-testid="bridge-approval-delay-time"
+          >
+            {{ t('bridgeTransaction.approvalDelay.timeLeft', { time: approvalDelayTimeLeft }) }}
+          </span>
+        </div>
+        <progress
+          v-if="approvalDelayProgress.remainingMs"
+          class="transaction-approval-delay__bar"
+          max="100"
+          :value="approvalDelayProgress.percent"
+          :aria-label="t('bridgeTransaction.approvalDelay.title')"
+          :aria-valuetext="t('bridgeTransaction.approvalDelay.timeLeft', { time: approvalDelayTimeLeft })"
+        ></progress>
+        <div
+          v-else
+          class="transaction-approval-delay__bar transaction-approval-delay__bar--collecting"
+          role="progressbar"
+          :aria-label="t('bridgeTransaction.approvalDelay.collecting')"
+        >
+          <span class="transaction-approval-delay__pulse"></span>
+        </div>
+        <span class="transaction-approval-delay__description" role="status" aria-live="polite">
+          {{ approvalDelayDescription }}
+        </span>
+      </div>
       <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="txDate"></info-line>
       <info-line
         v-if="amount"
@@ -240,6 +271,7 @@ import { getTsFundingQuery } from '@/features/misc/lib/getTsFlow';
 import { useBridgeCore } from '@/composables/useBridgeCore';
 import { useBridgeTransaction } from '@/composables/useBridgeTransaction';
 import { useCopyAddress } from '@/composables/useCopyAddress';
+import { useEthBridgeApprovalDelay } from '@/composables/useEthBridgeApprovalDelay';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
@@ -248,6 +280,7 @@ import { type ExplorerLink, PageNames, TranslationConsts, ZeroStringValue } from
 import { resolveBridgeBackLocation } from '@/features/bridge/services/navigationHistory';
 import {
   buildBridgeAddressAriaLabel,
+  formatBridgeCountdown,
   isBridgeWaitingForSoraConfirmation,
   requiresBridgeExternalAccountMatch,
   requiresBridgeExternalNetworkMatch,
@@ -346,6 +379,13 @@ const isOutgoing = bridgeTransaction.isOutgoing;
 const externalNetworkId = bridgeTransaction.externalNetworkId;
 
 const externalBlockNumber = computed(() => bridgeStore.fees.externalBlockNumber);
+const { delayMs: approvalDelayMs, progress: approvalDelayProgress } = useEthBridgeApprovalDelay(tx);
+const approvalDelayTimeLeft = computed(() => formatBridgeCountdown(approvalDelayProgress.value?.remainingMs ?? 0));
+const approvalDelayDescription = computed(() =>
+  approvalDelayProgress.value?.remainingMs
+    ? t('bridgeTransaction.approvalDelay.description', { seconds: Math.round(approvalDelayMs.value / 1000) })
+    : t('bridgeTransaction.approvalDelay.collecting')
+);
 const resumeRequested = ref(false);
 const transactionRequested = ref(false);
 const networkChangeRequested = ref(false);
@@ -1220,6 +1260,87 @@ $network-title-max-width: 250px;
   &-approval-text {
     margin-top: $inner-spacing-medium;
     font-size: var(--s-font-size-mini);
+  }
+  &-approval-delay {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: $inner-spacing-mini;
+    padding: $inner-spacing-medium;
+    border-radius: var(--s-border-radius-small);
+    background-color: var(--s-color-base-background);
+    line-height: var(--s-line-height-mini);
+    text-align: left;
+
+    &__header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: $inner-spacing-mini;
+    }
+    &__title {
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    &__time {
+      color: var(--s-color-base-content-secondary);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    &__description {
+      color: var(--s-color-base-content-secondary);
+      font-size: var(--s-font-size-mini);
+    }
+    &__bar {
+      display: block;
+      width: 100%;
+      height: 8px;
+      margin: 0;
+      accent-color: var(--s-color-theme-accent);
+      border: 0;
+      border-radius: 8px;
+      overflow: hidden;
+      &::-webkit-progress-bar {
+        background: var(--s-color-base-border-secondary);
+      }
+      &::-webkit-progress-value {
+        background: var(--s-color-theme-accent);
+        transition: width 0.6s ease;
+      }
+      &::-moz-progress-bar {
+        background: var(--s-color-theme-accent);
+      }
+      &--collecting {
+        position: relative;
+        background: var(--s-color-base-border-secondary);
+      }
+    }
+    &__pulse {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 40%;
+      border-radius: inherit;
+      background: var(--s-color-theme-accent);
+      animation: approval-delay-collecting 1.6s ease-in-out infinite;
+    }
+  }
+}
+
+@keyframes approval-delay-collecting {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(250%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .transaction-approval-delay__pulse {
+    width: 100%;
+    animation: none;
+    opacity: 0.5;
   }
 }
 .header {

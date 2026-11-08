@@ -2179,6 +2179,12 @@
     "bridgeText": "橋接",
     "bridgeTransaction": {
         "allowToken": "允許 {AppName} 使用你的 {tokenSymbol}",
+        "approvalDelay": {
+            "collecting": "正在收集驗證者簽章...",
+            "description": "橋接驗證者會在簽署轉出交易前等待 {seconds} 秒。這是正常現象：您的轉帳正在進行中。",
+            "timeLeft": "約剩 {time}",
+            "title": "安全延遲"
+        },
         "approveToken": "請注意：每種代幣僅需核准一次。若外掛要求多次代幣核准，請僅確認最後一次並拒絕其餘請求。",
         "blocksLeft": "剩餘 {count} 個區塊...",
         "for": " 於 ",
