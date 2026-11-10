@@ -18,7 +18,7 @@ import { useWalletStore } from '@/stores/wallet';
 import { useLoading } from '../composables/useLoading';
 import { useNotification } from '../composables/useNotification';
 import { delay } from '../util';
-import { unlockAccountPair } from '../util/account';
+import { confirmTransactionSign, getTransactionSignRequest } from '../util/transactionSignRequest';
 
 import AccountConfirmDialog from './Account/ConfirmDialog.vue';
 
@@ -59,20 +59,20 @@ function resetAccountPassphrase(address: string) {
 }
 
 async function handleConfirm(password: string): Promise<void> {
+  const chainApi = props.chainApi;
+  const address = props.account?.address;
+  const request = getTransactionSignRequest(chainApi);
   await withLoading(async () => {
     // hack: to render loading state before sync code execution, 250 - button transition
     await nextTick();
     await delay(250);
 
     await withAppNotification(async () => {
-      const address = props.account?.address;
-
-      if (!address) {
-        props.setVisibility(false);
-        return;
+      if (!visible.value || !address || props.account?.address !== address || props.chainApi !== chainApi) {
+        throw new Error('Signing confirmation expired.');
       }
 
-      unlockAccountPair(props.chainApi, password);
+      confirmTransactionSign(chainApi, password, request);
 
       if (isSignTxDialogDisabled.value) {
         setAccountPassphrase({ address, password });

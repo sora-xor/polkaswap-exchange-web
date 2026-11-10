@@ -1,5 +1,9 @@
 <template>
-  <s-form class="container tonswap-burn el-form--actions" :show-message="false">
+  <s-form
+    class="container tonswap-burn el-form--actions"
+    :class="{ 'tonswap-burn--burning': burnPending }"
+    :show-message="false"
+  >
     <div class="tonswap-burn__content">
       <header class="tonswap-burn__hero">
         <burn-logo-fire class="tonswap-burn__mark" variant="tonswap" />
@@ -8,120 +12,212 @@
             <generic-page-header :title="t('burnPage.tonswap.title')" />
             <span v-if="isLive" class="tonswap-burn__live">{{ t('burnPage.tonswap.live') }}</span>
           </div>
-          <p class="tonswap-burn__description">{{ t('burnPage.tonswap.description') }}</p>
+          <p class="tonswap-burn__description">{{ t('burnPage.tonswap.curve.description') }}</p>
           <p v-if="statusMessage" class="tonswap-burn__status" role="status">{{ statusMessage }}</p>
           <p class="tonswap-burn__claim">
             <strong>{{ t('burnPage.tonswap.claimNotice') }}</strong>
           </p>
-          <external-link href="https://tonswap.org/ts" :title="t('burnPage.tonswap.journey.terms')" />
         </div>
       </header>
-      <dl v-if="isMainnet" class="tonswap-burn__stats" :aria-busy="!summary">
-        <div class="tonswap-stat tonswap-stat--rate">
-          <dt>{{ t('burnPage.tonswap.currentRate') }}</dt>
-          <dd :title="summary ? `${format(summary.rate, 6)} TS / XOR` : undefined">
-            <strong class="tonswap-stat__value">{{ summary ? format(summary.rate, 4) : '—' }}</strong>
-            <span class="tonswap-stat__unit">TS / XOR</span>
-          </dd>
-        </div>
-        <div class="tonswap-stat">
-          <dt>{{ t('burnPage.tonswap.rewardedBurns') }}</dt>
-          <dd>
-            <strong class="tonswap-stat__value">{{ summary ? format(summary.burned) : '—' }}</strong>
-            <span class="tonswap-stat__unit">XOR</span>
-          </dd>
-        </div>
-        <div class="tonswap-stat">
-          <dt>{{ t('burnPage.tonswap.remaining') }}</dt>
-          <dd>
-            <strong class="tonswap-stat__value">{{ summary ? format(summary.remaining) : '—' }}</strong>
-            <span class="tonswap-stat__unit">XOR</span>
-          </dd>
-        </div>
-        <div class="tonswap-stat">
-          <dt>{{ t('burnPage.tonswap.totalReserved') }}</dt>
-          <dd>
-            <strong class="tonswap-stat__value">{{ summary ? format(summary.reserved) : '—' }}</strong>
-            <span class="tonswap-stat__unit">TS</span>
-          </dd>
-        </div>
-      </dl>
-      <div v-if="isMainnet" class="tonswap-burn__meter">
-        <progress
-          v-if="summary"
-          class="tonswap-burn__progress"
-          :value="summary.burned.toString()"
-          max="1753357"
-          :aria-label="t('burnPage.tonswap.rewardedBurns')"
-        />
-        <span v-else class="tonswap-burn__track" aria-hidden="true" />
-        <div class="tonswap-burn__meter-labels">
-          <span>{{
-            summary ? t('burnPage.tonswap.curve.progress', { percent: format(summary.percent, 4) }) : ''
-          }}</span>
-          <span>{{ t('burnPage.tonswap.cap') }}: {{ capLabel }} XOR</span>
-        </div>
-      </div>
-      <div v-if="isMainnet" class="tonswap-burn__data" :data-state="dataStatusState">
-        <div class="tonswap-burn__data-content">
-          <p class="tonswap-burn__data-message" role="status">{{ dataStatusMessage }}</p>
-          <p class="tonswap-burn__data-block">
-            <span v-if="allocation">{{ t('blockNumberText') }} {{ indexedThroughBlock.toLocaleString('en-US') }}</span>
-          </p>
-        </div>
-        <s-button
-          class="tonswap-burn__data-refresh"
-          type="action"
-          alternative
-          icon="arrows-refresh-ccw-24"
-          :aria-label="t('burnPage.tonswap.refreshData')"
-          :title="t('burnPage.tonswap.refreshData')"
-          :disabled="refreshing || submitting"
-          @click="refreshSnapshot()"
+      <div v-if="statusReceipt" ref="statusSection" class="tonswap-burn__status-banner">
+        <tonswap-burn-status
+          :phase="receiptDisplayPhase(statusReceipt)"
+          :amount="statusReceipt.amount"
+          :message="receiptProgressMessage(statusReceipt)"
+          :reward="statusReward"
+          :excluded="isExcludedXorBurnAddress(statusReceipt.address)"
+          :delayed="reconciliationDelayed"
+          :busy="refreshing"
+          @dismiss="dismissStatus"
+          @retry="retryBurnStatus"
         />
       </div>
       <div class="tonswap-burn__layout">
         <section class="tonswap-burn__preview" aria-labelledby="tonswap-preview-title">
-          <h3 id="tonswap-preview-title">{{ t('burnPage.tonswap.journey.preview') }}</h3>
-          <label for="tonswap-preview-amount">{{ t('burnPage.tonswap.journey.amount') }}</label>
-          <div class="tonswap-burn__field">
-            <input
-              id="tonswap-preview-amount"
-              v-model="previewAmount"
-              @input="previewEdited = true"
-              type="text"
-              inputmode="decimal"
-              autocomplete="off"
-              maxlength="97"
-              placeholder="0"
-              :aria-invalid="Boolean(previewAmount && !parsedPreviewAmount)"
-            />
-            <span class="tonswap-burn__unit" aria-hidden="true">XOR</span>
+          <h3 id="tonswap-preview-title" class="tonswap-burn__sr">{{ t('burnPage.tonswap.journey.preview') }}</h3>
+          <div class="tonswap-burn__leg">
+            <label for="tonswap-preview-amount">{{ t('burnPage.tonswap.journey.amount') }}</label>
+            <div class="tonswap-burn__field">
+              <input
+                id="tonswap-preview-amount"
+                ref="previewInput"
+                v-model="previewAmount"
+                @input="previewEdited = true"
+                type="text"
+                inputmode="decimal"
+                autocomplete="off"
+                maxlength="97"
+                placeholder="0"
+                :aria-invalid="Boolean(previewAmount && !parsedPreviewAmount)"
+              />
+              <span class="tonswap-burn__unit" aria-hidden="true">XOR</span>
+            </div>
+            <div class="tonswap-burn__chips" role="group" :aria-label="t('burnPage.tonswap.journey.amount')">
+              <button
+                v-for="chip in quickAmounts"
+                :key="chip.value"
+                class="tonswap-burn__chip"
+                type="button"
+                :aria-label="`${chip.label} XOR`"
+                :aria-pressed="previewAmount === chip.value"
+                @click="pickAmount(chip.value)"
+              >
+                {{ chip.label }}
+              </button>
+            </div>
           </div>
-          <p v-if="previewAmount && !parsedPreviewAmount" role="status">{{ t('burnPage.tonswap.invalidAmount') }}</p>
-          <template v-else-if="parsedPreviewAmount">
-            <info-line
-              :label="t('burnPage.tonswap.journey.estimated')"
-              :value="previewQuote ? format(previewQuote.reward, 6) : '—'"
-              asset-symbol="TS"
-            />
-            <info-line
-              :label="t('burnPage.tonswap.journey.total')"
-              :value="parsedFee ? parsedPreviewAmount.add(parsedFee).toString() : '—'"
-              asset-symbol="XOR"
-            />
-            <p v-if="!previewQuote">{{ t('burnPage.tonswap.estimateUnavailable') }}</p>
-            <p v-if="previewQuote?.excess.gt(zero)">
-              {{ t('burnPage.tonswap.excessRecord', { xor: previewQuote.excess.toString() }) }}
+          <span
+            class="tonswap-burn__flow"
+            :class="{ 'tonswap-burn__flow--lit': !!parsedPreviewAmount }"
+            aria-hidden="true"
+          >
+            <s-icon name="basic-flame-24" size="20" />
+          </span>
+          <div class="tonswap-burn__leg tonswap-burn__leg--out" aria-live="polite">
+            <span class="tonswap-burn__leg-label">{{ t('burnPage.tonswap.journey.estimated') }}</span>
+            <p
+              class="tonswap-burn__out"
+              :class="{ 'tonswap-burn__out--empty': !previewQuote }"
+              :title="previewQuote ? `${format(previewQuote.reward, 6)} TS` : undefined"
+            >
+              <strong :key="previewOutput">{{ previewOutput }}</strong>
+              <span class="tonswap-burn__unit" aria-hidden="true">TS</span>
             </p>
-            <p>{{ t('burnPage.tonswap.journey.estimateNotice') }}</p>
-          </template>
-          <s-button v-if="!isLoggedIn" class="action-button" type="primary" @click="connectSoraWallet">
-            {{ t('connectWalletText') }}
-          </s-button>
-          <s-button v-else class="action-button" type="primary" :disabled="!canBurn || submitting" @click="openDialog">
-            {{ t('burnPage.tonswap.burn') }}
-          </s-button>
+          </div>
+          <div class="tonswap-burn__notes">
+            <p v-if="previewAmount && !parsedPreviewAmount" role="status">{{ t('burnPage.tonswap.invalidAmount') }}</p>
+            <template v-else-if="parsedPreviewAmount">
+              <info-line
+                :label="t('burnPage.tonswap.journey.total')"
+                :value="parsedFee ? parsedPreviewAmount.add(parsedFee).toString() : '—'"
+                asset-symbol="XOR"
+              />
+              <!-- A read in flight is not an outage: the sentence waits until the data is known to be missing. -->
+              <p v-if="!previewQuote && dataStatusState !== 'loading'">
+                {{ t('burnPage.tonswap.estimateUnavailable') }}
+              </p>
+              <p v-if="previewQuote?.excess.gt(zero)">
+                {{ t('burnPage.tonswap.excessRecord', { xor: previewQuote.excess.toString() }) }}
+              </p>
+              <p>{{ t('burnPage.tonswap.journey.estimateNotice') }}</p>
+            </template>
+          </div>
+          <div class="tonswap-burn__actions">
+            <s-button v-if="!isLoggedIn" class="action-button" type="primary" @click="connectSoraWallet">
+              {{ t('connectWalletText') }}
+            </s-button>
+            <s-button
+              v-else
+              class="action-button"
+              type="primary"
+              :disabled="!canBurn || submitting"
+              @click="openDialog"
+            >
+              {{ t('burnPage.tonswap.burn') }}
+            </s-button>
+            <div v-if="isLoggedIn && allocation" class="tonswap-burn__account">
+              <info-line
+                :label="t('burnPage.tonswap.yourBurns')"
+                :value="format(accountBurned)"
+                asset-symbol="XOR"
+                value-can-be-hidden
+              />
+              <info-line
+                :label="t('burnPage.tonswap.yourReserved')"
+                :value="format(accountReward)"
+                asset-symbol="TS"
+                value-can-be-hidden
+              />
+            </div>
+          </div>
+        </section>
+        <section class="tonswap-burn__market" :data-state="dataStatusState">
+          <dl v-if="isMainnet" class="tonswap-burn__stats" :aria-busy="!summary">
+            <div class="tonswap-stat tonswap-stat--rate">
+              <dt>{{ t('burnPage.tonswap.currentRate') }}</dt>
+              <dd :title="summary ? `${format(summary.rate, 6)} TS / XOR` : undefined">
+                <strong class="tonswap-stat__value">{{ summary ? format(summary.rate, 4) : '—' }}</strong>
+                <span class="tonswap-stat__unit">TS / XOR</span>
+              </dd>
+            </div>
+            <div class="tonswap-stat">
+              <dt>{{ t('burnPage.tonswap.rewardedBurns') }}</dt>
+              <dd>
+                <strong class="tonswap-stat__value">{{ summary ? format(summary.burned) : '—' }}</strong>
+                <span class="tonswap-stat__unit">XOR</span>
+              </dd>
+            </div>
+            <div class="tonswap-stat">
+              <dt>{{ t('burnPage.tonswap.remaining') }}</dt>
+              <dd>
+                <strong class="tonswap-stat__value">{{ summary ? format(summary.remaining) : '—' }}</strong>
+                <span class="tonswap-stat__unit">XOR</span>
+              </dd>
+            </div>
+            <div class="tonswap-stat">
+              <dt>{{ t('burnPage.tonswap.totalReserved') }}</dt>
+              <dd>
+                <strong class="tonswap-stat__value">{{ summary ? format(summary.reserved) : '—' }}</strong>
+                <span class="tonswap-stat__unit">TS</span>
+              </dd>
+            </div>
+          </dl>
+          <div v-if="isMainnet" class="tonswap-burn__meter">
+            <progress
+              v-if="summary"
+              class="tonswap-burn__progress"
+              :value="summary.burned.toString()"
+              max="1753357"
+              :aria-label="t('burnPage.tonswap.rewardedBurns')"
+            />
+            <span v-else class="tonswap-burn__track" aria-hidden="true" />
+            <div class="tonswap-burn__meter-labels">
+              <span>{{
+                summary ? t('burnPage.tonswap.curve.progress', { percent: format(summary.percent, 4) }) : ''
+              }}</span>
+              <span>{{ t('burnPage.tonswap.cap') }}: {{ capLabel }} XOR</span>
+            </div>
+          </div>
+          <div class="tonswap-burn__chart">
+            <tonswap-reward-curve
+              :burned="isMainnet ? (allocation?.totalEligible ?? null) : null"
+              :show-summary="false"
+              compact
+            />
+          </div>
+          <div v-if="isMainnet" class="tonswap-burn__data" :data-state="dataStatusState">
+            <div class="tonswap-burn__data-content">
+              <p class="tonswap-burn__data-message" role="status">{{ dataStatusMessage }}</p>
+              <p class="tonswap-burn__data-block">
+                <span v-if="allocation"
+                  >{{ t('blockNumberText') }} {{ indexedThroughBlock.toLocaleString('en-US') }}</span
+                >
+              </p>
+            </div>
+            <s-button
+              class="tonswap-burn__data-refresh"
+              type="action"
+              alternative
+              icon="arrows-refresh-ccw-24"
+              :aria-label="t('burnPage.tonswap.refreshData')"
+              :title="t('burnPage.tonswap.refreshData')"
+              :disabled="refreshing || submitting"
+              @click="refreshSnapshot()"
+            />
+          </div>
+        </section>
+        <div class="tonswap-burn__extras">
+          <details class="tonswap-burn__more">
+            <summary>{{ t('burnPage.tonswap.more') }}</summary>
+            <ol class="tonswap-burn__how">
+              <li v-for="step in howSteps" :key="step">
+                <span>{{ t(`burnPage.tonswap.how.${step}`) }}</span>
+              </li>
+            </ol>
+            <p class="tonswap-burn__terms">{{ t('burnPage.tonswap.description') }}</p>
+            <info-line class="tonswap-burn__start" :label="t('burnPage.tonswap.startBlock')" value="27,720,478" />
+            <external-link href="https://tonswap.org/ts" :title="t('burnPage.tonswap.journey.terms')" />
+          </details>
           <details class="tonswap-burn__onboarding">
             <summary>{{ t('burnPage.tonswap.journey.getStarted') }}</summary>
             <tonswap-onboarding
@@ -132,32 +228,12 @@
               @review="openDialog"
             />
           </details>
-          <div v-if="isLoggedIn && allocation" class="tonswap-burn__account">
-            <info-line
-              :label="t('burnPage.tonswap.yourBurns')"
-              :value="format(accountBurned)"
-              asset-symbol="XOR"
-              value-can-be-hidden
-            />
-            <info-line
-              :label="t('burnPage.tonswap.yourReserved')"
-              :value="format(accountReward)"
-              asset-symbol="TS"
-              value-can-be-hidden
-            />
-          </div>
-          <info-line class="tonswap-burn__start" :label="t('burnPage.tonswap.startBlock')" value="27,720,478" />
-        </section>
-        <div class="tonswap-burn__chart">
-          <tonswap-reward-curve
-            :burned="isMainnet ? (allocation?.totalEligible ?? null) : null"
-            :show-summary="false"
-          />
         </div>
       </div>
     </div>
+    <!-- A finished receipt is listed by its verified row, so the section never shows a bare heading. -->
     <section
-      v-if="allBurnReceipts.length || accountAllocations.length"
+      v-if="visibleBurnReceipts.length || accountAllocations.length"
       ref="historySection"
       class="tonswap-burn__history"
       aria-labelledby="tonswap-history-heading"
@@ -166,10 +242,9 @@
         <s-icon name="basic-flame-24" size="20" aria-hidden="true" />
         {{ t('burnPage.tonswap.claimDetails') }}
       </h3>
-      <div v-if="burnReceipt?.phase === 'updated'" class="tonswap-burn__updated" role="status">
-        <p>{{ receiptProgressMessage(burnReceipt) }}</p>
-        <strong>{{ t('burnPage.tonswap.claimNotice') }}</strong>
-      </div>
+      <p v-if="accountAllocations.length" class="tonswap-burn__receipt-note">
+        {{ t('burnPage.tonswap.journey.receiptNotice') }}
+      </p>
       <ol class="tonswap-burn__records">
         <li
           v-for="receipt in visibleBurnReceipts"
@@ -247,7 +322,6 @@
           <s-button type="secondary" class="tonswap-burn__save-receipt" @click="saveReceipt(row)">
             {{ t('burnPage.tonswap.journey.saveReceipt') }}
           </s-button>
-          <p class="tonswap-burn__receipt-note">{{ t('burnPage.tonswap.journey.receiptNotice') }}</p>
           <p v-if="receiptDownloadError === row.txHash" role="alert">
             {{ t('burnPage.tonswap.journey.receiptError') }}
           </p>
@@ -274,6 +348,7 @@
       v-model:visible="dialogVisible"
       :title="t('burnPage.tonswap.title')"
       custom-class="dialog--tonswap-burn"
+      :blur-overlay="false"
       @after-open="focusAmountOnOpen"
     >
       <div class="tonswap-dialog">
@@ -281,15 +356,18 @@
           ref="amountInput"
           :model-value="amount"
           :token="xor"
+          :balance="xorBalanceCodec"
           :title="t('burnPage.tonswap.amount')"
           :is-fiat-editable="false"
+          :is-max-available="!!maxBurnAmount"
           :disabled="submitting"
           @update:model-value="setAmount"
+          @max="setMaxAmount"
         />
         <div class="tonswap-dialog__estimate" aria-live="polite">
           <span>{{ t('burnPage.tonswap.estimatedReward') }}</span>
           <div>
-            <burn-logo-fire class="tonswap-dialog__fire" variant="tonswap" /><strong>{{
+            <burn-logo-fire class="tonswap-dialog__fire" variant="tonswap" :animate="false" /><strong>{{
               quote ? format(quote.reward, 6) : '—'
             }}</strong
             ><span>TS</span>
@@ -338,6 +416,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, shallowRef, watch 
 
 import GenericPageHeader from '@/components/shared/GenericPageHeader.vue';
 import BurnLogoFire from '@/features/misc/components/burn/BurnLogoFire.vue';
+import TonswapBurnStatus from '@/features/misc/components/burn/TonswapBurnStatus.vue';
 import TonswapRewardCurve from '@/features/misc/components/burn/TonswapRewardCurve.vue';
 import TonswapOnboarding from '@/features/misc/components/burn/TonswapOnboarding.vue';
 import TokenInput from '@/components/shared/Input/TokenInput.vue';
@@ -361,18 +440,21 @@ import {
   type TonswapBurnAllocation,
 } from '@/features/misc/lib/tonswapBurn';
 import { summarizeTonswapCampaign } from '@/features/misc/lib/tonswapCampaignStatus';
+import type { TonswapBurnPhase } from '@/features/misc/lib/tonswapBurnStatus';
 import { publishTonswapCampaignSummary } from '@/features/misc/composables/useTonswapCampaignStatus';
+import { IndexerType } from '@/indexer/queries/indexerConsts';
 import { fetchTonswapBurnSnapshot, TONSWAP_MAINNET_GENESIS } from '@/indexer/queries/tonswapBurn';
 import { api } from '@/lib/soraneo-wallet/src/api';
-import { TransactionStatus, type HistoryItem } from '@/lib/substrate/sdk/types';
+import { TransactionStatus, type HistoryItem } from '@sora-substrate/sdk/build/types';
 import DialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 import InfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 import ExternalLink from '@/lib/soraneo-wallet/src/components/shared/ExternalLink.vue';
 import { useAssetsStore } from '@/stores/assets';
 import { useSettingsStore } from '@/stores/settings';
 import { useWalletStore } from '@/stores/wallet';
+import { normalizeCodecBalanceValue } from '@/utils/asset-formatting';
 
-/** Separate TS campaign: finalized global burns determine quotes and claims; no Nexus recipient is collected. */
+/** Separate TS campaign: finalized global burns determine quotes and claims; no SORA Nexus recipient is collected. */
 defineOptions({ name: 'TonswapBurnCampaign' });
 const props = defineProps<{ initialAmount?: string }>();
 const emit = defineEmits<{ 'amount-change': [amount: string]; submitted: [payload: { transactionHash: string }] }>();
@@ -401,7 +483,7 @@ const googleWalletAvailable = computed(
   () => wallet.availableWallets?.some((entry) => entry.extensionName === 'google-drive') ?? false
 );
 const submitting = ref(false);
-type BurnPhase = 'waiting' | 'included' | 'confirmed' | 'updated' | 'failed';
+type BurnPhase = TonswapBurnPhase;
 type BurnReceipt = {
   localId: number;
   address: string;
@@ -411,6 +493,8 @@ type BurnReceipt = {
   submittedAt: number;
   previousHistoryIds: string[];
   phase: BurnPhase;
+  /** Advisory TS estimate the user reviewed when signing, as an exact decimal; absent for a recovered receipt. */
+  estimate?: string;
 };
 const burnReceipt = ref<BurnReceipt | null>(null);
 const priorBurnReceipts = ref<BurnReceipt[]>([]);
@@ -419,15 +503,28 @@ let receiptId = 0;
 const allBurnReceipts = computed(() =>
   burnReceipt.value ? [burnReceipt.value, ...priorBurnReceipts.value] : priorBurnReceipts.value
 );
-const visibleBurnReceipts = computed(() => allBurnReceipts.value.filter((receipt) => receipt.phase !== 'updated'));
+const visibleBurnReceipts = computed(() =>
+  allBurnReceipts.value.filter((receipt) => receiptDisplayPhase(receipt) !== 'updated')
+);
 const reconciliationDelayed = ref(false);
 const RECONCILIATION_INTERVAL_MS = 2_000;
 const RECONCILIATION_WINDOW_MS = 120_000;
 const RECOVER_HISTORY_WINDOW_MS = 24 * 60 * 60 * 1_000;
+/** How long after it was verified a reading may stay on screen while the next read is in flight. */
+const READING_KEEP_MS = 60_000;
+let readingAcceptedAt = 0;
+let readingExpiryTimer: ReturnType<typeof setTimeout> | undefined;
 let reconciliationTimer: ReturnType<typeof setTimeout> | undefined;
 let reconciliationDeadline = 0;
 const submitError = ref('');
 const historySection = ref<HTMLElement | null>(null);
+const statusSection = ref<HTMLElement | null>(null);
+const previewInput = ref<HTMLInputElement | null>(null);
+/** The receipt whose banner the user closed; a later burn gets a new id and shows its own banner. */
+const dismissedStatusId = ref<number | null>(null);
+/** Amounts offered under the field so a visitor can try the preview without typing. */
+const QUICK_AMOUNTS = ['10', '100', '1000'] as const;
+const howSteps = ['enter', 'burn', 'claim'] as const;
 let refreshTimer: ReturnType<typeof setInterval> | undefined;
 let disposed = false;
 let requestId = 0;
@@ -439,7 +536,12 @@ const canBurn = computed(() => isMainnet.value && !submitting.value);
 const accountAllocations = computed(
   () =>
     allocation.value?.allocations
-      .filter((row) => soraAddress.value && isSameSoraAddress(row.address, soraAddress.value))
+      .filter(
+        (row) =>
+          soraAddress.value &&
+          row.claimStatus !== 'extinguished' &&
+          isSameSoraAddress(row.claimOwner ?? row.address, soraAddress.value)
+      )
       .slice()
       .reverse() ?? []
 );
@@ -448,7 +550,17 @@ const accountReward = computed(() => accountAllocations.value.reduce((total, row
 const feeCodec = computed(() => settings.networkFees?.[Operation.BurnWithRemark]);
 const parsedFee = computed(() => parseNonnegativeCodec(feeCodec.value));
 const fee = computed(() => parsedFee.value ?? zero);
-const balance = computed(() => parseNonnegativeCodec(assets.xor?.balance?.transferable));
+/** Spendable XOR as the wallet page reads it, so both pages agree on the same snapshot. */
+const xorBalanceCodec = computed(() => normalizeCodecBalanceValue(assets.xor?.balance?.transferable) ?? null);
+const balance = computed(() => parseNonnegativeCodec(xorBalanceCodec.value));
+/** A missing balance means the wallet is still synchronizing, not that the account lacks XOR. */
+const balanceUnavailable = computed(() => isLoggedIn.value && !balance.value);
+/** Largest burn that still leaves the network fee; null when the balance cannot cover the fee. */
+const maxBurnAmount = computed(() => {
+  if (!balance.value || !parsedFee.value) return null;
+  const available = balance.value.sub(parsedFee.value);
+  return available.gt(zero) ? available : null;
+});
 const validAmount = computed(
   () =>
     amount.value.length <= 97 &&
@@ -457,18 +569,18 @@ const validAmount = computed(
 );
 const parsedAmount = computed(() => (validAmount.value ? new FPNumber(amount.value) : null));
 const quote = computed(() => {
-  if (!parsedAmount.value) return null;
-  // An excluded source always earns zero, independently of whether reward data is available.
+  if (!parsedAmount.value || !allocation.value) return null;
+  // Excluded-account estimates still require the fresh capability-bound snapshot.
   if (isExcludedAccount.value) return quoteTonswapBurn(new FPNumber(TONSWAP_XOR_CAP), parsedAmount.value);
   return allocation.value ? quoteTonswapBurn(allocation.value.totalEligible, parsedAmount.value) : null;
 });
 const previewQuote = computed(() => {
-  if (!isMainnet.value || !parsedPreviewAmount.value) return null;
+  if (!isMainnet.value || !parsedPreviewAmount.value || !allocation.value) return null;
   if (isExcludedAccount.value) return quoteTonswapBurn(new FPNumber(TONSWAP_XOR_CAP), parsedPreviewAmount.value);
   return allocation.value ? quoteTonswapBurn(allocation.value.totalEligible, parsedPreviewAmount.value) : null;
 });
 const insufficientBalance = computed(
-  () => !!parsedAmount.value && (!balance.value || balance.value.lt(parsedAmount.value.add(fee.value)))
+  () => !!parsedAmount.value && !!balance.value && balance.value.lt(parsedAmount.value.add(fee.value))
 );
 const exceedsRemaining = computed(() => !!quote.value && quote.value.excess.gt(zero));
 const canSubmit = computed(
@@ -479,6 +591,7 @@ const canSubmit = computed(
     !!soraAddress.value &&
     !!parsedAmount.value &&
     !!parsedFee.value &&
+    !!balance.value &&
     !insufficientBalance.value &&
     !submitting.value
 );
@@ -506,15 +619,69 @@ const dataStatusMessage = computed(() => {
 });
 const validationMessage = computed(() => {
   if (amount.value && !validAmount.value) return t('burnPage.tonswap.invalidAmount');
+  if (balanceUnavailable.value) return t('getTs.balancesLoading');
   if (insufficientBalance.value) return t('insufficientBalanceText', { tokenSymbol: 'XOR' });
   if (!parsedFee.value) return t('burnPage.tonswap.feeUnavailable');
   if (!isMainnet.value) return t('burnPage.tonswap.mainnetOnly');
   return '';
 });
 
+/** The newest burn of this wallet keeps a status banner at the top of the card until the user closes it. */
+const statusReceipt = computed(() =>
+  burnReceipt.value && burnReceipt.value.localId !== dismissedStatusId.value ? burnReceipt.value : null
+);
+/** Finds this exact burn in the currently admitted campaign reading. */
+function indexedReceiptAllocation(receipt: BurnReceipt) {
+  return allocation.value?.allocations.find(
+    (row) => row.txHash === receipt.txHash && isSameSoraAddress(row.address, receipt.address)
+  );
+}
+
+/** Keeps proved chain finality visible when reservation evidence has been withdrawn. */
+function receiptDisplayPhase(receipt: BurnReceipt): BurnPhase {
+  return receipt.phase === 'updated' && !indexedReceiptAllocation(receipt) ? 'confirmed' : receipt.phase;
+}
+
+/**
+ * Shows reserved TS only from the current admitted reading. A pending burn may retain the estimate
+ * reviewed at signing while that reading remains valid; withdrawing it also withdraws the estimate.
+ */
+const statusReward = computed(() => {
+  const receipt = statusReceipt.value;
+  if (!receipt || !allocation.value || receipt.phase === 'failed' || isExcludedXorBurnAddress(receipt.address))
+    return null;
+  if (receipt.phase === 'updated') return indexedReceiptAllocation(receipt)?.reward ?? null;
+  return loadFailed.value ? null : parseReceiptAmount(receipt.estimate);
+});
+const quickAmounts = computed(() => QUICK_AMOUNTS.map((value) => ({ value, label: format(new FPNumber(value), 0) })));
+/** The estimate beside the amount: a dash while there is an amount but no verified campaign data. */
+const previewOutput = computed(() => {
+  if (previewQuote.value) return `≈ ${format(previewQuote.value.reward, 4)}`;
+  return parsedPreviewAmount.value ? '—' : '0';
+});
+
 /** Formats exact token values only for display. */
 function format(value: FPNumber, precision = 4): string {
   return formatBurnAmount(value, precision);
+}
+
+/** Reads a TS amount kept on a receipt; zero is a real result, anything malformed is no result. */
+function parseReceiptAmount(value: string | undefined): FPNumber | null {
+  if (!value || value.length > 97 || !/^(?:0|[1-9]\d*)(?:\.\d{1,18})?$/.test(value)) return null;
+  const parsed = new FPNumber(value);
+  return parsed.isFinity() ? parsed : null;
+}
+
+/** Fills the preview with a suggested amount; nothing is signed until the user reviews the burn. */
+function pickAmount(value: string): void {
+  previewEdited.value = true;
+  previewAmount.value = value;
+}
+
+/** Closes the status banner for this burn and hands the keyboard back to the amount field. */
+function dismissStatus(): void {
+  dismissedStatusId.value = burnReceipt.value?.localId ?? null;
+  void nextTick(() => previewInput.value?.focus());
 }
 
 /** Rejects missing, malformed or negative chain amounts before any balance comparison. */
@@ -524,24 +691,58 @@ function parseNonnegativeCodec(value: unknown): FPNumber | null {
   return parsed.isFinity() && !parsed.lt(zero) ? parsed : null;
 }
 
-/** Refreshes advisory reward data without controlling whether XOR can be burned. */
+/** Withdraws the campaign reading everywhere it is shown, including the sidebar's Live mark. */
+function clearReading(): void {
+  clearTimeout(readingExpiryTimer);
+  readingExpiryTimer = undefined;
+  allocation.value = null;
+  indexedThroughBlock.value = 0;
+  readingAcceptedAt = 0;
+  for (const receipt of allBurnReceipts.value) receipt.estimate = undefined;
+  publishTonswapCampaignSummary(null);
+}
+
+/** Expires displayed evidence even while its replacement is pending or the tab is hidden. */
+function expireReading(): void {
+  if (allocation.value && Date.now() - readingAcceptedAt >= READING_KEEP_MS) clearReading();
+}
+
+/**
+ * Refreshes advisory reward data without controlling whether XOR can be burned.
+ *
+ * A reading accepted within the last minute stays on screen while its replacement loads, so the
+ * numbers do not blink on every poll (approved by the user on 2026-11-10). It is not a fallback:
+ * a failed read withdraws it at once, an independent timer withdraws it at 60 seconds, and
+ * a change of network or indexer endpoint withdraws it immediately.
+ */
 async function refreshSnapshot(): Promise<boolean> {
   const id = ++requestId;
   if (!isMainnet.value) return false;
   refreshing.value = true;
+  expireReading();
   try {
     const snapshot = await fetchTonswapBurnSnapshot();
     const next = allocateTonswapBurns(snapshot.burns);
     if (disposed || id !== requestId) return false;
     allocation.value = next;
     indexedThroughBlock.value = snapshot.indexedThroughBlock;
+    readingAcceptedAt = Date.now();
+    clearTimeout(readingExpiryTimer);
+    readingExpiryTimer = setTimeout(expireReading, READING_KEEP_MS);
     loadFailed.value = !snapshot.fresh;
-    // Share fresh readings with the sidebar so its Live mark never disagrees with this page.
-    if (snapshot.fresh) publishTonswapCampaignSummary(summarizeTonswapCampaign(next, snapshot.indexedThroughBlock));
+    if (!snapshot.fresh) {
+      for (const receipt of allBurnReceipts.value) receipt.estimate = undefined;
+    }
+    // Share only fresh readings with the sidebar so its Live mark never disagrees with this page.
+    publishTonswapCampaignSummary(snapshot.fresh ? summarizeTonswapCampaign(next, snapshot.indexedThroughBlock) : null);
     reconcileIndexedBurn();
     return snapshot.fresh;
   } catch {
-    if (!disposed && id === requestId) loadFailed.value = true;
+    if (!disposed && id === requestId) {
+      // Nothing cached stands in for a read that failed admission.
+      clearReading();
+      loadFailed.value = true;
+    }
     return false;
   } finally {
     if (id === requestId) refreshing.value = false;
@@ -562,6 +763,11 @@ function focusAmountOnOpen(): void {
   void amountInput.value?.focusAndSelect();
 }
 
+/** Fills the spendable balance minus the network fee, as an exact decimal string. */
+function setMaxAmount(): void {
+  if (maxBurnAmount.value) setAmount(maxBurnAmount.value.toString());
+}
+
 /** Keeps entered amounts as decimal strings and prevents edits during submission. */
 function setAmount(value: string): void {
   if (submitting.value) return;
@@ -573,11 +779,15 @@ function setAmount(value: string): void {
 
 /** Signs using live wallet and funding checks; reward-data requests never block a burn. */
 async function confirmBurn(): Promise<void> {
+  expireReading();
   if (!canSubmit.value) return;
   const requested = amount.value;
   const signer = soraAddress.value;
   const submittedAt = Date.now();
   const previousHistoryIds = currentBurnHistory().map((item) => item.id ?? historyTxHash(item));
+  // The estimate on screen when the user confirms; an excluded source is never shown one in the banner.
+  const estimate = isExcludedAccount.value ? undefined : quote.value?.reward.toString();
+  const estimateReadingAt = readingAcceptedAt;
   submitting.value = true;
   submitError.value = '';
   try {
@@ -594,6 +804,7 @@ async function confirmBurn(): Promise<void> {
       }
       if (!validAmount.value) throw new Error(t('burnPage.tonswap.invalidAmount'));
       if (!parsedFee.value) throw new Error(t('burnPage.tonswap.feeUnavailable'));
+      if (!balance.value) throw new Error(t('getTs.balancesLoading'));
       if (insufficientBalance.value) throw new Error(t('insufficientBalanceText', { tokenSymbol: 'XOR' }));
       const chainApi = api.connection?.api;
       if (!chainApi?.isConnected) throw new Error(t('burnPage.tonswap.connectionUnavailable'));
@@ -626,13 +837,16 @@ async function confirmBurn(): Promise<void> {
           submittedAt,
           previousHistoryIds,
           phase: phaseFromHistory(transaction),
+          estimate:
+            allocation.value && readingAcceptedAt === estimateReadingAt && !loadFailed.value ? estimate : undefined,
         });
         if (burnReceipt.value) submittedReceiptIds.add(burnReceipt.value.localId);
         syncBurnHistory();
         startReconciliation();
       }
       void nextTick(() => {
-        const receipt = historySection.value?.querySelector('.tonswap-burn__record');
+        // The status banner sits above the amount field; the full record stays in the history list.
+        const receipt = statusSection.value ?? historySection.value?.querySelector('.tonswap-burn__record');
         receipt?.scrollIntoView?.({
           block: 'nearest',
           behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
@@ -660,16 +874,16 @@ function isPendingReceipt(receipt: BurnReceipt): boolean {
 /** Describes this transaction without promising TS for an excluded source. */
 function receiptProgressMessage(receipt: BurnReceipt | null): string {
   if (!receipt) return '';
-  if (receipt.phase === 'failed') return t('transaction.statuses.failed');
-  if (receipt.phase === 'confirmed' && isExcludedXorBurnAddress(receipt.address))
-    return t('transaction.statuses.complete');
+  const phase = receiptDisplayPhase(receipt);
+  if (phase === 'failed') return t('transaction.statuses.failed');
+  if (phase === 'confirmed' && isExcludedXorBurnAddress(receipt.address)) return t('transaction.statuses.complete');
   const keys = {
     waiting: 'waitingConfirmation',
     included: 'included',
     confirmed: 'confirmed',
     updated: 'rewardsUpdated',
   };
-  return t(`burnPage.tonswap.${keys[receipt.phase]}`);
+  return t(`burnPage.tonswap.${keys[phase]}`);
 }
 
 /** Preserves every earlier receipt when the wallet submits another independent burn. */
@@ -799,13 +1013,14 @@ function syncReceiptHistory(receipt: BurnReceipt): void {
 /** Completes feedback only when this exact account and transaction appear in authoritative finalized data. */
 function reconcileIndexedBurn(): void {
   for (const receipt of allBurnReceipts.value) {
-    if (
-      receipt.txHash &&
-      allocation.value?.allocations.some(
-        (row) => row.txHash === receipt.txHash && isSameSoraAddress(row.address, receipt.address)
-      )
-    )
+    const listed = receipt.txHash
+      ? allocation.value?.allocations.find(
+          (row) => row.txHash === receipt.txHash && isSameSoraAddress(row.address, receipt.address)
+        )
+      : undefined;
+    if (listed) {
       receipt.phase = 'updated';
+    }
   }
   if (!burnPending.value) {
     reconciliationDelayed.value = false;
@@ -868,7 +1083,9 @@ async function refreshBurnStatus(): Promise<void> {
 
 /** Keeps the public curve current on blocks and tab return without overlapping reads or signing. */
 async function refreshCampaignStatus(): Promise<void> {
-  if (disposed || !isMainnet.value || document.visibilityState === 'hidden') return;
+  if (disposed) return;
+  expireReading();
+  if (!isMainnet.value || document.visibilityState === 'hidden') return;
   if (burnPending.value) await refreshBurnStatus();
   else if (!submitting.value && !refreshing.value) await refreshSnapshot();
 }
@@ -926,7 +1143,7 @@ watch(
   [() => props.initialAmount, balance, feeCodec, isLoggedIn],
   () => {
     if (previewEdited.value || dialogVisible.value || !isLoggedIn.value || !props.initialAmount) return;
-    previewAmount.value = getTsBurnPrefill(props.initialAmount, assets.xor?.balance?.transferable, feeCodec.value);
+    previewAmount.value = getTsBurnPrefill(props.initialAmount, xorBalanceCodec.value, feeCodec.value);
   },
   { immediate: true }
 );
@@ -974,11 +1191,18 @@ watch(isMainnet, () => {
   stopReconciliation();
   burnReceipt.value = null;
   priorBurnReceipts.value = [];
-  allocation.value = null;
-  indexedThroughBlock.value = 0;
+  clearReading();
   requestId += 1;
   if (isMainnet.value) void refreshSnapshot().then(() => recoverBurnReceipt());
 });
+// A reading belongs to the indexer that served it, so another endpoint starts from nothing.
+watch(
+  () => wallet.indexers?.[IndexerType.POLKASWAP]?.endpoint,
+  () => {
+    clearReading();
+    void refreshSnapshot().then(() => recoverBurnReceipt());
+  }
+);
 watch(
   () => wallet.history,
   () => {
@@ -1018,6 +1242,7 @@ onBeforeUnmount(() => {
   disposed = true;
   requestId += 1;
   clearInterval(refreshTimer);
+  clearTimeout(readingExpiryTimer);
   document.removeEventListener('visibilitychange', refreshCampaignStatus);
   window.removeEventListener('focus', refreshCampaignStatus);
   stopReconciliation();
@@ -1041,6 +1266,10 @@ defineExpose({
   previewAmount,
   previewQuote,
   saveReceipt,
+  statusReceipt,
+  statusReward,
+  pickAmount,
+  dismissStatus,
 });
 </script>
 
@@ -1048,12 +1277,27 @@ defineExpose({
 .tonswap-burn {
   @include buttons;
   @include full-width-button('action-button');
+  position: relative;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   gap: 24px;
   margin: 0 0 $basic-spacing;
   box-shadow: var(--s-shadow-element-pressed);
+
+  // A soft glow behind the mark and the form. Decoration only: it never carries information.
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background:
+      radial-gradient(58% 420px at 0% 0%, rgba(0, 152, 234, 0.16), transparent 72%),
+      radial-gradient(46% 360px at 100% 0%, rgba(248, 8, 123, 0.1), transparent 72%);
+    pointer-events: none;
+  }
 
   // The wide Burn page layout opts out of the 464px card width the global .container rule sets.
   &.container--featured {
@@ -1076,23 +1320,34 @@ defineExpose({
     container-type: inline-size;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 20px;
     align-self: stretch;
     width: 100%;
     min-width: 0;
   }
 
+  // Headings that only name a region for assistive technology.
+  &__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
   &__hero {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 18px;
     min-width: 0;
   }
   &__mark {
     display: block;
-    flex: 0 0 112px;
-    width: 112px;
-    height: 112px;
+    flex: 0 0 104px;
+    width: 104px;
+    height: 104px;
   }
   &__intro {
     flex: 1;
@@ -1103,18 +1358,18 @@ defineExpose({
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 8px 12px;
-    margin-bottom: 8px;
+    gap: 6px 12px;
+    margin-bottom: 6px;
     :deep(.page-header) {
       width: auto;
       margin: 0;
     }
     // The shared header mixin sets font-weight with !important, so the heading weight needs it too.
     :deep(.page-header-title) {
-      font-size: 24px;
-      line-height: 1.25;
+      font-size: 26px;
+      line-height: 1.2;
       font-weight: 600 !important;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.015em;
       text-transform: none;
     }
   }
@@ -1142,19 +1397,23 @@ defineExpose({
     }
   }
   &__description,
-  &__claim {
-    max-width: 760px;
-    margin: 0 0 8px;
+  &__claim,
+  &__status {
+    max-width: 640px;
+    margin: 0;
     font-size: 14px;
-    line-height: 1.55;
+    line-height: 1.5;
+  }
+  &__description {
+    color: var(--s-color-base-content-secondary);
+  }
+  &__claim,
+  &__status {
+    margin-top: 4px;
+    font-size: 13px;
   }
   &__claim strong {
     font-weight: 700;
-  }
-  &__status {
-    margin: 0 0 8px;
-    font-size: 13px;
-    line-height: 1.5;
   }
   :deep(.info-line) {
     min-width: 0;
@@ -1171,23 +1430,220 @@ defineExpose({
     font-weight: 600;
   }
   :deep(.action-button.el-button) {
-    height: 46px;
-    min-height: 46px;
-    font-size: 15px;
+    height: 50px;
+    min-height: 50px;
+    margin-top: 0;
+    font-size: 16px;
     line-height: 20px;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: none;
   }
 
+  // One column on a phone: the form, then the campaign numbers, then the folded reading.
+  &__layout {
+    display: grid;
+    grid-template-columns: #{'minmax(0, 1fr)'};
+    gap: 16px;
+    min-width: 0;
+  }
+  &__preview,
+  &__market {
+    min-width: 0;
+    padding: 20px;
+    border-radius: var(--s-border-radius-mini);
+    background: var(--s-color-utility-surface);
+    box-shadow: var(--s-shadow-element-pressed);
+    text-align: start;
+    @media (max-width: 480px) {
+      padding: 14px;
+    }
+  }
+
+  // The burn form reads like a swap: XOR goes in at the top, the flame sits between, TS comes out below.
+  &__preview {
+    display: flex;
+    flex-direction: column;
+  }
+  &__leg {
+    min-width: 0;
+    padding: 14px 16px 12px;
+    border-radius: 18px;
+    background: var(--s-color-base-border-primary);
+    box-shadow: var(--s-shadow-element);
+    label,
+    &-label {
+      display: block;
+      margin: 0 0 2px;
+      color: var(--s-color-base-content-secondary);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+    // One ring around the whole field while its input has keyboard focus; the chips keep their own ring.
+    &:has(input:focus-visible) {
+      outline: 2px solid var(--s-color-focus-ring, var(--s-color-outline));
+      outline-offset: -2px;
+    }
+    @supports not selector(:has(*)) {
+      &:focus-within {
+        outline: 2px solid var(--s-color-focus-ring, var(--s-color-outline));
+        outline-offset: -2px;
+      }
+    }
+    &--out {
+      padding-top: 20px;
+    }
+  }
+  &__field {
+    position: relative;
+    display: flex;
+    align-items: center;
+    input {
+      flex: 1;
+      box-sizing: border-box;
+      width: 100%;
+      min-width: 0;
+      min-height: 44px;
+      padding: 2px 56px 2px 0;
+      border: 0;
+      background: transparent;
+      color: var(--s-color-base-content-primary);
+      font: inherit;
+      font-size: 30px;
+      font-weight: 600;
+      line-height: 1.2;
+      font-variant-numeric: tabular-nums;
+      html[dir='rtl'] & {
+        padding: 2px 0 2px 56px;
+      }
+      &::placeholder {
+        color: var(--s-color-base-content-tertiary);
+      }
+      // The ring is drawn on the field around it.
+      &:focus-visible {
+        outline: none !important;
+      }
+    }
+  }
+  &__unit {
+    color: var(--s-color-base-content-secondary);
+    font-size: 15px;
+    font-weight: 700;
+  }
+  &__field &__unit {
+    position: absolute;
+    inset-inline-end: 0;
+    pointer-events: none;
+  }
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  &__chip {
+    appearance: none;
+    min-width: 52px;
+    min-height: 30px;
+    padding: 5px 12px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--s-color-utility-surface);
+    box-shadow: var(--s-shadow-element-pressed);
+    color: var(--s-color-base-content-secondary);
+    cursor: pointer;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.4;
+    font-variant-numeric: tabular-nums;
+    &:hover {
+      color: var(--s-color-action-text);
+    }
+    &[aria-pressed='true'] {
+      background: var(--s-color-action-text);
+      box-shadow: none;
+      color: var(--s-color-base-on-accent);
+    }
+  }
+  &__flow {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    align-self: center;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    margin: -14px 0;
+    border-radius: 50%;
+    background: var(--s-color-utility-surface);
+    box-shadow: var(--s-shadow-element-pressed);
+    color: var(--s-color-base-content-tertiary);
+    transition:
+      color 0.2s ease,
+      box-shadow 0.2s ease;
+    :deep(.s-icon),
+    :deep(i) {
+      color: inherit;
+    }
+    &--lit {
+      background: linear-gradient(135deg, #0098ea, var(--s-color-theme-accent));
+      box-shadow: 0 6px 18px -6px var(--s-color-theme-accent);
+      color: #ffffff;
+    }
+  }
+  &__out {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 8px;
+    min-height: 44px;
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+    strong {
+      display: inline-block;
+      min-width: 0;
+      color: var(--s-color-base-content-primary);
+      font-size: 30px;
+      font-weight: 600;
+      line-height: 44px;
+      overflow-wrap: anywhere;
+      direction: ltr;
+      unicode-bidi: isolate;
+    }
+    &--empty strong {
+      color: var(--s-color-base-content-tertiary);
+    }
+  }
+  &__notes {
+    p {
+      margin: 8px 0 0;
+      color: var(--s-color-base-content-secondary);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    :deep(.info-line) {
+      margin-top: 8px;
+    }
+  }
+  &__actions {
+    padding-top: 16px;
+  }
+  &__account {
+    margin-top: 12px;
+    padding-top: 4px;
+    border-top: 1px solid var(--s-color-base-border-secondary);
+  }
+
+  &__market {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
   &__stats {
     display: grid;
     // Keep native CSS minmax separate from the Sass breakpoint helper.
-    grid-template-columns: #{'repeat(2, minmax(0, 1fr))'};
-    gap: 12px;
+    grid-template-columns: #{'minmax(0, 1fr)'};
     margin: 0;
-  }
-  &__meter {
-    margin-top: -4px;
   }
   &__meter-labels {
     display: flex;
@@ -1204,27 +1660,38 @@ defineExpose({
   &__track {
     display: block;
     width: 100%;
-    height: 8px;
-    border-radius: 8px;
+    height: 10px;
+    border-radius: 999px;
     background: var(--s-color-base-border-secondary);
   }
   &__progress {
     display: block;
     width: 100%;
-    height: 8px;
+    height: 10px;
     margin: 0;
     accent-color: var(--s-color-theme-accent);
     border: 0;
-    border-radius: 8px;
+    border-radius: 999px;
     overflow: hidden;
     &::-webkit-progress-bar {
       background: var(--s-color-base-border-secondary);
     }
     &::-webkit-progress-value {
-      background: var(--s-color-theme-accent);
+      border-radius: 999px;
+      background: linear-gradient(90deg, #0098ea, var(--s-color-theme-accent));
     }
     &::-moz-progress-bar {
-      background: var(--s-color-theme-accent);
+      border-radius: 999px;
+      background: linear-gradient(90deg, #0098ea, var(--s-color-theme-accent));
+    }
+  }
+  &__chart {
+    min-width: 0;
+    :deep(.tonswap-curve) {
+      margin: 0;
+      padding: 0;
+      background: none;
+      box-shadow: none;
     }
   }
 
@@ -1232,6 +1699,9 @@ defineExpose({
     display: flex;
     align-items: center;
     gap: 12px;
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px solid var(--s-color-base-border-secondary);
   }
   &__data-content {
     display: flex;
@@ -1249,13 +1719,14 @@ defineExpose({
   }
   &__data-message {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 8px;
     &::before {
       content: '';
       flex: 0 0 8px;
       width: 8px;
       height: 8px;
+      margin-top: 5px;
       border-radius: 50%;
       background: var(--s-color-base-content-tertiary);
     }
@@ -1275,9 +1746,9 @@ defineExpose({
     font-variant-numeric: tabular-nums;
   }
   :deep(.tonswap-burn__data-refresh.el-button) {
-    flex: 0 0 36px;
-    width: 36px;
-    height: 36px;
+    flex: 0 0 34px;
+    width: 34px;
+    height: 34px;
     margin: 0;
     padding: 0;
     &.is-disabled,
@@ -1287,157 +1758,154 @@ defineExpose({
     }
   }
 
-  &__layout {
+  // Secondary reading, folded away until asked for.
+  &__extras {
     display: grid;
     grid-template-columns: #{'minmax(0, 1fr)'};
-    gap: 16px;
+    align-items: start;
+    gap: 10px;
     min-width: 0;
   }
-  &__preview,
-  &__chart {
+  &__more,
+  &__onboarding {
     min-width: 0;
-    padding: 20px;
-    border-radius: var(--s-border-radius-mini);
+    padding: 0 16px;
+    border-radius: 16px;
     background: var(--s-color-utility-surface);
     box-shadow: var(--s-shadow-element-pressed);
-    @media (max-width: 480px) {
-      padding: 16px;
-    }
-  }
-  &__preview {
-    text-align: start;
-    h3 {
-      margin: 0 0 14px;
-      font-size: 16px;
-      font-weight: 700;
-      line-height: 1.3;
-      text-transform: none;
-    }
-    label {
-      display: block;
-      margin: 0 0 8px;
-      font-size: 12px;
-      color: var(--s-color-base-content-secondary);
-    }
-    p {
-      margin: 8px 0 0;
-      font-size: 12px;
-      line-height: 1.5;
-      color: var(--s-color-base-content-secondary);
-    }
-  }
-  &__field {
-    position: relative;
-    display: flex;
-    align-items: center;
-    border-radius: 14px;
-    background: var(--s-color-base-border-primary);
-    box-shadow: var(--s-shadow-element);
-    @include focus-outline($focusWithin: true);
-    input {
-      flex: 1;
-      box-sizing: border-box;
-      width: 100%;
-      min-width: 0;
-      min-height: 56px;
-      padding: 12px 64px 12px 16px;
-      border: 0;
-      background: transparent;
-      color: var(--s-color-base-content-primary);
-      font: inherit;
-      font-size: 24px;
-      font-weight: 600;
-      html[dir='rtl'] & {
-        padding: 12px 16px 12px 64px;
-      }
-      &::placeholder {
-        color: var(--s-color-base-content-tertiary);
-      }
-    }
-  }
-  &__unit {
-    position: absolute;
-    inset-inline-end: 16px;
-    color: var(--s-color-base-content-secondary);
-    font-size: 14px;
-    font-weight: 700;
-    pointer-events: none;
-  }
-  &__onboarding {
-    margin: 12px 0 0;
     text-align: start;
     summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 0;
+      border-radius: 10px;
       cursor: pointer;
-      padding: 8px 0;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 600;
+      line-height: 1.4;
+      list-style: none;
+      &::-webkit-details-marker {
+        display: none;
+      }
+      // A chevron drawn with borders turns when the section opens.
+      &::after {
+        content: '';
+        flex: 0 0 8px;
+        width: 8px;
+        height: 8px;
+        margin-inline-end: 4px;
+        border: solid var(--s-color-base-content-secondary);
+        border-width: 0 2px 2px 0;
+        transform: translateY(-2px) rotate(45deg);
+        transition: transform 0.2s ease;
+      }
+    }
+    &[open] summary::after {
+      transform: translateY(2px) rotate(-135deg);
+    }
+    &[open] {
+      padding-bottom: 14px;
     }
   }
-  &__account {
-    margin-top: 12px;
-    padding-top: 4px;
-    border-top: 1px solid var(--s-color-base-border-secondary);
-  }
-  &__start {
-    margin-top: 8px;
-  }
-  &__chart {
-    :deep(.tonswap-curve) {
-      margin: 0 0 8px;
-      padding: 0;
-      background: none;
-      box-shadow: none;
+  &__how {
+    display: grid;
+    gap: 10px;
+    margin: 0 0 12px;
+    padding: 0;
+    counter-reset: tonswap-how;
+    list-style: none;
+    li {
+      display: grid;
+      grid-template-columns: #{'26px minmax(0, 1fr)'};
+      align-items: start;
+      gap: 10px;
+      counter-increment: tonswap-how;
+      font-size: 13px;
+      line-height: 1.5;
+      // The first line of text sits level with the number beside it.
+      span {
+        padding-top: 3px;
+      }
+      &::before {
+        content: counter(tonswap-how);
+        display: grid;
+        place-items: center;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: var(--s-color-base-border-primary);
+        box-shadow: var(--s-shadow-element);
+        color: var(--s-color-action-text);
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1;
+      }
     }
   }
-  &__receipt-note {
+  &__terms {
+    margin: 0 0 4px;
+    color: var(--s-color-base-content-secondary);
     font-size: 12px;
     line-height: 1.5;
-    color: var(--s-color-base-content-secondary);
   }
-  &__save-receipt {
-    align-self: flex-start;
-    width: auto;
-    min-width: 220px;
-    max-width: 100%;
-    white-space: normal;
-    min-height: 40px;
-    height: auto;
-    text-transform: none;
+  &__start {
+    margin-bottom: 8px;
   }
+  // Each burn is one compact record: what was burned, what it reserved, where to find it on chain.
   &__history {
     width: 100%;
     font-size: 13px;
+    text-align: start;
     h3 {
       display: flex;
       align-items: center;
       gap: 8px;
-      margin: 0 0 16px;
+      margin: 0 0 6px;
       font-size: 16px;
       line-height: 1.4;
       font-weight: 600;
       text-transform: none;
     }
   }
+  &__receipt-note {
+    margin: 0 0 14px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--s-color-base-content-secondary);
+  }
   &__records {
     display: grid;
     // Keep native CSS minmax separate from the Sass breakpoint helper.
-    grid-template-columns: #{'repeat(auto-fill, minmax(min(100%, 420px), 1fr))'};
-    gap: 16px;
+    grid-template-columns: #{'repeat(auto-fill, minmax(min(100%, 380px), 1fr))'};
+    align-items: start;
+    gap: 12px;
     list-style: none;
     margin: 0;
     padding: 0;
   }
   &__record {
+    display: grid;
+    // Two columns when the card is wide enough; a long translated button label drops below the block number.
+    grid-template-columns: #{'repeat(auto-fit, minmax(min(100%, 170px), 1fr))'};
+    align-items: center;
+    gap: 10px 12px;
     min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 16px;
-    border-radius: var(--s-border-radius-mini);
+    padding: 14px 16px;
+    border-radius: 16px;
     background: var(--s-color-utility-surface);
-    box-shadow: var(--s-shadow-element);
+    box-shadow: var(--s-shadow-element-pressed);
     p {
       margin: 0;
+    }
+    > * {
+      grid-column: 1 / -1;
+      min-width: 0;
+    }
+    // The block and the receipt button share one line when both fit.
+    > .tonswap-burn__record-block {
+      grid-column: auto;
     }
   }
   &__receipt-heading {
@@ -1466,26 +1934,14 @@ defineExpose({
     animation: tonswap-pending 900ms linear infinite;
   }
   &__receipt-amount {
-    padding: 12px;
-    border-radius: 8px;
-    background: var(--s-color-base-border-primary);
-    box-shadow: var(--s-shadow-element-pressed);
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.3;
+    font-variant-numeric: tabular-nums;
   }
   &__receipt-claim {
     font-size: 12px;
     line-height: 1.5;
-  }
-  &__updated {
-    margin-bottom: 16px;
-    font-size: 12px;
-    line-height: 1.5;
-    p {
-      margin: 0 0 4px;
-      font-weight: 600;
-      font-size: 14px;
-    }
   }
   dl.tonswap-burn__record-amounts {
     display: grid;
@@ -1493,15 +1949,8 @@ defineExpose({
     grid-template-columns: #{'repeat(2, minmax(0, 1fr))'};
     gap: 12px;
     margin: 0;
-    @media (max-width: 379px) {
-      grid-template-columns: 1fr;
-    }
     > div {
       min-width: 0;
-      padding: 12px;
-      border-radius: 8px;
-      background: var(--s-color-base-border-primary);
-      box-shadow: var(--s-shadow-element-pressed);
     }
     dt {
       display: flex;
@@ -1520,20 +1969,22 @@ defineExpose({
       flex-wrap: wrap;
       align-items: baseline;
       column-gap: 4px;
-      margin: 4px 0 0;
-      font-size: 16px;
-      line-height: 1.4;
-      font-weight: 600;
-      @media (max-width: 480px) {
-        font-size: 13px;
-      }
+      margin: 2px 0 0;
+      font-size: 18px;
+      line-height: 1.3;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+    > div:last-child dd {
+      color: var(--s-color-action-text);
     }
     .tonswap-burn__record-number {
       white-space: nowrap;
     }
     .tonswap-burn__record-unit {
+      color: var(--s-color-base-content-secondary);
       font-size: 12px;
-      font-weight: 400;
+      font-weight: 500;
     }
   }
   &__record-block,
@@ -1541,44 +1992,71 @@ defineExpose({
     font-size: 12px;
     line-height: 1.5;
     color: var(--s-color-base-content-secondary);
+    font-variant-numeric: tabular-nums;
   }
+  // The full hash stays in the page for copying; one line of it is enough to recognise it.
   &__hash {
     display: flex;
     align-items: center;
     gap: 10px;
+    padding-top: 8px;
+    border-top: 1px solid var(--s-color-base-border-secondary);
     > div {
-      min-width: 0;
+      display: flex;
       flex: 1;
+      align-items: baseline;
+      gap: 8px;
+      min-width: 0;
     }
     span {
-      display: block;
-      margin-bottom: 3px;
+      flex: 0 0 auto;
       font-size: 11px;
       color: var(--s-color-base-content-secondary);
     }
     code {
-      display: block;
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
       font-size: 11px;
       line-height: 1.5;
-      overflow-wrap: anywhere;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     :deep(.el-button) {
       flex: 0 0 32px;
       width: 32px;
       height: 32px;
       min-height: 32px;
+      margin: 0;
       padding: 0;
     }
   }
+  :deep(.tonswap-burn__save-receipt.el-button),
   :deep(.tonswap-burn__retry.el-button) {
-    align-self: flex-start;
-    min-height: 34px;
+    width: auto;
+    min-width: 0;
+    max-width: 100%;
     height: auto;
-    padding: 8px 12px;
+    min-height: 32px;
+    margin: 0;
+    padding: 6px 14px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--s-color-base-border-primary);
+    box-shadow: var(--s-shadow-element-pressed);
+    color: var(--s-color-base-content-primary);
     font-size: 12px;
+    font-weight: 600;
     line-height: 1.4;
-    font-weight: 500;
     text-transform: none;
+    white-space: normal;
+  }
+  :deep(.tonswap-burn__save-receipt.el-button) {
+    grid-column: auto;
+    justify-self: start;
+  }
+  :deep(.tonswap-burn__retry.el-button) {
+    justify-self: start;
   }
 }
 @keyframes tonswap-pending {
@@ -1597,6 +2075,45 @@ defineExpose({
     transform: scale(0.7);
   }
 }
+@keyframes tonswap-flare {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+}
+@keyframes tonswap-wait {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+@keyframes tonswap-out {
+  from {
+    opacity: 0.2;
+    transform: translateY(4px);
+  }
+}
+// While a burn is on its way the mark flares, a new estimate slides in and loading numbers breathe.
+@media (prefers-reduced-motion: no-preference) {
+  .tonswap-burn--burning .tonswap-burn__mark {
+    animation: tonswap-flare 1.4s ease-in-out infinite;
+  }
+  .tonswap-burn__out strong {
+    animation: tonswap-out 0.25s ease-out;
+  }
+  .tonswap-burn__market[data-state='loading'] .tonswap-stat__value {
+    animation: tonswap-wait 1.3s ease-in-out infinite;
+  }
+  .tonswap-burn__flow--lit {
+    animation: tonswap-flare 2.2s ease-in-out infinite;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .tonswap-burn__spinner,
   .tonswap-burn__live::before {
@@ -1604,88 +2121,144 @@ defineExpose({
   }
 }
 
+// Totals read as plain rows; only the current rate, the number that matters most, is large.
 .tonswap-stat {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2px 12px;
   min-width: 0;
-  padding: 14px 16px;
-  border-radius: 12px;
-  background: var(--s-color-base-border-primary);
-  box-shadow: var(--s-shadow-element);
+  padding: 9px 0;
+  border-top: 1px solid var(--s-color-base-border-secondary);
   text-align: start;
 
   dt {
-    margin: 0 0 6px;
+    margin: 0;
     font-size: 12px;
-    line-height: 1.35;
+    line-height: 1.4;
     color: var(--s-color-base-content-secondary);
   }
   dd {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    column-gap: 6px;
+    justify-content: flex-end;
+    column-gap: 5px;
     margin: 0;
+    margin-inline-start: auto;
   }
   &__value {
-    font-size: 22px;
+    font-size: 15px;
     font-weight: 700;
-    line-height: 1.2;
+    line-height: 1.3;
     font-variant-numeric: tabular-nums;
     overflow-wrap: anywhere;
     direction: ltr;
     unicode-bidi: isolate;
   }
   &__unit {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--s-color-base-content-secondary);
   }
-  &__note {
-    flex: 1 0 100%;
-    margin-top: 4px;
-    font-size: 11px;
-    line-height: 1.4;
-    color: var(--s-color-base-content-secondary);
-    font-variant-numeric: tabular-nums;
+  &--rate {
+    display: block;
+    padding: 0 0 12px;
+    border-top: 0;
+    dt {
+      margin-bottom: 2px;
+      font-size: 13px;
+    }
+    dd {
+      justify-content: flex-start;
+      column-gap: 8px;
+      margin-inline-start: 0;
+    }
   }
   &--rate &__value {
     color: var(--s-color-action-text);
+    font-size: 40px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
   }
+  &--rate &__unit {
+    font-size: 14px;
+    font-weight: 600;
+  }
+}
+// A dash stands in for a number the page has not verified; it is muted so it does not read as a value.
+.tonswap-burn__stats[aria-busy='true'] .tonswap-stat__value {
+  color: var(--s-color-base-content-tertiary);
 }
 
 @container tonswap (min-width: 620px) {
-  .tonswap-burn__stats {
-    grid-template-columns: #{'repeat(4, minmax(0, 1fr))'};
+  .tonswap-burn__mark {
+    flex-basis: 120px;
+    width: 120px;
+    height: 120px;
+  }
+  .tonswap-burn__title :deep(.page-header-title) {
+    font-size: 30px;
+  }
+  .tonswap-burn__description {
+    font-size: 15px;
   }
 }
 @container tonswap (min-width: 760px) {
+  // Two columns: the form with the folded reading under it, and the campaign numbers beside both.
   .tonswap-burn__layout {
     grid-template-columns: #{'minmax(0, 5fr) minmax(0, 6fr)'};
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      'form market'
+      'extras market';
+    align-items: start;
+  }
+  .tonswap-burn__preview {
+    grid-area: form;
+  }
+  .tonswap-burn__market {
+    grid-area: market;
+    align-self: stretch;
+  }
+  .tonswap-burn__extras {
+    grid-area: extras;
   }
 }
 @container tonswap (max-width: 479px) {
+  // The mark sits beside the title only, so the text below can use the full width of a phone.
   .tonswap-burn__hero {
-    align-items: flex-start;
-    gap: 14px;
+    display: grid;
+    grid-template-columns: #{'auto minmax(0, 1fr)'};
+    align-items: center;
+    gap: 4px 10px;
   }
   .tonswap-burn__mark {
-    flex-basis: 72px;
-    width: 72px;
-    height: 72px;
+    width: 64px;
+    height: 64px;
+    margin-inline-start: -6px;
+  }
+  .tonswap-burn__intro {
+    display: contents;
+  }
+  .tonswap-burn__title {
+    margin: 0;
   }
   .tonswap-burn__title :deep(.page-header-title) {
-    font-size: 20px;
+    font-size: 22px;
   }
-  .tonswap-stat {
-    padding: 12px 14px;
+  .tonswap-burn__description,
+  .tonswap-burn__status,
+  .tonswap-burn__claim {
+    grid-column: 1 / -1;
+    margin-top: 0;
   }
-  .tonswap-stat__value {
-    font-size: 17px;
-    overflow-wrap: normal;
-    white-space: nowrap;
+  .tonswap-burn__field input,
+  .tonswap-burn__out strong {
+    font-size: 26px;
   }
-}
-@container tonswap (max-width: 299px) {
-  .tonswap-burn__stats {
-    grid-template-columns: #{'minmax(0, 1fr)'};
+  .tonswap-stat--rate .tonswap-stat__value {
+    font-size: 34px;
   }
 }
 </style>

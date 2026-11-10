@@ -30,3 +30,13 @@ export const FiatPriceStreamQuery = gql<QueryData<UpdatesStream>>`
     }
   }
 `;
+
+/** Returns the complete current exact-price map when supported by the configured indexer. */
+export const ExactFiatPriceStreamQuery = gql<QueryData<UpdatesStream>>`
+  query PolkaswapExactFiatPriceStreamQuery {
+    data: updatesStream(id: "price") {
+      block
+      pricesExact
+    }
+  }
+`;

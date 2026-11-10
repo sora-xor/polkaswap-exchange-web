@@ -82,3 +82,7 @@ Interaction thesis: replay the same deterministic example continuously, briefly 
 `StrategyLab` owns the selected `RuleFlow` or `StrategyFlow` inside `lab-strategy-preview`, which moves with the token controls when teleported into the page-first region. `RuleBuilder` defaults `showFlow` to true for standalone use. Reduced motion, a hidden page, an offscreen preview, and an inactive workspace suspend the illustrative clock; it resumes only when visible and not manually paused. Stored historical decision views remain static.
 
 Published and verified on 2026-09-15 at production root `bafybeihlio27kvwhjmdivv5ismul3zd2mtydv6a2mem37umgklytasde4i`. See [looping preview release evidence](reports/bots-looping-preview-deployment-2026-09-15.md) for the completed purge, 82 focused tests and eight live WebKit checks.
+
+## Default Bots entry order
+
+The default `/bots` view puts existing run controls first, followed by the asset-readiness message and AI goal form. The quant research controls follow the form, with the same fee/history loaders and paper/live review handlers. Opening the AI form does not draft a strategy or authorize trading; the research panel retains its existing read-only loading behavior. Advanced and My Bots navigation retain their existing views.

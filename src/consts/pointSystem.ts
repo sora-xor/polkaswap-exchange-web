@@ -54,6 +54,7 @@ export const getImageSrc = (imageName: string): AccountAsset | string => {
 
 export const categoriesPointSystem: { [key: string]: Category } = {
   liquidityProvision: {
+    activityPath: '/pool',
     maxPercentage: 10,
     levels: generateLevels(progressZero25K),
     titleProgress: messages.points.liquidityProvision.titleProgress,
@@ -62,6 +63,7 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     imageName: 'liquidity',
   },
   VXORHoldings: {
+    activityPath: '/wallet',
     maxPercentage: 10,
     levels: generateLevels(progressZero10K),
     titleProgress: messages.points.VXORHoldings.titleProgress,
@@ -70,6 +72,7 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     imageName: VXOR.address,
   },
   referralRewards: {
+    activityPath: '/referral',
     maxPercentage: 6,
     levels: generateLevels([0, 10, 50, 100, 250, 1001]),
     titleProgress: messages.points.referralRewards.titleProgress,
@@ -78,6 +81,7 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     imageName: 'referral_rewards',
   },
   depositVolumeBridges: {
+    activityPath: '/bridge',
     maxPercentage: 6,
     levels: generateLevels(progressZero25K),
     titleProgress: messages.points.depositVolumeBridges.titleProgress,
@@ -94,6 +98,7 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     imageName: 'network_fee',
   },
   XORBurned: {
+    activityPath: '/burn',
     maxPercentage: 5,
     levels: generateLevels(progressZero10K),
     titleProgress: messages.points.XORBurned.titleProgress,
@@ -102,6 +107,7 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     imageName: 'xor_burned',
   },
   XORHoldings: {
+    activityPath: '/wallet',
     maxPercentage: 4,
     levels: generateLevels(progressZero10K),
     titleProgress: messages.points.XORHoldings.titleProgress,
@@ -118,6 +124,7 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     imageName: 'governance',
   },
   kensetsuVolumeRepaid: {
+    activityPath: '/kensetsu',
     maxPercentage: 3,
     levels: generateLevels(progressZero10K),
     titleProgress: messages.points.kensetsuVolumeRepaid.titleProgress,
@@ -126,6 +133,7 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     imageName: 'kensetsu',
   },
   orderbookVolume: {
+    activityPath: '/trade',
     maxPercentage: 3,
     levels: generateLevels(progressZero10K),
     titleProgress: messages.points.orderbookVolume.titleProgress,
@@ -134,6 +142,7 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     imageName: 'orderbook',
   },
   nativeXorStaking: {
+    activityPath: '/staking/sora',
     maxPercentage: 2.5,
     levels: generateLevels(progressZero10K),
     titleProgress: messages.points.nativeXorStaking.titleProgress,
@@ -142,6 +151,7 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     imageName: 'staking',
   },
   KUSDHoldings: {
+    activityPath: '/wallet',
     maxPercentage: 1,
     levels: generateLevels(progressZero10K),
     titleProgress: messages.points.KUSDHoldings.titleProgress,
@@ -150,6 +160,7 @@ export const categoriesPointSystem: { [key: string]: Category } = {
     imageName: KUSD.address,
   },
   firstTxAccount: {
+    activityPath: '/wallet',
     maxPercentage: 0.5,
     levels: generateLevels(timestampThresholds, [1.0, 0.9, 0.75, 0.5, 0]),
     titleProgress: messages.points.firstTxAccount.titleProgress,

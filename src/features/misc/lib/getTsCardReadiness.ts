@@ -2,6 +2,7 @@ import { FPNumber } from '@sora-substrate/sdk';
 import { decodeAddress } from '@polkadot/util-crypto';
 import { getAddress, Interface, type BrowserProvider } from 'ethers';
 import type { GetTsPurpose } from './getTsFlow';
+import type { GetTsSwapAsset } from './getTsPlan';
 import {
   requestGetTsCardQuote,
   requestGetTsPlanPreview,
@@ -22,24 +23,22 @@ import {
 import { isSwapPriceImpactAllowed } from '@/features/swap/services/priceImpactLimit';
 
 export const GET_TS_CARD_REVIEW_TTL_MS = 30_000;
+/** The Hashi bridge contract for DAI and ETH. */
 export const GET_TS_HASHI_DAI_BRIDGE = '0x313416870a4da6f12505a550b67bb73c8e21d5d3';
 export const GET_TS_CARD_DAI = '0x6b175474e89094c44da98b954eedeac495271d0f';
 /** Read-only simulation endpoint; it never receives keys, signatures, card details or provider orders. */
 const SIMULATION_RPC = 'https://ethereum-rpc.publicnode.com';
-const bridgeAbi = new Interface(['function sendERC20ToSidechain(bytes32 to,uint256 amount,address tokenAddress)']);
+const bridgeAbi = new Interface([
+  'function sendERC20ToSidechain(bytes32 to,uint256 amount,address tokenAddress)',
+  'function sendEthToSidechain(bytes32 to) payable',
+]);
+/** Seed for sizing the ETH bridge simulation; `sendEthToSidechain` used about 26,100 gas in October 2026. */
+const GET_TS_ETH_BRIDGE_GAS = 30_000n;
 const tokenAbi = new Interface(['function approve(address spender,uint256 amount) returns(bool)']);
 const gatewayAbi = new Interface(['function fee() view returns (uint256)']);
 type ReadProvider = Pick<BrowserProvider, 'send' | 'getNetwork' | 'getFeeData' | 'getBalance' | 'getCode' | 'call'>;
 export type GetTsCardReadinessReason =
-  | 'wallet'
-  | 'budget'
-  | 'provider'
-  | 'gas'
-  | 'simulation'
-  | 'bridge'
-  | 'conversion'
-  | 'liquidity'
-  | 'expired';
+  'wallet' | 'budget' | 'provider' | 'gas' | 'simulation' | 'bridge' | 'conversion' | 'liquidity' | 'expired';
 /** Ephemeral estimates only: no address, calldata, quote or completion flag belongs in saved plans. */
 export interface GetTsCardReadiness {
   allowed: boolean;
@@ -48,6 +47,7 @@ export interface GetTsCardReadiness {
   reason?: GetTsCardReadinessReason;
   deliveredEth?: string;
   existingEth?: string;
+  /** ETH the purchase moves on after Ethereum gas: converted to DAI, or bridged to SORA when `swapAsset` is ETH. */
   conversionEth?: string;
   conversionGasReserve?: string;
   bridgeGasReserve?: string;
@@ -55,6 +55,10 @@ export interface GetTsCardReadiness {
   conversionProviderFee?: string;
   bridgeDaiFee?: string;
   daiAmount?: string;
+  /** Asset swapped on SORA: ETH for card purchases of XOR, DAI otherwise. */
+  swapAsset?: GetTsSwapAsset;
+  /** Amount of `swapAsset` that reaches SORA. */
+  swapAmount?: string;
   nativeFeeReserve?: string;
   spendableXor?: string;
   burnableXor?: string;
@@ -87,6 +91,7 @@ export interface GetTsCardReadinessDependencies {
     fundedBalance: bigint,
     soraAccount: string
   ) => Promise<bigint | null>;
+  estimateEthBridge?: (value: bigint, fundedBalance: bigint, soraAccount: string) => Promise<bigint>;
   preview?: typeof requestGetTsPlanPreview;
 }
 /** RPC quantities are bounded unsigned integers; unknown/zero gas is never a free transaction. */
@@ -138,6 +143,13 @@ async function simulationRpc(
     rpc(method, method === 'eth_estimateGas' ? [params[0], head.number, params[1]] : [...params, head.number]);
 }
 
+/** A SORA account's public key as the bytes32 recipient of a Hashi transfer. */
+function soraRecipientHex(soraAccount: string): string {
+  const recipient = decodeAddress(soraAccount);
+  if (recipient.length !== 32) throw new Error('Invalid recipient');
+  return `0x${Array.from(recipient, (byte) => byte.toString(16).padStart(2, '0')).join('')}`;
+}
+
 /** Exact current ETH→DAI calldata with only an ephemeral sender ETH balance override. */
 export async function estimateGetTsCardConversionGas(
   provider: ReadProvider,
@@ -171,9 +183,7 @@ export async function estimateGetTsCardBridgeGas(
   signal: AbortSignal
 ): Promise<bigint | null> {
   if (quote.transaction.type !== 'evm') throw new Error('Unsupported simulation');
-  const recipient = decodeAddress(soraAccount);
-  if (recipient.length !== 32) throw new Error('Invalid recipient');
-  const to = `0x${Array.from(recipient, (byte) => byte.toString(16).padStart(2, '0')).join('')}`;
+  const to = soraRecipientHex(soraAccount);
   const amount = BigInt(quote.minOutputAmount);
   const from = quote.request.fromAddress;
   const calls = [
@@ -213,7 +223,43 @@ export async function estimateGetTsCardBridgeGas(
   }
 }
 
-/** Full-route pre-payment estimate, funded entirely from the quoted card delivery, with short-lived evidence. */
+/**
+ * Gas of the Hashi `sendEthToSidechain` transfer of `value` ETH to the SORA account (Buy XOR card purchases), with only
+ * an ephemeral sender ETH balance override.
+ */
+export async function estimateGetTsCardEthBridgeGas(
+  provider: ReadProvider,
+  from: string,
+  soraAccount: string,
+  value: bigint,
+  fundedBalance: bigint,
+  signal: AbortSignal
+): Promise<bigint> {
+  const transaction = {
+    from,
+    to: GET_TS_HASHI_DAI_BRIDGE,
+    data: bridgeAbi.encodeFunctionData('sendEthToSidechain', [soraRecipientHex(soraAccount)]),
+    value: hex(value),
+  };
+  const overrides = { [from]: { balance: hex(fundedBalance) } };
+  let estimate: unknown;
+  try {
+    estimate = await provider.send('eth_estimateGas', [transaction, 'latest', overrides]);
+  } catch {
+    // Some wallets do not forward state overrides. This narrow public read is checked against that wallet's chain.
+    const read = await simulationRpc(provider, signal);
+    estimate = await read('eth_estimateGas', [transaction, overrides]);
+  }
+  const gas = quantity(estimate);
+  if (gas < 21_000n || gas > 200_000n) throw new Error('Invalid bridge gas');
+  return gas;
+}
+
+/**
+ * Full-route pre-payment estimate, funded entirely from the quoted card delivery, with short-lived evidence.
+ * Buy XOR (`purpose: 'xor'`) sends the delivered ETH to SORA in one bridge transaction and swaps ETH there; Get TS
+ * converts it to DAI first.
+ */
 export async function requestGetTsCardReadiness(
   request: GetTsCardReadinessRequest,
   dependencies: GetTsCardReadinessDependencies
@@ -275,15 +321,18 @@ export async function requestGetTsCardReadiness(
     const funded = BigInt(new FPNumber(card.ethAmount).toCodecString());
     result.deliveredEth = card.ethAmount;
     result.providerFeeUsd = card.fees.reduce((sum, fee) => sum.add(new FPNumber(fee.amount)), FPNumber.ZERO).toString();
+    const ethRoute = (request.purpose ?? 'ts') === 'xor';
     reason = 'gas';
     const [feeData, balance, gatewayFeeData] = await read(
       Promise.all([
         dependencies.provider.getFeeData(),
         dependencies.provider.getBalance(request.account),
-        dependencies.provider.call({
-          to: TONSWAP_CONVERSION_CONTRACTS.gateway,
-          data: gatewayAbi.encodeFunctionData('fee'),
-        }),
+        ethRoute
+          ? Promise.resolve('0x')
+          : dependencies.provider.call({
+              to: TONSWAP_CONVERSION_CONTRACTS.gateway,
+              data: gatewayAbi.encodeFunctionData('fee'),
+            }),
       ])
     );
     const gasPrice = feeData.maxFeePerGas ?? feeData.gasPrice;
@@ -296,91 +345,138 @@ export async function requestGetTsCardReadiness(
     )
       throw new Error('Unknown gas');
     result.existingEth = natural(balance);
-    let bridgeReserve = estimateTonswapBridgeGasReserve(gasPrice);
-    const gatewayFee = gatewayAbi.decodeFunctionResult('fee', gatewayFeeData)[0] as bigint;
-    // Start near the actual spend instead of halving small budgets below a provider's conversion minimum.
-    // This seed is replaced by the exact calldata simulation; it cannot itself authorize checkout.
-    let input = funded - bridgeReserve - 600_000n * gasPrice - gatewayFee;
-    let quote: TonswapConversionQuote | undefined;
-    let conversionReserve = 0n;
-    let settled = false;
-    for (let iteration = 0; iteration < 3; iteration++) {
+    let swapQuoteExpiresAt = Number.MAX_SAFE_INTEGER;
+    if (ethRoute) {
+      // One bridge transaction moves the delivered ETH to SORA: no conversion and no token approval.
       reason = 'budget';
-      if (input <= 0n) throw new Error('Budget cannot cover fees');
-      reason = 'conversion';
-      quote = await read(
-        (dependencies.conversionQuote ?? ((value, signal) => requestTonswapConversionQuote(value, { signal })))(
-          {
-            source: 'eth',
-            target: 'dai',
-            amount: natural(input),
-            fromAddress: request.account,
-            toAddress: request.account,
-          },
-          controller.signal
-        )
-      );
-      await read(
-        (dependencies.verifyConversion ?? verifyTonswapConversionReadiness)(quote, dependencies.provider, current, now)
-      );
-      if (
-        quote.request.fromAddress.toLowerCase() !== request.account.toLowerCase() ||
-        quote.request.toAddress.toLowerCase() !== request.account.toLowerCase() ||
-        quote.request.source !== 'eth' ||
-        quote.request.target !== 'dai' ||
-        BigInt(quote.inputAmount) !== input ||
-        quote.transaction.type !== 'evm' ||
-        BigInt(quote.transaction.value) !== input + BigInt(quote.nativeFee)
-      )
-        throw new Error('Changed conversion');
+      const seed = funded - gasReserve(GET_TS_ETH_BRIDGE_GAS, gasPrice);
+      if (seed <= 0n) throw new Error('Budget cannot cover fees');
       reason = 'simulation';
       const gas = await read(
-        dependencies.estimateConversion
-          ? dependencies.estimateConversion(quote, funded)
-          : estimateGetTsCardConversionGas(dependencies.provider, quote, funded, controller.signal)
+        dependencies.estimateEthBridge
+          ? dependencies.estimateEthBridge(seed, funded, request.soraAccount)
+          : estimateGetTsCardEthBridgeGas(
+              dependencies.provider,
+              request.account,
+              request.soraAccount,
+              seed,
+              funded,
+              controller.signal
+            )
       );
-      if (gas < 21_000n || gas > 2_000_000n) throw new Error('Invalid conversion gas');
-      conversionReserve = gasReserve(gas, gasPrice);
-      const available = funded - conversionReserve - bridgeReserve - BigInt(quote.nativeFee);
+      if (gas < 21_000n || gas > 200_000n) throw new Error('Invalid bridge gas');
+      const bridgeReserve = gasReserve(gas, gasPrice);
       reason = 'budget';
-      if (available <= 0n) throw new Error('Budget cannot cover fees');
-      if (iteration === 0 || input > available) {
-        input = available;
-        continue;
+      if (funded <= bridgeReserve) throw new Error('Budget cannot cover fees');
+      result.conversionEth = natural(funded - bridgeReserve);
+      result.conversionGasReserve = '0';
+      result.bridgeGasReserve = natural(bridgeReserve);
+      result.ethereumGasReserve = natural(bridgeReserve);
+      result.conversionProviderFee = '0';
+      result.bridgeEstimate = 'simulated';
+      result.swapAsset = 'ETH';
+      result.swapAmount = result.conversionEth;
+    } else {
+      let bridgeReserve = estimateTonswapBridgeGasReserve(gasPrice);
+      const gatewayFee = gatewayAbi.decodeFunctionResult('fee', gatewayFeeData)[0] as bigint;
+      // Start near the actual spend instead of halving small budgets below a provider's conversion minimum.
+      // This seed is replaced by the exact calldata simulation; it cannot itself authorize checkout.
+      let input = funded - bridgeReserve - 600_000n * gasPrice - gatewayFee;
+      let quote: TonswapConversionQuote | undefined;
+      let conversionReserve = 0n;
+      let settled = false;
+      for (let iteration = 0; iteration < 3; iteration++) {
+        reason = 'budget';
+        if (input <= 0n) throw new Error('Budget cannot cover fees');
+        reason = 'conversion';
+        quote = await read(
+          (dependencies.conversionQuote ?? ((value, signal) => requestTonswapConversionQuote(value, { signal })))(
+            {
+              source: 'eth',
+              target: 'dai',
+              amount: natural(input),
+              fromAddress: request.account,
+              toAddress: request.account,
+            },
+            controller.signal
+          )
+        );
+        await read(
+          (dependencies.verifyConversion ?? verifyTonswapConversionReadiness)(
+            quote,
+            dependencies.provider,
+            current,
+            now
+          )
+        );
+        if (
+          quote.request.fromAddress.toLowerCase() !== request.account.toLowerCase() ||
+          quote.request.toAddress.toLowerCase() !== request.account.toLowerCase() ||
+          quote.request.source !== 'eth' ||
+          quote.request.target !== 'dai' ||
+          BigInt(quote.inputAmount) !== input ||
+          quote.transaction.type !== 'evm' ||
+          BigInt(quote.transaction.value) !== input + BigInt(quote.nativeFee)
+        )
+          throw new Error('Changed conversion');
+        reason = 'simulation';
+        const gas = await read(
+          dependencies.estimateConversion
+            ? dependencies.estimateConversion(quote, funded)
+            : estimateGetTsCardConversionGas(dependencies.provider, quote, funded, controller.signal)
+        );
+        if (gas < 21_000n || gas > 2_000_000n) throw new Error('Invalid conversion gas');
+        conversionReserve = gasReserve(gas, gasPrice);
+        const available = funded - conversionReserve - bridgeReserve - BigInt(quote.nativeFee);
+        reason = 'budget';
+        if (available <= 0n) throw new Error('Budget cannot cover fees');
+        if (iteration === 0 || input > available) {
+          input = available;
+          continue;
+        }
+        reason = 'bridge';
+        const bridgeGas = await read(
+          dependencies.estimateBridge
+            ? dependencies.estimateBridge(quote, funded, request.soraAccount)
+            : estimateGetTsCardBridgeGas(dependencies.provider, quote, funded, request.soraAccount, controller.signal)
+        );
+        if (bridgeGas !== null && (bridgeGas < 42_000n || bridgeGas > 1_000_000n))
+          throw new Error('Invalid bridge gas');
+        result.bridgeEstimate = bridgeGas === null ? 'reserve' : 'simulated';
+        if (bridgeGas !== null && gasReserve(bridgeGas, gasPrice) > bridgeReserve)
+          bridgeReserve = gasReserve(bridgeGas, gasPrice);
+        const finalAvailable = funded - conversionReserve - bridgeReserve - BigInt(quote.nativeFee);
+        if (input > finalAvailable) {
+          input = finalAvailable;
+          continue;
+        }
+        settled = true;
+        break;
       }
-      reason = 'bridge';
-      const bridgeGas = await read(
-        dependencies.estimateBridge
-          ? dependencies.estimateBridge(quote, funded, request.soraAccount)
-          : estimateGetTsCardBridgeGas(dependencies.provider, quote, funded, request.soraAccount, controller.signal)
-      );
-      if (bridgeGas !== null && (bridgeGas < 42_000n || bridgeGas > 1_000_000n)) throw new Error('Invalid bridge gas');
-      result.bridgeEstimate = bridgeGas === null ? 'reserve' : 'simulated';
-      if (bridgeGas !== null && gasReserve(bridgeGas, gasPrice) > bridgeReserve)
-        bridgeReserve = gasReserve(bridgeGas, gasPrice);
-      const finalAvailable = funded - conversionReserve - bridgeReserve - BigInt(quote.nativeFee);
-      if (input > finalAvailable) {
-        input = finalAvailable;
-        continue;
-      }
-      settled = true;
-      break;
+      if (!settled || !quote) throw new Error('Unstable fees');
+      reason = 'conversion';
+      if (!isSwapPriceImpactAllowed(quote.priceImpactPercent, '5') || !isTonswapConversionQuoteFresh(quote, now()))
+        throw new Error('Conversion unavailable');
+      result.conversionEth = natural(input);
+      result.conversionGasReserve = natural(conversionReserve);
+      result.bridgeGasReserve = natural(bridgeReserve);
+      result.ethereumGasReserve = natural(conversionReserve + bridgeReserve);
+      result.conversionProviderFee = natural(BigInt(quote.nativeFee));
+      result.bridgeDaiFee = '0';
+      result.daiAmount = FPNumber.fromCodecValue(quote.minOutputAmount, 18).toString();
+      result.swapAsset = 'DAI';
+      result.swapAmount = result.daiAmount;
+      swapQuoteExpiresAt = quote.expiresAt;
     }
-    if (!settled || !quote) throw new Error('Unstable fees');
-    reason = 'conversion';
-    if (!isSwapPriceImpactAllowed(quote.priceImpactPercent, '5') || !isTonswapConversionQuoteFresh(quote, now()))
-      throw new Error('Conversion unavailable');
-    result.conversionEth = natural(input);
-    result.conversionGasReserve = natural(conversionReserve);
-    result.bridgeGasReserve = natural(bridgeReserve);
-    result.ethereumGasReserve = natural(conversionReserve + bridgeReserve);
-    result.conversionProviderFee = natural(BigInt(quote.nativeFee));
-    result.bridgeDaiFee = '0';
-    result.daiAmount = FPNumber.fromCodecValue(quote.minOutputAmount, 18).toString();
     reason = 'liquidity';
     const preview: GetTsPlanPreviewResult = await read(
       (dependencies.preview ?? requestGetTsPlanPreview)(
-        { source: 'sora', paymentAsset: 'DAI', amount: result.daiAmount, purpose: request.purpose ?? 'ts' },
+        {
+          source: 'sora',
+          paymentAsset: result.swapAsset as GetTsSwapAsset,
+          amount: result.swapAmount as string,
+          purpose: request.purpose ?? 'ts',
+        },
         { ...dependencies.plan, now, signal: controller.signal }
       )
     );
@@ -401,7 +497,7 @@ export async function requestGetTsCardReadiness(
     const expiresAt = Math.min(
       startedAt + GET_TS_CARD_REVIEW_TTL_MS,
       card.expiresAt,
-      quote.expiresAt,
+      swapQuoteExpiresAt,
       preview.expiresAt ?? 0
     );
     if (!Number.isSafeInteger(expiresAt) || expiresAt <= now() || now() < startedAt)

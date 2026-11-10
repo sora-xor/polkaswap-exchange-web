@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { effectScope, nextTick, reactive, ref } from 'vue';
 import { Operation } from '@sora-substrate/sdk';
-import { DAI } from '@sora-substrate/sdk/build/assets/consts';
+import { DAI, ETH } from '@sora-substrate/sdk/build/assets/consts';
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 import { evaluateGetTsBridgeProgress, matchGetTsBridgeHistory } from '@/features/misc/lib/getTsBridgeProgress';
 import { useGetTsPlan } from '@/features/misc/composables/useGetTsPlan';
@@ -303,6 +303,26 @@ describe('Get TS tracked bridge progress', () => {
       { amount: '-1' },
     ])
       expect(matchGetTsBridgeHistory([{ ...row, ...patch }], context)).toBeNull();
+  });
+  it('accepts incoming ETH only on a Buy XOR row tagged for ETH, with matching finalized evidence', () => {
+    const ethRow: EthHistory = {
+      ...row,
+      assetAddress: ETH.address,
+      amount: '0.0062',
+      payload: { buyXorFunding: 'ethereum-eth-v1' },
+    };
+    expect(matchGetTsBridgeHistory([ethRow], { ...context, purpose: 'xor' })).toEqual(ethRow);
+    // Get TS never moves ETH, and an untagged or DAI-tagged ETH row is not a purchase transfer.
+    expect(
+      matchGetTsBridgeHistory([{ ...ethRow, payload: { tonswapFunding: 'ethereum-dai-v1' } }], context)
+    ).toBeNull();
+    expect(matchGetTsBridgeHistory([{ ...ethRow, payload: {} }], context)).toBeNull();
+    const ethEvidence = { ...evidence, assetAddress: ETH.address, amountCodec: '6200000000000000' };
+    expect(evaluateGetTsBridgeProgress(ethRow, ethEvidence).state).toBe('received');
+    expect(evaluateGetTsBridgeProgress(ethRow, { ...ethEvidence, assetAddress: DAI.address }).state).toBe(
+      'unavailable'
+    );
+    expect(evaluateGetTsBridgeProgress(row, { ...evidence, assetAddress: ETH.address }).state).toBe('unavailable');
   });
   it('never treats a saved completed history row as received without exact finalized evidence', () => {
     expect(evaluateGetTsBridgeProgress(row, { status: null, finalizedBlock: block }).state).toBe('pending');

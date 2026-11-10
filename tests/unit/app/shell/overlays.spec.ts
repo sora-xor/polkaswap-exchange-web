@@ -106,6 +106,10 @@ vi.mock('@/app/shell/components', () => ({
     name: 'SelectSoraAccountDialogStub',
     template: '<div class="select-sora-account-dialog-stub" />',
   }),
+  TemporaryWalletRequestDialog: defineComponent({
+    name: 'TemporaryWalletRequestDialogStub',
+    template: '<div class="temporary-wallet-request-dialog-stub" />',
+  }),
 }));
 vi.mock('@/lib/soraneo-wallet/src/components/NotificationEnablingPage.vue', () => ({
   default: defineComponent({
@@ -181,6 +185,35 @@ describe('AppShellOverlays', () => {
     expect(wrapper.findComponent({ name: 'AppMobilePopupStub' }).exists()).toBe(true);
     expect(wrapper.findComponent({ name: 'AlertsStub' }).exists()).toBe(true);
     expect(wrapper.findComponent({ name: 'ConfirmDialogStub' }).exists()).toBe(true);
+  });
+
+  it('mounts the temporary wallet approval dialog only while a transaction waits, even during wallet teardown', async () => {
+    const { requestTemporaryWalletApproval, rejectTemporaryWalletRequest, temporaryWalletSession } =
+      await import('@/utils/connection/evm/temporaryWalletSession');
+    showWalletOverlays.value = false;
+    const wrapper = mount(AppShellOverlays);
+    expect(wrapper.findComponent({ name: 'TemporaryWalletRequestDialogStub' }).exists()).toBe(false);
+
+    const request = requestTemporaryWalletApproval(
+      {
+        from: '0xa',
+        to: '0xb',
+        value: '0',
+        data: '0x',
+        gasLimit: '1',
+        maxFeePerGas: '1',
+        estimatedFee: '1',
+        maxFee: '1',
+      },
+      vi.fn()
+    );
+    request.catch(() => undefined);
+    await wrapper.vm.$nextTick();
+    expect(wrapper.findComponent({ name: 'TemporaryWalletRequestDialogStub' }).exists()).toBe(true);
+
+    rejectTemporaryWalletRequest(temporaryWalletSession.request!.id);
+    await wrapper.vm.$nextTick();
+    expect(wrapper.findComponent({ name: 'TemporaryWalletRequestDialogStub' }).exists()).toBe(false);
   });
 
   it('waits for the chain API before mounting the signing dialog', () => {

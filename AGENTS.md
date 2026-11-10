@@ -82,7 +82,9 @@ This is a financial application — treat security as a first‑class concern.
 
 ### Bunny/IPFS Deployment Runbook
 
-Use the dedicated static origin at `https://pi.soramitsu.io` on the approved MOF macOS host `207.254.29.218`, with Host header `pi.soramitsu.io`. Its private, offline Kubo service serves locally pinned content through nginx's `/ipfs/` route. See `docs/ipfs-origin.md` for the exact service paths and replication commands. Never use `ipfs.io`, `dweb.link`, or browser service-worker gateways as an origin or fallback.
+Use the dedicated static origin at `https://pi.soramitsu.io` on the approved OVH MOF host `141.94.30.127`, with Host header `pi.soramitsu.io`. The service migrated on 6 November 2026; `docs/ipfs-origin-ovh.md` supplies the current pinned SSH route, service paths and replication commands and supersedes former macOS paths. Its private, offline Kubo service serves locally pinned content through nginx's `/ipfs/` route. See `docs/ipfs-origin.md` for the exact service paths and replication commands. Never use `ipfs.io`, `dweb.link`, or browser service-worker gateways as an origin or fallback.
+
+The October 9 migration restored the current production root, `bafybeidevp4ms5lsmoxqzcqkkgjtzxqmqgkqootc5zh574lfn6xqkrbr5e`, and paired testnet root, `bafybeia2spxspa3cjf7h4fyagdkn7lmbjbtel4zbfr522nqf4dmzdkqcmq`, from separate retained CARs without rebuilding. Full pin integrity, complete HTTPS byte checks, Bunny cache purge, and all five required WebKit routes passed. Future publications must replicate and verify production and testnet DAGs separately. The disconnected `208.83.1.62` is a historical target; use the current host and isolated `pi-ipfs` service in `docs/ipfs-origin.md`.
 
 The October 22 liquidity layout release is production root
 `bafybeicjwe24zlmugkwtmtue6ynybsyqfcnzfjyeipdbonsinv7gt2ig7i`, with paired testnet root
@@ -91,28 +93,11 @@ on the approved origin. Bunny was updated and purged; all five candidate and
 public WebKit routes passed. See `docs/reports/deployment-2026-10-22.md` for
 the exact deployed source snapshot and release evidence.
 
-The October 24 dependency/security release is production root
-`bafybeicqvi4opmxmxoqem73mtybdh4ka2ltx3wo7nlvr5k46tqypd3bxea`, with paired testnet root
-`bafybeihezo3i5u3ohglt47rrjddcdy3ecacvooys3kze6mext5cwlyxshi`. It preserves the
-October 22 shipped feature assembly and liquidity fix while applying the security
-updates. Both DAGs passed origin pin integrity, Bunny was updated and purged,
-and all five candidate and live WebKit routes passed. See
-`docs/reports/deployment-2026-10-24.md` for the isolated source provenance and evidence.
-
-The October 25 password-policy release is production root
-`bafybeictpwld4czgcwbzwxaegopxsgzeaax52mykee2scwa7wonhz7ja7u`, with paired testnet root
-`bafybeielqxowawakjsw24xku3bivyj25wgqfra435zngplbqosqkqlrxma`. It preserves the
-October 24 shipped assembly and enforces the minimum password length for new
-wallets while preserving existing-wallet recovery. Both DAGs passed full origin
-pin integrity. Bunny was updated and purged; 419 complete public body checks and
-all five candidate/live WebKit routes passed. See
-`docs/reports/deployment-2026-10-25.md` for provenance and wallet compatibility evidence.
-
 Use this exact order when the user asks to rebuild, redeploy to IPFS, and update Bunny:
 
 Before building, compare the candidate checkout with the currently deployed release. A feature-specific checkout must not replace the full site while omitting another shipped feature. Integrate the shipped Store configuration and payment package alongside Bots and the other app routes. Record the current and candidate CIDs and feature provenance in the release evidence.
 
-1. Run `IPFS_PUBLIC_GATEWAY_URL=https://pi.soramitsu.io yarn ipfs:publish` from the repo root. Supply this explicit override because the publisher's default has not yet been updated. Capture the **Production CID**, **Production CIDv1**, **Production Bunny origin URL**, and **Production Bunny origin host header** from the command output. Do not use the testnet CID for `polkaswap.io`. Before testing or switching the public origin, transfer production and testnet DAGs separately to the approved `207.254.29.218` repository with `ipfs dag export` and remote `ipfs dag import --pin-roots`, then verify both recursive root pins and full pin integrity using `docs/ipfs-origin.md`.
+1. Run `IPFS_PUBLIC_GATEWAY_URL=https://pi.soramitsu.io yarn ipfs:publish` from the repo root. Supply this explicit override because the publisher's default has not yet been updated. Capture the **Production CID**, **Production CIDv1**, **Production Bunny origin URL**, and **Production Bunny origin host header** from the command output. Do not use the testnet CID for `polkaswap.io`. Before testing or switching the public origin, transfer production and testnet DAGs separately to the approved `141.94.30.127` repository with `ipfs dag export` and remote `ipfs dag import --pin-roots`, then verify both recursive root pins and full pin integrity using `docs/ipfs-origin.md`.
 2. Before saving Bunny, test the candidate origin as a static gateway with the new production CIDv1. The origin is valid only if it returns the real built files with no `3xx` redirect and no IPFS service-worker shell:
    - `curl -sS -D - -o /tmp/origin-root.html <origin>/`
    - `curl -sS -D - -o /tmp/origin-index.js <origin>/assets/<index-*.js>`
@@ -166,11 +151,29 @@ Fast failure triage for IPFS hash updates:
 - After switching origin, do not waste time warming all of `dist` first. Warm the exact failed chunks from the WebKit output sequentially through `https://polkaswap.io/assets/<chunk>.js`, then rerun the WebKit check. Add more chunks only if the next run names them.
 - Successful final evidence is: Bunny root response has `x-ipfs-roots: <production-cidv1>`, Safari or WebKit title is `Swap - Polkaswap`, the swap UI is visible, and a WebKit request/console capture reports `0` failed requests and `0` console errors.
 
+### Production stats API deployment target
+
+The shipped Polkaswap configuration currently sets `POLKASWAP_INDEXER_ENDPOINT`
+to `https://pi.soramitsu.io/graphql`, served by the approved MOF host
+`207.254.29.218`. Check the live `env.json` before each API release and verify
+against the endpoint the browser actually uses. The separate MOF GraphQL
+service and `wss://ws.mof.sora.org` RPC node are distinct services; a successful
+MOF API rollout does not update Pi's GraphQL service.
+
+For an API-only correction, inspect Pi's actual launcher, process owner, release
+path, and RocksDB lock before stopping or replacing that service. Preserve
+Pi's deployed functionality and persistent database. Confirm the public Pi
+schema, health, canonical BLOCK totals, and the browser's exact stats queries
+after restart. No frontend/IPFS publication is needed for an API-only change.
+For the one-shot trading-volume repair, follow
+`../polkaswap-indexer/docs/network-volume-repair.md` and complete the offline
+repair before starting a calendar-enabled worker.
+
 ### SORA MOF RPC Host Runbook
 
 `wss://ws.mof.sora.org` is a production SORA RPC endpoint used by the shipped env config. The endpoint runs on the MOF host from `../indexer-creds.txt`; do not print credentials, and do not kill unrelated processes. In particular, never kill Codex, agent, terminal, shell, or other user processes while repairing this service. Verify the exact process command and owner before stopping anything.
 
-The public hostname is served by Homebrew nginx on the remote macOS host. The active nginx server block is `/opt/homebrew/etc/nginx/servers/mof.sora.org.conf`, and `ws.mof.sora.org` proxies to `http://127.0.0.1:9944`. A `502 Bad Gateway` from `https://ws.mof.sora.org/` means nginx cannot reach the local SORA node on port `9944`; do not work around this in the frontend and do not switch production traffic to `mof2`.
+The public hostname is served by Homebrew nginx on the remote macOS host. The active nginx server block is `/opt/homebrew/etc/nginx/servers/mof.sora.org.conf`, and `ws.mof.sora.org` proxies to `http://127.0.0.1:9944`. The MOF service migrated to the approved OVH host on 6 November 2026; inspect its actual upstream before repairs rather than relying on these retained macOS paths. On 7 November the user explicitly restored `wss://mof2.sora.org` as a selectable production default alongside `wss://ws.mof.sora.org`, superseding the former single-node restriction. Verify the selected endpoint against its active mainnet WebSocket.
 
 The durable SORA node service is launchd label `org.sora.mof-framenode`:
 
@@ -200,3 +203,42 @@ Passing evidence is: CORS preflight `200`, JSON-RPC `system_health` `200` with p
 - [ ] Security reviewed (inputs validated, math safe, no secrets exposed).
 
 If anything here conflicts with explicit user or system instructions, follow those higher‑priority instructions and update this document accordingly.
+
+
+## November 10 Burn release safeguards
+
+The Burn redesign retains a verified TONSWAP reading during a replacement read
+for at most 60 seconds, as approved by the user on November 10. Failure, expiry,
+network change or indexer change withdraws it immediately. An independent expiry
+timer also applies while a read is pending. A banner's TS reservation must come
+from the matching transaction in the current admitted allocation; a local receipt
+or wallet history is never an entitlement fallback. Preserve proved transaction
+finality when reservation evidence is unavailable. This retention approval is
+limited to the TONSWAP card.
+
+The integrated deployed assembly requires a fresh endpoint-bound indexer
+capability for Points, referrals, burn claims and TS estimates. Preserve the
+canonical recovery policy and owner/receipt evidence. Public finalized Burn
+counts and historical activity intervals do not certify personal entitlements.
+Never restore cached, raw-query, local-history or RPC entitlement fallbacks.
+Preserve unknown quotes as unavailable, true zero, token precision, complete
+interval coverage for network totals, and the separate verified-day Stats view.
+
+Use the approved OVH origin and pinned SSH helper in
+[the current origin runbook](docs/ipfs-origin-ovh.md). Both production and testnet
+DAGs must be imported and fully verified separately. The Burn release source,
+validation, publication and master integration evidence are in
+[the release report](docs/reports/burn-redesign-2026-11-10.md).
+
+
+The Burn redesign published on November 11 (work begun November 10) uses production
+root `bafybeiawmv7o6xvcgolgemttjxyckyqwum2jevnwannjjejjjjo42bdz4y` and paired testnet
+root `bafybeigyppl2avcuj3n6etj7is2ijgda7ezd6rrup77jtced3yxtvtvohe`. It preserves the
+verified Stats download assembly and all entitlement guards. The TONSWAP-only
+60-second display retention approved above is now shipped, with independent
+expiry even during a pending read; failed or replaced evidence also withdraws
+the banner's TS reservation. Both DAGs passed full pin verification, Bunny was
+saved/read back/purged, all 933 public files matched, and all nine candidate/live
+WebKit routes plus the final Swap check passed with zero failed requests and
+console errors. The initial transient CDN audit failure and recovery are retained.
+See [Burn redesign release](docs/reports/burn-redesign-2026-11-10.md).

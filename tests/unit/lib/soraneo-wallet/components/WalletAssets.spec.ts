@@ -342,10 +342,7 @@ describe('Wallet WalletAssets', () => {
         { label: 'assets.balance.total', value: '1,099.6019223 XOR' },
         { label: 'assets.balance.transferable', value: '99.6019223 XOR' },
         { label: 'assets.balance.free', value: '999.6019223 XOR' },
-        {
-          label: 'assets.balance.frozen (pointSystem.governanceLockedXOR.titleProgress / StakingContainer)',
-          value: '900 XOR',
-        },
+        { label: 'assets.balance.frozen', value: '900 XOR' },
         { label: 'assets.balance.reserved', value: '25 XOR' },
         { label: 'assets.balance.bonded', value: '75 XOR' },
       ]);

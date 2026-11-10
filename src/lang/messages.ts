@@ -7,6 +7,7 @@ import cardReadinessMessages from '@/features/misc/getTsCardReadiness.en.json';
 import purchasePreviewMessages from '@/features/misc/getTsPreview.en.json';
 import purchaseJourneyMessages from '@/features/misc/getTsJourney.en.json';
 import purchaseOnboardingMessages from '@/features/misc/getTsOnboarding.en.json';
+import temporaryWalletMessages from '@/features/misc/temporaryWallet.en.json';
 import { Theme } from '@/consts/theme';
 
 import { MoonpayNotifications } from '@/features/deposit/components/moonpay/consts';
@@ -28,6 +29,7 @@ export default {
     },
   },
   buyXor: buyXorMessages.buyXor,
+  temporaryWallet: temporaryWalletMessages.temporaryWallet,
   communityStore: communityStoreMessages,
   getTs: {
     journey: purchaseJourneyMessages.getTs.journey,

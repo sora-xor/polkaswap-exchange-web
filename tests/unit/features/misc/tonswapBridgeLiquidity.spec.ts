@@ -1,12 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Operation } from '@sora-substrate/sdk';
-import { DAI } from '@sora-substrate/sdk/build/assets/consts';
+import { DAI, ETH } from '@sora-substrate/sdk/build/assets/consts';
 import { TONSWAP_MAINNET_GENESIS } from '@/indexer/queries/tonswapBurn';
 import {
   assertTonswapBridgeQuote,
   hasTonswapBridgeFundingTag,
   TONSWAP_BRIDGE_FUNDING_TAG,
   BUY_XOR_BRIDGE_FUNDING_TAG,
+  BUY_XOR_ETH_BRIDGE_FUNDING_TAG,
   getTonswapBridgeFundingPurpose,
   getTonswapBridgeFundingPayload,
   tonswapBridgeFailureTranslation,
@@ -51,8 +52,40 @@ describe('guided bridge signing quote', () => {
     const { tx, quote, dependencies } = setup();
     const now = Date.now();
     const expires = await assertTonswapBridgeQuote(tx, dependencies);
-    expect(quote).toHaveBeenCalledWith('10000000000000000000');
+    expect(quote).toHaveBeenCalledWith('10000000000000000000', DAI.address);
     expect(expires).toBeGreaterThan(now);
+  });
+  it('quotes ETH for a Buy XOR ETH transfer, within the 15% Buy XOR limit, and refuses mismatched tags', async () => {
+    const { tx, state, quote, dependencies } = setup();
+    const ethTx = {
+      ...tx,
+      assetAddress: ETH.address,
+      amount: '0.006',
+      payload: getTonswapBridgeFundingPayload('xor', 'ETH'),
+    };
+    expect(ethTx.payload).toEqual({ buyXorFunding: BUY_XOR_ETH_BRIDGE_FUNDING_TAG });
+    expect(getTonswapBridgeFundingPurpose(ethTx)).toBe('xor');
+    // 10% impact passes Buy XOR's 15% limit.
+    quote.mockResolvedValueOnce({ amount: '2250000000000000000', amountWithoutImpact: '2500000000000000000' });
+    await expect(assertTonswapBridgeQuote(ethTx, { ...dependencies, readState: () => state })).resolves.toBeGreaterThan(
+      0
+    );
+    expect(quote).toHaveBeenLastCalledWith('6000000000000000', ETH.address);
+    // 16% does not.
+    quote.mockResolvedValueOnce({ amount: '2100000000000000000', amountWithoutImpact: '2500000000000000000' });
+    await expect(assertTonswapBridgeQuote(ethTx, dependencies)).rejects.toThrow('QUOTE_REQUIRED');
+    // An ETH row needs the ETH tag, and the ETH tag needs an ETH row.
+    quote.mockClear();
+    await expect(
+      assertTonswapBridgeQuote({ ...ethTx, payload: getTonswapBridgeFundingPayload('xor') }, dependencies)
+    ).rejects.toThrow('CONTEXT_CHANGED');
+    await expect(assertTonswapBridgeQuote({ ...ethTx, assetAddress: DAI.address }, dependencies)).rejects.toThrow(
+      'CONTEXT_CHANGED'
+    );
+    await expect(
+      assertTonswapBridgeQuote({ ...ethTx, payload: { tonswapFunding: TONSWAP_BRIDGE_FUNDING_TAG } }, dependencies)
+    ).rejects.toThrow('CONTEXT_CHANGED');
+    expect(quote).not.toHaveBeenCalled();
   });
   it.each([
     { type: Operation.EthBridgeOutgoing },

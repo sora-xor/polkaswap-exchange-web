@@ -166,7 +166,7 @@ describe('Google Drive wallet accounts', () => {
 
     await expect(accounts.getAccount('addr', 'password')).resolves.toEqual(pairJson);
     expect(getMock).toHaveBeenCalledWith('1');
-    expect(getPairJsonMock).toHaveBeenCalledWith(encryptedAccount, 'password');
+    expect(getPairJsonMock).toHaveBeenCalledWith(encryptedAccount, 'password', 'addr');
   });
 
   it('polls through subscribe and stops after unsubscribe', async () => {

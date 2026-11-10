@@ -118,9 +118,9 @@ vi.mock('@/features/rewards/components/point-system/FirstTxCard.vue', () => ({
   },
 }));
 
-vi.mock('@/indexer/queries/pointSystem', () => ({
+vi.mock('@/indexer/queries/pointOwnership', () => ({
   __esModule: true,
-  fetchAccountMeta: fetchAccountMetaMock,
+  fetchOwnedPointMetadata: fetchAccountMetaMock,
 }));
 
 const PointSystemV2 = (await import('@/features/rewards/pages/PointSystemV2Page.vue')).default;
@@ -155,6 +155,7 @@ const buildWrapper = () =>
           template: '<div class="s-scrollbar"><slot /></div>',
         },
         's-divider': true,
+        RouterLink: { props: ['to'], template: '<a :href="to"><slot /></a>' },
       },
       directives: {
         loading: () => undefined,
@@ -164,6 +165,7 @@ const buildWrapper = () =>
 
 describe('PointSystemV2.vue', () => {
   beforeEach(() => {
+    capabilityFixture.allowed = true;
     loginState.value = false;
     connectSpy.mockClear();
     subscribeOnList.mockClear();
@@ -184,6 +186,15 @@ describe('PointSystemV2.vue', () => {
 
     await flushPromises();
 
+    expect(wrapper.findAll('.points__activity-list li')).toHaveLength(13);
+    expect(wrapper.get('.points__activity-list a[href="/pool"]').text()).toBe(
+      'points.liquidityProvision.titleProgress'
+    );
+    expect(wrapper.get('a[href="https://t.me/soratopia_bot/app"]').text()).toContain('Soratopia');
+    expect(wrapper.text()).toContain('points.historyRequirement');
+    expect(wrapper.text()).not.toContain('points.loginText');
+    expect(wrapper.find('.points__header-heading h3').exists()).toBe(false);
+    expect(fetchAccountMetaMock).not.toHaveBeenCalled();
     expect(subscribeOnList).toHaveBeenCalledTimes(1);
     expect(subscribeOnUpdates).toHaveBeenCalledTimes(1);
 
@@ -232,9 +243,12 @@ describe('PointSystemV2.vue', () => {
     await flushPromises();
 
     expect(getAccountReferralRewards).toHaveBeenCalled();
-    expect(fetchAccountMetaMock).toHaveBeenCalledWith('5mock');
+    expect(fetchAccountMetaMock).toHaveBeenCalledWith('5mock', {});
     expect(wrapper.vm.pointsForCards).not.toBeNull();
     expect(wrapper.vm.totalPoints).toBeGreaterThanOrEqual(0);
+    expect(wrapper.find('.points__activity-list').exists()).toBe(false);
+    expect(wrapper.find('.task-card-stub').exists()).toBe(true);
+    expect(wrapper.get('.points__header-heading h3').text()).toBe(wrapper.vm.formattedTotalPoints);
   });
 
   it('does not block point loading on long-lived account liquidity subscriptions', async () => {
@@ -250,7 +264,7 @@ describe('PointSystemV2.vue', () => {
     await flushPromises();
 
     expect(subscribeOnList).toHaveBeenCalledTimes(1);
-    expect(fetchAccountMetaMock).toHaveBeenCalledWith('5mock');
+    expect(fetchAccountMetaMock).toHaveBeenCalledWith('5mock', {});
     expect((wrapper.vm as unknown as PointSystemV2Vm).loading).toBe(false);
   });
 
@@ -355,7 +369,7 @@ describe('PointSystemV2.vue', () => {
     walletStoreMock.account = { address: '5next' };
     expect(wrapper.vm.pointsForCards).toBeNull();
     await flushPromises();
-    expect(fetchAccountMetaMock).toHaveBeenCalledWith('5next');
+    expect(fetchAccountMetaMock).toHaveBeenCalledWith('5next', {});
     expect(subscribeOnList).toHaveBeenCalledTimes(2);
     expect(subscribeOnUpdates).toHaveBeenCalledTimes(2);
     expect(wrapper.vm.firstTxTimestamp).toBe(2);
@@ -384,4 +398,125 @@ describe('PointSystemV2.vue', () => {
     await wrapper.vm.$nextTick();
     expect(wrapper.vm.pointsForCards?.VXORHoldings.currentProgress).toBe(25);
   });
+  it('keeps every live category hidden when ownership metadata is unavailable', async () => {
+    loginState.value = true;
+    fetchAccountMetaMock.mockResolvedValue(null);
+    const wrapper = buildWrapper();
+    await flushPromises();
+    walletStoreMock.accountAssets = [
+      {
+        address: VXOR.address,
+        symbol: VXOR.symbol,
+        decimals: 18,
+        balance: { [BalanceType.Transferable]: FPNumber.fromNatural('2000', 18).toCodecString() },
+      },
+    ];
+    walletStoreMock.fiatPriceObject = { [VXOR.address]: FPNumber.ONE.toCodecString() };
+    poolStoreMock.accountLiquidity = [
+      {
+        firstAddress: VXOR.address,
+        secondAddress: VXOR.address,
+        firstBalance: FPNumber.ONE.toCodecString(),
+        secondBalance: FPNumber.ONE.toCodecString(),
+      },
+    ];
+    referralsStoreMock.referralRewards = { rewards: new FPNumber(900), invitedUserRewards: {} };
+    await flushPromises();
+    expect(wrapper.vm.pointsForCards).toBeNull();
+    expect(wrapper.find('[data-testid="points-unavailable"]').exists()).toBe(true);
+    expect(wrapper.text()).toContain('points.personalUnavailable');
+    expect(wrapper.get('.points__activity-list a[href="/burn"]').text()).toBe('points.XORBurned.titleProgress');
+    expect(wrapper.text()).not.toContain('points.firstTxAccount.descriptionTask');
+    expect(wrapper.find('.point-card-stub').exists()).toBe(false);
+    expect(wrapper.find('.task-card-stub').exists()).toBe(false);
+    expect(wrapper.find('.points__header-heading h3').exists()).toBe(false);
+    expect(getAccountReferralRewards).not.toHaveBeenCalled();
+    wrapper.unmount();
+  });
+
+  it('preserves replacement metadata and scoring after ownership admission', async () => {
+    loginState.value = true;
+    const metadata = {
+      accountId: '0x' + 'ab'.repeat(32),
+      recoveryPolicyHash: '0x' + 'cd'.repeat(32),
+      createdAt: { timestamp: 12345, block: 456 },
+      points: [],
+      recoveryReferralRewards: new FPNumber(12),
+    };
+    fetchAccountMetaMock.mockResolvedValue(metadata);
+    const wrapper = buildWrapper();
+    await flushPromises();
+    expect((wrapper.vm as any).accountPointSystems).toEqual(metadata);
+    expect(getAccountReferralRewards).not.toHaveBeenCalled();
+    expect(wrapper.vm.pointsForCards?.referralRewards.currentProgress).toBe(12);
+    referralsStoreMock.referralRewards = { rewards: new FPNumber(999999), invitedUserRewards: {} };
+    walletStoreMock.fiatPriceObject = {};
+    await flushPromises();
+    expect(wrapper.vm.pointsForCards?.referralRewards.currentProgress).toBe(12);
+    expect((wrapper.vm as any).pointsReady).toBe(true);
+    expect(wrapper.vm.pointsForCards).not.toBeNull();
+    wrapper.unmount();
+  });
+
+  it('does not load metadata or score local balances when capability is denied', async () => {
+    loginState.value = true;
+    capabilityFixture.allowed = false;
+    fetchAccountMetaMock.mockResolvedValue({ createdAt: { timestamp: 1, block: 1 }, points: [] });
+    const wrapper = buildWrapper();
+    await flushPromises();
+    expect(fetchAccountMetaMock).not.toHaveBeenCalled();
+    expect(getAccountReferralRewards).not.toHaveBeenCalled();
+    expect(wrapper.vm.pointsForCards).toBeNull();
+    expect(wrapper.find('[data-testid="points-unavailable"]').exists()).toBe(true);
+    wrapper.unmount();
+  });
+
+  it('freshly checks before recalculation and clears admitted cards after revocation', async () => {
+    loginState.value = true;
+    fetchAccountMetaMock.mockResolvedValue({ createdAt: { timestamp: 1, block: 1 }, points: [] });
+    const wrapper = buildWrapper();
+    await flushPromises();
+    expect(wrapper.vm.pointsForCards).not.toBeNull();
+    const priorChecks = capabilityFixture.calls.mock.calls.length;
+    capabilityFixture.allowed = false;
+    walletStoreMock.accountAssets = [
+      {
+        address: VXOR.address,
+        symbol: VXOR.symbol,
+        decimals: 18,
+        balance: { [BalanceType.Transferable]: FPNumber.fromNatural('2000', 18).toCodecString() },
+      },
+    ];
+    await flushPromises();
+    expect(capabilityFixture.calls.mock.calls.length).toBeGreaterThan(priorChecks);
+    expect(wrapper.vm.pointsForCards).toBeNull();
+    expect(wrapper.find('.point-card-stub').exists()).toBe(false);
+    expect(wrapper.find('[data-testid="points-unavailable"]').exists()).toBe(true);
+    wrapper.unmount();
+  });
+
+  it('discards metadata admitted before a capability is revoked in flight', async () => {
+    loginState.value = true;
+    fetchAccountMetaMock.mockImplementation(async () => {
+      capabilityFixture.allowed = false;
+      return { createdAt: { timestamp: 1, block: 1 }, points: [] };
+    });
+    const wrapper = buildWrapper();
+    await flushPromises();
+    expect(wrapper.vm.pointsForCards).toBeNull();
+    expect(wrapper.find('[data-testid="points-unavailable"]').exists()).toBe(true);
+    wrapper.unmount();
+  });
+});
+
+const capabilityFixture = vi.hoisted(() => ({ allowed: true, calls: vi.fn() }));
+vi.mock('@/indexer/queries/capabilities', async () => {
+  const { allowedLegacyCapabilities } = await import('@tests/fixtures/entitlementCapabilities');
+  return {
+    requireEntitlements: async (indexer = {}) => {
+      capabilityFixture.calls();
+      if (!capabilityFixture.allowed) throw Error('uncertified');
+      return { indexer, capabilities: allowedLegacyCapabilities };
+    },
+  };
 });

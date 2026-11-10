@@ -11,13 +11,13 @@
         <div class="points__header">
           <div class="points__header-heading">
             <h2>{{ t('points.title') }}</h2>
-            <h3 v-if="!loading && isLoggedIn">{{ formattedTotalPoints }}</h3>
+            <h3 v-if="!loading && isLoggedIn && pointsReady && pointsForCards">{{ formattedTotalPoints }}</h3>
           </div>
         </div>
       </template>
-      <div class="points__main s-flex-row">
+      <div class="points__main s-flex-column">
         <div v-if="!isLoggedIn" class="points__connect s-flex-column">
-          <span class="points__connect-title d2">{{ t('points.loginText') }}</span>
+          <span class="points__connect-title d2">{{ t('points.historyRequirement') }}</span>
           <s-button
             class="points__connect-action s-typography-button--medium"
             type="primary"
@@ -26,6 +26,38 @@
             {{ t('connectWalletText') }}
           </s-button>
         </div>
+        <p
+          v-else-if="!pointsReady || !pointsForCards"
+          v-loading="loading"
+          data-testid="points-unavailable"
+          role="status"
+        >
+          {{ t('points.personalUnavailable') }}
+        </p>
+        <a
+          v-if="!pointsReady || !pointsForCards || categoryPoints === pointSystemCategory.tasks"
+          class="points__soratopia s-flex"
+          rel="nofollow noopener"
+          target="_blank"
+          href="https://t.me/soratopia_bot/app"
+        >
+          <span class="points__soratopia-container s-flex">
+            <span class="points__soratopia-action">{{ t('points.openTelegram') }}</span>
+            <span class="points__soratopia-text">Soratopia</span>
+          </span>
+        </a>
+        <section v-if="!isLoggedIn || !pointsReady || !pointsForCards" aria-labelledby="points-activities">
+          <h3 id="points-activities">{{ t('points.activityGuide') }}</h3>
+          <ul class="points__activity-list">
+            <li v-for="(activity, name) in categoriesPointSystem" :key="name">
+              <router-link v-if="activity.activityPath" :to="activity.activityPath">
+                {{ t(`points.${name}.titleProgress`) }}
+              </router-link>
+              <strong v-else>{{ t(`points.${name}.titleProgress`) }}</strong>
+              <p>{{ t(`points.${name}.${name === 'firstTxAccount' ? 'titleTask' : 'descriptionTask'}`) }}</p>
+            </li>
+          </ul>
+        </section>
         <div v-else v-loading="loading" :class="['points__content', { 'points__content--loading': loading }]">
           <s-tabs v-model="categoryPoints" type="rounded" class="points__tabs">
             <s-tab :label="t('points.yourTasks').toUpperCase()" name="tasks">
@@ -34,17 +66,6 @@
                 :wrap-style="{ padding: '0', margin: '0', overflowY: 'auto' }"
               >
                 <div class="points__task-list">
-                  <a
-                    class="points__soratopia s-flex"
-                    rel="nofollow noopener"
-                    target="_blank"
-                    href="https://t.me/soratopia_bot/app"
-                  >
-                    <div class="points__soratopia-container s-flex">
-                      <button class="points__soratopia-action">{{ t('points.openTelegram') }}</button>
-                      <span class="points__soratopia-text">{{ t('points.toEarnPoints') }}</span>
-                    </div>
-                  </a>
                   <task-card
                     v-for="(pointsForCategory, categoryName) in pointsForCards"
                     :key="categoryName"
@@ -87,8 +108,9 @@
 import { BalanceType, XOR, KUSD, VXOR } from '@sora-substrate/sdk/build/assets/consts';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
-import { pointSystemCategory } from '@/consts/pointSystem';
-import { fetchAccountMeta } from '@/indexer/queries/pointSystem';
+import { categoriesPointSystem, pointSystemCategory } from '@/consts/pointSystem';
+import { requireEntitlements } from '@/indexer/queries/capabilities';
+import { fetchOwnedPointMetadata } from '@/indexer/queries/pointOwnership';
 import type { ReferrerRewards } from '@/indexer/queries/referrals';
 import { LogoSize } from '@/lib/soraneo-wallet/src/consts';
 import { useAssetsStore } from '@/stores/assets';
@@ -129,6 +151,8 @@ defineOptions({
 const categoryPoints = ref(pointSystemCategory.tasks);
 const pointsForCards = ref<Record<string, CalculateCategoryPointResult> | null>(null);
 const accountPointSystems = ref<AccountPointSystems | null>(null);
+const pointsReady = ref(false);
+let pointsSession: Awaited<ReturnType<typeof requireEntitlements>>['indexer'] | null = null;
 
 const { t } = useTranslation();
 const { loading, withApi, withLoading } = useLoading();
@@ -143,7 +167,15 @@ const referralRewards = computed(() => referralsStore.referralRewards as Nullabl
 const accountAssets = computed(() => walletStore.accountAssets as Array<AccountAsset>);
 const accountLiquidity = computed(() => poolStore.accountLiquidity as Array<AccountLiquidity>);
 const account = computed(() => walletStore.account as Nullable<PolkadotJsAccount>);
-const accountIdentity = computed(() => `${walletStore.accountSource ?? ''}:${account.value?.address ?? ''}`);
+const accountIdentity = computed(() =>
+  JSON.stringify([
+    walletStore.accountSource,
+    account.value?.address,
+    walletStore.soraNetwork,
+    walletStore.indexerType,
+    walletStore.indexers,
+  ])
+);
 let dataGeneration = 0;
 let liquidityGeneration = 0;
 const getAsset = (addr?: string) => assetsStore.assetDataByAddress(addr) as Nullable<AccountAsset>;
@@ -190,7 +222,9 @@ const getPointsForCategories = (pointSystems: AccountPointSystems): CategoryPoin
   const XORHoldings = getCurrentFiatBalanceForToken(XOR.symbol);
   const VXORHoldings = getCurrentFiatBalanceForToken(VXOR.symbol);
   const KUSDHoldings = getCurrentFiatBalanceForToken(KUSD.symbol);
-  const referralRewardsValue = convertFPNumberToNumber(referralRewards.value?.rewards);
+  const referralRewardsValue = convertFPNumberToNumber(
+    pointSystems.recoveryReferralRewards ?? referralRewards.value?.rewards
+  );
 
   const points = pointSystems.points.reduce(
     (acc, era) => {
@@ -241,6 +275,8 @@ const getPointsForCategories = (pointSystems: AccountPointSystems): CategoryPoin
  * Clears cached point metadata and rendered cards when the active account is unavailable.
  */
 const resetPointData = (): void => {
+  pointsReady.value = false;
+  pointsSession = null;
   accountPointSystems.value = null;
   pointsForCards.value = null;
 };
@@ -248,12 +284,29 @@ const resetPointData = (): void => {
 /**
  * Recalculates visible cards from the current account metadata and wallet snapshots.
  */
-const updatePointsForCards = (): void => {
-  if (!accountPointSystems.value || !isLoggedIn.value) {
+let scoringGeneration = 0;
+const updatePointsForCards = async (): Promise<void> => {
+  const run = ++scoringGeneration;
+  const metadata = accountPointSystems.value;
+  const identity = accountIdentity.value;
+  if (!pointsReady.value || !accountPointSystems.value || !isLoggedIn.value) {
     pointsForCards.value = null;
     return;
   }
 
+  pointsForCards.value = null;
+  if (!pointsSession) {
+    resetPointData();
+    return;
+  }
+  try {
+    await requireEntitlements(pointsSession);
+  } catch {
+    if (run === scoringGeneration && identity === accountIdentity.value && metadata === accountPointSystems.value)
+      resetPointData();
+    return;
+  }
+  if (run !== scoringGeneration || identity !== accountIdentity.value || metadata !== accountPointSystems.value) return;
   pointsForCards.value = pointsService.calculateCategoryPoints(getPointsForCategories(accountPointSystems.value));
 };
 
@@ -269,14 +322,23 @@ const initData = async (): Promise<void> => {
   resetPointData();
   if (!isLoggedIn.value || !accountAddress) return;
 
-  await referralsStore.getAccountReferralRewards();
+  let session: Awaited<ReturnType<typeof requireEntitlements>>;
+  try {
+    session = await requireEntitlements();
+  } catch {
+    return;
+  }
+  const metadata = await fetchOwnedPointMetadata(accountAddress, session.indexer);
+  if (!isCurrent() || !metadata) return;
+
+  // Recovery referral history is already bound to the admitted owner and policy.
+  if (metadata.recoveryReferralRewards === undefined) await referralsStore.getAccountReferralRewards(session.indexer);
   if (!isCurrent()) return;
 
-  const metadata = await fetchAccountMeta(accountAddress);
-  if (!isCurrent()) return;
-
+  pointsSession = session.indexer;
   accountPointSystems.value = metadata;
-  updatePointsForCards();
+  pointsReady.value = true;
+  await updatePointsForCards();
 };
 
 /**
@@ -417,7 +479,29 @@ $points-card-min-width: 258px;
     overflow-y: auto;
     padding-right: $inner-spacing-mini;
   }
+  &__activity-list {
+    display: grid;
+    gap: $inner-spacing-small;
+    grid-template-columns: #{'repeat(auto-fit, minmax(min(100%, 16rem), 1fr))'};
+    list-style: none;
+    margin: $inner-spacing-small 0 0;
+    padding: 0;
+
+    li {
+      border-top: 1px solid var(--s-color-base-border-secondary);
+      padding-top: $inner-spacing-small;
+    }
+    a {
+      color: var(--s-color-theme-accent);
+      text-decoration: underline;
+    }
+    p {
+      color: var(--s-color-base-content-secondary);
+      margin: $inner-spacing-mini 0 0;
+    }
+  }
   &__main {
+    gap: $inner-spacing-medium;
     margin-top: 0;
     padding: 0 $inner-spacing-medium $inner-spacing-medium;
   }
@@ -508,7 +592,6 @@ $points-card-min-width: 258px;
     box-sizing: border-box;
     box-shadow: var(--s-shadow-element-pressed);
     gap: $inner-spacing-medium;
-    min-height: 264px;
     padding: $inner-spacing-big $inner-spacing-medium;
     justify-content: center;
     width: 100%;
@@ -589,7 +672,6 @@ $points-card-min-width: 258px;
     }
 
     &__connect {
-      min-height: 252px;
       padding: $inner-spacing-big $inner-spacing-small;
 
       &-title {

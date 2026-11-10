@@ -108,7 +108,7 @@ describe('Tonswap Ethereum bridge preparation', () => {
     }
     expect(mocks.bridge.updateForm).not.toHaveBeenCalled();
   });
-  it('prefills only an exact validated DAI draft after asset metadata is ready', async () => {
+  it('prefills only an exact validated DAI or ETH draft after asset metadata is ready', async () => {
     const funding = useTonswapBridgeFunding();
     expect(await funding.prepareEthereumFunding('DAI', '1.000000000000000001')).not.toBeNull();
     expect(mocks.bridge.setSendedAmount).toHaveBeenLastCalledWith('1.000000000000000001');
@@ -117,7 +117,11 @@ describe('Tonswap Ethereum bridge preparation', () => {
     );
     for (const amount of ['-1', '1e3', '0', '0.0000000000000000001'])
       expect(await funding.prepareEthereumFunding('DAI', amount)).toBeNull();
-    expect(await funding.prepareEthereumFunding('ETH', '1')).toBeNull();
+    // Buy XOR card purchases move the delivered ETH itself.
+    expect(await funding.prepareEthereumFunding('ETH', '0.00622871875')).not.toBeNull();
+    expect(mocks.bridge.setSendedAmount).toHaveBeenLastCalledWith('0.00622871875');
+    expect(await funding.prepareEthereumFunding('XOR', '1')).toBeNull();
+    expect(await funding.prepareEthereumFunding('USDT', '1')).toBeNull();
   });
   it('requires the live XOR coefficient and passes it to the existing bridge amount state', async () => {
     const funding = useTonswapBridgeFunding();

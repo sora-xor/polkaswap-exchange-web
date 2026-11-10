@@ -15,7 +15,7 @@ const DEFAULT_SAMPLE_INTERVAL_MS = Number(process.env.IPFS_CHECK_SAMPLE_INTERVAL
 const CONTENT_POLL_INTERVAL_MS = Number(process.env.IPFS_CHECK_CONTENT_POLL || 200);
 const DEFAULT_BROWSER_ORDER = ['chromium', 'webkit', 'firefox'];
 const IPFS_BOOT_TIMEOUT = Number(process.env.IPFS_CHECK_IPFS_TIMEOUT || 15000);
-const APPROVED_LIVE_RPC = 'wss://ws.mof.sora.org/';
+const APPROVED_LIVE_RPCS = Object.freeze(['wss://ws.mof.sora.org/', 'wss://mof2.sora.org/']);
 const MAINNET_GENESIS = '0x7e4e32d0feafd4f9c9414b0be86373f9a1efa904809b683453a9af6856d38ad5';
 const MAX_LIVE_RPC_FRAME_BYTES = 64 * 1024;
 // A presentation action budget, independent of hydration/load polling and route settling.
@@ -635,17 +635,19 @@ const BROWSER_LAUNCHERS = {
   firefox: async () => firefox.launch({ headless: true }),
 };
 
-/** Production cannot omit/override its live RPC gate; other targets may explicitly request the same gate. */
+/** Production requires an approved live RPC; explicit endpoint checks stay pinned to that endpoint. */
 function resolveLiveRpcExpectation(targetUrl, explicit) {
   const target = new URL(targetUrl);
   const production = target.protocol === 'https:' && target.hostname === 'polkaswap.io' && !target.port;
   if (production && (target.username || target.password)) {
     throw new Error('Production live RPC checks require a target URL without credentials.');
   }
-  if (explicit !== undefined && !['wss://ws.mof.sora.org', APPROVED_LIVE_RPC].includes(explicit)) {
-    throw new Error('--expected-live-rpc may only be wss://ws.mof.sora.org.');
+  if (explicit !== undefined) {
+    const endpoint = APPROVED_LIVE_RPCS.find((approved) => explicit === approved || explicit === approved.slice(0, -1));
+    if (!endpoint) throw new Error('--expected-live-rpc may only be wss://ws.mof.sora.org or wss://mof2.sora.org.');
+    return endpoint;
   }
-  return production || explicit !== undefined ? APPROVED_LIVE_RPC : null;
+  return production ? APPROVED_LIVE_RPCS : null;
 }
 
 /** Normalize a root WSS endpoint without aliases, credentials, query strings or fragments. */
@@ -923,6 +925,8 @@ async function inspectLiveRpcFooter(page, appSelector, readiness) {
 /** A probe HTTP200, old log, unmatched frame or post-boundary response never supplies live authority. */
 function liveRpcIssue(expected, footer, snapshot, failures, readiness) {
   if (!expected) return null;
+  const allowedEndpoints = Array.isArray(expected) ? expected : [expected];
+  const selectedEndpoint = normalizeLiveRpcEndpoint(footer?.address);
   const checkoutReadiness = readiness && routeReadiness(`https://polkaswap.io/#${readiness.path}`);
   const verifiedCheckout =
     ['/buy-xor', '/get-ts'].includes(readiness?.path) &&
@@ -935,24 +939,29 @@ function liveRpcIssue(expected, footer, snapshot, failures, readiness) {
     !hydrationIssue(footer.hydration, readiness);
   if (
     !verifiedCheckout &&
-    (!footer?.connected ||
-      footer.binding !== 'fresh-node-popover' ||
-      normalizeLiveRpcEndpoint(footer.address) !== expected)
+    (!footer?.connected || footer.binding !== 'fresh-node-popover' || !allowedEndpoints.includes(selectedEndpoint))
   ) {
-    return 'Approved live RPC gate requires the rendered successful footer node address to be ws.mof.sora.org.';
+    return 'Approved live RPC gate requires the rendered successful footer node address to match an expected endpoint.';
   }
   if (failures.length) return 'Approved live RPC gate detected a WebSocket evidence failure.';
   if (
     snapshot?.sockets.some(
       (socket) =>
-        socket.endpoint === 'wss://mof2.sora.org/' || (socket.endpoint !== expected && socket.sentGenesisReads > 0)
+        !allowedEndpoints.includes(socket.endpoint) &&
+        (APPROVED_LIVE_RPCS.includes(socket.endpoint) || socket.sentGenesisReads > 0)
     )
   ) {
     return 'Approved live RPC gate observed an unexpected SORA genesis-read WebSocket endpoint.';
   }
-  const newestApprovedSocket = snapshot?.sockets.filter((socket) => socket.endpoint === expected).at(-1);
+  // Normal pages must prove the exact footer selection, not another approved socket.
+  // Checkout has no footer, so its newest approved socket must itself carry fresh proof.
+  const newestApprovedSocket = snapshot?.sockets
+    .filter((socket) =>
+      verifiedCheckout ? allowedEndpoints.includes(socket.endpoint) : socket.endpoint === selectedEndpoint
+    )
+    .at(-1);
   if (!newestApprovedSocket || newestApprovedSocket.closed || newestApprovedSocket.successfulGenesisReads === 0) {
-    return 'Approved live RPC gate requires an active ws.mof WebSocket with a correlated successful mainnet genesis response.';
+    return 'Approved live RPC gate requires an active selected WebSocket with a correlated successful mainnet genesis response.';
   }
   return null;
 }

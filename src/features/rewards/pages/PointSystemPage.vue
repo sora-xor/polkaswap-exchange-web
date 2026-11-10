@@ -6,7 +6,7 @@
       </template>
       <div class="points__main s-flex-column">
         <div v-if="!isLoggedIn" class="points__connect s-flex-column">
-          <span class="points__connect-title d2">{{ t('points.loginText') }}</span>
+          <span class="points__connect-title d2">{{ t('points.historyRequirement') }}</span>
           <s-button
             class="points__connect-action s-typography-button--medium"
             type="primary"
@@ -15,6 +15,9 @@
             {{ t('connectWalletText') }}
           </s-button>
         </div>
+        <p v-else-if="!pointsReady" v-loading="loading" data-testid="points-unavailable" role="status">
+          {{ t('points.personalUnavailable') }}
+        </p>
         <div v-else v-loading="loading">
           <div class="points__card points__card-bridge" :style="bridgeCardStyles">
             <div class="points__card-header s-flex-column">
@@ -129,8 +132,8 @@
           href="https://t.me/soratopia_bot/app"
         >
           <div class="points__soratopia-container s-flex">
-            <button class="points__soratopia-action">{{ t('points.openTelegram') }}</button>
-            <span class="points__soratopia-text">{{ t('points.toEarnPoints') }}</span>
+            <span class="points__soratopia-action">{{ t('points.openTelegram') }}</span>
+            <span class="points__soratopia-text">Soratopia</span>
           </div>
         </a>
       </div>
@@ -145,6 +148,8 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { ZeroStringValue } from '@/consts';
 import { Theme } from '@/consts/theme';
+import { requireEntitlements } from '@/indexer/queries/capabilities';
+import { canShowPoints, fetchPointOwnership } from '@/indexer/queries/pointOwnership';
 import { fetchData as fetchBurnXorData } from '@/indexer/queries/burnXor';
 import { CountType, type BridgeData, fetchBridgeData, fetchCount } from '@/indexer/queries/pointSystem';
 import type { ReferrerRewards } from '@/indexer/queries/referrals';
@@ -190,12 +195,23 @@ const referralsStore = useReferralsStore();
 const walletStore = useWalletStore();
 const assetsStore = useAssetsStore();
 
-const referralRewards = computed(() => referralsStore.referralRewards as Nullable<ReferrerRewards>);
+const pointsReady = ref(false);
+const referralRewards = computed(() =>
+  pointsReady.value ? (referralsStore.referralRewards as Nullable<ReferrerRewards>) : null
+);
 const blockNumber = computed(() => settingsStore.blockNumber);
 const networkFees = computed(() => settingsStore.networkFees as Nullable<NetworkFeesObject>);
 const libraryTheme = computed(() => (settingsStore.libraryTheme ?? Theme.LIGHT) as Theme);
 const account = computed(() => walletStore.account as Nullable<PolkadotJsAccount>);
-const accountIdentity = computed(() => `${walletStore.accountSource ?? ''}:${account.value?.address ?? ''}`);
+const accountIdentity = computed(() =>
+  JSON.stringify([
+    walletStore.accountSource,
+    account.value?.address,
+    walletStore.soraNetwork,
+    walletStore.indexerType,
+    walletStore.indexers,
+  ])
+);
 let dataGeneration = 0;
 const xor = computed(() => assetsStore.xor as Nullable<AccountAsset>);
 const currencySymbol = computed(() => walletStore.currencySymbol);
@@ -276,6 +292,7 @@ const totalReferralRewardsFiat = computed(() => {
 });
 
 const resetStats = () => {
+  pointsReady.value = false;
   burnData.value = null;
   bridgeData.value = [];
   poolDepositCount.value = 0;
@@ -296,16 +313,33 @@ const initData = async () => {
   resetStats();
   if (!isLoggedIn.value || !accountAddress || !endBlock) return;
 
-  await referralsStore.getAccountReferralRewards();
+  // V1 raw history/RPC reads are allowed only before recovery ownership is installed.
+  let session: Awaited<ReturnType<typeof requireEntitlements>>;
+  try {
+    session = await requireEntitlements();
+  } catch {
+    return;
+  }
+  const ownership = await fetchPointOwnership(accountAddress, session.indexer);
+  if (!isCurrent() || !canShowPoints(ownership, 1)) return;
+
+  await referralsStore.getAccountReferralRewards(session.indexer);
   if (!isCurrent()) return;
 
-  const [burnEntries, bridges, swaps, deposits, withdrawals] = await Promise.all([
-    fetchBurnXorData(0, endBlock, accountAddress),
-    fetchBridgeData(0, endBlock, accountAddress),
-    fetchCount(0, endBlock, accountAddress, CountType.Swap),
-    fetchCount(0, endBlock, accountAddress, CountType.PoolDeposit),
-    fetchCount(0, endBlock, accountAddress, CountType.PoolWithdraw),
-  ]);
+  const data = await Promise.all([
+    fetchBurnXorData(0, endBlock, accountAddress, session.indexer),
+    fetchBridgeData(0, endBlock, accountAddress, session.indexer),
+    fetchCount(0, endBlock, accountAddress, CountType.Swap, session.indexer),
+    fetchCount(0, endBlock, accountAddress, CountType.PoolDeposit, session.indexer),
+    fetchCount(0, endBlock, accountAddress, CountType.PoolWithdraw, session.indexer),
+  ]).catch(() => null);
+  if (!data) return;
+  const [burnEntries, bridges, swaps, deposits, withdrawals] = data;
+  try {
+    await requireEntitlements(session.indexer);
+  } catch {
+    return;
+  }
   if (!isCurrent()) return;
 
   burnData.value = burnEntries.reduce((acc, { amount }) => acc.add(amount), Zero);
@@ -313,6 +347,7 @@ const initData = async () => {
   totalSwapTxs.value = swaps;
   poolDepositCount.value = deposits;
   poolWithdrawCount.value = withdrawals;
+  pointsReady.value = true;
 };
 
 onMounted(() => {

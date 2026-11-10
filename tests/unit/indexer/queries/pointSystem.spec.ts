@@ -26,6 +26,18 @@ vi.mock('@/lib/soraneo-wallet/src/services/indexer', () => ({
   getCurrentIndexer: () => indexerMocks.currentIndexer,
 }));
 
+// Existing math scenarios explicitly assume an admitted non-recovery test chain.
+vi.mock('@/indexer/queries/capabilities', async () => {
+  const { allowedLegacyCapabilities } = await import('@tests/fixtures/entitlementCapabilities');
+  return {
+    requireEntitlements: vi.fn(async (indexer) => ({
+      indexer: indexer ?? indexerMocks.currentIndexer,
+      capabilities: allowedLegacyCapabilities,
+    })),
+    EntitlementsUnavailableError: class extends Error {},
+  };
+});
+
 describe('point system indexer queries', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -63,8 +75,6 @@ describe('point system indexer queries', () => {
     expect(result[1]?.amount.toString()).toBe('2.5');
   });
 
-
-
   it('fetches Polkaswap activity counts and falls back to zero when no count is returned', async () => {
     indexerMocks.fetchEntities.mockResolvedValue({ totalCount: 7 });
     indexerMocks.currentIndexer = createIndexer('polkaswap');
@@ -80,7 +90,6 @@ describe('point system indexer queries', () => {
 
     await expect(fetchCount(100, 200, 'account-1', CountType.PoolDeposit)).resolves.toBe(0);
   });
-
 
   it('fetches and parses Polkaswap account metadata into versioned point calculations', async () => {
     indexerMocks.request.mockResolvedValue({
@@ -167,7 +176,7 @@ describe('point system indexer queries', () => {
     expect(result?.points[0]?.version).toBe(2);
   });
 
-  it('falls back to metadata points when versioned point systems are unavailable', async () => {
+  it('does not substitute metadata points after the required versioned snapshot is unavailable', async () => {
     indexerMocks.request.mockResolvedValue({
       data: createAccountMetaEntity(),
     });
@@ -176,8 +185,7 @@ describe('point system indexer queries', () => {
 
     const result = await fetchAccountPoints('account-1');
 
-    expect(result?.points).toHaveLength(1);
-    expect(result?.points[0]?.version).toBe(1);
+    expect(result).toBeNull();
   });
 
   it('returns null account points when account metadata is unavailable', async () => {

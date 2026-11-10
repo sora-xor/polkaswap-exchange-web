@@ -2045,6 +2045,59 @@ describe('PolkaswapAgent service', () => {
     expect(walletStore.beforeTransactionSign).not.toHaveBeenCalled();
   });
 
+  it.each<[number, string]>([
+    [6, '0.0000001'],
+    [6, '1.0000001'],
+    [18, '1.0000000000000000001'],
+    [18, '0.0000000000000000001'],
+    [0, '1.1'],
+  ])('rejects a transfer of %s-decimal units that cannot represent %s', async (decimals, amount) => {
+    const { agent, api, walletStore, assetIn } = createHarness();
+    assetIn.decimals = decimals;
+    walletStore.accountAssetsAddressTable[assetIn.address].decimals = decimals;
+
+    await expect(agent.prepareTransfer({ asset: { symbol: 'IN' }, to: 'cn-recipient', amount })).rejects.toMatchObject({
+      code: 'INVALID_AMOUNT',
+    });
+    expect(walletStore.beforeTransactionSign).not.toHaveBeenCalled();
+    expect(api.assets.simpleTransfer).not.toHaveBeenCalled();
+  });
+
+  it.each<[number, string, string]>([
+    [6, '0.000001', '1'],
+    [6, '1.5000000', '1500000'],
+    [18, '0.000000000000000001', '1'],
+    [18, '1.0000000000000000000', '1000000000000000000'],
+    [0, '2.000', '2'],
+  ])('preserves an exact %s-decimal transfer of %s', async (decimals, amount, codec) => {
+    const { agent, api, walletStore, assetIn } = createHarness();
+    assetIn.decimals = decimals;
+    walletStore.accountAssetsAddressTable[assetIn.address].decimals = decimals;
+
+    const prepared = await agent.prepareTransfer({ asset: { symbol: 'IN' }, to: 'cn-recipient', amount });
+    expect(prepared.canExecute).toBe(true);
+    expect(prepared.amountMeta).toMatchObject({ value: amount, codec });
+    await agent.executeTransfer({ intentId: prepared.intentId, clientOrderId: `exact-${decimals}-${amount}` });
+    expect(api.assets.simpleTransfer).toHaveBeenCalledWith(
+      expect.objectContaining({ decimals }),
+      'cn-recipient',
+      amount,
+      prepared.intentId
+    );
+  });
+
+  it('rechecks transfer units at submission when the resolved asset precision has changed', async () => {
+    const { agent, api, walletStore, assetIn } = createHarness();
+    const prepared = await agent.prepareTransfer({ asset: { symbol: 'IN' }, to: 'cn-recipient', amount: '1.0000001' });
+    assetIn.decimals = 6;
+    walletStore.accountAssetsAddressTable[assetIn.address].decimals = 6;
+
+    await expect(
+      agent.executeTransfer({ intentId: prepared.intentId, clientOrderId: 'changed-transfer-precision' })
+    ).rejects.toMatchObject({ code: 'INVALID_AMOUNT' });
+    expect(api.assets.simpleTransfer).not.toHaveBeenCalled();
+  });
+
   it('reads only the deterministic history record assigned to the prepared intent', async () => {
     const { agent, api, assetIn, assetOut } = createHarness();
     const prepared = await agent.prepareSwap({

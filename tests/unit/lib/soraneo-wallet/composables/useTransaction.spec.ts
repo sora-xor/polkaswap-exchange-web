@@ -9,6 +9,7 @@ const getOperationMessageMock = vi.hoisted(() => vi.fn(() => 'operation-message'
 const delayMock = vi.hoisted(() => vi.fn(async (): Promise<void> => undefined));
 const api = vi.hoisted(() => ({
   api: { isReady: Promise.resolve() },
+  accountPair: null as { isLocked: boolean; lock: () => void } | null,
   historyList: [] as Array<{ id: string; startTime: string }>,
 }));
 
@@ -93,6 +94,7 @@ describe('useTransaction', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    api.accountPair = null;
     delayMock.mockResolvedValue(undefined);
     api.historyList = [];
     walletStore = reactive({
@@ -236,5 +238,29 @@ describe('useTransaction', () => {
     await promise;
 
     expect(walletStore.addActiveTransaction).toHaveBeenCalledWith('tx-delayed');
+  });
+
+  it('relocks the captured key after preflight failure without locking a newly selected account', async () => {
+    const original = {
+      isLocked: true,
+      lock: vi.fn(() => {
+        original.isLocked = true;
+      }),
+    };
+    const replacement = { isLocked: false, lock: vi.fn() };
+    api.accountPair = original;
+    beforeTransactionSign.mockImplementationOnce(async () => {
+      original.isLocked = false;
+    });
+    const { withNotifications } = useTransaction();
+    const pending = withNotifications(async () => {
+      api.accountPair = replacement;
+      throw new Error('changed review');
+    });
+    await expect(pending).rejects.toThrow('changed review');
+    expect(original.isLocked).toBe(true);
+    expect(original.lock).toHaveBeenCalledOnce();
+    expect(replacement.lock).not.toHaveBeenCalled();
+    api.accountPair = null;
   });
 });

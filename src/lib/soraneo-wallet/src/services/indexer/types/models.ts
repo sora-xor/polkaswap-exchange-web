@@ -189,7 +189,8 @@ export type NetworkSnapshotEntity = {
   id: string;
   type: SnapshotTypes;
   timestamp: number;
-  accounts: number;
+  accounts: number | null;
+  accountCountAvailable?: boolean;
   transactions: number;
   fees: CodecString;
   liquidityUSD: string;
@@ -593,6 +594,7 @@ export type HistoryElement = HistoryElementBase & {
 };
 
 export type UpdatesStream = {
+  pricesExact?: Record<string, string> | null;
   id: string;
   block: number;
   data: string; // stringified JSON

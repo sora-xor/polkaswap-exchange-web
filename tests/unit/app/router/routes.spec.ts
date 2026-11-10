@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { createMemoryHistory, createRouter } from 'vue-router';
 
 import { routes } from '@/app/router/routes';
 import { bridgeRoutes } from '@/features/bridge/routes';
@@ -36,5 +37,19 @@ describe('app router routes', () => {
       ...storeRoutes,
       ...miscRoutes,
     ]);
+  });
+
+  it('retires Migration through the existing fallback while retaining the other feature routes', () => {
+    const router = createRouter({ history: createMemoryHistory(), routes });
+    const retired = router.resolve('/migration');
+
+    expect(router.hasRoute('Migration')).toBe(false);
+    expect(retired.matched).toHaveLength(1);
+    expect(retired.matched[0]).toMatchObject({ path: '/:catchAll(.*)', redirect: '/swap' });
+    for (const path of ['/swap', '/bots', '/store', '/buy-xor', '/get-ts']) {
+      const matched = router.resolve(path).matched;
+      expect(matched.length).toBeGreaterThan(0);
+      expect(matched.at(-1)?.path).not.toBe('/:catchAll(.*)');
+    }
   });
 });

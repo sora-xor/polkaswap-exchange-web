@@ -3,6 +3,13 @@
     <template #title>
       <moonpay-logo :theme="libraryTheme"></moonpay-logo>
     </template>
+    <p v-if="shownAddressHint" class="moonpay-dialog__address" data-test-name="moonpayAddressHint">
+      <span>{{ t('getTs.cardDestination') }}</span>
+      <code>{{ shownAddressHint }}</code>
+      <button type="button" @click="copyAddressHint">
+        {{ t(addressHintCopied ? 'assets.copied' : 'getTs.copyAddress') }}
+      </button>
+    </p>
     <i-frame-widget :src="widgetUrl" :allowed-origins="MOONPAY_WIDGET_ORIGINS"></i-frame-widget>
   </dialog-base>
 </template>
@@ -40,12 +47,21 @@ const props = withDefaults(
     receivingAddress?: string;
     /** Let a guided flow convert received ETH before offering a separate bridge transaction. */
     autoPrepareBridge?: boolean;
+    /**
+     * Ethereum address shown above the checkout with a copy button. MoonPay cannot be pre-filled without a
+     * signed URL, so the buyer pastes it; showing it here means they need not leave the dialog to copy it again.
+     */
+    addressHint?: string;
   }>(),
   { autoPrepareBridge: true }
 );
 const emit = defineEmits<{ completed: [transaction: MoonpayTransaction] }>();
 
 const widgetUrl = ref('');
+const addressHintCopied = ref(false);
+const shownAddressHint = computed(() =>
+  props.addressHint && /^0x[0-9a-fA-F]{40}$/.test(props.addressHint) ? props.addressHint : ''
+);
 const transactionsPolling = ref<Nullable<FnWithoutArgs>>(null);
 const checkout =
   ref<Nullable<{ key: string; account: string; receiver: string; startedAt: number; knownIds: Set<string> }>>(null);
@@ -298,6 +314,20 @@ watch(lastCompletedTransaction, async (transaction, previous) => {
   await prepareBridgeForTransfer(transaction);
 });
 
+/** Copies the shown address; "Copied" stays until the address changes. */
+async function copyAddressHint(): Promise<void> {
+  try {
+    await navigator.clipboard.writeText(shownAddressHint.value);
+    addressHintCopied.value = true;
+  } catch {
+    addressHintCopied.value = false;
+  }
+}
+
+watch(shownAddressHint, () => {
+  addressHintCopied.value = false;
+});
+
 onMounted(() => {
   void withApi(async () => {
     initMoonpayApi();
@@ -315,3 +345,40 @@ defineExpose({
   widgetUrl,
 });
 </script>
+
+<style scoped lang="scss">
+.moonpay-dialog__address {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  margin: 0 0 12px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--s-color-base-content-secondary);
+  span {
+    flex-basis: 100%;
+  }
+  code {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    color: var(--s-color-base-content-primary);
+  }
+  button {
+    min-height: 44px;
+    padding: 8px 14px;
+    border: 0;
+    border-radius: var(--s-border-radius-small);
+    background: var(--s-color-utility-body);
+    box-shadow: var(--s-shadow-element);
+    color: var(--s-color-action-text);
+    font: inherit;
+    cursor: pointer;
+    &:focus-visible {
+      outline: 2px solid var(--s-color-focus-ring, var(--s-color-theme-accent));
+      outline-offset: 3px;
+    }
+  }
+}
+</style>

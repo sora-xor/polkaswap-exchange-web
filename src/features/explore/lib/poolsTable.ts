@@ -16,12 +16,12 @@ export type PoolExploreTableItem = {
   name: string;
   baseAsset: RegisteredAccountAsset;
   targetAsset: RegisteredAccountAsset;
-  priceUSD: number;
-  priceUSDFormatted: string;
+  priceUSD: number | null;
+  priceUSDFormatted: string | null;
   apy: number;
   apyFormatted: string;
-  tvl: number;
-  tvlFormatted: AmountWithSuffix;
+  tvl: number | null;
+  tvlFormatted: AmountWithSuffix | null;
   isAccountItem: boolean;
   poolTokens: PoolTokenRow[];
   accountTokens: PoolTokenRow[];
@@ -66,7 +66,7 @@ export function buildPoolTableItems({
     const name = `${baseAsset.symbol}-${targetAsset.symbol}`;
     const baseAssetReserves = FPNumber.fromCodecValue(pool.baseAssetReserves ?? 0, baseAsset.decimals);
     const targetAssetReserves = FPNumber.fromCodecValue(pool.targetAssetReserves ?? 0, targetAsset.decimals);
-    const tvlUSD = targetAssetReserves.mul(pool.priceUSD).mul(FPNumber.TWO);
+    const tvlUSD = pool.tvlUSD;
 
     const accountPool = findAccountPool(accountLiquidity, baseAsset.address, targetAsset.address);
 
@@ -96,12 +96,12 @@ export function buildPoolTableItems({
       name,
       baseAsset,
       targetAsset,
-      priceUSD: pool.priceUSD.toNumber(),
-      priceUSDFormatted: pool.priceUSD.toLocaleString(),
+      priceUSD: pool.priceUSD?.toNumber(FPNumber.DEFAULT_PRECISION) ?? null,
+      priceUSDFormatted: pool.priceUSD?.toLocaleString(FPNumber.DEFAULT_PRECISION) ?? null,
       apy: pool.apy.toNumber(),
       apyFormatted: formatDecimalPlaces(pool.apy, true),
-      tvl: tvlUSD.toNumber(),
-      tvlFormatted: formatAmountWithSuffix(tvlUSD),
+      tvl: tvlUSD?.toNumber(tvlUSD.precision) ?? null,
+      tvlFormatted: tvlUSD ? formatAmountWithSuffix(tvlUSD) : null,
       isAccountItem: Boolean(accountPool),
       poolTokens,
       accountTokens,

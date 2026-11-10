@@ -77,6 +77,7 @@ const mockPools: PoolData[] = [
     baseAssetReserves: '1000000000000000000',
     targetAssetReserves: '2000000000000000000',
     priceUSD: new FPNumber(2),
+    tvlUSD: new FPNumber(7),
     apy: new FPNumber(0.25),
   },
   {
@@ -85,6 +86,7 @@ const mockPools: PoolData[] = [
     baseAssetReserves: '0',
     targetAssetReserves: '0',
     priceUSD: new FPNumber(1),
+    tvlUSD: null,
     apy: new FPNumber(0),
   },
 ];
@@ -112,7 +114,7 @@ describe('poolsTable helpers', () => {
     expect(row.targetAsset).toBe(targetAsset);
     expect(row.priceUSD).toBe(2);
     expect(row.apy).toBeCloseTo(0.25);
-    expect(row.tvl).toBeCloseTo(8);
+    expect(row.tvl).toBe(7);
     expect(row.poolTokens[0]?.asset).toBe(baseAsset);
     expect(row.poolTokens[1]?.asset).toBe(targetAsset);
     expect(formatDecimalPlacesMock).toHaveBeenCalledWith(FPNumber.fromCodecValue(mockAccountLiquidity[0].firstBalance));

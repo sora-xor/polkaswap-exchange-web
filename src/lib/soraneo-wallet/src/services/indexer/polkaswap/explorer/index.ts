@@ -1,5 +1,6 @@
-import BaseExplorer from '../../explorer/base';
+import BaseExplorer, { type ExplorerRequestOptions } from '../../explorer/base';
 
+import { ExactFiatPriceStreamQuery } from '../queries/fiatPrice';
 import { PolkaswapAccountModule } from './modules/account';
 import { PolkaswapAssetModule } from './modules/asset';
 import { PolkaswapPriceModule } from './modules/price';
@@ -13,12 +14,31 @@ export default class PolkaswapExplorer extends BaseExplorer {
   public readonly asset: PolkaswapAssetModule = new PolkaswapAssetModule(this);
   public readonly price: PolkaswapPriceModule = new PolkaswapPriceModule(this);
 
+  private quoteSupport?: { endpoint: string; until: number; value: Promise<boolean> };
+
+  /** Negotiate the price projection with an ordinary read and recheck after endpoint changes or upgrades. */
+  public supportsExactPrices(): Promise<boolean> {
+    const endpoint = this.getEndpoint();
+    if (!endpoint) return Promise.resolve(false);
+    const now = Date.now();
+    if (this.quoteSupport?.endpoint === endpoint && this.quoteSupport.until > now) return this.quoteSupport.value;
+    const value = this.request(ExactFiatPriceStreamQuery, {}, { requestPolicy: 'network-only', retryPendingCore: true })
+      .then((result) => !!result && Object.hasOwn(result, 'data') && this.getEndpoint() === endpoint)
+      .catch((error) => {
+        if (this.quoteSupport?.endpoint === endpoint) this.quoteSupport = undefined;
+        throw error;
+      });
+    this.quoteSupport = { endpoint, until: now + 60_000, value };
+    return value;
+  }
+
   public async fetchEntities<T>(
     query: TypedDocumentNode<ConnectionQueryResponse<T>>,
-    variables?: AnyVariables
+    variables?: AnyVariables,
+    options?: ExplorerRequestOptions
   ): Promise<Nullable<ConnectionQueryResponse<T>['data']>> {
     try {
-      const response = await this.request(query, variables);
+      const response = await this.request(query, variables, options);
 
       if (!response || !response.data) return null;
 
@@ -32,16 +52,18 @@ export default class PolkaswapExplorer extends BaseExplorer {
   public async fetchAllEntities<T, R>(
     query: TypedDocumentNode<ConnectionQueryResponse<T>>,
     variables: AnyVariables = {},
-    parse?: (entity: T) => R
+    parse?: (entity: T) => R,
+    options?: ExplorerRequestOptions
   ): Promise<Nullable<R[]>> {
     const acc: any = [];
 
     let after = '';
     let hasNextPage = true;
+    const cursors = new Set<string>();
 
     try {
       do {
-        const response = await this.fetchEntities(query, { ...variables, after });
+        const response = await this.fetchEntities(query, { ...variables, after }, options);
 
         if (!response) {
           return null;
@@ -49,6 +71,10 @@ export default class PolkaswapExplorer extends BaseExplorer {
 
         after = response.pageInfo.endCursor;
         hasNextPage = response.pageInfo.hasNextPage;
+        if (hasNextPage) {
+          if (!after || cursors.has(after)) return null;
+          cursors.add(after);
+        }
 
         response.edges.forEach((el) => {
           const record = parse ? parse(el.node) : el.node;

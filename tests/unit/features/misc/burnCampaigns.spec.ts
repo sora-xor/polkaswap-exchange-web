@@ -217,3 +217,32 @@ describe('burn campaign helpers', () => {
     ).toBe('tonswap');
   });
 });
+
+describe('recovery burn identity and ownership', () => {
+  it('preserves two canonical events in one extrinsic and replaces optimistic duplicates', () => {
+    const first = burn({ receiptId: '0xblock:0', amount: new FPNumber(1) });
+    const second = burn({ receiptId: '0xblock:1', amount: new FPNumber(2) });
+    expect(dedupeBurnEntries([burn({}), first, second])).toEqual([first, second]);
+  });
+  it('shows mapped entitlements only for the replacement and extinguishes attacker claims', () => {
+    const campaign = createBurnCampaigns().solswap;
+    const rows = [
+      burn({ address: 'old', claimOwner: 'replacement', amount: new FPNumber(1) }),
+      burn({ address: 'attacker', claimStatus: 'extinguished', amount: new FPNumber(5) }),
+    ];
+    const result = calculateBurnCampaignStatistics({
+      campaigns: [campaign],
+      accountAddress: 'replacement',
+      globalBurns: rows,
+      accountBurns: rows,
+    });
+    expect(result.accountReservedTotals.solswap.toString()).toBe('50');
+    expect(result.overallReservedTotals.solswap.toString()).toBe('50');
+    expect(result.accountClaimRows.solswap).toHaveLength(1);
+  });
+  it('rejects contradictory amounts for one canonical event', () => {
+    expect(() =>
+      dedupeBurnEntries([burn({ receiptId: '0xblock:0' }), burn({ receiptId: '0xblock:0', amount: new FPNumber(99) })])
+    ).toThrow('Conflicting');
+  });
+});

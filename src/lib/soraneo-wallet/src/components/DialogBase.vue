@@ -4,7 +4,7 @@
     :teleport-to="teleportTo"
     :root-class="'dialog-wrapper__root'"
     :modal-class="modalClass"
-    :overlay-class="'dialog-wrapper__overlay'"
+    :overlay-class="['dialog-wrapper__overlay', { 'dialog-wrapper__overlay--unblurred': !blurOverlay }]"
     :lock-scroll="true"
     :close-on-overlay-click="closeOnOverlayClick"
     :close-on-esc="closeOnEsc"
@@ -80,6 +80,8 @@ const props = withDefaults(
     modalAppendToBody?: boolean;
     closeOnClickModal?: boolean;
     closeOnEsc?: boolean;
+    /** Disable backdrop sampling for dialogs displayed over continuously animated content. */
+    blurOverlay?: boolean;
   }>(),
   {
     customClass: '',
@@ -93,6 +95,7 @@ const props = withDefaults(
     modalAppendToBody: true,
     closeOnClickModal: true,
     closeOnEsc: true,
+    blurOverlay: true,
   }
 );
 
@@ -178,6 +181,11 @@ const handleBackClick = () => {
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   opacity: 1;
+
+  &--unblurred {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
 }
 
 .dialog-card {

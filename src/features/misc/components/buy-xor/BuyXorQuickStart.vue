@@ -67,15 +67,16 @@
         <span class="buy-xor-start__label">{{ t('buyXor.start.youGet') }}</span>
         <strong
           v-if="xorOut"
+          :key="xorOut"
           class="buy-xor-start__total"
           :class="{ 'buy-xor-start__total--refreshing': refreshing }"
           data-test-name="buyXorEstimate"
           ><bdi>≈ {{ xorOut }}</bdi> <span>XOR</span></strong
         >
-        <p v-else-if="result.state === 'loading'">{{ t('getTs.preview.loading') }}</p>
+        <p v-else-if="result.state === 'loading'" class="buy-xor-start__pending">{{ t('getTs.preview.loading') }}</p>
         <p v-else-if="result.state === 'idle'">{{ t('getTs.preview.start') }}</p>
         <p v-else-if="!problem" class="buy-xor-start__dash" aria-hidden="true">—</p>
-        <p v-if="refreshing" class="buy-xor-start__note">{{ t('getTs.preview.loading') }}</p>
+        <p v-if="refreshing" class="buy-xor-start__note buy-xor-start__pending">{{ t('getTs.preview.loading') }}</p>
         <p v-else-if="xorOut && feeNote" class="buy-xor-start__note">{{ t(feeNote) }}</p>
         <div v-if="problem" class="buy-xor-start__problem" data-test-name="buyXorProblem" :data-problem="problem.key">
           <p>{{ t(problem.key, problem.params) }}</p>
@@ -104,7 +105,8 @@
         <ol>
           <li v-for="step in nextSteps" :key="step">{{ t(`buyXor.start.steps.${step}`) }}</li>
         </ol>
-        <p>{{ t('buyXor.start.stepsNote') }}</p>
+        <!-- Card purchases sign their Ethereum steps on the page, so the buyer's approval is the card payment itself. -->
+        <p>{{ t(source === 'card' ? 'buyXor.start.stepsNoteCard' : 'buyXor.start.stepsNote') }}</p>
       </div>
       <details class="buy-xor-start__details">
         <summary>{{ t('getTs.preview.details') }}</summary>
@@ -128,7 +130,13 @@
           </li>
         </ul>
         <p v-if="result.priceImpact">
-          {{ t('getTs.preview.impact', { impact: displayGetTsAmount(result.priceImpact, 2) }) }}
+          {{
+            t('buyXor.preview.impact', {
+              asset: result.swapAsset ?? 'DAI',
+              impact: displayGetTsAmount(result.priceImpact, 2),
+              limit: BUY_XOR_MAX_PRICE_IMPACT,
+            })
+          }}
         </p>
         <p v-if="source === 'card'">{{ t('getTs.preview.cardTerms') }}</p>
         <p>{{ t('buyXor.preview.method') }}</p>
@@ -159,7 +167,14 @@ import { useTranslation } from '@/composables/useTranslation';
 import { displayGetTsAmount, useGetTsPlanPreview } from '@/features/misc/composables/useGetTsPlanPreview';
 import { findBuyXorMaxDai, roundBuyXorPayment, scaleBuyXorMaxPayment } from '@/features/misc/lib/buyXorMaxAmount';
 import { BUY_XOR_DEFAULT_CARD_USD, buyXorNextSteps } from '@/features/misc/lib/buyXorStart';
-import { quoteDai, type GetTsPaymentAsset, type GetTsPlanPreviewResult } from '@/features/misc/lib/getTsPlanQuote';
+import {
+  quoteDai,
+  quoteEth,
+  type GetTsPaymentAsset,
+  type GetTsPlanPreviewResult,
+} from '@/features/misc/lib/getTsPlanQuote';
+import type { GetTsSwapAsset } from '@/features/misc/lib/getTsPlan';
+import { BUY_XOR_MAX_PRICE_IMPACT } from '@/features/misc/lib/tonswapLiquidity';
 import type { GetTsSource } from '@/features/misc/lib/getTsFlow';
 import { useSettingsStore } from '@/stores/settings';
 
@@ -179,6 +194,8 @@ interface Problem {
 }
 const MAX_TTL_MS = 60_000;
 const MAX_RETRY_MS = 15_000;
+/** First upper bound of the maximum search, in the swap asset; ETH is worth thousands of DAI. */
+const MAX_SEARCH_START: Record<GetTsSwapAsset, string> = { DAI: '64', ETH: '0.02' };
 
 const props = withDefaults(
   defineProps<{
@@ -213,10 +230,20 @@ const otherSources = [
   { source: 'sora', label: 'getTs.sources.sora.title' },
   { source: 'ton', label: 'buyXor.start.ton' },
 ] as const;
-const maxDai = ref<string | null>(null);
-const sample = ref<{ source: GetTsSource; amount: string; paymentAsset: GetTsPaymentAsset; daiAmount: string } | null>(
-  null
-);
+/** Card purchases swap ETH on SORA, every other route DAI; the maximum is searched in that asset. */
+const swapAsset = computed<GetTsSwapAsset>(() => (props.source === 'card' ? 'ETH' : 'DAI'));
+/** Largest swap input that passes the liquidity check, in `asset`. */
+const maxInput = ref<{ asset: GetTsSwapAsset; amount: string } | null>(null);
+/** The latest estimate's payment and swap amounts, for converting the maximum into the buyer's currency. */
+const sample = ref<{
+  source: GetTsSource;
+  amount: string;
+  paymentAsset: GetTsPaymentAsset;
+  swapAsset: GetTsSwapAsset;
+  daiAmount: string;
+  /** Card provider fees included in `amount`, in USD. */
+  fees: string;
+} | null>(null);
 const cardMinimum = ref<string | null>(null);
 /** The last ready estimate stays readable while the same request refreshes; the page gate still sees loading. */
 const lastReady = ref<GetTsPlanPreviewResult | null>(null);
@@ -261,11 +288,18 @@ const feeNote = computed(() =>
 );
 /** The largest amount in the buyer's currency; DAI needs no conversion estimate. */
 const maxPayment = computed(() => {
-  if (!maxDai.value || !props.source || !asset.value) return null;
-  if (asset.value === 'DAI') return roundBuyXorPayment(new FPNumber(maxDai.value), 'DAI');
+  const max = maxInput.value;
+  if (!max || max.asset !== swapAsset.value || !props.source || !asset.value) return null;
+  if (asset.value === 'DAI') return roundBuyXorPayment(new FPNumber(max.amount), 'DAI');
   const current = sample.value;
-  if (!current || current.source !== props.source || current.paymentAsset !== asset.value) return null;
-  return scaleBuyXorMaxPayment(maxDai.value, current);
+  if (
+    !current ||
+    current.source !== props.source ||
+    current.paymentAsset !== asset.value ||
+    current.swapAsset !== max.asset
+  )
+    return null;
+  return scaleBuyXorMaxPayment(max.amount, current);
 });
 const typedAmount = computed(() =>
   /^(?:0|[1-9]\d*)(?:\.\d+)?$/.test(props.amount) ? new FPNumber(props.amount) : null
@@ -359,37 +393,44 @@ function useAmount(value: string): void {
 function useTonUsdt(): void {
   if (!props.locked) emit('update:paymentAsset', 'USDT');
 }
-/** Keeps the latest DAI estimate for scaling the maximum and refreshes the SORA-side search when stale. */
+/** Keeps the latest swap estimate for scaling the maximum and refreshes the SORA-side search when stale. */
 function onPreview(value: GetTsPlanPreviewResult): void {
   emit('preview', value);
   if (value.state === 'ready') lastReady.value = value;
   else if (value.state !== 'loading') lastReady.value = null;
   if (value.reason === 'card-minimum' && value.providerMinimumUsd) cardMinimum.value = value.providerMinimumUsd;
-  if (!value.daiAmount || (value.state !== 'ready' && value.reason !== 'price-impact')) return;
+  const swapAmount = value.swapAsset === 'ETH' ? value.swapAmount : value.daiAmount;
+  if (!swapAmount || (value.state !== 'ready' && value.reason !== 'price-impact')) return;
   sample.value = {
     source: value.source,
     amount: value.amount,
     paymentAsset: value.paymentAsset,
-    daiAmount: value.daiAmount,
+    swapAsset: value.swapAsset ?? 'DAI',
+    daiAmount: swapAmount,
+    fees: value.feeComponents
+      .filter((fee) => fee.stage === 'provider' && fee.symbol === 'USD' && fee.included)
+      .reduce((sum, fee) => sum.add(new FPNumber(fee.amount)), FPNumber.ZERO)
+      .toString(),
   };
-  void refreshMaxDai();
+  void refreshMax(value.swapAsset ?? 'DAI');
 }
 /** Bounded read-only search; a failure hides the maximum instead of guessing one. */
-async function refreshMaxDai(): Promise<void> {
+async function refreshMax(target: GetTsSwapAsset): Promise<void> {
   const now = Date.now();
-  if (maxSearch || now < maxRetryAt || (maxDai.value && now - maxCheckedAt < MAX_TTL_MS)) return;
+  const fresh = maxInput.value?.asset === target && now - maxCheckedAt < MAX_TTL_MS;
+  if (maxSearch || now < maxRetryAt || fresh) return;
   const controller = new AbortController();
   maxSearch = controller;
   const value = await findBuyXorMaxDai(
-    quoteDai,
+    target === 'ETH' ? quoteEth : quoteDai,
     { swapFeeCodec: settings.networkFees?.[Operation.Swap], slippageTolerance: settings.slippageTolerance },
-    { signal: controller.signal }
+    { signal: controller.signal, start: MAX_SEARCH_START[target], decimals: target === 'ETH' ? 6 : 2 }
   );
   if (controller.signal.aborted) return;
   maxSearch = undefined;
   maxCheckedAt = Date.now();
   maxRetryAt = value ? 0 : maxCheckedAt + MAX_RETRY_MS;
-  maxDai.value = value;
+  maxInput.value = value ? { asset: target, amount: value } : null;
 }
 
 watch(
@@ -702,6 +743,53 @@ defineExpose({ focus: (options?: FocusOptions) => heading.value?.focus(options) 
     button {
       transition: none !important;
     }
+  }
+  /* A new estimate ticks in, a price being fetched shimmers, and a problem rises into the box. */
+  @media (prefers-reduced-motion: no-preference) {
+    &__total {
+      animation: buy-xor-start-tick 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.25) backwards;
+    }
+    &__pending {
+      color: transparent !important;
+      background: linear-gradient(
+          100deg,
+          var(--s-color-base-content-secondary) 35%,
+          var(--s-color-base-content-primary) 50%,
+          var(--s-color-base-content-secondary) 65%
+        )
+        100% 0 / 250% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: buy-xor-start-shimmer 1.4s linear infinite;
+    }
+    &__problem {
+      animation: buy-xor-start-rise 0.35s ease backwards;
+    }
+  }
+  @media (forced-colors: active) {
+    &__pending {
+      color: CanvasText !important;
+      background: none;
+      animation: none;
+    }
+  }
+}
+
+@keyframes buy-xor-start-tick {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.94);
+  }
+}
+@keyframes buy-xor-start-shimmer {
+  to {
+    background-position: 0 0;
+  }
+}
+@keyframes buy-xor-start-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
   }
 }
 </style>

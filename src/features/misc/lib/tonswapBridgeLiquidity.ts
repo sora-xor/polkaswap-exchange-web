@@ -1,6 +1,7 @@
 import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { DAI } from '@sora-substrate/sdk/build/assets/consts';
+import { DAI, ETH } from '@sora-substrate/sdk/build/assets/consts';
 import type { GetTsPurpose } from './getTsFlow';
+import type { GetTsSwapAsset } from './getTsPlan';
 import {
   evaluateTonswapLiquidity,
   isTonswapFundingAmount,
@@ -10,6 +11,8 @@ import {
 
 export const TONSWAP_BRIDGE_FUNDING_TAG = 'ethereum-dai-v1';
 export const BUY_XOR_BRIDGE_FUNDING_TAG = 'ethereum-dai-v1';
+/** Buy XOR card purchases move MoonPay's ETH to SORA and swap it there (October 2026). */
+export const BUY_XOR_ETH_BRIDGE_FUNDING_TAG = 'ethereum-eth-v1';
 const INVALID_CONTEXT = 'GET_TS_BRIDGE_CONTEXT_CHANGED';
 const QUOTE_REQUIRED = 'GET_TS_BRIDGE_QUOTE_REQUIRED';
 
@@ -39,7 +42,7 @@ export function getTonswapBridgeFundingPurpose(transaction: TonswapBridgeTransac
   if (!payload || typeof payload !== 'object' || Array.isArray(payload)) return null;
   const value = payload as Record<string, unknown>;
   if (
-    value.buyXorFunding === BUY_XOR_BRIDGE_FUNDING_TAG &&
+    (value.buyXorFunding === BUY_XOR_BRIDGE_FUNDING_TAG || value.buyXorFunding === BUY_XOR_ETH_BRIDGE_FUNDING_TAG) &&
     !Object.prototype.hasOwnProperty.call(value, 'tonswapFunding')
   )
     return 'xor';
@@ -51,11 +54,22 @@ export function getTonswapBridgeFundingPurpose(transaction: TonswapBridgeTransac
   return null;
 }
 
-/** The reviewed row retains its independent purchase purpose across query changes and history recovery. */
-export function getTonswapBridgeFundingPayload(purpose: GetTsPurpose): Record<string, string> {
-  return purpose === 'xor'
-    ? { buyXorFunding: BUY_XOR_BRIDGE_FUNDING_TAG }
-    : { tonswapFunding: TONSWAP_BRIDGE_FUNDING_TAG };
+/**
+ * The reviewed row retains its independent purchase purpose across query changes and history recovery. The tag also
+ * names the asset moved: only Buy XOR moves ETH.
+ */
+export function getTonswapBridgeFundingPayload(
+  purpose: GetTsPurpose,
+  asset: GetTsSwapAsset = 'DAI'
+): Record<string, string> {
+  if (purpose !== 'xor') return { tonswapFunding: TONSWAP_BRIDGE_FUNDING_TAG };
+  return { buyXorFunding: asset === 'ETH' ? BUY_XOR_ETH_BRIDGE_FUNDING_TAG : BUY_XOR_BRIDGE_FUNDING_TAG };
+}
+
+/** SORA asset ID the guided row's tag allows: ETH for the Buy XOR ETH tag, DAI for the others. */
+function getTonswapBridgeFundingAsset(transaction: TonswapBridgeTransaction): string {
+  const payload = transaction.payload as Record<string, unknown> | undefined;
+  return payload?.buyXorFunding === BUY_XOR_ETH_BRIDGE_FUNDING_TAG ? ETH.address : DAI.address;
 }
 
 /** Captures only immutable signing inputs; mutable tracking status and approval receipts are excluded. */
@@ -83,12 +97,15 @@ export function tonswapBridgeFailureTranslation(message: unknown, purpose: GetTs
 /**
  * Re-quotes the exact guided transfer before an irreversible wallet action.
  * The caller supplies its connected API and live fee state; ordinary transfers are untouched.
+ * The asset quoted is the one the row's tag allows (DAI, or ETH for Buy XOR card purchases), within the purpose's
+ * price-impact limit.
  */
 export async function assertTonswapBridgeQuote(
   transaction: TonswapBridgeTransaction,
   dependencies: {
     readState: () => { connected: boolean; genesis: string; fees: TonswapFeeEvidence };
-    quote: (amountCodec: string) => Promise<{ amount: string; amountWithoutImpact: string }>;
+    /** Read-only SORA quote of `assetAddress` → XOR. */
+    quote: (amountCodec: string, assetAddress: string) => Promise<{ amount: string; amountWithoutImpact: string }>;
   }
 ): Promise<number | null> {
   if (!hasTonswapBridgeFundingTag(transaction)) return null;
@@ -97,7 +114,7 @@ export async function assertTonswapBridgeQuote(
   if (
     !purpose ||
     transaction.type !== Operation.EthBridgeIncoming ||
-    transaction.assetAddress !== DAI.address ||
+    transaction.assetAddress !== getTonswapBridgeFundingAsset(transaction) ||
     transaction.externalNetwork !== 1 ||
     !transaction.from ||
     !transaction.to ||
@@ -111,7 +128,8 @@ export async function assertTonswapBridgeQuote(
     const before = dependencies.readState();
     if (!before.connected || before.genesis.toLowerCase() !== SORA_FUNDING_MAINNET_GENESIS)
       throw new Error(QUOTE_REQUIRED);
-    const quote = await dependencies.quote(new FPNumber(amount).toCodecString());
+    const assetAddress = transaction.assetAddress;
+    const quote = await dependencies.quote(new FPNumber(amount).toCodecString(), assetAddress);
     const after = dependencies.readState();
     if (
       !after.connected ||

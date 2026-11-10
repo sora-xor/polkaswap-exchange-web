@@ -4,9 +4,11 @@ import { defineComponent, nextTick, reactive } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import NetworkStats from '@/features/misc/components/stats/NetworkStats.vue';
+import { SoraNetwork } from '@/lib/soraneo-wallet/src/consts';
 import networkStatsSource from '@/features/misc/components/stats/NetworkStats.vue?raw';
 
-const fetchDataMock = vi.hoisted(() => vi.fn(async () => []));
+const fetchDataMock = vi.hoisted(() => vi.fn());
+const archiveOnly = vi.hoisted(() => ({ value: false }));
 const fetchActiveAccountsMock = vi.hoisted(() => vi.fn());
 const settingsStoreMock = vi.hoisted(() => ({ state: undefined as any }));
 
@@ -58,7 +60,14 @@ vi.mock('@/composables/useLoading', () => ({
 }));
 
 vi.mock('@/indexer/queries/network/stats', () => ({
-  fetchData: fetchDataMock,
+  readNetworkPeriodCounts: async (...args: unknown[]) => {
+    const counts = await fetchDataMock(...args);
+    return {
+      counts,
+      archivedDays: counts?.archivedDays ?? [],
+      retainedTransactionsComplete: !archiveOnly.value && counts?.transactions != null,
+    };
+  },
   fetchActiveAccounts: fetchActiveAccountsMock,
 }));
 
@@ -72,6 +81,9 @@ vi.mock('@/stores/settings', async () => {
 
   return {
     useSettingsStore: () => ({
+      get soraNetwork() {
+        return settingsStoreMock.state.soraNetwork;
+      },
       get nodeIsConnected() {
         return settingsStoreMock.state.nodeIsConnected;
       },
@@ -105,6 +117,7 @@ vi.mock('@/consts/snapshots', () => ({
 describe('NetworkStats', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    archiveOnly.value = false;
     fetchActiveAccountsMock.mockResolvedValue(FPNumber.ZERO);
     settingsStoreMock.state = reactive({
       nodeIsConnected: false,
@@ -112,9 +125,90 @@ describe('NetworkStats', () => {
     });
   });
 
+  it('offers the fixed mainnet CSV without exposing it as testnet history', async () => {
+    settingsStoreMock.state.soraNetwork = SoraNetwork.Prod;
+    const wrapper = mount(NetworkStats, {
+      global: { stubs: { 's-card': true, 's-tooltip': true, 's-icon': true } },
+    });
+    await flushPromises();
+    const link = wrapper.get('[data-testid="verified-days-download"]');
+    expect(link.attributes('href')).toContain('polkaswap-verified-days-2026-11-10');
+    expect(link.attributes('download')).toBe('polkaswap-verified-days-2026-11-10.csv');
+    settingsStoreMock.state.soraNetwork = SoraNetwork.Test;
+    await nextTick();
+    expect(wrapper.find('[data-testid="verified-days-download"]').exists()).toBe(false);
+    wrapper.unmount();
+  });
+
+  it('shows unavailable for account creation while preserving transaction statistics', async () => {
+    fetchDataMock.mockResolvedValue({
+      accounts: null,
+      transactions: new FPNumber(22),
+      bridgeIncomingTransactions: new FPNumber(3),
+      bridgeOutgoingTransactions: new FPNumber(4),
+    });
+    const wrapper = mount(NetworkStats, {
+      global: { stubs: { 's-card': { template: '<div><slot /></div>' }, 's-tooltip': true, 's-icon': true } },
+    });
+    await flushPromises();
+    expect(wrapper.findAll('[data-testid="network-metric-unavailable"]')).toHaveLength(1);
+    expect(wrapper.findAll('.formatted-amount-stub').some((row) => row.attributes('data-value') === '22')).toBe(true);
+    wrapper.unmount();
+  });
+
+  it('shows archived transaction and bridge totals without turning partial retained signers into an active count', async () => {
+    archiveOnly.value = true;
+    fetchDataMock.mockResolvedValue({
+      accounts: null,
+      transactions: new FPNumber(144),
+      bridgeIncomingTransactions: new FPNumber(6),
+      bridgeOutgoingTransactions: new FPNumber(3),
+    });
+    fetchActiveAccountsMock.mockResolvedValue(new FPNumber(5));
+    const wrapper = mount(NetworkStats, {
+      global: {
+        stubs: {
+          's-card': { template: '<div><slot /></div>' },
+          's-tooltip': true,
+          's-icon': true,
+        },
+      },
+    });
+    await flushPromises();
+    expect(wrapper.findAll('.formatted-amount-stub').map((e) => e.attributes('data-value'))).toEqual(['144', '6', '3']);
+    expect(wrapper.findAll('[data-testid="network-metric-unavailable"]')).toHaveLength(2);
+    wrapper.unmount();
+  });
+
+  it('shows only the available archive dates beside an incomplete period, including real zeros', async () => {
+    fetchDataMock.mockResolvedValue({
+      accounts: null,
+      transactions: null,
+      bridgeIncomingTransactions: null,
+      bridgeOutgoingTransactions: null,
+      archivedDays: [
+        { date: '2026-07-20', transactions: '82', bridgeIncomingTransactions: '5', bridgeOutgoingTransactions: '0' },
+      ],
+    });
+    const wrapper = mount(NetworkStats, {
+      global: {
+        stubs: {
+          's-card': { template: '<div><slot /></div>' },
+          's-tooltip': true,
+          's-icon': true,
+        },
+      },
+    });
+    await flushPromises();
+    expect(wrapper.find('[data-testid="archive-days"] tbody').text()).toContain('2026-07-20');
+    expect(wrapper.findAll('tbody td').map((e) => e.text())).toEqual(['82', '5', '0']);
+    expect(wrapper.findAll('[data-testid="network-metric-unavailable"]')).toHaveLength(5);
+    wrapper.unmount();
+  });
+
   it('keeps filters disabled while stats data is unresolved and node is disconnected', async () => {
-    fetchDataMock.mockResolvedValueOnce([]);
-    fetchDataMock.mockResolvedValueOnce([]);
+    fetchActiveAccountsMock.mockResolvedValue(null);
+    fetchDataMock.mockResolvedValue(null);
 
     const wrapper = mount(NetworkStats, {
       global: {
@@ -145,7 +239,7 @@ describe('NetworkStats', () => {
   });
 
   it('refreshes unresolved stats when the indexer endpoint becomes available', async () => {
-    fetchDataMock.mockResolvedValue([]);
+    fetchDataMock.mockResolvedValue(null);
 
     mount(NetworkStats, {
       global: {
@@ -169,8 +263,8 @@ describe('NetworkStats', () => {
     expect(fetchActiveAccountsMock).toHaveBeenCalledTimes(4);
   });
 
-  it('renders the active account metric returned for the selected period', async () => {
-    fetchDataMock.mockResolvedValue([]);
+  it('withholds an observed account count when transaction history lacks coverage', async () => {
+    fetchDataMock.mockResolvedValue(null);
     fetchActiveAccountsMock.mockResolvedValueOnce(new FPNumber(12)).mockResolvedValueOnce(new FPNumber(8));
 
     const wrapper = mount(NetworkStats, {
@@ -187,29 +281,47 @@ describe('NetworkStats', () => {
       },
     });
 
-    await nextTick();
-    await Promise.resolve();
-    await Promise.resolve();
-    await nextTick();
+    await flushPromises();
 
     expect(wrapper.text()).toContain('activeAccountsText');
-    expect(wrapper.find('[data-value="12"]').exists()).toBe(true);
+    expect(wrapper.find('[data-value="12"]').exists()).toBe(false);
+    expect(wrapper.findAll('[data-testid="network-metric-unavailable"]')).toHaveLength(5);
+  });
+
+  it.each([0, 12])('shows a certified period with %d active accounts', async (active) => {
+    fetchDataMock.mockResolvedValue({
+      transactions: new FPNumber(20),
+      accounts: null,
+      bridgeIncomingTransactions: FPNumber.ZERO,
+      bridgeOutgoingTransactions: FPNumber.ZERO,
+    });
+    fetchActiveAccountsMock.mockResolvedValue(new FPNumber(active));
+    const wrapper = mount(NetworkStats, {
+      global: {
+        stubs: {
+          's-card': { template: '<div><slot /></div>' },
+          's-tooltip': true,
+          's-icon': true,
+        },
+      },
+    });
+    await flushPromises();
+    const card = wrapper.findAll('.stats-column')[1];
+    expect(card.find('.formatted-amount-stub').attributes('data-value')).toBe(String(active));
+    expect(card.find('[data-testid="network-metric-unavailable"]').exists()).toBe(false);
+    wrapper.unmount();
   });
 
   it('keeps snapshot metrics visible when the active account endpoint fails', async () => {
-    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => undefined);
     fetchDataMock
-      .mockResolvedValueOnce([
-        {
-          timestamp: 1_700_000_000,
-          accounts: new FPNumber(5),
-          activeAccounts: FPNumber.ZERO,
-          transactions: new FPNumber(7),
-          bridgeIncomingTransactions: FPNumber.ZERO,
-          bridgeOutgoingTransactions: FPNumber.ZERO,
-        },
-      ])
-      .mockResolvedValueOnce([]);
+      .mockResolvedValueOnce({
+        accounts: new FPNumber(5),
+        activeAccounts: FPNumber.ZERO,
+        transactions: new FPNumber(7),
+        bridgeIncomingTransactions: FPNumber.ZERO,
+        bridgeOutgoingTransactions: FPNumber.ZERO,
+      })
+      .mockResolvedValueOnce(null);
     fetchActiveAccountsMock.mockRejectedValue(new Error('account activity unavailable'));
 
     const wrapper = mount(NetworkStats, {
@@ -226,29 +338,23 @@ describe('NetworkStats', () => {
       },
     });
 
-    await nextTick();
-    await Promise.resolve();
-    await Promise.resolve();
-    await nextTick();
+    await flushPromises();
 
     expect(wrapper.find('[data-value="5"]').exists()).toBe(true);
     expect(wrapper.find('[data-value="7"]').exists()).toBe(true);
     expect(wrapper.find('[data-value="0"]').exists()).toBe(true);
-    expect(consoleError).toHaveBeenCalledTimes(2);
-    consoleError.mockRestore();
+    expect(wrapper.findAll('[data-testid="network-metric-unavailable"]')).toHaveLength(1);
+    expect(wrapper.find('.price-change-stub').exists()).toBe(false);
   });
 
   it('keeps data from the latest endpoint refresh when an older request resolves last', async () => {
-    const snapshot = (accounts: number) => [
-      {
-        timestamp: 1_700_000_000,
-        accounts: new FPNumber(accounts),
-        activeAccounts: FPNumber.ZERO,
-        transactions: FPNumber.ZERO,
-        bridgeIncomingTransactions: FPNumber.ZERO,
-        bridgeOutgoingTransactions: FPNumber.ZERO,
-      },
-    ];
+    const snapshot = (accounts: number) => ({
+      accounts: new FPNumber(accounts),
+      activeAccounts: FPNumber.ZERO,
+      transactions: FPNumber.ZERO,
+      bridgeIncomingTransactions: FPNumber.ZERO,
+      bridgeOutgoingTransactions: FPNumber.ZERO,
+    });
     let resolveOldRequest!: (value: ReturnType<typeof snapshot>) => void;
     let resolveNewRequest!: (value: ReturnType<typeof snapshot>) => void;
     const oldRequest = new Promise<ReturnType<typeof snapshot>>((resolve) => {
@@ -259,9 +365,9 @@ describe('NetworkStats', () => {
     });
     fetchDataMock
       .mockImplementationOnce(() => oldRequest)
-      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce(null)
       .mockImplementationOnce(() => newRequest)
-      .mockResolvedValueOnce([]);
+      .mockResolvedValueOnce(null);
 
     const wrapper = mount(NetworkStats, {
       global: {
@@ -301,7 +407,6 @@ describe('NetworkStats', () => {
     expect(networkStatsSource).toContain("import StatsFilter from '@/components/shared/Stats/StatsFilter.vue';");
     expect(networkStatsSource).toContain("import PriceChange from '@/components/shared/PriceChange.vue';");
     expect(networkStatsSource).toContain('fetchActiveAccounts');
-    expect(networkStatsSource).toContain('fetchActiveAccountsOrZero');
     expect(networkStatsSource).toContain("prop: 'activeAccounts' as const");
   });
 });

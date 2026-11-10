@@ -169,10 +169,10 @@ describe('TONSWAP campaign status for the sidebar', () => {
     await vi.advanceTimersByTimeAsync(mod.TONSWAP_STATUS_FIRST_READ_MS);
     expect(status.isLive.value).toBe(true);
 
-    // Stale reads do not replace the verified reading, but they cannot extend it either.
+    // A stale read immediately withdraws the earlier live entitlement label.
     await vi.advanceTimersByTimeAsync(mod.TONSWAP_STATUS_MAX_AGE_MS - 1_000);
     expect(mocks.fetch.mock.calls.length).toBeGreaterThan(2);
-    expect(status.isLive.value).toBe(true);
+    expect(status.isLive.value).toBe(false);
 
     await vi.advanceTimersByTimeAsync(1_000);
     expect(status.isLive.value).toBe(false);
@@ -194,7 +194,7 @@ describe('TONSWAP campaign status for the sidebar', () => {
     expect(status.isLive.value).toBe(true);
   });
 
-  it('skips its own read when the Burn page just published a fresh one, and shows it right away', async () => {
+  it('refreshes admission even after the Burn page publishes a fresh reading', async () => {
     mocks.fetch.mockResolvedValue(snapshot([burn('100')]));
     const mod = await load();
     const { summarizeTonswapCampaign } = await import('@/features/misc/lib/tonswapCampaignStatus');
@@ -208,10 +208,10 @@ describe('TONSWAP campaign status for the sidebar', () => {
     expect(status.rateLabel.value).toBe('27.50');
 
     await vi.advanceTimersByTimeAsync(mod.TONSWAP_STATUS_FIRST_READ_MS);
-    expect(mocks.fetch).not.toHaveBeenCalled();
+    expect(mocks.fetch).toHaveBeenCalledTimes(1);
 
     await vi.advanceTimersByTimeAsync(mod.TONSWAP_STATUS_REFRESH_MS);
-    expect(mocks.fetch).toHaveBeenCalledTimes(1);
+    expect(mocks.fetch).toHaveBeenCalledTimes(2);
   });
 
   it('lets a published reading expire on its own', async () => {

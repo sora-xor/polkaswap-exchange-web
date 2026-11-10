@@ -44,7 +44,7 @@ const setup = () => {
 };
 
 /** Exercise the real request and pagination path with controlled GraphQL responses. */
-const setupQueryExplorer = () => {
+const setupQueryExplorer = (getEndpoint = () => 'https://indexer.test/graphql') => {
   const queryToPromise = vi.fn();
   const query = vi.fn(() => ({ toPromise: queryToPromise }));
   const explorer = new PolkaswapExplorer({
@@ -52,7 +52,7 @@ const setupQueryExplorer = () => {
     createExplorerClient: vi.fn(() => ({ query })) as never,
     getStatus: () => ConnectionStatus.Available,
     setStatus: vi.fn(async () => undefined),
-    getEndpoint: () => 'https://indexer.test/graphql',
+    getEndpoint,
   });
   return { explorer, query, queryToPromise };
 };
@@ -60,6 +60,21 @@ const setupQueryExplorer = () => {
 describe('PolkaswapExplorer', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+  });
+
+  it('coalesces exact-field reads, checks each endpoint and supports a legacy schema', async () => {
+    let endpoint = 'https://indexer.test/pi';
+    const { explorer, queryToPromise } = setupQueryExplorer(() => endpoint);
+    queryToPromise.mockResolvedValueOnce({ data: { data: { pricesExact: {} } } });
+    await expect(Promise.all([explorer.supportsExactPrices(), explorer.supportsExactPrices()])).resolves.toEqual([
+      true,
+      true,
+    ]);
+    expect(queryToPromise).toHaveBeenCalledTimes(1);
+    endpoint = 'https://indexer.test/old';
+    queryToPromise.mockResolvedValueOnce({ error: { graphQLErrors: [{ message: 'Unknown field pricesExact' }] } });
+    await expect(explorer.supportsExactPrices()).resolves.toBe(false);
+    expect(queryToPromise).toHaveBeenCalledTimes(2);
   });
 
   it('ignores empty entity subscription payloads and handles valid entities', () => {
@@ -158,5 +173,20 @@ describe('PolkaswapExplorer', () => {
       { id: 'hour-1' },
       { id: 'hour-2' },
     ]);
+  });
+  it('discards a market batch if its pagination cursor stops advancing', async () => {
+    const { explorer, query, queryToPromise } = setupQueryExplorer();
+    queryToPromise.mockResolvedValue({
+      data: {
+        data: {
+          edges: [{ node: { id: 'one' } }],
+          pageInfo: { endCursor: 'repeated', hasNextPage: true },
+        },
+      },
+    });
+    const options = { requestPolicy: 'network-only', retryPendingCore: true } as const;
+    await expect(explorer.fetchAllEntities({} as never, {}, undefined, options)).resolves.toBeNull();
+    expect(query).toHaveBeenCalledTimes(2);
+    expect(query).toHaveBeenLastCalledWith({}, { after: 'repeated' }, { requestPolicy: 'network-only' });
   });
 });

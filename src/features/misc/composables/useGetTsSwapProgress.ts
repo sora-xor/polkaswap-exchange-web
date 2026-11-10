@@ -16,7 +16,8 @@ import {
 import { useGetTsPlan } from './useGetTsPlan';
 import { readGetTsSwapArchive } from '@/features/misc/lib/getTsSwapArchive';
 import { matchGetTsSwapDraft } from '@/features/misc/lib/getTsSwapDraft';
-import { DAI, XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { getTsSwapAsset, getTsSwapAssetAddress } from '@/features/misc/lib/getTsPlan';
 import { Operation, type HistoryItem } from '@sora-substrate/sdk';
 
 /** Observes the tracked swap without wallet actions; balances never prove this transaction completed. */
@@ -141,7 +142,7 @@ export function useGetTsSwapProgress(purpose: MaybeRefOrGetter<GetTsPurpose> = '
             amount: draft.amount,
             from: wallet.address,
             type: Operation.Swap,
-            assetAddress: DAI.address,
+            assetAddress: getTsSwapAssetAddress(getTsSwapAsset(plan.value)),
             asset2Address: XOR.address,
           },
           draft,

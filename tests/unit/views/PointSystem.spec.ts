@@ -9,6 +9,7 @@ const getAccountReferralRewards = vi.fn().mockResolvedValue(undefined);
 const fetchBurnXorDataMock = vi.fn();
 const fetchBridgeDataMock = vi.fn();
 const fetchCountMock = vi.fn();
+const fetchPointOwnershipMock = vi.fn();
 
 const settingsStoreMock = {
   blockNumber: 100,
@@ -111,6 +112,7 @@ vi.mock('@/indexer/queries/burnXor', () => ({
 
 vi.mock('@/indexer/queries/pointSystem', () => ({
   __esModule: true,
+  fetchAccountMeta: vi.fn(),
   fetchBridgeData: fetchBridgeDataMock,
   fetchCount: fetchCountMock,
   CountType: {
@@ -118,6 +120,11 @@ vi.mock('@/indexer/queries/pointSystem', () => ({
     PoolDeposit: 'poolDeposit',
     PoolWithdraw: 'poolWithdraw',
   },
+}));
+
+vi.mock('@/indexer/queries/pointOwnership', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/indexer/queries/pointOwnership')>()),
+  fetchPointOwnership: fetchPointOwnershipMock,
 }));
 
 const PointSystem = (await import('@/features/rewards/pages/PointSystemPage.vue')).default;
@@ -150,12 +157,14 @@ const buildWrapper = () =>
 
 describe('PointSystem.vue', () => {
   beforeEach(() => {
+    capabilityFixture.allowed = true;
     loginState.value = false;
     connectSpy.mockClear();
     getAccountReferralRewards.mockClear();
     fetchBurnXorDataMock.mockReset();
     fetchBridgeDataMock.mockReset();
     fetchCountMock.mockReset();
+    fetchPointOwnershipMock.mockReset().mockResolvedValue({ status: 'legacy', ready: true });
 
     referralsStoreMock.referralRewards = {
       rewards: FPNumber.ZERO,
@@ -247,11 +256,11 @@ describe('PointSystem.vue', () => {
     await flushPromises();
 
     expect(getAccountReferralRewards).toHaveBeenCalled();
-    expect(fetchBurnXorDataMock).toHaveBeenCalledWith(0, 100, '5mock');
+    expect(fetchBurnXorDataMock).toHaveBeenCalledWith(0, 100, '5mock', {});
     expect(fetchBridgeDataMock).toHaveBeenCalled();
-    expect(fetchCountMock).toHaveBeenCalledWith(0, 100, '5mock', 'swap');
-    expect(fetchCountMock).toHaveBeenCalledWith(0, 100, '5mock', 'poolDeposit');
-    expect(fetchCountMock).toHaveBeenCalledWith(0, 100, '5mock', 'poolWithdraw');
+    expect(fetchCountMock).toHaveBeenCalledWith(0, 100, '5mock', 'swap', {});
+    expect(fetchCountMock).toHaveBeenCalledWith(0, 100, '5mock', 'poolDeposit', {});
+    expect(fetchCountMock).toHaveBeenCalledWith(0, 100, '5mock', 'poolWithdraw', {});
 
     const vm = wrapper.vm as any;
     expect(vm.bridgeData).toHaveLength(2);
@@ -278,7 +287,7 @@ describe('PointSystem.vue', () => {
     walletStoreMock.account = { address: '5next' };
     expect((wrapper.vm as any).burnData).toBeNull();
     await flushPromises();
-    expect(fetchBurnXorDataMock).toHaveBeenCalledWith(0, 100, '5next');
+    expect(fetchBurnXorDataMock).toHaveBeenCalledWith(0, 100, '5next', {});
     expect((wrapper.vm as any).burnData.toString()).toBe('7');
     expect((wrapper.vm as any).totalSwapTxs).toBe(2);
 
@@ -287,4 +296,85 @@ describe('PointSystem.vue', () => {
     expect((wrapper.vm as any).burnData.toString()).toBe('7');
     expect((wrapper.vm as any).totalSwapTxs).toBe(2);
   });
+  it.each(['retired', 'extinguished', 'active', 'replacement'])(
+    'hides all V1 scores and avoids legacy reads for %s recovery ownership',
+    async (status) => {
+      loginState.value = true;
+      fetchPointOwnershipMock.mockResolvedValue({ status, ready: true });
+      referralsStoreMock.referralRewards = {
+        rewards: new FPNumber(123),
+        invitedUserRewards: { stale: new FPNumber(1) },
+      };
+      const wrapper = buildWrapper();
+      await flushPromises();
+      expect(wrapper.find('[data-testid="points-unavailable"]').exists()).toBe(true);
+      expect(wrapper.find('.points__card-referrals').exists()).toBe(false);
+      expect(fetchBurnXorDataMock).not.toHaveBeenCalled();
+      expect(fetchBridgeDataMock).not.toHaveBeenCalled();
+      expect(fetchCountMock).not.toHaveBeenCalled();
+      expect(getAccountReferralRewards).not.toHaveBeenCalled();
+      expect((wrapper.vm as any).totalReferrals).toBe(0);
+      wrapper.unmount();
+    }
+  );
+
+  it.each([null, { status: 'active', ready: false }])(
+    'fails V1 closed for missing/incomplete ownership %j',
+    async (ownership) => {
+      loginState.value = true;
+      fetchPointOwnershipMock.mockResolvedValue(ownership);
+      const wrapper = buildWrapper();
+      await flushPromises();
+      expect(wrapper.find('[data-testid="points-unavailable"]').exists()).toBe(true);
+      expect(fetchBurnXorDataMock).not.toHaveBeenCalled();
+      wrapper.unmount();
+    }
+  );
+
+  it('does not revive an old score after switching to a retired account during ownership loading', async () => {
+    loginState.value = true;
+    let finishOld!: (value: unknown) => void;
+    fetchPointOwnershipMock.mockImplementation((address) =>
+      address === '5mock'
+        ? new Promise((resolve) => {
+            finishOld = resolve;
+          })
+        : Promise.resolve({ status: 'retired', ready: true })
+    );
+    const wrapper = buildWrapper();
+    await flushPromises();
+    walletStoreMock.account = { address: '5retired' };
+    await flushPromises();
+    finishOld({ status: 'legacy', ready: true });
+    await flushPromises();
+    expect(fetchBurnXorDataMock).not.toHaveBeenCalled();
+    expect((wrapper.vm as any).pointsReady).toBe(false);
+    wrapper.unmount();
+  });
+
+  it('blocks ownership, history, referral and score work before a denied capability', async () => {
+    loginState.value = true;
+    capabilityFixture.allowed = false;
+    const wrapper = buildWrapper();
+    await flushPromises();
+    expect(fetchPointOwnershipMock).not.toHaveBeenCalled();
+    expect(fetchBurnXorDataMock).not.toHaveBeenCalled();
+    expect(fetchBridgeDataMock).not.toHaveBeenCalled();
+    expect(fetchCountMock).not.toHaveBeenCalled();
+    expect(getAccountReferralRewards).not.toHaveBeenCalled();
+    expect(wrapper.find('[data-testid="points-unavailable"]').exists()).toBe(true);
+    wrapper.unmount();
+  });
+});
+
+const capabilityFixture = vi.hoisted(() => ({ allowed: true, calls: vi.fn() }));
+vi.mock('@/indexer/queries/capabilities', async () => {
+  const { allowedLegacyCapabilities } = await import('@tests/fixtures/entitlementCapabilities');
+  return {
+    requireEntitlements: async (indexer = {}) => {
+      capabilityFixture.calls();
+      if (!capabilityFixture.allowed) throw Error('uncertified');
+      return { indexer, capabilities: allowedLegacyCapabilities };
+    },
+  };
 });

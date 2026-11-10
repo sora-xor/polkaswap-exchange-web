@@ -4,9 +4,10 @@ import { defineComponent, nextTick, reactive } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import BarChart from '@/features/misc/components/stats/BarChart.vue';
+import type { fetchData } from '@/indexer/queries/network/volume';
 import barChartSource from '@/features/misc/components/stats/BarChart.vue?raw';
 
-const fetchDataMock = vi.hoisted(() => vi.fn(async () => []));
+const fetchDataMock = vi.hoisted(() => vi.fn<typeof fetchData>().mockResolvedValue([]));
 const settingsStoreMock = vi.hoisted(() => ({ state: undefined as any }));
 
 vi.mock('@/components/shared/Widget/Base.vue', () => ({
@@ -59,8 +60,8 @@ vi.mock('@/composables/useChartSpec', () => ({
   useChartSpec: () => ({
     gridSpec: () => ({}),
     xAxisSpec: () => ({}),
-    yAxisSpec: () => ({}),
-    tooltipSpec: () => ({}),
+    yAxisSpec: (option: object) => option,
+    tooltipSpec: (option: object) => option,
     barSeriesSpec: () => ({}),
   }),
 }));
@@ -123,8 +124,8 @@ vi.mock('pinia', async (importOriginal) => {
   return {
     ...actual,
     storeToRefs: () => ({
-      exchangeRate: { value: 1 },
-      currencySymbol: { value: '$' },
+      exchangeRate: { value: settingsStoreMock.state.exchangeRate ?? 1 },
+      currencySymbol: { value: settingsStoreMock.state.currencySymbol ?? '$' },
     }),
   };
 });
@@ -138,7 +139,7 @@ describe('BarChart', () => {
     });
   });
 
-  it('keeps chart loading visible when node is disconnected and data is unresolved', async () => {
+  it('settles a completed empty query even when the node is disconnected', async () => {
     fetchDataMock.mockResolvedValueOnce([]);
     fetchDataMock.mockResolvedValueOnce([]);
 
@@ -156,7 +157,23 @@ describe('BarChart', () => {
 
     const skeleton = wrapper.find('.chart-skeleton-stub');
     expect(skeleton.exists()).toBe(true);
-    expect(skeleton.attributes('data-loading')).toBe('true');
+    expect(skeleton.attributes('data-empty')).toBe('true');
+    expect(skeleton.attributes('data-loading')).toBe('false');
+  });
+
+  it.each([
+    { fees: true, tick: '2', tip: '2 XOR' },
+    { fees: false, tick: '300', tip: '¥ 300' },
+  ])('uses the same unit for ticks and tooltip (fees=$fees)', async ({ fees, tick, tip }) => {
+    settingsStoreMock.state.exchangeRate = 150;
+    settingsStoreMock.state.currencySymbol = '¥';
+    fetchDataMock.mockResolvedValueOnce([{ timestamp: 1000, value: new FPNumber(2) }]).mockResolvedValueOnce([]);
+    const wrapper = mount(BarChart, { props: { fees } });
+    await flushPromises();
+    const chart = wrapper.findComponent({ name: 'VChartStub' }).props('option');
+    expect(chart.yAxis.axisLabel.formatter(2).trim()).toBe(tick);
+    expect(chart.tooltip.formatter([{ data: [1000, 2] }])).toBe(tip);
+    wrapper.unmount();
   });
 
   it('refreshes unresolved chart data when the indexer endpoint becomes available', async () => {
@@ -192,8 +209,8 @@ describe('BarChart', () => {
     try {
       fetchDataMock
         .mockResolvedValueOnce([
-          { timestamp: newerTimestamp, value: new FPNumber(3) },
           { timestamp: olderTimestamp, value: new FPNumber(1) },
+          { timestamp: newerTimestamp, value: new FPNumber(3) },
         ])
         .mockResolvedValueOnce([]);
 
@@ -255,6 +272,53 @@ describe('BarChart', () => {
     };
     expect(option.dataset.source).toContainEqual([timestamp, 22]);
     expect(option.dataset.source).not.toContainEqual([timestamp, 11]);
+  });
+
+  it('renders real observations and unknown gaps before a stalled or failed comparison, without a synthetic total', async () => {
+    let failComparison!: (error: Error) => void;
+    const comparison = new Promise<never>((_, reject) => {
+      failComparison = reject;
+    });
+    fetchDataMock
+      .mockResolvedValueOnce([
+        { timestamp: 1000, value: new FPNumber(7) },
+        { timestamp: 2000, value: null },
+      ])
+      .mockImplementationOnce(() => comparison);
+    const wrapper = mount(BarChart, { props: { fees: true } });
+    await flushPromises();
+    expect(wrapper.find('.chart-skeleton-stub').attributes('data-loading')).toBe('false');
+    expect(wrapper.find('[data-testid="network-flow-unavailable"]').exists()).toBe(true);
+    expect(wrapper.findComponent({ name: 'VChartStub' }).props('option').dataset.source).toEqual([
+      [1000, 7],
+      [2000, null],
+    ]);
+    failComparison(new Error('comparison unavailable'));
+    await flushPromises();
+    expect(wrapper.find('.chart-skeleton-stub').attributes('data-error')).toBe('false');
+  });
+
+  it('shows a retryable error after a primary connection fails while the node is disconnected', async () => {
+    fetchDataMock.mockRejectedValueOnce(new Error('missing primary page')).mockResolvedValueOnce([]);
+    const wrapper = mount(BarChart);
+    await flushPromises();
+    expect(wrapper.find('.chart-skeleton-stub').attributes('data-loading')).toBe('false');
+    expect(wrapper.find('.chart-skeleton-stub').attributes('data-error')).toBe('true');
+  });
+
+  it('aborts both current and comparison range reads on endpoint change and unmount', async () => {
+    fetchDataMock.mockResolvedValue([]);
+    const wrapper = mount(BarChart);
+    await flushPromises();
+    const oldSignal = vi.mocked(fetchDataMock).mock.calls[0][5] as AbortSignal;
+    expect(oldSignal.aborted).toBe(false);
+    settingsStoreMock.state.indexerEndpoint = 'https://indexer.example/graphql';
+    await flushPromises();
+    expect(oldSignal.aborted).toBe(true);
+    const newSignal = vi.mocked(fetchDataMock).mock.calls[2][5] as AbortSignal;
+    expect(vi.mocked(fetchDataMock).mock.calls[3][5]).toBe(newSignal);
+    wrapper.unmount();
+    expect(newSignal.aborted).toBe(true);
   });
 
   it('uses direct shared imports instead of the central lazy registry', () => {

@@ -1,5 +1,4 @@
 import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { DAI } from '@sora-substrate/sdk/build/assets/consts';
 import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 import { areBridgeExternalAccountsEqual } from '@/utils/bridge/common/account';
@@ -7,11 +6,15 @@ import type { GetTsPurpose } from './getTsFlow';
 import { getTonswapBridgeFundingPurpose } from './tonswapBridgeLiquidity';
 import { getTsContextHash } from './getTsContextHash';
 import {
+  getTsSwapAssetOf,
   isGetTsBridgeDraftId,
   isGetTsTransactionReference,
   normalizeGetTsAmount,
   type GetTsBridgeDraft,
 } from './getTsPlan';
+
+/** DAI and ETH both have 18 decimals on SORA. */
+const SWAP_ASSET_DECIMALS = 18;
 
 export type GetTsBridgeProgressState = 'idle' | 'unavailable' | 'pending' | 'received' | 'failed';
 export interface GetTsBridgeProgress {
@@ -38,7 +41,10 @@ export interface GetTsFinalizedBridgeRequest {
   amountCodec?: string;
 }
 
-/** Captures only the exact reviewed incoming DAI row; public wallet addresses stay outside the plan. */
+/**
+ * Captures only the exact reviewed incoming row of the purchase's swap asset (DAI, or ETH for Buy XOR card purchases);
+ * public wallet addresses stay outside the plan.
+ */
 export function createGetTsBridgeDraft(row: EthHistory, purpose: GetTsPurpose): GetTsBridgeDraft | null {
   const amount = normalizeGetTsAmount(row.amount);
   if (
@@ -46,7 +52,7 @@ export function createGetTsBridgeDraft(row: EthHistory, purpose: GetTsPurpose): 
     !amount ||
     row.type !== Operation.EthBridgeIncoming ||
     row.externalNetwork !== 1 ||
-    row.assetAddress !== DAI.address ||
+    !getTsSwapAssetOf(row.assetAddress, purpose) ||
     getTonswapBridgeFundingPurpose(row) !== purpose ||
     typeof row.from !== 'string' ||
     !row.from ||
@@ -104,7 +110,7 @@ export function matchGetTsBridgeHistory(
         (!context.purpose || getTonswapBridgeFundingPurpose(row) === context.purpose) &&
         row.type === Operation.EthBridgeIncoming &&
         row.externalNetwork === 1 &&
-        row.assetAddress === DAI.address &&
+        !!getTsSwapAssetOf(row.assetAddress, getTonswapBridgeFundingPurpose(row) ?? 'ts') &&
         row.externalHash?.toLowerCase() === context.reference.toLowerCase() &&
         areBridgeExternalAccountsEqual(row.from, context.soraAddress) &&
         areBridgeExternalAccountsEqual(row.to, context.evmAddress) &&
@@ -124,13 +130,15 @@ export function evaluateGetTsBridgeProgress(
     return { ...base, state: 'pending', finalizedBlock: request.finalizedBlock };
   const matched =
     request.ethereumHash?.toLowerCase() === row.externalHash?.toLowerCase() &&
-    request.assetAddress === DAI.address &&
+    !!request.assetAddress &&
+    request.assetAddress === row.assetAddress &&
+    !!getTsSwapAssetOf(row.assetAddress, getTonswapBridgeFundingPurpose(row) ?? 'ts') &&
     areBridgeExternalAccountsEqual(request.from, row.to) &&
     areBridgeExternalAccountsEqual(request.to, row.from) &&
     typeof request.amountCodec === 'string' &&
     /^\d{1,78}$/.test(request.amountCodec) &&
     !!row.amount &&
-    FPNumber.fromCodecValue(request.amountCodec, DAI.decimals).eq(new FPNumber(row.amount));
+    FPNumber.fromCodecValue(request.amountCodec, SWAP_ASSET_DECIMALS).eq(new FPNumber(row.amount));
   if (!matched) return { ...base, state: 'unavailable' };
   if (request.status === BridgeTxStatus.Done)
     return { ...base, state: 'received', finalizedBlock: request.finalizedBlock };

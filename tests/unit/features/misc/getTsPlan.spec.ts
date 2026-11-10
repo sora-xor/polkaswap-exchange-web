@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ref } from 'vue';
 import { Operation } from '@sora-substrate/sdk';
-import { DAI } from '@sora-substrate/sdk/build/assets/consts';
+import { DAI, ETH } from '@sora-substrate/sdk/build/assets/consts';
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 import type { GetTsPurpose } from '@/features/misc/lib/getTsFlow';
 import {
@@ -16,6 +16,9 @@ import {
   writeGetTsPlan,
   clearGetTsPlan,
   getTsBurnPrefill,
+  getTsSwapAsset,
+  getTsSwapAssetAddress,
+  getTsSwapAssetOf,
   GET_TS_PLAN_STORAGE_KEY,
 } from '@/features/misc/lib/getTsPlan';
 import { useGetTsPlan } from '@/features/misc/composables/useGetTsPlan';
@@ -359,5 +362,51 @@ describe('Get TS purchase draft', () => {
     xor.clearPlan();
     expect(readGetTsPlan(undefined, 'xor')).toBeNull();
     expect(ts.plan.value.paymentAmount).toBe('1');
+  });
+
+  it('moves ETH only for card purchases of XOR, and treats plans without a swap asset as DAI', () => {
+    const card = { ...emptyGetTsPlan(), paymentAsset: 'card', paymentAmount: '20', swapAsset: 'ETH' };
+    expect(parseGetTsPlan(card, 'xor')).toMatchObject({ swapAsset: 'ETH' });
+    expect(getTsSwapAsset(parseGetTsPlan(card, 'xor')!)).toBe('ETH');
+    expect(getTsSwapAsset(emptyGetTsPlan())).toBe('DAI');
+    // Get TS, other payment methods and any other value are refused.
+    expect(parseGetTsPlan(card, 'ts')).toBeNull();
+    expect(parseGetTsPlan({ ...card, paymentAsset: 'eth', paymentAmount: '1' }, 'xor')).toBeNull();
+    expect(parseGetTsPlan({ ...card, swapAsset: 'DAI' }, 'xor')).toBeNull();
+    expect(parseGetTsPlan({ ...card, swapAsset: 'XOR' }, 'xor')).toBeNull();
+    expect(getTsSwapAssetAddress('ETH')).toBe(ETH.address);
+    expect(getTsSwapAssetAddress('DAI')).toBe(DAI.address);
+    expect(getTsSwapAssetOf(ETH.address, 'xor')).toBe('ETH');
+    expect(getTsSwapAssetOf(ETH.address, 'ts')).toBeNull();
+    expect(getTsSwapAssetOf(DAI.address, 'ts')).toBe('DAI');
+    expect(getTsSwapAssetOf('other', 'xor')).toBeNull();
+  });
+
+  it('sets and clears the swap asset, dropping drafts for the other asset and on a new budget', () => {
+    const xor = useGetTsPlan('xor');
+    xor.updatePlan({ paymentAsset: 'card', paymentAmount: '20' });
+    expect(xor.updatePlan({ daiAmount: '0.0062', swapAsset: 'ETH' })).toBe(true);
+    const ethRow = { ...row, id: 'eth-row', assetAddress: ETH.address, amount: '0.0062' };
+    // A DAI-tagged row cannot carry ETH, and a DAI row does not match an ETH plan.
+    expect(xor.rememberBridgeDraft({ ...ethRow, payload: { buyXorFunding: 'ethereum-dai-v1' } })).toBe(true);
+    expect(
+      xor.rememberBridgeDraft({ ...ethRow, assetAddress: DAI.address, payload: { buyXorFunding: 'ethereum-dai-v1' } })
+    ).toBe(false);
+    expect(xor.plan.value.bridgeDraft?.id).toBe('eth-row');
+    // Back to DAI (DAI left from the earlier route): the ETH draft no longer applies.
+    expect(xor.updatePlan({ swapAsset: 'DAI' })).toBe(true);
+    expect(xor.plan.value.swapAsset).toBeUndefined();
+    expect(xor.plan.value.bridgeDraft).toBeUndefined();
+    expect(xor.updatePlan({ swapAsset: 'XOR' as never })).toBe(false);
+    // A new budget or method starts over without a swap asset.
+    xor.updatePlan({ swapAsset: 'ETH' });
+    xor.updatePlan({ paymentAmount: '25' });
+    expect(xor.plan.value.swapAsset).toBeUndefined();
+    xor.updatePlan({ paymentAmount: '25', swapAsset: 'ETH' });
+    expect(xor.updatePlan({ paymentAsset: 'eth', paymentAmount: '' })).toBe(true);
+    expect(xor.plan.value.swapAsset).toBeUndefined();
+    // Get TS keeps DAI.
+    useGetTsPlan().updatePlan({ paymentAsset: 'card', paymentAmount: '20' });
+    expect(useGetTsPlan().updatePlan({ swapAsset: 'ETH' })).toBe(false);
   });
 });

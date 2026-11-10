@@ -42,8 +42,11 @@
       </button>
     </nav>
     <p v-if="!isMainnet" class="get-ts__notice" role="status">{{ purchaseText('mainnetRequired') }}</p>
+    <p v-if="temporaryWalletNotice" class="get-ts__notice" data-test-name="temporaryWalletNotice" role="status">
+      {{ t('temporaryWallet.keepPageOpen') }}
+    </p>
     <get-ts-purchase-progress
-      v-if="phase === 'actions'"
+      v-if="phase === 'actions' && !cardRun"
       :items="journey"
       :purpose="purpose"
       :reviewable="reviewableJourney"
@@ -60,6 +63,19 @@
       }"
     >
       <section class="get-ts__workspace" :data-step="activeStep">
+        <buy-xor-card-run
+          v-if="cardRun && ['fund', 'bridge', 'swap'].includes(activeStep)"
+          :enabled="cardRunEnabled"
+          :conversion-progress="conversionProgress"
+          :bridge-progress="bridgeProgress"
+          :swap-progress="swapProgress"
+          :refresh-conversion="refreshConversionProgress"
+          :refresh-bridge="refreshBridgeProgress"
+          @preparing="conversionPreparing = $event"
+          @received="goToStep('swap')"
+          @ready="cardRunReady = $event"
+          @restart="reviewNewCardPurchase"
+        />
         <buy-xor-quick-start
           v-if="activeStep === 'source' && buyingXor"
           ref="stepHeading"
@@ -142,7 +158,7 @@
           </template>
         </template>
         <template v-else-if="activeStep === 'wallets' && view.source">
-          <get-ts-wallet-setup :source="view.source" :purpose="purpose" />
+          <get-ts-wallet-setup :source="view.source" :purpose="purpose" :automatic-ethereum="cardRun" />
           <div v-if="walletsReady" class="get-ts__action-bar">
             <s-button
               class="get-ts__primary"
@@ -155,7 +171,8 @@
           </div>
         </template>
         <template v-else-if="activeStep === 'fund'">
-          <h2 ref="stepHeading" tabindex="-1">
+          <!-- After the card checkout opens, the card run's step list above is this step's whole content. -->
+          <h2 v-if="!cardRun || (!cardConversion && !conversionStarted)" ref="stepHeading" tabindex="-1">
             {{
               t(
                 view.source === 'card' && !cardConversion && !conversionStarted
@@ -202,16 +219,22 @@
                 class="get-ts__primary"
                 type="primary"
                 native-type="button"
-                :disabled="!moonpayEnabled || !cardQuoteAllowed || !walletsReady || !isMainnet"
+                :disabled="
+                  !moonpayEnabled ||
+                  !cardQuoteAllowed ||
+                  !walletsReady ||
+                  !isMainnet ||
+                  (cardRun && (!cardRunReady || !evmAddress))
+                "
                 @click="openCardPurchase"
                 >{{ t(buyingXor ? 'buyXor.card.open' : 'getTs.cardBuy') }}</s-button
               >
             </div>
-            <button class="get-ts__text-action" type="button" @click="cardConversion = true">
+            <button v-if="!cardRun" class="get-ts__text-action" type="button" @click="cardConversion = true">
               {{ t('getTs.alreadyHaveEth') }}
             </button>
           </template>
-          <template v-else>
+          <template v-else-if="!cardRun">
             <p v-if="cardPurchaseCompleted" role="status">{{ t('getTs.cardCompleted') }}</p>
             <div v-else-if="view.source === 'card' && plan.cardDraft && !conversionStarted" role="status">
               <p>{{ t('getTs.cardResumeDescription') }}</p>
@@ -287,6 +310,9 @@
             </details>
           </template>
         </template>
+        <template v-else-if="activeStep === 'bridge' && cardRun">
+          <h2 ref="stepHeading" tabindex="-1">{{ t('getTs.bridgeTitle') }}</h2>
+        </template>
         <template v-else-if="activeStep === 'bridge'">
           <h2 ref="stepHeading" tabindex="-1">{{ t('getTs.bridgeTitle') }}</h2>
           <p>{{ t('getTs.bridgeDescription') }}</p>
@@ -338,13 +364,15 @@
           <h2 ref="stepHeading" tabindex="-1">
             {{ t(buyingXor && swapProgress.state === 'received' ? 'buyXor.receivedTitle' : 'getTs.swapTitle') }}
           </h2>
-          <p v-if="swapProgress.state !== 'received'">{{ purchaseText('swapDescription') }}</p>
+          <p v-if="swapProgress.state !== 'received'">
+            {{ buyingXor ? t('buyXor.swapDescription', { asset: swapAsset }) : t('getTs.swapDescription') }}
+          </p>
           <swap-form-widget
             v-if="swapPairReady && (!swapStarted || swapRetry || swapPreparing)"
             fixed-pair
             compact-details
             :purchase-purpose="purpose"
-            max-price-impact="5"
+            :max-price-impact="getTsMaxPriceImpact(purpose)"
             full
             @preparing="swapPreparing = $event"
             @submitted="onSwapSubmitted"
@@ -382,9 +410,7 @@
           </div>
           <div v-if="buyingXor && swapProgress.state === 'received'" class="get-ts__received" role="status">
             <p>{{ t('buyXor.receivedDescription') }}</p>
-            <p v-if="swapProgress.xorReceived" class="get-ts__amount">
-              {{ formatAmount(swapProgress.xorReceived) }} <span>XOR</span>
-            </p>
+            <buy-xor-received-amount v-if="swapProgress.xorReceived" :amount="swapProgress.xorReceived" />
             <s-button class="get-ts__primary" type="primary" native-type="button" @click="router.push('/wallet')">{{
               t('buyXor.viewWallet')
             }}</s-button>
@@ -450,6 +476,10 @@
         <details v-if="isLoggedIn" class="get-ts__route">
           <summary>{{ t('getTs.balancesTitle') }}</summary>
           <dl>
+            <div v-if="swapAsset === 'ETH'">
+              <dt>ETH</dt>
+              <dd data-test-name="getTsEthBalance">{{ balanceText(ethBalance) }}</dd>
+            </div>
             <div>
               <dt>DAI</dt>
               <dd data-test-name="getTsDaiBalance">{{ balanceText(daiBalance) }}</dd>
@@ -501,6 +531,7 @@
         currency-code="eth"
         :base-currency-amount="plan.paymentAmount"
         :receiving-address="evmAddress"
+        :address-hint="evmAddress"
         :auto-prepare-bridge="false"
         @completed="onCardCompleted" /><moonpay-notification /><moonpay-confirmation
     /></template>
@@ -510,7 +541,7 @@
 
 <script setup lang="ts">
 import { FPNumber } from '@sora-substrate/sdk';
-import { DAI, XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { DAI, ETH, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { Operation } from '@sora-substrate/sdk/build/types';
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
@@ -532,6 +563,8 @@ import type { GetTsCardReadiness as CardReadiness } from '@/features/misc/lib/ge
 import GetTsWalletSetup from '@/features/misc/components/burn/GetTsWalletSetup.vue';
 import GetTsPlanPreview from '@/features/misc/components/burn/GetTsPlanPreview.vue';
 import BuyXorQuickStart from '@/features/misc/components/buy-xor/BuyXorQuickStart.vue';
+import BuyXorCardRun from '@/features/misc/components/buy-xor/BuyXorCardRun.vue';
+import BuyXorReceivedAmount from '@/features/misc/components/buy-xor/BuyXorReceivedAmount.vue';
 import GetTsRouteRequirements from '@/features/misc/components/burn/GetTsRouteRequirements.vue';
 import GetTsPurchaseProgress from '@/features/misc/components/burn/GetTsPurchaseProgress.vue';
 import { getTsJourney, type GetTsJourneyStage } from '@/features/misc/lib/getTsJourney';
@@ -545,13 +578,21 @@ import { useGetTsSwapProgress } from '@/features/misc/composables/useGetTsSwapPr
 import { useGetTsBridgeProgress } from '@/features/misc/composables/useGetTsBridgeProgress';
 import { useGetTsConversionProgress } from '@/features/misc/composables/useGetTsConversionProgress';
 import { useTonswapTonWallet } from '@/features/misc/composables/useTonswapTonWallet';
-import { getTsPlanProtection, normalizeGetTsAmount, type GetTsPaymentAsset } from '@/features/misc/lib/getTsPlan';
+import {
+  getTsPlanProtection,
+  getTsSwapAsset,
+  getTsSwapAssetAddress,
+  normalizeGetTsAmount,
+  type GetTsPaymentAsset,
+} from '@/features/misc/lib/getTsPlan';
+import { getTsMaxPriceImpact } from '@/features/misc/lib/tonswapLiquidity';
 import SwapFormWidget from '@/features/swap/components/widgets/Form.vue';
 import { useSwapStore } from '@/features/swap/stores/useSwapStore';
 import { useMoonpayStore } from '@/stores/moonpay';
 import { useSettingsStore } from '@/stores/settings';
 import { useWalletStore } from '@/stores/wallet';
 import { normalizeCodecBalanceValue } from '@/utils/asset-formatting';
+import { temporaryWalletSession } from '@/utils/connection/evm/temporaryWalletSession';
 import {
   buildGetTsBridgeRoute,
   getTsSteps,
@@ -663,9 +704,15 @@ const needsConversion = computed(
 const steps = computed(() =>
   getTsSteps(view.value.source, props.purpose).filter((step) => step !== 'fund' || needsConversion.value)
 );
+/**
+ * Buy XOR by card runs its Ethereum steps on its own (`BuyXorCardRun`): a temporary wallet on the page is used unless
+ * the buyer connects their own Ethereum wallet, so only the SORA wallet must be set up.
+ */
+const cardRun = computed(() => buyingXor.value && view.value.source === 'card');
+const cardRunReady = ref(false);
 const walletsReady = computed(
   () =>
-    getTsWalletsReady(view.value.source, isLoggedIn.value, !!evmAddress.value) &&
+    (cardRun.value ? isLoggedIn.value : getTsWalletsReady(view.value.source, isLoggedIn.value, !!evmAddress.value)) &&
     (view.value.source !== 'ton' || (!!ton.address.value && ton.chain.value === '-239'))
 );
 const activeStep = computed<GetTsStep>(() => {
@@ -794,10 +841,23 @@ const conversionAmount = computed(() =>
     : supplementalConversionAmount.value
 );
 const moonpayEnabled = computed(() => Boolean(settings.moonpayEnabled));
+const cardRunEnabled = computed(() => cardRun.value && isLoggedIn.value && isMainnet.value);
+/** A page-memory wallet is lost with the tab, so remind its user until the transfer to SORA is sent. */
+const temporaryWalletNotice = computed(
+  () =>
+    !!temporaryWalletSession.address &&
+    !temporaryWalletSession.persisted &&
+    evmAddress.value?.toLowerCase() === temporaryWalletSession.address &&
+    ['fund', 'bridge'].includes(activeStep.value) &&
+    !plan.value.references.bridge
+);
 const balancesReady = computed(
   () => isMainnet.value && isLoggedIn.value && wallet.accountAssetsLoaded && !wallet.accountAssetsLoading
 );
 const daiBalance = computed(() => readBalance(DAI.address, DAI.decimals));
+/** Asset swapped for XOR on SORA: ETH for card purchases of XOR once the plan records it, otherwise DAI. */
+const swapAsset = computed(() => getTsSwapAsset(plan.value));
+const ethBalance = computed(() => readBalance(ETH.address, ETH.decimals));
 const xorBalance = computed(() => readBalance(XOR.address, XOR.decimals));
 const hasDai = computed(() => daiBalance.value?.gt(FPNumber.ZERO) ?? false);
 const hasXor = computed(() => xorBalance.value?.gt(FPNumber.ZERO) ?? false);
@@ -887,8 +947,9 @@ function onPreview(value: GetTsPlanPreviewResult): void {
     !receivedAsset.value
   )
     updatePlan({
-      daiAmount: value.daiIntent ?? value.daiAmount ?? '',
+      daiAmount: value.swapAsset === 'ETH' ? (value.swapAmount ?? '') : (value.daiIntent ?? value.daiAmount ?? ''),
       xorAmount: buyingXor.value ? (value.spendableXor ?? '') : (value.burnableXor ?? ''),
+      swapAsset: value.swapAsset ?? 'DAI',
     });
 }
 /** Reads only this account's synchronized spendable balance with the SDK denomination. */
@@ -1010,14 +1071,16 @@ function openCardPurchase(): void {
     !isMainnet.value ||
     !walletsReady.value ||
     !cardQuoteAllowed.value ||
-    !cardReadiness.value?.canContinue()
+    !cardReadiness.value?.canContinue() ||
+    (cardRun.value && (!cardRunReady.value || !evmAddress.value))
   )
     return;
   const check = cardCheck.value!;
   if (!rememberCardDraft({ deliveredEth: check.deliveredEth ?? '', conversionEth: check.conversionEth ?? '' })) return;
   updatePlan({
-    daiAmount: check.daiAmount ?? '',
+    daiAmount: check.swapAmount ?? check.daiAmount ?? '',
     xorAmount: buyingXor.value ? (check.spendableXor ?? '') : (check.burnableXor ?? ''),
+    swapAsset: check.swapAsset ?? 'DAI',
   });
   cardFundingEth.value = check.deliveredEth ?? '';
   supplementalConversionAsset.value = 'eth';
@@ -1108,7 +1171,7 @@ async function openBridge(): Promise<void> {
     plan.value.bridgeDraft ? { path: '/bridge/history', query: bridgeRoute.value.query } : bridgeRoute.value
   );
 }
-/** Carries the intended DAI amount into the existing live-quote form, without submitting it. */
+/** Carries the intended swap amount (DAI, or ETH for card purchases of XOR) into the live-quote form, unsubmitted. */
 async function prepareSwapPair(): Promise<void> {
   if (planProtection.value && planProtection.value.step !== 'swap') return;
   const request = ++pairRequest;
@@ -1122,7 +1185,7 @@ async function prepareSwapPair(): Promise<void> {
       swapStore.setExchangeB(false);
       swapStore.selectDexId();
       swapStore.setLiquiditySource(LiquiditySourceTypes.Default);
-      await swapStore.setTokenFromAddress(DAI.address);
+      await swapStore.setTokenFromAddress(getTsSwapAssetAddress(swapAsset.value));
       await swapStore.setTokenToAddress(XOR.address);
       if (!disposed && request === pairRequest && activeStep.value === 'swap') {
         swapStore.setFromValue(plan.value.daiAmount);
@@ -1447,6 +1510,12 @@ onBeforeUnmount(() => {
     border-radius: var(--s-border-radius-medium);
     background: var(--s-color-utility-surface);
     box-shadow: var(--s-shadow-dialog);
+  }
+  /* What appears with a new step rises in softly. The card run stays mounted across Buy XOR's steps, so it never replays. */
+  @media (prefers-reduced-motion: no-preference) {
+    &__workspace > :not(.buy-xor-run) {
+      animation: get-ts-rise 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+    }
   }
   &__sources {
     display: grid;
@@ -1773,6 +1842,13 @@ onBeforeUnmount(() => {
     button {
       transition: none !important;
     }
+  }
+}
+
+@keyframes get-ts-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
   }
 }
 </style>

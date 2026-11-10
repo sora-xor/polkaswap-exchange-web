@@ -7,6 +7,13 @@ export const SORA_FUNDING_MAINNET_GENESIS = '0x7e4e32d0feafd4f9c9414b0be86373f9a
 /** A funding check is advisory and short lived; the eventual swap always requires a new quote. */
 export const TONSWAP_LIQUIDITY_TTL_MS = 30_000;
 export const TONSWAP_MAX_PRICE_IMPACT = '5';
+/** Buy XOR's SORA swaps allow more price impact: the XOR markets are thin (user decision, 10 October 2026). */
+export const BUY_XOR_MAX_PRICE_IMPACT = '15';
+
+/** Price-impact limit of a purpose's SORA swap, in percent. */
+export function getTsMaxPriceImpact(purpose: GetTsPurpose = 'ts'): string {
+  return purpose === 'xor' ? BUY_XOR_MAX_PRICE_IMPACT : TONSWAP_MAX_PRICE_IMPACT;
+}
 /** Current SDK network-fee codecs; zero is the SDK's unavailable/default sentinel. */
 export interface TonswapFeeEvidence {
   swapFeeCodec?: string | null;
@@ -27,7 +34,7 @@ export interface TonswapLiquidityCheck {
   spendableXor?: string;
 }
 
-/** Rejects unbounded, zero, exponent, signed, and overprecision DAI input before any RPC request. */
+/** Rejects unbounded, zero, exponent, signed, and overprecision DAI or ETH input before any RPC request. */
 export function isTonswapFundingAmount(amount: string): boolean {
   return (
     typeof amount === 'string' &&
@@ -38,8 +45,8 @@ export function isTonswapFundingAmount(amount: string): boolean {
 }
 
 /**
- * Checks price impact and leaves positive XOR after purpose-specific network fees.
- * Reduces output by the accepted 2% conversion bound and configured
+ * Checks price impact against the purpose's limit (`getTsMaxPriceImpact`) and leaves positive XOR after
+ * purpose-specific network fees. Reduces output by the accepted 2% conversion bound and configured
  * SORA slippage when larger. It assumes no existing XOR to subsidize a newcomer.
  */
 export function evaluateTonswapLiquidity(
@@ -89,7 +96,7 @@ export function evaluateTonswapLiquidity(
     else result.burnableXor = burnable.gt(FPNumber.ZERO) ? burnable.toString() : '0';
     if (!burnable.gt(FPNumber.ZERO)) result.reason = 'fees-insufficient';
   }
-  if (impact.gt(new FPNumber(TONSWAP_MAX_PRICE_IMPACT))) result.reason = 'price-impact';
+  if (impact.gt(new FPNumber(getTsMaxPriceImpact(purpose)))) result.reason = 'price-impact';
   result.allowed = result.reason === undefined;
   return result;
 }

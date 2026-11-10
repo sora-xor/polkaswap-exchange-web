@@ -69,6 +69,8 @@ export function useExploreTable<T>(options: UseExploreTableOptions<T>) {
       const bValue = (b as any)[prop];
 
       if (aValue === bValue) return 0;
+      if (aValue == null) return bValue == null ? 0 : 1;
+      if (bValue == null) return -1;
 
       return (isAscending ? aValue > bValue : aValue < bValue) ? 1 : -1;
     });

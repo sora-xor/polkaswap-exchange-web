@@ -62,6 +62,47 @@ describe('burn page layout sources', () => {
     expect(burnPageSource).toMatch(/@container burn-card \(min-width: 760px\)/);
   });
 
+  it('puts the form and the folded reading in one column beside the campaign numbers on a wide card', () => {
+    expect(campaignSource).toMatch(
+      /@container tonswap \(min-width: 760px\) \{[\s\S]*?grid-template-areas:\s*'form market'\s*'extras market';/
+    );
+    expect(campaignSource).toMatch(/\.tonswap-burn__market \{\s*grid-area: market;\s*align-self: stretch;/);
+    // The folded sections live inside the grid, after the two panels, so a phone reads form, numbers, reading.
+    const layout = campaignSource.slice(campaignSource.indexOf('<div class="tonswap-burn__layout">'));
+    expect(layout.indexOf('class="tonswap-burn__preview"')).toBeLessThan(
+      layout.indexOf('class="tonswap-burn__market"')
+    );
+    expect(layout.indexOf('class="tonswap-burn__market"')).toBeLessThan(layout.indexOf('class="tonswap-burn__extras"'));
+  });
+
+  it('keeps the mark beside the title only on a phone, so the text below uses the full width', () => {
+    expect(campaignSource).toMatch(
+      /@container tonswap \(max-width: 479px\) \{[\s\S]*?\.tonswap-burn__intro \{\s*display: contents;/
+    );
+    expect(burnPageSource).toMatch(
+      /@container burn-card \(max-width: 479px\) \{[\s\S]*?\.campaign__intro \{\s*display: contents;/
+    );
+  });
+
+  it('never covers a card with a loading mask, and stops the loading line for reduced motion', () => {
+    expect(burnPageSource).not.toContain('v-loading');
+    expect(burnPageSource).toMatch(/&--loading::after \{[\s\S]*?animation: burn-card-loading/);
+    expect(burnPageSource).toMatch(
+      /@media \(prefers-reduced-motion: reduce\) \{\s*\.campaign--loading::after \{[\s\S]*?animation: none;/
+    );
+  });
+
+  it('draws one focus ring around the amount field and keeps motion optional', () => {
+    expect(campaignSource).toMatch(/&:has\(input:focus-visible\) \{\s*outline: 2px solid/);
+    // Browsers without :has() still get a ring around the field.
+    expect(campaignSource).toMatch(/@supports not selector\(:has\(\*\)\) \{\s*&:focus-within/);
+    const beforeMotionQuery = campaignSource.slice(
+      campaignSource.indexOf('<style lang="scss" scoped>'),
+      campaignSource.indexOf('@media (prefers-reduced-motion: no-preference)')
+    );
+    expect(beforeMotionQuery).not.toMatch(/animation: tonswap-(?:flare|out|wait)\b/);
+  });
+
   it('overrides the shared header weight, which the title mixin sets with !important', () => {
     expect(campaignSource).toContain('font-weight: 600 !important;');
     expect(burnPageSource).toContain('font-weight: 600 !important;');

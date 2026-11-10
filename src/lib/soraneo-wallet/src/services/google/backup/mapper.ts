@@ -1,4 +1,7 @@
-import { api } from '../../../api';
+import { Keyring } from '@polkadot/keyring';
+import { u8aEq } from '@polkadot/util';
+import { decodeAddress } from '@polkadot/util-crypto';
+
 import { formatAccountAddress } from '../../../util';
 
 import { BackupAccountCrypto } from './account';
@@ -6,7 +9,22 @@ import { generateSeed, prepareSeed } from './crypto';
 import { BackupAccountType } from './types';
 
 import type { DecryptedBackupAccount, EncryptedBackupAccount } from './types';
-import type { KeyringPair$Json } from '@polkadot/keyring/types';
+import type { KeyringPair, KeyringPair$Json } from '@polkadot/keyring/types';
+import type { KeypairType } from '@polkadot/util-crypto/types';
+
+/** Accepts the Substrate key types supported by the backup format without changing their meaning. */
+const getBackupKeyType = (cryptoType?: string): KeypairType => {
+  const type = cryptoType?.toLowerCase() || 'sr25519';
+  if (type !== 'sr25519' && type !== 'ed25519' && type !== 'ecdsa') throw new Error('polkadotjs.noAccount');
+  return type;
+};
+
+/** Compares decoded identities so another SS58 prefix cannot hide or manufacture an account mismatch. */
+const assertBackupIdentity = (pair: KeyringPair, address: string): void => {
+  if (!address || !u8aEq(decodeAddress(pair.address), decodeAddress(address))) {
+    throw new Error('polkadotjs.noAccount');
+  }
+};
 
 /**
  * Converts between encrypted backup payloads and the keyring JSON format used
@@ -15,29 +33,40 @@ import type { KeyringPair$Json } from '@polkadot/keyring/types';
 export class BackupAccountMapper {
   /**
    * Decrypts the backup account and returns a keyring JSON representation that
-   * can be imported into the wallet.
+   * can be imported into the wallet. Stored JSON takes precedence because it
+   * retains the exact key; mnemonic/seed-only backups retain their derivation.
+   * Both the backup metadata and the selected Drive account must match the key.
    */
-  public static getPairJson(encryptedAccount: EncryptedBackupAccount, password: string): Nullable<KeyringPair$Json> {
+  public static getPairJson(
+    encryptedAccount: EncryptedBackupAccount,
+    password: string,
+    expectedAddress?: string
+  ): Nullable<KeyringPair$Json> {
     const decryptedAccount = BackupAccountCrypto.decryptAccount(encryptedAccount, password);
+    const keyring = new Keyring({ type: getBackupKeyType(decryptedAccount.cryptoType) });
+    let pair: KeyringPair | undefined;
 
-    if (decryptedAccount.mnemonicPhrase) {
-      const pair = api.createAccountPair(decryptedAccount.mnemonicPhrase, decryptedAccount.name);
+    try {
+      if (decryptedAccount.json?.substrateJson) {
+        pair = keyring.createFromJson(JSON.parse(decryptedAccount.json.substrateJson) as KeyringPair$Json);
+        // Decode before comparing: a JSON address header is not proof of the encrypted key's identity.
+        pair.decodePkcs8(password);
+      } else {
+        const secret =
+          decryptedAccount.mnemonicPhrase ||
+          (decryptedAccount.seed?.substrateSeed ? prepareSeed(decryptedAccount.seed.substrateSeed) : null);
+        if (!secret) return null;
+        pair = keyring.createFromUri(`${secret}${decryptedAccount.substrateDerivationPath || ''}`, {
+          name: decryptedAccount.name,
+        });
+      }
 
+      assertBackupIdentity(pair, decryptedAccount.address);
+      if (expectedAddress) assertBackupIdentity(pair, expectedAddress);
       return pair.toJson(password);
+    } finally {
+      pair?.lock();
     }
-
-    if (decryptedAccount.seed?.substrateSeed) {
-      const seed = prepareSeed(decryptedAccount.seed.substrateSeed);
-      const pair = api.createAccountPair(seed, decryptedAccount.name);
-
-      return pair.toJson(password);
-    }
-
-    if (decryptedAccount.json?.substrateJson) {
-      return JSON.parse(decryptedAccount.json.substrateJson) as KeyringPair$Json;
-    }
-
-    return null;
   }
 
   /**
@@ -51,8 +80,8 @@ export class BackupAccountMapper {
   ): EncryptedBackupAccount {
     const decryptedAccount: DecryptedBackupAccount = {
       name: (pairJson.meta?.name as string) || '',
-      address: formatAccountAddress(pairJson.address),
-      cryptoType: 'sr25519'.toUpperCase(),
+      address: formatAccountAddress(new Keyring().createFromJson(pairJson).address),
+      cryptoType: (pairJson.encoding?.content?.[1] || 'sr25519').toUpperCase(),
       backupAccountType: [BackupAccountType.JSON],
       mnemonicPhrase,
       substrateDerivationPath: null,

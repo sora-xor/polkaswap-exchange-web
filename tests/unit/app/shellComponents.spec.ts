@@ -63,6 +63,9 @@ vi.mock('@/features/referrals/components/ConfirmInviteUser.vue', () => ({
 vi.mock('@/components/shared/Dialog/SelectSoraAccount.vue', () => ({
   default: { name: 'SelectSoraAccountDialogComponent' },
 }));
+vi.mock('@/features/misc/components/buy-xor/TemporaryWalletRequestDialog.vue', () => ({
+  default: { name: 'TemporaryWalletRequestDialogComponent' },
+}));
 
 import * as shellComponents from '@/app/shell/components';
 
@@ -114,6 +117,11 @@ describe('app shell async components', () => {
       ['NotificationEnablingPage', shellComponents.NotificationEnablingPage, 'NotificationEnablingPageComponent'],
       ['ReferralsConfirmInviteUser', shellComponents.ReferralsConfirmInviteUser, 'ReferralsConfirmInviteUserComponent'],
       ['SelectSoraAccountDialog', shellComponents.SelectSoraAccountDialog, 'SelectSoraAccountDialogComponent'],
+      [
+        'TemporaryWalletRequestDialog',
+        shellComponents.TemporaryWalletRequestDialog,
+        'TemporaryWalletRequestDialogComponent',
+      ],
     ] as const;
 
     expect(createAsyncComponentMock).toHaveBeenCalledTimes(registry.length);

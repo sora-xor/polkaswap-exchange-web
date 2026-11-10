@@ -2,6 +2,7 @@ import { flushPromises, mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { reactive, ref } from 'vue';
 import GetTsWalletSetup from '@/features/misc/components/burn/GetTsWalletSetup.vue';
+import { setTemporaryWalletAddress } from '@/utils/connection/evm/temporaryWalletSession';
 
 const shared = vi.hoisted(() => ({ ctx: null as ReturnType<typeof createContext> | null }));
 function createContext() {
@@ -36,15 +37,20 @@ vi.mock('@/features/misc/composables/useTonswapTonWallet', () => ({ useTonswapTo
 const wrappers: ReturnType<typeof mount>[] = [];
 const attachedRoots: HTMLElement[] = [];
 const SButtonStub = { name: 'SButton', props: ['loading'], template: '<button :disabled="loading"><slot /></button>' };
+const TemporaryWalletPanelStub = {
+  name: 'TemporaryWalletPanel',
+  template: '<section class="temporary-wallet-stub" />',
+};
 function setup(
   source: 'ethereum' | 'ton' | 'card' | 'xor' | 'sora' = 'ethereum',
   purpose: 'ts' | 'xor' = 'ts',
-  attachTo?: HTMLElement
+  attachTo?: HTMLElement,
+  automaticEthereum = false
 ) {
   const wrapper = mount(GetTsWalletSetup, {
     attachTo,
-    props: { source, purpose },
-    global: { stubs: { SButton: SButtonStub } },
+    props: { source, purpose, automaticEthereum },
+    global: { stubs: { SButton: SButtonStub, TemporaryWalletPanel: TemporaryWalletPanelStub } },
   });
   wrappers.push(wrapper);
   return wrapper;
@@ -59,6 +65,7 @@ describe('Get TS wallet setup', () => {
   afterEach(() => {
     wrappers.splice(0).forEach((wrapper) => wrapper.unmount());
     attachedRoots.splice(0).forEach((root) => root.remove());
+    setTemporaryWalletAddress('');
   });
   it('moves real DOM focus from entry through Ethereum, SORA and ready without starting unsolicited connections', async () => {
     const host = document.createElement('div');
@@ -195,7 +202,8 @@ describe('Get TS wallet setup', () => {
     expect(wrapper.findAll('h3')).toHaveLength(1);
   });
   it('offers passive official creation help before Ethereum connection', async () => {
-    const wrapper = setup('card');
+    const wrapper = setup('ethereum');
+    expect(wrapper.find('.temporary-wallet-stub').exists()).toBe(false);
     expect(wrapper.find('details summary').text()).toBe('getTs.onboarding.needEthereumWallet');
     await wrapper.find('details summary').trigger('click');
     expect(wrapper.findAll('.claim-wallets__instructions li')).toHaveLength(3);
@@ -205,6 +213,44 @@ describe('Get TS wallet setup', () => {
     expect(link.attributes('rel')).toBe('noopener noreferrer');
     expect(shared.ctx!.external.connectEvmWallet).not.toHaveBeenCalled();
     expect(shared.ctx!.internal.connectGoogleWallet).not.toHaveBeenCalled();
+  });
+  it('offers card buyers a temporary wallet in place of the wallet-app help, without connecting anything', () => {
+    const wrapper = setup('card', 'xor');
+    expect(wrapper.find('h3').text()).toBe('getTs.connectEthereum');
+    expect(wrapper.findAll('.temporary-wallet-stub')).toHaveLength(1);
+    expect(wrapper.text()).not.toContain('getTs.onboarding.needEthereumWallet');
+    expect(button(wrapper, 'getTs.connectEthereum')).toBeTruthy();
+    expect(shared.ctx!.external.connectEvmWallet).not.toHaveBeenCalled();
+  });
+  it('labels a connected temporary wallet and keeps its controls in the address list', () => {
+    setTemporaryWalletAddress('0xAbC0000000000000000000000000000000000001');
+    shared.ctx!.external.evmAddress.value = '0xabc0000000000000000000000000000000000001';
+    const wrapper = setup('card', 'xor');
+    expect(wrapper.find('h3').text()).toBe('getTs.onboarding.soraTitle');
+    const labels = (target: ReturnType<typeof mount>) => target.findAll('strong').map((node) => node.text());
+    expect(labels(wrapper)).toEqual(['temporaryWallet.active']);
+    expect(wrapper.findAll('.temporary-wallet-stub')).toHaveLength(1);
+
+    shared.ctx!.external.evmAddress.value = '0xmetamask';
+    const other = setup('ethereum');
+    expect(labels(other)).toEqual(['getTs.ethereumWallet']);
+    expect(other.findAll('.temporary-wallet-stub')).toHaveLength(1);
+  });
+  it('asks Buy XOR card buyers only for a SORA wallet and lets them choose their own Ethereum wallet', async () => {
+    const wrapper = setup('card', 'xor', undefined, true);
+    expect(wrapper.find('h3').text()).toBe('getTs.onboarding.soraTitle');
+    expect(wrapper.find('.temporary-wallet-stub').exists()).toBe(false);
+    expect(wrapper.text()).toContain('getTs.onboarding.walletProgress 0/1');
+    expect(wrapper.get('[data-test-name="automaticEthereumNote"]').text()).toContain('buyXor.run.walletNote');
+    await button(wrapper, 'buyXor.run.ownWallet').trigger('click');
+    expect(shared.ctx!.external.connectEvmWallet).toHaveBeenCalledOnce();
+
+    shared.ctx!.internal.isLoggedIn.value = true;
+    shared.ctx!.external.evmAddress.value = '0xmetamask';
+    await flushPromises();
+    expect(wrapper.get('.claim-wallets__ready').text()).toBe('getTs.walletsReady');
+    expect(button(wrapper, 'buyXor.run.ownWallet')).toBeUndefined();
+    expect(wrapper.findAll('strong').map((node) => node.text())).toContain('getTs.ethereumWallet');
   });
   it('explains Google creation and recovery without auto-creating an account', async () => {
     const wrapper = setup('sora');

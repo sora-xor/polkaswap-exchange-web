@@ -24,7 +24,7 @@ export type LatestIndexedBlockResult = {
 
 const PolkaswapIndexerStreamBlockQuery = gql<IndexerStreamBlockResponse>`
   query PolkaswapIndexerStreamBlockQuery {
-    data: updatesStream(id: "price") {
+    data: updatesStream(id: "chainState") {
       block
     }
   }
@@ -63,7 +63,7 @@ function parseIndexerStreamBlock(response: Nullable<IndexerStreamBlockResponse>)
 }
 
 /**
- * Reads the price stream first, then the bounded worker checkpoint record.
+ * Reads the canonical worker checkpoint, with one bounded retry when it is unavailable.
  * Preserves the first request error when neither stream provides a valid block.
  */
 async function fetchPolkaswapLatestIndexedBlock(): Promise<number | null> {

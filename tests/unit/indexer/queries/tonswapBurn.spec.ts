@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 
 import { fetchTonswapBurnSnapshot, TONSWAP_MAINNET_GENESIS } from '@/indexer/queries/tonswapBurn';
+import { APPROVED_RECOVERY_POLICY } from '@/indexer/queries/capabilities';
 import { TONSWAP_START_BLOCK } from '@/features/misc/lib/tonswapBurn';
 
 const indexerMocks = vi.hoisted(() => ({
@@ -34,13 +35,23 @@ const burn = (overrides: Record<string, unknown> = {}) => ({
   blockHeight: TONSWAP_START_BLOCK,
   extrinsicIndex: 1,
   campaign: 'tonswap',
+  recoveryPolicyHash: APPROVED_RECOVERY_POLICY,
+  blockHash: `0x${'44'.repeat(32)}`,
+  eventIndex: 0,
+  receiptId: `0x${'44'.repeat(32)}:0`,
+  claimOwner: address,
+  originalAddress: address,
+  claimStatus: 'reserved',
   ...overrides,
 });
 const page = (overrides: Record<string, unknown> = {}) => ({
   genesisHash: TONSWAP_MAINNET_GENESIS,
   startBlock: TONSWAP_START_BLOCK,
   indexedThroughBlock: TONSWAP_START_BLOCK + 2,
-  checkpointBlock: TONSWAP_START_BLOCK + 2,
+  checkpointBlock: 28_194_043,
+  recoveryPolicyHash: APPROVED_RECOVERY_POLICY,
+  postForkAnchorBlock: 28_194_043,
+  postForkAnchorHash: '0xe7c02d6f6990bc6c0f6356833db98ccdf3ed07fb628631e45236935470774e7c',
   checkpointTimestamp: Math.floor(Date.now() / 1_000),
   fresh: true,
   nodes: [burn()],
@@ -52,6 +63,7 @@ const response = (value: unknown) => ({ ok: true, json: async () => ({ data: { t
 beforeEach(() => {
   indexerMocks.endpoint = 'https://mof.sora.org/graphql';
   indexerMocks.unavailable = false;
+  capabilityFixture.allowed = true;
 });
 
 afterEach(() => vi.unstubAllGlobals());
@@ -120,7 +132,7 @@ describe('finalized TONSWAP burn snapshots', () => {
       })
       .mockResolvedValueOnce(response(page()));
     vi.stubGlobal('fetch', fetchMock);
-    await fetchTonswapBurnSnapshot();
+    await expect(fetchTonswapBurnSnapshot()).rejects.toThrow('context changed');
     expect(fetchMock.mock.calls.map(([url]) => url)).toEqual([endpoint, endpoint]);
     expect(JSON.parse(fetchMock.mock.calls[1][1].body).variables.atBlock).toBe(TONSWAP_START_BLOCK + 2);
   });
@@ -258,4 +270,48 @@ describe('finalized TONSWAP burn snapshots', () => {
     );
     await expect(fetchTonswapBurnSnapshot()).rejects.toThrow();
   });
+});
+
+// Snapshot arithmetic fixtures explicitly supply affirmative capability; negative real-gate tests are separate.
+const capabilityFixture = vi.hoisted(() => ({ allowed: true }));
+vi.mock('@/indexer/queries/capabilities', async (importOriginal) => {
+  const { allowedFullCapabilities } = await import('@tests/fixtures/entitlementCapabilities');
+  return {
+    ...(await importOriginal()),
+    requireEndpointEntitlements: vi.fn(async () => {
+      if (!capabilityFixture.allowed) throw Error('revoked');
+      return allowedFullCapabilities;
+    }),
+  };
+});
+
+it.each([
+  { recoveryPolicyHash: '0x' + '99'.repeat(32) },
+  { recoveryPolicyHash: null },
+  { postForkAnchorBlock: 28_194_044 },
+  { postForkAnchorHash: '0x' + '99'.repeat(32) },
+])('rejects mismatched recovery snapshot identity %j', async (override) => {
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValue(response(page(override))));
+  await expect(fetchTonswapBurnSnapshot()).rejects.toThrow();
+});
+it.each([
+  { receiptId: null },
+  { claimOwner: null },
+  { originalAddress: null },
+  { recoveryPolicyHash: null },
+  { eventIndex: -1 },
+  { blockHash: '0x' + '00'.repeat(32) },
+])('rejects missing recovery receipt evidence %j', async (override) => {
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValue(response(page({ nodes: [burn(override)] }))));
+  await expect(fetchTonswapBurnSnapshot()).rejects.toThrow();
+});
+it('rejects capability revoked after snapshot fetch before publishing or scoring', async () => {
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async () => {
+      capabilityFixture.allowed = false;
+      return response(page());
+    })
+  );
+  await expect(fetchTonswapBurnSnapshot()).rejects.toThrow('revoked');
 });

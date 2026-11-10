@@ -1,0 +1,9 @@
+# Volume and fee history
+
+The Stats page displays disjoint UTC calendar observations from the selected indexer. Volume is natural USD and fees are codec-denominated XOR. All sums and changes use FPNumber. The selected period owns its upper second and the previous period owns the touching lower second. The open current bucket may end at the latest indexed block within 120 seconds of the requested end. Historical buckets require both exact boundaries.
+
+The chart displays the primary observations as soon as their connection finishes. Adjacent missing DAY buckets are queried together for HOUR data. Any still-missing hours are checked between the immediately preceding and following canonical BLOCK observations. A complete, consecutive set of unique block heights can supply the missing amount. Two consecutive outside anchors prove that no block occurred in the intervening period. A legacy rolling snapshot, a missing anchor, an invalid amount or an unfinished connection cannot certify the sum.
+
+Gap recovery stops after 24 requests per period and metric, including page retries. A single gap spanning more than 800 blocks remains unknown. The chart shows gaps for unknown buckets, marks the period total unavailable and omits a comparison percentage when either period is incomplete. A failed primary query shows the chart's retry action. Switching range or endpoint prevents superseded reads from updating the chart or requesting more pages.
+
+If the current period's sole missing interval ends at the live selection and the right BLOCK anchor has not finalized yet, the chart retries only the anchors after 6, 12, 24 and 48 seconds. The original time bounds stay fixed. Each attempt counts toward the same recovery budget. Changing the range or endpoint, or leaving the page, cancels the pending timer. No amount is shown for a still-unproven interval.

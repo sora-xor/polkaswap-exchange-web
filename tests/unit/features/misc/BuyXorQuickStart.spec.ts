@@ -66,12 +66,16 @@ describe('Buy XOR start screen', () => {
   beforeEach(() => {
     vi.useFakeTimers();
     mocked.request.mockReset();
-    mocked.maxDai.mockReset().mockResolvedValue('23.88');
+    // Card purchases search the maximum in ETH (six decimals), every other route in DAI.
+    mocked.maxDai
+      .mockReset()
+      .mockImplementation(async (_quote, _fees, options) => (options?.decimals === 6 ? '0.02388' : '23.88'));
     preview({
       state: 'ready',
       feasible: true,
       spendableXor: '2.621118',
-      daiAmount: '15',
+      swapAsset: 'ETH',
+      swapAmount: '0.0064',
       expiresAt: Date.now() + 30_000,
     });
   });
@@ -109,10 +113,12 @@ describe('Buy XOR start screen', () => {
   });
 
   it('offers the largest amount the SORA market can take when the amount is too large', async () => {
-    preview({ state: 'blocked', feasible: false, reason: 'price-impact', daiAmount: '41.6' });
+    preview({ state: 'blocked', feasible: false, reason: 'price-impact', swapAsset: 'ETH', swapAmount: '0.0416' });
     const wrapper = mountStart({ amount: '50' });
     await settle();
     expect(mocked.maxDai).toHaveBeenCalledTimes(1);
+    // The card route swaps ETH on SORA, so the maximum is searched in ETH: 50 × 0.02388 / 0.0416 × 0.98 ≈ 28 USD.
+    expect(mocked.maxDai.mock.calls[0][2]).toMatchObject({ start: '0.02', decimals: 6 });
     expect(wrapper.find('[data-test-name="buyXorEstimate"]').exists()).toBe(false);
     expect(wrapper.get('[data-test-name="buyXorProblem"]').text()).toContain(
       'buyXor.start.tooBig {"amount":"28\u00a0USD"}'
@@ -122,8 +128,28 @@ describe('Buy XOR start screen', () => {
     expect(wrapper.emitted('update:amount')).toEqual([['28']]);
   });
 
+  it('keeps the card provider fees out of the scaled card maximum', async () => {
+    mocked.maxDai.mockResolvedValue('0.026');
+    preview({
+      state: 'ready',
+      feasible: true,
+      spendableXor: '2.3174',
+      swapAsset: 'ETH',
+      swapAmount: '0.00636292',
+      feeComponents: [
+        { stage: 'provider', amount: '3.56', symbol: 'USD', included: true },
+        { stage: 'swap', amount: '0.1', symbol: 'XOR', included: true },
+      ],
+      expiresAt: Date.now() + 30_000,
+    });
+    const wrapper = mountStart({ amount: '20' });
+    await settle();
+    // 3.56 + 16.44 × 0.026 / 0.00636292, less 2 % → 69 USD (scaling the fees too would say 80).
+    expect(wrapper.get('[data-test-name="buyXorMax"]').text()).toContain('buyXor.start.max {"amount":"69\u00a0USD"}');
+  });
+
   it('reuses one maximum search for a minute of estimates', async () => {
-    preview({ state: 'blocked', feasible: false, reason: 'price-impact', daiAmount: '41.6' });
+    preview({ state: 'blocked', feasible: false, reason: 'price-impact', swapAsset: 'ETH', swapAmount: '0.0416' });
     const wrapper = mountStart({ amount: '50' });
     await settle();
     await wrapper.setProps({ amount: '60' });
@@ -137,7 +163,7 @@ describe('Buy XOR start screen', () => {
 
   it('hides the maximum when the search finds none and offers the smaller-amount search instead', async () => {
     mocked.maxDai.mockResolvedValue(null);
-    preview({ state: 'blocked', feasible: false, reason: 'price-impact', daiAmount: '41.6' });
+    preview({ state: 'blocked', feasible: false, reason: 'price-impact', swapAsset: 'ETH', swapAmount: '0.0416' });
     const wrapper = mountStart({ amount: '50' });
     await settle();
     expect(wrapper.find('[data-test-name="buyXorMax"]').exists()).toBe(false);
@@ -152,7 +178,7 @@ describe('Buy XOR start screen', () => {
     expect(wrapper.text()).toContain('buyXor.start.cardMinimum {"amount":"30\u00a0USD"}');
     await button(wrapper, 'getTs.preview.useAmount {"amount":"30","asset":"USD"}')!.trigger('click');
     expect(wrapper.emitted('update:amount')).toEqual([['30']]);
-    preview({ state: 'blocked', feasible: false, reason: 'price-impact', daiAmount: '25' });
+    preview({ state: 'blocked', feasible: false, reason: 'price-impact', swapAsset: 'ETH', swapAmount: '0.025' });
     await wrapper.setProps({ amount: '30' });
     await settle();
     expect(wrapper.text()).toContain('buyXor.start.cardBlocked {"minimum":"30\u00a0USD","maximum":"28\u00a0USD"}');
@@ -183,8 +209,20 @@ describe('Buy XOR start screen', () => {
       'buyXor.start.steps.swap',
     ]);
     expect(wrapper.emitted('update:amount')).toBeUndefined();
+    expect(wrapper.get('.buy-xor-start__next > p').text()).toBe('buyXor.start.stepsNote');
     await wrapper.get('[data-source="card"]').trigger('click');
     expect(wrapper.emitted('selectSource')).toEqual([['card']]);
+  });
+
+  it('tells card buyers that the page handles the Ethereum steps and nothing is charged before they pay', () => {
+    const wrapper = mountStart({ source: 'card' });
+    expect(wrapper.findAll('.buy-xor-start__next li').map((item) => item.text())).toEqual([
+      'buyXor.start.steps.walletsCard',
+      'buyXor.start.steps.card',
+      'buyXor.start.steps.sendCard',
+      'buyXor.start.steps.swap',
+    ]);
+    expect(wrapper.get('.buy-xor-start__next > p').text()).toBe('buyXor.start.stepsNoteCard');
   });
 
   it('formats the advisory maximum with the app language delimiters and emits the canonical amount', async () => {
@@ -236,13 +274,14 @@ describe('Buy XOR start screen', () => {
   });
 
   it('offers the maximum only when it is a real step up from the typed amount', async () => {
-    // Each USD buys 22/27 DAI, so the scaled maximum stays 27 × 23.88 / 22 × 0.98 = 28.7 → 28 USD.
+    // Each USD buys 0.022/27 ETH, so the scaled maximum stays 27 × 0.02388 / 0.022 × 0.98 = 28.7 → 28 USD.
     mocked.request.mockImplementation(async (request) => ({
       ...request,
       state: 'ready',
       feasible: true,
       spendableXor: '3.69',
-      daiAmount: new FPNumber(request.amount).mul(new FPNumber('22')).div(new FPNumber('27')).toString(),
+      swapAsset: 'ETH',
+      swapAmount: new FPNumber(request.amount).mul(new FPNumber('0.022')).div(new FPNumber('27')).toString(),
       feeComponents: [],
       limitations: [],
       costCoverage: 'partial',
