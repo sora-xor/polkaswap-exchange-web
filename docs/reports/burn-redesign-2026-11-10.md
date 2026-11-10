@@ -1,4 +1,4 @@
-# Burn page redesign — 10 November 2026
+# Burn page redesign — 10–11 November 2026
 
 The Burn page now leads with an XOR amount and estimated TS, quick amounts,
 folded guidance, compact public activity, and a transaction status banner.
@@ -19,8 +19,8 @@ configuration, Store payment package, Bots and other routes are preserved.
 Predecessor production: `bafybeicphwvkvtgea6m7osamlafvac3527ikjvqxkoc7oj6bjtl23a6zua`.
 Predecessor testnet: `bafybeic74v6pe4kvgj33vqkqlvjq7i2otp2j7fufbqx42o2esyfra645pi`.
 
-Candidate production: `bafybeiawmv7o6xvcgolgemttjxyckyqwum2jevnwannjjejjjjo42bdz4y`.
-Candidate testnet: `bafybeigyppl2avcuj3n6etj7is2ijgda7ezd6rrup77jtced3yxtvtvohe`.
+Published production: `bafybeiawmv7o6xvcgolgemttjxyckyqwum2jevnwannjjejjjjo42bdz4y`.
+Published paired testnet: `bafybeigyppl2avcuj3n6etj7is2ijgda7ezd6rrup77jtced3yxtvtvohe`.
 
 ## Reading and reservation safeguards
 
@@ -57,6 +57,60 @@ All nine candidate WebKit routes pass with zero failed requests and console
 errors. Chromium and WebKit freshness probes both pass, and the spark animation
 runs then settles; reduced-motion mode suppresses it.
 
-The master integration full-unit gate and public rollout remain in progress.
-Final evidence is retained under
+Bunny's origin was saved, read back and purged using the existing authorized API
+credential. The root, entry JavaScript and CSS matched, then 374 observed Swap
+paths were warmed sequentially. All 933 public files matched (935 complete
+responses, 42,402,577 bytes); initial and final roots both reported the new CID.
+The unmocked live Burn page passed at 390px and 1280px with working quick amounts,
+invalid-input rejection, unavailable estimates kept unavailable, no overflow,
+and no request or page errors. The final live WebKit refresh probe passed.
+
+The first complete-body audit received one empty Bunny root `503`; independent
+stable/origin reads immediately returned the exact expected `200` body, and a
+new full audit passed without retries. The first synthetic live fixture probe
+timed out waiting for its sample rate; its cause was not established. A repeat
+with the same fixture passed. Both initial attempts and recovery evidence are
+retained rather than discarded.
+
+All nine official live WebKit routes pass with zero failed requests and console
+errors, preserving each requested route and mounted UI. The final Swap recheck
+reached `Swap - Polkaswap`, confirmed the new CID and reported zero failed
+requests and console errors. Publication is complete. Final evidence is retained under
 `output/playwright/burn-redesign-release-20261110/`.
+
+## Master integration
+
+Implementation commit: `5a7092413ff1f4de15a5c3939b8d036b4fd3cc1b` on
+`codex/burn-redesign-20261110`; PR:
+[#1630](https://github.com/sora-xor/polkaswap-exchange-web/pull/1630).
+
+The isolated integration starts from local master
+`b5896d3674d8fc42c188d3b76a2119e7e7defa89` and reconciles the deployed assembly
+using common ancestor `1ac1cffd1d8486a16c7fafee26db380365f6a214`.
+Master-only signing, bridge-approval, wallet and Bots fixes are preserved. The
+canonical checkpoint query retains safe parsing and a bounded network-only retry.
+Production is built from its proven release assembly plus Burn, independently
+of these additional master changes. Package dependencies and the lockfile are
+unchanged. Integration build, static feature parity, translation and lint pass.
+Formatting was checked for equivalent TypeScript, Vue and GraphQL ASTs.
+
+The comprehensive master unit run executed 11,425 tests across 1,108 files:
+11,424 passed and one new Burn disclosure assertion expected the older release
+label. Master correctly retained “Create Minamoto mainnet SORA Nexus address”.
+The assertion was corrected; all 28 tests in `tests/unit/views/Burn.spec.ts`
+then passed. No runtime code changed. The entire unit project was not repeated
+after this test-only correction. The separate unit-scripts project completed:
+3,579 tests passed and four existing Bots cases hit the 15-second timeout
+(two in `goal-bundle-study.spec.ts`, two in `goal-target-bundle-quote.spec.ts`).
+These timeouts have not been diagnosed or rerun under the default serial
+settings; they must not be described as passing. The user requested immediate
+completion, so no further extended test runs were started. Master translations
+pass all 13 tests. The full projects use the repository configuration with four workers
+and file parallelism; their source/configuration was not changed to speed up the
+run.
+
+The remote master branch requires one independent approving review and approval
+of the latest push; this protection applies to administrators. Automatic merging
+is disabled. The PR is being made ready for independent review with the four
+script timeouts disclosed. Master remains unmerged pending the required review;
+branch protection will not be bypassed.

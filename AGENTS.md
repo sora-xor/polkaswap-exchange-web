@@ -229,3 +229,16 @@ Use the approved OVH origin and pinned SSH helper in
 DAGs must be imported and fully verified separately. The Burn release source,
 validation, publication and master integration evidence are in
 [the release report](docs/reports/burn-redesign-2026-11-10.md).
+
+
+The Burn redesign published on November 11 (work begun November 10) uses production
+root `bafybeiawmv7o6xvcgolgemttjxyckyqwum2jevnwannjjejjjjo42bdz4y` and paired testnet
+root `bafybeigyppl2avcuj3n6etj7is2ijgda7ezd6rrup77jtced3yxtvtvohe`. It preserves the
+verified Stats download assembly and all entitlement guards. The TONSWAP-only
+60-second display retention approved above is now shipped, with independent
+expiry even during a pending read; failed or replaced evidence also withdraws
+the banner's TS reservation. Both DAGs passed full pin verification, Bunny was
+saved/read back/purged, all 933 public files matched, and all nine candidate/live
+WebKit routes plus the final Swap check passed with zero failed requests and
+console errors. The initial transient CDN audit failure and recovery are retained.
+See [Burn redesign release](docs/reports/burn-redesign-2026-11-10.md).

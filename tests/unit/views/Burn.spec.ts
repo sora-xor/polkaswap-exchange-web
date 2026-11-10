@@ -274,7 +274,7 @@ describe('Burn.vue', () => {
     await flushPromises();
     const tool = running.get('details.campaign__nexus');
     expect(tool.attributes('open')).toBeUndefined();
-    expect(tool.get('summary').text()).toBe('Create a SORA Nexus address for SOLSWAP');
+    expect(tool.get('summary').text()).toBe('Create Minamoto mainnet SORA Nexus address');
     // A bare boolean attribute reaches the stub as an empty string, which means true.
     expect(tool.get('.nexus-generator-stub').attributes('burn-available')).toBe('');
     running.unmount();
