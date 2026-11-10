@@ -2239,6 +2239,19 @@
         "disclaimer": "𒁾 𒋼",
         "title": "𒁾 𒋼"
     },
+    "burnActivity": {
+        "all": "𒀀𒇉 𒁕𒀭 𒌷𒊭",
+        "campaignHistory": "𒁕𒀭 𒉌𒁺 𒅆𒀀 𒌷𒊭 𒈬",
+        "count": "𒉌𒁺 𒊹𒌷",
+        "coverage": "𒌷𒊭 𒌷𒊭 {from}–{to}",
+        "loading": "𒄷𒄷 𒌷𒊭 𒉌𒁺 𒊹𒌷…",
+        "rewardsUnavailable": "𒉆𒀳 𒊹𒌷 𒊹𒌷 𒁕𒀭 𒅆𒀀 𒀭𒆠 𒀭𒆠 𒌷𒊭 𒈬 𒌷𒊭 𒅆𒀀.",
+        "scope": "𒊹𒌷",
+        "title": "𒌷𒊭 𒁕𒀭 𒌷𒊭",
+        "tonswap": "𒁕𒀭 𒉌𒁺 𒅆𒀀",
+        "unavailable": "𒌷𒊭 𒉌𒁺 𒊹𒌷 𒌷𒊭 𒀭𒆠.",
+        "xor": "𒁕𒀭 𒌷𒊭"
+    },
     "burnPage": {
         "confirmNexusRecovery": "𒀭𒆠 𒌷𒊭 𒆠 𒄿𒇻",
         "copySoraNetworkTxHash": "𒁕𒀭 𒊹𒌷 𒆠𒁲",
@@ -2396,8 +2409,22 @@
                 "return": "↩ · 𒋫𒋛",
                 "dismiss": "𒌑 · 𒄷𒊒",
                 "receiptError": "𒁾: 𒉡 𒅅. 𒌋𒌋 𒁺. 𒁾 𒄑𒉈 = 𒁾 𒄑𒉈."
-            }
-        }
+            },
+            "how": {
+                "enter": "𒀭𒆠 𒉌𒁺 𒁕𒀭 𒁕𒀭 𒅆𒀀 𒁕𒀭 𒉌𒁺 𒊹𒌷 𒅆𒀀 𒉌𒁺 𒊹𒌷 𒀭𒆠.",
+                "burn": "𒉌𒁺 𒉌𒁺. 𒉌𒁺 𒁕𒀭 𒌷𒊭 𒉌𒁺 𒁕𒀭 𒊹𒌷.",
+                "claim": "𒂗𒆠 𒁕𒀭 𒊹𒌷 𒉌𒁺 𒅆𒀀.𒌷𒊭 𒉌𒁺 𒊹𒌷 𒅆𒀀 𒉌𒁺 𒅆𒀀 𒃻𒋃."
+            },
+            "more": "𒅆𒀀 𒉌𒁺 𒌷𒊭",
+            "steps": {
+                "sent": "𒅆𒀀",
+                "included": "𒉌𒁺 𒊹𒌷 𒉌𒁺",
+                "final": "𒀭𒆠",
+                "reserved": "𒊹𒌷 𒀭𒆠"
+            },
+            "burnMore": "𒉌𒁺 𒉌𒁺"
+        },
+        "sent": "𒉌𒁺 𒅆𒀀. 𒁕𒀭 𒁕𒀭 𒄷 𒅆𒀀 𒉌𒁺 𒉌𒁺 𒌷𒊭 𒀭𒆠."
     },
     "buttons": {
         "chooseAToken": "𒉌𒁺 𒊹𒌷 𒉌",
@@ -3142,6 +3169,7 @@
     "networkFeeText": "𒆠 𒈠𒄦",
     "networkFeeTooltipText": "𒆠 𒈠𒄦 𒌷𒊭 𒊹𒌷 𒁕𒀭 𒅆𒀀 {Sora} 𒉌𒁺 𒉌𒁺 𒊹𒌷 𒊹𒌷 𒅆𒀀.",
     "networkStatisticsText": "𒆠 𒈨𒂊",
+    "networkVerifiedDays": "𒌓 𒈨𒌍 𒁾",
     "newAccountsText": "𒅆𒀀 𒌷𒊭",
     "nextText": "𒄷",
     "noDataText": "𒁕𒀭 𒌷𒊭",
@@ -3472,6 +3500,7 @@
         "Explore/Tokens": "𒀭𒆠",
         "ForAgents": "𒁕𒀭 𒌷𒊭",
         "OrderBook": "𒅆𒀀",
+        "PointSystemWrapper": "𒁕𒀭",
         "Polkamarkt": "𒀭𒆠",
         "Pool": "𒀀",
         "Rewards": "𒉆𒀳",
@@ -3489,6 +3518,7 @@
     "pairIsNotCreated": "𒉌 𒀭𒆠 𒉌𒁺 𒌷𒊭",
     "points": {
         "accountsText": "{amount} 𒌷𒊭",
+        "activityGuide": "𒁕𒀭 𒊹𒌷",
         "bridgeVolume": "𒆜 𒌷𒊭",
         "complete": "𒁕𒀭 | 𒁕𒀭",
         "currently": "𒅆𒀀",
@@ -3510,6 +3540,7 @@
             "titleProgress": "𒅆𒀀",
             "titleTask": "𒄿𒆪 𒁕𒀭 𒉌𒁺 𒅆𒀀 𒁕𒀭"
         },
+        "historyRequirement": "𒃻𒋃 𒁕𒀭 𒊹𒌷 𒊹𒌷 𒁕𒀭 𒅆𒀀 𒃻𒋃 𒈬.",
         "kensetsuVolumeRepaid": {
             "descriptionTask": "𒊹𒌷 𒊹𒌷 𒉌𒁺 𒊹𒌷 𒌷𒊭 𒁕𒀭 𒊹𒌷 𒅆𒀀",
             "titleProgress": "𒅆𒀀 𒌷𒊭",
@@ -3545,6 +3576,7 @@
             "titleProgress": "𒉌𒁺",
             "titleTask": "𒄷 𒉌𒁺 𒁕𒀭"
         },
+        "personalUnavailable": "𒁕𒀭 𒁕𒀭 𒊹𒌷 𒊹𒌷 𒅆𒀀 𒀭𒆠 𒀭𒆠 𒁕𒀭 𒃻𒋃 𒈬 𒅆𒀀 𒉌𒁺 𒅆𒀀.",
         "progress": "𒊹𒌷",
         "referralRewards": {
             "descriptionTask": "𒀭𒆠 𒌷𒊭 𒁕𒀭 𒉌𒁺 𒉌𒁺 𒁕𒀭",

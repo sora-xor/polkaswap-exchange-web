@@ -2239,6 +2239,19 @@
         "disclaimer": "مطلوب الوصول إلى الكاميرا لالتقاط المستندات في الوقت الفعلي لمنع الاحتيال.",
         "title": "السماح للوصول إلى الكاميرا في إعدادات المتصفح"
     },
+    "burnActivity": {
+        "all": "جميع عمليات حرق XOR",
+        "campaignHistory": "سجل حملة TONSWAP",
+        "count": "عمليات الحرق",
+        "coverage": "كتل blockchain النهائية {from}-{to}",
+        "loading": "جارٍ تحميل سجلات تدمير الرموز المميزة المؤكدة…",
+        "rewardsUnavailable": "لا تتوفر تخصيصات وتقديرات المكافآت حتى يتم التحقق من سجل الحملة.",
+        "scope": "النشاط",
+        "title": "عمليات حرق XOR المؤكدة",
+        "tonswap": "منها TONSWAP",
+        "unavailable": "سجلات تدمير الرمز المميز المؤكدة غير متوفرة.",
+        "xor": "كمية XOR المحروقة"
+    },
     "burnPage": {
         "confirmNexusRecovery": "تأكيد إمكانية الوصول إلى Nexus",
         "copySoraNetworkTxHash": "انسخ تجزئة SORA Network tx",
@@ -2396,8 +2409,22 @@
                 "return": "العودة إلى حملة TS",
                 "dismiss": "رفض الدليل",
                 "receiptError": "تعذّر تنزيل الإيصال. حاول مرة أخرى. لم يتغير سجل حرق الرموز الخاص بك."
-            }
-        }
+            },
+            "how": {
+                "enter": "أدخل كمية XOR التي تريد حرقها وتحقق من تقدير TS.",
+                "burn": "احرقها. تختفي XOR نهائيًا.",
+                "claim": "طالب بـ TS على tonswap.org عند الإطلاق بالمحفظة نفسها."
+            },
+            "more": "كيف يعمل",
+            "steps": {
+                "sent": "أُرسل",
+                "included": "في كتلة",
+                "final": "نهائي",
+                "reserved": "تم حجز TS"
+            },
+            "burnMore": "احرق المزيد"
+        },
+        "sent": "تم إرسال الحرق. تتحدّث إجمالياتك عندما تصبح الكتلة نهائية."
     },
     "buttons": {
         "chooseAToken": "اختر رمزاً",
@@ -3142,6 +3169,7 @@
     "networkFeeText": "رسوم الشبكة",
     "networkFeeTooltipText": "يتم استخدام رسوم الشبكة لضمان نمو النظام {Sora} وأدائه المستقر.",
     "networkStatisticsText": "إحصائيات الشبكة",
+    "networkVerifiedDays": "الأيام الموثّقة في الأرشيف",
     "newAccountsText": "حسابات جديدة",
     "nextText": "التالي",
     "noDataText": "لا توجد بيانات",
@@ -3472,6 +3500,7 @@
         "Explore/Tokens": "الرموز",
         "ForAgents": "للوكلاء",
         "OrderBook": "تجارة",
+        "PointSystemWrapper": "@:rewards.PointSystemWrapper",
         "Polkamarkt": "بولكاماركت",
         "Pool": "حمام سباحة",
         "Rewards": "مكافآت",
@@ -3489,6 +3518,7 @@
     "pairIsNotCreated": "لم يتم إنشاء زوج الرمز المميز",
     "points": {
         "accountsText": "{amount} حسابات",
+        "activityGuide": "أنشطة النقاط",
         "bridgeVolume": "حجم الجسر",
         "complete": "أكمل | مكتمل",
         "currently": "حالياً",
@@ -3510,6 +3540,7 @@
             "titleProgress": "الحكم",
             "titleTask": "قفل XOR في التصويت الحوكمة"
         },
+        "historyRequirement": "تتطلب نقاط الحساب والتقدم سجل حساب تم التحقق منه.",
         "kensetsuVolumeRepaid": {
             "descriptionTask": "سداد ديون KUSD أثناء التصفية أو المواقف الختامية",
             "titleProgress": "حجم Kensetsu",
@@ -3545,6 +3576,7 @@
             "titleProgress": "دفتر الطلبات",
             "titleTask": "إنشاء أوامر الحد"
         },
+        "personalUnavailable": "لن تكون نقاطك وتقدمك متاحين حتى يتم التحقق من سجل حسابك.",
         "progress": "تقدم",
         "referralRewards": {
             "descriptionTask": "راجع الحسابات من خلال نظام الإحالة",

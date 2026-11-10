@@ -11,6 +11,7 @@
         @update:model-value="handleBurnedInputField"
       ></token-input>
       <token-input
+        v-if="estimatesAvailable"
         class="token-input burn-dialog__amount-input burn-dialog__amount-input--received"
         :max="max"
         :title="receivedPlaceholder"
@@ -20,6 +21,9 @@
         @update:model-value="handleInputField"
       ></token-input>
     </div>
+    <p v-if="!estimatesAvailable" role="status" data-testid="burn-estimate-unavailable">
+      {{ t('footer.statistics.title.unavailable') }}
+    </p>
     <div class="burn-dialog__metrics">
       <info-line
         class="burn-dialog__info-line"
@@ -104,7 +108,7 @@
         <template v-else-if="isInsufficientBalance">
           {{ t('insufficientBalanceText', { tokenSymbol: burnedAsset.symbol }) }}
         </template>
-        <template v-else>RESERVE</template>
+        <template v-else>{{ estimatesAvailable ? 'RESERVE' : t('operations.Burn') }}</template>
       </s-button>
     </template>
   </dialog-base>
@@ -114,6 +118,7 @@
 import { Operation } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { api } from '@/lib/soraneo-wallet/src/api';
+import { requireEntitlements } from '@/indexer/queries/capabilities';
 import { computed, getCurrentInstance, nextTick, ref, toRefs, watch } from 'vue';
 
 import TokenInput from '@/components/shared/Input/TokenInput.vue';
@@ -178,6 +183,8 @@ const settingsStore = useSettingsStore();
 const walletStore = useWalletStore();
 
 const value = ref('');
+const estimatesAvailable = ref(false);
+let estimateGeneration = 0;
 const nexusRecipient = ref('');
 const nexusAccessAcknowledged = ref(false);
 const xor = XOR;
@@ -204,7 +211,9 @@ const tokensLeft = computed(() => {
 const burnedValue = computed(() => (value.value ? willBeBurned.value.toString() : ''));
 const maxBurned = computed(() => getFPNumber(max.value).mul(fpRate.value).toString());
 
-const title = computed(() => `Reserve ${receivedAsset.value.symbol} token`);
+const title = computed(() =>
+  estimatesAvailable.value ? `Reserve ${receivedAsset.value.symbol} token` : t('operations.Burn')
+);
 const burnedPlaceholder = computed(() => t('burnPage.soraV3XorAmountTitle', { tokenSymbol: 'SORA v3 XOR' }));
 const receivedPlaceholder = computed(() => `HOW MUCH ${receivedAsset.value.symbol} DO YOU WANT?`);
 
@@ -318,6 +327,23 @@ async function handleConfirmBurn(): Promise<void> {
 
   isVisible.value = false;
 }
+
+/** Gate each opened estimate independently; the ordinary on-chain burn stays available. */
+watch(
+  isVisible,
+  async (dialogVisible) => {
+    const generation = ++estimateGeneration;
+    estimatesAvailable.value = false;
+    if (!dialogVisible) return;
+    try {
+      await requireEntitlements();
+      if (generation === estimateGeneration && isVisible.value) estimatesAvailable.value = true;
+    } catch {
+      /* Unknown entitlement data is not a zero reservation. */
+    }
+  },
+  { immediate: true, flush: 'sync' }
+);
 
 watch(isVisible, async (dialogVisible) => {
   await nextTick();

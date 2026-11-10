@@ -75,14 +75,16 @@ const totalText = computed(() => {
   const upperBound = upperNumber > props.total ? props.total : upperNumber;
 
   return t('ofText', {
-    first: `${lowerBound}-${upperBound}`,
+    first: props.total ? `${lowerBound}-${upperBound}` : '0',
     second: props.total,
   });
 });
 
-const disabledFirstPrev = computed(() => props.currentPage === 1 || Boolean(props.loading));
+const disabledFirstPrev = computed(() => props.total === 0 || props.currentPage === 1 || Boolean(props.loading));
 
-const disabledNextLast = computed(() => props.currentPage === props.lastPage || Boolean(props.loading));
+const disabledNextLast = computed(
+  () => props.total === 0 || props.currentPage >= props.lastPage || Boolean(props.loading)
+);
 
 const handlePaginationClick = (button: PaginationButton) => {
   emit('pagination-click', button);

@@ -313,3 +313,15 @@ describe('amount-first Get TS plan', () => {
     await expect(requestGetTsCardQuote('100', 'pk_live_publictest')).rejects.toThrow('Inconsistent card fees');
   });
 });
+
+const capabilityFixture = vi.hoisted(() => ({ allowed: true, calls: vi.fn() }));
+vi.mock('@/indexer/queries/capabilities', async () => {
+  const { allowedLegacyCapabilities } = await import('@tests/fixtures/entitlementCapabilities');
+  return {
+    requireEntitlements: async (indexer = {}) => {
+      capabilityFixture.calls();
+      if (!capabilityFixture.allowed) throw Error('uncertified');
+      return { indexer, capabilities: allowedLegacyCapabilities };
+    },
+  };
+});

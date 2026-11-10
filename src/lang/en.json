@@ -2239,6 +2239,19 @@
         "disclaimer": "Camera access is required for real-time document capture to prevent fraud.",
         "title": "Allow camera access in browser settings"
     },
+    "burnActivity": {
+        "all": "All XOR burns",
+        "campaignHistory": "TONSWAP campaign history",
+        "count": "Burn events",
+        "coverage": "Finalized blocks {from}–{to}",
+        "loading": "Loading finalized burn activity…",
+        "rewardsUnavailable": "Reward allocations and estimates are unavailable until campaign history is verified.",
+        "scope": "Activity",
+        "title": "Finalized XOR burns",
+        "tonswap": "Of which TONSWAP",
+        "unavailable": "Finalized burn activity is unavailable.",
+        "xor": "XOR burned"
+    },
     "burnPage": {
         "confirmNexusRecovery": "Confirm Nexus access",
         "copySoraNetworkTxHash": "Copy SORA Network tx hash",
@@ -2396,8 +2409,22 @@
             "waitingConfirmation": "Waiting for block confirmation.",
             "walletNotice": "Your TS claim is linked to this SORA wallet. Keep access to it and your transaction hash.",
             "yourBurns": "Your XOR burned",
-            "yourReserved": "Your TS reserved"
-        }
+            "yourReserved": "Your TS reserved",
+            "how": {
+                "burn": "Burn it. The XOR is gone for good.",
+                "claim": "Claim your TS on tonswap.org at launch with the same wallet.",
+                "enter": "Enter the XOR you want to burn and check the TS estimate."
+            },
+            "more": "How it works",
+            "steps": {
+                "final": "Final",
+                "included": "In a block",
+                "reserved": "TS reserved",
+                "sent": "Sent"
+            },
+            "burnMore": "Burn more"
+        },
+        "sent": "Burn sent. Your totals update when the block is final."
     },
     "buttons": {
         "chooseAToken": "Choose a token",
@@ -3875,6 +3902,7 @@
     "networkFeeText": "Network Fee",
     "networkFeeTooltipText": "Network fee is used to ensure {Sora} system's growth and stable performance.",
     "networkStatisticsText": "Network statistics",
+    "networkVerifiedDays": "Verified archive days",
     "newAccountsText": "New accounts",
     "nextText": "Next",
     "noDataText": "No data",
@@ -4207,6 +4235,7 @@
         "ForAgents": "For Agents",
         "GetTs": "Get TS",
         "OrderBook": "Trade",
+        "PointSystemWrapper": "@:rewards.PointSystemWrapper",
         "Polkamarkt": "Polkamarkt",
         "Pool": "Pool",
         "Rewards": "Rewards",
@@ -4222,6 +4251,7 @@
     "pairIsNotCreated": "Token pair isn't created",
     "points": {
         "accountsText": "{amount} accounts",
+        "activityGuide": "Points activities",
         "bridgeVolume": "Bridge volume",
         "complete": "Completed | Complete",
         "currently": "Currently",
@@ -4243,6 +4273,7 @@
             "titleProgress": "Governance",
             "titleTask": "Lock XOR in Governance Voting"
         },
+        "historyRequirement": "Account points and progress require verified account history.",
         "kensetsuVolumeRepaid": {
             "descriptionTask": "Repay KUSD debt during liquidations or closing positions",
             "titleProgress": "Kensetsu volume",
@@ -4278,6 +4309,7 @@
             "titleProgress": "Orderbook",
             "titleTask": "Create Limit Orders"
         },
+        "personalUnavailable": "Your points and progress are unavailable until your account history can be verified.",
         "progress": "Progress",
         "referralRewards": {
             "descriptionTask": "Refer accounts through the referral system",

@@ -228,12 +228,26 @@ export const isSameSoraAddress = (left: string, right: string): boolean => {
 export const dedupeBurnEntries = (items: BurnForStats[]): BurnForStats[] => {
   const seen = new Map<string, BurnForStats>();
   const result: BurnForStats[] = [];
+  const canonicalTransactions = new Set(items.filter((item) => item.receiptId).map((item) => item.txHash));
 
   for (const item of items) {
-    const key = item.txHash ? `tx:${item.txHash}` : `${item.address}:${item.blockHeight}:${item.amount.toString()}`;
+    if (!item.receiptId && item.txHash && canonicalTransactions.has(item.txHash)) continue;
+    const key =
+      item.receiptId ??
+      (item.txHash ? `tx:${item.txHash}` : `${item.address}:${item.blockHeight}:${item.amount.toString()}`);
     const existing = seen.get(key);
 
     if (existing) {
+      if (
+        item.receiptId &&
+        (existing.address !== item.address ||
+          existing.blockHeight !== item.blockHeight ||
+          !existing.amount.eq(item.amount) ||
+          existing.claimOwner !== item.claimOwner ||
+          existing.claimStatus !== item.claimStatus)
+      ) {
+        throw new Error('Conflicting canonical burn receipt');
+      }
       existing.nexusRecipient ??= item.nexusRecipient;
       existing.campaign ??= item.campaign;
       existing.extrinsicIndex ??= item.extrinsicIndex;
@@ -306,7 +320,7 @@ export const getReservationAmountsForBurn = (
   const { amount, blockHeight } = burn;
 
   // TS burns belong solely to TONSWAP and must not reserve SS or Nexus XOR.
-  if (burn.campaign === 'tonswap') return null;
+  if (burn.campaign === 'tonswap' || burn.claimStatus === 'extinguished') return null;
   if (!amount.gte(getMinimumBurnedForBlock(campaign, blockHeight))) return null;
 
   return {
@@ -320,7 +334,8 @@ export const getReservationAmountsForBurn = (
  */
 export const aggregateBurnStatsByAddress = (campaign: Campaign, burns: BurnForStats[]): BurnStatsByAddress => {
   return burns.reduce<BurnStatsByAddress>((acc, burn) => {
-    const { address: burnAddress, amount } = burn;
+    const { amount } = burn;
+    const burnAddress = burn.claimOwner ?? burn.address;
     const reservationAmounts = getReservationAmountsForBurn(campaign, burn);
 
     if (!reservationAmounts) return acc;
@@ -391,21 +406,22 @@ export const calculateBurnCampaignStatistics = ({
     if (!accountAddress) continue;
 
     campaignAccountBurns.forEach((burn) => {
-      const { address: burnAddress, amount, blockHeight, txHash } = burn;
+      const { amount, blockHeight, txHash } = burn;
+      const burnAddress = burn.claimOwner ?? burn.address;
       const reservationAmounts = getReservationAmountsForBurn(campaign, burn);
 
       if (!txHash || !reservationAmounts || !isSameSoraAddress(burnAddress, accountAddress)) return;
 
-      accountClaimRows[campaign.id].push(
-        createClaimRow(
-          blockHeight,
-          amount,
-          reservationAmounts.reserved,
-          reservationAmounts.nexus,
-          txHash,
-          'displayBlockHeight' in burn ? burn.displayBlockHeight : blockHeight
-        )
+      const row = createClaimRow(
+        blockHeight,
+        amount,
+        reservationAmounts.reserved,
+        reservationAmounts.nexus,
+        txHash,
+        'displayBlockHeight' in burn ? burn.displayBlockHeight : blockHeight
       );
+      row.id = burn.receiptId ?? row.id;
+      accountClaimRows[campaign.id].push(row);
     });
 
     accountClaimRows[campaign.id].sort(

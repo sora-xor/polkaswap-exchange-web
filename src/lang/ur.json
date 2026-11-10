@@ -2239,6 +2239,19 @@
         "disclaimer": "دھوکہ دہی سے بچنے کے لئے ریئل ٹائم دستاویز کی گرفتاری کے لئے کیمرہ تک رسائی ضروری ہے۔",
         "title": "براؤزر کی ترتیبات میں کیمرے تک رسائی کی اجازت دیں"
     },
+    "burnActivity": {
+        "all": "تمام ٹوکن تباہی (XOR)",
+        "campaignHistory": "TONSWAP مہم کی تاریخ",
+        "count": "ٹوکن تباہی کے واقعات",
+        "coverage": "حتمی شکل دی گئی بلاکچین بلاکس {from}–{to}",
+        "loading": "تصدیق شدہ ٹوکن تباہی کے ریکارڈز لوڈ ہو رہے ہیں…",
+        "rewardsUnavailable": "مہم کی سرگزشت کی تصدیق ہونے تک انعامات اور تخمینے دستیاب نہیں ہیں۔",
+        "scope": "سرگرمی",
+        "title": "تصدیق شدہ ٹوکن تباہی (XOR)",
+        "tonswap": "ان میں سے: TONSWAP",
+        "unavailable": "تصدیق شدہ ٹوکن تباہی کے ریکارڈ دستیاب نہیں ہیں۔",
+        "xor": "تباہ شدہ مقدار (XOR)"
+    },
     "burnPage": {
         "confirmNexusRecovery": "تصدیق کریں · SORA Nexus",
         "copySoraNetworkTxHash": "SORA نیٹ ورک tx ہیش کاپی کریں۔",
@@ -2396,8 +2409,22 @@
                 "return": "TS مہم پر واپس جائیں۔",
                 "dismiss": "برخاست گائیڈ",
                 "receiptError": "رسید ڈاؤن لوڈ نہیں ہو سکی۔ دوبارہ کوشش کریں۔ آپ کے ٹوکن جلانے کا ریکارڈ تبدیل نہیں ہوا۔"
-            }
-        }
+            },
+            "how": {
+                "enter": "جتنا XOR برن کرنا ہے درج کریں اور TS کا تخمینہ دیکھیں۔",
+                "burn": "برن کریں۔ یہ XOR ہمیشہ کے لیے ختم ہو جاتا ہے۔",
+                "claim": "آغاز پر اسی والیٹ سے tonswap.org پر اپنا TS کلیم کریں۔"
+            },
+            "more": "یہ کیسے کام کرتا ہے",
+            "steps": {
+                "sent": "بھیج دیا",
+                "included": "بلاک میں",
+                "final": "حتمی",
+                "reserved": "TS محفوظ"
+            },
+            "burnMore": "مزید برن کریں"
+        },
+        "sent": "برن بھیج دیا گیا۔ بلاک حتمی ہونے پر آپ کے مجموعے اپ ڈیٹ ہوں گے۔"
     },
     "buttons": {
         "chooseAToken": "ایک ٹوکن منتخب کریں",
@@ -3142,6 +3169,7 @@
     "networkFeeText": "نیٹ ورک فیس",
     "networkFeeTooltipText": "نیٹ ورک فیس کا استعمال {Sora} سسٹم کی ترقی اور مستحکم کارکردگی کو یقینی بنانے کے لیے کیا جاتا ہے۔",
     "networkStatisticsText": "نیٹ ورک کے اعدادوشمار",
+    "networkVerifiedDays": "محفوظ شدہ ریکارڈ کے تصدیق شدہ دن",
     "newAccountsText": "نئے اکاؤنٹس",
     "nextText": "اگلا",
     "noDataText": "کوئی ڈیٹا نہیں",
@@ -3472,6 +3500,7 @@
         "Explore/Tokens": "ٹوکن",
         "ForAgents": "ایجنٹوں کے لیے",
         "OrderBook": "تجارت",
+        "PointSystemWrapper": "@:rewards.PointSystemWrapper",
         "Polkamarkt": "پولکا مارکٹ",
         "Pool": "پول",
         "Rewards": "انعامات",
@@ -3489,6 +3518,7 @@
     "pairIsNotCreated": "ٹوکن جوڑی نہیں بنائی گئی ہے",
     "points": {
         "accountsText": "{amount} اکاؤنٹس",
+        "activityGuide": "پوائنٹس کی سرگرمیاں",
         "bridgeVolume": "پل کا حجم",
         "complete": "مکمل | مکمل",
         "currently": "فی الحال",
@@ -3510,6 +3540,7 @@
             "titleProgress": "گورننس",
             "titleTask": "گورننس ووٹنگ میں XOR کو لاک کریں"
         },
+        "historyRequirement": "اکاؤنٹ پوائنٹس اور پیش رفت کے لیے اکاؤنٹ کی تصدیق شدہ تاریخ درکار ہے۔",
         "kensetsuVolumeRepaid": {
             "descriptionTask": "لیکویڈیشن یا اختتامی پوزیشنوں کے دوران KUSD قرض کی ادائیگی کریں",
             "titleProgress": "کینسٹسو حجم",
@@ -3545,6 +3576,7 @@
             "titleProgress": "آرڈر بک",
             "titleTask": "حد کے آرڈر بنائیں"
         },
+        "personalUnavailable": "آپ کے پوائنٹس اور پیش رفت اس وقت تک دستیاب نہیں ہیں جب تک کہ آپ کے اکاؤنٹ کی تاریخ کی تصدیق نہیں ہو جاتی۔",
         "progress": "پیشرفت",
         "referralRewards": {
             "descriptionTask": "ریفرل سسٹم کے ذریعے اکاؤنٹس کا حوالہ دیں",

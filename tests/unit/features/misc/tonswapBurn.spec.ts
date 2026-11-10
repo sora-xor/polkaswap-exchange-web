@@ -269,3 +269,22 @@ describe('TONSWAP global finalized allocation', () => {
     expect(() => allocateTonswapBurns([burn(override)])).toThrow();
   });
 });
+
+describe('recovery TS claim ownership', () => {
+  it('extinguishes an attacker allocation without removing its interval from the reward curve', () => {
+    const first = burn({ claimStatus: 'extinguished' });
+    const second = burn({
+      address: 'old',
+      claimOwner: 'replacement',
+      extrinsicIndex: 1,
+      txHash: `0x${'02'.repeat(32)}`,
+    });
+    const recovered = allocateTonswapBurns([first, second]);
+    const original = allocateTonswapBurns([{ ...first, claimStatus: undefined }, second]);
+    expect(recovered.allocations[0].reward.isZero()).toBe(true);
+    expect(recovered.allocations[1].reward.toString()).toBe(original.allocations[1].reward.toString());
+    expect(recovered.totalBurned.toString()).toBe('2');
+    expect(recovered.totalReward.toString()).toBe(recovered.allocations[1].reward.toString());
+    expect(recovered.allocations[1]).toMatchObject({ address: 'old', claimOwner: 'replacement' });
+  });
+});

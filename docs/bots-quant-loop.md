@@ -215,6 +215,27 @@ We tested whether structural-break detection improves this loop: the ADIA Lab St
 
 The dislocation rule already acts as the relevant break detector for this edge, so no break-conditioned trading is shipped.
 
+## Live-only bots for new deep pools
+
+The archive can only research pools that were deep while it was recorded. XOR-ETH grew from under 1 XOR to about 104 XOR on 2026-10-10 and 2026-10-12, after the archive ended, so the loop rated it `thin` from its archive median. Users can now set up and run a bot on such a pool without a past test (`quant-live.ts`, `useQuantLoop` → `live`, the _Live only_ card in `QuantCommandCenter`).
+
+- **Which pools.** After research finishes, and on every hourly signal refresh, each archive-`thin` market's direct XOR pool is read from the connected node (`readQuantPoolDepth`). A pool whose XOR side holds at least 20 XOR (the loop's liquidity gate) becomes a live-only offer with its last 48 hourly closes from `createPlaygroundHistoryLoader` (exact pool reserves). A still-shallow pool stays under _Other markets_, and its note shows the live depth instead of the archive median.
+- **Freshness.** An offer is marked stale when its depth or closes fail to load or its latest close is more than two hours old (the limit a running bot applies). A stale card keeps its information but disables Paper trade and Go live. Both actions first re-read that pool and its closes (`refreshLiveMarket`), so a review is never prepared from an old depth or close.
+- **Rule.** Buy when the price is 5, 8 (default) or 12% below its 24-hour average; sell when it is far enough above it. These are ordinary `rules` strategies, so the live engine, limits and paper mode are unchanged.
+- **Cost-aware plan** (`quantLivePlan`). A round trip pays price impact on both legs, the pool fee twice and the network fee twice, so:
+  - the order size is about √(network fee × pool XOR depth), where impact (≈ order / depth per leg) and the fixed fee (fee / order per leg) cost least: 3 XOR for 0.1 XOR fees and a 104 XOR pool. It is capped at half the budget after the 2 XOR reserve and at 5% of the pool, in 0.5 XOR steps;
+  - the sell trigger is set one point above where a round trip from the buy trigger covers its estimated cost, counting buy- and sell-side fees separately: 13.5% on 2026-10-13, giving −5%/+10%, −8%/+7% and −12%/+3%. The card says so in one line;
+  - the review quotes fees for the planned order. If fresh fees change the order size, the new order is quoted again, so the saved fee evidence matches the bot.
+- **Break-even exit floor.** The exit is measured against a moving average, which can fall below the price the bot paid. Live-only bots therefore carry `strategy.exitFloor: 'break-even'`: the engine holds a sell signal (`bots.events.breakEven`) while selling all holdings at the latest close, after the saved sell-side pool fee, price impact and network fee, would leave the bot below its starting budget (`sellKeepsBreakEven`). If an edit drops the saved costs, holdings are valued at the close alone, so an edited bot can still exit. The floor is opt-in and accepted only on `rules` strategies.
+- **Budget.** The pilot budget is fixed at 10 XOR including the 2 XOR fee reserve, which bounds stacked buys during a long slide to two. Larger budgets wait for forward results. The price-impact ceiling is the order's constant-product impact plus two points (`quantLiveImpactCeiling`).
+- **Untested, said plainly.** The saved record is `source: 'live'`, `validation: 'none'`, zero trades and zero return; `copyResearchSnapshot` rejects a live record that claims anything else. The card is titled _No past test_, the consent dialog shows "Not tested on past data…" instead of a test result, and a saved bot is titled _Live prices · not tested_ (not "created from a backtest").
+- **Sessions.** `prepareLiveBot` allows sessions longer than a day for `rules` bots with walk-forward research or with a live-only record, so live-only bots get the same 1–14 day choice.
+- **Live prices for every rule bot.** Running `rules` bots now read hourly closes on the `xor-pool` basis (exact same-block pool reserves), the basis their research uses. The indexed USD price feed applies its own liquidity gate and had no ETH price at all, which would have stopped an ETH bot with a stale-history error. Every bot-eligible asset has a direct XOR pool above 1 XOR, which is exactly the indexer's rule for publishing pool evidence.
+
+On true hourly reserves read from the archive node (2026-10-11 08:00 to 2026-10-13 04:00 UTC), XOR-ETH swung between about 361 and 463 XOR per ETH several times a day. A rough replay suggested that fixed +2–3% exits lose money after costs and that cost-aware exits do better. It resets reserves every hour (ignoring the bot's own fills), counts a final liquidation the engine does not perform and covers only three or four swings, so it is not evidence of profit and the card shows no result.
+
+The indexer's hourly closes for XOR-ETH were stale during that period: its worker did not refresh cached pool reserves after swaps, so closes repeated the reserves of the last liquidity change. Live signals for new pools depend on the indexer fix in `polkaswap-indexer` and on repairing the affected hours.
+
 ## Refreshing the data
 
 The research covers the bundled archive. To extend it, rerun the read-only extractor described in `public/bot-history/README.md`, then rebuild. The loop picks up the new hours automatically.
@@ -231,7 +252,9 @@ The research covers the bundled archive. To extend it, rerun the read-only extra
   - bar-by-bar parity of every extended condition and of `any` groups on real VAL, PSWAP and DAI history, plus bounded, market-bound memos;
   - a real-archive regression, including the strategy map data.
 - `quant-deploy.spec.ts`: templates, impact ceilings, research snapshot contract, signals.
-- `useQuantLoop.spec.ts`: state machine, fee retry, cache, archive fallback, cancellation.
+- `useQuantLoop.spec.ts`: state machine, fee retry, cache, archive fallback, cancellation, live-only offers for archive-thin pools that are deep now, stale marking and the per-market re-read.
+- `quant-live.spec.ts`: depth gate, cost-aware order sizing and sell triggers (including asymmetric buy and sell fees), rules, impact ceiling, the bot template with its break-even floor and the untested research record.
+- `engine.spec.ts`, _break-even exit floor_: sells above break-even, holds below it with the sell direction kept, the no-cost fallback and rules-only validation.
 - `QuantCommandCenter.spec.ts`: the three how-to steps and the matching card action order, plain rule and budget text, research progress, signals, the strategy map's market, emitted payloads, and the error and retry paths.
 - `QuantAtlasMap.spec.ts` and `QuantParallel.spec.ts`: map data, rules in words, pinning and the studio link; brushing, picking and axis ranges.
 - `BotsPage.spec.ts`, _Quant Loop command center_: page wiring, the consent summary, the funding-short link, paper save and Swap navigation. The _My Bots_ and _Advanced_ header links are covered there too.

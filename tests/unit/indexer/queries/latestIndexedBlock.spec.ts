@@ -55,6 +55,10 @@ describe('latest indexed block query', () => {
       })
     ).toBeNull();
     expect(parseLatestIndexedBlock(null)).toBeNull();
+    for (const value of [null, '', ' ', false, {}, '1e3', '9007199254740992']) {
+      expect(parseIndexerBlock(value)).toBeNull();
+    }
+    expect(parseIndexerBlock('0')).toBe(0);
   });
 
   it.each(
@@ -103,7 +107,7 @@ describe('latest indexed block query', () => {
       source: 'polkaswap',
     });
     expect(indexerMocks.request).toHaveBeenCalledTimes(1);
-    expect(print(indexerMocks.request.mock.calls[0][0])).toContain('updatesStream(id: "price")');
+    expect(print(indexerMocks.request.mock.calls[0][0])).toContain('updatesStream(id: "chainState")');
     expect(indexerMocks.fetchEntities).not.toHaveBeenCalled();
     expect(indexerMocks.fetchSorametricsLatestBlock).not.toHaveBeenCalled();
   });

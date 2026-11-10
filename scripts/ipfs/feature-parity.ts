@@ -8,6 +8,7 @@ import ts from 'typescript';
  * bafybeidb3gmikyesy7f6gvs24zpqevf2n7pf2sxfbcjmvc6bbkhudvvl3a.
  * Provenance: output/go-history/bots-route-repair-20260928/feature-parity.json.
  * Additions are allowed; intentional removals require an explicit baseline review.
+ * Migration was explicitly retired on 2026-10-31 and must not return in a release.
  */
 export const REQUIRED_ROUTE_FRAGMENTS = [
   '',
@@ -224,6 +225,10 @@ export function assertStaticFeatureParity(distDirectory: string): StaticFeatureP
     visit(source);
   }
 
+  const retiredRoutes = [...routes].filter((path) => /^\/migration(?:\/|$)/.test(path));
+  if (retiredRoutes.length) {
+    throw new Error(`Static feature parity failed: retired routes ${JSON.stringify(retiredRoutes)}.`);
+  }
   const missingRoutes = REQUIRED_ROUTE_FRAGMENTS.filter((path) => !routes.has(path));
   const missingPages = Object.entries(REQUIRED_PAGES)
     .filter(([path]) => !pages[path] || !visited.has(pages[path]))

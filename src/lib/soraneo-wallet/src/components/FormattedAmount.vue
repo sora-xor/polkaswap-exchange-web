@@ -167,7 +167,12 @@ const formatted = computed(() => {
       }
     }
 
-    value = new FPNumber(unformatted.value).mul(coefficient).toLocaleString();
+    const precision = props.fiatDefaultRounding
+      ? Math.max(FPNumber.DEFAULT_PRECISION, Math.min(273, unformatted.value.split('.')[1]?.length ?? 0))
+      : FPNumber.DEFAULT_PRECISION;
+    value = new FPNumber(unformatted.value, precision)
+      .mul(coefficient)
+      .toLocaleString(props.fiatDefaultRounding ? precision : undefined);
   }
 
   let [integer, decimal] = value.split(FPNumber.DELIMITERS_CONFIG.decimal);

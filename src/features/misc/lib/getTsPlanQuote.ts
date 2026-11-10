@@ -1,3 +1,4 @@
+import { requireEntitlements } from '@/indexer/queries/capabilities';
 import { FPNumber } from '@sora-substrate/sdk';
 import { DAI, ETH, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { api } from '@/lib/soraneo-wallet/src/api';
@@ -246,6 +247,14 @@ export async function requestGetTsPlanPreview(
   }
   const mainnet = dependencies.checkMainnet ?? isMainnet;
   if (!mainnet()) return stop('mainnet');
+  let entitlementSession: Awaited<ReturnType<typeof requireEntitlements>> | undefined;
+  if (purpose === 'ts') {
+    try {
+      entitlementSession = await requireEntitlements();
+    } catch {
+      return stop('campaign-unavailable');
+    }
+  }
   const burnFee = purpose === 'xor' ? FPNumber.ZERO : knownFee(dependencies.fees.burnFeeCodec);
   const swapFee = knownFee(dependencies.fees.swapFeeCodec);
   if (!burnFee || (request.source !== 'xor' && !swapFee)) return stop('fees-unavailable');
@@ -392,7 +401,12 @@ export async function requestGetTsPlanPreview(
           ),
       dependencies.signal
     );
-    if (!snapshot.fresh) return stop('campaign-unavailable');
+    if (!snapshot.fresh || !entitlementSession) return stop('campaign-unavailable');
+    try {
+      await requireEntitlements(entitlementSession.indexer);
+    } catch {
+      return stop('campaign-unavailable');
+    }
     const allocation = allocateTonswapBurns(snapshot.burns);
     const burn = quoteTonswapBurn(allocation.totalBurned, burnable);
     result.estimatedTs = burn.reward.toString();

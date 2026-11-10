@@ -7,7 +7,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import tonswapMarkUrl from '@/assets/img/tonswap-mark.svg?url';
 import { createTonswapXorBurnRemark, TONSWAP_START_BLOCK } from '@/features/misc/lib/tonswapBurn';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { TransactionStatus, type HistoryItem } from '@/lib/substrate/sdk/types';
+import { TransactionStatus, type HistoryItem } from '@sora-substrate/sdk/build/types';
 import { createTonswapIntent, writeTonswapIntent, clearTonswapIntent } from '@/features/misc/lib/tonswapOnboarding';
 
 // TextEncoder returns Node-realm arrays; SS58 hashing must use the same constructor in jsdom.
@@ -80,7 +80,7 @@ vi.mock('@/composables/useCopyAddress', () => ({ useCopyAddress: () => ({ handle
 vi.mock('@/lib/soraneo-wallet/src/components/DialogBase.vue', () => ({
   default: {
     name: 'DialogBase',
-    props: ['visible'],
+    props: ['visible', 'blurOverlay'],
     emits: ['after-open'],
     template: '<section v-if="visible"><slot/><slot name="footer"/></section>',
   },
@@ -251,7 +251,7 @@ describe('Tonswap burn campaign', () => {
     expect(wrapper.vm.dialogVisible).toBe(false);
   });
 
-  it('preserves verified graph, totals and account history during an outage without blocking burning', async () => {
+  it('clears cached graph, totals and claim history after failed admission without blocking burning', async () => {
     mocks.fetch.mockResolvedValue(snapshot([{ ...burn('17533.57'), address: 'alice' }]));
     const wrapper = await setup();
     const curve = wrapper.findComponent({ name: 'TonswapRewardCurve' });
@@ -263,12 +263,11 @@ describe('Tonswap burn campaign', () => {
     mocks.fetch.mockRejectedValueOnce(new Error('Indexer unavailable'));
     await wrapper.vm.refreshSnapshot();
     await nextTick();
-    expect(curve.props('burned').toString()).toBe('17533.57');
-    expect(wrapper.vm.allocation.totalEligible.toString()).toBe('17533.57');
-    expect(wrapper.get('.tonswap-burn__records').text()).toBe(history);
-    expect(wrapper.get('.tonswap-burn__data').attributes('data-state')).toBe('stale');
-    expect(wrapper.get('.tonswap-burn__data-message').text()).toBe('burnPage.tonswap.dataStale');
-    expect(wrapper.get('.tonswap-burn__data-block').text()).toContain('27,720,488');
+    expect(curve.props('burned')).toBeNull();
+    expect(wrapper.vm.allocation).toBeNull();
+    expect(wrapper.find('.tonswap-burn__records').exists()).toBe(false);
+    expect(wrapper.vm.quote).toBeNull();
+    expect(wrapper.get('.tonswap-burn__data').attributes('data-state')).toBe('reconnecting');
     expect(wrapper.vm.canBurn).toBe(true);
     expect(wrapper.vm.canSubmit).toBe(true);
     mocks.fetch.mockResolvedValue(snapshot([{ ...burn('17534.57'), address: 'alice' }]));
@@ -289,18 +288,20 @@ describe('Tonswap burn campaign', () => {
     let reject!: (reason: Error) => void;
     mocks.fetch.mockReturnValueOnce(new Promise((_resolve, fail) => (reject = fail)));
     await vi.advanceTimersByTimeAsync(5_000);
+    // The reading verified a few seconds ago stays while its replacement loads.
     expect(wrapper.get('.tonswap-burn__data-message').text()).toBe('burnPage.tonswap.dataReady');
+    expect(wrapper.findComponent({ name: 'TonswapRewardCurve' }).props('burned').toString()).toBe('6');
     expect(wrapper.get('.tonswap-burn__data-refresh').element).toBe(control);
     reject(new Error('Finalized coverage unavailable'));
     await flushPromises();
-    expect(wrapper.get('.tonswap-burn__data-message').text()).toBe('burnPage.tonswap.dataStale');
+    expect(wrapper.get('.tonswap-burn__data-message').text()).toBe('burnPage.tonswap.dataReconnecting');
     let resolve!: (value: ReturnType<typeof snapshot>) => void;
     mocks.fetch.mockReturnValueOnce(new Promise((done) => (resolve = done)));
     await vi.advanceTimersByTimeAsync(5_000);
     expect(wrapper.get('.tonswap-burn__data').element).toBe(panel);
-    expect(wrapper.get('.tonswap-burn__data-message').text()).toBe('burnPage.tonswap.dataStale');
+    expect(wrapper.get('.tonswap-burn__data-message').text()).toBe('burnPage.tonswap.dataReconnecting');
     expect(wrapper.get('.tonswap-burn__data-refresh').element).toBe(control);
-    expect(wrapper.findComponent({ name: 'TonswapRewardCurve' }).props('burned').toString()).toBe('6');
+    expect(wrapper.findComponent({ name: 'TonswapRewardCurve' }).props('burned')).toBeNull();
     expect(wrapper.text()).not.toContain('burnPage.tonswap.retry');
     resolve(snapshot([burn('1006')]));
     await flushPromises();
@@ -376,6 +377,26 @@ describe('Tonswap burn campaign', () => {
     expect(mocks.selectAmount).toHaveBeenCalledTimes(2);
   });
 
+  it('keeps the confirmation logo static and disables backdrop blur across edits and refreshes', async () => {
+    const wrapper = await setup();
+    wrapper.vm.openDialog();
+    await nextTick();
+    const dialog = wrapper.findComponent({ name: 'DialogBase' });
+    const logo = dialog.findComponent({ name: 'BurnLogoFire' });
+    const input = dialog.get('input').element;
+    expect(dialog.props('blurOverlay')).toBe(false);
+    expect(logo.props('animate')).toBe(false);
+    expect(logo.attributes('data-renderer')).toBe('static');
+    await dialog.get('input').setValue('123.45');
+    await wrapper.vm.refreshSnapshot();
+    await nextTick();
+    expect(wrapper.vm.dialogVisible).toBe(true);
+    expect(dialog.get('input').element).toBe(input);
+    expect(logo.props('animate')).toBe(false);
+    expect(logo.attributes('data-renderer')).toBe('static');
+    expect(mocks.burn).not.toHaveBeenCalled();
+  });
+
   it('shows the burn amount and hash through inclusion, finality, and exact indexed reservation updates', async () => {
     const wrapper = await setup();
     await submitPendingBurn(wrapper);
@@ -407,7 +428,9 @@ describe('Tonswap burn campaign', () => {
     expect(wrapper.vm.allocation.totalReward.toString()).toBe('99.999948669894379752');
     expect(wrapper.text()).toContain('burnPage.tonswap.rewardsUpdated');
     expect(wrapper.text()).not.toContain('burnPage.tonswap.submitted');
-    expect(wrapper.findAll('strong').filter((node) => node.text() === 'burnPage.tonswap.claimNotice')).toHaveLength(2);
+    // The claim notice stays in the page intro and is repeated once, in the status banner of this burn.
+    expect(wrapper.findAll('strong').filter((node) => node.text() === 'burnPage.tonswap.claimNotice')).toHaveLength(1);
+    expect(wrapper.get('.burn-status__claim').text()).toBe('burnPage.tonswap.claimNotice');
     expect(wrapper.text()).toContain(pendingHash);
   });
 
@@ -695,6 +718,8 @@ describe('Tonswap burn campaign', () => {
       expect(wrapper.vm.dialogVisible).toBe(false);
       expect(wrapper.get('.tonswap-burn__receipt').text()).toContain(pendingHash);
       expect(scroll).toHaveBeenCalledWith(expect.objectContaining({ block: 'nearest' }));
+      // The page brings the status banner into view; the record with the hash stays in the history list.
+      expect((scroll.mock.contexts[0] as Element).className).toBe('tonswap-burn__status-banner');
       resolve(snapshot());
       await flushPromises();
     } finally {
@@ -703,7 +728,7 @@ describe('Tonswap burn campaign', () => {
   });
 
   it.each([excludedAddress, excludedAlternateAddress])(
-    'allows the Trust account %s to burn with an explicit zero reward even without campaign data',
+    'allows the Trust account %s to burn without fabricating a reward when campaign data is unavailable',
     async (excluded) => {
       address.value = excluded;
       mocks.account.pair.address = excluded;
@@ -713,8 +738,7 @@ describe('Tonswap burn campaign', () => {
       wrapper.vm.setAmount('10');
       expect(wrapper.vm.canBurn).toBe(true);
       expect(wrapper.vm.canSubmit).toBe(true);
-      expect(wrapper.vm.quote.reward.toString()).toBe('0');
-      expect(wrapper.vm.quote.eligible.toString()).toBe('0');
+      expect(wrapper.vm.quote).toBeNull();
       await wrapper.vm.confirmBurn();
       expect(mocks.burn).toHaveBeenCalledWith(XOR, '10', createTonswapXorBurnRemark());
     }
@@ -843,12 +867,12 @@ describe('Tonswap burn campaign', () => {
     }
   );
 
-  it('retains stale global data as advisory instead of assuming an empty campaign', async () => {
+  it('withholds unavailable global data instead of assuming an empty campaign', async () => {
     const wrapper = await setup();
     mocks.fetch.mockRejectedValue(new Error('offline'));
     await wrapper.vm.refreshSnapshot();
     expect(wrapper.vm.canBurn).toBe(true);
-    expect(wrapper.text()).toContain('burnPage.tonswap.dataStale');
+    expect(wrapper.text()).toContain('burnPage.tonswap.dataReconnecting');
   });
 
   it('allows signing when an advisory estimate changes during the wallet interaction', async () => {
@@ -925,6 +949,57 @@ describe('Tonswap burn campaign', () => {
       expect(mocks.burn).not.toHaveBeenCalled();
     }
   );
+
+  it('reports an unsynchronized XOR balance as loading, never as insufficient', async () => {
+    const wrapper = await setup();
+    wrapper.vm.openDialog();
+    wrapper.vm.setAmount('100');
+    assets.xor.balance.transferable = undefined as unknown as string;
+    await flushPromises();
+    expect(wrapper.vm.canSubmit).toBe(false);
+    expect(wrapper.text()).toContain('getTs.balancesLoading');
+    expect(wrapper.text()).not.toContain('insufficientBalanceText');
+    await wrapper.vm.confirmBurn();
+    expect(mocks.burn).not.toHaveBeenCalled();
+
+    assets.xor.balance.transferable = '200000000000000000000';
+    await flushPromises();
+    expect(wrapper.vm.canSubmit).toBe(true);
+    expect(wrapper.text()).not.toContain('getTs.balancesLoading');
+  });
+
+  it('reads the spendable balance like the wallet page and shows it beside the amount', async () => {
+    const wrapper = await setup();
+    wrapper.vm.openDialog();
+    await flushPromises();
+    // The wallet page tolerates grouped codec strings; the burn check must agree with what it displays.
+    assets.xor.balance.transferable = '932,000,000,000,000,000,000';
+    wrapper.vm.setAmount('100');
+    await flushPromises();
+    expect(wrapper.vm.canSubmit).toBe(true);
+    expect(wrapper.findComponent({ name: 'TokenInput' }).attributes('balance')).toBe('932000000000000000000');
+    wrapper.vm.setAmount('931.999');
+    expect(wrapper.vm.canSubmit).toBe(true);
+    wrapper.vm.setAmount('932');
+    expect(wrapper.vm.canSubmit).toBe(false);
+    expect(wrapper.vm.validationMessage).toBe('insufficientBalanceText');
+  });
+
+  it('fills MAX with the spendable balance minus the exact network fee', async () => {
+    const wrapper = await setup();
+    wrapper.vm.openDialog();
+    await flushPromises();
+    const input = wrapper.findComponent({ name: 'TokenInput' });
+    expect(input.attributes('is-max-available')).toBe('true');
+    input.vm.$emit('max');
+    await flushPromises();
+    expect(wrapper.vm.amount).toBe('199.999');
+    expect(wrapper.vm.canSubmit).toBe(true);
+
+    assets.xor.balance.transferable = '1000000000000000';
+    await flushPromises();
+    expect(input.attributes('is-max-available')).toBe('false');
+  });
 
   it('rechecks balance and fee immediately before the SDK signs', async () => {
     const wrapper = await setup();
@@ -1367,7 +1442,7 @@ describe('Tonswap campaign headline numbers and live state', () => {
     mocks.publish.mockClear();
     mocks.fetch.mockResolvedValue({ ...snapshot([burn('11592.4')]), fresh: false });
     await setup();
-    expect(mocks.publish).not.toHaveBeenCalled();
+    expect(mocks.publish).toHaveBeenCalledExactlyOnceWith(null);
   });
 
   it('leaves the numbers to the tiles and tells the chart not to repeat them', async () => {
@@ -1390,5 +1465,598 @@ describe('Tonswap campaign headline numbers and live state', () => {
     await nextTick();
     expect(wrapper.find('.tonswap-burn__account').exists()).toBe(false);
     loggedIn.value = true;
+  });
+});
+
+describe('Tonswap burn form, status banner and folded reading', () => {
+  const banner = (wrapper: ReturnType<typeof mount>) => wrapper.find('.burn-status');
+  const steps = (wrapper: ReturnType<typeof mount>) =>
+    wrapper
+      .findAll('.burn-status__step')
+      .map((step) => `${step.attributes('data-step')}:${step.attributes('data-state')}`);
+
+  it('opens a status banner above the form when a burn is sent and follows it to the indexed reservation', async () => {
+    const wrapper = await setup();
+    expect(banner(wrapper).exists()).toBe(false);
+
+    await submitPendingBurn(wrapper);
+    expect(banner(wrapper).attributes('data-phase')).toBe('waiting');
+    expect(wrapper.get('.burn-status__message').text()).toBe('burnPage.tonswap.waitingConfirmation');
+    expect(wrapper.get('.burn-status__value').text()).toBe('2');
+    expect(steps(wrapper)).toEqual(['sent:done', 'included:active', 'final:todo', 'reserved:todo']);
+    // Before the indexer lists the burn, the banner repeats the advisory estimate and says it is one.
+    expect(wrapper.get('.burn-status__note').text()).toBe('burnPage.tonswap.journey.estimated: ≈ 99.9999 TS');
+    // The banner comes before the amount field, where the user just acted.
+    const field = wrapper.get('#tonswap-preview-amount').element;
+    expect(banner(wrapper).element.compareDocumentPosition(field) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(wrapper.classes()).toContain('tonswap-burn--burning');
+
+    wallet.history = { [pendingHash]: pendingHistory(TransactionStatus.InBlock) };
+    await flushPromises();
+    expect(steps(wrapper)).toEqual(['sent:done', 'included:done', 'final:active', 'reserved:todo']);
+
+    wallet.history = { [pendingHash]: pendingHistory(TransactionStatus.Finalized) };
+    await flushPromises();
+    expect(steps(wrapper)).toEqual(['sent:done', 'included:done', 'final:done', 'reserved:active']);
+    expect(wrapper.get('.burn-status__value').text()).toBe('2');
+
+    mocks.fetch.mockResolvedValue(snapshot([indexedPendingBurn()]));
+    wallet.externalHistoryUpdates = { [pendingHash]: pendingHistory(TransactionStatus.Finalized) };
+    await flushPromises();
+    expect(banner(wrapper).attributes('data-phase')).toBe('updated');
+    expect(steps(wrapper)).toEqual(['sent:done', 'included:done', 'final:done', 'reserved:done']);
+    // The headline is now the indexed reservation of exactly this transaction.
+    expect(wrapper.vm.statusReward.toString()).toBe('99.999948669894379752');
+    expect(wrapper.get('.burn-status__value').text()).toBe('+99.9999');
+    expect(wrapper.get('.burn-status__figure').attributes('title')).toBe('99.999948669894379752 TS');
+    expect(wrapper.classes()).not.toContain('tonswap-burn--burning');
+  });
+
+  it('keeps the banner number while a read is in flight and withdraws it after a failed read', async () => {
+    const wrapper = await setup();
+    await submitPendingBurn(wrapper, TransactionStatus.Finalized);
+    expect(wrapper.get('.burn-status__note').text()).toContain('≈ 99.9999 TS');
+
+    let resolve!: (value: ReturnType<typeof snapshot>) => void;
+    mocks.fetch.mockReturnValueOnce(new Promise((done) => (resolve = done)));
+    const read = wrapper.vm.refreshSnapshot();
+    await nextTick();
+    expect(wrapper.get('.burn-status__note').text()).toContain('≈ 99.9999 TS');
+    resolve(snapshot([indexedPendingBurn()]));
+    await read;
+    await nextTick();
+    expect(wrapper.get('.burn-status__value').text()).toBe('+99.9999');
+
+    let reject!: (reason: Error) => void;
+    mocks.fetch.mockReturnValueOnce(new Promise((_done, fail) => (reject = fail)));
+    const failing = wrapper.vm.refreshSnapshot();
+    await nextTick();
+    expect(wrapper.get('.burn-status__value').text()).toBe('+99.9999');
+    reject(new Error('Indexer unavailable'));
+    await failing;
+    await nextTick();
+    // After a failed admission no TS number is shown anywhere, the banner included.
+    expect(wrapper.vm.allocation).toBeNull();
+    expect(wrapper.vm.statusReward).toBeNull();
+    expect(wrapper.get('.burn-status__value').text()).toBe('2');
+    expect(wrapper.get('.burn-status__message').text()).toBe('burnPage.tonswap.confirmed');
+    expect(wrapper.get('.burn-status').attributes('data-phase')).toBe('confirmed');
+    expect(wrapper.get('[data-step="reserved"]').attributes('data-state')).toBe('active');
+    expect(wrapper.get('.tonswap-burn__receipt code').text()).toBe(pendingHash);
+
+    mocks.fetch.mockResolvedValue({ ...snapshot([indexedPendingBurn()]), fresh: false });
+    await wrapper.vm.refreshSnapshot();
+    await nextTick();
+    // Certified older data lists the transaction again, so its own row supplies the number.
+    expect(wrapper.get('.tonswap-burn__data').attributes('data-state')).toBe('stale');
+    expect(wrapper.get('.burn-status__value').text()).toBe('+99.9999');
+  });
+
+  it('withdraws the banner reservation at expiry while preserving proved chain finality', async () => {
+    vi.useFakeTimers();
+    mocks.fetch.mockResolvedValue(snapshot([indexedPendingBurn()]));
+    const wrapper = await setup();
+    mocks.fetch.mockResolvedValue(snapshot());
+    await wrapper.vm.refreshSnapshot();
+    mocks.fetch.mockResolvedValue(snapshot([indexedPendingBurn()]));
+    await submitPendingBurn(wrapper, TransactionStatus.Finalized);
+    await flushPromises();
+    expect(wrapper.get('.burn-status__value').text()).toBe('+99.9999');
+
+    // The tab is hidden for longer than a reading may be kept, then a slow read starts.
+    const visibility = vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('hidden');
+    try {
+      await vi.advanceTimersByTimeAsync(61_000);
+      visibility.mockReturnValue('visible');
+      mocks.fetch.mockReturnValueOnce(new Promise(() => {}));
+      document.dispatchEvent(new Event('visibilitychange'));
+      await nextTick();
+      expect(wrapper.vm.allocation).toBeNull();
+      expect(wrapper.vm.statusReward).toBeNull();
+      expect(wrapper.get('.burn-status__value').text()).toBe('2');
+      expect(wrapper.get('.burn-status').attributes('data-phase')).toBe('confirmed');
+      expect(wrapper.get('.burn-status__message').text()).toBe('burnPage.tonswap.confirmed');
+    } finally {
+      visibility.mockRestore();
+    }
+  });
+
+  it('withdraws a reservation omitted by the next complete snapshot without losing the transaction', async () => {
+    const wrapper = await setup();
+    mocks.fetch.mockResolvedValue(snapshot([indexedPendingBurn()]));
+    await submitPendingBurn(wrapper, TransactionStatus.Finalized);
+    expect(wrapper.get('.burn-status__value').text()).toBe('+99.9999');
+
+    mocks.fetch.mockResolvedValue(snapshot());
+    await wrapper.vm.refreshSnapshot();
+    await nextTick();
+    expect(wrapper.vm.statusReward).toBeNull();
+    expect(wrapper.get('.burn-status').attributes('data-phase')).toBe('confirmed');
+    expect(wrapper.get('.burn-status__value').text()).toBe('2');
+    expect(wrapper.get('.burn-status__message').text()).toBe('burnPage.tonswap.confirmed');
+    expect(wrapper.get('.tonswap-burn__receipt code').text()).toBe(pendingHash);
+
+    mocks.fetch.mockResolvedValue(snapshot([indexedPendingBurn()]));
+    await wrapper.vm.refreshSnapshot();
+    await nextTick();
+    expect(wrapper.get('.burn-status').attributes('data-phase')).toBe('updated');
+    expect(wrapper.get('.burn-status__value').text()).toBe('+99.9999');
+  });
+
+  it('withdraws a completed banner reservation when the endpoint changes before its replacement arrives', async () => {
+    const store = wallet as typeof wallet & { indexers?: Record<string, { endpoint: string }> };
+    store.indexers = { polkaswap: { endpoint: 'https://first.invalid/graphql' } };
+    try {
+      const wrapper = await setup();
+      mocks.fetch.mockResolvedValue(snapshot([indexedPendingBurn()]));
+      await submitPendingBurn(wrapper, TransactionStatus.Finalized);
+      expect(wrapper.get('.burn-status__value').text()).toBe('+99.9999');
+
+      mocks.fetch.mockReturnValueOnce(new Promise(() => {}));
+      store.indexers.polkaswap.endpoint = 'https://second.invalid/graphql';
+      await nextTick();
+      expect(wrapper.vm.allocation).toBeNull();
+      expect(wrapper.vm.statusReward).toBeNull();
+      expect(wrapper.get('.burn-status').attributes('data-phase')).toBe('confirmed');
+      expect(wrapper.get('.burn-status__value').text()).toBe('2');
+      expect(wrapper.get('.tonswap-burn__receipt code').text()).toBe(pendingHash);
+    } finally {
+      delete store.indexers;
+    }
+  });
+
+  it('does not retain an estimate whose reading expired while the wallet was signing', async () => {
+    vi.useFakeTimers();
+    const wrapper = await setup();
+    let complete!: () => void;
+    mocks.notify.mockImplementation(async (handler: () => Promise<void>) => {
+      await handler();
+      await new Promise<void>((resolve) => (complete = resolve));
+      const transaction = pendingHistory();
+      mocks.history = [transaction];
+      return { submitted: true, transaction };
+    });
+    wrapper.vm.openDialog();
+    wrapper.vm.setAmount('2');
+    const submitting = wrapper.vm.confirmBurn();
+    await flushPromises();
+    await vi.advanceTimersByTimeAsync(60_000);
+    complete();
+    await submitting;
+    await flushPromises();
+    expect(wrapper.vm.allocation).not.toBeNull();
+    expect(wrapper.vm.statusReward).toBeNull();
+    expect(wrapper.find('.burn-status__note').exists()).toBe(false);
+  });
+
+  it('does not restore a withdrawn signing estimate when another endpoint later supplies data', async () => {
+    const store = wallet as typeof wallet & { indexers?: Record<string, { endpoint: string }> };
+    store.indexers = { polkaswap: { endpoint: 'https://first.invalid/graphql' } };
+    try {
+      const wrapper = await setup();
+      await submitPendingBurn(wrapper);
+      expect(wrapper.get('.burn-status__note').text()).toContain('≈ 99.9999 TS');
+      store.indexers.polkaswap.endpoint = 'https://second.invalid/graphql';
+      await flushPromises();
+      expect(wrapper.vm.allocation).not.toBeNull();
+      expect(wrapper.vm.statusReward).toBeNull();
+      expect(wrapper.find('.burn-status__note').exists()).toBe(false);
+      expect(wrapper.get('.burn-status').attributes('data-phase')).toBe('waiting');
+    } finally {
+      delete store.indexers;
+    }
+  });
+
+  it('shows no estimate for a burn recovered after a reload, because none was reviewed in this visit', async () => {
+    mocks.history = [pendingHistory(TransactionStatus.InBlock)];
+    const wrapper = await setup();
+    expect(banner(wrapper).attributes('data-phase')).toBe('included');
+    expect(wrapper.vm.statusReward).toBeNull();
+    expect(wrapper.find('.burn-status__note').exists()).toBe(false);
+
+    mocks.fetch.mockResolvedValue(snapshot([indexedPendingBurn()]));
+    await wrapper.vm.refreshSnapshot();
+    await nextTick();
+    expect(wrapper.get('.burn-status__value').text()).toBe('+99.9999');
+  });
+
+  it('keeps the banner until the user closes it, returns to the amount field and shows the next burn again', async () => {
+    const focus = vi.spyOn(HTMLInputElement.prototype, 'focus');
+    const wrapper = await setup();
+    mocks.fetch.mockResolvedValue(snapshot([indexedPendingBurn()]));
+    await submitPendingBurn(wrapper, TransactionStatus.Finalized);
+    await flushPromises();
+    expect(banner(wrapper).attributes('data-phase')).toBe('updated');
+    expect(wrapper.find('.tonswap-burn__receipt').exists()).toBe(false);
+
+    await wrapper.get('.burn-status__dismiss').trigger('click');
+    await flushPromises();
+    expect(banner(wrapper).exists()).toBe(false);
+    expect(focus).toHaveBeenCalled();
+    expect(focus.mock.contexts.at(-1)).toBe(wrapper.get('#tonswap-preview-amount').element);
+    // Closing the banner never removes the record itself.
+    expect(wrapper.findAll(`[data-tx-hash="${pendingHash}"]`)).toHaveLength(1);
+    expect(wrapper.vm.burnReceipt.phase).toBe('updated');
+
+    const secondHash = `0x${'4'.repeat(64)}`;
+    mocks.notify.mockImplementation(async (handler: () => Promise<void>) => {
+      await handler();
+      const transaction = { ...pendingHistory(), id: secondHash, txId: secondHash };
+      mocks.history = [transaction, ...mocks.history];
+      return { submitted: true, transaction };
+    });
+    wrapper.vm.openDialog();
+    wrapper.vm.setAmount('2');
+    await wrapper.vm.confirmBurn();
+    await flushPromises();
+    expect(banner(wrapper).attributes('data-phase')).toBe('waiting');
+    focus.mockRestore();
+  });
+
+  it('shows no TS number in the banner without campaign data, after a failure, or for a SORA Trust burn', async () => {
+    mocks.fetch.mockRejectedValue(new Error('offline'));
+    const offline = await setup();
+    await submitPendingBurn(offline);
+    expect(banner(offline).exists()).toBe(true);
+    expect(offline.vm.statusReward).toBeNull();
+    expect(offline.find('.burn-status__note').exists()).toBe(false);
+    offline.unmount();
+
+    mocks.fetch.mockResolvedValue(snapshot());
+    mocks.history = [];
+    const failed = await setup();
+    await submitPendingBurn(failed);
+    expect(failed.get('.burn-status__note').text()).toContain('≈ 99.9999 TS');
+    wallet.history = {
+      [pendingHash]: { ...pendingHistory(TransactionStatus.Error), blockId: `0x${'9'.repeat(64)}` },
+    };
+    await flushPromises();
+    expect(banner(failed).attributes('data-phase')).toBe('failed');
+    expect(failed.vm.statusReward).toBeNull();
+    expect(failed.get('.burn-status__message').text()).toBe('transaction.statuses.failed');
+    expect(failed.find('.burn-status__dismiss').exists()).toBe(true);
+    failed.unmount();
+
+    wallet.history = {};
+    mocks.history = [];
+    address.value = excludedAddress;
+    mocks.account.pair.address = excludedAlternateAddress;
+    const trust = await setup();
+    mocks.notify.mockImplementation(async (handler: () => Promise<void>) => {
+      await handler();
+      const transaction = { ...pendingHistory(TransactionStatus.Finalized), from: excludedAlternateAddress };
+      mocks.history = [transaction];
+      return { submitted: true, transaction };
+    });
+    trust.vm.openDialog();
+    trust.vm.setAmount('2');
+    await trust.vm.confirmBurn();
+    await flushPromises();
+    expect(trust.vm.statusReward).toBeNull();
+    expect(steps(trust)).toEqual(['sent:done', 'included:done', 'final:done']);
+    expect(trust.get('.burn-status__note').text()).toBe('0 TS · burnPage.tonswap.excludedAccount');
+    expect(trust.find('.burn-status__claim').exists()).toBe(false);
+  });
+
+  it('fills the amount from a quick choice without opening the review or signing', async () => {
+    loggedIn.value = false;
+    const wrapper = await setup();
+    const chips = wrapper.findAll('.tonswap-burn__chip');
+    expect(chips.map((chip) => chip.text())).toEqual(['10', '100', '1,000']);
+    expect(chips.map((chip) => chip.attributes('aria-label'))).toEqual(['10 XOR', '100 XOR', '1,000 XOR']);
+    expect(chips.every((chip) => chip.attributes('type') === 'button')).toBe(true);
+
+    await chips[2].trigger('click');
+    expect(wrapper.get('#tonswap-preview-amount').element.value).toBe('1000');
+    expect(chips[2].attributes('aria-pressed')).toBe('true');
+    expect(chips[0].attributes('aria-pressed')).toBe('false');
+    expect(wrapper.emitted('amount-change')?.at(-1)).toEqual(['1000']);
+    expect(wrapper.vm.dialogVisible).toBe(false);
+    expect(mocks.burn).not.toHaveBeenCalled();
+    // A later purchase draft does not overwrite a choice the user made.
+    loggedIn.value = true;
+    await wrapper.setProps({ initialAmount: '4' });
+    expect(wrapper.get('#tonswap-preview-amount').element.value).toBe('1000');
+  });
+
+  it('shows zero, an estimate or a dash beside the amount, depending on what is known', async () => {
+    const wrapper = await setup();
+    const output = () => wrapper.get('.tonswap-burn__out');
+    expect(output().get('strong').text()).toBe('0');
+    expect(output().classes()).toContain('tonswap-burn__out--empty');
+    expect(wrapper.find('.tonswap-burn__flow--lit').exists()).toBe(false);
+
+    await wrapper.get('#tonswap-preview-amount').setValue('2');
+    expect(output().get('strong').text()).toBe('≈ 99.9999');
+    expect(output().attributes('title')).toBe('99.999948 TS');
+    expect(output().classes()).not.toContain('tonswap-burn__out--empty');
+    expect(wrapper.find('.tonswap-burn__flow--lit').exists()).toBe(true);
+    expect(wrapper.text()).toContain('burnPage.tonswap.journey.estimateNotice');
+
+    mocks.fetch.mockRejectedValueOnce(new Error('Indexer unavailable'));
+    await wrapper.vm.refreshSnapshot();
+    await nextTick();
+    // Without verified campaign data there is an amount but no number to promise.
+    expect(output().get('strong').text()).toBe('—');
+    expect(wrapper.text()).toContain('burnPage.tonswap.estimateUnavailable');
+
+    // While the next read is only in flight the dash shows without calling it an outage.
+    mocks.fetch.mockReturnValueOnce(new Promise(() => {}));
+    void wrapper.vm.refreshSnapshot();
+    await nextTick();
+    expect(wrapper.get('.tonswap-burn__data').attributes('data-state')).toBe('reconnecting');
+    expect(output().get('strong').text()).toBe('—');
+
+    await wrapper.get('#tonswap-preview-amount').setValue('abc');
+    expect(output().get('strong').text()).toBe('0');
+    expect(wrapper.text()).toContain('burnPage.tonswap.invalidAmount');
+  });
+
+  it('leads with one sentence and folds the how-to, the full terms and the funding guide away', async () => {
+    const wrapper = await setup();
+    expect(wrapper.get('.tonswap-burn__description').text()).toBe('burnPage.tonswap.curve.description');
+    expect(wrapper.get('.tonswap-burn__hero').text()).not.toContain('burnPage.tonswap.description');
+
+    const more = wrapper.get('details.tonswap-burn__more');
+    expect(more.attributes('open')).toBeUndefined();
+    expect(more.get('summary').text()).toBe('burnPage.tonswap.more');
+    expect(more.findAll('.tonswap-burn__how li').map((step) => step.text())).toEqual([
+      'burnPage.tonswap.how.enter',
+      'burnPage.tonswap.how.burn',
+      'burnPage.tonswap.how.claim',
+    ]);
+    expect(more.text()).toContain('burnPage.tonswap.description');
+    expect(more.text()).toContain('burnPage.tonswap.startBlock: 27,720,478');
+    expect(more.get('a').attributes('href')).toBe('https://tonswap.org/ts');
+
+    const funding = wrapper.get('details.tonswap-burn__onboarding');
+    expect(funding.attributes('open')).toBeUndefined();
+    expect(funding.get('summary').text()).toBe('burnPage.tonswap.journey.getStarted');
+    // The chart explains the schedule beside the numbers, so it does not repeat the sentence above.
+    expect(wrapper.findComponent({ name: 'TonswapRewardCurve' }).props('compact')).toBe(true);
+    expect(wrapper.findAll('.tonswap-curve__description')).toHaveLength(0);
+  });
+
+  it('shows the receipt note once for the whole history instead of under every burn', async () => {
+    const first = { ...burn('2'), address: 'alice' };
+    const second = { ...burn('3'), address: 'alice', extrinsicIndex: 2, txHash: `0x${'2'.repeat(64)}` };
+    mocks.fetch.mockResolvedValue(snapshot([first, second]));
+    const wrapper = await setup();
+    expect(wrapper.findAll('.tonswap-burn__records > li')).toHaveLength(2);
+    const notes = wrapper.findAll('.tonswap-burn__receipt-note');
+    expect(notes).toHaveLength(1);
+    expect(notes[0].text()).toBe('burnPage.tonswap.journey.receiptNotice');
+    expect(wrapper.findAll('.tonswap-burn__save-receipt')).toHaveLength(2);
+
+    address.value = 'carol';
+    await flushPromises();
+    expect(wrapper.find('.tonswap-burn__receipt-note').exists()).toBe(false);
+  });
+});
+
+describe('Tonswap campaign reading during background reads', () => {
+  const rate = (wrapper: ReturnType<typeof mount>) => wrapper.get('.tonswap-stat--rate .tonswap-stat__value').text();
+  const tiles = (wrapper: ReturnType<typeof mount>) =>
+    wrapper.findAll('.tonswap-stat__value').map((value) => value.text());
+
+  it('keeps the verified numbers, the live mark and the history rows on screen while the next read loads', async () => {
+    vi.useFakeTimers();
+    mocks.fetch.mockResolvedValue(snapshot([{ ...burn('11592.4'), address: 'alice' }]));
+    const wrapper = await setup();
+    const shown = tiles(wrapper);
+    expect(shown).toEqual(['49.7024', '11,592.4', '1,741,764.6', '577,895.5171']);
+    mocks.publish.mockClear();
+
+    let resolve!: (value: ReturnType<typeof snapshot>) => void;
+    mocks.fetch.mockReturnValueOnce(new Promise((done) => (resolve = done)));
+    await vi.advanceTimersByTimeAsync(5_000);
+
+    // Nothing blinks while the request is out.
+    expect(tiles(wrapper)).toEqual(shown);
+    expect(wrapper.find('progress.tonswap-burn__progress').exists()).toBe(true);
+    expect(wrapper.find('.tonswap-burn__live').exists()).toBe(true);
+    expect(wrapper.get('.tonswap-burn__data').attributes('data-state')).toBe('ready');
+    expect(wrapper.findAll('.tonswap-burn__records > li[data-tx-hash]')).toHaveLength(1);
+    expect(wrapper.get('.tonswap-burn__account').text()).toContain('11,592.4 XOR');
+    expect(wrapper.findComponent({ name: 'TonswapRewardCurve' }).props('burned').toString()).toBe('11592.4');
+    // The sidebar keeps its reading too: nothing withdrew it.
+    expect(mocks.publish).not.toHaveBeenCalled();
+
+    resolve(snapshot([{ ...burn('12592.4'), address: 'alice' }]));
+    await flushPromises();
+    expect(rate(wrapper)).toBe('49.6768');
+    expect(mocks.publish).toHaveBeenCalledTimes(1);
+    expect(mocks.publish.mock.calls[0][0].burned.toString()).toBe('12592.4');
+  });
+
+  it('expires at the exact 60-second boundary while a replacement read is pending', async () => {
+    vi.useFakeTimers();
+    mocks.fetch.mockResolvedValue(snapshot([{ ...burn('11592.4'), address: 'alice' }]));
+    const wrapper = await setup();
+    mocks.publish.mockClear();
+    let resolve!: (value: ReturnType<typeof snapshot>) => void;
+    mocks.fetch.mockReturnValueOnce(new Promise((done) => (resolve = done)));
+    await vi.advanceTimersByTimeAsync(5_000);
+    await vi.advanceTimersByTimeAsync(54_999);
+    expect(rate(wrapper)).toBe('49.7024');
+    expect(mocks.publish).not.toHaveBeenCalled();
+
+    await vi.advanceTimersByTimeAsync(1);
+    expect(tiles(wrapper)).toEqual(['—', '—', '—', '—']);
+    expect(wrapper.find('.tonswap-burn__live').exists()).toBe(false);
+    expect(wrapper.find('.tonswap-burn__account').exists()).toBe(false);
+    expect(wrapper.find('.tonswap-burn__records').exists()).toBe(false);
+    expect(mocks.publish).toHaveBeenCalledExactlyOnceWith(null);
+    expect(wrapper.vm.canBurn).toBe(true);
+
+    resolve(snapshot([burn('6')]));
+    await flushPromises();
+    expect(wrapper.vm.allocation.totalEligible.toString()).toBe('6');
+  });
+
+  it('expires before returning from the visibility handler even when an older read is pending', async () => {
+    vi.useFakeTimers();
+    const wrapper = await setup();
+    mocks.fetch.mockReturnValueOnce(new Promise(() => {}));
+    await vi.advanceTimersByTimeAsync(5_000);
+    // Model throttled background timers: wall time advanced but the expiry callback did not run.
+    vi.setSystemTime(Date.now() + 55_000);
+    document.dispatchEvent(new Event('visibilitychange'));
+    await nextTick();
+    expect(wrapper.vm.allocation).toBeNull();
+    expect(mocks.publish).toHaveBeenLastCalledWith(null);
+  });
+
+  it('gives a replacement reading its own 60-second lifetime and removes its expiry timer on unmount', async () => {
+    vi.useFakeTimers();
+    const wrapper = await setup();
+    const visibility = vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('hidden');
+    try {
+      await vi.advanceTimersByTimeAsync(30_000);
+      await wrapper.vm.refreshSnapshot();
+      await vi.advanceTimersByTimeAsync(30_000);
+      expect(wrapper.vm.allocation).not.toBeNull();
+      mocks.publish.mockClear();
+      wrapper.unmount();
+      await vi.advanceTimersByTimeAsync(60_000);
+      expect(mocks.publish).not.toHaveBeenCalled();
+    } finally {
+      visibility.mockRestore();
+    }
+  });
+
+  it('withdraws every number at once when a read fails, and tells the sidebar', async () => {
+    vi.useFakeTimers();
+    mocks.fetch.mockResolvedValue(snapshot([{ ...burn('11592.4'), address: 'alice' }]));
+    const wrapper = await setup();
+    mocks.publish.mockClear();
+
+    mocks.fetch.mockRejectedValueOnce(new Error('Indexer unavailable'));
+    await vi.advanceTimersByTimeAsync(5_000);
+
+    expect(tiles(wrapper)).toEqual(['—', '—', '—', '—']);
+    expect(wrapper.find('progress').exists()).toBe(false);
+    expect(wrapper.find('.tonswap-burn__live').exists()).toBe(false);
+    expect(wrapper.find('.tonswap-burn__records').exists()).toBe(false);
+    expect(wrapper.find('.tonswap-burn__account').exists()).toBe(false);
+    expect(wrapper.get('.tonswap-burn__data').attributes('data-state')).toBe('reconnecting');
+    expect(mocks.publish).toHaveBeenCalledExactlyOnceWith(null);
+    expect(wrapper.vm.canBurn).toBe(true);
+  });
+
+  it('withdraws a reading after a minute even while the tab is hidden', async () => {
+    vi.useFakeTimers();
+    mocks.fetch.mockResolvedValue(snapshot([burn('11592.4')]));
+    const wrapper = await setup();
+    const visibility = vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('hidden');
+    try {
+      // No reads happen while the tab is hidden, so the reading on screen ages.
+      const before = mocks.fetch.mock.calls.length;
+      await vi.advanceTimersByTimeAsync(61_000);
+      expect(mocks.fetch).toHaveBeenCalledTimes(before);
+      expect(rate(wrapper)).toBe('—');
+      expect(mocks.publish).toHaveBeenLastCalledWith(null);
+      mocks.publish.mockClear();
+
+      visibility.mockReturnValue('visible');
+      mocks.fetch.mockReturnValueOnce(new Promise(() => {}));
+      document.dispatchEvent(new Event('visibilitychange'));
+      await nextTick();
+      expect(tiles(wrapper)).toEqual(['—', '—', '—', '—']);
+      expect(wrapper.find('.tonswap-burn__live').exists()).toBe(false);
+      expect(wrapper.get('.tonswap-burn__data').attributes('data-state')).toBe('loading');
+      expect(mocks.publish).not.toHaveBeenCalled();
+    } finally {
+      visibility.mockRestore();
+    }
+  });
+
+  it('keeps a reading that is still within the minute when the tab returns', async () => {
+    vi.useFakeTimers();
+    mocks.fetch.mockResolvedValue(snapshot([burn('11592.4')]));
+    const wrapper = await setup();
+    const visibility = vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('hidden');
+    try {
+      await vi.advanceTimersByTimeAsync(55_000);
+      visibility.mockReturnValue('visible');
+      mocks.fetch.mockReturnValueOnce(new Promise(() => {}));
+      document.dispatchEvent(new Event('visibilitychange'));
+      await nextTick();
+      expect(rate(wrapper)).toBe('49.7024');
+      expect(wrapper.get('.tonswap-burn__data').attributes('data-state')).toBe('ready');
+    } finally {
+      visibility.mockRestore();
+    }
+  });
+
+  it('starts from nothing when the indexer endpoint changes, even while the old read is recent', async () => {
+    const store = wallet as typeof wallet & { indexers?: Record<string, { endpoint: string }> };
+    store.indexers = { polkaswap: { endpoint: 'https://first.invalid/graphql' } };
+    try {
+      mocks.fetch.mockResolvedValue(snapshot([burn('11592.4')]));
+      const wrapper = await setup();
+      expect(rate(wrapper)).toBe('49.7024');
+      mocks.publish.mockClear();
+
+      let resolve!: (value: ReturnType<typeof snapshot>) => void;
+      mocks.fetch.mockReturnValueOnce(new Promise((done) => (resolve = done)));
+      store.indexers.polkaswap.endpoint = 'https://second.invalid/graphql';
+      await nextTick();
+      // The other endpoint has proved nothing yet.
+      expect(tiles(wrapper)).toEqual(['—', '—', '—', '—']);
+      expect(wrapper.find('.tonswap-burn__live').exists()).toBe(false);
+      expect(mocks.publish).toHaveBeenCalledExactlyOnceWith(null);
+
+      resolve(snapshot([burn('6')]));
+      await flushPromises();
+      expect(wrapper.vm.allocation.totalEligible.toString()).toBe('6');
+    } finally {
+      delete store.indexers;
+    }
+  });
+
+  it('withdraws the reading when the network leaves mainnet', async () => {
+    mocks.fetch.mockResolvedValue(snapshot([burn('11592.4')]));
+    const wrapper = await setup();
+    mocks.publish.mockClear();
+    settings.soraNetwork = 'Test';
+    await nextTick();
+    expect(wrapper.vm.allocation).toBeNull();
+    expect(wrapper.find('.tonswap-burn__stats').exists()).toBe(false);
+    expect(mocks.publish).toHaveBeenCalledExactlyOnceWith(null);
+  });
+
+  it('replaces a fresh reading with certified older data and stops calling it live', async () => {
+    vi.useFakeTimers();
+    mocks.fetch.mockResolvedValue(snapshot([burn('11592.4')]));
+    const wrapper = await setup();
+    mocks.publish.mockClear();
+
+    mocks.fetch.mockResolvedValue({ ...snapshot([burn('100')]), fresh: false });
+    await vi.advanceTimersByTimeAsync(5_000);
+    expect(wrapper.get('.tonswap-burn__data').attributes('data-state')).toBe('stale');
+    expect(wrapper.find('.tonswap-burn__live').exists()).toBe(false);
+    expect(wrapper.vm.allocation.totalEligible.toString()).toBe('100');
+    expect(mocks.publish).toHaveBeenCalledExactlyOnceWith(null);
   });
 });

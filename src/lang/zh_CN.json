@@ -2239,6 +2239,19 @@
         "disclaimer": "实时文档捕获需要摄像头访问，以防止欺诈。",
         "title": "在浏览器设置中允许相机访问"
     },
+    "burnActivity": {
+        "all": "所有 XOR 销毁",
+        "campaignHistory": "TONSWAP 活动历史",
+        "count": "销毁事件",
+        "coverage": "最终确定的区块链区块 {from}–{to}",
+        "loading": "正在加载已确认的代币销毁记录...",
+        "rewardsUnavailable": "在验证活动历史记录之前，无法获得奖励分配和估算。",
+        "scope": "活动",
+        "title": "已确认的 XOR 销毁",
+        "tonswap": "其中属于 TONSWAP",
+        "unavailable": "确认的代币销毁记录不可用。",
+        "xor": "已销毁的 XOR"
+    },
     "burnPage": {
         "confirmNexusRecovery": "确认可以访问 Nexus",
         "copySoraNetworkTxHash": "复制 SORA 网络 tx 哈希",
@@ -2396,8 +2409,22 @@
                 "return": "重返TS战役",
                 "dismiss": "解散引导",
                 "receiptError": "无法下载凭证。请重试。您的代币销毁记录未发生变化。"
-            }
-        }
+            },
+            "how": {
+                "enter": "输入要销毁的 XOR 数量，并查看 TS 估算。",
+                "burn": "执行销毁。这些 XOR 将永久消失。",
+                "claim": "上线时使用同一钱包在 tonswap.org 领取 TS。"
+            },
+            "more": "如何运作",
+            "steps": {
+                "sent": "已发送",
+                "included": "已入块",
+                "final": "已最终确认",
+                "reserved": "TS 已预留"
+            },
+            "burnMore": "继续销毁"
+        },
+        "sent": "销毁已发送。区块最终确认后，您的合计会更新。"
     },
     "buttons": {
         "chooseAToken": "选择一个代币",
@@ -3142,6 +3169,7 @@
     "networkFeeText": "网络费用",
     "networkFeeTooltipText": "网络费用用于确保{Sora}系统的增长和稳定运行。",
     "networkStatisticsText": "网络统计",
+    "networkVerifiedDays": "已核实的历史日期",
     "newAccountsText": "新帐户",
     "nextText": "下一个",
     "noDataText": "没有数据",
@@ -3472,6 +3500,7 @@
         "Explore/Tokens": "代币",
         "ForAgents": "对于代理商",
         "OrderBook": "现货交易",
+        "PointSystemWrapper": "@:rewards.PointSystemWrapper",
         "Polkamarkt": "波尔卡市场",
         "Pool": "流动池",
         "Rewards": "奖励",
@@ -3489,6 +3518,7 @@
     "pairIsNotCreated": "未创建代币对",
     "points": {
         "accountsText": "{amount} 个账户",
+        "activityGuide": "积分活动",
         "bridgeVolume": "桥接量",
         "complete": "已完成 | 完成",
         "currently": "现在",
@@ -3510,6 +3540,7 @@
             "titleProgress": "治理",
             "titleTask": "在治理投票中锁定 XOR"
         },
+        "historyRequirement": "账户积分和进度需要经过验证的账户历史记录。",
         "kensetsuVolumeRepaid": {
             "descriptionTask": "在清算或关闭头寸时偿还 KUSD 债务",
             "titleProgress": "Kensetsu 量",
@@ -3545,6 +3576,7 @@
             "titleProgress": "订单簿",
             "titleTask": "创建限价单"
         },
+        "personalUnavailable": "在验证您的帐户历史记录之前，您的积分和进度不可用。",
         "progress": "进步",
         "referralRewards": {
             "descriptionTask": "通过推荐系统推荐账户",

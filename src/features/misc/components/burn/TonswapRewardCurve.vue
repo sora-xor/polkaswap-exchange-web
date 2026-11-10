@@ -1,7 +1,7 @@
 <template>
-  <section class="tonswap-curve" :aria-labelledby="headingId">
+  <section class="tonswap-curve" :class="{ 'tonswap-curve--compact': compact }" :aria-labelledby="headingId">
     <h3 :id="headingId">{{ t('burnPage.tonswap.curve.title') }}</h3>
-    <p class="tonswap-curve__description">
+    <p v-if="!compact || exhausted" class="tonswap-curve__description">
       {{ exhausted ? t('burnPage.tonswap.capReached') : t('burnPage.tonswap.curve.description') }}
     </p>
     <div v-if="showSummary && position && !exhausted" class="tonswap-curve__current">
@@ -75,9 +75,14 @@ import { getTonswapCurrentRate, getTonswapRemaining, TONSWAP_XOR_CAP } from '@/f
  * Finalized progress is grouped separately from the schedule's axis endpoints.
  * The exact cap percentage makes small burns visible without distorting the scale.
  * Set `showSummary` to false when the page already shows the rate and totals next to the chart.
+ * Set `compact` when the page also explains the schedule in its own words: the heading stays for
+ * assistive technology, the description is dropped (the cap notice still shows) and the chart is shorter.
  */
 defineOptions({ name: 'TonswapRewardCurve' });
-const props = withDefaults(defineProps<{ burned: FPNumber | null; showSummary?: boolean }>(), { showSummary: true });
+const props = withDefaults(defineProps<{ burned: FPNumber | null; showSummary?: boolean; compact?: boolean }>(), {
+  showSummary: true,
+  compact: false,
+});
 const { t } = useTranslation();
 const id = useId();
 const headingId = `tonswap-curve-heading-${id}`;
@@ -179,10 +184,28 @@ const chartDescription = computed(() => {
     direction: ltr;
     display: block;
     width: 100%;
-    max-width: 440px;
+    // The labels scale with the drawing, so the width cap also keeps them near the page's text size.
+    max-width: 400px;
     height: auto;
     margin: 16px auto 0;
     overflow: visible;
+  }
+  &--compact {
+    h3 {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+    .tonswap-curve__chart {
+      margin-top: 0;
+    }
+    .tonswap-curve__description {
+      margin-bottom: 8px;
+    }
   }
   &__grid {
     fill: none;
@@ -206,7 +229,7 @@ const chartDescription = computed(() => {
   &__tick {
     fill: var(--s-color-base-content-primary);
     font-family: inherit;
-    font-size: 15px;
+    font-size: 13px;
   }
   &__rate {
     font-weight: 600;

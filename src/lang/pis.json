@@ -2239,6 +2239,19 @@
         "disclaimer": "wakaot raonem raonem luksavve luksavve raonem gohed falom luksavve raonem raonem.",
         "title": "gohed wakaot raonem gohed brausa seting"
     },
+    "burnActivity": {
+        "all": "evri luksavve raonem",
+        "campaignHistory": "Histri blong TONSWAP kempein",
+        "count": "gohed wakaot",
+        "coverage": "raonem raonem {from}–{to}",
+        "loading": "weit raonem gohed wakaot…",
+        "rewardsUnavailable": "praes wakaot wakaot luksavve falom stakaon stakaon raonem histri raonem falom.",
+        "scope": "wakaot",
+        "title": "raonem luksavve raonem",
+        "tonswap": "luksavve gohed falom",
+        "unavailable": "raonem gohed wakaot raonem stakaon.",
+        "xor": "luksavve raonem"
+    },
     "burnPage": {
         "confirmNexusRecovery": "Mekem tru · SORA Nexus",
         "copySoraNetworkTxHash": "kopi wakaot netwok stakaon falom",
@@ -2396,8 +2409,22 @@
                 "return": "Kambak long TS campaign",
                 "dismiss": "Klosem disfala gaed",
                 "receiptError": "No save daonlodim risit. Traem moa. Rekod blong token wea iu bonem hem no senis."
-            }
-        }
+            },
+            "how": {
+                "enter": "stakaon gohed luksavve luksavve falom luksavve gohed wakaot falom gohed wakaot stakaon.",
+                "burn": "gohed gohed. gohed luksavve raonem gohed luksavve wakaot.",
+                "claim": "tekem luksavve wakaot gohed falom.raonem gohed wakaot falom gohed falom walet."
+            },
+            "more": "falom gohed raonem",
+            "steps": {
+                "sent": "falom",
+                "included": "gohed wakaot gohed",
+                "final": "stakaon",
+                "reserved": "wakaot stakaon"
+            },
+            "burnMore": "gohed gohed"
+        },
+        "sent": "gohed falom. luksavve luksavve apdeit falom gohed gohed raonem stakaon."
     },
     "buttons": {
         "chooseAToken": "gohed wakaot token",
@@ -3142,6 +3169,7 @@
     "networkFeeText": "netwok fi",
     "networkFeeTooltipText": "netwok fi raonem wakaot luksavve falom {Sora} gohed gohed wakaot wakaot falom.",
     "networkStatisticsText": "netwok namba",
+    "networkVerifiedDays": "Olketa de long rekod wea mifala bin sekem",
     "newAccountsText": "falom raonem",
     "nextText": "gohed",
     "noDataText": "luksavve raonem",
@@ -3472,6 +3500,7 @@
         "Explore/Tokens": "stakaon",
         "ForAgents": "luksavve raonem",
         "OrderBook": "falom",
+        "PointSystemWrapper": "@:rewards.PointSystemWrapper",
         "Polkamarkt": "stakaon",
         "Pool": "pul",
         "Rewards": "Praes",
@@ -3489,6 +3518,7 @@
     "pairIsNotCreated": "token stakaon gohed raonem",
     "points": {
         "accountsText": "{amount} raonem",
+        "activityGuide": "luksavve wakaot",
         "bridgeVolume": "brij raonem",
         "complete": "luksavve | luksavve",
         "currently": "falom",
@@ -3510,6 +3540,7 @@
             "titleProgress": "falom",
             "titleTask": "lok luksavve gohed falom luksavve"
         },
+        "historyRequirement": "akaon luksavve wakaot wakaot luksavve falom akaon histri.",
         "kensetsuVolumeRepaid": {
             "descriptionTask": "wakaot wakaot gohed wakaot raonem luksavve wakaot falom",
             "titleProgress": "falom raonem",
@@ -3545,6 +3576,7 @@
             "titleProgress": "gohed",
             "titleTask": "wakem gohed luksavve"
         },
+        "personalUnavailable": "luksavve luksavve wakaot wakaot falom stakaon stakaon luksavve akaon histri falom gohed falom.",
         "progress": "wakaot",
         "referralRewards": {
             "descriptionTask": "stakaon raonem luksavve gohed gohed luksavve",

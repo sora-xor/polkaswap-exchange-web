@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import tonswapUrl from '@/assets/img/tonswap-mark.svg?url';
 import soraUrl from '@/assets/img/networks/sora.svg?url';
 import {
@@ -17,7 +17,14 @@ import {
 } from '@/features/misc/lib/burnLogoFire';
 
 /** Brand-shaped fire is decorative; the real logo remains available without animation or WebGL. */
-const props = defineProps<{ variant: BurnFireVariant }>();
+const props = withDefaults(
+  defineProps<{
+    variant: BurnFireVariant;
+    /** Keep the SVG static in surfaces where animated GPU layers can cause flicker. */
+    animate?: boolean;
+  }>(),
+  { animate: true }
+);
 const logoUrl = computed(() => (props.variant === 'tonswap' ? tonswapUrl : soraUrl));
 const canvas = ref<HTMLCanvasElement | null>(null);
 const animated = ref(false);
@@ -65,6 +72,7 @@ function sync(): void {
   if (disposed || !canvas.value) return;
   const device = navigator as Navigator & { deviceMemory?: number; connection?: { saveData?: boolean } };
   if (
+    !props.animate ||
     !canAnimateBurnFire({
       reducedMotion: motion?.matches ?? false,
       saveData: device.connection?.saveData,
@@ -92,6 +100,8 @@ function handleContextLoss(event: Event): void {
   permanentlyUnavailable = true;
   disable();
 }
+
+watch(() => props.animate, sync);
 
 onMounted(() => {
   motion = window.matchMedia?.('(prefers-reduced-motion: reduce)');

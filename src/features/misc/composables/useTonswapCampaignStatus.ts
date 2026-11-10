@@ -63,10 +63,11 @@ export async function readTonswapCampaignSummary(): Promise<TonswapCampaignSumma
   return summarizeTonswapCampaign(allocateTonswapBurns(snapshot.burns), snapshot.indexedThroughBlock);
 }
 
-/** One read at a time. A failed or stale read keeps the last verified reading until it expires. */
+/** One read at a time. A failed or stale read clears the previous reading. */
 function refresh(): Promise<void> {
   if (inFlight) return inFlight;
   const run = generation;
+  publishTonswapCampaignSummary(null);
   inFlight = (async () => {
     try {
       const next = await readTonswapCampaignSummary();
@@ -92,12 +93,11 @@ function schedule(delay: number): void {
   if (pollers > 0) timer = setTimeout(() => void tick(), delay);
 }
 
-/** Skips the network while the tab is hidden or when the Burn page has just published newer data. */
+/** Skips the network while the tab is hidden; every visible read refreshes capability admission. */
 async function tick(): Promise<void> {
   timer = undefined;
   if (pollers === 0) return;
-  const recent = readAt > 0 && Date.now() - readAt < TONSWAP_STATUS_REFRESH_MS - RETRY_BASE_MS;
-  if (!document.hidden && !recent) await refresh();
+  if (!document.hidden) await refresh();
   schedule(
     failures > 0 ? Math.min(TONSWAP_STATUS_REFRESH_MS, RETRY_BASE_MS * 2 ** (failures - 1)) : TONSWAP_STATUS_REFRESH_MS
   );
@@ -111,6 +111,7 @@ function handleVisibilityChange(): void {
 function acquire(): void {
   pollers += 1;
   if (pollers > 1) return;
+  publishTonswapCampaignSummary(null);
   document.addEventListener('visibilitychange', handleVisibilityChange);
   schedule(TONSWAP_STATUS_FIRST_READ_MS);
 }

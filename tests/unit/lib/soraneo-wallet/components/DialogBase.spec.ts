@@ -165,6 +165,24 @@ describe('DialogBase', () => {
     expect(wrapper.get('.s-modal-stub').attributes('data-teleport-to')).toBe('inline');
   });
 
+  it('can disable backdrop blur without removing the overlay or its close behavior', async () => {
+    const wrapper = mount(DialogBase, {
+      props: { visible: true },
+      global: {
+        stubs: { SModal: SModalStub, SButton: true, SIcon: true },
+      },
+    });
+    const modal = wrapper.get('.s-modal-stub');
+    expect(modal.attributes('data-overlay-class')).toBe('dialog-wrapper__overlay');
+
+    await wrapper.setProps({ blurOverlay: false });
+    expect(modal.attributes('data-overlay-class')).toBe('dialog-wrapper__overlay dialog-wrapper__overlay--unblurred');
+    expect(modal.attributes('data-show')).toBe('true');
+    expect(modal.attributes('data-close-on-overlay-click')).toBe('true');
+    expect(dialogBaseSource).toMatch(/&--unblurred\s*\{\s*backdrop-filter:\s*none;\s*-webkit-backdrop-filter:\s*none;/);
+    wrapper.unmount();
+  });
+
   it('forwards the modal after-open event for dialog focus restoration', async () => {
     const wrapper = mount(DialogBase, {
       props: {

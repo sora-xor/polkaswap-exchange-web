@@ -120,6 +120,7 @@ describe('Burn.vue', () => {
       template: '<div class="burn-dialog-stub" :data-recipient="initialNexusRecipient" />',
     },
     TonswapBurnCampaign: { template: '<div class="tonswap-campaign-stub" />' },
+    PublicBurnActivity: { template: '<div data-testid="public-burn-activity" />' },
     SoraNexusAccountGenerator: { name: 'SoraNexusAccountGenerator', template: '<div class="nexus-generator-stub" />' },
     BurnLogoFire: { props: ['variant'], template: '<div class="fire-stub" :data-variant="variant" />' },
     GenericPageHeader: { template: '<div><slot /></div>' },
@@ -140,6 +141,7 @@ describe('Burn.vue', () => {
   };
 
   beforeEach(async () => {
+    capabilityFixture.allowed = true;
     await setI18nLocale(Language.EN);
     loggedInRef.value = true;
     accountDialogVisibleRef.value = false;
@@ -206,6 +208,107 @@ describe('Burn.vue', () => {
     expect(columns[1]!.classes()).not.toContain('burn-column--featured');
     expect(columns[1]!.get('form').classes()).toEqual(expect.arrayContaining(['container--campaign', 'campaign']));
     expect(wrapper.find('.burn-info').exists()).toBe(true);
+  });
+
+  it('orders the page as burn form, public totals, second campaign and a short disclaimer', async () => {
+    const wrapper = mount(BurnPage, { global: { stubs: baseStubs } });
+    await flushPromises();
+
+    const grid = wrapper.get('.burn-grid');
+    expect([...grid.element.children].map((child) => child.className.split(' ')[0])).toEqual([
+      'burn-column',
+      'burn-activity',
+      'burn-column',
+    ]);
+    // The recent interval and the campaign history stay two separate tables.
+    const activity = wrapper.get('.burn-activity').findAll('[data-testid="public-burn-activity"]');
+    expect(activity).toHaveLength(2);
+    const disclaimer = wrapper.get('.burn-info');
+    expect(disclaimer.element.tagName).toBe('P');
+    expect(disclaimer.text()).toContain('community-proposed initiative');
+    expect(grid.element.compareDocumentPosition(disclaimer.element) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+
+    settingsStoreMock.soraNetwork = 'Test';
+    const testnet = mount(BurnPage, { global: { stubs: baseStubs } });
+    await flushPromises();
+    expect(testnet.find('.burn-activity').exists()).toBe(false);
+  });
+
+  it('keeps the second campaign readable while its totals load instead of covering it', async () => {
+    loadingRef.value = true;
+    const wrapper = mount(BurnPage, { global: { stubs: baseStubs } });
+    await flushPromises();
+
+    const card = wrapper.get('form.campaign');
+    expect(card.classes()).toContain('campaign--loading');
+    expect(card.attributes('aria-busy')).toBe('true');
+    // The campaign terms stay on screen under the loading line.
+    expect(card.text()).toContain('Burn XOR to reserve SS');
+    expect(card.find('.reward-tiers').exists()).toBe(true);
+
+    loadingRef.value = false;
+    await nextTick();
+    expect(card.classes()).not.toContain('campaign--loading');
+    expect(card.attributes('aria-busy')).toBe('false');
+  });
+
+  it('says so in the card when reward totals are unavailable, and shows them when they are verified', async () => {
+    capabilityFixture.allowed = false;
+    const unavailable = mount(BurnPage, { global: { stubs: baseStubs } });
+    await flushPromises();
+    const note = unavailable.get('form.campaign [data-testid="burn-statistics-unavailable"]');
+    expect(note.attributes('role')).toBe('status');
+    expect(note.text()).toBe('Reward allocations and estimates are unavailable until campaign history is verified.');
+    expect(unavailable.find('.campaign__account').exists()).toBe(false);
+    unavailable.unmount();
+
+    capabilityFixture.allowed = true;
+    const available = mount(BurnPage, { global: { stubs: baseStubs } });
+    await flushPromises();
+    expect(available.find('[data-testid="burn-statistics-unavailable"]').exists()).toBe(false);
+    expect(available.find('.campaign__account').exists()).toBe(true);
+  });
+
+  it('folds the SORA Nexus address tool away while the campaign runs and shows it plainly once ended', async () => {
+    const running = mount(BurnPage, { global: { stubs: baseStubs } });
+    await flushPromises();
+    const tool = running.get('details.campaign__nexus');
+    expect(tool.attributes('open')).toBeUndefined();
+    expect(tool.get('summary').text()).toBe('Create a SORA Nexus address for SOLSWAP');
+    // A bare boolean attribute reaches the stub as an empty string, which means true.
+    expect(tool.get('.nexus-generator-stub').attributes('burn-available')).toBe('');
+    running.unmount();
+
+    settingsStoreMock.blockNumber = 61_000_000;
+    const ended = mount(BurnPage, { global: { stubs: baseStubs } });
+    await flushPromises();
+    expect(ended.find('details.campaign__nexus').exists()).toBe(false);
+    expect(ended.findAll('.nexus-generator-stub')).toHaveLength(1);
+    expect(ended.get('.nexus-generator-stub').attributes('burn-available')).toBe('false');
+  });
+
+  it('tells the user a burn was sent only after signing, and forgets it when the account changes', async () => {
+    const wrapper = mount(BurnPage, { global: { stubs: baseStubs } });
+    await flushPromises();
+    const vm = wrapper.vm as unknown as Record<string, any>;
+    expect(wrapper.find('[data-testid="burn-sent"]').exists()).toBe(false);
+
+    vm.handleBurnClick('solswap');
+    // The dialog first reports that signing started; nothing was sent yet.
+    vm.handleBurnConfirm();
+    await nextTick();
+    expect(wrapper.find('[data-testid="burn-sent"]').exists()).toBe(false);
+
+    vm.handleBurnConfirm(true);
+    await nextTick();
+    const sent = wrapper.get('[data-testid="burn-sent"]');
+    expect(sent.attributes('role')).toBe('status');
+    expect(sent.text()).toBe('Burn sent. Your totals update when the block is final.');
+    expect(vm.burnSent.solswap).toBe(true);
+
+    soraAddressRefs.at(-1)!.value = 'bob';
+    await flushPromises();
+    expect(wrapper.find('[data-testid="burn-sent"]').exists()).toBe(false);
   });
 
   it('marks an ended campaign card as disabled', async () => {
@@ -433,8 +536,8 @@ describe('Burn.vue', () => {
 
     const vm = wrapper.vm as unknown as Record<string, any>;
 
-    expect(fetchBurnDataMock).toHaveBeenCalledWith(25_043_003, 60_000_000);
-    expect(fetchBurnDataMock).toHaveBeenCalledWith(25_043_003, 60_000_000, 'alice');
+    expect(fetchBurnDataMock).toHaveBeenCalledWith(25_043_003, 60_000_000, undefined, {});
+    expect(fetchBurnDataMock).toHaveBeenCalledWith(25_043_003, 60_000_000, 'alice', {});
     expect(vm.totalXorBurned.solswap.toString()).toBe('10');
     expect(vm.accountXorBurned.solswap.toString()).toBe('10');
     expect(vm.totalReserved.solswap.toString()).toBe('500');
@@ -462,7 +565,7 @@ describe('Burn.vue', () => {
     expect(vm.isBurnFormLoading).toBe(false);
   });
 
-  it('keeps account-specific burn totals separate when the global burn fetch is not ready yet', async () => {
+  it('withholds all claim estimates when either required burn snapshot fails', async () => {
     const exampleHash = '0x5ac60114e1cd80551915531094bb38ebb40a90885122c32baf5c0614ebb02957';
 
     fetchBurnDataMock.mockImplementation((_start: number, _end: number, account?: string) => {
@@ -493,21 +596,10 @@ describe('Burn.vue', () => {
 
     const vm = wrapper.vm as unknown as Record<string, any>;
 
-    expect(vm.totalXorBurned.solswap.toString()).toBe('0');
-    expect(vm.accountXorBurned.solswap.toString()).toBe('10');
-    expect(vm.totalReserved.solswap.toString()).toBe('0');
-    expect(vm.accountReserved.solswap.toString()).toBe('500');
-    expect(vm.totalNexusReserved.solswap.toString()).toBe('0');
-    expect(vm.accountNexusReserved.solswap.toString()).toBe('10');
-    expect(vm.accountClaimRows.solswap).toEqual([
-      expect.objectContaining({
-        blockHeight: 25_868_450,
-        burned: '10',
-        ssReserved: '500',
-        nexusReserved: '10',
-        txHash: exampleHash,
-      }),
-    ]);
+    expect(vm.accountClaimRows.solswap).toEqual([]);
+    expect(wrapper.find('[data-testid="burn-statistics-unavailable"]').exists()).toBe(true);
+    expect(wrapper.find('.campaign__account').exists()).toBe(false);
+    expect(wrapper.find('.info-card-container').exists()).toBe(false);
   });
 
   it('renders Minamoto claim rows with SORA tx hashes and copy icons', async () => {
@@ -762,4 +854,72 @@ describe('Burn.vue', () => {
     expect(accountXorBurned.solswap.toString()).toBe('0');
     expect(intervalSpy).not.toHaveBeenCalled();
   });
+  it('denies capability before raw header RPC, local history, indexer reads and claims', async () => {
+    capabilityFixture.allowed = false;
+    settingsStoreMock.blockNumber = 0;
+    walletApiMock.historyList.push({
+      type: Operation.Burn,
+      amount: '1000000',
+      from: 'alice',
+      assetAddress: XOR.address,
+      blockHeight: 25_900_000,
+    });
+    const wrapper = mount(BurnPage, { global: { stubs: baseStubs } });
+    await flushPromises();
+    expect(walletApiMock.connection.api.rpc.chain.getHeader).not.toHaveBeenCalled();
+    expect(fetchBurnDataMock).not.toHaveBeenCalled();
+    expect((wrapper.vm as any).accountClaimRows.solswap).toEqual([]);
+    expect(wrapper.find('.campaign__account').exists()).toBe(false);
+    expect(wrapper.find('[data-testid="burn-statistics-unavailable"]').exists()).toBe(true);
+    wrapper.unmount();
+  });
+
+  it('clears prior claims and global totals when a later capability is denied', async () => {
+    fetchBurnDataMock.mockResolvedValue([
+      {
+        blockHeight: 25_900_000,
+        amount: new FPNumber(10),
+        address: 'alice',
+        nexusRecipient: validSoraNexusAccount,
+        txHash: '0xprior',
+      },
+    ]);
+    const wrapper = mount(BurnPage, { global: { stubs: baseStubs } });
+    await flushPromises();
+    expect((wrapper.vm as any).accountClaimRows.solswap).not.toEqual([]);
+    capabilityFixture.allowed = false;
+    fetchBurnDataMock.mockClear();
+    (wrapper.vm as any).handleBurnConfirm(true);
+    await flushPromises();
+    expect(fetchBurnDataMock).not.toHaveBeenCalled();
+    expect((wrapper.vm as any).accountClaimRows.solswap).toEqual([]);
+    expect((wrapper.vm as any).totalReserved.solswap.toString()).toBe('0');
+    expect(wrapper.find('.info-card-container').exists()).toBe(false);
+    wrapper.unmount();
+  });
+
+  it('rejects capability revoked while the two burn queries are in flight', async () => {
+    fetchBurnDataMock.mockImplementation(async () => {
+      capabilityFixture.allowed = false;
+      return [{ blockHeight: 25_900_000, amount: new FPNumber(10), address: 'alice', txHash: '0xlate' }];
+    });
+    const wrapper = mount(BurnPage, { global: { stubs: baseStubs } });
+    await flushPromises();
+    expect((wrapper.vm as any).accountClaimRows.solswap).toEqual([]);
+    expect(wrapper.find('.campaign__account').exists()).toBe(false);
+    expect(wrapper.find('[data-testid="burn-statistics-unavailable"]').exists()).toBe(true);
+    wrapper.unmount();
+  });
+});
+
+const capabilityFixture = vi.hoisted(() => ({ allowed: true, calls: vi.fn() }));
+vi.mock('@/indexer/queries/capabilities', async () => {
+  const { allowedLegacyCapabilities } = await import('@tests/fixtures/entitlementCapabilities');
+  return {
+    requireEntitlements: async (indexer = {}) => {
+      capabilityFixture.calls();
+      if (!capabilityFixture.allowed) throw Error('uncertified');
+      return { indexer, capabilities: allowedLegacyCapabilities };
+    },
+  };
 });

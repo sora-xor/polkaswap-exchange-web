@@ -120,6 +120,9 @@ export const formatAssetBalance = (
 };
 
 export const formatAmountWithSuffix = (value: FPNumber, precision = 2): AmountWithSuffix => {
+  if (value.isGtZero() && value.dp(precision).isZero()) {
+    return { amount: value.toLocaleString(value.precision), suffix: '' };
+  }
   const val = value.toNumber();
   const entries: Array<[number, string]> = [
     [3, 'K'],

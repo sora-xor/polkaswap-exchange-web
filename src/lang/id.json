@@ -2239,6 +2239,19 @@
         "disclaimer": "Akses kamera diperlukan untuk pengambilan dokumen secara real-time untuk mencegah penipuan.",
         "title": "Izinkan akses kamera di setelan browser"
     },
+    "burnActivity": {
+        "all": "Semua pembakaran XOR",
+        "campaignHistory": "Riwayat kampanye TONSWAP",
+        "count": "Peristiwa pembakaran",
+        "coverage": "Blok blockchain yang diselesaikan {from}–{to}",
+        "loading": "Memuat catatan penghancuran token yang dikonfirmasi…",
+        "rewardsUnavailable": "Alokasi dan perkiraan hadiah tidak tersedia sampai riwayat kampanye diverifikasi.",
+        "scope": "Aktivitas",
+        "title": "Pembakaran XOR terkonfirmasi",
+        "tonswap": "Termasuk TONSWAP",
+        "unavailable": "Catatan penghancuran token yang dikonfirmasi tidak tersedia.",
+        "xor": "XOR yang dibakar"
+    },
     "burnPage": {
         "confirmNexusRecovery": "Konfirmasi akses ke Nexus",
         "copySoraNetworkTxHash": "Salin hash tx Jaringan SORA",
@@ -2396,8 +2409,22 @@
                 "return": "Kembali ke kampanye TS",
                 "dismiss": "Singkirkan pemandu",
                 "receiptError": "Tanda terima tidak dapat diunduh. Coba lagi. Catatan pembakaran token Anda tidak berubah."
-            }
-        }
+            },
+            "how": {
+                "enter": "Masukkan XOR yang ingin Anda bakar dan periksa estimasi TS.",
+                "burn": "Bakar. XOR tersebut hilang selamanya.",
+                "claim": "Klaim TS Anda di tonswap.org saat peluncuran dengan dompet yang sama."
+            },
+            "more": "Cara kerjanya",
+            "steps": {
+                "sent": "Terkirim",
+                "included": "Dalam blok",
+                "final": "Final",
+                "reserved": "TS dipesan"
+            },
+            "burnMore": "Bakar lagi"
+        },
+        "sent": "Pembakaran terkirim. Total Anda diperbarui saat blok sudah final."
     },
     "buttons": {
         "chooseAToken": "Pilih token",
@@ -3142,6 +3169,7 @@
     "networkFeeText": "Biaya Jaringan",
     "networkFeeTooltipText": "Biaya jaringan digunakan untuk memastikan pertumbuhan sistem {Sora} dan kinerja yang stabil.",
     "networkStatisticsText": "Statistik jaringan",
+    "networkVerifiedDays": "Hari arsip yang terverifikasi",
     "newAccountsText": "Akun baru",
     "nextText": "Berikutnya",
     "noDataText": "Tidak ada data",
@@ -3472,6 +3500,7 @@
         "Explore/Tokens": "Token",
         "ForAgents": "Untuk Agen",
         "OrderBook": "Berdagang",
+        "PointSystemWrapper": "@:rewards.PointSystemWrapper",
         "Polkamarkt": "Polkamarkt",
         "Pool": "Kolam renang",
         "Rewards": "Hadiah",
@@ -3489,6 +3518,7 @@
     "pairIsNotCreated": "Pair token belum dibuat",
     "points": {
         "accountsText": "{amount} akun",
+        "activityGuide": "Kegiatan poin",
         "bridgeVolume": "Volume jembatan",
         "complete": "Selesai | Selesaikan",
         "currently": "Saat ini",
@@ -3510,6 +3540,7 @@
             "titleProgress": "Pemerintahan",
             "titleTask": "Kunci XOR dalam Pemungutan Suara Tata Kelola"
         },
+        "historyRequirement": "Poin dan kemajuan akun memerlukan riwayat akun yang diverifikasi.",
         "kensetsuVolumeRepaid": {
             "descriptionTask": "Bayar kembali utang KUSD selama likuidasi atau penutupan posisi",
             "titleProgress": "Volume Kensetsu",
@@ -3545,6 +3576,7 @@
             "titleProgress": "Buku pesanan",
             "titleTask": "Buat Pesanan Batasan"
         },
+        "personalUnavailable": "Poin dan kemajuan Anda tidak tersedia sampai riwayat akun Anda dapat diverifikasi.",
         "progress": "Kemajuan",
         "referralRewards": {
             "descriptionTask": "Rujuk akun melalui sistem referensi",

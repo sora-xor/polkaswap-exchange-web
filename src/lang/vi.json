@@ -2239,6 +2239,19 @@
         "disclaimer": "Cần có quyền truy cập máy ảnh để chụp tài liệu theo thời gian thực nhằm ngăn chặn gian lận.",
         "title": "Cho phép truy cập máy ảnh trong cài đặt trình duyệt"
     },
+    "burnActivity": {
+        "all": "Tất cả lượt đốt XOR",
+        "campaignHistory": "Lịch sử chiến dịch TONSWAP",
+        "count": "Sự kiện đốt",
+        "coverage": "Khối blockchain đã hoàn thiện {from}–{to}",
+        "loading": "Đang tải bản ghi hủy mã thông báo đã được xác nhận…",
+        "rewardsUnavailable": "Phân bổ và ước tính phần thưởng không có sẵn cho đến khi lịch sử chiến dịch được xác minh.",
+        "scope": "Hoạt động",
+        "title": "Các lượt đốt XOR đã xác nhận",
+        "tonswap": "Trong đó thuộc TONSWAP",
+        "unavailable": "Bản ghi hủy mã thông báo đã được xác nhận không có sẵn.",
+        "xor": "Lượng XOR đã đốt"
+    },
     "burnPage": {
         "confirmNexusRecovery": "Xác nhận quyền truy cập Nexus",
         "copySoraNetworkTxHash": "Sao chép hàm băm tx của Mạng SORA",
@@ -2396,8 +2409,22 @@
                 "return": "Trở lại chiến dịch TS",
                 "dismiss": "Hướng dẫn loại bỏ",
                 "receiptError": "Không thể tải biên nhận xuống. Hãy thử lại. Bản ghi đốt token của bạn không thay đổi."
-            }
-        }
+            },
+            "how": {
+                "enter": "Nhập số XOR bạn muốn đốt và xem ước tính TS.",
+                "burn": "Đốt. Số XOR đó mất vĩnh viễn.",
+                "claim": "Nhận TS trên tonswap.org khi ra mắt bằng chính ví đó."
+            },
+            "more": "Cách hoạt động",
+            "steps": {
+                "sent": "Đã gửi",
+                "included": "Trong khối",
+                "final": "Hoàn tất",
+                "reserved": "Đã đặt trước TS"
+            },
+            "burnMore": "Đốt thêm"
+        },
+        "sent": "Đã gửi lệnh đốt. Tổng số của bạn cập nhật khi khối được hoàn tất."
     },
     "buttons": {
         "chooseAToken": "Chọn 1 token",
@@ -3142,6 +3169,7 @@
     "networkFeeText": "Phí Mạng",
     "networkFeeTooltipText": "Phí mạng được sử dụng để đảm bảo hệ thống {Sora} phát triển và hoạt động ổn định.",
     "networkStatisticsText": "thống kê mạng",
+    "networkVerifiedDays": "Các ngày đã xác minh trong kho lưu trữ",
     "newAccountsText": "tài khoản mới",
     "nextText": "Kế tiếp",
     "noDataText": "Không có dữ liệu",
@@ -3472,6 +3500,7 @@
         "Explore/Tokens": "Token",
         "ForAgents": "Dành cho đại lý",
         "OrderBook": "Buôn bán",
+        "PointSystemWrapper": "@:rewards.PointSystemWrapper",
         "Polkamarkt": "Polkamarkt",
         "Pool": "Bể bơi",
         "Rewards": "Phần thưởng",
@@ -3489,6 +3518,7 @@
     "pairIsNotCreated": "Cặp token này chưa được tạo",
     "points": {
         "accountsText": "{amount} tài khoản",
+        "activityGuide": "Hoạt động tích điểm",
         "bridgeVolume": "Khối lượng cầu",
         "complete": "Đã hoàn thành | Hoàn thành",
         "currently": "Hiện nay",
@@ -3510,6 +3540,7 @@
             "titleProgress": "Quản trị",
             "titleTask": "Khóa XOR trong Bỏ phiếu Quản trị"
         },
+        "historyRequirement": "Điểm tài khoản và tiến độ yêu cầu lịch sử tài khoản được xác minh.",
         "kensetsuVolumeRepaid": {
             "descriptionTask": "Trả nợ KUSD trong quá trình thanh lý hoặc đóng vị thế",
             "titleProgress": "Khối lượng Kensetsu",
@@ -3545,6 +3576,7 @@
             "titleProgress": "Sổ lệnh",
             "titleTask": "Tạo lệnh giới hạn"
         },
+        "personalUnavailable": "Điểm và tiến trình của bạn không có sẵn cho đến khi lịch sử tài khoản của bạn có thể được xác minh.",
         "progress": "Tiến triển",
         "referralRewards": {
             "descriptionTask": "Giới thiệu tài khoản thông qua hệ thống giới thiệu",

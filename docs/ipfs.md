@@ -50,7 +50,7 @@ The script performs the following:
 4. Copies canonical root `env.json` into the built `dist/env.json`, checks combined static feature parity, then publishes production `dist/` and prints its CID and gateway URLs.
 5. Creates a temporary copy of finalized production `dist/`, replaces its `env.json` with the built `env.dev.json`, checks the same combined feature baseline, publishes the testnet variant, and prints its CID.
 
-The approved static origin is `https://pi.soramitsu.io` on `208.83.1.62`, with
+The approved static origin is `https://pi.soramitsu.io` on `207.254.29.218`, with
 Host header `pi.soramitsu.io`. The publisher still defaults to `https://mof.sora.org`,
 so every release must supply the explicit Pi override shown above. This static
 origin is separate from the existing MOF RPC/indexer application endpoints.

@@ -2239,6 +2239,19 @@
         "disclaimer": "ማታለልን ለመከላከል በቀጥታ ሰነዶችን ለመቅረፅ የካሜራ መዳረሻ ያስፈልጋል።",
         "title": "በአሳሽ ቅንብሮች ውስጥ የካሜራ መዳረሻ ፍቀድ"
     },
+    "burnActivity": {
+        "all": "ሁሉም ማስመሰያዎች (XOR)",
+        "campaignHistory": "የTONSWAP ዘመቻ ታሪክ",
+        "count": "የማስመሰያ ጥፋት ክስተቶች",
+        "coverage": "የተጠናቀቀ blockchain ብሎኮች {from}–{to}",
+        "loading": "የተረጋገጡ የማስመሰያ ጥፋት መዝገቦችን በመጫን ላይ…",
+        "rewardsUnavailable": "የዘመቻ ታሪክ እስኪረጋገጥ ድረስ የሽልማት ምደባዎች እና ግምቶች አይገኙም።",
+        "scope": "እንቅስቃሴ",
+        "title": "የተረጋገጠ የምልክት ማጥፋት (XOR)",
+        "tonswap": "ከነሱ፡ TONSWAP",
+        "unavailable": "የተረጋገጡ የማስመሰያ ማጥፋት መዝገቦች አይገኙም።",
+        "xor": "ብዛት ወድሟል (XOR)"
+    },
     "burnPage": {
         "confirmNexusRecovery": "አረጋግጥ · SORA Nexus",
         "copySoraNetworkTxHash": "የ SORA አውታረ መረብ tx hash ቅዳ",
@@ -2396,8 +2409,22 @@
                 "return": "ወደ ቲኤስ ዘመቻ ተመለስ",
                 "dismiss": "አስጎብኚ",
                 "receiptError": "ደረሰኙን ማውረድ አልተቻለም። እንደገና ይሞክሩ። የቶከን ማቃጠል መዝገብዎ አልተለወጠም።"
-            }
-        }
+            },
+            "how": {
+                "enter": "ማቃጠል የሚፈልጉትን XOR ያስገቡ እና የTS ግምቱን ይመልከቱ።",
+                "burn": "ያቃጥሉት። XOR ለዘለዓለም ይጠፋል።",
+                "claim": "በሚጀመርበት ጊዜ TS በtonswap.org ላይ በተመሳሳይ የገንዘብ ቦርሳ ይጠይቁ።"
+            },
+            "more": "እንዴት እንደሚሰራ",
+            "steps": {
+                "sent": "ተልኳል",
+                "included": "በብሎክ ውስጥ",
+                "final": "የመጨረሻ",
+                "reserved": "TS ተጠብቋል"
+            },
+            "burnMore": "ተጨማሪ አቃጥል"
+        },
+        "sent": "ማቃጠሉ ተልኳል። ብሎኩ የመጨረሻ ሲሆን ጠቅላላ ድምሮችዎ ይዘምናሉ።"
     },
     "buttons": {
         "chooseAToken": "ማስመሰያ ይምረጡ",
@@ -3142,6 +3169,7 @@
     "networkFeeText": "የአውታረ መረብ ክፍያ",
     "networkFeeTooltipText": "የአውታረ መረብ ክፍያ የ{Sora} ስርዓቱን እድገት እና የተረጋጋ አፈጻጸም ለማረጋገጥ ጥቅም ላይ ይውላል።",
     "networkStatisticsText": "የአውታረ መረብ ስታቲስቲክስ",
+    "networkVerifiedDays": "የተረጋገጡ የማህደር ቀናት",
     "newAccountsText": "አዲስ መለያዎች",
     "nextText": "ቀጥሎ",
     "noDataText": "ምንም ውሂብ የለም",
@@ -3472,6 +3500,7 @@
         "Explore/Tokens": "ማስመሰያዎች",
         "ForAgents": "ለኤጀንቶች",
         "OrderBook": "ንግድ",
+        "PointSystemWrapper": "@:rewards.PointSystemWrapper",
         "Polkamarkt": "ፖልካማርት",
         "Pool": "ገንዳ",
         "Rewards": "ሽልማቶች",
@@ -3489,6 +3518,7 @@
     "pairIsNotCreated": "ማስመሰያ ጥንድ አልተፈጠረም።",
     "points": {
         "accountsText": "{amount} መለያዎች",
+        "activityGuide": "ነጥቦች እንቅስቃሴዎች",
         "bridgeVolume": "የድልድይ መጠን",
         "complete": "ተጠናቀቀ | ተጠናቀቀ",
         "currently": "አሁን",
@@ -3510,6 +3540,7 @@
             "titleProgress": "አስተዳደር",
             "titleTask": "በአስተዳደር ምርጫ XOR አቆም"
         },
+        "historyRequirement": "የመለያ ነጥቦች እና መሻሻል የተረጋገጠ የመለያ ታሪክ ያስፈልጋቸዋል።",
         "kensetsuVolumeRepaid": {
             "descriptionTask": "በመታጠፍ/ቦታ ማጥፋት ጊዜ KUSD ዕዳ መክፈል",
             "titleProgress": "የKensetsu መጠን",
@@ -3545,6 +3576,7 @@
             "titleProgress": "ኦርደርቡክ",
             "titleTask": "የገደብ ትእዛዝ ፍጠር"
         },
+        "personalUnavailable": "የመለያዎ ታሪክ እስኪረጋገጥ ድረስ የእርስዎ ነጥቦች እና ግስጋሴ አይገኙም።",
         "progress": "ሂደት",
         "referralRewards": {
             "descriptionTask": "በሪፈራል ስርዓት መለያዎችን ጥቅል ላይ አውርድ",

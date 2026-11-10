@@ -1904,7 +1904,7 @@ describe('BotsPage', () => {
       };
     }
 
-    it('renders the research above the AI goal flow with the real fee and history loaders', async () => {
+    it('leads with the AI goal flow and retains research with the real fee and history loaders', async () => {
       await router.push('/bots');
       const wrapper = render();
       const center = wrapper.getComponent({ name: 'QuantCommandCenter' });
@@ -1912,7 +1912,13 @@ describe('BotsPage', () => {
       expect(center.props('loadFees')).toBe(mocks.loadFees);
       expect(center.props('loadHistory')).toBe(mocks.loadHistory);
       const html = wrapper.html();
-      expect(html.indexOf('quant-command-center-stub')).toBeLessThan(html.indexOf('data-testid="autopilot"'));
+      expect(html.indexOf('data-testid="autopilot"')).toBeLessThan(html.indexOf('quant-command-center-stub'));
+      expect(wrapper.get('[data-testid="autopilot-capital"]').isVisible()).toBe(true);
+      expect(wrapper.get('[data-testid="autopilot-go"]').isVisible()).toBe(true);
+      expect(mocks.createAi).not.toHaveBeenCalled();
+      expect(mocks.loadHistory).not.toHaveBeenCalled();
+      expect(state.prepareLiveBot).not.toHaveBeenCalled();
+      expect(state.startBot).not.toHaveBeenCalled();
       await router.push('/bots/lab');
       await flushPromises();
       expect(wrapper.findComponent({ name: 'QuantCommandCenter' }).exists()).toBe(false);

@@ -2239,6 +2239,19 @@
         "disclaimer": "Pro zachycení dokumentů v reálném čase je vyžadován přístup k fotoaparátu, aby se zabránilo podvodům.",
         "title": "Povolit přístup k fotoaparátu v nastavení prohlížeče"
     },
+    "burnActivity": {
+        "all": "Všechna zničení tokenů (XOR)",
+        "campaignHistory": "Historie kampaně TONSWAP",
+        "count": "Události zničení tokenů",
+        "coverage": "Dokončené bloky blockchainu {from}–{to}",
+        "loading": "Načítání potvrzených záznamů o zničení tokenu…",
+        "rewardsUnavailable": "Přidělení odměn a odhady nejsou k dispozici, dokud nebude ověřena historie kampaně.",
+        "scope": "Aktivita",
+        "title": "Potvrzené zničení tokenu (XOR)",
+        "tonswap": "Z toho: TONSWAP",
+        "unavailable": "Potvrzené záznamy o zničení tokenu nejsou k dispozici.",
+        "xor": "Zničené množství (XOR)"
+    },
     "burnPage": {
         "confirmNexusRecovery": "Potvrdit přístup k Nexus",
         "copySoraNetworkTxHash": "Zkopírujte SORA Network TX hash",
@@ -2396,8 +2409,22 @@
                 "return": "Návrat ke kampani TS",
                 "dismiss": "Propustit průvodce",
                 "receiptError": "Potvrzení se nepodařilo stáhnout. Zkuste to znovu. Záznam o spálení tokenů se nezměnil."
-            }
-        }
+            },
+            "how": {
+                "enter": "Zadejte, kolik XOR chcete spálit, a zkontrolujte odhad TS.",
+                "burn": "Spalte je. XOR nenávratně zmizí.",
+                "claim": "Při spuštění si TS vyzvedněte na tonswap.org stejnou peněženkou."
+            },
+            "more": "Jak to funguje",
+            "steps": {
+                "sent": "Odesláno",
+                "included": "V bloku",
+                "final": "Finální",
+                "reserved": "TS rezervováno"
+            },
+            "burnMore": "Spálit další"
+        },
+        "sent": "Spálení odesláno. Součty se aktualizují, jakmile bude blok finální."
     },
     "buttons": {
         "chooseAToken": "Vybrat token",
@@ -3142,6 +3169,7 @@
     "networkFeeText": "Síťový poplatek",
     "networkFeeTooltipText": "Síťový poplatek slouží k zajištění růstu a stabilního výkonu systému {Sora}.",
     "networkStatisticsText": "Síťové statistiky",
+    "networkVerifiedDays": "Ověřené dny v archivu",
     "newAccountsText": "Nové účty",
     "nextText": "Další",
     "noDataText": "Žádné údaje",
@@ -3472,6 +3500,7 @@
         "Explore/Tokens": "Tokeny",
         "ForAgents": "Pro agenty",
         "OrderBook": "Obchod",
+        "PointSystemWrapper": "@:rewards.PointSystemWrapper",
         "Polkamarkt": "Polkamarkt",
         "Pool": "Bazén",
         "Rewards": "Odměny",
@@ -3489,6 +3518,7 @@
     "pairIsNotCreated": "Tokenový pár není vytvořen",
     "points": {
         "accountsText": "{amount} účtů",
+        "activityGuide": "Bodové aktivity",
         "bridgeVolume": "Objem na mostě",
         "complete": "Dokončeno | Dokončit",
         "currently": "V současné době",
@@ -3510,6 +3540,7 @@
             "titleProgress": "Správa",
             "titleTask": "Uzamkněte XOR při hlasování o správě"
         },
+        "historyRequirement": "Body účtu a postup vyžadují ověřenou historii účtu.",
         "kensetsuVolumeRepaid": {
             "descriptionTask": "Splaťte dluh KUSD během likvidací nebo uzavírání pozic",
             "titleProgress": "Objem Kensetsu",
@@ -3545,6 +3576,7 @@
             "titleProgress": "Objednávka",
             "titleTask": "Vytvořte limitní příkazy"
         },
+        "personalUnavailable": "Vaše body a postup jsou nedostupné, dokud nebude možné ověřit historii vašeho účtu.",
         "progress": "Pokrok",
         "referralRewards": {
             "descriptionTask": "Doporučte účty prostřednictvím doporučovacího systému",

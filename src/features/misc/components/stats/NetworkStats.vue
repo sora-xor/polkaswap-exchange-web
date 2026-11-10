@@ -27,6 +27,7 @@
           </div>
           <div class="stats-card-data">
             <formatted-amount
+              v-if="value"
               class="stats-card-value"
               :font-weight-rate="FontWeightRate.MEDIUM"
               :font-size-rate="FontSizeRate.MEDIUM"
@@ -35,11 +36,55 @@
               :integer-only="!value.amount.includes(FPNumber.DELIMITERS_CONFIG.decimal)"
               symbol-as-decimal
             ></formatted-amount>
-            <price-change :value="change"></price-change>
+            <span v-else data-testid="network-metric-unavailable">{{ t('footer.statistics.title.unavailable') }}</span>
+            <price-change v-if="change" :value="change"></price-change>
           </div>
         </s-card>
       </div>
     </div>
+    <details
+      v-if="
+        !loadingState &&
+        currData?.archivedDays.length &&
+        (currData.transactions === null ||
+          currData.bridgeIncomingTransactions === null ||
+          currData.bridgeOutgoingTransactions === null)
+      "
+      class="archive-days"
+      data-testid="archive-days"
+    >
+      <summary>{{ t('networkVerifiedDays') }}</summary>
+      <div class="archive-days__scroll">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">{{ t('bridgeTransaction.networkInfo.date') }} (UTC)</th>
+              <th scope="col">{{ columns[0].title }}</th>
+              <th scope="col">{{ columns[3].title }}</th>
+              <th scope="col">{{ columns[4].title }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="day in currData.archivedDays" :key="day.date">
+              <th scope="row">
+                <time :datetime="day.date">{{ day.date }}</time>
+              </th>
+              <td v-for="key in archivedFields" :key="key">
+                {{ day[key] ?? t('footer.statistics.title.unavailable') }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+    <a
+      v-if="settingsStore.soraNetwork === SoraNetwork.Prod"
+      class="stats-download"
+      :href="verifiedDaysCsv"
+      download="polkaswap-verified-days-2026-11-10.csv"
+      data-testid="verified-days-download"
+      >{{ t('networkVerifiedDays') }} (CSV)</a
+    >
   </base-widget>
 </template>
 
@@ -53,8 +98,14 @@ import BaseWidget from '@/components/shared/Widget/Base.vue';
 import { SECONDS_IN_TYPE, NETWORK_STATS_FILTERS } from '@/consts/snapshots';
 import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
-import { fetchActiveAccounts, fetchData } from '@/indexer/queries/network/stats';
-import { FontSizeRate, FontWeightRate } from '@/lib/soraneo-wallet/src/consts';
+import {
+  fetchActiveAccounts,
+  readNetworkPeriodCounts,
+  type NetworkCounts,
+  type ArchiveDayCounts,
+} from '@/indexer/queries/network/stats';
+import { FontSizeRate, FontWeightRate, SoraNetwork } from '@/lib/soraneo-wallet/src/consts';
+import verifiedDaysCsv from '@/assets/stats/polkaswap-verified-days-2026-11-10.csv?url&no-inline';
 import FormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 import { useSettingsStore } from '@/stores/settings';
 import { createStatsRange } from '@/features/misc/components/stats/range';
@@ -63,21 +114,11 @@ import type { AmountWithSuffix } from '@/types/formats';
 import type { Nullable } from '@/types/common';
 import { calcPriceChange, formatAmountWithSuffix } from '@/utils';
 
-type NetworkSnapshot = {
-  accounts: FPNumber;
-  activeAccounts: FPNumber;
-  transactions: FPNumber;
-  bridgeIncomingTransactions: FPNumber;
-  bridgeOutgoingTransactions: FPNumber;
-};
-
-type NetworkSnapshotData = NetworkSnapshot & {
-  timestamp: number;
-};
+type NetworkSnapshot = NetworkCounts & { activeAccounts: FPNumber | null; archivedDays: ArchiveDayCounts[] };
 
 type NetworkStatsColumn = {
-  value: AmountWithSuffix;
-  change: FPNumber;
+  value: AmountWithSuffix | null;
+  change: FPNumber | null;
   title: string;
   tooltip: string;
 };
@@ -97,7 +138,7 @@ const filter = ref<SnapshotFilter>(filters[0]);
 const currData = ref<Nullable<NetworkSnapshot>>(null);
 const prevData = ref<Nullable<NetworkSnapshot>>(null);
 const hasResolvedData = ref(false);
-let updateRequestId = 0;
+let pendingRead: AbortController | undefined;
 
 const parentLoading = computed(() => props.parentLoading);
 const { loading, withLoading, withParentLoading } = useLoading({ parentLoading });
@@ -112,6 +153,7 @@ const indexerEndpoint = computed(() => {
 const loadingState = computed(() => parentLoading.value || loading.value || !hasResolvedData.value);
 
 const arrow = String.fromCodePoint(0x2192);
+const archivedFields = ['transactions', 'bridgeIncomingTransactions', 'bridgeOutgoingTransactions'] as const;
 
 const columns = computed(() => {
   const { Sora, Ethereum } = TranslationConsts;
@@ -147,87 +189,65 @@ const columns = computed(() => {
 
 const statsColumns = computed<NetworkStatsColumn[]>(() => {
   return columns.value.map(({ prop, title, tooltip }) => {
-    const current = currData.value?.[prop] ?? FPNumber.ZERO;
-    const previous = prevData.value?.[prop] ?? FPNumber.ZERO;
+    const current = currData.value?.[prop];
+    const previous = prevData.value?.[prop];
     return {
       title,
       tooltip,
-      value: formatAmountWithSuffix(current),
-      change: calcPriceChange(current, previous),
+      value: current ? formatAmountWithSuffix(current) : null,
+      change: current && previous ? calcPriceChange(current, previous) : null,
     } satisfies NetworkStatsColumn;
   });
 });
 
-const createEmptyNetworkSnapshot = (): NetworkSnapshot => ({
-  accounts: FPNumber.ZERO,
-  activeAccounts: FPNumber.ZERO,
-  transactions: FPNumber.ZERO,
-  bridgeIncomingTransactions: FPNumber.ZERO,
-  bridgeOutgoingTransactions: FPNumber.ZERO,
-});
+/** Distinct counts from retained transactions need the same period’s transaction coverage. */
+async function fetchPeriod(
+  from: number,
+  to: number,
+  type: SnapshotFilter['type'],
+  signal: AbortSignal
+): Promise<NetworkSnapshot> {
+  const [metrics, activity] = await Promise.allSettled([
+    readNetworkPeriodCounts(from, to, type, signal),
+    // Account activity accepts an inclusive lower bound. The Stats period is (to, from].
+    fetchActiveAccounts(from, to + 1),
+  ]);
+  const period = metrics.status === 'fulfilled' ? metrics.value : null;
+  const counts = period?.counts;
+  return {
+    transactions: counts?.transactions ?? null,
+    accounts: counts?.accounts ?? null,
+    bridgeIncomingTransactions: counts?.bridgeIncomingTransactions ?? null,
+    bridgeOutgoingTransactions: counts?.bridgeOutgoingTransactions ?? null,
+    archivedDays: period?.archivedDays ?? [],
+    activeAccounts:
+      period?.retainedTransactionsComplete && counts?.transactions && activity.status === 'fulfilled'
+        ? activity.value
+        : null,
+  };
+}
 
-const groupData = (data: NetworkSnapshotData[], activeAccounts: FPNumber): Nullable<NetworkSnapshot> => {
-  if (!data.length && activeAccounts.isZero()) return null;
-
-  const grouped = data.reduce<NetworkSnapshot>((buffer, item) => {
-    for (const { prop } of columns.value) {
-      buffer[prop] = (buffer[prop] as FPNumber).add(item[prop]);
-    }
-
-    return buffer;
-  }, createEmptyNetworkSnapshot());
-
-  grouped.activeAccounts = activeAccounts;
-
-  return grouped;
-};
-
-/**
- * Keeps the existing snapshot metrics visible if the account-activity endpoint
- * is temporarily unavailable or returns an invalid response.
- */
-const fetchActiveAccountsOrZero = async (from: number, to: number): Promise<FPNumber> => {
-  try {
-    return await fetchActiveAccounts(from, to);
-  } catch (error) {
-    console.error(error);
-    return FPNumber.ZERO;
-  }
-};
-
+/** Refresh both periods together and discard obsolete results when the filter or endpoint changes. */
 const updateData = async () => {
-  const requestId = ++updateRequestId;
-
+  pendingRead?.abort();
+  const controller = new AbortController();
+  pendingRead = controller;
   await withLoading(async () => {
     await withParentLoading(async () => {
-      try {
-        const { type, count } = filter.value;
-        const seconds = SECONDS_IN_TYPE[type];
-        const { from, to, previousFrom, previousTo } = createStatsRange(Date.now(), seconds, count);
-
-        const [current, previous, currentActiveAccounts, previousActiveAccounts] = await Promise.all([
-          fetchData(from, to, type),
-          fetchData(previousFrom, previousTo, type),
-          fetchActiveAccountsOrZero(from, to),
-          fetchActiveAccountsOrZero(previousFrom, previousTo),
-        ]);
-
-        if (requestId !== updateRequestId) return;
-
-        currData.value = Object.freeze(groupData(current, currentActiveAccounts));
-        prevData.value = Object.freeze(groupData(previous, previousActiveAccounts));
-        hasResolvedData.value =
-          current.length > 0 ||
-          previous.length > 0 ||
-          !currentActiveAccounts.isZero() ||
-          !previousActiveAccounts.isZero() ||
-          nodeIsConnected.value;
-      } catch (error) {
-        if (requestId !== updateRequestId) return;
-
-        console.error(error);
-        hasResolvedData.value = nodeIsConnected.value;
-      }
+      const { type, count } = filter.value;
+      const { from, to, previousFrom, previousTo } = createStatsRange(Date.now(), SECONDS_IN_TYPE[type], count);
+      const [current, previous] = await Promise.all([
+        fetchPeriod(from, to, type, controller.signal),
+        fetchPeriod(previousFrom, previousTo, type, controller.signal),
+      ]);
+      if (controller.signal.aborted) return;
+      currData.value = Object.freeze(current);
+      prevData.value = Object.freeze(previous);
+      hasResolvedData.value =
+        nodeIsConnected.value ||
+        Boolean(indexerEndpoint.value) ||
+        columns.value.some(({ prop }) => current[prop] !== null) ||
+        current.archivedDays.length > 0;
     });
   });
 };
@@ -249,9 +269,12 @@ watch(nodeIsConnected, (connected) => {
 });
 
 watch(indexerEndpoint, (endpoint, previousEndpoint) => {
-  if (!endpoint || endpoint === previousEndpoint) return;
-
-  void updateData();
+  if (endpoint === previousEndpoint) return;
+  pendingRead?.abort();
+  currData.value = null;
+  prevData.value = null;
+  hasResolvedData.value = false;
+  if (endpoint) void updateData();
 });
 
 onMounted(() => {
@@ -260,7 +283,7 @@ onMounted(() => {
 
 if (getCurrentScope()) {
   onScopeDispose(() => {
-    updateRequestId += 1;
+    pendingRead?.abort();
     currData.value = null;
     prevData.value = null;
     hasResolvedData.value = false;
@@ -288,6 +311,38 @@ $gap: $inner-spacing-mini;
     @include desktop {
       @include columns(5, $gap);
     }
+  }
+}
+
+.stats-download {
+  display: inline-block;
+  margin-top: $inner-spacing-small;
+  text-decoration: underline;
+}
+
+.archive-days {
+  margin-top: $inner-spacing-small;
+  summary {
+    cursor: pointer;
+    color: var(--s-color-theme-accent);
+  }
+  &__scroll {
+    overflow-x: auto;
+  }
+  table {
+    width: 100%;
+    margin-top: $inner-spacing-mini;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+  th,
+  td {
+    padding: $inner-spacing-mini;
+    text-align: end;
+  }
+  th:first-child {
+    text-align: start;
+    white-space: nowrap;
   }
 }
 

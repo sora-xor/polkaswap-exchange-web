@@ -33,6 +33,20 @@ describe('FormattedAmount', () => {
     expect(wrapper.text().replace(/\s+/g, ' ').trim()).toBe('0 XOR');
   });
 
+  it('renders a sub-cent exact fiat quote and a genuine zero as distinct values', async () => {
+    const wrapper = mount(FormattedAmount, {
+      props: {
+        value: '0.000000000340941693',
+        isFiatValue: true,
+        fiatDefaultRounding: true,
+      },
+    });
+    expect(wrapper.get('.formatted-amount__decimal-value').text()).toBe('.000000000340941693');
+    await wrapper.setProps({ value: '0.000000000000000000125' });
+    expect(wrapper.get('.formatted-amount__decimal-value').text()).toBe('.000000000000000000125');
+    await wrapper.setProps({ value: '0' });
+    expect(wrapper.get('.formatted-amount__decimal-value').text()).toBe('.00');
+  });
   it('marks overflowing values so row styles can reveal the full amount on hover', async () => {
     const wrapper = mount(FormattedAmount, {
       props: {

@@ -2239,6 +2239,19 @@
         "disclaimer": "Акылсыз документлар өчен камера керүе кирәк.",
         "title": "Браузер көйләүләрендә камера рөхсәтенә рөхсәт итегез"
     },
+    "burnActivity": {
+        "all": "Барлык билгеләрне юк итү (XOR)",
+        "campaignHistory": "TONSWAP кампаниясе тарихы",
+        "count": "Токен юк итү вакыйгалары",
+        "coverage": "{from}–{to} блокчейн блоклары",
+        "loading": "Токен юк итү язмаларын йөкләү…",
+        "rewardsUnavailable": "Бүләк бүлеп бирү һәм смета кампания тарихы тикшерелгәнче мөмкин түгел.",
+        "scope": "Эшчәнлек",
+        "title": "Токен юк ителүе (XOR)",
+        "tonswap": "Шулардан: TONSWAP",
+        "unavailable": "Расланган токен юк итү язмалары юк.",
+        "xor": "Destroyedимерелгән сан (XOR)"
+    },
     "burnPage": {
         "confirmNexusRecovery": "Раслагыз · SORA Nexus",
         "copySoraNetworkTxHash": "SORA Network tx хэшын күчереп алыгыз",
@@ -2396,8 +2409,22 @@
                 "return": "TS кампаниясенә кире кайту",
                 "dismiss": "Белешмәлекне кире кагу",
                 "receiptError": "Квитанцияне йөкләп булмады. Кабатлап карагыз. Токеннарны яндыру язмагыз үзгәрмәде."
-            }
-        }
+            },
+            "how": {
+                "enter": "Яндырырга теләгән XOR күләмен кертегез һәм TS бәясен тикшерегез.",
+                "burn": "Яндырыгыз. XOR мәңгегә юкка чыга.",
+                "claim": "Эшли башлагач, TS-ны tonswap.org сайтында шул ук янчык белән алыгыз."
+            },
+            "more": "Ничек эшли",
+            "steps": {
+                "sent": "Җибәрелде",
+                "included": "Блокта",
+                "final": "Соңгы",
+                "reserved": "TS сакланды"
+            },
+            "burnMore": "Тагын яндыру"
+        },
+        "sent": "Яндыру җибәрелде. Блок соңгы булгач, гомуми саннар яңартыла."
     },
     "buttons": {
         "chooseAToken": "Токенны сайлагыз",
@@ -3142,6 +3169,7 @@
     "networkFeeText": "Челтәр өчен түләү",
     "networkFeeTooltipText": "Челтәр өчен түләү {Sora} системасының үсешен һәм тотрыклы эшләвен тәэмин итү өчен кулланыла.",
     "networkStatisticsText": "Челтәр статистикасы",
+    "networkVerifiedDays": "Архивтагы тикшерелгән көннәр",
     "newAccountsText": "Яңа счетлар",
     "nextText": "Киләсе",
     "noDataText": "Мәгълүмат юк",
@@ -3472,6 +3500,7 @@
         "Explore/Tokens": "Билгеләр",
         "ForAgents": "Агентлар өчен",
         "OrderBook": "Сәүдә",
+        "PointSystemWrapper": "@:rewards.PointSystemWrapper",
         "Polkamarkt": "Полкамаркт",
         "Pool": "Бассейн",
         "Rewards": "Бүләкләр",
@@ -3489,6 +3518,7 @@
     "pairIsNotCreated": "Токен пар ясалмаган",
     "points": {
         "accountsText": "{amount} хисап язмалары",
+        "activityGuide": "Баллар эшчәнлеге",
         "bridgeVolume": "Күпер күләме",
         "complete": "Тәмамланды | Тулы",
         "currently": "Хәзерге вакытта",
@@ -3510,6 +3540,7 @@
             "titleProgress": "Идарә итү",
             "titleTask": "Маргарнер тавыш бирүдә XOR бикләү"
         },
+        "historyRequirement": "Хисап пунктлары һәм алгарыш тикшерелгән хисап тарихын таләп итә.",
         "kensetsuVolumeRepaid": {
             "descriptionTask": "Ликладлар яки ябылган позициядә Кусд бурычын кайтару",
             "titleProgress": "Кентецу күләме",
@@ -3545,6 +3576,7 @@
             "titleProgress": "Заказ юк",
             "titleTask": "Лимит заказлары булдыру"
         },
+        "personalUnavailable": "Сезнең баллар һәм алгарыш сезнең хисап тарихын тикшергәнче мөмкин түгел.",
         "progress": "Алгарыш",
         "referralRewards": {
             "descriptionTask": "Хисапларны юллама системасы аша әйтегез",

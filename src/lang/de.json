@@ -2239,6 +2239,19 @@
         "disclaimer": "Für die Dokumentenerfassung in Echtzeit ist ein Kamerazugriff erforderlich, um Betrug zu verhindern.",
         "title": "Erlauben Sie den Kamerazugriff in den Browsereinstellungen"
     },
+    "burnActivity": {
+        "all": "Alle XOR-Verbrennungen",
+        "campaignHistory": "Verlauf der TONSWAP-Kampagne",
+        "count": "Burn-Ereignisse",
+        "coverage": "Finalisierte Blockchain-Blöcke {from}–{to}",
+        "loading": "Bestätigte Token-Vernichtungsaufzeichnungen werden geladen…",
+        "rewardsUnavailable": "Prämienzuteilungen und -schätzungen sind erst verfügbar, wenn der Kampagnenverlauf überprüft wurde.",
+        "scope": "Aktivität",
+        "title": "Bestätigte XOR-Verbrennungen",
+        "tonswap": "Davon TONSWAP",
+        "unavailable": "Bestätigte Aufzeichnungen zur Tokenvernichtung sind nicht verfügbar.",
+        "xor": "Verbrannte XOR"
+    },
     "burnPage": {
         "confirmNexusRecovery": "Nexus-Zugriff bestätigen",
         "copySoraNetworkTxHash": "Kopieren Sie den Sende-Hash des SORA-Netzwerks",
@@ -2396,8 +2409,22 @@
                 "return": "Rückkehr zur TS-Kampagne",
                 "dismiss": "Führer entlassen",
                 "receiptError": "Der Beleg konnte nicht heruntergeladen werden. Versuche es erneut. Dein Burn-Eintrag bleibt unverändert."
-            }
-        }
+            },
+            "how": {
+                "enter": "Geben Sie ein, wie viel XOR Sie verbrennen möchten, und prüfen Sie die TS-Schätzung.",
+                "burn": "Verbrennen Sie die XOR. Sie sind danach endgültig weg.",
+                "claim": "Fordern Sie Ihre TS zum Start auf tonswap.org mit derselben Wallet an."
+            },
+            "more": "So funktioniert es",
+            "steps": {
+                "sent": "Gesendet",
+                "included": "Im Block",
+                "final": "Endgültig",
+                "reserved": "TS reserviert"
+            },
+            "burnMore": "Mehr verbrennen"
+        },
+        "sent": "Burn gesendet. Ihre Summen werden aktualisiert, sobald der Block final ist."
     },
     "buttons": {
         "chooseAToken": "Wähle einen Token",
@@ -3142,6 +3169,7 @@
     "networkFeeText": "Netzwerkgebühr",
     "networkFeeTooltipText": "Die Netzwerkgebühr wird verwendet, um das Wachstum und eine stabile Leistung des {Sora} -Systems sicherzustellen.",
     "networkStatisticsText": "Netzwerkstatistiken",
+    "networkVerifiedDays": "Geprüfte Tage im Archiv",
     "newAccountsText": "Neue Konten",
     "nextText": "Weiter",
     "noDataText": "Keine Daten",
@@ -3472,6 +3500,7 @@
         "Explore/Tokens": "Token",
         "ForAgents": "Für Agenten",
         "OrderBook": "Handel",
+        "PointSystemWrapper": "@:rewards.PointSystemWrapper",
         "Polkamarkt": "Polkamarkt",
         "Pool": "Pool",
         "Rewards": "Belohnungen",
@@ -3489,6 +3518,7 @@
     "pairIsNotCreated": "Token-Paar wurde nicht erstellt",
     "points": {
         "accountsText": "{amount} Konten",
+        "activityGuide": "Punkteaktivitäten",
         "bridgeVolume": "Bridge-Volumen",
         "complete": "Abgeschlossen | Abschließen",
         "currently": "Momentan",
@@ -3510,6 +3540,7 @@
             "titleProgress": "Führung",
             "titleTask": "Sperren Sie XOR bei Governance-Abstimmungen"
         },
+        "historyRequirement": "Kontopunkte und Fortschritt erfordern eine verifizierte Kontohistorie.",
         "kensetsuVolumeRepaid": {
             "descriptionTask": "Tilgen Sie KUSD-Schulden während Liquidationen oder beim Schließen von Positionen",
             "titleProgress": "Kensetsu-Volumen",
@@ -3545,6 +3576,7 @@
             "titleProgress": "Orderbuch",
             "titleTask": "Limit-Aufträge erstellen"
         },
+        "personalUnavailable": "Ihre Punkte und Fortschritte sind erst verfügbar, wenn Ihr Kontoverlauf überprüft werden kann.",
         "progress": "Fortschritt",
         "referralRewards": {
             "descriptionTask": "Verweise Konten über das Empfehlungsprogramm",

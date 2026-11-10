@@ -2239,6 +2239,19 @@
         "disclaimer": "即時文件擷取需要攝影機訪問，以防止詐欺。",
         "title": "在瀏覽器設定中允許相機訪問"
     },
+    "burnActivity": {
+        "all": "所有 XOR 銷毀",
+        "campaignHistory": "TONSWAP 活動歷史",
+        "count": "銷毀事件",
+        "coverage": "最終確定的區塊鏈區塊 {from}–{to}",
+        "loading": "正在加載已確認的代幣銷毀記錄...",
+        "rewardsUnavailable": "在驗證活動歷史記錄之前，無法獲得獎勵分配和估算。",
+        "scope": "活動",
+        "title": "已確認的 XOR 銷毀",
+        "tonswap": "其中屬於 TONSWAP",
+        "unavailable": "確認的代幣銷毀記錄不可用。",
+        "xor": "已銷毀的 XOR"
+    },
     "burnPage": {
         "confirmNexusRecovery": "確認可存取 Nexus",
         "copySoraNetworkTxHash": "複製 SORA 網路 tx 哈希",
@@ -2396,8 +2409,22 @@
                 "return": "重返TS戰役",
                 "dismiss": "解散引導",
                 "receiptError": "無法下載憑證。請重試。您的代幣銷毀記錄未發生變化。"
-            }
-        }
+            },
+            "how": {
+                "enter": "輸入要銷毀的 XOR 數量，並查看 TS 估算。",
+                "burn": "執行銷毀。這些 XOR 將永久消失。",
+                "claim": "上線時使用同一錢包在 tonswap.org 領取 TS。"
+            },
+            "more": "如何運作",
+            "steps": {
+                "sent": "已送出",
+                "included": "已入塊",
+                "final": "已最終確認",
+                "reserved": "TS 已預留"
+            },
+            "burnMore": "繼續銷毀"
+        },
+        "sent": "銷毀已送出。區塊最終確認後，您的合計會更新。"
     },
     "buttons": {
         "chooseAToken": "選擇代幣",
@@ -3142,6 +3169,7 @@
     "networkFeeText": "網路費",
     "networkFeeTooltipText": "網路費用用於確保{Sora}系統的成長和效能穩定。",
     "networkStatisticsText": "網路統計",
+    "networkVerifiedDays": "已驗證的歷史日期",
     "newAccountsText": "新帳戶",
     "nextText": "下一步",
     "noDataText": "無數據",
@@ -3472,6 +3500,7 @@
         "Explore/Tokens": "代幣",
         "ForAgents": "對於代理商",
         "OrderBook": "貿易",
+        "PointSystemWrapper": "@:rewards.PointSystemWrapper",
         "Polkamarkt": "波爾卡市場",
         "Pool": "泳池",
         "Rewards": "獎勵",
@@ -3489,6 +3518,7 @@
     "pairIsNotCreated": "未建立令牌對",
     "points": {
         "accountsText": "{amount} 帳戶",
+        "activityGuide": "積分活動",
         "bridgeVolume": "橋捲",
         "complete": "已完成 |完全的",
         "currently": "目前",
@@ -3510,6 +3540,7 @@
             "titleProgress": "治理",
             "titleTask": "治理投票中鎖定異或"
         },
+        "historyRequirement": "帳戶積分和進度需要經過驗證的帳戶歷史記錄。",
         "kensetsuVolumeRepaid": {
             "descriptionTask": "在清算或平倉期間償還 KUSD 債務",
             "titleProgress": "劍集卷",
@@ -3545,6 +3576,7 @@
             "titleProgress": "訂單簿",
             "titleTask": "建立限價訂單"
         },
+        "personalUnavailable": "在驗證您的帳戶歷史記錄之前，您的積分和進度不可用。",
         "progress": "進展",
         "referralRewards": {
             "descriptionTask": "透過推薦系統推薦帳戶",

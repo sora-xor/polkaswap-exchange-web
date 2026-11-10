@@ -522,9 +522,11 @@ export default {
     border-radius: var(--s-border-radius-mini);
     background-color: var(--s-color-utility-body);
 
+    // Noir defines the warning fill and warning text as the same orange, so pair the outline with the
+    // contrast-checked warning text token instead.
     &--restricted {
-      background-color: var(--s-color-status-warning-background);
-      color: var(--s-color-status-warning);
+      box-shadow: inset 0 0 0 1px var(--s-color-status-warning);
+      color: var(--s-color-status-warning-text);
     }
 
     &__label {
@@ -542,8 +544,9 @@ export default {
     margin-top: $basic-spacing;
     padding: $basic-spacing $basic-spacing-medium;
     border-radius: var(--s-border-radius-mini);
-    background-color: var(--s-color-status-warning-background);
-    color: var(--s-color-status-warning);
+    background-color: var(--s-color-utility-body);
+    box-shadow: inset 0 0 0 1px var(--s-color-status-warning);
+    color: var(--s-color-status-warning-text);
     line-height: var(--s-line-height-medium);
 
     .s-icon-lock-16 {

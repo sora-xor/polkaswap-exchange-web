@@ -28,6 +28,13 @@ export type TonswapBurnQuote = {
 
 /** A successful, finalized, marker-verified XOR burn from the complete global stream. */
 export type TonswapBurn = {
+  receiptId?: string;
+  blockHash?: string;
+  eventIndex?: number;
+  originalAddress?: string;
+  claimOwner?: string;
+  recoveryPolicyHash?: string;
+  claimStatus?: 'reserved' | 'recipient-confirmation-required' | 'extinguished';
   address: string;
   amount: FPNumber;
   blockHeight: number;
@@ -137,6 +144,10 @@ export function quoteTonswapBurn(totalBurned: FPNumber, requested: FPNumber): To
 function isSameBurn(left: TonswapBurn, right: TonswapBurn): boolean {
   return (
     left.address === right.address &&
+    left.receiptId === right.receiptId &&
+    left.claimOwner === right.claimOwner &&
+    left.claimStatus === right.claimStatus &&
+    left.recoveryPolicyHash === right.recoveryPolicyHash &&
     left.blockHeight === right.blockHeight &&
     left.extrinsicIndex === right.extrinsicIndex &&
     left.txHash.toLowerCase() === right.txHash.toLowerCase() &&
@@ -182,14 +193,19 @@ export function allocateTonswapBurns(burns: readonly TonswapBurn[]): TonswapBurn
     const burnedBefore = fromAmountCodec(totalBurnedCodec);
     const quote = quoteTonswapBurn(burnedBefore, burn.amount);
     totalBurnedCodec += toAmountCodec(burn.amount);
-    return { ...burn, ...quote, burnedBefore };
+    return {
+      ...burn,
+      ...quote,
+      reward: burn.claimStatus === 'extinguished' ? FPNumber.ZERO : quote.reward,
+      burnedBefore,
+    };
   });
   const totalEligibleCodec = cappedCodec(totalBurnedCodec);
   return {
     allocations,
     totalBurned: fromAmountCodec(totalBurnedCodec),
     totalEligible: fromAmountCodec(totalEligibleCodec),
-    totalReward: fromAmountCodec(cumulativeRewardCodec(totalEligibleCodec)),
+    totalReward: fromAmountCodec(allocations.reduce((sum, allocation) => sum + toAmountCodec(allocation.reward), 0n)),
     remaining: fromAmountCodec(CAP_CODEC - totalEligibleCodec),
   };
 }

@@ -2239,6 +2239,19 @@
         "disclaimer": "Se requiere acceso a la cámara para la captura de documentos en tiempo real para evitar el fraude.",
         "title": "Permitir el acceso a la cámara en la configuración del navegador"
     },
+    "burnActivity": {
+        "all": "Todas las quemas de XOR",
+        "campaignHistory": "Historial de la campaña TONSWAP",
+        "count": "Operaciones de quema",
+        "coverage": "Bloques de blockchain finalizados {from}–{to}",
+        "loading": "Cargando registros de destrucción de tokens confirmados...",
+        "rewardsUnavailable": "Las asignaciones y estimaciones de recompensas no están disponibles hasta que se verifique el historial de la campaña.",
+        "scope": "Actividad",
+        "title": "Quemas de XOR confirmadas",
+        "tonswap": "De las cuales, TONSWAP",
+        "unavailable": "Los registros confirmados de destrucción de tokens no están disponibles.",
+        "xor": "XOR quemado"
+    },
     "burnPage": {
         "confirmNexusRecovery": "Confirmar acceso a Nexus",
         "copySoraNetworkTxHash": "Copiar el hash tx de la red SORA",
@@ -2396,8 +2409,22 @@
                 "return": "Regreso a la campaña TS",
                 "dismiss": "Descartar guía",
                 "receiptError": "No se pudo descargar el recibo. Inténtalo de nuevo. El registro de tu quema no ha cambiado."
-            }
-        }
+            },
+            "how": {
+                "enter": "Introduce los XOR que quieres quemar y revisa la estimación de TS.",
+                "burn": "Quémalos. Los XOR desaparecen para siempre.",
+                "claim": "Reclama tus TS en tonswap.org en el lanzamiento con la misma billetera."
+            },
+            "more": "Cómo funciona",
+            "steps": {
+                "sent": "Enviada",
+                "included": "En un bloque",
+                "final": "Definitiva",
+                "reserved": "TS reservados"
+            },
+            "burnMore": "Quemar más"
+        },
+        "sent": "Quema enviada. Tus totales se actualizan cuando el bloque sea definitivo."
     },
     "buttons": {
         "chooseAToken": "Elegir un token",
@@ -3142,6 +3169,7 @@
     "networkFeeText": "Tarifa de red",
     "networkFeeTooltipText": "La comisión de la red se utiliza para garantizar el crecimiento y el rendimiento estable del sistema {Sora}.",
     "networkStatisticsText": "Estadísticas de red",
+    "networkVerifiedDays": "Días verificados del archivo",
     "newAccountsText": "Nuevas cuentas",
     "nextText": "Siguiente",
     "noDataText": "Sin datos",
@@ -3472,6 +3500,7 @@
         "Explore/Tokens": "Fichas",
         "ForAgents": "Para agentes",
         "OrderBook": "Comercio",
+        "PointSystemWrapper": "@:rewards.PointSystemWrapper",
         "Polkamarkt": "Mercado de lunares",
         "Pool": "Fondo común",
         "Rewards": "Recompensas",
@@ -3489,6 +3518,7 @@
     "pairIsNotCreated": "El par de token no se ha creado",
     "points": {
         "accountsText": "{amount} cuentas",
+        "activityGuide": "Actividades de puntos",
         "bridgeVolume": "Volumen de puente",
         "complete": "Completado | Completar",
         "currently": "Actualmente",
@@ -3510,6 +3540,7 @@
             "titleProgress": "Gobernanza",
             "titleTask": "Bloquea XOR en la votación de gobernanza"
         },
+        "historyRequirement": "Los puntos de cuenta y el progreso requieren un historial de cuenta verificado.",
         "kensetsuVolumeRepaid": {
             "descriptionTask": "Reembolsa la deuda de KUSD durante liquidaciones o cierre de posiciones",
             "titleProgress": "Volumen Kensetsu",
@@ -3545,6 +3576,7 @@
             "titleProgress": "Cartera de pedidos",
             "titleTask": "Crear órdenes limitadas"
         },
+        "personalUnavailable": "Sus puntos y progreso no estarán disponibles hasta que se pueda verificar el historial de su cuenta.",
         "progress": "Progreso",
         "referralRewards": {
             "descriptionTask": "Recomienda cuentas a través del sistema de referidos",

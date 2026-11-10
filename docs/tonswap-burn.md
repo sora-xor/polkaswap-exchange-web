@@ -99,6 +99,20 @@ The excluded Trust account may also burn but receives no TS rewards.
 
 The card refreshes complete finalized statistics every five seconds and on block
 and tab-return events. Signing does not wait for or require campaign statistics.
+
+A reading that was verified within the last 60 seconds stays on screen while its
+replacement loads, so the rate, totals, chart point, history rows and the
+sidebar's Live mark do not blink on every poll (the user approved this on
+10 November 2026). It is not a fallback for missing data:
+
+- a failed read withdraws every number at once and tells the sidebar;
+- a reading expires at 60 seconds even if its replacement is still loading or
+  the tab is hidden; returning to the tab also checks expiry before waiting on a read;
+- leaving mainnet or changing the indexer endpoint withdraws it immediately;
+- certified older data replaces a fresh reading and is labelled as such.
+
+`READING_KEEP_MS`, `expireReading` and `clearReading` in `TonswapBurnCampaign.vue` hold this rule;
+the "Tonswap campaign reading during background reads" tests cover each case.
 A submitted burn has a persistent visible receipt with its
 amount, copyable signed transaction hash, and progress through block inclusion,
 final confirmation, and indexed TS reservation. Wallet history and block updates
@@ -146,6 +160,90 @@ hashes. Its source is the entire paginated campaign snapshot, not a recent-histo
 limit. Pending submissions appear individually with their confirmation status
 and are replaced by their finalized records when indexing completes.
 
+### Page layout (November 2026 redesign)
+
+`/#/burn` reads top to bottom as: the TONSWAP card, the two public burn totals,
+the SOLSWAP card, and a one-paragraph disclaimer. Nothing covers a card while
+data loads.
+
+The TONSWAP card is laid out by its own width (`@container tonswap`), so the
+same rules serve a phone, the Burn page and the 464px card inside Get TS:
+
+- **Intro.** The title, one sentence (`burnPage.tonswap.curve.description`) and
+  the claim notice. On a narrow card the mark sits beside the title only.
+- **Burn form** (`.tonswap-burn__preview`). It reads like a swap: the XOR amount
+  on top, a flame between, the estimated TS below. Quick amounts (10, 100,
+  1,000) fill the field; they never open the review or sign. The output shows
+  `0` without an amount, `≈ <TS>` with verified campaign data, and a dash when
+  there is an amount but no data. The "estimate unavailable" sentence waits
+  until the data is known to be missing, not while a read is only in flight.
+- **Campaign numbers** (`.tonswap-burn__market`). The current rate is the one
+  large number; burned, remaining and reserved totals are plain rows above the
+  cap meter, the reward curve (`TonswapRewardCurve` with `compact`) and the data
+  status line.
+- **Folded reading** (`.tonswap-burn__extras`). "How it works" holds three
+  numbered steps, the full campaign description, the start block and the terms
+  link; "Need XOR or a wallet?" holds the funding guide. Both are closed by
+  default. From 760px of card width they sit under the form, beside the numbers.
+- **Your burn history.** One compact record per burn. The receipt notice is
+  shown once for the list, and the hash is one line (the copy button gives all
+  of it).
+
+### Burn status banner
+
+`TonswapBurnStatus.vue` gives feedback for the newest burn of the connected
+wallet. It appears above the form as soon as the burn is signed, and the page
+scrolls it into view. It shows the burned XOR, the progress sentence and four
+steps: sent, in a block, final, TS reserved (`getTonswapBurnSteps` in
+`src/features/misc/lib/tonswapBurnStatus.ts`). While the burn is pending the
+card's mark flares and the banner shows the estimate the user reviewed when
+signing, labelled as an estimate. When the indexer lists the transaction, the
+headline becomes the TS that exact transaction reserved, a short burst of sparks
+plays, and **Burn more** closes the banner and returns focus to the amount
+field. A failed burn and a SORA Trust burn show no TS number; a Trust burn has
+no "TS reserved" step and ends at finality. Slow indexing adds a status refresh
+button.
+
+Rules the banner keeps:
+
+- Only an indexed reservation is ever shown as earned TS. An estimate stays in
+  the small line and never becomes the headline.
+- Reserved TS always comes from this transaction's row in the current admitted
+  reading. Expiry, read failure, endpoint change or a replacement snapshot that
+  omits the burn withdraws both the TS number and the completed reservation step.
+  Proved chain finality and the transaction hash stay available while reservation
+  evidence is unavailable. No stored receipt reward acts as a fallback.
+- A pending burn's signing estimate is withdrawn with its reading and is never
+  restored from an old receipt after an endpoint change or failed admission.
+- A burn recovered after a reload has no estimate, because none was reviewed in
+  this visit. A burn that was already indexed before the page loaded gets no
+  banner at all; its record is in the history list.
+- Sparks and other motion are decoration and do not run with
+  `prefers-reduced-motion`. Numbers always show their final value.
+
+`tests/unit/components/pages/Burn/TonswapBurnStatus.spec.ts` and
+`tests/unit/features/misc/tonswapBurnStatus.spec.ts` cover the banner; the
+layout rules are pinned in `tests/unit/features/misc/burnLayout.source.spec.ts`.
+
+### Public totals and the SOLSWAP card
+
+`PublicBurnActivity.vue` keeps the recent interval and the campaign history as
+two separate tables. Amounts and block numbers are grouped for reading with
+`groupExactDecimal`, which works on the decimal string, so no digit is rounded;
+the untouched amount is in the cell's `title`.
+
+The SOLSWAP card shows a thin moving line while its totals load (`aria-busy`
+on the form) instead of a mask. The sentence about unavailable reward totals is
+inside the card. The SORA Nexus address tool is a closed disclosure while the
+campaign runs. After a signed burn the card says "Burn sent" until the account
+changes.
+
+The ten strings added for this redesign (`burnPage.sent`,
+`burnPage.tonswap.burnMore`, `.more`, `.how.*`, `.steps.*`) were translated by
+the model that wrote the change, not reviewed by native speakers. The `akk`,
+`egy` and `pis` entries come from the same word tables as
+`scripts/lang/semantic-locales.ts`.
+
 ## Logo fire
 
 `BurnLogoFire.vue` and `burnLogoFire.ts` render blue fire from the official
@@ -157,3 +255,20 @@ rejected. Reduced motion, data saving, or reported hardware with at most two
 logical processors or 2 GB memory keeps the static logo. Off-screen or hidden
 documents pause animation. Context loss, shader/texture failures, or draw errors
 restore the SVG; unmounting releases GPU resources and observers.
+
+The burn confirmation deliberately uses `BurnLogoFire` with `:animate="false"`
+and `DialogBase` with `:blur-overlay="false"`. This avoids continuously repainting
+a WebGL logo alongside a full-screen backdrop-filter layer, a suspected cause of
+the reported modal flashing. The static SVG keeps the same footprint; amount
+autofocus, exact decimal handling, estimates and submission checks are unchanged.
+Other dialogs retain their default blur and campaign-page logos retain animation.
+An explicitly static logo never allocates WebGL resources, including after late
+image loads or visibility callbacks. Changing `animate` also cancels queued frames.
+
+Regression coverage lives in `BurnLogoFire.spec.ts`, `TonswapBurnCampaign.spec.ts`
+and `DialogBase.spec.ts`. Browser verification should exercise opening, typing,
+refreshing reward data, closing and reopening on desktop and mobile in Chromium
+and WebKit, with both short and overflowing amounts. Verify a static dialog logo,
+computed backdrop-filter `none`, stable dialog bounds and focus after transitions,
+and no page errors. Headless checks did not reproduce the reported
+full-screen flash, so they verify the rendering safeguards and interaction stability.

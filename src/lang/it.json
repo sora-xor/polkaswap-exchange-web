@@ -2239,6 +2239,19 @@
         "disclaimer": "L'accesso alla fotocamera è necessario per l'acquisizione di documenti in tempo reale per prevenire le frodi.",
         "title": "Consenti l'accesso alla fotocamera nelle impostazioni del browser"
     },
+    "burnActivity": {
+        "all": "Tutti i burn di XOR",
+        "campaignHistory": "Cronologia della campagna TONSWAP",
+        "count": "Operazioni di burn",
+        "coverage": "Blocchi blockchain finalizzati {from}–{to}",
+        "loading": "Caricamento dei record confermati di distruzione dei token…",
+        "rewardsUnavailable": "Le assegnazioni e le stime dei premi non sono disponibili finché la cronologia della campagna non viene verificata.",
+        "scope": "Attività",
+        "title": "Burn di XOR confermati",
+        "tonswap": "Di cui TONSWAP",
+        "unavailable": "I record confermati di distruzione dei token non sono disponibili.",
+        "xor": "XOR bruciati"
+    },
     "burnPage": {
         "confirmNexusRecovery": "Conferma l’accesso a Nexus",
         "copySoraNetworkTxHash": "Copia l'hash tx della rete SORA",
@@ -2396,8 +2409,22 @@
                 "return": "Ritorno alla campagna di ST",
                 "dismiss": "Respingere la guida",
                 "receiptError": "Impossibile scaricare la ricevuta. Riprova. La registrazione della distruzione dei tuoi token rimane invariata."
-            }
-        }
+            },
+            "how": {
+                "enter": "Inserisci gli XOR che vuoi bruciare e controlla la stima di TS.",
+                "burn": "Bruciali. Gli XOR spariscono per sempre.",
+                "claim": "Riscatta i tuoi TS su tonswap.org al lancio con lo stesso portafoglio."
+            },
+            "more": "Come funziona",
+            "steps": {
+                "sent": "Inviato",
+                "included": "In un blocco",
+                "final": "Definitivo",
+                "reserved": "TS riservati"
+            },
+            "burnMore": "Brucia ancora"
+        },
+        "sent": "Burn inviato. I tuoi totali si aggiornano quando il blocco è definitivo."
     },
     "buttons": {
         "chooseAToken": "Seleziona un token",
@@ -3142,6 +3169,7 @@
     "networkFeeText": "Fee del network",
     "networkFeeTooltipText": "La fees vengono utilizzate per garantire la crescita e le prestazioni stabili del sistema {Sora}.",
     "networkStatisticsText": "Statistiche di rete",
+    "networkVerifiedDays": "Giorni verificati nell’archivio",
     "newAccountsText": "Nuovi account",
     "nextText": "Il prossimo",
     "noDataText": "Nessun dato",
@@ -3472,6 +3500,7 @@
         "Explore/Tokens": "Token",
         "ForAgents": "Per gli agenti",
         "OrderBook": "Commercio",
+        "PointSystemWrapper": "@:rewards.PointSystemWrapper",
         "Polkamarkt": "Polkamarkt",
         "Pool": "pool",
         "Rewards": "Ricompense",
@@ -3489,6 +3518,7 @@
     "pairIsNotCreated": "La token pair è ancora stata creata",
     "points": {
         "accountsText": "{amount} account",
+        "activityGuide": "Attività a punti",
         "bridgeVolume": "Volume del ponte",
         "complete": "Completato | Completa",
         "currently": "Attualmente",
@@ -3510,6 +3540,7 @@
             "titleProgress": "Governo",
             "titleTask": "Blocca XOR nelle votazioni di governance"
         },
+        "historyRequirement": "I punti e i progressi dell'account richiedono una cronologia dell'account verificata.",
         "kensetsuVolumeRepaid": {
             "descriptionTask": "Ripaga il debito KUSD durante le liquidazioni o la chiusura delle posizioni",
             "titleProgress": "Volume Kensetsu",
@@ -3545,6 +3576,7 @@
             "titleProgress": "Libro degli ordini",
             "titleTask": "Crea ordini limite"
         },
+        "personalUnavailable": "I tuoi punti e i tuoi progressi non saranno disponibili finché la cronologia del tuo account non sarà verificata.",
         "progress": "Progressi",
         "referralRewards": {
             "descriptionTask": "Riferisci account tramite il sistema di riferimento",

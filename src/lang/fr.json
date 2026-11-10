@@ -2239,6 +2239,19 @@
         "disclaimer": "L'accès à la caméra est requis pour la capture de documents en temps réel afin de prévenir la fraude.",
         "title": "Autoriser l'accès à la caméra dans les paramètres du navigateur"
     },
+    "burnActivity": {
+        "all": "Toutes les destructions de XOR",
+        "campaignHistory": "Historique de la campagne TONSWAP",
+        "count": "Opérations de destruction",
+        "coverage": "Blocs blockchain finalisés {from}–{to}",
+        "loading": "Chargement des enregistrements de destruction de jetons confirmés…",
+        "rewardsUnavailable": "Les allocations et les estimations de récompenses ne sont pas disponibles tant que l'historique de la campagne n'est pas vérifié.",
+        "scope": "Activité",
+        "title": "Destructions de XOR confirmées",
+        "tonswap": "Dont TONSWAP",
+        "unavailable": "Les enregistrements confirmés de destruction de jetons ne sont pas disponibles.",
+        "xor": "XOR détruits"
+    },
     "burnPage": {
         "confirmNexusRecovery": "Confirmer l’accès à Nexus",
         "copySoraNetworkTxHash": "Copier le hachage d'émission du réseau SORA",
@@ -2396,8 +2409,22 @@
                 "return": "Retour à la campagne TS",
                 "dismiss": "Rejeter le guide",
                 "receiptError": "Le reçu n’a pas pu être téléchargé. Réessayez. L’enregistrement de votre destruction de jetons reste inchangé."
-            }
-        }
+            },
+            "how": {
+                "enter": "Saisissez les XOR à brûler et vérifiez l’estimation de TS.",
+                "burn": "Brûlez-les. Les XOR disparaissent pour de bon.",
+                "claim": "Réclamez vos TS sur tonswap.org au lancement avec le même portefeuille."
+            },
+            "more": "Comment ça marche",
+            "steps": {
+                "sent": "Envoyé",
+                "included": "Dans un bloc",
+                "final": "Définitif",
+                "reserved": "TS réservés"
+            },
+            "burnMore": "Brûler plus"
+        },
+        "sent": "Burn envoyé. Vos totaux se mettent à jour quand le bloc est définitif."
     },
     "buttons": {
         "chooseAToken": "Choisissez un jeton",
@@ -3142,6 +3169,7 @@
     "networkFeeText": "Frais de réseau",
     "networkFeeTooltipText": "Les frais de réseau sont utilisés pour assurer la croissance et les performances stables du système {Sora}.",
     "networkStatisticsText": "Statistiques du réseau",
+    "networkVerifiedDays": "Jours vérifiés dans les archives",
     "newAccountsText": "Nouveaux comptes",
     "nextText": "Suivant",
     "noDataText": "Pas de données",
@@ -3472,6 +3500,7 @@
         "Explore/Tokens": "Jetons",
         "ForAgents": "Pour les mandataires",
         "OrderBook": "Commerce",
+        "PointSystemWrapper": "@:rewards.PointSystemWrapper",
         "Polkamarkt": "Marché aux puces",
         "Pool": "Piscine",
         "Rewards": "Récompenses",
@@ -3489,6 +3518,7 @@
     "pairIsNotCreated": "La paire de jetons n'est pas créée",
     "points": {
         "accountsText": "{amount} comptes",
+        "activityGuide": "Activités à points",
         "bridgeVolume": "Volume du pont",
         "complete": "Terminé | Terminer",
         "currently": "Actuellement",
@@ -3510,6 +3540,7 @@
             "titleProgress": "Gouvernance",
             "titleTask": "Verrouillez XOR dans le vote de gouvernance"
         },
+        "historyRequirement": "Les points de compte et la progression nécessitent un historique de compte vérifié.",
         "kensetsuVolumeRepaid": {
             "descriptionTask": "Remboursez la dette en KUSD lors des liquidations ou de la fermeture de positions",
             "titleProgress": "Volume Kensetsu",
@@ -3545,6 +3576,7 @@
             "titleProgress": "Carnet de commandes",
             "titleTask": "Créer des ordres à cours limité"
         },
+        "personalUnavailable": "Vos points et votre progression ne seront pas disponibles tant que l'historique de votre compte n'aura pas été vérifié.",
         "progress": "Progrès",
         "referralRewards": {
             "descriptionTask": "Référez des comptes via le système de parrainage",

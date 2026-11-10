@@ -2239,6 +2239,19 @@
         "disclaimer": "Cameratoegang is vereist voor real-time documentregistratie om fraude te voorkomen.",
         "title": "Cameratoegang toestaan in browserinstellingen"
     },
+    "burnActivity": {
+        "all": "Alle XOR-verbrandingen",
+        "campaignHistory": "Geschiedenis van de TONSWAP-campagne",
+        "count": "Verbrandingen",
+        "coverage": "Afgeronde blockchain-blokken {from}–{to}",
+        "loading": "Bevestigde tokenvernietigingsrecords laden...",
+        "rewardsUnavailable": "Beloningstoewijzingen en schattingen zijn pas beschikbaar nadat de campagnegeschiedenis is geverifieerd.",
+        "scope": "Activiteit",
+        "title": "Bevestigde XOR-verbrandingen",
+        "tonswap": "Waarvan TONSWAP",
+        "unavailable": "Bevestigde tokenvernietigingsrecords zijn niet beschikbaar.",
+        "xor": "Verbrande XOR"
+    },
     "burnPage": {
         "confirmNexusRecovery": "Toegang tot Nexus bevestigen",
         "copySoraNetworkTxHash": "Kopieer SORA Network tx-hash",
@@ -2396,8 +2409,22 @@
                 "return": "Terug naar TS-campagne",
                 "dismiss": "Ontslaggids",
                 "receiptError": "Het ontvangstbewijs kon niet worden gedownload. Probeer het opnieuw. Je burnregistratie is ongewijzigd."
-            }
-        }
+            },
+            "how": {
+                "enter": "Vul in hoeveel XOR je wilt verbranden en bekijk de TS-schatting.",
+                "burn": "Verbrand ze. De XOR zijn daarna voorgoed weg.",
+                "claim": "Claim je TS bij de lancering op tonswap.org met dezelfde wallet."
+            },
+            "more": "Zo werkt het",
+            "steps": {
+                "sent": "Verzonden",
+                "included": "In een blok",
+                "final": "Definitief",
+                "reserved": "TS gereserveerd"
+            },
+            "burnMore": "Meer verbranden"
+        },
+        "sent": "Verbranding verzonden. Je totalen worden bijgewerkt zodra het blok definitief is."
     },
     "buttons": {
         "chooseAToken": "Kies een token",
@@ -3142,6 +3169,7 @@
     "networkFeeText": "Netwerkvergoeding",
     "networkFeeTooltipText": "Netwerkvergoeding wordt gebruikt om de groei en stabiele prestaties van het {Sora}-systeem te garanderen.",
     "networkStatisticsText": "Netwerkstatistieken",
+    "networkVerifiedDays": "Geverifieerde dagen in het archief",
     "newAccountsText": "Nieuwe rekeningen",
     "nextText": "Volgende",
     "noDataText": "Geen informatie",
@@ -3472,6 +3500,7 @@
         "Explore/Tokens": "Tokens",
         "ForAgents": "Voor agenten",
         "OrderBook": "Handel",
+        "PointSystemWrapper": "@:rewards.PointSystemWrapper",
         "Polkamarkt": "Polkamarkt",
         "Pool": "pool",
         "Rewards": "Beloningen",
@@ -3489,6 +3518,7 @@
     "pairIsNotCreated": "Tokenpaar is niet aangemaakt",
     "points": {
         "accountsText": "{amount} accounts",
+        "activityGuide": "Punten activiteiten",
         "bridgeVolume": "Brugvolume",
         "complete": "Voltooid | Voltooien",
         "currently": "Momenteel",
@@ -3510,6 +3540,7 @@
             "titleProgress": "Bestuur",
             "titleTask": "Vergrendel XOR in governance-stemmen"
         },
+        "historyRequirement": "Accountpunten en voortgang vereisen een geverifieerde accountgeschiedenis.",
         "kensetsuVolumeRepaid": {
             "descriptionTask": "Los KUSD-schuld af tijdens liquidaties of het sluiten van posities",
             "titleProgress": "Kensetsu-volume",
@@ -3545,6 +3576,7 @@
             "titleProgress": "Orderboek",
             "titleTask": "Maak limietorders aan"
         },
+        "personalUnavailable": "Uw punten en voortgang zijn pas beschikbaar nadat uw accountgeschiedenis kan worden geverifieerd.",
         "progress": "Voortgang",
         "referralRewards": {
             "descriptionTask": "Verwijs accounts via het verwijzingssysteem",

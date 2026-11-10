@@ -2239,6 +2239,19 @@
         "disclaimer": "גישה למצלמה נדרשת לכידת מסמכים בזמן אמת כדי למנוע הונאה.",
         "title": "אפשר גישה למצלמה בהגדרות הדפדפן"
     },
+    "burnActivity": {
+        "all": "כל הרס האסימונים (XOR)",
+        "campaignHistory": "היסטוריית קמפיין TONSWAP",
+        "count": "אירועי השמדת אסימונים",
+        "coverage": "בלוקים סופיים של בלוקצ'יין {from}–{to}",
+        "loading": "טוען רשומות השמדת אסימון מאושרות...",
+        "rewardsUnavailable": "הקצאות והערכות תגמול אינן זמינות עד לאימות היסטוריית הקמפיין.",
+        "scope": "פעילות",
+        "title": "השמדת אסימון מאושרת (XOR)",
+        "tonswap": "מתוכם: TONSWAP",
+        "unavailable": "רשומות השמדת אסימון מאושרות אינן זמינות.",
+        "xor": "כמות שנהרסה (XOR)"
+    },
     "burnPage": {
         "confirmNexusRecovery": "לְאַשֵׁר · SORA Nexus",
         "copySoraNetworkTxHash": "העתק את SORA Network tx hash",
@@ -2396,8 +2409,22 @@
                 "return": "חזרה לקמפיין TS",
                 "dismiss": "בטל מדריך",
                 "receiptError": "לא ניתן היה להוריד את הקבלה. יש לנסות שוב. רישום שריפת האסימונים שלך לא השתנה."
-            }
-        }
+            },
+            "how": {
+                "enter": "יש להזין כמה XOR לשרוף ולבדוק את הערכת ה-TS.",
+                "burn": "שורפים. ה-XOR נעלמים לתמיד.",
+                "claim": "בהשקה תובעים את ה-TS ב-tonswap.org עם אותו ארנק."
+            },
+            "more": "איך זה עובד",
+            "steps": {
+                "sent": "נשלח",
+                "included": "בבלוק",
+                "final": "סופי",
+                "reserved": "TS נשמרו"
+            },
+            "burnMore": "לשרוף עוד"
+        },
+        "sent": "השריפה נשלחה. הסכומים שלך יתעדכנו כשהבלוק יהיה סופי."
     },
     "buttons": {
         "chooseAToken": "בחרו טוקן",
@@ -3142,6 +3169,7 @@
     "networkFeeText": "דמי רשת",
     "networkFeeTooltipText": "דמי הרשת משמשים כדי להבטיח את צמיחת המערכת {Sora} וביצועים יציבים.",
     "networkStatisticsText": "סטטיסטיקות רשת",
+    "networkVerifiedDays": "ימים מאומתים בארכיון",
     "newAccountsText": "חשבונות חדשים",
     "nextText": "הַבָּא",
     "noDataText": "אין נתונים",
@@ -3472,6 +3500,7 @@
         "Explore/Tokens": "אסימונים",
         "ForAgents": "עבור סוכנים",
         "OrderBook": "סַחַר",
+        "PointSystemWrapper": "@:rewards.PointSystemWrapper",
         "Polkamarkt": "פולקמרקט",
         "Pool": "פּוּל",
         "Rewards": "תגמולים",
@@ -3489,6 +3518,7 @@
     "pairIsNotCreated": "זוג אסימון לא נוצר",
     "points": {
         "accountsText": "{amount} חשבונות",
+        "activityGuide": "פעילויות נקודות",
         "bridgeVolume": "נפח גשר",
         "complete": "הושלם | לְהַשְׁלִים",
         "currently": "כַּיוֹם",
@@ -3510,6 +3540,7 @@
             "titleProgress": "ממשל",
             "titleTask": "לנעול XOR בהצבעה ממשלתית"
         },
+        "historyRequirement": "נקודות והתקדמות בחשבון דורשים היסטוריית חשבון מאומתת.",
         "kensetsuVolumeRepaid": {
             "descriptionTask": "החזר חוב KUSD במהלך פיצולים או עמדות סגירה",
             "titleProgress": "נפח קנסטסו",
@@ -3545,6 +3576,7 @@
             "titleProgress": "ספר הזמנה",
             "titleTask": "צור הזמנות מגבלה"
         },
+        "personalUnavailable": "הנקודות וההתקדמות שלך אינם זמינים עד שניתן יהיה לאמת את היסטוריית החשבון שלך.",
         "progress": "הִתקַדְמוּת",
         "referralRewards": {
             "descriptionTask": "הפנה חשבונות באמצעות מערכת ההפניה",

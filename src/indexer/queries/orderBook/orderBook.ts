@@ -2,6 +2,7 @@ import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/sdk';
 import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { gql } from '@urql/core';
+import { readMarketPrice } from '@/lib/soraneo-wallet/src/services/indexer/marketPrice';
 
 import { isJsonRecord, parseIndexerJson } from '@/utils/indexerParsing';
 
@@ -12,6 +13,8 @@ import type { OrderBookEntity, QueryData } from '@/lib/soraneo-wallet/src/servic
 
 type OrderBookEntityMutation = {
   price: string;
+  price_exact?: string | null;
+  priceExact?: string | null;
   price_change_day: number;
   volume_day_u_s_d: string;
   status: string;
@@ -68,10 +71,11 @@ const parseDeals = (lastDeals?: string): OrderBookDealData[] => {
   });
 };
 
-const PolkaswapOrderBookDataQuery = gql<QueryData<OrderBookEntity>>`
+const makeOrderBookDataQuery = (exact: boolean) => gql<QueryData<OrderBookEntity>>`
   query PolkaswapOrderBookDataQuery($id: String!) {
     data: orderBook(id: $id) {
       price
+      ${exact ? 'priceExact' : ''}
       priceChangeDay
       volumeDayUSD
       status
@@ -79,6 +83,8 @@ const PolkaswapOrderBookDataQuery = gql<QueryData<OrderBookEntity>>`
     }
   }
 `;
+const OrderBookDataQuery = makeOrderBookDataQuery(false);
+const ExactOrderBookDataQuery = makeOrderBookDataQuery(true);
 
 const parseOrderBookResponse =
   (dexId: number, base: string, quote: string) =>
@@ -92,7 +98,7 @@ const parseOrderBookResponse =
         quote,
       },
       stats: {
-        price: parseFinancialValue(price),
+        price: readMarketPrice(item.data.priceExact, price, 19),
         priceChange: parseFinancialValue(priceChangeDay, true),
         volume: parseFinancialValue(volumeDayUSD),
         status,
@@ -123,7 +129,7 @@ const parseOrderBookMutation =
         quote,
       },
       stats: {
-        price: parseFinancialValue(price),
+        price: readMarketPrice('priceExact' in item ? item.priceExact : item.price_exact, price, 19),
         priceChange: parseFinancialValue(price_change_day, true),
         volume: parseFinancialValue(volume_day_u_s_d),
         status,
@@ -141,7 +147,10 @@ export async function subscribeOnOrderBookUpdates(
   const dexId = Number(dex);
   const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
   const parseQuery = parseOrderBookResponse(dexId, baseAssetId, quoteAssetId);
-  const response = await polkaswapIndexer.services.explorer.request(PolkaswapOrderBookDataQuery, { id: orderBookId });
+  const query = (await polkaswapIndexer.services.explorer.supportsExactPrices())
+    ? ExactOrderBookDataQuery
+    : OrderBookDataQuery;
+  const response = await polkaswapIndexer.services.explorer.request(query, { id: orderBookId });
 
   if (!response) return null;
 

@@ -58,12 +58,14 @@
         </template>
         <template v-slot="{ row }">
           <formatted-amount
+            v-if="row.priceUSDFormatted != null"
             is-fiat-value
             fiat-default-rounding
             :font-weight-rate="FontWeightRate.MEDIUM"
             :value="row.priceUSDFormatted"
             class="explore-table-item-price"
           ></formatted-amount>
+          <market-unavailable v-else />
         </template>
       </s-table-column>
       <!-- APY -->
@@ -134,13 +136,16 @@
         </template>
         <template v-slot="{ row }">
           <formatted-amount
+            v-if="row.tvlFormatted != null"
             is-fiat-value
             :font-weight-rate="FontWeightRate.MEDIUM"
+            fiat-default-rounding
             :value="row.tvlFormatted.amount"
             class="explore-table-item-price explore-table-item-amount"
           >
             {{ row.tvlFormatted.suffix }}
           </formatted-amount>
+          <market-unavailable v-else />
         </template>
       </s-table-column>
     </s-table>
@@ -185,6 +190,7 @@ import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/
 import WalletComponentHistoryPagination from '@/lib/soraneo-wallet/src/components/HistoryPagination.vue';
 import PairTokenLogo from '@/components/shared/PairTokenLogo.vue';
 import SortButton from '@/components/shared/Button/SortButton.vue';
+import MarketUnavailable from '@/shared/ui/MarketUnavailable.vue';
 
 defineOptions({
   name: 'ExplorePoolsPage',

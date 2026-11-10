@@ -4,7 +4,9 @@
       <div class="rewards-container">
         <span class="rewards-title">{{ t('referralProgram.receivedRewards') }}</span>
         <token-logo :token="xor" :size="LogoSize.BIGGER"></token-logo>
+        <p v-if="!referralRewards" role="status">{{ t('footer.statistics.title.unavailable') }}</p>
         <formatted-amount
+          v-else
           class="rewards-value"
           value-can-be-hidden
           :font-size-rate="FontSizeRate.SMALL"
@@ -76,7 +78,11 @@
             </s-button>
           </div>
         </s-collapse-item>
-        <s-collapse-item v-if="invitedUsersCount" class="invited-users-container" name="invitedUsers">
+        <s-collapse-item
+          v-if="invitedUsersCount && referralRewards"
+          class="invited-users-container"
+          name="invitedUsers"
+        >
           <template #title>
             <span class="invited-users-icon"></span>
             <h3 class="invited-users-collapse-title">
@@ -173,6 +179,7 @@ import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import last from 'lodash/fp/last';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { requireEntitlements } from '@/indexer/queries/capabilities';
 import { useRouter } from 'vue-router';
 
 import { FontSizeRate, FontWeightRate, LogoSize } from '@/lib/soraneo-wallet/src/consts';
@@ -237,7 +244,10 @@ const {
   getFPNumberFromCodec,
 } = useFormattedAmount();
 
-const referralRewards = computed(() => referralsStore.referralRewards as Nullable<ReferrerRewards>);
+const rewardsAvailable = ref(false);
+const referralRewards = computed(() =>
+  rewardsAvailable.value ? (referralsStore.referralRewards as Nullable<ReferrerRewards>) : null
+);
 const invitedUsers = computed(() => referralsStore.invitedUsers as Array<string>);
 const referrer = computed(() => referralsStore.referrer as string);
 const isReferrerApproved = computed(() => Boolean(referralsStore.isReferrerApproved));
@@ -245,7 +255,15 @@ const isTMA = computed(() => Boolean(settingsStore.isTMA));
 const telegramBotUrl = computed(() => settingsStore.telegramBotUrl as Nullable<string>);
 const xor = computed(() => assetsStore.xor as Nullable<AccountAsset>);
 const account = computed(() => walletStore.account as Nullable<PolkadotJsAccount>);
-const accountIdentity = computed(() => `${walletStore.accountSource ?? ''}:${account.value?.address ?? ''}`);
+const accountIdentity = computed(() =>
+  JSON.stringify([
+    walletStore.accountSource,
+    account.value?.address,
+    walletStore.soraNetwork,
+    walletStore.indexerType,
+    walletStore.indexers,
+  ])
+);
 let dataGeneration = 0;
 const networkFees = computed(() => walletStore.networkFees as Nullable<Record<string, CodecString>>);
 
@@ -299,7 +317,7 @@ const bondedContainerClasses = computed(() => {
 
 const invitedUserRewards = computed<Record<string, FPNumber>>(() => referralRewards.value?.invitedUserRewards ?? {});
 
-const formattedRewards = computed(() => referralRewards.value?.rewards.toLocaleString() ?? ZeroStringValue);
+const formattedRewards = computed(() => referralRewards.value?.rewards.toLocaleString() ?? '—');
 
 const formattedRewardsFiatValue = computed(() =>
   referralRewards.value?.rewards ? getFiatAmountByFPNumber(referralRewards.value.rewards) : null
@@ -475,6 +493,7 @@ const resetSubscriptions = () => {
 };
 
 const resetState = () => {
+  rewardsAvailable.value = false;
   referralsStore.reset();
 };
 
@@ -485,7 +504,16 @@ const initData = async () => {
   const isCurrent = () => generation === dataGeneration && identity === accountIdentity.value && isLoggedIn.value;
   if (!isLoggedIn.value || !account.value?.address) return;
 
-  await referralsStore.getAccountReferralRewards();
+  rewardsAvailable.value = false;
+  try {
+    const session = await requireEntitlements();
+    if (!isCurrent()) return;
+    await referralsStore.getAccountReferralRewards(session.indexer);
+    await requireEntitlements(session.indexer);
+    if (isCurrent()) rewardsAvailable.value = true;
+  } catch {
+    /* Keep ordinary referral setup available without reward estimates. */
+  }
   if (!isCurrent()) return;
   await referralsStore.subscribeOnInvitedUsers();
   if (!isCurrent()) return;
