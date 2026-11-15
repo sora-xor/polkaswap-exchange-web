@@ -254,12 +254,14 @@ release source no longer exists; its source chain and overlays are retained unde
 five changed files are byte-identical in this branch.
 See [New Accounts frontend release](docs/reports/account-creations-frontend-2026-11-11.md).
 
-Since 12 November 18:11 UTC the Pi stats writer has failed closed. SORA's spec
-138→141 runtime upgrade at block 28,343,400 has no pinned execution-metadata
-witness, so `pi-canonical-stats-live.service` stopped on `Recovery metadata cache
-witness mismatch`. It exited on 13 November and `/graphql` has returned 502 since.
-Restoring it needs a reviewed spec-141 witness and a controlled rollout, not a
-plain restart. Separately, `sorametrics.org` stopped sending CORS headers for
-`/tokens` and `/staking/recent-blocks`. The live zero-failure WebKit gate fails
-on Swap, Burn and Stats until both are resolved; do not describe it as passed.
+From 12 November 18:11 UTC the Pi stats writer failed closed. The SORA Nexus spec
+138→141 runtime upgrade at block 28,343,400 had no pinned execution-metadata witness, so
+`pi-canonical-stats-live.service` stopped on `Recovery metadata cache witness
+mismatch`, and `/graphql` returned 502 from 13 November 07:02 UTC. On 15 November
+at about 17:10 UTC a reviewed spec-141 witness layer brought it back. Its rollout
+record is in the polkaswap-indexer repository. The writer was still catching up
+at 17:30 UTC (`statsReady` false at block 28,348,406 of 28,381,170 finalized).
+With Pi answering, the live WebKit gate passed again on Swap, Burn and Stats.
+`sorametrics.org` still sends no CORS header. The wallet asks it for token prices
+only when the indexer returns nothing, so that fallback fails during a Pi outage.
 See [Pi outage after runtime 141](docs/reports/pi-runtime-141-outage-2026-11-15.md).
