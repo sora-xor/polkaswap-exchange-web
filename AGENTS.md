@@ -253,3 +253,13 @@ release source no longer exists; its source chain and overlays are retained unde
 `output/playwright/account-creations-release-20261111/` and on approved Pi. Its
 five changed files are byte-identical in this branch.
 See [New Accounts frontend release](docs/reports/account-creations-frontend-2026-11-11.md).
+
+Since 12 November 18:11 UTC the Pi stats writer has failed closed. SORA's spec
+138→141 runtime upgrade at block 28,343,400 has no pinned execution-metadata
+witness, so `pi-canonical-stats-live.service` stopped on `Recovery metadata cache
+witness mismatch`. It exited on 13 November and `/graphql` has returned 502 since.
+Restoring it needs a reviewed spec-141 witness and a controlled rollout, not a
+plain restart. Separately, `sorametrics.org` stopped sending CORS headers for
+`/tokens` and `/staking/recent-blocks`. The live zero-failure WebKit gate fails
+on Swap, Burn and Stats until both are resolved; do not describe it as passed.
+See [Pi outage after runtime 141](docs/reports/pi-runtime-141-outage-2026-11-15.md).
