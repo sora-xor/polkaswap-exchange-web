@@ -5,6 +5,8 @@ import burnPageSource from '@/features/misc/pages/BurnPage.vue?raw';
 import campaignSource from '@/features/misc/components/burn/TonswapBurnCampaign.vue?raw';
 import curveSource from '@/features/misc/components/burn/TonswapRewardCurve.vue?raw';
 import onboardingSource from '@/features/misc/components/burn/TonswapOnboarding.vue?raw';
+import statusSource from '@/features/misc/components/burn/TonswapBurnStatus.vue?raw';
+import activitySource from '@/features/misc/components/burn/PublicBurnActivity.vue?raw';
 
 /** Sass blocks only: a plain-CSS style block never reaches the Sass compiler, so its minmax() is real CSS. */
 function sassBlocks(source: string): string[] {
@@ -106,6 +108,34 @@ describe('burn page layout sources', () => {
   it('overrides the shared header weight, which the title mixin sets with !important', () => {
     expect(campaignSource).toContain('font-weight: 600 !important;');
     expect(burnPageSource).toContain('font-weight: 600 !important;');
+  });
+
+  it('keeps the exact total whole: its line wraps as a unit and the wallet break-all default is lifted', () => {
+    expect(campaignSource).toMatch(/&__notes \{[\s\S]*?:deep\(\.info-line\) \{[\s\S]*?flex-wrap: wrap;/);
+    expect(campaignSource).toMatch(
+      /&__notes \{[\s\S]*?:deep\(\.info-line-content\) \{\s*max-width: 100%;\s*overflow-wrap: anywhere;\s*word-break: normal;/
+    );
+  });
+
+  it('lets long translated button labels wrap instead of cutting them on one line', () => {
+    // The main action grows with its label; it used to be a fixed 50px.
+    expect(campaignSource).toMatch(/:deep\(\.action-button\.el-button\) \{\s*height: auto;\s*min-height: 50px;/);
+    const wrapped = /\.s-button__text \{\s*overflow: visible;\s*white-space: normal;/g;
+    expect(campaignSource.match(wrapped)?.length).toBe(2);
+    expect(statusSource.match(wrapped)?.length).toBe(1);
+  });
+
+  it('shrinks the reserved-TS headline on the narrowest card and gives the banner buttons a white focus ring', () => {
+    expect(statusSource).toMatch(
+      /@container tonswap \(max-width: 279px\) \{[\s\S]*?\.burn-status__value \{\s*font-size: 20px;/
+    );
+    expect(statusSource).toMatch(/&:focus-visible \{\s*outline-color: #ffffff !important;/);
+  });
+
+  it('scrolls a long exact total inside the public activity card instead of widening the page', () => {
+    expect(activitySource).toMatch(/\.public-burn \{[\s\S]*?min-width: 0;[\s\S]*?overflow-x: auto;/);
+    // Table cells still never break a number to make room for a label.
+    expect(activitySource).not.toMatch(/overflow-wrap: anywhere/);
   });
 
   it('shows the live pill with the same high-contrast colors as the sidebar pill and stops it for reduced motion', () => {
