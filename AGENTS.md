@@ -242,3 +242,26 @@ saved/read back/purged, all 933 public files matched, and all nine candidate/liv
 WebKit routes plus the final Swap check passed with zero failed requests and
 console errors. The initial transient CDN audit failure and recovery are retained.
 See [Burn redesign release](docs/reports/burn-redesign-2026-11-10.md).
+
+The November 11 New Accounts release is production root
+`bafybeidalmpedv6tpwjcu6kuimrg5ulwiwniib6m2izzbxyqzcehoavazq`, paired with testnet
+`bafybeigodxgspk5f76xxri52vfhj5or4mq22l2owel2chi25g2cn3vpaiq`. It adds only the
+creation-based New Accounts counter to the complete Burn redesign assembly. Both
+DAGs passed full pin integrity, Bunny was saved and purged, all 933 public files
+matched, and all nine candidate/live WebKit routes passed. The `/private/tmp`
+release source no longer exists; its source chain and overlays are retained under
+`output/playwright/account-creations-release-20261111/` and on approved Pi. Its
+five changed files are byte-identical in this branch.
+See [New Accounts frontend release](docs/reports/account-creations-frontend-2026-11-11.md).
+
+From 12 November 18:11 UTC the Pi stats writer failed closed. The SORA Nexus spec
+138→141 runtime upgrade at block 28,343,400 had no pinned execution-metadata witness, so
+`pi-canonical-stats-live.service` stopped on `Recovery metadata cache witness
+mismatch`, and `/graphql` returned 502 from 13 November 07:02 UTC. On 15 November
+at about 17:10 UTC a reviewed spec-141 witness layer brought it back. Its rollout
+record is in the polkaswap-indexer repository. The writer was still catching up
+at 17:30 UTC (`statsReady` false at block 28,348,406 of 28,381,170 finalized).
+With Pi answering, the live WebKit gate passed again on Swap, Burn and Stats.
+`sorametrics.org` still sends no CORS header. The wallet asks it for token prices
+only when the indexer returns nothing, so that fallback fails during a Pi outage.
+See [Pi outage after runtime 141](docs/reports/pi-runtime-141-outage-2026-11-15.md).

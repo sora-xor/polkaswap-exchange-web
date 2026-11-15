@@ -653,7 +653,17 @@ const statusReward = computed(() => {
   if (receipt.phase === 'updated') return indexedReceiptAllocation(receipt)?.reward ?? null;
   return loadFailed.value ? null : parseReceiptAmount(receipt.estimate);
 });
-const quickAmounts = computed(() => QUICK_AMOUNTS.map((value) => ({ value, label: format(new FPNumber(value), 0) })));
+/**
+ * Quick-amount labels in the app's number format. The formatter takes its delimiters from the app language, which
+ * is applied after this card first renders, so the labels follow the store's locale state instead of being
+ * computed once ("1,000" stayed on screen in German).
+ */
+const quickAmounts = computed(() => {
+  // Both are written each time a language is applied, after the delimiters are set.
+  void settings.language;
+  void settings.percentFormat;
+  return QUICK_AMOUNTS.map((value) => ({ value, label: format(new FPNumber(value), 0) }));
+});
 /** The estimate beside the amount: a dash while there is an amount but no verified campaign data. */
 const previewOutput = computed(() => {
   if (previewQuote.value) return `≈ ${format(previewQuote.value.reward, 4)}`;
@@ -1430,13 +1440,20 @@ defineExpose({
     font-weight: 600;
   }
   :deep(.action-button.el-button) {
-    height: 50px;
+    height: auto;
     min-height: 50px;
     margin-top: 0;
+    padding-block: 10px;
     font-size: 16px;
     line-height: 20px;
     font-weight: 700;
     text-transform: none;
+    // The shared button keeps its label on one clipped line; a long translation wraps to a second line here.
+    .s-button__text {
+      overflow: visible;
+      white-space: normal;
+      text-align: center;
+    }
   }
 
   // One column on a phone: the form, then the campaign numbers, then the folded reading.
@@ -1622,7 +1639,15 @@ defineExpose({
       line-height: 1.5;
     }
     :deep(.info-line) {
+      // The exact total is one long number: when it does not fit beside its label it moves below it.
+      flex-wrap: wrap;
       margin-top: 8px;
+    }
+    // Only a number wider than the whole line may break; the wallet default breaks every value mid-number.
+    :deep(.info-line-content) {
+      max-width: 100%;
+      overflow-wrap: anywhere;
+      word-break: normal;
     }
   }
   &__actions {
@@ -2050,6 +2075,12 @@ defineExpose({
     line-height: 1.4;
     text-transform: none;
     white-space: normal;
+    // The shared button keeps its label on one clipped line; a long translation wraps here instead.
+    .s-button__text {
+      overflow: visible;
+      white-space: normal;
+      text-align: center;
+    }
   }
   :deep(.tonswap-burn__save-receipt.el-button) {
     grid-column: auto;

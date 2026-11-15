@@ -127,6 +127,9 @@ watch(
   box-sizing: border-box;
   width: 100%;
   min-width: 0;
+  // Exact amounts are never broken or shortened, so a total too long for a phone scrolls inside its card
+  // instead of widening the page.
+  overflow-x: auto;
   padding: 16px 20px;
   border-radius: 20px;
   background: var(--s-color-utility-surface);

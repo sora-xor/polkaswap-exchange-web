@@ -50,6 +50,22 @@ describe('burn campaign helpers', () => {
     expect(formatBurnAmount(new FPNumber('10.125'), 3)).toBe('10.125');
   });
 
+  it('trims with the decimal mark of the language applied after load, keeping grouped thousands whole', () => {
+    const delimiters = { ...FPNumber.DELIMITERS_CONFIG };
+    try {
+      // German: "." groups thousands and "," is the decimal mark.
+      FPNumber.DELIMITERS_CONFIG.thousand = '.';
+      FPNumber.DELIMITERS_CONFIG.decimal = ',';
+      expect(formatBurnAmount(new FPNumber('1000'), 0)).toBe('1.000');
+      expect(formatBurnAmount(new FPNumber('1250000'))).toBe('1.250.000');
+      expect(formatBurnAmount(new FPNumber('11592.40'), 4)).toBe('11.592,4');
+      expect(formatBurnAmount(new FPNumber('10.000'), 3)).toBe('10');
+    } finally {
+      Object.assign(FPNumber.DELIMITERS_CONFIG, delimiters);
+    }
+    expect(formatBurnAmount(new FPNumber('1250000'))).toBe('1,250,000');
+  });
+
   it('formats claim rows from qualifying burn reservation amounts', () => {
     expect(
       createClaimRow(123, new FPNumber('10.000'), new FPNumber('500.000'), new FPNumber('10.000'), '0xtx', null)

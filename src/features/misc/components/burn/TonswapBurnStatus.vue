@@ -386,10 +386,20 @@ onBeforeUnmount(() => clearTimeout(burstTimer));
     line-height: 1.4;
     text-transform: none;
     white-space: normal;
+    // The shared button keeps its label on one clipped line; a long translation wraps here instead.
+    .s-button__text {
+      overflow: visible;
+      white-space: normal;
+      text-align: center;
+    }
     &:hover,
     &:focus-visible {
       background: #ffe9f3;
       color: #4a1450;
+    }
+    // The banner is dark in both themes, so the app's accent ring would sink into it; white keeps it clear.
+    &:focus-visible {
+      outline-color: #ffffff !important;
     }
     &.is-disabled,
     &:disabled {
@@ -436,6 +446,20 @@ onBeforeUnmount(() => clearTimeout(burstTimer));
   }
   .burn-status__step {
     font-size: 11px;
+  }
+}
+// The narrowest phones: a five-digit reservation stays on one line beside a smaller mark.
+@container tonswap (max-width: 279px) {
+  .burn-status__main {
+    gap: 10px;
+  }
+  .burn-status__flame {
+    flex-basis: 36px;
+    width: 36px;
+    height: 36px;
+  }
+  .burn-status__value {
+    font-size: 20px;
   }
 }
 
