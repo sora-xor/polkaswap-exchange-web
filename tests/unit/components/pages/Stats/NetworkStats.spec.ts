@@ -125,6 +125,26 @@ describe('NetworkStats', () => {
     });
   });
 
+  it.each([
+    [SoraNetwork.Prod, 'creation'],
+    [SoraNetwork.Test, 'participation'],
+  ])('selects the supported account counter on %s', async (network, metric) => {
+    settingsStoreMock.state.soraNetwork = network;
+    fetchDataMock.mockResolvedValue({
+      accounts: FPNumber.ZERO,
+      transactions: new FPNumber(22),
+      bridgeIncomingTransactions: FPNumber.ZERO,
+      bridgeOutgoingTransactions: FPNumber.ZERO,
+    });
+    const wrapper = mount(NetworkStats, {
+      global: { stubs: { 's-card': true, 's-tooltip': true, 's-icon': true } },
+    });
+    await flushPromises();
+    expect(fetchDataMock).toHaveBeenCalledTimes(2);
+    expect(fetchDataMock.mock.calls.map((args) => args[4])).toEqual([metric, metric]);
+    wrapper.unmount();
+  });
+
   it('offers the fixed mainnet CSV without exposing it as testnet history', async () => {
     settingsStoreMock.state.soraNetwork = SoraNetwork.Prod;
     const wrapper = mount(NetworkStats, {

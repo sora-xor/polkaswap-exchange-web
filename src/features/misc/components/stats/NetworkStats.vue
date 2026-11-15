@@ -208,7 +208,13 @@ async function fetchPeriod(
   signal: AbortSignal
 ): Promise<NetworkSnapshot> {
   const [metrics, activity] = await Promise.allSettled([
-    readNetworkPeriodCounts(from, to, type, signal),
+    readNetworkPeriodCounts(
+      from,
+      to,
+      type,
+      signal,
+      settingsStore.soraNetwork === SoraNetwork.Prod ? 'creation' : 'participation'
+    ),
     // Account activity accepts an inclusive lower bound. The Stats period is (to, from].
     fetchActiveAccounts(from, to + 1),
   ]);

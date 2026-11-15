@@ -242,3 +242,14 @@ saved/read back/purged, all 933 public files matched, and all nine candidate/liv
 WebKit routes plus the final Swap check passed with zero failed requests and
 console errors. The initial transient CDN audit failure and recovery are retained.
 See [Burn redesign release](docs/reports/burn-redesign-2026-11-10.md).
+
+The November 11 New Accounts release is production root
+`bafybeidalmpedv6tpwjcu6kuimrg5ulwiwniib6m2izzbxyqzcehoavazq`, paired with testnet
+`bafybeigodxgspk5f76xxri52vfhj5or4mq22l2owel2chi25g2cn3vpaiq`. It adds only the
+creation-based New Accounts counter to the complete Burn redesign assembly. Both
+DAGs passed full pin integrity, Bunny was saved and purged, all 933 public files
+matched, and all nine candidate/live WebKit routes passed. The `/private/tmp`
+release source no longer exists; its source chain and overlays are retained under
+`output/playwright/account-creations-release-20261111/` and on approved Pi. Its
+five changed files are byte-identical in this branch.
+See [New Accounts frontend release](docs/reports/account-creations-frontend-2026-11-11.md).
