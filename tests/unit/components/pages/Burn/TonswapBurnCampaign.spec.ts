@@ -2,6 +2,7 @@ import { flushPromises, mount } from '@vue/test-utils';
 import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
 import { nextTick, reactive, ref } from 'vue';
+import SForm from '@/lib/soramitsu-ui/components/Form/SForm.vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import tonswapMarkUrl from '@/assets/img/tonswap-mark.svg?url';
@@ -36,6 +37,8 @@ vi.mock('@/features/misc/composables/useTonswapCampaignStatus', () => ({
 }));
 vi.mock('@/features/misc/lib/tonswapTelemetry', () => ({ trackTonswapStep: vi.fn() }));
 const settings = reactive({
+  language: 'en',
+  percentFormat: null as Intl.NumberFormat | null,
   soraNetwork: 'Prod',
   networkFees: { [Operation.BurnWithRemark]: '1000000000000000' } as Record<string, string>,
   blockNumber: 0,
@@ -1756,6 +1759,64 @@ describe('Tonswap burn form, status banner and folded reading', () => {
     expect(steps(trust)).toEqual(['sent:done', 'included:done', 'final:done']);
     expect(trust.get('.burn-status__note').text()).toBe('0 TS · burnPage.tonswap.excludedAccount');
     expect(trust.find('.burn-status__claim').exists()).toBe(false);
+  });
+
+  it('does not submit the amount form natively: Enter cannot reload the page or start a burn', async () => {
+    // The real form wrapper replaces the suite's plain stub, because the reload came from its <form> element.
+    const wrapper = mount(Component, {
+      global: {
+        stubs: {
+          TonswapOnboarding: true,
+          's-form': SForm,
+          's-button': { inheritAttrs: false, template: '<button type="button"><slot/></button>' },
+        },
+      },
+    });
+    wrappers.push(wrapper);
+    await flushPromises();
+    const input = wrapper.get<HTMLInputElement>('#tonswap-preview-amount');
+    const form = input.element.form as HTMLFormElement;
+    expect(form).not.toBeNull();
+    // One text field and no submit button is exactly what browsers submit on Enter.
+    expect(form.querySelectorAll('input:not([type="hidden"])').length).toBe(1);
+    expect(form.querySelector('[type="submit"]')).toBeNull();
+
+    await input.setValue('25.5');
+    await input.trigger('keydown', { key: 'Enter' });
+    const submit = new Event('submit', { bubbles: true, cancelable: true });
+    expect(form.dispatchEvent(submit)).toBe(false);
+
+    expect(submit.defaultPrevented).toBe(true);
+    expect(input.element.value).toBe('25.5');
+    expect(wrapper.vm.dialogVisible).toBe(false);
+    expect(mocks.burn).not.toHaveBeenCalled();
+  });
+
+  it('writes the quick-amount labels in the language applied after the card first rendered', async () => {
+    loggedIn.value = false;
+    const delimiters = { ...FPNumber.DELIMITERS_CONFIG };
+    try {
+      const wrapper = await setup();
+      expect(wrapper.findAll('.tonswap-burn__chip').map((chip) => chip.text())).toEqual(['10', '100', '1,000']);
+
+      // What applying German does: the delimiters first, then the store's locale state.
+      FPNumber.DELIMITERS_CONFIG.thousand = '.';
+      FPNumber.DELIMITERS_CONFIG.decimal = ',';
+      settings.language = 'de';
+      settings.percentFormat = new Intl.NumberFormat('de', { style: 'percent' });
+      await nextTick();
+
+      const chips = wrapper.findAll('.tonswap-burn__chip');
+      expect(chips.map((chip) => chip.text())).toEqual(['10', '100', '1.000']);
+      expect(chips[2].attributes('aria-label')).toBe('1.000 XOR');
+      // The value handed to the amount field stays a plain decimal string.
+      await chips[2].trigger('click');
+      expect(wrapper.get<HTMLInputElement>('#tonswap-preview-amount').element.value).toBe('1000');
+    } finally {
+      Object.assign(FPNumber.DELIMITERS_CONFIG, delimiters);
+      settings.language = 'en';
+      settings.percentFormat = null;
+    }
   });
 
   it('fills the amount from a quick choice without opening the review or signing', async () => {

@@ -7,3 +7,10 @@ The chart displays the primary observations as soon as their connection finishes
 Gap recovery stops after 24 requests per period and metric, including page retries. A single gap spanning more than 800 blocks remains unknown. The chart shows gaps for unknown buckets, marks the period total unavailable and omits a comparison percentage when either period is incomplete. A failed primary query shows the chart's retry action. Switching range or endpoint prevents superseded reads from updating the chart or requesting more pages.
 
 If the current period's sole missing interval ends at the live selection and the right BLOCK anchor has not finalized yet, the chart retries only the anchors after 6, 12, 24 and 48 seconds. The original time bounds stay fixed. Each attempt counts toward the same recovery budget. Changing the range or endpoint, or leaving the page, cancels the pending timer. No amount is shown for a still-unproven interval.
+
+
+## On-chain account creation
+
+The mainnet New Accounts card reads `NetworkSnapshot.accountCreations`, aliased to the local `accounts` counter in both calendar and BLOCK queries. It counts finalized `System.NewAccount` events, including accounts recreated after removal; it does not infer first-ever participation from incomplete ownership history. A missing creation observation keeps the selected-period count unavailable, while a complete observed zero remains zero. Fee and volume reads, and other networks, keep their existing GraphQL field selection. The API admits coverage independently from personal Points or reward entitlements.
+
+If an alternate mainnet endpoint rejects the creation query before returning calendar data, the reader makes one bounded retry using its legacy schema for the other counters and always clears the account count. The fallback stays on the captured endpoint and never presents legacy first-participation values as creation counts.

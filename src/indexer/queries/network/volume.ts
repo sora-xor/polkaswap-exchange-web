@@ -1,5 +1,6 @@
 import { FPNumber } from '@sora-substrate/math';
-import { gql } from '@urql/core';
+import { gql, type TypedDocumentNode } from '@urql/core';
+import { Kind, print, visit } from 'graphql';
 
 import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { SnapshotTypes, type ConnectionQueryResponse } from '@/lib/soraneo-wallet/src/services/indexer/types';
@@ -121,6 +122,35 @@ const blocksQuery = gql<ConnectionQueryResponse<Block>>`
   }
 `;
 
+/** Select the creation field only for the mainnet counter read; fees, volume and other networks keep their schema. */
+function withAccountCreations<T>(query: TypedDocumentNode<T>): TypedDocumentNode<T> {
+  return gql<T>(
+    print(
+      visit(query, {
+        OperationDefinition(node) {
+          return node.name
+            ? {
+                ...node,
+                name: { ...node.name, value: node.name.value.replace('NetworkChart', 'NetworkChartCreation') },
+              }
+            : undefined;
+        },
+        Field(node) {
+          return node.name.value === 'accounts'
+            ? { ...node, alias: node.name, name: { kind: Kind.NAME, value: 'accountCreations' } }
+            : undefined;
+        },
+      })
+    )
+  );
+}
+
+const legacyQueries = { calendar: flowQuery, blocks: blocksQuery };
+const creationQueries = {
+  calendar: withAccountCreations(flowQuery),
+  blocks: withAccountCreations(blocksQuery),
+};
+
 type Anchor = Pick<Block, 'id' | 'timestamp'>;
 const anchorsQuery = gql<{ before: { nodes: Anchor[] }; after: { nodes: Anchor[] } }>`
   query NetworkChartGapAnchors($start: Int!, $end: Int!) {
@@ -215,7 +245,8 @@ async function calendar<T>(
   size: number,
   projection: Projection<T>,
   permit: () => boolean,
-  liveEnd: number | null
+  liveEnd: number | null,
+  query = flowQuery
 ): Promise<Map<number, T>> {
   // The API owns the lower bound exclusively for projected calendar flows and returns an exclusive bucket end.
   const variables = {
@@ -223,7 +254,7 @@ async function calendar<T>(
     start: range.start - 1,
     end: range.end,
   };
-  const rows = await pages<Row>((after) => explorer.fetchEntities(flowQuery, { ...variables, after }), permit);
+  const rows = await pages<Row>((after) => explorer.fetchEntities(query, { ...variables, after }), permit);
   const values = new Map<number, T>();
   for (const row of rows) {
     if (row.flowAggregation !== 'CALENDAR' || row.flowBucketEnd === row.flowBucketStart) continue;
@@ -275,7 +306,8 @@ async function recoverBlocks<T>(
   intervals: Range[],
   projection: Projection<T>,
   permit: () => boolean,
-  trailingSignal?: AbortSignal
+  trailingSignal?: AbortSignal,
+  query = blocksQuery
 ): Promise<Map<number, T>> {
   const readAnchors = () =>
     retryOnEmptyResult(
@@ -314,9 +346,7 @@ async function recoverBlocks<T>(
   )
     return new Map();
   const count = last - first - 1;
-  const rows = count
-    ? await pages<Block>((after) => explorer.fetchEntities(blocksQuery, { ...range, after }), permit)
-    : [];
+  const rows = count ? await pages<Block>((after) => explorer.fetchEntities(query, { ...range, after }), permit) : [];
   if (rows.length !== count) return new Map();
   const covered = new Set<number>();
   const values = new Map(intervals.map(({ start }) => [start, projection.zero]));
@@ -341,7 +371,8 @@ async function readCoveredFlow<T>(
   type: SnapshotTypes,
   onCalendar?: (points: Observation<T>[]) => void,
   signal: AbortSignal = new AbortController().signal,
-  explorer: Explorer = (getCurrentIndexer() as PolkaswapIndexer).services.explorer
+  explorer: Explorer = (getCurrentIndexer() as PolkaswapIndexer).services.explorer,
+  queries = legacyQueries
 ): Promise<Observation<T>[]> {
   const active = () => !signal.aborted;
   const granularity = resolveNetworkHistorySnapshotType(type);
@@ -367,7 +398,8 @@ async function readCoveredFlow<T>(
     size,
     projection,
     () => active() && ++primaryRequests <= Math.ceil(intervals.length / PAGE_SIZE) + 2,
-    liveEnd
+    liveEnd,
+    queries.calendar
   );
   const points = (): Observation<T>[] =>
     intervals.map(({ start }) => ({ timestamp: start * 1000, value: values.get(start) ?? null }));
@@ -380,7 +412,9 @@ async function readCoveredFlow<T>(
     try {
       const hours = buckets(missing, HOUR);
       const hourly =
-        size === DAY ? await calendar(explorer, missing, HOUR, projection, permit, liveEnd) : new Map<number, T>();
+        size === DAY
+          ? await calendar(explorer, missing, HOUR, projection, permit, liveEnd, queries.calendar)
+          : new Map<number, T>();
       const hourlyGaps = gaps(hours, hourly);
       const onlyLiveTail = values.size === intervals.length - 1 && hourlyGaps.length === 1 && missing.end === liveEnd;
       for (const gap of hourlyGaps) {
@@ -388,7 +422,15 @@ async function readCoveredFlow<T>(
         const within = hours.filter(({ start }) => start >= gap.start && start <= gap.end);
         try {
           const trailingSignal = onlyLiveTail && gap.end === liveEnd ? signal : undefined;
-          const recovered = await recoverBlocks(explorer, gap, within, projection, permit, trailingSignal);
+          const recovered = await recoverBlocks(
+            explorer,
+            gap,
+            within,
+            projection,
+            permit,
+            trailingSignal,
+            queries.blocks
+          );
           for (const [start, value] of recovered) hourly.set(start, value);
         } catch {
           // An incomplete BLOCK connection affects this gap only.
@@ -461,23 +503,43 @@ const countProjection: Projection<NetworkCounts> = {
   }),
 };
 
-/** Read event counters together so their coverage, pagination and gap recovery agree. */
+/** Read complete event counters together. Mainnet creation counts include finalized account re-creation events. */
 export async function readNetworkPeriodCounts(
   from: number,
   to: number,
   type: SnapshotTypes,
-  signal?: AbortSignal
+  signal?: AbortSignal,
+  accountMetric: 'participation' | 'creation' = 'participation'
 ): Promise<PeriodCounts> {
   const archivedDays: ArchiveDayCounts[] = [];
   let archiveReader: PolkaswapIndexer['services']['explorer'] | undefined;
-  if (type === SnapshotTypes.DAY) {
+  if (type === SnapshotTypes.DAY || accountMetric === 'creation') {
     try {
       archiveReader = (getCurrentIndexer() as PolkaswapIndexer).services.explorer.captureNetworkOnly();
     } catch {
       // An indexer without a frozen uncached session can still serve its ordinary calendar rows.
     }
   }
-  let observations = await readCoveredFlow(countProjection, from, to, type, undefined, signal, archiveReader);
+  let observations: Observation<NetworkCounts>[];
+  try {
+    observations = await readCoveredFlow(
+      countProjection,
+      from,
+      to,
+      type,
+      undefined,
+      signal,
+      archiveReader,
+      accountMetric === 'creation' ? creationQueries : legacyQueries
+    );
+  } catch (error) {
+    if (accountMetric !== 'creation' || signal?.aborted) throw error;
+    // A legacy mainnet endpoint may reject the new field before returning calendar data.
+    // Retry its supported schema once for the other counters; participation never substitutes for creation.
+    observations = (await readCoveredFlow(countProjection, from, to, type, undefined, signal, archiveReader)).map(
+      (point) => ({ ...point, value: point.value ? { ...point.value, accounts: null } : null })
+    );
+  }
   const retainedTransactionsComplete =
     observations.length > 0 && observations.every(({ value }) => value?.transactions != null);
   if (

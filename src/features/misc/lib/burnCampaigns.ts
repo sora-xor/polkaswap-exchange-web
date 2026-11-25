@@ -84,11 +84,27 @@ export const SOLSWAP_CURRENT_SS_PER_XOR = '50';
 export const SOLSWAP_LEGACY_SS_PER_XOR = '100';
 
 const MIN_NORMALIZABLE_ADDRESS_LENGTH = 32;
-const decimalDelimiter = FPNumber.DELIMITERS_CONFIG.decimal;
-const escapedDecimalDelimiter = decimalDelimiter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-const decimalOnlyZerosRegExp = new RegExp(`${escapedDecimalDelimiter}0+$`);
-const trailingZerosRegExp = new RegExp(`(${escapedDecimalDelimiter}\\d*?[1-9])0+$`);
-const danglingDecimalRegExp = new RegExp(`${escapedDecimalDelimiter}$`);
+type TrailingZeroPatterns = { decimalOnlyZeros: RegExp; trailingZeros: RegExp; danglingDecimal: RegExp };
+const trailingZeroPatterns = new Map<string, TrailingZeroPatterns>();
+
+/**
+ * Trailing-zero patterns for one decimal mark. The mark follows the app language, which is applied after this
+ * module loads, so it is read on every call: with the English mark kept from load time, German "1.000" lost its
+ * thousands group and read as 1.
+ */
+function getTrailingZeroPatterns(decimalDelimiter: string): TrailingZeroPatterns {
+  let patterns = trailingZeroPatterns.get(decimalDelimiter);
+  if (!patterns) {
+    const escaped = decimalDelimiter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    patterns = {
+      decimalOnlyZeros: new RegExp(`${escaped}0+$`),
+      trailingZeros: new RegExp(`(${escaped}\\d*?[1-9])0+$`),
+      danglingDecimal: new RegExp(`${escaped}$`),
+    };
+    trailingZeroPatterns.set(decimalDelimiter, patterns);
+  }
+  return patterns;
+}
 
 /**
  * Creates the supported burn campaign definitions in display order.
@@ -168,10 +184,10 @@ export const calculateBurnCountdowns = (
  * Removes trailing decimal zeroes from locale-formatted FPNumber output.
  */
 export const trimBurnTrailingZeros = (value: string): string => {
-  return value
-    .replace(decimalOnlyZerosRegExp, '')
-    .replace(trailingZerosRegExp, '$1')
-    .replace(danglingDecimalRegExp, '');
+  const { decimalOnlyZeros, trailingZeros, danglingDecimal } = getTrailingZeroPatterns(
+    FPNumber.DELIMITERS_CONFIG.decimal
+  );
+  return value.replace(decimalOnlyZeros, '').replace(trailingZeros, '$1').replace(danglingDecimal, '');
 };
 
 /**

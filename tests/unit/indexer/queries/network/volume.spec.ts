@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { fetchData, fetchNetworkCounts, readNetworkPeriodCounts } from '@/indexer/queries/network/volume';
+import { stringifyDocument } from '@urql/core';
 import { SnapshotTypes } from '@/lib/soraneo-wallet/src/services/indexer/types';
 
 const { fetchEntities, request } = vi.hoisted(() => ({ fetchEntities: vi.fn(), request: vi.fn() }));
@@ -247,6 +248,61 @@ describe('calendar fee and volume history', () => {
 
 describe('period network counters', () => {
   const counts = { transactions: 3, accounts: 2, bridgeIncomingTransactions: 0, bridgeOutgoingTransactions: 1 };
+
+  it.each(['creation', 'participation'] as const)(
+    'uses the %s schema for both calendar and BLOCK counters',
+    async (metric) => {
+      fetchEntities.mockReset();
+      request.mockReset();
+      fetchEntities.mockImplementation(async (query, variables) => {
+        const text = stringifyDocument(query);
+        if (metric === 'creation') {
+          expect(text).toContain('accounts: accountCreations');
+          expect(text).toContain('query NetworkChartCreation');
+        } else expect(text).not.toContain('accountCreations');
+        const accounts = metric === 'creation' ? 1 : 7;
+        return page(
+          variables.type
+            ? [{ ...row(1, hour - 1), ...counts, accounts }]
+            : [{ ...block(23, hour + 2), ...counts, accounts }]
+        );
+      });
+      request.mockResolvedValue(anchors(22, 24, hour, 2 * hour - 1));
+      const result = await readNetworkPeriodCounts(2 * hour - 1, 0, SnapshotTypes.HOUR, undefined, metric);
+      expect(result.counts?.accounts?.toString()).toBe(metric === 'creation' ? '2' : '14');
+      expect(fetchEntities).toHaveBeenCalledTimes(2);
+      expect(result.counts?.transactions?.toString()).toBe('6');
+    }
+  );
+
+  it('preserves other counters on an unsupported schema without substituting first participation for creation', async () => {
+    fetchEntities.mockReset();
+    request.mockReset();
+    fetchEntities.mockImplementation(async (query) =>
+      stringifyDocument(query).includes('accountCreations')
+        ? null
+        : page([{ ...row(1, hour - 1), ...counts, accounts: 999 }])
+    );
+    const result = await readNetworkPeriodCounts(hour - 1, 0, SnapshotTypes.HOUR, undefined, 'creation');
+    expect(result.counts?.accounts).toBeNull();
+    expect(result.counts?.transactions?.toString()).toBe('3');
+    expect(result.counts?.bridgeIncomingTransactions?.toString()).toBe('0');
+    expect(result.counts?.bridgeOutgoingTransactions?.toString()).toBe('1');
+    expect(fetchEntities).toHaveBeenCalledTimes(3);
+    expect(request).not.toHaveBeenCalled();
+  });
+
+  it('keeps a missing creation count unavailable and preserves a certified creation zero', async () => {
+    for (const accounts of [null, 0]) {
+      fetchEntities.mockReset();
+      request.mockReset();
+      fetchEntities.mockResolvedValue(page([{ ...row(1, hour - 1), ...counts, accounts }]));
+      const result = await readNetworkPeriodCounts(hour - 1, 0, SnapshotTypes.HOUR, undefined, 'creation');
+      expect(result.counts?.accounts?.toString() ?? null).toBe(accounts === null ? null : '0');
+      expect(result.counts?.transactions?.toString()).toBe('3');
+      expect(stringifyDocument(fetchEntities.mock.calls[0][0])).toContain('accounts: accountCreations');
+    }
+  });
 
   it('adds complete calendar and recovered block counts and preserves unknown per-field counts', async () => {
     fetchEntities.mockReset();
