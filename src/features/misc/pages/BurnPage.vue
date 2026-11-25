@@ -144,6 +144,7 @@
             :burn-available="false"
             @use-address="handleUseGeneratedNexusAddress"
           />
+          <sora-nexus-account-recovery v-if="id === 'solswap'" />
           <s-button v-if="!isLoggedIn" type="primary" class="action-button" @click="connectSoraWallet">
             {{ t('connectWalletText') }}
           </s-button>
@@ -193,6 +194,7 @@ import { computed, onBeforeUnmount, onMounted, reactive, ref, toRef, watch } fro
 import { requireEntitlements } from '@/indexer/queries/capabilities';
 import BurnLogoFire from '@/features/misc/components/burn/BurnLogoFire.vue';
 import SoraNexusAccountGenerator from '@/features/misc/components/burn/SoraNexusAccountGenerator.vue';
+import SoraNexusAccountRecovery from '@/features/misc/components/burn/SoraNexusAccountRecovery.vue';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useInternalConnect } from '@/composables/useInternalConnect';
 import { useLoading } from '@/composables/useLoading';

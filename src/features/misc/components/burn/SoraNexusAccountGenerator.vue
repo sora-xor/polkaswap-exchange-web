@@ -8,10 +8,24 @@
       <strong>{{ t('burnPage.nexusGenerator.recoveryWarningTitle') }}</strong>
       <p>{{ t('burnPage.nexusGenerator.formatWarning') }}</p>
     </div>
+    <div v-if="burnAvailable" class="nexus-generator__wallet">
+      <label>
+        <span>{{ t('burnPage.nexusGenerator.targetWalletLabel') }}</span>
+        <select v-model="targetWallet" data-testid="nexus-target-wallet" :disabled="dialogVisible">
+          <option disabled value="">{{ t('burnPage.nexusGenerator.chooseTargetWallet') }}</option>
+          <option value="sora-wallet">{{ t('burnPage.nexusGenerator.soraWallet') }}</option>
+          <option value="fearless-wallet">{{ t('burnPage.nexusGenerator.fearlessWallet') }}</option>
+        </select>
+      </label>
+      <p data-testid="nexus-target-wallet-help">{{ t('burnPage.nexusGenerator.targetWalletHelp') }}</p>
+    </div>
     <div v-if="confirmedAddress" class="nexus-generator__address">
       <div>
         <span class="nexus-generator__label">{{ t('burnPage.nexusGenerator.addressLabel') }}</span>
         <code data-testid="nexus-confirmed-address">{{ confirmedAddress }}</code>
+        <p v-if="confirmedTargetWallet" data-testid="nexus-confirmed-wallet">
+          {{ t('burnPage.nexusGenerator.targetWalletBackup', { wallet: t(targetWalletKeys[confirmedTargetWallet]) }) }}
+        </p>
         <p>{{ t('burnPage.nexusGenerator.addressInstruction') }}</p>
       </div>
       <div class="nexus-generator__address-actions">
@@ -26,6 +40,7 @@
       v-if="burnAvailable"
       :type="confirmedAddress ? 'secondary' : 'primary'"
       class="nexus-generator__generate"
+      :disabled="!targetWallet || dialogVisible"
       @click="generate"
     >
       {{ t(confirmedAddress ? 'burnPage.nexusGenerator.generateAgain' : 'burnPage.nexusGenerator.generate') }}
@@ -57,6 +72,9 @@
       </template>
       <p v-if="!discardRequested" class="nexus-generator__step">
         {{ t('burnPage.nexusGenerator.step', { step: stepNumber }) }}
+      </p>
+      <p v-if="pendingTargetWallet && !discardRequested" data-testid="nexus-pending-wallet">
+        {{ t('burnPage.nexusGenerator.targetWalletBackup', { wallet: t(targetWalletKeys[pendingTargetWallet]) }) }}
       </p>
       <p v-if="discardRequested" class="nexus-generator__modal-intro" role="alert">
         {{ t('burnPage.nexusGenerator.discardWarning') }}
@@ -164,7 +182,7 @@ import { onBeforeRouteLeave } from 'vue-router';
 
 import { useTranslation } from '@/composables/useTranslation';
 import DialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
-import { generateSoraNexusAccount } from '@/features/misc/lib/nexusAccountGenerator';
+import { generateSoraNexusAccount, type SoraNexusTargetWallet } from '@/features/misc/lib/nexusAccountGenerator';
 
 defineOptions({ name: 'SoraNexusAccountGenerator' });
 
@@ -172,6 +190,13 @@ const props = withDefaults(defineProps<{ burnAvailable?: boolean }>(), { burnAva
 const emit = defineEmits<{ (event: 'useAddress', address: string): void }>();
 const { t } = useTranslation();
 const titleId = 'nexus-generator-title';
+const targetWalletKeys: Record<SoraNexusTargetWallet, string> = {
+  'sora-wallet': 'burnPage.nexusGenerator.soraWallet',
+  'fearless-wallet': 'burnPage.nexusGenerator.fearlessWallet',
+};
+const targetWallet = ref<SoraNexusTargetWallet | ''>('');
+const pendingTargetWallet = ref<SoraNexusTargetWallet | null>(null);
+const confirmedTargetWallet = ref<SoraNexusTargetWallet | null>(null);
 const challengeIndexes = ref<number[]>([]);
 const dialogVisible = ref(false);
 const stage = ref<'display' | 'verify' | 'address'>('display');
@@ -197,6 +222,7 @@ const dialogTitle = computed(() => {
 function discardPending(): void {
   words.value = [];
   pendingAddress.value = '';
+  pendingTargetWallet.value = null;
   backupAcknowledged.value = false;
   addressBackupAcknowledged.value = false;
   challengeAnswers.value = ['', '', ''];
@@ -206,16 +232,17 @@ function discardPending(): void {
   stage.value = 'display';
 }
 
-/** Generates an Ed25519 Nexus recipient locally without persisting its recovery words. */
+/** Captures the chosen wallet with a new SORA Nexus recipient without storing private words. */
 function generate(): void {
-  if (!props.burnAvailable) return;
+  if (!props.burnAvailable || dialogVisible.value || !targetWallet.value) return;
   discardPending();
   generationError.value = false;
   copyMessage.value = '';
   try {
-    const account = generateSoraNexusAccount();
+    const account = generateSoraNexusAccount(targetWallet.value);
     words.value = account.phrase.split(' ');
     pendingAddress.value = account.address;
+    pendingTargetWallet.value = account.targetWallet;
     dialogVisible.value = true;
   } catch {
     generationError.value = true;
@@ -268,8 +295,15 @@ function verifyWords(): void {
 
 /** Completes the flow only after the user records the public address too. */
 function finishBackup(): void {
-  if (stage.value !== 'address' || !addressBackupAcknowledged.value || !pendingAddress.value) return;
+  if (
+    stage.value !== 'address' ||
+    !addressBackupAcknowledged.value ||
+    !pendingAddress.value ||
+    !pendingTargetWallet.value
+  )
+    return;
   confirmedAddress.value = pendingAddress.value;
+  confirmedTargetWallet.value = pendingTargetWallet.value;
   discardPending();
   dialogVisible.value = false;
 }
@@ -379,11 +413,35 @@ onBeforeUnmount(() => {
 }
 
 .nexus-generator__heading p,
+.nexus-generator__wallet p,
 .nexus-generator__address p {
   margin: 0;
   color: var(--s-color-base-content-secondary);
   font-size: 14px;
   line-height: 1.5;
+}
+
+.nexus-generator__wallet {
+  display: grid;
+  gap: $basic-spacing-small;
+  margin: $basic-spacing 0;
+
+  label {
+    display: grid;
+    gap: $basic-spacing-small;
+  }
+
+  select {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid var(--s-color-base-border-secondary);
+    border-radius: 8px;
+    background: var(--s-color-base-background);
+    color: inherit;
+    font: inherit;
+  }
 }
 
 .nexus-generator__generate {

@@ -122,6 +122,7 @@ describe('Burn.vue', () => {
     TonswapBurnCampaign: { template: '<div class="tonswap-campaign-stub" />' },
     PublicBurnActivity: { template: '<div data-testid="public-burn-activity" />' },
     SoraNexusAccountGenerator: { name: 'SoraNexusAccountGenerator', template: '<div class="nexus-generator-stub" />' },
+    SoraNexusAccountRecovery: { name: 'SoraNexusAccountRecovery', template: '<div class="nexus-recovery-stub" />' },
     BurnLogoFire: { props: ['variant'], template: '<div class="fire-stub" :data-variant="variant" />' },
     GenericPageHeader: { template: '<div><slot /></div>' },
     ExternalLink: { template: '<a><slot /></a>' },
@@ -277,6 +278,9 @@ describe('Burn.vue', () => {
     expect(tool.get('summary').text()).toBe('Create Minamoto mainnet SORA Nexus address');
     // A bare boolean attribute reaches the stub as an empty string, which means true.
     expect(tool.get('.nexus-generator-stub').attributes('burn-available')).toBe('');
+    // The backup check stays outside the campaign-only tool so it is reachable in both states.
+    expect(running.findAll('.nexus-recovery-stub')).toHaveLength(1);
+    expect(tool.find('.nexus-recovery-stub').exists()).toBe(false);
     running.unmount();
 
     settingsStoreMock.blockNumber = 61_000_000;
@@ -285,6 +289,7 @@ describe('Burn.vue', () => {
     expect(ended.find('details.campaign__nexus').exists()).toBe(false);
     expect(ended.findAll('.nexus-generator-stub')).toHaveLength(1);
     expect(ended.get('.nexus-generator-stub').attributes('burn-available')).toBe('false');
+    expect(ended.findAll('.nexus-recovery-stub')).toHaveLength(1);
   });
 
   it('tells the user a burn was sent only after signing, and forgets it when the account changes', async () => {
