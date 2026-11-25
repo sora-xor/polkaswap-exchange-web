@@ -35,7 +35,7 @@
           :delimiters="delimiters"
           :decimals="asset.decimals"
           :max="MaxInputNumber"
-          @update:model-value="fetchNetworkFeeDebounced"
+          @update:model-value="handleAmountInput"
         >
           <template #top>
             <div class="wallet-send-amount">
@@ -193,7 +193,7 @@ import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import dayjs from 'dayjs';
 import debounce from 'lodash/fp/debounce';
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import {
   getWalletCurrentParams,
@@ -275,6 +275,7 @@ export default {
     const address = ref('');
     const name = ref('');
     const amount = ref('');
+    const isMaxSelected = ref(false);
     const showAdditionalInfo = ref(true);
     const withVesting = ref(false);
     const selectedVestingPeriod = ref<UnlockPeriodDays>(1);
@@ -350,6 +351,21 @@ export default {
         decimals: asset.value.decimals,
         fee: fee.value,
       })
+    );
+    watch(
+      [() => networkFees.value.Transfer, withVesting],
+      ([transferFee, vesting]) => {
+        if (!vesting) fee.value = getFPNumberFromCodec(transferFee ?? '0', XOR.decimals);
+      },
+      { immediate: true, flush: 'sync' }
+    );
+    watch(
+      [maxAmount, step],
+      ([nextMax, currentStep]) => {
+        // Keep an explicitly selected MAX current while editing, preserving the reviewed amount afterward.
+        if (isMaxSelected.value && currentStep === 1) amount.value = nextMax.toString();
+      },
+      { flush: 'sync' }
     );
     const isMaxButtonAvailable = computed(() =>
       isWalletSendMaxAvailable({
@@ -464,10 +480,16 @@ export default {
         return;
       }
 
-      fee.value = getFPNumberFromCodec(networkFees.value.Transfer);
+      fee.value = getFPNumberFromCodec(networkFees.value.Transfer ?? '0', XOR.decimals);
     };
 
     const fetchNetworkFeeDebounced = debounce(100)(() => void fetchNetworkFee()) as () => void;
+
+    /** Manual edits stop following MAX while retaining the existing fee refresh. */
+    const handleAmountInput = (): void => {
+      isMaxSelected.value = false;
+      fetchNetworkFeeDebounced();
+    };
 
     const handleBack = (): void => {
       if (step.value !== 1) {
@@ -483,6 +505,7 @@ export default {
     };
 
     const handleMaxClick = async (): Promise<void> => {
+      isMaxSelected.value = true;
       amount.value = maxAmount.value.toString();
     };
 
@@ -568,8 +591,6 @@ export default {
 
         void subscribeToRouteAssetBalance();
       }
-
-      fee.value = getFPNumberFromCodec(networkFees.value.Transfer);
     });
 
     onBeforeUnmount(() => {
@@ -611,6 +632,7 @@ export default {
       formattedVestingStart,
       fetchNetworkFee,
       fetchNetworkFeeDebounced,
+      handleAmountInput,
       handleBack,
       handleCopyAddress,
       handleMaxClick,
