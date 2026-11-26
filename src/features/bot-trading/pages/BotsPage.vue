@@ -65,16 +65,6 @@
         @connect="connectSoraWallet"
       />
     </section>
-    <QuantCommandCenter
-      v-if="workspaceView === 'simple'"
-      :assets="assets"
-      :load-fees="researchFees.load"
-      :load-history="playgroundHistory.load"
-      :busy="busy || !!startIntent"
-      @live="startQuant"
-      @paper="paperQuant"
-      @swap="openSwap"
-    />
     <p
       v-if="workspaceView === 'simple' && simpleEligibilityMessage"
       :class="{ 'bots-error': assetsError }"
@@ -143,6 +133,16 @@
       @pause="(id) => run(() => pauseBot(id))"
       @stop="(id) => run(() => stopBot(id))"
       @resume="autopilot.resume"
+    />
+    <QuantCommandCenter
+      v-if="workspaceView === 'simple'"
+      :assets="assets"
+      :load-fees="researchFees.load"
+      :load-history="playgroundHistory.load"
+      :busy="busy || !!startIntent"
+      @live="startQuant"
+      @paper="paperQuant"
+      @swap="openSwap"
     />
     <div
       v-show="workspaceView === 'lab'"

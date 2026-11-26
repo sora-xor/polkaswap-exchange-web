@@ -268,6 +268,30 @@ describe('SForm', () => {
     expect(wrapper.find('.el-form-item__error').exists()).toBe(false);
   });
 
+  it('cancels the native submission, so Enter in a single text field cannot reload the app', () => {
+    const wrapper = mountForm();
+    const event = new Event('submit', { bubbles: true, cancelable: true });
+
+    // dispatchEvent returns false when a listener called preventDefault.
+    expect(wrapper.element.dispatchEvent(event)).toBe(false);
+    expect(event.defaultPrevented).toBe(true);
+  });
+
+  it('still runs a submit handler supplied by the parent, and cancels that submission too', () => {
+    const onSubmit = vi.fn();
+    const wrapper = mount(SForm, {
+      attrs: { onSubmit },
+      slots: { default: () => h('input', { name: 'only' }) },
+    });
+    const event = new Event('submit', { bubbles: true, cancelable: true });
+
+    wrapper.element.dispatchEvent(event);
+
+    expect(onSubmit).toHaveBeenCalledTimes(1);
+    expect(onSubmit).toHaveBeenCalledWith(event);
+    expect(event.defaultPrevented).toBe(true);
+  });
+
   it('renders standalone form items without requiring a form context or prop', () => {
     const wrapper = mount(SFormItem, {
       slots: {

@@ -209,6 +209,30 @@ function executableMinimum(quote: TonswapConversionQuote): string | null {
   }
 }
 
+/**
+ * Reads the token pair, receiver and enforced minimum out of gateway → 1inch conversion calldata, for showing a
+ * transaction before it is signed. It does not verify a quote; `executeTonswapConversionQuote` does that.
+ */
+export function decodeTonswapConversionSwap(data: string): {
+  srcToken: string;
+  dstToken: string;
+  dstReceiver: string;
+  minReturnAmount: bigint;
+} | null {
+  try {
+    const outer = GATEWAY_ABI.decodeFunctionData('onswap', data);
+    const { desc } = ROUTER_ABI.decodeFunctionData('swap', outer.calldata_);
+    return {
+      srcToken: desc.srcToken,
+      dstToken: desc.dstToken,
+      dstReceiver: desc.dstReceiver,
+      minReturnAmount: desc.minReturnAmount,
+    };
+  } catch {
+    return null;
+  }
+}
+
 /** Binds execution to an unmodified, freshly issued quote, including through a Vue reactive proxy. */
 function quoteFingerprint(quote: TonswapConversionQuote): string {
   return keccak256(toUtf8Bytes(JSON.stringify(quote)));

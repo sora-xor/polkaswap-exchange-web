@@ -14,6 +14,25 @@ describe('WalletAssets template', () => {
     expect(source).toContain('<div v-else class="wallet-assets__draggable">');
   });
 
+  it('keeps locked-balance tooltip labels readable on the inverted tooltip surface', async () => {
+    const source = (await import('@/lib/soraneo-wallet/src/components/WalletAssets.vue?raw')).default as string;
+    const labelStyleBlock = source.match(/&__label\s*\{[^}]*\}/)?.[0] ?? '';
+
+    // The tooltip body is light in Noir; a theme text token such as content-tertiary is light there too.
+    expect(labelStyleBlock).toContain('color: inherit;');
+    expect(labelStyleBlock).not.toContain('var(--s-color-base-content');
+    expect(source).not.toContain('pointSystem.governanceLockedXOR');
+  });
+
+  it('wraps the spendable pill label instead of overflowing the pill', async () => {
+    const source = (await import('@/lib/soraneo-wallet/src/components/WalletAssets.vue?raw')).default as string;
+    // `#{...}` interpolations contain braces, so read up to the span rule's own closing line.
+    const pillStyleBlock = source.match(/&-value-locked\s*\{[\s\S]*?> span\s*\{[\s\S]*?\n\s*\}\n/)?.[0] ?? '';
+
+    expect(pillStyleBlock).toContain('white-space: normal;');
+    expect(pillStyleBlock).not.toContain('white-space: nowrap;');
+  });
+
   it('keeps the add asset action on the shared medium secondary button contract', async () => {
     const source = (await import('@/lib/soraneo-wallet/src/components/WalletAssets.vue?raw')).default as string;
     const addAssetStyleBlock = source.match(/&-add\s*\{[^}]*\}/)?.[0] ?? '';

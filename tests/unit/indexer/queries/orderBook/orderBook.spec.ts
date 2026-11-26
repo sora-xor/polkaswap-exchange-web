@@ -81,6 +81,11 @@ describe('order book update subscription query', () => {
     expect(update.deals[0].side).toBe(PriceVariant.Sell);
     expect(update.deals[0].timestamp).toBe(1_701_000);
 
+    expect(parseMutation({ price_exact: null, price: '7' }).stats.price).toBeNull();
+    expect(parseMutation({ priceExact: '0', price: '7' }).stats.price.toString()).toBe('0');
+    expect(parseMutation({ price_exact: '0.000000000340941693', price: '0' }).stats.price.toString()).toBe(
+      '0.000000000340941693'
+    );
     const emptyUpdate = parseMutation({
       price: null,
       price_change_day: null,
@@ -89,7 +94,7 @@ describe('order book update subscription query', () => {
       last_deals: undefined,
     } as any);
 
-    expect(emptyUpdate.stats.price.toString()).toBe('0');
+    expect(emptyUpdate.stats.price).toBeNull();
     expect(emptyUpdate.stats.priceChange.toString()).toBe('0');
     expect(emptyUpdate.stats.volume.toString()).toBe('0');
     expect(emptyUpdate.deals).toEqual([]);
@@ -140,7 +145,7 @@ describe('order book update subscription query', () => {
     await subscribeOnOrderBookUpdates('0-base-quote', handler, vi.fn());
 
     const update = handler.mock.calls[0]?.[0];
-    expect(update.stats.price.toString()).toBe('0');
+    expect(update.stats.price).toBeNull();
     expect(update.stats.priceChange.toString()).toBe('0');
     expect(update.stats.volume.toString()).toBe('0');
     expect(update.deals).toHaveLength(1);
@@ -154,6 +159,7 @@ const createIndexer = (type: unknown) => ({
   type,
   services: {
     explorer: {
+      supportsExactPrices: vi.fn().mockResolvedValue(false),
       request: indexerMocks.request,
       createEntitySubscription: indexerMocks.createEntitySubscription,
     },

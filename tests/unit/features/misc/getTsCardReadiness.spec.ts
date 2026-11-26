@@ -5,6 +5,7 @@ import {
   requestGetTsCardReadiness,
   estimateGetTsCardConversionGas,
   estimateGetTsCardBridgeGas,
+  estimateGetTsCardEthBridgeGas,
   GET_TS_CARD_DAI,
   GET_TS_HASHI_DAI_BRIDGE,
   type GetTsCardReadinessDependencies,
@@ -17,7 +18,8 @@ const account = '0x1111111111111111111111111111111111111111';
 const soraAccount = encodeAddress(new Uint8Array(32).fill(7), 69);
 const started = 1_790_310_000_000;
 const codec = (amount: string) => new FPNumber(amount).toCodecString();
-const request = { amount: '25', account, soraAccount, publicKey: 'pk_live_test', purpose: 'xor' as const };
+/** Get TS converts the card's ETH to DAI first; Buy XOR's ETH route has its own suite below. */
+const request = { amount: '25', account, soraAccount, publicKey: 'pk_live_test', purpose: 'ts' as const };
 function quote(value: TonswapConversionRequest): TonswapConversionQuote {
   const inputAmount = codec(value.amount);
   return {
@@ -109,9 +111,10 @@ describe('before-card full-route readiness', () => {
     );
     expect(deps.estimateConversion).toHaveBeenCalledWith(expect.any(Object), 10_000_000_000_000_000n);
     expect(deps.preview).toHaveBeenCalledWith(
-      { source: 'sora', purpose: 'xor', paymentAsset: 'DAI', amount: '24.75' },
+      { source: 'sora', purpose: 'ts', paymentAsset: 'DAI', amount: '24.75' },
       expect.any(Object)
     );
+    expect(result).toMatchObject({ swapAsset: 'DAI', swapAmount: '24.75' });
     expect(result).not.toHaveProperty('account');
     expect(result).not.toHaveProperty('transaction');
   });
@@ -259,8 +262,12 @@ describe('before-card full-route readiness', () => {
   });
   it('uses purpose-specific downstream fee/campaign policy and never labels generic output as TS', async () => {
     const deps = dependencies();
-    await requestGetTsCardReadiness({ ...request, purpose: 'ts' }, deps);
+    await requestGetTsCardReadiness(request, deps);
     expect(deps.preview).toHaveBeenCalledWith(expect.objectContaining({ purpose: 'ts' }), expect.any(Object));
+    const xor = dependencies();
+    xor.estimateEthBridge = vi.fn().mockResolvedValue(26_100n);
+    await requestGetTsCardReadiness({ ...request, purpose: 'xor' }, xor);
+    expect(xor.preview).toHaveBeenCalledWith(expect.objectContaining({ purpose: 'xor' }), expect.any(Object));
   });
   it('bounds hung wallet reads and cancels stale work without any signing method', async () => {
     vi.useFakeTimers();
@@ -359,5 +366,115 @@ describe('read-only before-card simulation', () => {
       if (code === -32601) await expect(value).resolves.toBeNull();
       else await expect(value).rejects.toThrow();
     }
+  });
+});
+
+describe('Buy XOR card readiness: the ETH goes to SORA as it is', () => {
+  const xorRequest = { ...request, purpose: 'xor' as const };
+  function ethDependencies() {
+    const deps = dependencies();
+    deps.estimateEthBridge = vi.fn().mockResolvedValue(26_100n);
+    return deps;
+  }
+
+  it('reserves only the bridge transfer gas from the delivered ETH, with no conversion and no DAI', async () => {
+    const deps = ethDependencies();
+    const result = await requestGetTsCardReadiness(xorRequest, deps);
+    // 26,100 gas rounds up to 30,000 and is doubled: 60,000 gas at 1 gwei.
+    expect(result).toMatchObject({
+      allowed: true,
+      deliveredEth: '0.01',
+      conversionEth: '0.00994',
+      swapAsset: 'ETH',
+      swapAmount: '0.00994',
+      bridgeGasReserve: '0.00006',
+      ethereumGasReserve: '0.00006',
+      conversionGasReserve: '0',
+      conversionProviderFee: '0',
+      bridgeEstimate: 'simulated',
+      spendableXor: '3.2',
+      priceImpact: '1',
+    });
+    expect(result.daiAmount).toBeUndefined();
+    expect(deps.estimateEthBridge).toHaveBeenCalledWith(9_940_000_000_000_000n, 10_000_000_000_000_000n, soraAccount);
+    expect(deps.preview).toHaveBeenCalledWith(
+      { source: 'sora', purpose: 'xor', paymentAsset: 'ETH', amount: '0.00994' },
+      expect.any(Object)
+    );
+    // Nothing about the Ethereum DAI conversion is read.
+    expect(deps.conversionQuote).not.toHaveBeenCalled();
+    expect(deps.estimateConversion).not.toHaveBeenCalled();
+    expect(deps.estimateBridge).not.toHaveBeenCalled();
+    expect(deps.provider.call).not.toHaveBeenCalled();
+  });
+
+  it('stops before payment when the transfer cannot be simulated, the card ETH cannot pay its gas, or SORA cannot take it', async () => {
+    const simulation = ethDependencies();
+    vi.mocked(simulation.estimateEthBridge!).mockRejectedValue(new Error('revert'));
+    expect(await requestGetTsCardReadiness(xorRequest, simulation)).toMatchObject({
+      allowed: false,
+      reason: 'simulation',
+    });
+    const odd = ethDependencies();
+    vi.mocked(odd.estimateEthBridge!).mockResolvedValue(500_000n);
+    expect(await requestGetTsCardReadiness(xorRequest, odd)).toMatchObject({ allowed: false });
+    const tiny = ethDependencies();
+    vi.mocked(tiny.cardQuote!).mockResolvedValue({
+      ethAmount: '0.00001',
+      totalUsd: '25',
+      fees: [],
+      expiresAt: started + 30000,
+    });
+    expect(await requestGetTsCardReadiness(xorRequest, tiny)).toMatchObject({ allowed: false, reason: 'budget' });
+    const blocked = ethDependencies();
+    vi.mocked(blocked.preview!).mockResolvedValue({ state: 'blocked', feasible: false } as never);
+    expect(await requestGetTsCardReadiness(xorRequest, blocked)).toMatchObject({
+      allowed: false,
+      reason: 'liquidity',
+    });
+  });
+
+  it('estimates the exact sendEthToSidechain call to the SORA account with a funded balance override', async () => {
+    const deps = dependencies();
+    vi.mocked(deps.provider.send).mockResolvedValue('0x65f4');
+    const gas = await estimateGetTsCardEthBridgeGas(
+      deps.provider,
+      account,
+      soraAccount,
+      9_940_000_000_000_000n,
+      10n ** 16n,
+      new AbortController().signal
+    );
+    expect(gas).toBe(26_100n);
+    const [method, [transaction, block, overrides]] = vi.mocked(deps.provider.send).mock.calls[0] as [
+      string,
+      [{ from: string; to: string; data: string; value: string }, string, Record<string, { balance: string }>],
+    ];
+    expect(method).toBe('eth_estimateGas');
+    expect(block).toBe('latest');
+    expect(transaction).toMatchObject({ from: account, to: GET_TS_HASHI_DAI_BRIDGE, value: '0x23506099114000' });
+    // sendEthToSidechain(bytes32): the SORA account's public key, here 32 bytes of 7.
+    expect(transaction.data).toBe(`0xfdfba25d${'07'.repeat(32)}`);
+    expect(overrides).toEqual({ [account]: { balance: '0x2386f26fc10000' } });
+  });
+
+  it('falls back to the checked public read when the wallet cannot forward overrides, and rejects odd gas', async () => {
+    const { provider, fetcher } = simulationProvider();
+    expect(
+      await estimateGetTsCardEthBridgeGas(
+        provider,
+        account,
+        soraAccount,
+        10n ** 15n,
+        10n ** 16n,
+        new AbortController().signal
+      )
+    ).toBe(100_000n);
+    expect(JSON.parse(fetcher.mock.calls.at(-1)![1].body as string).method).toBe('eth_estimateGas');
+    const deps = dependencies();
+    vi.mocked(deps.provider.send).mockResolvedValue('0x1');
+    await expect(
+      estimateGetTsCardEthBridgeGas(deps.provider, account, soraAccount, 1n, 10n ** 16n, new AbortController().signal)
+    ).rejects.toThrow('Invalid bridge gas');
   });
 });

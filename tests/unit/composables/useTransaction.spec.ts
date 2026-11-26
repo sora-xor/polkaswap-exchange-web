@@ -37,6 +37,7 @@ type HistoryEntry = { id: string; startTime: string };
 const historyList = vi.hoisted(() => [] as HistoryEntry[]);
 const apiMock = vi.hoisted(() => ({
   api: { isReady: Promise.resolve() },
+  accountPair: null as { isLocked: boolean; lock: () => void } | null,
   historyList,
   swap: { isALT: false },
 }));
@@ -84,6 +85,7 @@ vi.mock('@/stores/wallet', () => ({
 describe('useTransaction', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    apiMock.accountPair = null;
     delayMock.mockResolvedValue(undefined);
     (api.historyList as unknown as Array<{ id: string; startTime: string }>).length = 0;
     getOperationMessage.mockClear();
@@ -280,5 +282,31 @@ describe('useTransaction', () => {
     await Promise.resolve();
     expect(showAppNotification).toHaveBeenLastCalledWith('addAsset.success', 'success');
     expect(removeActiveTransactions).toHaveBeenCalledWith(['tx-reg']);
+  });
+});
+
+describe('signing key cleanup', () => {
+  it('relocks the captured key after preflight failure without locking a newly selected account', async () => {
+    const original = {
+      isLocked: true,
+      lock: vi.fn(() => {
+        original.isLocked = true;
+      }),
+    };
+    const replacement = { isLocked: false, lock: vi.fn() };
+    apiMock.accountPair = original;
+    beforeTransactionSign.mockImplementationOnce(async () => {
+      original.isLocked = false;
+    });
+    const { withNotifications } = useTransaction();
+    const pending = withNotifications(async () => {
+      apiMock.accountPair = replacement;
+      throw new Error('changed review');
+    });
+    await expect(pending).resolves.toMatchObject({ submitted: false });
+    expect(original.isLocked).toBe(true);
+    expect(original.lock).toHaveBeenCalledOnce();
+    expect(replacement.lock).not.toHaveBeenCalled();
+    apiMock.accountPair = null;
   });
 });

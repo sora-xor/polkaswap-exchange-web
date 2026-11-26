@@ -6,6 +6,8 @@ export interface Level {
 }
 
 export interface Category {
+  /** In-app destination for browsing this activity when account progress is unavailable. */
+  activityPath?: string;
   maxPercentage: number;
   levels: Level[];
   titleProgress: string;
@@ -87,6 +89,11 @@ export interface AccountPointsVersioned extends AccountPointsCalculation {
 }
 
 export interface AccountPointSystems {
+  /** Indexer ownership identity; required by the recovery-aware page reader. */
+  accountId?: string;
+  recoveryPolicyHash?: string | null;
+  /** Exact recovery-owned historical referral total; never taken from the live referral store. */
+  recoveryReferralRewards?: FPNumber;
   createdAt: {
     timestamp: number;
     block: number;

@@ -1,7 +1,7 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { reactive, ref } from 'vue';
-import { DAI, XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { DAI, ETH, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import GetTsPage from '@/features/misc/pages/GetTsPage.vue';
 import { SoraNetwork } from '@/consts';
 import { emptyGetTsPlan, parseGetTsPlan, patchGetTsPlan } from '@/features/misc/lib/getTsPlan';
@@ -62,6 +62,7 @@ function createContext() {
       setTokenToAddress: vi.fn(),
     },
     copy: vi.fn(),
+    cardRunReady: true,
   };
 }
 vi.mock('@/features/misc/composables/useBuyXorFunnel', () => ({ useBuyXorFunnel: () => shared.ctx!.funnel }));
@@ -85,10 +86,14 @@ vi.mock('@/stores/moonpay', () => ({ useMoonpayStore: () => shared.ctx!.moonpay 
 vi.mock('@/features/swap/stores/useSwapStore', () => ({ useSwapStore: () => shared.ctx!.swap }));
 vi.mock('@/features/misc/composables/useTonswapTonWallet', () => ({ useTonswapTonWallet: () => shared.ctx!.ton }));
 vi.mock('@/features/misc/composables/useGetTsPlan', () => ({
-  useGetTsPlan: () => ({
+  useGetTsPlan: (purpose?: 'ts' | 'xor' | (() => 'ts' | 'xor')) => ({
     plan: shared.ctx!.plan,
     updatePlan: (patch: Parameters<typeof patchGetTsPlan>[1]) => {
-      const next = patchGetTsPlan(shared.ctx!.plan.value, patch);
+      const next = patchGetTsPlan(
+        shared.ctx!.plan.value,
+        patch,
+        typeof purpose === 'function' ? purpose() : (purpose ?? 'ts')
+      );
       if (next) shared.ctx!.plan.value = next;
       return !!next;
     },
@@ -118,7 +123,7 @@ vi.mock('@/components/shared/Dialog/SelectProvider.vue', () => ({ default: { tem
 vi.mock('@/features/deposit/components/moonpay/Moonpay.vue', () => ({
   default: {
     name: 'Moonpay',
-    props: ['currencyCode', 'autoPrepareBridge', 'baseCurrencyAmount', 'receivingAddress'],
+    props: ['currencyCode', 'autoPrepareBridge', 'baseCurrencyAmount', 'receivingAddress', 'addressHint'],
     emits: ['completed'],
     template: '<div />',
   },
@@ -146,7 +151,18 @@ vi.mock('@/features/misc/components/burn/GetTsCardReadiness.vue', () => ({
   },
 }));
 vi.mock('@/features/misc/components/burn/GetTsWalletSetup.vue', () => ({
-  default: { name: 'GetTsWalletSetup', props: ['source', 'purpose'], template: '<div />' },
+  default: { name: 'GetTsWalletSetup', props: ['source', 'purpose', 'automaticEthereum'], template: '<div />' },
+}));
+vi.mock('@/features/misc/components/buy-xor/BuyXorCardRun.vue', () => ({
+  default: {
+    name: 'BuyXorCardRun',
+    props: ['enabled', 'conversionProgress', 'bridgeProgress', 'swapProgress', 'refreshConversion', 'refreshBridge'],
+    emits: ['preparing', 'received', 'ready', 'restart'],
+    mounted() {
+      (this as unknown as { $emit: (event: string, value: boolean) => void }).$emit('ready', shared.ctx!.cardRunReady);
+    },
+    template: '<section class="buy-xor-card-run-stub" />',
+  },
 }));
 vi.mock('@/features/misc/components/burn/GetTsPlanPreview.vue', () => ({
   default: {
@@ -241,38 +257,35 @@ describe('Get TS checkout', () => {
     wrappers.splice(0).forEach((w) => w.unmount());
     vi.useRealTimers();
   });
-  it.each(['ts', 'xor'] as const)(
-    'restores a neutral %s card continuation after handoff and reload',
-    async (purpose) => {
-      setup('card', 'fund');
-      const first = mountPage({ purpose });
-      quote(first);
-      await flushPromises();
-      await first.get('[data-test-name="getTsBuyCard"]').trigger('click');
-      expect(shared.ctx!.plan.value.cardDraft).toEqual({ deliveredEth: '0.02', conversionEth: '0.017' });
-      expect(shared.ctx!.moonpay.setDialogVisibility).toHaveBeenCalledExactlyOnceWith(true);
-      expect(first.find('[data-test-name="getTsBuyCard"]').exists()).toBe(false);
-      expect(first.text()).toContain('getTs.cardResumeDescription');
-      first.unmount();
-      shared.ctx!.moonpay.setDialogVisibility.mockClear();
-      const restored = mountPage({ purpose });
-      expect(restored.find('[data-test-name="getTsBuyCard"]').exists()).toBe(false);
-      expect(restored.text()).toContain('getTs.cardResumeDescription');
-      expect(restored.text()).not.toContain('getTs.cardCompleted');
-      expect(restored.findComponent({ name: 'TonswapConversionPanel' }).props()).toMatchObject({
-        paymentAmount: '0.017',
-        ethBudget: '0.02',
-        source: 'ethereum',
-      });
-      expect(shared.ctx!.moonpay.setDialogVisibility).not.toHaveBeenCalled();
-      expect(shared.ctx!.track).not.toHaveBeenCalled();
-      await button(restored, 'getTs.cardReviewAgain').trigger('click');
-      expect(shared.ctx!.plan.value.cardDraft).toBeUndefined();
-      expect(restored.findComponent({ name: 'GetTsCardReadiness' }).exists()).toBe(true);
-      expect(restored.get('[data-test-name="getTsBuyCard"]').attributes('disabled')).toBeDefined();
-      expect(shared.ctx!.moonpay.setDialogVisibility).not.toHaveBeenCalled();
-    }
-  );
+  it.each(['ts'] as const)('restores a neutral %s card continuation after handoff and reload', async (purpose) => {
+    setup('card', 'fund');
+    const first = mountPage({ purpose });
+    quote(first);
+    await flushPromises();
+    await first.get('[data-test-name="getTsBuyCard"]').trigger('click');
+    expect(shared.ctx!.plan.value.cardDraft).toEqual({ deliveredEth: '0.02', conversionEth: '0.017' });
+    expect(shared.ctx!.moonpay.setDialogVisibility).toHaveBeenCalledExactlyOnceWith(true);
+    expect(first.find('[data-test-name="getTsBuyCard"]').exists()).toBe(false);
+    expect(first.text()).toContain('getTs.cardResumeDescription');
+    first.unmount();
+    shared.ctx!.moonpay.setDialogVisibility.mockClear();
+    const restored = mountPage({ purpose });
+    expect(restored.find('[data-test-name="getTsBuyCard"]').exists()).toBe(false);
+    expect(restored.text()).toContain('getTs.cardResumeDescription');
+    expect(restored.text()).not.toContain('getTs.cardCompleted');
+    expect(restored.findComponent({ name: 'TonswapConversionPanel' }).props()).toMatchObject({
+      paymentAmount: '0.017',
+      ethBudget: '0.02',
+      source: 'ethereum',
+    });
+    expect(shared.ctx!.moonpay.setDialogVisibility).not.toHaveBeenCalled();
+    expect(shared.ctx!.track).not.toHaveBeenCalled();
+    await button(restored, 'getTs.cardReviewAgain').trigger('click');
+    expect(shared.ctx!.plan.value.cardDraft).toBeUndefined();
+    expect(restored.findComponent({ name: 'GetTsCardReadiness' }).exists()).toBe(true);
+    expect(restored.get('[data-test-name="getTsBuyCard"]').attributes('disabled')).toBeDefined();
+    expect(shared.ctx!.moonpay.setDialogVisibility).not.toHaveBeenCalled();
+  });
   it('does not persist a provider-completed claim across a card continuation reload', async () => {
     setup('card', 'fund');
     shared.ctx!.plan.value.cardDraft = { deliveredEth: '0.02', conversionEth: '0.017' };
@@ -303,6 +316,25 @@ describe('Get TS checkout', () => {
       ethBudget: '0.02',
     });
     expect(w.findComponent({ name: 'Moonpay' }).props('receivingAddress')).toBe(shared.ctx!.external.evmAddress.value);
+  });
+  it('reminds temporary-wallet buyers to keep the page open until the DAI transfer is sent', async () => {
+    const { setTemporaryWalletAddress } = await import('@/utils/connection/evm/temporaryWalletSession');
+    setup('card', 'fund');
+    const other = mountPage({ purpose: 'xor' });
+    expect(other.find('[data-test-name="temporaryWalletNotice"]').exists()).toBe(false);
+    expect(other.findComponent({ name: 'Moonpay' }).props('addressHint')).toBe(shared.ctx!.external.evmAddress.value);
+    other.unmount();
+
+    setTemporaryWalletAddress(shared.ctx!.external.evmAddress.value.toUpperCase().replace('0X', '0x'));
+    try {
+      const w = mountPage({ purpose: 'xor' });
+      expect(w.get('[data-test-name="temporaryWalletNotice"]').text()).toBe('temporaryWallet.keepPageOpen');
+      shared.ctx!.plan.value = { ...shared.ctx!.plan.value, references: { bridge: '0x' + 'ab'.repeat(32) } };
+      await flushPromises();
+      expect(w.find('[data-test-name="temporaryWalletNotice"]').exists()).toBe(false);
+    } finally {
+      setTemporaryWalletAddress('');
+    }
   });
   it('cannot discard a card continuation while its conversion wallet request is pending', async () => {
     setup('card', 'fund');
@@ -486,17 +518,129 @@ describe('Get TS checkout', () => {
     expect(shared.ctx!.moonpay.setDialogVisibility).not.toHaveBeenCalled();
     expect(shared.ctx!.track).not.toHaveBeenCalled();
   });
+  it('fills the ETH swap of a Buy XOR card purchase with Buy XOR’s 15% impact limit', async () => {
+    setup('card', 'swap');
+    shared.ctx!.plan.value = { ...shared.ctx!.plan.value, daiAmount: '0.0062', swapAsset: 'ETH' };
+    const w = mountPage({ purpose: 'xor' });
+    await flushPromises();
+    expect(shared.ctx!.swap.setTokenFromAddress).toHaveBeenLastCalledWith(ETH.address);
+    expect(shared.ctx!.swap.setFromValue).toHaveBeenLastCalledWith('0.0062');
+    expect(w.findComponent({ name: 'SwapFormWidget' }).props()).toMatchObject({ maxPriceImpact: '15' });
+    expect(w.text()).toContain('buyXor.swapDescription');
+  });
   it('keeps SORA receipt confirmation after disconnecting the upstream Ethereum wallet', async () => {
     setup('card', 'swap');
     const hash = `0x${'1'.repeat(64)}`;
     shared.ctx!.plan.value.references.swap = hash;
     shared.ctx!.swapProgress.value = { state: 'received', reference: hash } as { state: string };
-    const w = mountPage({ purpose: 'xor' });
+    const w = mountPage({ purpose: 'ts' });
     await flushPromises();
     shared.ctx!.external.evmAddress.value = '';
     await flushPromises();
     expect(w.get('[data-stage="swap"]').attributes('data-status')).toBe('confirmed');
-    expect(w.text()).toContain('buyXor.receivedTitle');
+
+    // Buy XOR shows the same receipt in its own step list, which replaces the stage overview.
+    const xor = mountPage({ purpose: 'xor' });
+    await flushPromises();
+    expect(xor.find('[data-stage="swap"]').exists()).toBe(false);
+    expect(xor.getComponent({ name: 'BuyXorCardRun' }).props('swapProgress')).toMatchObject({ state: 'received' });
+    expect(xor.text()).toContain('buyXor.receivedTitle');
+  });
+  it('lets a Buy XOR card buyer with only a SORA wallet reach payment, and hands the rest to the step list', async () => {
+    setup('card', 'fund');
+    shared.ctx!.external.evmAddress.value = '';
+    const w = mountPage({ purpose: 'xor' });
+    await flushPromises();
+    const run = w.getComponent({ name: 'BuyXorCardRun' });
+    expect(run.props()).toMatchObject({ enabled: true, conversionProgress: { state: 'idle' } });
+    expect(w.find('[data-stage="card"]').exists()).toBe(false);
+    expect(w.text()).not.toContain('getTs.alreadyHaveEth');
+    // The step list connects the purchase wallet; the payment waits for its address.
+    expect(w.get('[data-test-name="getTsBuyCard"]').attributes('disabled')).toBeDefined();
+    shared.ctx!.external.evmAddress.value = '0x1111111111111111111111111111111111111111';
+    await flushPromises();
+    quote(w);
+    await flushPromises();
+    await w.get('[data-test-name="getTsBuyCard"]').trigger('click');
+    expect(shared.ctx!.plan.value.cardDraft).toEqual({ deliveredEth: '0.02', conversionEth: '0.017' });
+    expect(shared.ctx!.moonpay.setDialogVisibility).toHaveBeenCalledExactlyOnceWith(true);
+    await flushPromises();
+    // After payment no manual conversion screen appears: the step list carries on, also after a reload.
+    expect(w.findComponent({ name: 'TonswapConversionPanel' }).exists()).toBe(false);
+    expect(w.text()).not.toContain('getTs.cardResumeDescription');
+    w.unmount();
+    const restored = mountPage({ purpose: 'xor' });
+    await flushPromises();
+    expect(restored.findComponent({ name: 'BuyXorCardRun' }).exists()).toBe(true);
+    expect(restored.findComponent({ name: 'TonswapConversionPanel' }).exists()).toBe(false);
+    expect(restored.find('[data-test-name="getTsBuyCard"]').exists()).toBe(false);
+  });
+  it('reopens the card review when the buyer restarts while waiting for MoonPay', async () => {
+    setup('card', 'fund');
+    shared.ctx!.plan.value.cardDraft = { deliveredEth: '0.02', conversionEth: '0.017' };
+    const w = mountPage({ purpose: 'xor' });
+    await flushPromises();
+    // Waiting for MoonPay: the step list is the whole step, without a separate fund heading.
+    expect(w.find('[data-test-name="getTsBuyCard"]').exists()).toBe(false);
+    expect(w.text()).not.toContain('getTs.fundTitle');
+    w.getComponent({ name: 'BuyXorCardRun' }).vm.$emit('restart');
+    await flushPromises();
+    expect(shared.ctx!.plan.value.cardDraft).toBeUndefined();
+    expect(w.text()).toContain('getTs.cardTitle');
+    expect(w.find('[data-test-name="getTsBuyCard"]').exists()).toBe(true);
+
+    // A started conversion cannot be restarted from here.
+    shared.ctx!.plan.value.cardDraft = { deliveredEth: '0.02', conversionEth: '0.017' };
+    shared.ctx!.plan.value.references.conversion = `0x${'2'.repeat(64)}`;
+    const started = mountPage({ purpose: 'xor' });
+    await flushPromises();
+    started.getComponent({ name: 'BuyXorCardRun' }).vm.$emit('restart');
+    await flushPromises();
+    expect(shared.ctx!.plan.value.cardDraft).toEqual({ deliveredEth: '0.02', conversionEth: '0.017' });
+  });
+  it('keeps the card payment closed until the step list reports the purchase wallet ready', async () => {
+    setup('card', 'fund');
+    shared.ctx!.cardRunReady = false;
+    const w = mountPage({ purpose: 'xor' });
+    quote(w);
+    await flushPromises();
+    const open = w.get('[data-test-name="getTsBuyCard"]');
+    expect(open.attributes('disabled')).toBeDefined();
+    await open.trigger('click');
+    expect(shared.ctx!.moonpay.setDialogVisibility).not.toHaveBeenCalled();
+    w.getComponent({ name: 'BuyXorCardRun' }).vm.$emit('ready', true);
+    await flushPromises();
+    expect(w.get('[data-test-name="getTsBuyCard"]').attributes('disabled')).toBeUndefined();
+  });
+  it('moves a Buy XOR card purchase to the swap when its DAI reaches SORA, and locks edits while signing', async () => {
+    setup('card', 'fund');
+    shared.ctx!.plan.value.cardDraft = { deliveredEth: '0.02', conversionEth: '0.017' };
+    const w = mountPage({ purpose: 'xor' });
+    await flushPromises();
+    const run = w.getComponent({ name: 'BuyXorCardRun' });
+    run.vm.$emit('preparing', true);
+    await flushPromises();
+    expect(shared.ctx!.leaveGuard?.()).toBe(false);
+    run.vm.$emit('preparing', false);
+    await flushPromises();
+    expect(shared.ctx!.leaveGuard?.()).toBe(true);
+    run.vm.$emit('received');
+    await flushPromises();
+    expect(shared.ctx!.route.query).toMatchObject({ source: 'card', step: 'swap' });
+    expect(w.findComponent({ name: 'BuyXorCardRun' }).exists()).toBe(true);
+  });
+  it('asks only Buy XOR card buyers for no Ethereum wallet', () => {
+    setup('card', 'wallets');
+    expect(mountPage({ purpose: 'xor' }).getComponent({ name: 'GetTsWalletSetup' }).props('automaticEthereum')).toBe(
+      true
+    );
+    expect(mountPage({ purpose: 'ts' }).getComponent({ name: 'GetTsWalletSetup' }).props('automaticEthereum')).toBe(
+      false
+    );
+    setup('ethereum', 'wallets');
+    expect(mountPage({ purpose: 'xor' }).getComponent({ name: 'GetTsWalletSetup' }).props('automaticEthereum')).toBe(
+      false
+    );
   });
   it('accepts a TON alternative only when the plan has no unresolved transaction', async () => {
     setup('ton', 'source');

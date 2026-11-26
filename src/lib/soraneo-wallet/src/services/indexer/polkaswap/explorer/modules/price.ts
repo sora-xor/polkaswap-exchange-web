@@ -1,5 +1,6 @@
 import { parseAssetFiatPrice, parsePriceStreamUpdate } from '../../../explorer/utils';
-import { FiatPriceQuery, FiatPriceStreamQuery } from '../../queries/fiatPrice';
+import { StatsCoreNotReadyError } from '../../../coreRefresh';
+import { ExactFiatPriceStreamQuery, FiatPriceQuery, FiatPriceStreamQuery } from '../../queries/fiatPrice';
 import { PriceStreamSubscription } from '../../subscriptions/stream';
 
 import { PolkaswapBaseModule } from './_base';
@@ -20,19 +21,44 @@ export class PolkaswapPriceModule extends PolkaswapBaseModule {
    * price stream payload from the same configured indexer when needed.
    */
   public async getFiatPriceObject(): Promise<Nullable<FiatPriceObject>> {
+    if (await this.root.supportsExactPrices()) {
+      const result = await this.root.request(
+        ExactFiatPriceStreamQuery,
+        {},
+        { requestPolicy: 'network-only', retryPendingCore: true }
+      );
+      const prices = result?.data && parsePriceStreamUpdate(result.data);
+      if (!prices) throw new StatsCoreNotReadyError('Current indexer quotes are unavailable');
+      return prices;
+    }
     const result = await this.root.fetchAllEntities(FiatPriceQuery, {}, parseAssetFiatPrice);
     const snapshot = mergeFiatPriceChunks(result);
 
     if (snapshot) return snapshot;
 
-    return this.getFiatPriceUpdates();
+    return this.getFiatPriceUpdates(true);
   }
 
   /**
-   * Gets the latest fiat price stream payload from the indexer.
+   * Gets the latest fiat price stream payload. An initial load can wait for Pi's core refresh.
    */
-  public async getFiatPriceUpdates(): Promise<Nullable<FiatPriceObject>> {
-    const result = await this.root.request(FiatPriceStreamQuery);
+  public async getFiatPriceUpdates(
+    retryPendingCore = false,
+    onComplete?: (prices: Nullable<FiatPriceObject>) => void
+  ): Promise<Nullable<FiatPriceObject>> {
+    if (await this.root.supportsExactPrices()) {
+      const result = await this.root.request(
+        ExactFiatPriceStreamQuery,
+        {},
+        { requestPolicy: 'network-only', retryPendingCore }
+      );
+      const prices = result?.data ? parsePriceStreamUpdate(result.data) : null;
+      onComplete?.(prices);
+      return prices;
+    }
+    const result = retryPendingCore
+      ? await this.root.request(FiatPriceStreamQuery, {}, { requestPolicy: 'network-only', retryPendingCore: true })
+      : await this.root.request(FiatPriceStreamQuery);
 
     if (!result) return null;
 
@@ -42,14 +68,14 @@ export class PolkaswapPriceModule extends PolkaswapBaseModule {
   }
 
   public createFiatPriceSubscription(
-    handler: (entity: Nullable<FiatPriceObject>) => void,
+    handler: (entity: Nullable<FiatPriceObject>, complete?: boolean) => void,
     errorHandler: () => void | Promise<void>
   ): VoidFunction {
     return this.root.createEntitySubscription(
       PriceStreamSubscription,
       {},
-      parsePriceStreamUpdate,
-      handler,
+      (entity) => ({ prices: parsePriceStreamUpdate(entity), complete: Object.hasOwn(entity, 'pricesExact') }),
+      (update) => handler(update?.prices ?? null, update?.complete),
       errorHandler
     );
   }

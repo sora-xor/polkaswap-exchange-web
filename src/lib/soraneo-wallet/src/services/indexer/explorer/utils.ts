@@ -2,37 +2,30 @@ import { excludePoolXYKAssets } from '@sora-substrate/sdk/build/assets';
 
 import { isJsonRecord, parseIndexerJson } from '@/utils/indexerParsing';
 
-import { formatStringNumber } from '../../../util';
+import { readMarketPrice } from '../marketPrice';
 
 import type { AssetEntity, FiatPriceObject, UpdatesStream } from '../types';
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 
 export function parseAssetFiatPrice(entity: AssetEntity): FiatPriceObject {
-  const acc = {};
-  const id = entity.id;
-  const priceFPNumber = formatStringNumber(entity.priceUSD);
-  const isPriceFinity = priceFPNumber.isFinity();
-  if (isPriceFinity) {
-    acc[id] = priceFPNumber.toCodecString();
-  }
-  return acc;
+  const price = readMarketPrice(entity.priceUSDExact, entity.priceUSD);
+  return price ? { [entity.id]: price.toCodecString() } : {};
 }
 
+/** Preserve an exact zero and omit unquoted tokens from the wallet price map. */
 export function parsePriceStreamUpdate(entity: UpdatesStream): Nullable<FiatPriceObject> {
-  if (!entity?.data) return null;
-
-  const data = parseIndexerJson(entity.data, {}, isJsonRecord);
-
-  return Object.entries(data).reduce((acc, [id, price]) => {
-    if (!id.trim() || typeof price !== 'string') return acc;
-
-    const priceFPNumber = formatStringNumber(price);
-    const isPriceFinity = priceFPNumber.isFinity();
-    if (isPriceFinity) {
-      acc[id] = priceFPNumber.toCodecString();
-    }
-    return acc;
-  }, {});
+  if (!entity) return null;
+  const exact = Object.hasOwn(entity, 'pricesExact');
+  const raw = exact ? entity.pricesExact : entity.data;
+  if (raw == null || raw === '') return null;
+  const data = isJsonRecord(raw) ? raw : parseIndexerJson<Record<string, unknown> | null>(raw, null, isJsonRecord);
+  if (!data) return exact ? null : {};
+  const prices: FiatPriceObject = {};
+  for (const [id, value] of Object.entries(data)) {
+    const price = exact ? readMarketPrice(value) : readMarketPrice(undefined, value);
+    if (id.trim() && price) prices[id] = price.toCodecString();
+  }
+  return prices;
 }
 
 export function parseAssetRegistrationStreamUpdate(entity: UpdatesStream): Asset[] {

@@ -1,6 +1,8 @@
 import { FPNumber } from '@sora-substrate/sdk';
 import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { gql } from '@urql/core';
+import { readMarketPrice } from '@/lib/soraneo-wallet/src/services/indexer/marketPrice';
+import { fetchByAssetIds, marketRequestOptions } from '@/indexer/queries/asset/batches';
 
 import type { CodecString } from '@sora-substrate/sdk';
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
@@ -12,11 +14,12 @@ export type PoolData = {
   targetAssetId: string;
   baseAssetReserves: CodecString;
   targetAssetReserves: CodecString;
-  priceUSD: FPNumber;
+  priceUSD: FPNumber | null;
+  tvlUSD: FPNumber | null;
   apy: FPNumber;
 };
 
-const PolkaswapPoolsQuery = gql<ConnectionQueryResponse<PolkaswapPoolXYKEntity>>`
+const makePolkaswapPoolsQuery = (exact: boolean) => gql<ConnectionQueryResponse<PolkaswapPoolXYKEntity>>`
   query PolkaswapPoolsQuery($after: Cursor, $filter: PoolXYKFilter) {
     data: poolXYKs(after: $after, filter: $filter) {
       pageInfo {
@@ -30,6 +33,7 @@ const PolkaswapPoolsQuery = gql<ConnectionQueryResponse<PolkaswapPoolXYKEntity>>
           baseAssetReserves
           targetAssetReserves
           priceUSD
+          ${exact ? 'priceUSDExact liquidityUSDExact' : ''}
           liquidityUSD
           strategicBonusApy
         }
@@ -37,10 +41,12 @@ const PolkaswapPoolsQuery = gql<ConnectionQueryResponse<PolkaswapPoolXYKEntity>>
     }
   }
 `;
+const PolkaswapPoolsQuery = makePolkaswapPoolsQuery(false);
+const ExactPolkaswapPoolsQuery = makePolkaswapPoolsQuery(true);
 
 const parse = (item: PoolXYKEntity): PoolData => {
   const apy = new FPNumber(item.strategicBonusApy ?? 0).mul(FPNumber.HUNDRED);
-  const priceUSD = new FPNumber(item.priceUSD ?? 0);
+  const priceUSD = readMarketPrice(item.priceUSDExact, item.priceUSD);
 
   return {
     baseAssetId: item.baseAssetId,
@@ -48,6 +54,8 @@ const parse = (item: PoolXYKEntity): PoolData => {
     baseAssetReserves: item.baseAssetReserves,
     targetAssetReserves: item.targetAssetReserves,
     priceUSD,
+    // A USD mark has 18 decimals; a raw reserve can have a u8 native precision.
+    tvlUSD: readMarketPrice(item.liquidityUSDExact, undefined, 18 + 255),
     apy,
   };
 };
@@ -67,9 +75,18 @@ const polkaswapPoolsFilter = (ids: string[]) => {
 
 export async function fetchPoolsData(assets?: Asset[]): Promise<PoolData[]> {
   const ids = assets?.map((item) => item.address) ?? [];
-  const filter = polkaswapPoolsFilter(ids);
   const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
-  const result = await polkaswapIndexer.services.explorer.fetchAllEntities(PolkaswapPoolsQuery, { filter }, parse);
+  const query = (await polkaswapIndexer.services.explorer.supportsExactPrices())
+    ? ExactPolkaswapPoolsQuery
+    : PolkaswapPoolsQuery;
+  const result = await fetchByAssetIds(ids, (batch) =>
+    polkaswapIndexer.services.explorer.fetchAllEntities(
+      query,
+      { filter: polkaswapPoolsFilter(batch) },
+      parse,
+      marketRequestOptions
+    )
+  );
 
   return result ?? [];
 }

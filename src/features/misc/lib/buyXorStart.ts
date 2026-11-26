@@ -3,17 +3,19 @@ import type { GetTsPaymentAsset } from './getTsPlanQuote';
 
 /**
  * Starting card budget on the Buy XOR start screen. In October 2026 it fit both MoonPay's minimum and the
- * SORA DAI/XOR market; it is only a prefilled value that the normal estimate checks like any other amount.
+ * SORA ETH/XOR market; it is only a prefilled value that the normal estimate checks like any other amount.
  */
 export const BUY_XOR_DEFAULT_CARD_USD = '20';
 
 export type BuyXorNextStep =
+  | 'walletsCard'
   | 'walletsEthereum'
   | 'walletSora'
   | 'walletsTon'
   | 'card'
   | 'ton'
   | 'convert'
+  | 'sendCard'
   | 'transfer'
   | 'swap';
 
@@ -24,7 +26,9 @@ export type BuyXorNextStep =
 export function buyXorNextSteps(source: GetTsSource | null, asset?: GetTsPaymentAsset): BuyXorNextStep[] {
   switch (source) {
     case 'card':
-      return ['walletsEthereum', 'card', 'convert', 'swap'];
+      // Card purchases need only a SORA wallet: a temporary Ethereum wallet on the page receives the ETH and signs its
+      // transfer to SORA (`BuyXorCardRun`).
+      return ['walletsCard', 'card', 'sendCard', 'swap'];
     case 'ethereum':
       return ['walletsEthereum', asset === 'DAI' ? 'transfer' : 'convert', 'swap'];
     case 'ton':

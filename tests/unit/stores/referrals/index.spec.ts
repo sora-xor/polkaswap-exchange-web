@@ -248,7 +248,7 @@ describe('referrals store', () => {
     const store = useReferralsStore();
     await store.getAccountReferralRewards();
 
-    expect(shared.getReferralRewards).toHaveBeenCalledWith('5wallet');
+    expect(shared.getReferralRewards).toHaveBeenCalledWith('5wallet', undefined);
     expect(store.referralRewards).toEqual(rewards);
     expect(store.invitedUsers).toEqual(['alice', 'bob']);
   });

@@ -159,5 +159,6 @@ export { useNotificationStore } from './stores/notification';
 
 export type { PluginOptions };
 export type { TransactionSignVisibilityController, TransactionSignVisibilityTarget } from './util';
+export { confirmTransactionSign, getTransactionSignRequest } from './util/transactionSignRequest';
 
 export default SoraWalletElements;

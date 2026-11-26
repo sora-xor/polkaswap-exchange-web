@@ -122,7 +122,7 @@
 
 <script lang="ts">
 import { api, FPNumber } from '@sora-substrate/sdk';
-import { BalanceType, XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { BalanceType } from '@sora-substrate/sdk/build/assets/consts';
 import isEmpty from 'lodash/fp/isEmpty';
 import { computed } from 'vue';
 import draggable from 'vuedraggable';
@@ -349,15 +349,12 @@ export default {
       return formatCodecNumber(getCodecBalanceValue(asset, balanceKey), asset.decimals);
     }
 
-    /** Returns the display label for a balance type in the locked-balance tooltip. */
-    function getTooltipBalanceLabel(asset: AccountAsset, balanceKey: AccountBalanceKey): string {
-      const label = t(`assets.balance.${balanceKey}`);
-
-      if (balanceKey === 'frozen' && (asset.address === XOR.address || asset.symbol === XOR.symbol)) {
-        return `${label} (${t('pointSystem.governanceLockedXOR.titleProgress')} / ${t('StakingContainer')})`;
-      }
-
-      return label;
+    /**
+     * Returns the display label for a balance type in the locked-balance tooltip. The wallet catalog
+     * cannot resolve app-only keys, so the governance/staking hint lives on the asset details page.
+     */
+    function getTooltipBalanceLabel(balanceKey: AccountBalanceKey): string {
+      return t(`assets.balance.${balanceKey}`);
     }
 
     /** Omits zero component rows while keeping summary rows stable. */
@@ -379,7 +376,7 @@ export default {
 
         rows.push({
           key: balanceKey,
-          label: getTooltipBalanceLabel(asset, balanceKey),
+          label: getTooltipBalanceLabel(balanceKey),
           value: formatTooltipBalance(asset, balanceKey),
         });
         return rows;
@@ -716,7 +713,9 @@ $padding: 5px;
     }
 
     &__label {
-      color: var(--s-color-base-content-tertiary);
+      // The tooltip body is an inverted surface (light in Noir), so theme text tokens are unreadable here.
+      color: inherit;
+      opacity: 0.75;
       white-space: nowrap;
     }
 
@@ -741,15 +740,18 @@ $padding: 5px;
       background-color: var(--s-color-base-content-secondary);
       color: var(--s-color-base-on-accent);
       padding: 2px 7px;
-      line-height: 1;
+      line-height: 1.2;
       border-radius: var(--s-border-radius-mini);
       max-width: 100%;
       > .s-icon-lock-16 {
+        flex: 0 0 auto;
         color: var(--s-color-base-on-accent);
       }
       > span {
+        min-width: 0;
         margin-left: #{$basic-spacing-mini};
-        white-space: nowrap;
+        // Wrap "Spendable" under the amount in narrow rows instead of spilling past the pill.
+        white-space: normal;
       }
     }
   }

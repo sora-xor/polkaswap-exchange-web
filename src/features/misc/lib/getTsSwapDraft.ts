@@ -1,19 +1,22 @@
 import { decodeAddress } from '@polkadot/util-crypto';
 import { u8aToHex } from '@polkadot/util';
 import { Operation, type HistoryItem } from '@sora-substrate/sdk';
-import { DAI, XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { getTsContextHash } from './getTsContextHash';
 import type { GetTsPurpose } from './getTsFlow';
-import { normalizeGetTsAmount, parseGetTsSwapDraft, type GetTsSwapDraft } from './getTsPlan';
+import { getTsSwapAssetOf, normalizeGetTsAmount, parseGetTsSwapDraft, type GetTsSwapDraft } from './getTsPlan';
 import { SORA_FUNDING_MAINNET_GENESIS } from './tonswapLiquidity';
 
-/** Binds one reviewed deterministic SDK row to its purpose, public signer, chain, pair and exact DAI input. */
+/**
+ * Binds one reviewed deterministic SDK row to its purpose, public signer, chain, pair and exact input: DAI, or ETH for
+ * Buy XOR card purchases.
+ */
 export function createGetTsSwapDraft(row: HistoryItem, genesis: string, purpose: GetTsPurpose): GetTsSwapDraft | null {
   const amount = normalizeGetTsAmount(row.amount);
   if (
     genesis !== SORA_FUNDING_MAINNET_GENESIS ||
     row.type !== Operation.Swap ||
-    row.assetAddress !== DAI.address ||
+    !getTsSwapAssetOf(row.assetAddress, purpose) ||
     row.asset2Address !== XOR.address ||
     typeof row.from !== 'string' ||
     row.from.length > 128 ||
@@ -24,7 +27,7 @@ export function createGetTsSwapDraft(row: HistoryItem, genesis: string, purpose:
     const account = decodeAddress(row.from);
     if (account.length !== 32) return null;
     const contextHash = getTsContextHash(
-      JSON.stringify([purpose, row.id, genesis, u8aToHex(account), DAI.address, XOR.address, amount])
+      JSON.stringify([purpose, row.id, genesis, u8aToHex(account), row.assetAddress, XOR.address, amount])
     );
     return parseGetTsSwapDraft({ id: row.id, amount, contextHash }, purpose);
   } catch {

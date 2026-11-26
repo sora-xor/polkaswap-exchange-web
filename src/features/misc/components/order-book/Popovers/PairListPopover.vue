@@ -28,7 +28,8 @@
           <span>{{ t('priceText') }}</span>
         </template>
         <template #default="{ row }">
-          <formatted-amount :value="row.price" fiat-sign=""></formatted-amount>
+          <formatted-amount v-if="row.price != null" :value="row.price" fiat-sign=""></formatted-amount>
+          <market-unavailable v-else />
         </template>
       </s-table-column>
       <s-table-column width="110">
@@ -44,7 +45,8 @@
           <span>1D %</span>
         </template>
         <template #default="{ row }">
-          <price-change :value="row.priceChange"></price-change>
+          <price-change v-if="row.priceChange != null" :value="row.priceChange"></price-change>
+          <market-unavailable v-else />
         </template>
       </s-table-column>
       <s-table-column width="176">
@@ -71,6 +73,7 @@
 </template>
 
 <script setup lang="ts">
+import MarketUnavailable from '@/shared/ui/MarketUnavailable.vue';
 import { OrderBookStatus } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/sdk';
 import PairTokenLogo from '@/components/shared/PairTokenLogo.vue';
@@ -93,8 +96,8 @@ interface BookFields {
   pair: string;
   baseAsset?: Nullable<AccountAsset>;
   targetAsset?: Nullable<AccountAsset>;
-  price: string;
-  priceChange: FPNumber;
+  price: string | null;
+  priceChange: FPNumber | null;
   volumeNumber: number;
   volume: string;
   status: string;
@@ -160,8 +163,8 @@ const tableItems = computed<BookFields[]>(() => {
     const { base, quote } = value.orderBookId;
     const decimals = getBookDecimals(value);
     const stats = orderBooksStats.value[orderBookKey];
-    const price = (stats?.price ?? FPNumber.ZERO).dp(decimals);
-    const priceChange = stats?.priceChange ?? FPNumber.ZERO;
+    const price = stats?.price?.toLocaleString(decimals) ?? null;
+    const priceChange = price == null ? null : (stats?.priceChange ?? null);
     const volume = stats?.volume ?? FPNumber.ZERO;
     const baseAsset = assetsStore.assetDataByAddress(base);
     const targetAsset = assetsStore.assetDataByAddress(quote);
@@ -172,7 +175,7 @@ const tableItems = computed<BookFields[]>(() => {
       targetAsset,
       pair: `${baseAsset?.symbol}-${targetAsset?.symbol}`,
       status: value.status,
-      price: price.toLocaleString(),
+      price,
       priceChange,
       volumeNumber: volume.toNumber(),
       volume: volume.toLocaleString(),

@@ -156,14 +156,12 @@ const currencySymbol = computed(() => walletStore.currencySymbol ?? '$');
 const price = computed<FPNumber | null>(
   () => getAssetPrice(walletStore.fiatPriceObject, selected.value) ?? stats.value?.priceUSD ?? null
 );
-const priceText = computed(() =>
-  price.value?.isGtZero() ? formatPrice(price.value.mul(rate.value), currencySymbol.value) : ''
-);
+const priceText = computed(() => (price.value ? formatPrice(price.value.mul(rate.value), currencySymbol.value) : ''));
 
 const deltas = computed<Delta[]>(() => {
   const data = stats.value;
 
-  if (!data) return [];
+  if (!data || !price.value) return [];
 
   return [
     { label: t('rewards.analytics.market.day'), change: data.priceChangeDay },

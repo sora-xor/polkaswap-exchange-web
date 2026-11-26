@@ -69,7 +69,7 @@ yarn install
 
 ### Dependency security
 
-Run `yarn security:audit` to check the complete Yarn dependency graph, copied vendor packages, and the separate `scripts/ucan` lockfile. Findings and registry failures return a nonzero exit code; advisories are not suppressed. See [dependency maintenance](docs/security-dependencies.md) and the [October 24 security review](docs/reports/dependency-security-2026-10-24.md) for resolved advisories, compatibility pins, and validation evidence. The optional [Electron shell](electron/README.md) uses a sandboxed renderer without a Node/IPC preload bridge.
+Run `yarn security:audit` to check the complete Yarn dependency graph, copied vendor packages, and the separate `scripts/ucan` lockfile. Findings and registry failures return a nonzero exit code; advisories are not suppressed. See [dependency maintenance](docs/security-dependencies.md) and the [October 24 security review](docs/reports/dependency-security-2026-10-24.md) for remaining upstream issues, compatibility pins, and validation evidence. The optional [Electron shell](electron/README.md) uses a sandboxed renderer without a Node/IPC preload bridge.
 
 ## Scripts
 

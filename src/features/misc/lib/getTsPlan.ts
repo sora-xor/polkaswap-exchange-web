@@ -1,4 +1,5 @@
 import { FPNumber } from '@sora-substrate/sdk';
+import { DAI, ETH } from '@sora-substrate/sdk/build/assets/consts';
 import type { GetTsPurpose, GetTsSource, GetTsStep } from './getTsFlow';
 
 /** A draft and submitted transaction references, never a quote or evidence of completion. */
@@ -16,6 +17,11 @@ export const GET_TS_PAYMENT_ASSETS = [
 ] as const;
 export type GetTsPaymentAsset = (typeof GET_TS_PAYMENT_ASSETS)[number];
 export type GetTsTransactionStage = 'conversion' | 'bridge' | 'swap' | 'burn';
+/**
+ * Asset a purchase moves to SORA and swaps for XOR. Card purchases of XOR move the ETH that MoonPay delivers (October
+ * 2026); every other route uses DAI, and so does a card purchase that finishes DAI left over from the earlier DAI route.
+ */
+export type GetTsSwapAsset = 'DAI' | 'ETH';
 /** Resume inputs after opening card checkout; neither amount proves payment or delivery. */
 export interface GetTsCardDraft {
   deliveredEth: string;
@@ -37,14 +43,20 @@ export interface GetTsPlan {
   version: 1;
   paymentAsset: GetTsPaymentAsset | null;
   paymentAmount: string;
+  /** Amount of the swap asset (`swapAsset`, DAI when absent) moved to SORA and swapped for XOR. */
   daiAmount: string;
   xorAmount: string;
   references: Partial<Record<GetTsTransactionStage, string>>;
+  /** Set only for card purchases of XOR that move ETH; absent means DAI, as in plans saved before October 2026. */
+  swapAsset?: 'ETH';
   cardDraft?: GetTsCardDraft;
   bridgeDraft?: GetTsBridgeDraft;
   swapDraft?: GetTsSwapDraft;
 }
-export type GetTsPlanPatch = Partial<Pick<GetTsPlan, 'paymentAsset' | 'paymentAmount' | 'daiAmount' | 'xorAmount'>>;
+export type GetTsPlanPatch = Partial<Pick<GetTsPlan, 'paymentAsset' | 'paymentAmount' | 'daiAmount' | 'xorAmount'>> & {
+  /** `DAI` removes the field. */
+  swapAsset?: GetTsSwapAsset;
+};
 /** Current verified-reader results only; never load these fields from saved browser state. */
 export type GetTsPlanProgress = Partial<Record<GetTsTransactionStage, { state: string; reference?: string }>>;
 type PlanStorage = Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>;
@@ -52,6 +64,22 @@ const stages = ['conversion', 'bridge', 'swap', 'burn'];
 const maxCodec = FPNumber.fromCodecValue(
   '115792089237316195423570985008687907853269984665640564039457584007913129639935'
 );
+
+/** The asset this purchase moves to SORA and swaps; plans without `swapAsset` use DAI. */
+export function getTsSwapAsset(plan: { swapAsset?: unknown }): GetTsSwapAsset {
+  return plan.swapAsset === 'ETH' ? 'ETH' : 'DAI';
+}
+
+/** SORA asset ID of a swap asset. */
+export function getTsSwapAssetAddress(asset: GetTsSwapAsset): string {
+  return asset === 'ETH' ? ETH.address : DAI.address;
+}
+
+/** The swap asset with this SORA asset ID, if `purpose` may move it: Buy XOR also moves ETH, TS purchases only DAI. */
+export function getTsSwapAssetOf(address: unknown, purpose: GetTsPurpose): GetTsSwapAsset | null {
+  if (address === DAI.address) return 'DAI';
+  return address === ETH.address && purpose === 'xor' ? 'ETH' : null;
+}
 
 /** Returns a fresh empty draft without a connected-account identity. */
 export function emptyGetTsPlan(): GetTsPlan {
@@ -161,7 +189,7 @@ export function parseGetTsPlan(value: unknown, purpose: GetTsPurpose = 'ts'): Ge
   const keys = ['version', 'paymentAsset', 'paymentAmount', 'daiAmount', 'xorAmount', 'references'];
   if (
     !keys.every((key) => key in record) ||
-    Object.keys(record).some((key) => ![...keys, 'cardDraft', 'bridgeDraft', 'swapDraft'].includes(key))
+    Object.keys(record).some((key) => ![...keys, 'swapAsset', 'cardDraft', 'bridgeDraft', 'swapDraft'].includes(key))
   )
     return null;
   const bridgeDraft = 'bridgeDraft' in record ? parseGetTsBridgeDraft(record.bridgeDraft) : undefined;
@@ -170,6 +198,9 @@ export function parseGetTsPlan(value: unknown, purpose: GetTsPurpose = 'ts'): Ge
   if (swapDraft === null) return null;
   const cardDraft = 'cardDraft' in record ? parseGetTsCardDraft(record.cardDraft) : undefined;
   if (cardDraft === null || (cardDraft && record.paymentAsset !== 'card')) return null;
+  // Only card purchases of XOR move ETH to SORA.
+  if ('swapAsset' in record && (record.swapAsset !== 'ETH' || purpose !== 'xor' || record.paymentAsset !== 'card'))
+    return null;
   if (
     record.version !== 1 ||
     (record.paymentAsset !== null && !GET_TS_PAYMENT_ASSETS.includes(record.paymentAsset as GetTsPaymentAsset))
@@ -205,6 +236,7 @@ export function parseGetTsPlan(value: unknown, purpose: GetTsPurpose = 'ts'): Ge
     references: Object.fromEntries(
       Object.entries(references).map(([key, hash]) => [key, (hash as string).toLowerCase()])
     ),
+    ...('swapAsset' in record ? { swapAsset: 'ETH' as const } : {}),
     ...(cardDraft ? { cardDraft } : {}),
     ...(bridgeDraft ? { bridgeDraft } : {}),
     ...(swapDraft ? { swapDraft } : {}),
@@ -217,15 +249,31 @@ export function patchGetTsPlan(
   patch: GetTsPlanPatch,
   purpose: GetTsPurpose = 'ts'
 ): GetTsPlan | null {
-  if (Object.keys(patch).some((key) => !['paymentAsset', 'paymentAmount', 'daiAmount', 'xorAmount'].includes(key)))
+  if (
+    Object.keys(patch).some(
+      (key) => !['paymentAsset', 'paymentAmount', 'daiAmount', 'xorAmount', 'swapAsset'].includes(key)
+    )
+  )
     return null;
-  const candidate = { ...current, ...patch };
+  const { swapAsset, ...fields } = patch;
+  const candidate: GetTsPlan = { ...current, ...fields };
+  if ('swapAsset' in patch) {
+    if (swapAsset !== 'ETH' && swapAsset !== 'DAI') return null;
+    if (swapAsset === 'ETH') candidate.swapAsset = 'ETH';
+    else delete candidate.swapAsset;
+    // A different asset is a different bridge transfer and swap.
+    if (getTsSwapAsset(candidate) !== getTsSwapAsset(current)) {
+      delete candidate.bridgeDraft;
+      delete candidate.swapDraft;
+    }
+  }
   if (
     current.cardDraft &&
     (candidate.paymentAsset !== current.paymentAsset ||
       normalizeGetTsAmount(candidate.paymentAmount, 2) !== current.paymentAmount)
   )
     delete candidate.cardDraft;
+  if (candidate.paymentAsset !== 'card') delete candidate.swapAsset;
   if ('daiAmount' in patch && normalizeGetTsAmount(patch.daiAmount) !== current.daiAmount) {
     delete candidate.bridgeDraft;
     delete candidate.swapDraft;
@@ -236,6 +284,7 @@ export function patchGetTsPlan(
     next.daiAmount = '';
     next.xorAmount = '';
     next.references = {};
+    delete next.swapAsset;
     delete next.bridgeDraft;
     delete next.swapDraft;
   }

@@ -3,7 +3,7 @@ import { DAI, ETH, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { EvmNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/evm/consts';
 import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
-import { EthAssetKind } from '@sora-substrate/sdk/build/bridgeProxy/eth/consts';
+import { EthAssetKind, EthCurrencyType } from '@sora-substrate/sdk/build/bridgeProxy/eth/consts';
 import { createPinia, setActivePinia } from 'pinia';
 import { of } from 'rxjs';
 import { computed, markRaw, shallowRef } from 'vue';
@@ -11,7 +11,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { beforeTransactionSign } from '@/lib/soraneo-wallet/src/util';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import { TONSWAP_MAINNET_GENESIS } from '@/indexer/queries/tonswapBurn';
-import { TONSWAP_BRIDGE_FUNDING_TAG } from '@/features/misc/lib/tonswapBridgeLiquidity';
+import { BUY_XOR_ETH_BRIDGE_FUNDING_TAG, TONSWAP_BRIDGE_FUNDING_TAG } from '@/features/misc/lib/tonswapBridgeLiquidity';
+import { KnownEthBridgeAsset } from '@/consts/evm';
 
 import { useBridgeStore } from '@/stores/bridge';
 import { useMoonpayStore } from '@/stores/moonpay';
@@ -56,6 +57,7 @@ const walletStoreMock = vi.hoisted(() => ({
     },
   },
   getPassword: vi.fn(() => 'secret'),
+  beforeTransactionSign: vi.fn(async (_signerApi: unknown) => undefined),
   $subscribe: vi.fn((_callback: (...args: unknown[]) => void) => vi.fn()),
 }));
 
@@ -257,6 +259,7 @@ const ethersUtilMock = vi.hoisted(() => ({
   addressesAreEqual: vi.fn((left?: string, right?: string) => left?.toLowerCase() === right?.toLowerCase()),
   checkAccountIsConnected: vi.fn(async () => true),
   getEvmNetworkId: vi.fn<() => Promise<number>>(),
+  getContract: vi.fn(),
   getAccountAssetBalance: vi.fn(async () => '7'),
   getBlockNumber: vi.fn(async () => 777),
   getAllowance: vi.fn(async () => '0'),
@@ -491,6 +494,7 @@ describe('useBridgeStore', () => {
     walletStoreMock.address = 'sora-address';
     walletStoreMock.soraAddress = 'sora-address';
     walletStoreMock.sorametricsApiEndpoint = 'https://sorametrics.org';
+    walletStoreMock.beforeTransactionSign.mockReset();
     walletStoreMock.$subscribe.mockReset();
     walletStoreMock.$subscribe.mockImplementation((callback: (...args: unknown[]) => void) => {
       walletStoreSubscription = callback;
@@ -535,7 +539,9 @@ describe('useBridgeStore', () => {
       OTHER: '0xcontract-other',
     };
     web3StoreMock.contractAddress.mockReset();
-    web3StoreMock.contractAddress.mockReturnValue('0xcontract-other');
+    web3StoreMock.contractAddress.mockImplementation(
+      (kind: KnownEthBridgeAsset) => web3StoreMock.ethBridgeContractAddress[kind]
+    );
 
     subBridgeApiMock.isStandalone.mockReset();
     subBridgeApiMock.isStandalone.mockReturnValue(false);
@@ -617,7 +623,7 @@ describe('useBridgeStore', () => {
       value: 42n,
     });
     outgoingSignerMock.getAddress.mockReset();
-    outgoingSignerMock.getAddress.mockResolvedValue('0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+    outgoingSignerMock.getAddress.mockResolvedValue('0xReCiPiEnT');
     outgoingSignerMock.getNonce.mockReset();
     outgoingSignerMock.getNonce.mockResolvedValue(7);
     outgoingSignerMock.sendTransaction.mockReset();
@@ -646,6 +652,7 @@ describe('useBridgeStore', () => {
     ethersUtilMock.checkAccountIsConnected.mockClear();
     ethersUtilMock.getEvmNetworkId.mockReset();
     ethersUtilMock.getEvmNetworkId.mockResolvedValue(EvmNetworkId.EthereumSepolia);
+    ethersUtilMock.getContract.mockReset();
     ethersUtilMock.getAccountAssetBalance.mockClear();
     ethersUtilMock.getBlockNumber.mockClear();
     ethersUtilMock.getAllowance.mockClear();
@@ -1690,6 +1697,7 @@ describe('useBridgeStore', () => {
       to: '0xBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
       data: '0xAABB',
       value: '0x00002a',
+      chainId: EvmNetworkId.EthereumMainnet,
     });
 
     try {
@@ -1703,7 +1711,7 @@ describe('useBridgeStore', () => {
     expect(outgoingPopulateTransactionMock).toHaveBeenCalledWith('arg-1', 'arg-2');
     expect(outgoingSignerMock.getNonce).toHaveBeenCalledWith('pending');
     expect(recordSubmission).toHaveBeenCalledWith({
-      from: '0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+      from: '0xrecipient',
       to: '0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
       nonce: 7,
       data: '0xAABB',
@@ -1714,8 +1722,9 @@ describe('useBridgeStore', () => {
       to: '0xBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
       data: '0xAABB',
       value: '0x00002a',
-      from: '0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+      from: '0xReCiPiEnT',
       nonce: 7,
+      chainId: EvmNetworkId.EthereumSepolia,
     });
     expect(recordSubmission.mock.invocationCallOrder[0]).toBeLessThan(
       outgoingSignerMock.sendTransaction.mock.invocationCallOrder[0]
@@ -1787,6 +1796,287 @@ describe('useBridgeStore', () => {
 
     expect(recordSubmission).not.toHaveBeenCalled();
     expect(outgoingSignerMock.sendTransaction).not.toHaveBeenCalled();
+  });
+
+  it.each(['approval', 'contract', 'populate', 'nonce', 'lock'] as const)(
+    'rejects a provider chain switch during the outgoing %s wait before recording or broadcasting',
+    async (stage) => {
+      const id = 'tx-outgoing-chain-race';
+      ethBridgeApiMock.history[id] = {
+        id,
+        type: Operation.EthBridgeOutgoing,
+        amount: '10',
+        assetAddress: '0x01',
+        to: '0xrecipient',
+        hash: '0xapproved-request',
+        externalNetwork: EvmNetworkId.EthereumSepolia,
+      };
+      let release!: () => void;
+      const paused = new Promise<void>((resolve) => {
+        release = resolve;
+      });
+      let reached = false;
+      const pause = async () => {
+        reached = true;
+        await paused;
+      };
+      if (stage === 'approval') {
+        waitForApprovedRequestMock.mockImplementationOnce(async () => {
+          await pause();
+          return { to: '0xrecipient', hash: '0xapproved-request', amount: '10000000000000000000' };
+        });
+      } else if (stage === 'contract') {
+        const build = getOutgoingEvmTransactionDataMock.getMockImplementation()!;
+        getOutgoingEvmTransactionDataMock.mockImplementationOnce(async () => {
+          await pause();
+          return build();
+        });
+      } else if (stage === 'populate') {
+        outgoingPopulateTransactionMock.mockImplementationOnce(async () => {
+          await pause();
+          return { to: '0xcontract-other', data: '0xAABB' };
+        });
+      } else if (stage === 'nonce') {
+        outgoingSignerMock.getNonce.mockImplementationOnce(async () => {
+          await pause();
+          return 7;
+        });
+      } else {
+        webLocksMock.request.mockImplementationOnce(async (name, _options, callback) => {
+          await pause();
+          return callback({ name, mode: 'exclusive' } as Lock);
+        });
+      }
+
+      const recordSubmission = vi.fn();
+      const execution = store.signEthBridgeOutgoingEvm(id, recordSubmission);
+      const rejection = expect(execution).rejects.toThrow('Change evm network in wallet');
+      await vi.waitFor(() => expect(reached).toBe(true));
+      // Deliberately retain the cached UI validity flag to exercise the real provider read.
+      ethersUtilMock.getEvmNetworkId.mockResolvedValue(EvmNetworkId.EthereumMainnet);
+      release();
+      await rejection;
+
+      expect(recordSubmission).not.toHaveBeenCalled();
+      expect(outgoingSignerMock.sendTransaction).not.toHaveBeenCalled();
+    }
+  );
+
+  it('rejects a valid selected chain that differs from the outgoing history chain', async () => {
+    ethBridgeApiMock.history['tx-outgoing-wrong-chain'] = {
+      id: 'tx-outgoing-wrong-chain',
+      type: Operation.EthBridgeOutgoing,
+      amount: '10',
+      assetAddress: '0x01',
+      to: '0xrecipient',
+      externalNetwork: EvmNetworkId.EthereumSepolia,
+    };
+    web3StoreMock.networkSelected = EvmNetworkId.EthereumMainnet;
+    web3StoreMock.ethBridgeEvmNetwork = EvmNetworkId.EthereumMainnet;
+    ethersUtilMock.getEvmNetworkId.mockResolvedValue(EvmNetworkId.EthereumMainnet);
+    const recordSubmission = vi.fn();
+
+    await expect(store.signEthBridgeOutgoingEvm('tx-outgoing-wrong-chain', recordSubmission)).rejects.toThrow(
+      'Change evm network in wallet'
+    );
+    expect(waitForApprovedRequestMock).not.toHaveBeenCalled();
+    expect(recordSubmission).not.toHaveBeenCalled();
+    expect(outgoingSignerMock.sendTransaction).not.toHaveBeenCalled();
+  });
+
+  it('rejects in-place history edits while waiting for outgoing peer approval', async () => {
+    const id = 'tx-outgoing-history-race';
+    const history = {
+      id,
+      type: Operation.EthBridgeOutgoing,
+      amount: '10',
+      assetAddress: '0x01',
+      to: '0xrecipient',
+      hash: '0xapproved-request',
+      externalNetwork: EvmNetworkId.EthereumSepolia,
+    };
+    ethBridgeApiMock.history[id] = history;
+    waitForApprovedRequestMock.mockImplementationOnce(async () => {
+      await Promise.resolve();
+      history.amount = '20';
+      return { to: '0xrecipient', hash: '0xapproved-request', amount: '10000000000000000000' };
+    });
+    const recordSubmission = vi.fn();
+
+    await expect(store.signEthBridgeOutgoingEvm(id, recordSubmission)).rejects.toThrow(
+      'Ethereum bridge transaction changed'
+    );
+    expect(getOutgoingEvmTransactionDataMock).not.toHaveBeenCalled();
+    expect(ethBridgeApiMock.saveHistory).not.toHaveBeenCalled();
+    expect(recordSubmission).not.toHaveBeenCalled();
+    expect(outgoingSignerMock.sendTransaction).not.toHaveBeenCalled();
+  });
+
+  it.each([undefined, 0, -1, 1.5, Number.MAX_SAFE_INTEGER + 1])(
+    'rejects outgoing history with invalid chain ID %s before approval polling',
+    async (externalNetwork) => {
+      const id = 'tx-outgoing-invalid-chain';
+      ethBridgeApiMock.history[id] = {
+        id,
+        type: Operation.EthBridgeOutgoing,
+        amount: '10',
+        assetAddress: '0x01',
+        to: '0xrecipient',
+        externalNetwork,
+      };
+      const recordSubmission = vi.fn();
+
+      await expect(store.signEthBridgeOutgoingEvm(id, recordSubmission)).rejects.toThrow(
+        'Change evm network in wallet'
+      );
+      expect(waitForApprovedRequestMock).not.toHaveBeenCalled();
+      expect(recordSubmission).not.toHaveBeenCalled();
+      expect(outgoingSignerMock.sendTransaction).not.toHaveBeenCalled();
+    }
+  );
+
+  it.each([
+    'provider-account',
+    'displayed-account',
+    'signer-account',
+    'selected-chain',
+    'bridge-chain',
+    'network-type',
+    'history-chain',
+    'history-recipient',
+    'history-sender',
+    'history-proof',
+    'history-amount',
+    'history-asset',
+    'history-replacement',
+    'history-removal',
+    'contract',
+    'asset-registration',
+    'asset-address',
+  ] as const)(
+    'rejects an outgoing %s change during nonce retrieval without durable submission evidence',
+    async (change) => {
+      const id = 'tx-outgoing-context-change';
+      ethBridgeApiMock.history[id] = {
+        id,
+        type: Operation.EthBridgeOutgoing,
+        amount: '10',
+        assetAddress: '0x01',
+        from: 'sora-address',
+        to: '0xrecipient',
+        hash: '0xapproved-request',
+        externalNetwork: EvmNetworkId.EthereumSepolia,
+      };
+      if (change === 'signer-account') outgoingSignerMock.getAddress.mockResolvedValueOnce('0xother');
+      outgoingSignerMock.getNonce.mockImplementationOnce(async () => {
+        await Promise.resolve();
+        const current = ethBridgeApiMock.history[id];
+        if (change === 'provider-account') ethersUtilMock.checkAccountIsConnected.mockResolvedValueOnce(false);
+        if (change === 'displayed-account') web3StoreMock.evmAddress = '0xother';
+        if (change === 'selected-chain') web3StoreMock.networkSelected = EvmNetworkId.EthereumMainnet;
+        if (change === 'bridge-chain') web3StoreMock.ethBridgeEvmNetwork = EvmNetworkId.EthereumMainnet;
+        if (change === 'network-type') web3StoreMock.networkType = BridgeNetworkType.Evm;
+        if (change === 'history-chain') current.externalNetwork = EvmNetworkId.EthereumMainnet;
+        if (change === 'history-recipient') current.to = '0xother';
+        if (change === 'history-sender') current.from = 'another-sora-address';
+        if (change === 'history-proof') current.hash = '0xother-proof';
+        if (change === 'history-amount') current.amount = '20';
+        if (change === 'history-asset') current.assetAddress = '0x02';
+        if (change === 'history-replacement') ethBridgeApiMock.history[id] = { ...current, to: '0xother' };
+        if (change === 'history-removal') delete ethBridgeApiMock.history[id];
+        if (change === 'contract') web3StoreMock.ethBridgeContractAddress.OTHER = '0xother-contract';
+        if (change === 'asset-registration') assetsStoreMock.registeredAssets = {};
+        if (change === 'asset-address') walletStoreMock.assetsDataTable['0x01'].externalAddress = '0xother-token';
+        return 7;
+      });
+      const recordSubmission = vi.fn();
+
+      await expect(store.signEthBridgeOutgoingEvm(id, recordSubmission)).rejects.toThrow();
+      expect(recordSubmission).not.toHaveBeenCalled();
+      expect(outgoingSignerMock.sendTransaction).not.toHaveBeenCalled();
+    }
+  );
+
+  it.each([
+    [KnownEthBridgeAsset.XOR, EthCurrencyType.TokenAddress, KnownEthBridgeAsset.XOR, 'mintTokensByPeers'],
+    [KnownEthBridgeAsset.VAL, EthCurrencyType.TokenAddress, KnownEthBridgeAsset.VAL, 'mintTokensByPeers'],
+    [KnownEthBridgeAsset.XOR, EthCurrencyType.AssetId, KnownEthBridgeAsset.Other, 'receiveBySidechainAssetId'],
+    ['AAA', EthCurrencyType.TokenAddress, KnownEthBridgeAsset.Other, 'receiveByEthereumAssetAddress'],
+  ] as const)('preserves %s/%s outgoing contract selection', async (symbol, currencyType, kind, method) => {
+    const id = 'tx-outgoing-contract-variant';
+    ethBridgeApiMock.history[id] = {
+      id,
+      type: Operation.EthBridgeOutgoing,
+      amount: '10',
+      assetAddress: '0x01',
+      to: '0xrecipient',
+      hash: '0xapproved-request',
+      externalNetwork: EvmNetworkId.EthereumSepolia,
+    };
+    walletStoreMock.assetsDataTable['0x01'].symbol = symbol;
+    const approvedRequest = {
+      to: '0xrecipient',
+      from: '0xsender',
+      hash: '0xapproved-request',
+      amount: '10000000000000000000',
+      currencyType,
+      currencyId: currencyType === EthCurrencyType.TokenAddress ? '0xexternal-asset' : '0x01',
+      r: ['0xsignature-r'],
+      s: ['0xsignature-s'],
+      v: [27],
+    };
+    waitForApprovedRequestMock.mockResolvedValueOnce(approvedRequest);
+    ethersUtilMock.getContract.mockImplementationOnce(async () => {
+      // The peer proof must be snapshotted before awaiting wallet contract creation.
+      approvedRequest.to = '0xchanged-recipient';
+      approvedRequest.r[0] = '0xchanged-signature';
+      return {
+        runner: outgoingSignerMock,
+        [method]: { populateTransaction: outgoingPopulateTransactionMock },
+      };
+    });
+    const { getOutgoingEvmTransactionData } =
+      await vi.importActual<typeof import('@/utils/bridge/eth/utils')>('@/utils/bridge/eth/utils');
+    getOutgoingEvmTransactionDataMock.mockImplementationOnce(getOutgoingEvmTransactionData as never);
+    const recordSubmission = vi.fn();
+
+    await expect(store.signEthBridgeOutgoingEvm(id, recordSubmission)).resolves.toEqual({ hash: '0xoutgoing-tx' });
+    expect(ethersUtilMock.getContract).toHaveBeenCalledWith(
+      web3StoreMock.ethBridgeContractAddress[kind],
+      expect.any(Array)
+    );
+    expect(outgoingPopulateTransactionMock.mock.calls[0]).toContain('0xrecipient');
+    expect(outgoingPopulateTransactionMock.mock.calls[0]).toContainEqual(['0xsignature-r']);
+    expect(outgoingSignerMock.sendTransaction).toHaveBeenCalledWith(
+      expect.objectContaining({ chainId: EvmNetworkId.EthereumSepolia, from: '0xReCiPiEnT' })
+    );
+    expect(recordSubmission).toHaveBeenCalledOnce();
+  });
+
+  it('returns a broadcast recorded while waiting for the lock without another outgoing wallet request', async () => {
+    const id = 'tx-outgoing-already-broadcast';
+    ethBridgeApiMock.history[id] = {
+      id,
+      type: Operation.EthBridgeOutgoing,
+      amount: '10',
+      assetAddress: '0x01',
+      to: '0xrecipient',
+      externalNetwork: EvmNetworkId.EthereumSepolia,
+    };
+    webLocksMock.request.mockImplementationOnce(async (name, _options, callback) => {
+      ethBridgeApiMock.history[id].externalHash = '0xexisting-broadcast';
+      ethersUtilMock.getEvmNetworkId.mockResolvedValue(EvmNetworkId.EthereumMainnet);
+      return callback({ name, mode: 'exclusive' } as Lock);
+    });
+    const recordSubmission = vi.fn();
+
+    await expect(store.signEthBridgeOutgoingEvm(id, recordSubmission)).resolves.toEqual({
+      hash: '0xexisting-broadcast',
+    });
+    expect(outgoingPopulateTransactionMock).not.toHaveBeenCalled();
+    expect(outgoingSignerMock.getNonce).not.toHaveBeenCalled();
+    expect(outgoingSignerMock.sendTransaction).not.toHaveBeenCalled();
+    expect(recordSubmission).not.toHaveBeenCalled();
   });
 
   it('routes persisted transactions by their operation instead of the selected UI network', async () => {
@@ -2144,73 +2434,95 @@ describe('useBridgeStore', () => {
     expect(getOutgoingEvmTransactionDataMock).not.toHaveBeenCalled();
   });
 
-  it.each(['unchanged', 'xor-unchanged', 'approval-impact', 'disconnect', 'genesis', 'fees', 'slippage'] as const)(
-    'keeps a guided incoming history bound to fresh funding evidence: %s',
-    async (change) => {
-      web3StoreMock.evmAddress = '0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
-      web3StoreMock.networkSelected = 1 as never;
-      web3StoreMock.ethBridgeEvmNetwork = 1;
-      ethersUtilMock.getEvmNetworkId.mockResolvedValue(1);
-      settingsStoreMock.networkFees = {
-        [Operation.Swap]: '200000000000000',
-        [Operation.BurnWithRemark]: change === 'xor-unchanged' ? '0' : '100000000000000',
-      };
-      assetsStoreMock.registeredAssets = {
-        [DAI.address]: { address: '0xdai', decimals: 18, kind: EthAssetKind.Sidechain },
-      };
-      assetsStoreMock.assetDataByAddress.mockReturnValue({ ...DAI, externalAddress: '0xdai', externalDecimals: 18 });
-      const quote = vi.fn(async () => ({
-        unwrap: () => ({ amount: '1800000000000000000', amountWithoutImpact: '1810000000000000000' }),
-      }));
-      const chain = { isConnected: true, genesisHash: TONSWAP_MAINNET_GENESIS, rpc: { liquidityProxy: { quote } } };
-      const previousConnection = Object.getOwnPropertyDescriptor(api, 'connection');
-      Object.defineProperty(api, 'connection', { configurable: true, value: { api: chain } });
-      const fundingPayload =
-        change === 'xor-unchanged'
-          ? { buyXorFunding: 'ethereum-dai-v1', other: 'kept' }
-          : { tonswapFunding: TONSWAP_BRIDGE_FUNDING_TAG, other: 'kept' };
-      try {
-        const generated = (await store.generateHistoryItem({
-          type: Operation.EthBridgeIncoming,
-          amount: '10',
-          assetAddress: DAI.address,
-          payload: fundingPayload,
-        })) as { id: string };
-        ethersUtilMock.getAllowance.mockResolvedValueOnce('1');
-        if (change === 'approval-impact') {
-          waitForEvmTransactionMinedMock.mockImplementationOnce(async () => {
-            quote.mockResolvedValue({
-              unwrap: () => ({ amount: '1000000000000000000', amountWithoutImpact: '2000000000000000000' }),
-            });
+  it.each([
+    'unchanged',
+    'xor-unchanged',
+    'xor-eth-unchanged',
+    'approval-impact',
+    'disconnect',
+    'genesis',
+    'fees',
+    'slippage',
+  ] as const)('keeps a guided incoming history bound to fresh funding evidence: %s', async (change) => {
+    const ethFunding = change === 'xor-eth-unchanged';
+    const fundingAsset = ethFunding ? ETH : DAI;
+    const externalAddress = ethFunding ? '0x0000000000000000000000000000000000000000' : '0xdai';
+    web3StoreMock.evmAddress = '0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
+    web3StoreMock.networkSelected = 1 as never;
+    web3StoreMock.ethBridgeEvmNetwork = 1;
+    ethersUtilMock.getEvmNetworkId.mockResolvedValue(1);
+    settingsStoreMock.networkFees = {
+      [Operation.Swap]: '200000000000000',
+      [Operation.BurnWithRemark]: change === 'xor-unchanged' ? '0' : '100000000000000',
+    };
+    assetsStoreMock.registeredAssets = {
+      [fundingAsset.address]: { address: externalAddress, decimals: 18, kind: EthAssetKind.Sidechain },
+    };
+    assetsStoreMock.assetDataByAddress.mockReturnValue({ ...fundingAsset, externalAddress, externalDecimals: 18 });
+    const quote = vi.fn(async () => ({
+      unwrap: () => ({ amount: '1800000000000000000', amountWithoutImpact: '1810000000000000000' }),
+    }));
+    const chain = { isConnected: true, genesisHash: TONSWAP_MAINNET_GENESIS, rpc: { liquidityProxy: { quote } } };
+    const previousConnection = Object.getOwnPropertyDescriptor(api, 'connection');
+    Object.defineProperty(api, 'connection', { configurable: true, value: { api: chain } });
+    const fundingPayload = ethFunding
+      ? { buyXorFunding: BUY_XOR_ETH_BRIDGE_FUNDING_TAG, other: 'kept' }
+      : change === 'xor-unchanged'
+        ? { buyXorFunding: 'ethereum-dai-v1', other: 'kept' }
+        : { tonswapFunding: TONSWAP_BRIDGE_FUNDING_TAG, other: 'kept' };
+    try {
+      const generated = (await store.generateHistoryItem({
+        type: Operation.EthBridgeIncoming,
+        amount: '10',
+        assetAddress: fundingAsset.address,
+        payload: fundingPayload,
+      })) as { id: string };
+      ethersUtilMock.getAllowance.mockResolvedValueOnce(ethFunding ? null : '1');
+      if (change === 'approval-impact') {
+        waitForEvmTransactionMinedMock.mockImplementationOnce(async () => {
+          quote.mockResolvedValue({
+            unwrap: () => ({ amount: '1000000000000000000', amountWithoutImpact: '2000000000000000000' }),
           });
-        } else if (change !== 'unchanged' && change !== 'xor-unchanged') {
-          ethersUtilMock.checkAccountIsConnected.mockImplementationOnce(async () => {
-            await Promise.resolve();
-            if (change === 'disconnect') chain.isConnected = false;
-            if (change === 'genesis') chain.genesisHash = 'other';
-            if (change === 'fees') settingsStoreMock.networkFees[Operation.Swap] = '300000000000000';
-            if (change === 'slippage') settingsStoreMock.slippageTolerance = '5';
-            return true;
-          });
-        }
-        const recordSubmission = vi.fn();
-        const execution = store.signEthBridgeIncomingEvm(generated.id, recordSubmission);
-        if (change === 'unchanged' || change === 'xor-unchanged') {
-          await expect(execution).resolves.toEqual({ hash: '0xincoming-tx' });
-          expect(quote).toHaveBeenCalledTimes(4);
-          expect(recordSubmission).toHaveBeenCalledOnce();
-        } else {
-          await expect(execution).rejects.toThrow('GET_TS_BRIDGE_');
-          expect(recordSubmission).not.toHaveBeenCalled();
-          expect(incomingSignerMock.sendTransaction).not.toHaveBeenCalled();
-        }
-        expect(ethBridgeApiMock.history[generated.id].payload).toEqual(fundingPayload);
-      } finally {
-        if (previousConnection) Object.defineProperty(api, 'connection', previousConnection);
-        else Reflect.deleteProperty(api, 'connection');
+        });
+      } else if (change !== 'unchanged' && change !== 'xor-unchanged' && !ethFunding) {
+        ethersUtilMock.checkAccountIsConnected.mockImplementationOnce(async () => {
+          await Promise.resolve();
+          if (change === 'disconnect') chain.isConnected = false;
+          if (change === 'genesis') chain.genesisHash = 'other';
+          if (change === 'fees') settingsStoreMock.networkFees[Operation.Swap] = '300000000000000';
+          if (change === 'slippage') settingsStoreMock.slippageTolerance = '5';
+          return true;
+        });
       }
+      const recordSubmission = vi.fn();
+      const execution = store.signEthBridgeIncomingEvm(generated.id, recordSubmission);
+      if (change === 'unchanged' || change === 'xor-unchanged' || ethFunding) {
+        await expect(execution).resolves.toEqual({ hash: '0xincoming-tx' });
+        expect(quote).toHaveBeenCalledTimes(ethFunding ? 3 : 4);
+        for (const quoteCall of quote.mock.calls) {
+          expect(quoteCall).toEqual([
+            0,
+            fundingAsset.address,
+            XOR.address,
+            '10000000000000000000',
+            'WithDesiredInput',
+            ['XYKPool', 'OrderBook'],
+            'AllowSelected',
+          ]);
+        }
+        if (ethFunding) expect(ethersUtilMock.getTokenContract).not.toHaveBeenCalled();
+        expect(recordSubmission).toHaveBeenCalledOnce();
+      } else {
+        await expect(execution).rejects.toThrow('GET_TS_BRIDGE_');
+        expect(recordSubmission).not.toHaveBeenCalled();
+        expect(incomingSignerMock.sendTransaction).not.toHaveBeenCalled();
+      }
+      expect(ethBridgeApiMock.history[generated.id].payload).toEqual(fundingPayload);
+    } finally {
+      if (previousConnection) Object.defineProperty(api, 'connection', previousConnection);
+      else Reflect.deleteProperty(api, 'connection');
     }
-  );
+  });
 
   it('rejects incoming signing before allowance checks when the EVM wallet is disconnected', async () => {
     ethBridgeApiMock.history['tx-disconnected-incoming'] = {
@@ -3717,4 +4029,16 @@ describe('useBridgeStore', () => {
     expect(visibilityChanges).toEqual([true, false]);
     expect(store.flags.isSignTxDialogVisible).toBe(false);
   });
+
+  it.each([undefined, BridgeTransactionSignDialogMode.Wallet])(
+    'delegates %s bridge signing to the wallet dialog controller',
+    async (dialogMode) => {
+      const signerApi = { address: 'alice', accountPair: { isLocked: true } };
+      await store.beforeTransactionSign(signerApi, dialogMode);
+
+      expect(walletStoreMock.beforeTransactionSign).toHaveBeenCalledExactlyOnceWith(signerApi);
+      expect(beforeTransactionSign).not.toHaveBeenCalled();
+      expect(store.flags.isSignTxDialogVisible).toBe(false);
+    }
+  );
 });

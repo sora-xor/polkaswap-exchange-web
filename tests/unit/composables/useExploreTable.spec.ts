@@ -19,6 +19,22 @@ const createItems = (): TestItem[] => [
 ];
 
 describe('useExploreTable', () => {
+  it('sorts unavailable quotes after known numeric values in either direction', async () => {
+    const wrapper = mount({
+      template: '<div />',
+      setup() {
+        const items = computed(() => [{ value: null }, { value: 0 }, { value: 7 }]);
+        return { table: useExploreTable({ items, defaultProperty: 'value' }) };
+      },
+    });
+    const table = wrapper.vm.table;
+    expect(table.tableItems.value.map((row) => row.value)).toEqual([7, 0, null]);
+    table.changeSort({ order: SortDirection.ASC, property: 'value' });
+    await nextTick();
+    expect(table.tableItems.value.map((row) => row.value)).toEqual([0, 7, null]);
+    wrapper.unmount();
+  });
+
   it('sorts, paginates, and filters explore data', async () => {
     const wrapper = mount({
       template: '<div />',

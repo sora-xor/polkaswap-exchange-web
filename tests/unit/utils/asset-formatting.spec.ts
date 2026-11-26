@@ -105,6 +105,11 @@ describe('formatAssetBalance', () => {
 });
 
 describe('formatAmountWithSuffix', () => {
+  it('preserves the value of a positive reserve valuation below currency display precision', () => {
+    const micro = '0.000000000000000000125';
+    expect(formatAmountWithSuffix(new FPNumber(micro, 21))).toEqual({ amount: micro, suffix: '' });
+  });
+
   it('omits trailing decimals for integer values', () => {
     expect(formatAmountWithSuffix(new FPNumber('532'))).toEqual({
       amount: '532',

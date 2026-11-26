@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { IndexerType } from '@/consts';
 import BaseExplorer from '@/lib/soraneo-wallet/src/services/indexer/explorer/base';
+import { StatsCoreNotReadyError } from '@/lib/soraneo-wallet/src/services/indexer/coreRefresh';
 import { ConnectionStatus } from '@/lib/soraneo-wallet/src/types/common';
 
 type MockPayload = {
@@ -136,6 +137,35 @@ describe('BaseExplorer', () => {
     expect(statuses).toEqual([ConnectionStatus.Loading, ConnectionStatus.Available]);
   });
 
+  it('retries a pending Pi price generation and returns only the complete response', async () => {
+    vi.useFakeTimers();
+    const { explorer, queryToPromise } = setup('https://indexer.test/graphql');
+    const pending = { message: 'refreshing', extensions: { code: 'STATS_CORE_NOT_READY' } };
+    queryToPromise
+      .mockResolvedValueOnce({ data: { price: 'partial' }, error: { graphQLErrors: [pending] } })
+      .mockResolvedValueOnce({ data: { price: 'current' } });
+    const request = explorer.request({} as never, {}, { retryPendingCore: true, requestPolicy: 'network-only' });
+    await vi.runAllTimersAsync();
+    await expect(request).resolves.toEqual({ price: 'current' });
+    expect(queryToPromise).toHaveBeenCalledTimes(2);
+  });
+
+  it('reports a persistent core refresh after three attempts and does not classify mixed errors as pending', async () => {
+    vi.useFakeTimers();
+    const { explorer, queryToPromise } = setup('https://indexer.test/graphql');
+    const pending = { message: 'refreshing', extensions: { code: 'STATS_CORE_NOT_READY' } };
+    queryToPromise.mockResolvedValue({ error: { graphQLErrors: [pending] } });
+    const rejected = expect(explorer.request({} as never, {}, { retryPendingCore: true })).rejects.toThrow(
+      StatsCoreNotReadyError
+    );
+    await vi.runAllTimersAsync();
+    await rejected;
+    expect(queryToPromise).toHaveBeenCalledTimes(3);
+    queryToPromise.mockResolvedValue({ error: { graphQLErrors: [pending, { message: 'ordinary error' }] } });
+    await expect(explorer.request({} as never, {}, { retryPendingCore: true })).resolves.toBeUndefined();
+    expect(queryToPromise).toHaveBeenCalledTimes(4);
+  });
+
   it('discards partial data when network retries are exhausted', async () => {
     vi.useFakeTimers();
     const { explorer, statuses, createExplorerClient } = setupRetryExplorer([
@@ -211,4 +241,121 @@ describe('BaseExplorer', () => {
       ConnectionStatus.Unavailable,
     ]);
   });
+});
+
+describe('captured network-only queries', () => {
+  it('forces network-only POST and never retries an error on another client', async () => {
+    const { explorer, queryToPromise, createExplorerClient } = setup('https://indexer.test/graphql');
+    queryToPromise.mockResolvedValue({ data: { cached: true }, error: { networkError: Error('offline') } });
+    const session = explorer.captureNetworkOnly();
+    await expect(session.request({} as never)).resolves.toBeUndefined();
+    expect(explorer.client.query).toHaveBeenCalledWith(
+      {},
+      {},
+      {
+        requestPolicy: 'network-only',
+        preferGetMethod: false,
+        fetchOptions: { cache: 'no-store', credentials: 'omit', headers: { accept: 'application/json' } },
+      }
+    );
+    expect(createExplorerClient).toHaveBeenCalledOnce();
+  });
+  it('refuses a changed endpoint before queries and before re-capturing a session', async () => {
+    let endpoint = 'https://one.test/graphql';
+    const query = vi.fn(() => ({ toPromise: async () => ({ data: { ok: true } }) }));
+    const explorer = new BaseExplorer({
+      type: IndexerType.POLKASWAP,
+      createExplorerClient: () => ({ query }) as never,
+      getStatus: () => ConnectionStatus.Available,
+      setStatus: async () => {},
+      getEndpoint: () => endpoint,
+    });
+    const session = explorer.captureNetworkOnly();
+    endpoint = 'https://two.test/graphql';
+    await expect(session.request({} as never)).rejects.toThrow('Indexer changed');
+    expect(() => session.captureNetworkOnly()).toThrow();
+    expect(query).not.toHaveBeenCalled();
+  });
+  it('discards a response if the endpoint changes while it is pending', async () => {
+    let endpoint = 'https://one.test/graphql';
+    let finish!: (value: unknown) => void;
+    const explorer = new BaseExplorer({
+      type: IndexerType.POLKASWAP,
+      createExplorerClient: () =>
+        ({
+          query: () => ({
+            toPromise: () =>
+              new Promise((r) => {
+                finish = r;
+              }),
+          }),
+        }) as never,
+      getStatus: () => ConnectionStatus.Available,
+      setStatus: async () => {},
+      getEndpoint: () => endpoint,
+    });
+    const pending = explorer.captureNetworkOnly().request({} as never);
+    endpoint = 'https://two.test/graphql';
+    finish({ data: { stale: true } });
+    await expect(pending).rejects.toThrow();
+  });
+  it('supports a narrowly typed network-only option on the regular request path', async () => {
+    const { explorer, queryToPromise } = setup('https://indexer.test/graphql');
+    queryToPromise.mockResolvedValue({ data: { ok: true } });
+    await explorer.request({} as never, {}, { requestPolicy: 'network-only' });
+    expect(explorer.client.query).toHaveBeenCalledWith({}, {}, { requestPolicy: 'network-only' });
+  });
+});
+
+it('refuses an existing client created for an earlier endpoint before capability admission', () => {
+  let endpoint = 'https://one.test/graphql';
+  const query = vi.fn();
+  const explorer = new BaseExplorer({
+    type: IndexerType.POLKASWAP,
+    createExplorerClient: () => ({ query }) as never,
+    getStatus: () => ConnectionStatus.Available,
+    setStatus: async () => {},
+    getEndpoint: () => endpoint,
+  });
+  explorer.initClient();
+  endpoint = 'https://two.test/graphql';
+  expect(() => explorer.captureNetworkOnly()).toThrow('Indexer changed');
+  expect(query).not.toHaveBeenCalled();
+});
+
+it('sends an uncached JSON POST with real urql and rejects an old-schema partial response quietly', async () => {
+  const { createClient, fetchExchange, gql } = await import('@urql/core');
+  const fetch = vi.fn(
+    async (_input: RequestInfo | URL, _init?: RequestInit) =>
+      new Response(
+        JSON.stringify({ data: { protectedValue: 999 }, errors: [{ message: 'Unknown capability field' }] }),
+        { status: 200, headers: { 'content-type': 'application/json' } }
+      )
+  );
+  const client = createClient({
+    url: 'https://indexer.test/graphql',
+    exchanges: [fetchExchange],
+    preferGetMethod: true,
+    fetch,
+  });
+  const explorer = new BaseExplorer({
+    type: IndexerType.POLKASWAP,
+    createExplorerClient: () => client,
+    getStatus: () => ConnectionStatus.Available,
+    setStatus: async () => {},
+    getEndpoint: () => 'https://indexer.test/graphql',
+  });
+  await expect(
+    explorer.captureNetworkOnly().request(gql`
+      query CapabilityTest {
+        protectedValue
+      }
+    `)
+  ).resolves.toBeUndefined();
+  expect(fetch).toHaveBeenCalledOnce();
+  const options = fetch.mock.calls[0][1] as RequestInit;
+  expect(fetch.mock.calls[0][0]).toBe('https://indexer.test/graphql');
+  expect(options).toMatchObject({ method: 'POST', cache: 'no-store', credentials: 'omit' });
+  expect(new Headers(options.headers).get('accept')).toBe('application/json');
+  expect(JSON.parse(String(options.body)).query).toContain('CapabilityTest');
 });

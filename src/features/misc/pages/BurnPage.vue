@@ -4,15 +4,19 @@
       <div class="burn-column burn-column--featured">
         <tonswap-burn-campaign class="container--featured" />
       </div>
+      <section v-if="soraNetwork === SoraNetwork.Prod" class="burn-activity" :aria-label="t('burnActivity.title')">
+        <public-burn-activity />
+        <public-burn-activity campaign-history />
+      </section>
       <div
         v-for="{ id, title, description, rewardTiers, link, receivedAsset, rate, disabledText } in campaigns"
         :key="id"
         class="burn-column"
       >
         <s-form
-          v-loading="isBurnFormLoading"
           class="container container--campaign campaign el-form--actions"
-          :class="{ disabled: ended[id] }"
+          :class="{ disabled: ended[id], 'campaign--loading': isBurnFormLoading }"
+          :aria-busy="isBurnFormLoading"
           :show-message="false"
         >
           <header class="campaign__hero">
@@ -25,6 +29,10 @@
               <external-link class="p4 link" title="Read more" :href="link"></external-link>
             </div>
           </header>
+          <p v-if="burnSent[id]" class="campaign__sent" role="status" data-testid="burn-sent">
+            <s-icon name="basic-flame-24" size="20" aria-hidden="true" />
+            <span>{{ t('burnPage.sent') }}</span>
+          </p>
           <div class="campaign__body">
             <section class="campaign__terms">
               <div v-if="rewardTiers?.length" class="reward-tiers">
@@ -46,7 +54,7 @@
                 asset-symbol="SORA Nexus XOR"
               ></info-line>
             </section>
-            <section class="campaign__account">
+            <section v-if="statisticsAvailable" class="campaign__account">
               <info-line
                 :label="`Your reserved ${receivedAsset.symbol} tokens`"
                 :value="getFormattedAccountReserved(id)"
@@ -102,8 +110,11 @@
                 </div>
               </div>
             </section>
+            <p v-else class="campaign__unavailable" role="status" data-testid="burn-statistics-unavailable">
+              {{ t('burnActivity.rewardsUnavailable') }}
+            </p>
           </div>
-          <div class="info-card-container s-flex">
+          <div v-if="statisticsAvailable" class="info-card-container s-flex">
             <div class="info-card-item s-flex-column">
               <span class="info-card-title">TOTAL XOR BURNED</span>
               <span class="info-card-value">
@@ -123,9 +134,14 @@
               </span>
             </div>
           </div>
+          <!-- The address tool is long and only needed once, so it opens on request while the campaign runs. -->
+          <details v-if="id === 'solswap' && !ended.solswap" class="campaign__nexus">
+            <summary>{{ t('burnPage.nexusGenerator.title') }}</summary>
+            <sora-nexus-account-generator burn-available @use-address="handleUseGeneratedNexusAddress" />
+          </details>
           <sora-nexus-account-generator
-            v-if="id === 'solswap'"
-            :burn-available="!ended.solswap"
+            v-else-if="id === 'solswap'"
+            :burn-available="false"
             @use-address="handleUseGeneratedNexusAddress"
           />
           <s-button v-if="!isLoggedIn" type="primary" class="action-button" @click="connectSoraWallet">
@@ -145,20 +161,14 @@
         </s-form>
       </div>
     </div>
-    <s-card class="burn-info" border-radius="small" shadow="always" size="medium" pressed>
-      <div class="burn-info__content s-flex-column">
-        <div class="burn-info__desc s-flex">
-          <div class="burn-info__badge">
-            <s-icon class="burn-info__icon" name="notifications-alert-triangle-24" size="24"></s-icon>
-          </div>
-          <p class="description p4">
-            The 'Burn XOR' is a community-proposed initiative. It’s not officially endorsed by any centralized authority
-            or organization. Participation and interaction with the 'Burn XOR' should be considered with understanding
-            of its community-driven nature.
-          </p>
-        </div>
-      </div>
-    </s-card>
+    <p class="burn-info">
+      <s-icon class="burn-info__icon" name="notifications-alert-triangle-24" size="18" aria-hidden="true"></s-icon>
+      <span class="burn-info__text">
+        The 'Burn XOR' is a community-proposed initiative. It’s not officially endorsed by any centralized authority or
+        organization. Participation and interaction with the 'Burn XOR' should be considered with understanding of its
+        community-driven nature.
+      </span>
+    </p>
     <burn-dialog
       v-model:visible="burnDialogVisible"
       :received-asset="selectedReceivedAsset"
@@ -180,6 +190,7 @@ import dayjs from 'dayjs/esm';
 import durationPlugin from 'dayjs/plugin/duration';
 import { computed, onBeforeUnmount, onMounted, reactive, ref, toRef, watch } from 'vue';
 
+import { requireEntitlements } from '@/indexer/queries/capabilities';
 import BurnLogoFire from '@/features/misc/components/burn/BurnLogoFire.vue';
 import SoraNexusAccountGenerator from '@/features/misc/components/burn/SoraNexusAccountGenerator.vue';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
@@ -219,6 +230,7 @@ import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 import WalletComponentExternalLink from '@/lib/soraneo-wallet/src/components/shared/ExternalLink.vue';
 import BurnDialog from '@/features/misc/components/burn/BurnDialog.vue';
+import PublicBurnActivity from '@/features/misc/components/burn/PublicBurnActivity.vue';
 import TonswapBurnCampaign from '@/features/misc/components/burn/TonswapBurnCampaign.vue';
 import GenericPageHeader from '@/components/shared/GenericPageHeader.vue';
 
@@ -265,6 +277,7 @@ const campaignsObj = reactive(createBurnCampaigns());
 const campaignOrder: CampaignKey[] = ['solswap'];
 const campaigns = computed(() => campaignOrder.map((key) => campaignsObj[key]));
 
+const statisticsAvailable = ref(false);
 const totalXorBurned = reactive<Record<CampaignKey, FPNumber>>(createDefaultBurned());
 const accountXorBurned = reactive<Record<CampaignKey, FPNumber>>(createDefaultBurned());
 const totalReserved = reactive<Record<CampaignKey, FPNumber>>(createDefaultBurned());
@@ -280,6 +293,12 @@ const timeLeftFormatted = reactive<Record<CampaignKey, string>>({
 const ended = reactive<Record<CampaignKey, boolean>>({
   solswap: false,
 });
+
+/** A burn of this campaign was signed during this visit; the card says so until the account changes. */
+const burnSent = reactive<Record<CampaignKey, boolean>>({
+  solswap: false,
+});
+const selectedCampaignId = ref<CampaignKey>('solswap');
 
 const isBurnFormLoading = computed(() => parentLoadingRef.value || loading.value);
 const burnDialogVisible = ref(false);
@@ -308,22 +327,27 @@ function getFormattedXorFiat(rate: string): Nullable<string> {
 }
 
 function getFormattedTotalXorBurned(id: CampaignKey): string {
+  if (!statisticsAvailable.value) return '—';
   return totalXorBurned[id] ? formatBurnAmount(totalXorBurned[id]) : zeroString;
 }
 
 function getFormattedTotalReserved(id: CampaignKey): string {
+  if (!statisticsAvailable.value) return '—';
   return totalReserved[id] ? formatBurnAmount(totalReserved[id], 3) : zeroString;
 }
 
 function getFormattedTotalNexusReserved(id: CampaignKey): string {
+  if (!statisticsAvailable.value) return '—';
   return totalNexusReserved[id] ? formatBurnAmount(totalNexusReserved[id], 3) : zeroString;
 }
 
 function getFormattedAccountXorBurned(id: CampaignKey): string {
+  if (!statisticsAvailable.value) return '—';
   return accountXorBurned[id] ? formatBurnAmount(accountXorBurned[id]) : zeroString;
 }
 
 function getFormattedAccountReserved(id: CampaignKey): string {
+  if (!statisticsAvailable.value) return '—';
   return accountReserved[id] ? formatBurnAmount(accountReserved[id], 3) : zeroString;
 }
 
@@ -351,15 +375,42 @@ function calcCountdown(): void {
 async function fetchStatistics(): Promise<void> {
   const requestId = ++statisticsRequestId;
   const address = soraAddress.value;
+  statisticsAvailable.value = false;
+  for (const key of campaignOrder) {
+    accountXorBurned[key] = getFPNumber(zeroString);
+    accountReserved[key] = getFPNumber(zeroString);
+    accountNexusReserved[key] = getFPNumber(zeroString);
+    totalXorBurned[key] = getFPNumber(zeroString);
+    totalReserved[key] = getFPNumber(zeroString);
+    totalNexusReserved[key] = getFPNumber(zeroString);
+    accountClaimRows[key] = [];
+  }
+  let session: Awaited<ReturnType<typeof requireEntitlements>>;
+  try {
+    session = await requireEntitlements();
+  } catch {
+    return;
+  }
+  if (isUnmounted || requestId !== statisticsRequestId || address !== soraAddress.value) return;
   const currentEndBlock = await getCurrentEndBlock();
-  const [indexedBurnsResult, accountIndexedBurnsResult] = await Promise.allSettled([
-    fetchBurnData(minBlock.value, currentEndBlock),
-    address ? fetchBurnData(minBlock.value, currentEndBlock, address) : Promise.resolve([]),
-  ]);
-  const indexedBurns = indexedBurnsResult.status === 'fulfilled' ? indexedBurnsResult.value : [];
-  const accountIndexedBurns = accountIndexedBurnsResult.status === 'fulfilled' ? accountIndexedBurnsResult.value : [];
-  const localBurns = await getLocalXorBurns(address, currentEndBlock);
-  const hasGlobalBurns = indexedBurnsResult.status === 'fulfilled';
+  let indexedBurns: Awaited<ReturnType<typeof fetchBurnData>>;
+  let accountIndexedBurns: Awaited<ReturnType<typeof fetchBurnData>>;
+  try {
+    [indexedBurns, accountIndexedBurns] = await Promise.all([
+      fetchBurnData(minBlock.value, currentEndBlock, undefined, session.indexer),
+      address ? fetchBurnData(minBlock.value, currentEndBlock, address, session.indexer) : Promise.resolve([]),
+    ]);
+  } catch {
+    return;
+  }
+  // Optimistic local history cannot establish recovered ownership.
+  const localBurns = session.capabilities.mode === 'legacy' ? await getLocalXorBurns(address, currentEndBlock) : [];
+  try {
+    await requireEntitlements(session.indexer);
+  } catch {
+    return;
+  }
+  if (isUnmounted || requestId !== statisticsRequestId || address !== soraAddress.value) return;
   const globalBurns = dedupeBurnEntries(indexedBurns);
   const accountBurns = dedupeBurnEntries([...indexedBurns, ...accountIndexedBurns, ...localBurns]);
   const statistics = calculateBurnCampaignStatistics({
@@ -377,12 +428,13 @@ async function fetchStatistics(): Promise<void> {
     accountNexusReserved[key] = statistics.accountNexusReservedTotals[key];
     accountClaimRows[key] = statistics.accountClaimRows[key];
 
-    if (hasGlobalBurns) {
+    {
       totalXorBurned[key] = statistics.overallTotals[key];
       totalReserved[key] = statistics.overallReservedTotals[key];
       totalNexusReserved[key] = statistics.overallNexusReservedTotals[key];
     }
   }
+  statisticsAvailable.value = true;
 }
 
 function getLocalHistoryList(): LocalBurnHistoryItem[] {
@@ -460,6 +512,7 @@ function handleBurnClick(id: CampaignKey, nexusRecipient = ''): void {
   const campaign = campaignsObj[id];
 
   pendingGeneratedNexusRecipient.value = '';
+  selectedCampaignId.value = id;
   selectedReceivedAsset.value = campaign.receivedAsset;
   selectedRate.value = campaign.rate;
   selectedMax.value = campaign.max;
@@ -486,8 +539,10 @@ function handleUseGeneratedNexusAddress(address: string): void {
   handleBurnClick('solswap', recipient);
 }
 
+/** After a signed burn: tell the user it was sent, then refresh the totals now and twice more as blocks finalize. */
 function handleBurnConfirm(done?: boolean): void {
   if (done && !isUnmounted) {
+    burnSent[selectedCampaignId.value] = true;
     loading.value = true;
     void fetchDataAndCalcCountdown();
 
@@ -503,6 +558,10 @@ function handleBurnConfirm(done?: boolean): void {
 watch([blockNumber, soraAddress], ([nextBlockNumber, nextAddress], [previousBlockNumber, previousAddress]) => {
   const blockNumberBecameReady = nextBlockNumber >= minBlock.value && previousBlockNumber < minBlock.value;
   const accountChanged = nextAddress !== previousAddress;
+
+  if (accountChanged) {
+    for (const key of campaignOrder) burnSent[key] = false;
+  }
 
   if (blockNumberBecameReady || accountChanged) {
     void fetchDataAndCalcCountdown();
@@ -527,6 +586,7 @@ defineExpose({
   selectedMin,
   selectedRequiresNexusRecipient,
   handleBurnConfirm,
+  burnSent,
   loading,
   isBurnFormLoading,
   timeLeftFormatted,
@@ -594,10 +654,18 @@ $burn-page-width: 1120px;
 .burn-grid {
   display: grid;
   grid-template-columns: #{'minmax(0, 1fr)'};
-  gap: 24px;
+  gap: 20px;
   width: 100%;
   max-width: $burn-page-width;
-  margin: 0 auto 24px;
+  margin: 0 auto 16px;
+}
+
+// Public totals sit side by side when there is room and stack on a phone.
+.burn-activity {
+  display: grid;
+  grid-template-columns: #{'repeat(auto-fit, minmax(min(100%, 320px), 1fr))'};
+  gap: 16px;
+  min-width: 0;
 }
 
 .burn-column {
@@ -613,20 +681,125 @@ $burn-page-width: 1120px;
 }
 
 .campaign {
+  position: relative;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 20px;
+  gap: 16px;
   width: 100%;
   max-width: none;
   min-width: 0;
   margin: 0;
   padding: 24px;
+  overflow: hidden;
   box-shadow: var(--s-shadow-element-pressed);
 
   &.disabled {
     box-shadow: var(--s-shadow-element);
+  }
+
+  // Loading shows as a thin moving line, so the card stays readable while totals are fetched.
+  &--loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    inset-inline-start: 0;
+    width: 32%;
+    height: 3px;
+    border-radius: 3px;
+    background: var(--s-color-theme-accent);
+    animation: burn-card-loading 1.2s ease-in-out infinite;
+  }
+
+  &__sent {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: var(--s-color-status-success-background, rgba(52, 173, 135, 0.16));
+    color: var(--s-color-base-content-primary);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.45;
+    text-align: start;
+    :deep(.s-icon),
+    :deep(i) {
+      flex: 0 0 20px;
+      color: var(--s-color-theme-accent);
+    }
+  }
+
+  &__unavailable {
+    align-self: start;
+    margin: 0;
+    padding: 14px 16px;
+    border-radius: var(--s-border-radius-mini);
+    background: var(--s-color-base-border-primary);
+    color: var(--s-color-base-content-secondary);
+    font-size: 13px;
+    line-height: 1.5;
+    text-align: start;
+  }
+
+  &__nexus {
+    min-width: 0;
+    padding: 0 16px;
+    border-radius: 16px;
+    background: var(--s-color-utility-surface);
+    box-shadow: var(--s-shadow-element-pressed);
+    text-align: start;
+    summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 0;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.4;
+      list-style: none;
+      &::-webkit-details-marker {
+        display: none;
+      }
+      &::after {
+        content: '';
+        flex: 0 0 8px;
+        width: 8px;
+        height: 8px;
+        margin-inline-end: 4px;
+        border: solid var(--s-color-base-content-secondary);
+        border-width: 0 2px 2px 0;
+        transform: translateY(-2px) rotate(45deg);
+        transition: transform 0.2s ease;
+      }
+    }
+    &[open] {
+      padding-bottom: 16px;
+    }
+    &[open] summary::after {
+      transform: translateY(2px) rotate(-135deg);
+    }
+    // The summary already names the tool, so its own card and visible title are not repeated inside.
+    :deep(.nexus-generator) {
+      margin: 0;
+      padding: 0;
+      background: none;
+      box-shadow: none;
+    }
+    :deep(.nexus-generator__heading h2) {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
   }
 
   :deep(.action-button.el-button) {
@@ -657,7 +830,7 @@ $burn-page-width: 1120px;
   &__hero {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 16px;
     min-width: 0;
   }
 
@@ -668,11 +841,11 @@ $burn-page-width: 1120px;
 
     :deep(.page-header) {
       width: auto;
-      margin: 0 0 8px;
+      margin: 0 0 6px;
     }
     // The shared header mixin sets font-weight with !important, so the heading weight needs it too.
     :deep(.page-header-title) {
-      font-size: 24px;
+      font-size: 22px;
       line-height: 1.25;
       font-weight: 600 !important;
       letter-spacing: -0.01em;
@@ -699,16 +872,17 @@ $burn-page-width: 1120px;
 
 .campaign-fire {
   display: block;
-  flex: 0 0 112px;
-  width: 112px;
-  height: 112px;
+  flex: 0 0 88px;
+  width: 88px;
+  height: 88px;
 }
 
 .description {
-  max-width: 760px;
-  margin: 0 0 8px;
+  max-width: 640px;
+  margin: 0 0 6px;
+  color: var(--s-color-base-content-secondary);
   font-size: 14px;
-  line-height: 1.55;
+  line-height: 1.5;
 }
 
 .link {
@@ -891,52 +1065,75 @@ $burn-page-width: 1120px;
   .campaign {
     padding: 16px;
   }
+  // The mark sits beside the title only, so the text below can use the full width of a phone.
   .campaign__hero {
-    align-items: flex-start;
-    gap: 14px;
+    display: grid;
+    grid-template-columns: #{'auto minmax(0, 1fr)'};
+    align-items: center;
+    gap: 4px 10px;
   }
   .campaign-fire {
-    flex-basis: 72px;
-    width: 72px;
-    height: 72px;
+    width: 56px;
+    height: 56px;
+    margin-inline-start: -4px;
   }
-  .campaign__intro :deep(.page-header-title) {
-    font-size: 20px;
+  .campaign__intro {
+    display: contents;
+    :deep(.page-header) {
+      margin: 0;
+    }
+    :deep(.page-header-title) {
+      font-size: 19px;
+    }
+    .description,
+    .link {
+      grid-column: 1 / -1;
+    }
   }
   .campaign__terms,
   .campaign__account {
-    padding: 16px;
+    padding: 14px;
+  }
+}
+
+@keyframes burn-card-loading {
+  0% {
+    transform: translateX(-110%);
+  }
+  100% {
+    transform: translateX(420%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .campaign--loading::after {
+    width: 100%;
+    opacity: 0.5;
+    animation: none;
   }
 }
 
 .burn-info {
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
   width: 100%;
   max-width: $burn-page-width;
+  margin: 0 auto;
+  padding: 0 8px;
+  color: var(--s-color-base-content-secondary);
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: start;
 
-  &__desc {
-    align-items: center;
-    gap: 16px;
-
-    .description {
-      flex: 1;
-      margin: 0;
-      font-size: 13px;
-      color: var(--s-color-base-content-secondary);
-    }
-  }
-  &__badge {
-    display: flex;
-    flex: 0 0 auto;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: var(--s-color-status-info);
-    box-shadow: var(--s-shadow-element-pressed);
-  }
   &__icon {
-    color: white;
+    flex: 0 0 18px;
+    margin-top: 1px;
+    color: var(--s-color-status-info);
+  }
+  &__text {
+    flex: 1;
+    min-width: 0;
   }
 }
 </style>

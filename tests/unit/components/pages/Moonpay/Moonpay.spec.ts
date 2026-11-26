@@ -207,6 +207,7 @@ const mountComponent = (
     baseCurrencyAmount?: string;
     receivingAddress?: string;
     autoPrepareBridge?: boolean;
+    addressHint?: string;
   } = {}
 ) => mount(Moonpay, { props });
 
@@ -445,6 +446,30 @@ describe('Moonpay.vue', () => {
     expect(params).not.toHaveProperty('defaultCurrencyCode');
     expect(params).not.toHaveProperty('lockAmount');
     expect(wrapper.find('.iframe-widget').attributes('data-src')).toBe('https://widget.example');
+    wrapper.unmount();
+  });
+
+  it('shows the receiving address above the checkout with a copy button, without sending it to MoonPay', async () => {
+    const ctx = await getContext();
+    const writeText = vi.fn(async () => undefined);
+    Object.defineProperty(navigator, 'clipboard', { value: { writeText }, configurable: true });
+    const wrapper = mountComponent({ ...guidedProps, addressHint: guidedProps.receivingAddress });
+
+    await vi.runAllTimersAsync();
+
+    const hint = wrapper.get('[data-test-name="moonpayAddressHint"]');
+    expect(hint.text()).toContain('getTs.cardDestination');
+    expect(hint.get('code').text()).toBe(guidedProps.receivingAddress);
+    expect(ctx.moonpayApiMock.createWidgetUrl.mock.calls[0]?.[0]).not.toHaveProperty('walletAddress');
+    await hint.get('button').trigger('click');
+    await vi.runAllTimersAsync();
+    expect(writeText).toHaveBeenCalledWith(guidedProps.receivingAddress);
+    expect(hint.get('button').text()).toBe('assets.copied');
+
+    await wrapper.setProps({ addressHint: '0x' + '2'.repeat(40) });
+    expect(wrapper.get('[data-test-name="moonpayAddressHint"] button').text()).toBe('getTs.copyAddress');
+    await wrapper.setProps({ addressHint: 'not-an-address' });
+    expect(wrapper.find('[data-test-name="moonpayAddressHint"]').exists()).toBe(false);
     wrapper.unmount();
   });
 

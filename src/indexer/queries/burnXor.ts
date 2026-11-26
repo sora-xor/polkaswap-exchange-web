@@ -1,3 +1,4 @@
+import { requireEntitlements } from './capabilities';
 import { FPNumber } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { hexToString, isHex, u8aToHex } from '@polkadot/util';
@@ -20,6 +21,13 @@ import type {
 } from '@/lib/soraneo-wallet/src/services/indexer/types';
 
 export type XorBurn = {
+  receiptId?: string;
+  blockHash?: string;
+  eventIndex?: number;
+  originalAddress?: string;
+  claimOwner?: string;
+  recoveryPolicyHash?: string;
+  claimStatus?: 'reserved' | 'recipient-confirmation-required' | 'extinguished';
   address: string;
   amount: FPNumber;
   blockHeight: number;
@@ -30,6 +38,13 @@ export type XorBurn = {
 };
 
 type XorBurnEntity = {
+  receiptId?: string;
+  blockHash?: string;
+  eventIndex?: number;
+  originalAddress?: string;
+  claimOwner?: string;
+  recoveryPolicyHash?: string;
+  claimStatus?: 'reserved' | 'recipient-confirmation-required' | 'extinguished';
   id?: string;
   address?: string;
   amount?: string;
@@ -257,6 +272,13 @@ const getPolkaswapCompactXorBurnQuery = () => gql<ConnectionQueryResponse<XorBur
           assetId
           blockHeight
           nexusRecipient
+          receiptId
+          blockHash
+          eventIndex
+          originalAddress
+          claimOwner
+          recoveryPolicyHash
+          claimStatus
           campaign
           extrinsicIndex
           txHash
@@ -471,7 +493,27 @@ const parseCompactXorBurn = (item: XorBurnEntity): Nullable<XorBurn> => {
   const blockHeight = Number(item.blockHeight);
   if (!Number.isFinite(blockHeight)) return null;
 
+  if (
+    item.recoveryPolicyHash &&
+    (!/^0x[0-9a-f]{64}$/.test(item.recoveryPolicyHash) ||
+      !item.blockHash ||
+      !/^0x[0-9a-f]{64}$/.test(item.blockHash) ||
+      !Number.isSafeInteger(item.eventIndex) ||
+      Number(item.eventIndex) < 0 ||
+      item.receiptId !== `${item.blockHash}:${item.eventIndex}` ||
+      !item.claimOwner ||
+      !['reserved', 'recipient-confirmation-required', 'extinguished'].includes(item.claimStatus ?? ''))
+  ) {
+    throw new Error('Invalid recovery burn ownership evidence');
+  }
   return {
+    receiptId: item.receiptId,
+    blockHash: item.blockHash,
+    eventIndex: item.eventIndex,
+    originalAddress: item.originalAddress,
+    claimOwner: item.claimOwner,
+    recoveryPolicyHash: item.recoveryPolicyHash,
+    claimStatus: item.claimStatus,
     address: item.address,
     amount: new FPNumber(item.amount),
     blockHeight,
@@ -535,7 +577,7 @@ const isBurnInRange = (item: XorBurn, start: number, end: number): boolean => {
 };
 
 const isAccountBurn = (item: XorBurn, accountId?: string): boolean => {
-  return !accountId || isSameAddress(item.address, accountId);
+  return !accountId || isSameAddress(item.claimOwner ?? item.address, accountId);
 };
 
 const getEventExtrinsicIndex = (eventRecord: ApiEventRecord): Nullable<number> => {
@@ -670,7 +712,7 @@ const dedupeBurns = (items: XorBurn[]): XorBurn[] => {
   const result: XorBurn[] = [];
 
   for (const item of items) {
-    const key = `${item.address}:${item.blockHeight}:${item.amount.toString()}:${item.txHash ?? ''}`;
+    const key = item.receiptId ?? `${item.address}:${item.blockHeight}:${item.amount.toString()}:${item.txHash ?? ''}`;
     const existing = seen.get(key);
 
     if (existing) {
@@ -1117,16 +1159,24 @@ async function fetchOnChainXorBurns(start: number, end: number): Promise<XorBurn
   return onChainBurnCache.burns.filter(({ blockHeight }) => blockHeight >= from && blockHeight <= end);
 }
 
-export async function fetchData(start: number, end: number, accountId?: string): Promise<XorBurn[]> {
+export async function fetchData(
+  start: number,
+  end: number,
+  accountId?: string,
+  indexer?: PolkaswapIndexer
+): Promise<XorBurn[]> {
+  const session = await requireEntitlements(indexer ?? getCurrentIndexer());
   if (accountId && isExcludedXorBurnAddress(accountId)) return [];
 
   const variables = { start, end };
-  const polkaswapIndexer = getCurrentIndexer() as Nullable<PolkaswapIndexer>;
+  const polkaswapIndexer = session.indexer;
   const explorer = polkaswapIndexer?.services?.explorer;
   let compactItems: Nullable<Array<Nullable<XorBurn>>> = [];
+  let compactAvailable = false;
 
   try {
     compactItems = (await explorer?.fetchAllEntities(getPolkaswapCompactXorBurnQuery(), {}, parseCompactXorBurn)) ?? [];
+    compactAvailable = Boolean(explorer);
   } catch {
     compactItems = [];
   }
@@ -1134,6 +1184,26 @@ export async function fetchData(start: number, end: number, accountId?: string):
   const parsedCompactItems = (compactItems ?? [])
     .filter((item): item is XorBurn => !!item)
     .filter((item) => isBurnInRange(item, start, end) && isAccountBurn(item, accountId));
+
+  // Recovery ownership cannot be reconstructed from legacy call history or an
+  // unconfigured RPC fallback. A missing mapped snapshot must fail closed.
+  if (session.capabilities.mode === 'full-recovery') {
+    if (!compactAvailable || (compactItems ?? []).some((item) => item && !item.receiptId)) {
+      throw new Error('Canonical recovery burn snapshot is unavailable');
+    }
+    const policies = new Set(
+      (compactItems ?? []).flatMap((item) => (item?.recoveryPolicyHash ? [item.recoveryPolicyHash] : []))
+    );
+    if (
+      policies.size !== 1 ||
+      !policies.has(session.capabilities.policyHash ?? '') ||
+      (compactItems ?? []).some((item) => item && !item.recoveryPolicyHash)
+    ) {
+      throw new Error('Recovery burn snapshot policy is missing or inconsistent');
+    }
+    await requireEntitlements(polkaswapIndexer);
+    return filterEligibleBurns(dedupeBurns(parsedCompactItems));
+  }
 
   let historyItems: Nullable<Array<Nullable<XorBurn>>> = [];
 
@@ -1162,5 +1232,6 @@ export async function fetchData(start: number, end: number, accountId?: string):
     ? onChainItems.filter((item) => isSameAddress(item.address, accountId))
     : onChainItems;
 
+  await requireEntitlements(polkaswapIndexer);
   return filterEligibleBurns(dedupeBurns([...parsedItems, ...filteredOnChainItems, ...initData]));
 }

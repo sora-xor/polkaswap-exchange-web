@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Operation, type HistoryItem } from '@sora-substrate/sdk';
-import { DAI, XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { DAI, ETH, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import {
   createGetTsSwapDraft,
   matchGetTsSwapDraft,
@@ -45,6 +45,15 @@ describe('purchase swap deterministic draft', () => {
     expect(matchGetTsSwapDraft(row, draft, account, hash, 'xor')).toBe(false);
     expect(createGetTsSwapDraft(row, genesis, 'ts')).toBeNull();
     expect(createGetTsSwapDraft({ ...row, from: 'bad address' }, genesis, 'xor')).toBeNull();
+  });
+  it('binds an ETH → XOR swap for Buy XOR card purchases, never for TS purchases', () => {
+    const ethRow = { ...row, assetAddress: ETH.address, amount: '0.0062' };
+    const draft = createGetTsSwapDraft(ethRow, genesis, 'xor')!;
+    expect(draft).toMatchObject({ id, amount: '0.0062' });
+    expect(matchGetTsSwapDraft(ethRow, draft, account, genesis, 'xor')).toBe(true);
+    // The pair is part of the binding: the same row selling DAI does not match.
+    expect(matchGetTsSwapDraft({ ...ethRow, assetAddress: DAI.address }, draft, account, genesis, 'xor')).toBe(false);
+    expect(createGetTsSwapDraft({ ...ethRow, id: id.replace(':xor:', ':ts:') }, genesis, 'ts')).toBeNull();
   });
   it('persists a draft before signing and adopts only its exact eventual txId, never the local ID', () => {
     const purchase = useGetTsPlan('xor');

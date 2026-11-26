@@ -173,6 +173,22 @@ const normalizePoolApy = (value: Nullable<PoolApyObject>): PoolApyObject =>
 
 const toSdkFPNumber = (value: MathFPNumber | SDKFPNumber): SDKFPNumber => new SDKFPNumber(value.toString());
 
+/** Calculates the reserve ratio in exact codec units, rounding only the final counter amount down. */
+const calculatePoolCounterAmount = (
+  value: string,
+  inputDecimals: number,
+  outputDecimals: number,
+  inputReserve: CodecString,
+  outputReserve: CodecString
+): string => {
+  if (!/^[1-9]\d*$/.test(inputReserve) || !/^[1-9]\d*$/.test(outputReserve)) return ZeroStringValue;
+  const inputCodec = new SDKFPNumber(value, inputDecimals).toCodecString();
+  if (!/^\d+$/.test(inputCodec)) return ZeroStringValue;
+
+  const outputCodec = (BigInt(inputCodec) * BigInt(outputReserve)) / BigInt(inputReserve);
+  return SDKFPNumber.fromCodecValue(outputCodec.toString(), outputDecimals).toString();
+};
+
 /**
  * Pool discovery depends on DEX metadata because the SDK builds account-pool queries
  * from the known base-asset ids. On cold loads the account can restore before that
@@ -480,10 +496,13 @@ export const usePoolStore = defineStore('pool-legacy', {
 
       if (!(firstToken && secondToken)) return;
 
-      this.addLiquidity.firstTokenValue = new SDKFPNumber(value, secondToken.decimals)
-        .mul(SDKFPNumber.fromCodecValue(this.addLiquidityReserveA, firstToken.decimals))
-        .div(SDKFPNumber.fromCodecValue(this.addLiquidityReserveB, secondToken.decimals))
-        .toString();
+      this.addLiquidity.firstTokenValue = calculatePoolCounterAmount(
+        value,
+        secondToken.decimals,
+        firstToken.decimals,
+        this.addLiquidityReserveB,
+        this.addLiquidityReserveA
+      );
     },
     updateAddLiquiditySecondTokenValue(): void {
       const value = this.addLiquidity.firstTokenValue;
@@ -500,10 +519,13 @@ export const usePoolStore = defineStore('pool-legacy', {
 
       if (!(firstToken && secondToken)) return;
 
-      this.addLiquidity.secondTokenValue = new SDKFPNumber(value, firstToken.decimals)
-        .mul(SDKFPNumber.fromCodecValue(this.addLiquidityReserveB, secondToken.decimals))
-        .div(SDKFPNumber.fromCodecValue(this.addLiquidityReserveA, firstToken.decimals))
-        .toString();
+      this.addLiquidity.secondTokenValue = calculatePoolCounterAmount(
+        value,
+        firstToken.decimals,
+        secondToken.decimals,
+        this.addLiquidityReserveA,
+        this.addLiquidityReserveB
+      );
     },
     updateAddLiquidityValues(): void {
       if (this.addLiquidity.focusedField === 'secondTokenValue') {

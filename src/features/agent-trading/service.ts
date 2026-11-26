@@ -198,10 +198,7 @@ type InternalRemoveLiquidityQuote = {
 type AgentExecutionAction = AgentIdempotencyRecord['action'];
 
 type AgentPreparedResult =
-  | AgentPreparedSwap
-  | AgentPreparedTransfer
-  | AgentPreparedAddLiquidity
-  | AgentPreparedRemoveLiquidity;
+  AgentPreparedSwap | AgentPreparedTransfer | AgentPreparedAddLiquidity | AgentPreparedRemoveLiquidity;
 
 type StoredPreparedIntent = {
   action: AgentIntentAction;
@@ -342,6 +339,24 @@ const getNaturalFromCodec = (value: unknown, decimals: number): string => {
 };
 
 const getCodecFromNatural = (value: string, decimals: number): string => new FPNumber(value, decimals).toCodecString();
+
+/** Rejects transfer amounts that would be rounded or erased by the asset's codec conversion. */
+const getExactTransferCodec = (value: string, decimals: number): string => {
+  const amount = normalizeNaturalAmount(value);
+  if (!Number.isSafeInteger(decimals) || decimals < 0 || decimals > 255) {
+    throw agentError('INVALID_AMOUNT', 'Transfer asset precision is invalid.');
+  }
+
+  const codec = getCodecFromNatural(amount, decimals);
+  const canonicalAmount = amount.includes('.') ? amount.replace(/0+$/, '').replace(/\.$/, '') : amount;
+  if (!/^[1-9]\d*$/.test(codec) || getNaturalFromCodec(codec, decimals) !== canonicalAmount) {
+    throw agentError('INVALID_AMOUNT', 'Transfer amount must be exactly representable in asset units.', {
+      amount,
+      decimals,
+    });
+  }
+  return codec;
+};
 
 const getSlippageMultiplier = (slippageTolerance: string): FPNumber =>
   new FPNumber('1').sub(new FPNumber(slippageTolerance).div(new FPNumber('100')));
@@ -3508,7 +3523,7 @@ export function createPolkaswapAgentApi(
       const amount = normalizeNaturalAmount(request.amount);
       const to = normalizeRecipientAddress(request.to);
       const fee = getFeeEstimate(Operation.Transfer);
-      const amountCodec = getCodecFromNatural(amount, asset.decimals);
+      const amountCodec = getExactTransferCodec(amount, asset.decimals);
       const requiredBalances = await mergeRequiredBalances([
         { asset: asset as Asset, amountCodec, reason: 'transfer-amount' },
         { asset: getXorAsset(), amountCodec: fee.amountCodec, reason: 'network-fee' },
@@ -3562,6 +3577,8 @@ export function createPolkaswapAgentApi(
         );
         const to = readCallString(prepared, 'to');
         const amount = readCallString(prepared, 'amount');
+        // Persisted intents from an earlier release must obey the same exact-unit boundary.
+        getExactTransferCodec(amount, asset.decimals);
         beforeSubmit();
         await deps.api.assets.simpleTransfer(asset, to, amount, prepared.intentId);
         const history = deps.api.getHistory(prepared.intentId);

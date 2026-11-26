@@ -1,3 +1,4 @@
+import { requireEntitlements, EntitlementsUnavailableError } from './capabilities';
 import { FPNumber } from '@sora-substrate/sdk';
 import { gql } from '@urql/core';
 
@@ -82,9 +83,15 @@ const parseBridgeData = (item: HistoryElement): BridgeData => {
   };
 };
 
-export async function fetchBridgeData(start: number, end: number, account: string): Promise<BridgeData[]> {
+export async function fetchBridgeData(
+  start: number,
+  end: number,
+  account: string,
+  indexer?: PolkaswapIndexer
+): Promise<BridgeData[]> {
   const variables = { start, end, account };
-  const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
+  const { indexer: polkaswapIndexer, capabilities } = await requireEntitlements(indexer ?? getCurrentIndexer());
+  if (capabilities.mode !== 'legacy') throw new EntitlementsUnavailableError();
   const items = await polkaswapIndexer.services.explorer.fetchAllEntities(
     PolkaswapBridgeQuery,
     variables,
@@ -119,10 +126,17 @@ const CountFilters = {
   [CountType.PoolWithdraw]: `{ module: { equalTo: "poolXYK" } } { method: { equalTo: "withdrawLiquidity" } }`,
 };
 
-export async function fetchCount(start: number, end: number, account: string, type: CountType): Promise<number> {
+export async function fetchCount(
+  start: number,
+  end: number,
+  account: string,
+  type: CountType,
+  indexer?: PolkaswapIndexer
+): Promise<number> {
   const variables = { start, end, account };
   const filter = CountFilters[type];
-  const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
+  const { indexer: polkaswapIndexer, capabilities } = await requireEntitlements(indexer ?? getCurrentIndexer());
+  if (capabilities.mode !== 'legacy') throw new EntitlementsUnavailableError();
   const response = await polkaswapIndexer.services.explorer.fetchEntities(getPolkaswapCountQuery(filter), variables);
 
   return response?.totalCount ?? 0;
@@ -153,6 +167,7 @@ type AccountMetaDeposit = {
 type AccountMetaEntity = {
   id: string;
   accountId: string;
+  recoveryPolicyHash: string | null;
   createdAtTimestamp: number;
   createdAtBlock: number;
   xorFees: AccountMetaAssetVolume;
@@ -182,6 +197,8 @@ type AccountPointSystemEntity = {
 const PolkaswapAccountMetaQuery = gql<QueryData<AccountMetaEntity | null>>`
   query AccountMetaQuery($id: String = "") {
     data: accountMeta(id: $id) {
+      accountId
+      recoveryPolicyHash
       createdAtTimestamp
       createdAtBlock
       xorFees
@@ -261,6 +278,8 @@ const parseAccountMeta = (item: AccountMetaEntity): AccountPointSystems => {
   const startedAtBlock = Number(createdAtBlock);
 
   return {
+    accountId: item.accountId,
+    recoveryPolicyHash: item.recoveryPolicyHash,
     createdAt: {
       block: startedAtBlock,
       timestamp: Number(createdAtTimestamp) * 1000,
@@ -285,27 +304,35 @@ const parseAccountPointSystem = (item: AccountPointSystemEntity): AccountPointsV
   };
 };
 
-export async function fetchAccountMeta(accountAddress: string): Promise<AccountPointSystems | null> {
+/** Retain a caller-selected explorer when joining metadata to its ownership admission. */
+export async function fetchAccountMeta(
+  accountAddress: string,
+  indexer?: PolkaswapIndexer
+): Promise<AccountPointSystems | null> {
   const variables = { id: accountAddress };
 
   try {
-    const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
-    const response = await polkaswapIndexer.services.explorer.request(PolkaswapAccountMetaQuery, variables);
+    const session = await requireEntitlements(indexer ?? getCurrentIndexer());
+    const response = await session.indexer.services.explorer.request(PolkaswapAccountMetaQuery, variables);
 
     if (!response?.data) return null;
 
+    await requireEntitlements(session.indexer);
     return parseAccountMeta(response.data);
   } catch (error) {
-    console.error(error);
+    if (!(error instanceof EntitlementsUnavailableError)) console.error(error);
     return null;
   }
 }
 
-export async function fetchAccountPointSystems(accountAddress: string): Promise<AccountPointsVersioned[] | null> {
+export async function fetchAccountPointSystems(
+  accountAddress: string,
+  indexer?: PolkaswapIndexer
+): Promise<AccountPointsVersioned[] | null> {
   const variables = { id: accountAddress };
 
   try {
-    const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
+    const { indexer: polkaswapIndexer } = await requireEntitlements(indexer ?? getCurrentIndexer());
     const response = await polkaswapIndexer.services.explorer.fetchAllEntities(
       PolkaswapAccountPointSystemsQuery,
       variables,
@@ -314,21 +341,26 @@ export async function fetchAccountPointSystems(accountAddress: string): Promise<
 
     if (!response) return null;
 
+    await requireEntitlements(polkaswapIndexer);
     return response;
   } catch (error) {
-    console.error(error);
+    if (!(error instanceof EntitlementsUnavailableError)) console.error(error);
     return null;
   }
 }
 
 export async function fetchAccountPoints(accountAddress: string): Promise<AccountPointSystems | null> {
-  const meta = await fetchAccountMeta(accountAddress);
-  const points = await fetchAccountPointSystems(accountAddress);
+  const session = await requireEntitlements();
+  const meta = await fetchAccountMeta(accountAddress, session.indexer);
+  const points = await fetchAccountPointSystems(accountAddress, session.indexer);
 
-  if (!meta) return null;
+  if (!meta || !Array.isArray(points)) return null;
+  await requireEntitlements(session.indexer);
 
   return {
+    accountId: meta.accountId,
+    recoveryPolicyHash: meta.recoveryPolicyHash,
     createdAt: meta.createdAt,
-    points: Array.isArray(points) ? points : meta.points,
+    points,
   };
 }

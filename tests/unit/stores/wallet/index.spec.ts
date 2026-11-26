@@ -8,6 +8,7 @@ import { Theme } from '@/consts/theme';
 import { NFTStorage } from 'nft.storage';
 import { AppWallet, SoraNetwork } from '@/lib/soraneo-wallet/src/consts';
 import { NFT_BLACK_LIST_URL, WHITE_LIST_URL } from '@/lib/soraneo-wallet/src/util';
+import { StatsCoreNotReadyError } from '@/lib/soraneo-wallet/src/services/indexer/coreRefresh';
 import { Operation, TransactionStatus } from '@sora-substrate/sdk';
 import { FPNumber } from '@sora-substrate/math';
 import type { WALLET_TYPES } from '@tests/stubs/walletRuntime';
@@ -2608,7 +2609,10 @@ describe('wallet store actions', () => {
 
   it('keeps local mutation-backed wallet state in sync', async () => {
     const walletStore = useWalletStore();
-    const unlockPair = vi.fn();
+    const accountPair = { isLocked: true };
+    const unlockPair = vi.fn(() => {
+      accountPair.isLocked = false;
+    });
 
     walletStore.addPriceAlert({ token: 'XOR' } as any);
     walletStore.editPriceAlert({ alert: { token: 'VAL' }, position: 1 } as any);
@@ -2625,7 +2629,7 @@ describe('wallet store actions', () => {
     await walletStore.selectIndexer('polkaswap');
     walletStore.setSignTxDialogDisabled(true);
     walletStore.setAccountPassphrase({ address: 'alice', password: 'secret' });
-    await walletStore.beforeTransactionSign({ address: 'alice', unlockPair } as any);
+    await walletStore.beforeTransactionSign({ address: 'alice', accountPair, unlockPair } as any);
 
     expect(walletStore.alerts).toEqual([{ token: 'XOR' }]);
     expect(walletStore.allowTopUpAlert).toBe(true);
@@ -2648,6 +2652,23 @@ describe('wallet store actions', () => {
     expect(createFiatPriceSubscriptionMock).toHaveBeenCalledTimes(1);
     expect(walletStore.indexerType).toBe('polkaswap');
     expect(unlockPair).toHaveBeenCalledWith('secret');
+    expect(accountPair.isLocked).toBe(false);
+  });
+
+  it('replaces the full exact price map, preserving zero and deleting a mark that lost its pricing route', async () => {
+    const walletStore = useWalletStore();
+    getFiatPriceObjectMock.mockResolvedValueOnce({ old: '7000', live: '10' } as never);
+    await walletStore.subscribeOnFiatPrice();
+    expect(walletStore.fiatPriceObject).toEqual({ old: '7000', live: '10' });
+    const [notify] = createFiatPriceSubscriptionMock.mock.calls[0] as unknown as [
+      (prices: Record<string, string> | null, complete?: boolean) => void,
+    ];
+    notify({ live: '340941693', zero: '0' }, true);
+    expect(walletStore.fiatPriceObject).toEqual({ live: '340941693', zero: '0' });
+    notify({ legacy: '3' });
+    expect(walletStore.fiatPriceObject).toEqual({ live: '340941693', zero: '0', legacy: '3' });
+    notify(null, true);
+    expect(walletStore.fiatPriceObject).toEqual({});
   });
 
   it('clears fiat prices when the configured indexer price refresh fails', async () => {
@@ -2679,6 +2700,19 @@ describe('wallet store actions', () => {
     expect(fetchMock).toHaveBeenCalledWith('https://sorametrics.test/tokens', {
       headers: { Accept: 'application/json' },
     });
+    expect(createFiatPriceSubscriptionMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps fiat unavailable and subscribes to Pi when its price generation is still pending', async () => {
+    const walletStore = useWalletStore();
+    await walletStore.setSorametricsApiEndpoint('https://sorametrics.test');
+    walletStore.accountState.fiatPriceObject = Object.freeze({ xor: 'old-price' });
+    getFiatPriceObjectMock.mockRejectedValueOnce(new StatsCoreNotReadyError());
+
+    await walletStore.subscribeOnFiatPrice();
+
+    expect(walletStore.fiatPriceObject).toEqual({});
+    expect(fetchMock).not.toHaveBeenCalledWith('https://sorametrics.test/tokens', expect.anything());
     expect(createFiatPriceSubscriptionMock).toHaveBeenCalledTimes(1);
   });
 

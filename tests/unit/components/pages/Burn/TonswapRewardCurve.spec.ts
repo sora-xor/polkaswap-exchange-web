@@ -116,6 +116,26 @@ describe('Tonswap marginal reward curve', () => {
     expect(wrapper.get('h3').text()).toBe('burnPage.tonswap.curve.title');
   });
 
+  it('drops its description in compact mode but keeps the heading for screen readers and the cap notice', () => {
+    const compact = mount(TonswapRewardCurve, {
+      props: { burned: new FPNumber('876678.5'), showSummary: false, compact: true },
+    });
+    expect(compact.classes()).toContain('tonswap-curve--compact');
+    expect(compact.get('h3').text()).toBe('burnPage.tonswap.curve.title');
+    expect(compact.attributes('aria-labelledby')).toBe(compact.get('h3').attributes('id'));
+    expect(compact.find('.tonswap-curve__description').exists()).toBe(false);
+    expect(compact.get('.tonswap-curve__point').attributes('cx')).toBe('180');
+
+    const capped = mount(TonswapRewardCurve, {
+      props: { burned: new FPNumber('1753357'), showSummary: false, compact: true },
+    });
+    expect(capped.get('.tonswap-curve__description').text()).toBe('burnPage.tonswap.capReached');
+
+    const full = mount(TonswapRewardCurve, { props: { burned: new FPNumber('876678.5') } });
+    expect(full.classes()).not.toContain('tonswap-curve--compact');
+    expect(full.get('.tonswap-curve__description').text()).toBe('burnPage.tonswap.curve.description');
+  });
+
   it('keeps the summary by default so other pages are unchanged', () => {
     const wrapper = mount(TonswapRewardCurve, { props: { burned: new FPNumber('876678.5') } });
 

@@ -5,14 +5,8 @@ import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const pointSystemV2Path = path.resolve(__dirname, '../../../src/features/rewards/pages/PointSystemV2Page.vue');
-const taskCardPath = path.resolve(
-  __dirname,
-  '../../../src/features/rewards/components/point-system/TaskCard.vue'
-);
-const pointCardPath = path.resolve(
-  __dirname,
-  '../../../src/features/rewards/components/point-system/PointCard.vue'
-);
+const taskCardPath = path.resolve(__dirname, '../../../src/features/rewards/components/point-system/TaskCard.vue');
+const pointCardPath = path.resolve(__dirname, '../../../src/features/rewards/components/point-system/PointCard.vue');
 const firstTxCardPath = path.resolve(
   __dirname,
   '../../../src/features/rewards/components/point-system/FirstTxCard.vue'
@@ -75,7 +69,7 @@ describe('PointSystemV2 page styles', () => {
     const source = await readFile(pointSystemV2Path, 'utf8');
 
     expect(source).not.toContain('height: 350px;');
-    expect(source).toContain('min-height: 264px;');
+    expect(source).not.toContain('min-height: 264px;');
     expect(source).toContain('align-items: center;');
   });
 });

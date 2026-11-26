@@ -1,5 +1,5 @@
 import { FPNumber, Operation, type HistoryItem } from '@sora-substrate/sdk';
-import { DAI, XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { DAI, ETH, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { areBridgeExternalAccountsEqual } from '@/utils/bridge/common/account';
 import { isGetTsTransactionReference } from './getTsPlan';
 import { isPrunedGetTsSwapStateError } from './getTsSwapArchive';
@@ -45,6 +45,9 @@ export interface GetTsSwapReadClient {
   at(hash: string): Promise<{ query: { system: { events(): Promise<ArrayLike<SwapEvent>> } } }>;
 }
 
+/** Purchase swaps sell DAI, or ETH in Buy XOR card purchases; the exact hash comes from the purchase plan. */
+const SWAP_INPUTS: readonly string[] = [DAI.address, ETH.address];
+
 const textValue = (value: unknown): string =>
   String(value && typeof value === 'object' && 'code' in value ? value.code : value);
 const codecAmount = (value: unknown): FPNumber | null => {
@@ -63,14 +66,14 @@ export function matchGetTsSwapHistory(
     (row) =>
       (row.txId?.toLowerCase() === reference.toLowerCase() || row.id?.toLowerCase() === reference.toLowerCase()) &&
       row.type === Operation.Swap &&
-      row.assetAddress === DAI.address &&
+      SWAP_INPUTS.includes(row.assetAddress ?? '') &&
       row.asset2Address === XOR.address &&
       areBridgeExternalAccountsEqual(row.from, account)
   );
   return matches.find((row) => isGetTsTransactionReference(row.blockId)) ?? matches[0] ?? null;
 }
 
-/** Reads only this hash's canonical finalized DAI→XOR extrinsic and its own success/failure events. */
+/** Reads only this hash's canonical finalized DAI→XOR or ETH→XOR extrinsic and its own success/failure events. */
 export async function readGetTsSwapProgress(
   client: GetTsSwapReadClient,
   row: HistoryItem,
@@ -131,10 +134,11 @@ export async function readGetTsSwapProgress(
       !areBridgeExternalAccountsEqual(item.signer.toString(), account) ||
       item.method.section !== 'liquidityProxy' ||
       item.method.method !== 'swap' ||
-      textValue(item.method.args[1]) !== DAI.address ||
+      !SWAP_INPUTS.includes(textValue(item.method.args[1])) ||
       textValue(item.method.args[2]) !== XOR.address
     )
       throw new Error('swap');
+    const input = textValue(item.method.args[1]);
     const records = archived
       ? archived.events
       : await (async () => {
@@ -156,7 +160,7 @@ export async function readGetTsSwapProgress(
           output ||
           event.data.length < 6 ||
           !areBridgeExternalAccountsEqual(textValue(event.data[0]), account) ||
-          textValue(event.data[2]) !== DAI.address ||
+          textValue(event.data[2]) !== input ||
           textValue(event.data[3]) !== XOR.address
         )
           throw new Error('exchange');

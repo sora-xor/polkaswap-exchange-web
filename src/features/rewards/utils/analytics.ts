@@ -146,7 +146,7 @@ export function getAssetPrice(prices: Nullable<FiatPriceObjectLike>, asset: Null
 
   const price = FPNumber.fromCodecValue(raw);
 
-  return price.isGtZero() ? price : null;
+  return price.isFinity() && !price.isLtZero() ? price : null;
 }
 
 /** Converts amounts to fiat. Assets without a price add nothing and mark the result as incomplete. */

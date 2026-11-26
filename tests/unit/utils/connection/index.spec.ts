@@ -851,49 +851,62 @@ describe('NodesConnection reconnect behavior', () => {
     failingConnection.unlockForTest();
   });
 
-  it('uses only the production live default even when cached latency favors the former archive default', async () => {
+  it('selects the restored production secondary when measured latency favors it', async () => {
+    vi.useFakeTimers();
     NodesConnection.enableLatencyProbe = true;
-    NodesConnection.enableParallelDial = true;
+    NodesConnection.enableParallelDial = false;
     vi.mocked(fetchRpc).mockClear();
+    vi.mocked(fetchRpc).mockImplementation(async (endpoint) => {
+      await new Promise((resolve) => setTimeout(resolve, endpoint === 'wss://ws.mof.sora.org' ? 100 : 1));
+      return '0x1';
+    });
 
     const storage = createStorage();
     storage.set(
       'nodeLatencies',
       JSON.stringify({
-        'wss://ws.mof.sora.org': 100,
-        'wss://mof2.sora.org': 1,
+        'wss://ws.mof.sora.org': 1,
+        'wss://mof2.sora.org': 100,
       })
     );
     const nodesConnection = new SuccessfulNodesConnection(toStorage(storage), toConnection(createConnection()));
     nodesConnection.setDefaultNodes(productionEnv.DEFAULT_NETWORKS);
 
-    await nodesConnection.connect();
+    const connecting = nodesConnection.connect();
+    await vi.advanceTimersByTimeAsync(100);
+    await connecting;
 
-    expect(nodesConnection.status.defaultNodes).toEqual(productionEnv.DEFAULT_NETWORKS);
-    expect(nodesConnection.connectedNodes).toEqual(productionEnv.DEFAULT_NETWORKS);
-    expect(JSON.parse(storage.get('node') as string).address).toBe('wss://ws.mof.sora.org');
-    expect(vi.mocked(fetchRpc)).not.toHaveBeenCalled();
+    expect(nodesConnection.status.defaultNodes).toEqual([
+      productionEnv.DEFAULT_NETWORKS[1],
+      productionEnv.DEFAULT_NETWORKS[0],
+    ]);
+    expect(nodesConnection.connectedNodes).toEqual([productionEnv.DEFAULT_NETWORKS[1]]);
+    expect(JSON.parse(storage.get('node') as string).address).toBe('wss://mof2.sora.org');
+    expect(vi.mocked(fetchRpc).mock.calls.map(([endpoint]) => endpoint)).toEqual(
+      productionEnv.DEFAULT_NETWORKS.map((node) => node.address)
+    );
   });
 
   it.each(['auto', undefined] as const)(
     'clears a removed production default with persisted selection mode %s before reconnecting',
     async (mode) => {
       NodesConnection.enableLatencyProbe = true;
+      NodesConnection.enableParallelDial = false;
+      vi.spyOn(Date, 'now').mockReturnValue(1000);
       vi.mocked(fetchRpc).mockClear();
       const storage = createStorage();
       storage.set(
         'node',
         JSON.stringify({
           chain: 'SORA',
-          name: 'SORA Parliament Ministry of Finance #2',
-          address: 'wss://mof2.sora.org',
-          location: 'SG',
+          name: 'Removed node',
+          address: 'wss://removed.example',
         })
       );
       if (mode) storage.set('nodeSelectionMode', mode);
-      storage.set('nodeLatencies', JSON.stringify({ 'wss://mof2.sora.org': 1 }));
+      storage.set('nodeLatencies', JSON.stringify({ 'wss://removed.example': 1 }));
       const nodesConnection = new SuccessfulNodesConnection(toStorage(storage), toConnection(createConnection()));
-      expect(nodesConnection.status.node?.address).toBe('wss://mof2.sora.org');
+      expect(nodesConnection.status.node?.address).toBe('wss://removed.example');
 
       nodesConnection.setDefaultNodes(productionEnv.DEFAULT_NETWORKS);
 
@@ -901,29 +914,35 @@ describe('NodesConnection reconnect behavior', () => {
       expect(storage.get('node')).toBeNull();
       expect(storage.get('nodeSelectionMode')).toBe('auto');
       await nodesConnection.connect();
-      expect(nodesConnection.connectedNodes).toEqual(productionEnv.DEFAULT_NETWORKS);
+      expect(nodesConnection.connectedNodes).toEqual([productionEnv.DEFAULT_NETWORKS[0]]);
       expect(JSON.parse(storage.get('node') as string).address).toBe('wss://ws.mof.sora.org');
-      expect(vi.mocked(fetchRpc)).not.toHaveBeenCalled();
+      expect(vi.mocked(fetchRpc).mock.calls.map(([endpoint]) => endpoint)).toEqual(
+        productionEnv.DEFAULT_NETWORKS.map((node) => node.address)
+      );
     }
   );
 
-  it('keeps a failed production primary connection fatal without opening an archive fallback', async () => {
+  it('tries both approved production nodes before reporting an unavailable connection', async () => {
     NodesConnection.enableBackoff = false;
     NodesConnection.enableLatencyProbe = true;
-    NodesConnection.enableParallelDial = true;
+    NodesConnection.enableParallelDial = false;
+    vi.spyOn(Date, 'now').mockReturnValue(1000);
     vi.mocked(fetchRpc).mockClear();
     vi.spyOn(console, 'error').mockImplementation(() => undefined);
     const connectionMock = createConnection();
-    connectionMock.open.mockRejectedValue(new Error('primary unavailable'));
+    connectionMock.open.mockRejectedValue(new Error('node unavailable'));
     const nodesConnection = new NodesConnection(toStorage(createStorage()), toConnection(connectionMock));
     nodesConnection.setDefaultNodes(productionEnv.DEFAULT_NETWORKS);
 
     try {
       await expect(nodesConnection.connect()).rejects.toBeInstanceOf(AppHandledError);
-      expect(connectionMock.open).toHaveBeenCalledTimes(1);
-      expect(connectionMock.open).toHaveBeenCalledWith('wss://ws.mof.sora.org', expect.any(Object));
+      expect(connectionMock.open).toHaveBeenCalledTimes(2);
+      expect(connectionMock.open).toHaveBeenNthCalledWith(1, 'wss://ws.mof.sora.org', expect.any(Object));
+      expect(connectionMock.open).toHaveBeenNthCalledWith(2, 'wss://mof2.sora.org', expect.any(Object));
       expect(nodesConnection.status.node).toBeNull();
-      expect(vi.mocked(fetchRpc)).not.toHaveBeenCalled();
+      expect(vi.mocked(fetchRpc).mock.calls.map(([endpoint]) => endpoint)).toEqual(
+        productionEnv.DEFAULT_NETWORKS.map((node) => node.address)
+      );
     } finally {
       await nodesConnection.stopConnection();
     }
@@ -935,6 +954,7 @@ describe('NodesConnection reconnect behavior', () => {
       NodesConnection.enableLatencyProbe = true;
       vi.mocked(fetchRpc).mockClear();
       const customNode: Node = { chain: 'SORA', name: 'Explicit user custom node', address };
+      const selectedNode = productionEnv.DEFAULT_NETWORKS.find((node) => node.address === address) ?? customNode;
       const storage = createStorage();
       storage.set('node', JSON.stringify(customNode));
       storage.set('customNodes', JSON.stringify([customNode]));
@@ -943,14 +963,16 @@ describe('NodesConnection reconnect behavior', () => {
 
       nodesConnection.setDefaultNodes(productionEnv.DEFAULT_NETWORKS);
 
-      expect(nodesConnection.status.node).toEqual(customNode);
+      expect(nodesConnection.status.node).toEqual(selectedNode);
       expect(nodesConnection.status.customNodes).toEqual([customNode]);
       expect(nodesConnection.status.defaultNodes).toEqual(productionEnv.DEFAULT_NETWORKS);
       expect(storage.get('nodeSelectionMode')).toBe('manual');
       await nodesConnection.connect();
-      expect(nodesConnection.connectedNodes).toEqual([customNode]);
-      expect(JSON.parse(storage.get('node') as string)).toEqual(customNode);
-      expect(vi.mocked(fetchRpc)).not.toHaveBeenCalled();
+      expect(nodesConnection.connectedNodes).toEqual([selectedNode]);
+      expect(JSON.parse(storage.get('node') as string)).toEqual(selectedNode);
+      expect(vi.mocked(fetchRpc).mock.calls.map(([endpoint]) => endpoint)).toEqual(
+        productionEnv.DEFAULT_NETWORKS.map((node) => node.address)
+      );
     }
   );
 });

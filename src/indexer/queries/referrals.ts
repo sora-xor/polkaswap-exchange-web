@@ -1,3 +1,4 @@
+import { requireEntitlements } from './capabilities';
 import { FPNumber } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
@@ -32,12 +33,16 @@ const PolkaswapReferrerRewardsQuery = gql<ConnectionQueryResponse<ReferrerReward
 /**
  * Get Referral Rewards summarized by referral
  */
-export async function getReferralRewards(referrer?: string): Promise<Nullable<ReferrerRewards>> {
+export async function getReferralRewards(
+  referrer?: string,
+  indexer?: PolkaswapIndexer
+): Promise<Nullable<ReferrerRewards>> {
   const filter = referrer ? { referrer: { equalTo: referrer } } : undefined;
-  const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
+  const { indexer: polkaswapIndexer } = await requireEntitlements(indexer ?? getCurrentIndexer());
   const result = await polkaswapIndexer.services.explorer.fetchAllEntities(PolkaswapReferrerRewardsQuery, { filter });
 
   if (!result) return null;
+  await requireEntitlements(polkaswapIndexer);
 
   return result.reduce<ReferrerRewards>(
     (acc, node) => {

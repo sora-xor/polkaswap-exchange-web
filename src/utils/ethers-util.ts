@@ -20,8 +20,6 @@ type ethersProvider = ethers.BrowserProvider;
 let ethereumProvider!: any;
 let ethersInstance: ethersProvider | null = null;
 
-// Cache for ERC20 contract instances by token address (lowercased)
-const tokenContractCache = new Map<string, ethers.Contract>();
 // Cache for token decimals by token address (lowercased)
 const tokenDecimalsCache = new Map<string, number>();
 // TTL cache for gas price to reduce eth_gasPrice RPC spam
@@ -161,10 +159,6 @@ export function __resetTestEthersProvider(): void {
   ethersInstance = null;
 }
 
-export function __clearTokenContractCache(): void {
-  tokenContractCache.clear();
-}
-
 export function __clearTokenDecimalsCache(): void {
   tokenDecimalsCache.clear();
   gasPriceCache = null;
@@ -200,16 +194,11 @@ async function getContract(contractAddress: string, contractAbi: ethers.Interfac
 }
 
 /**
- * Return memoized ERC20 contract instance for the given token address.
+ * Bind each ERC20 request to the currently selected signer/provider. Contracts
+ * retain their signer, so caching them by token can reuse another account.
  */
 async function getTokenContract(tokenAddress: string): Promise<ethers.Contract> {
-  const key = tokenAddress?.toLowerCase?.() ?? tokenAddress;
-  const cached = tokenContractCache.get(key);
-  if (cached) return cached;
-
-  const contract = await getContract(tokenAddress, SmartContracts[SmartContractType.ERC20]);
-  tokenContractCache.set(key, contract);
-  return contract;
+  return getContract(tokenAddress, SmartContracts[SmartContractType.ERC20]);
 }
 
 /**
@@ -709,7 +698,6 @@ export default {
   storeSelectedBridgeType,
   __setTestEthersProvider,
   __resetTestEthersProvider,
-  __clearTokenContractCache,
   __clearTokenDecimalsCache,
   __setContractFactory,
   __resetContractFactory,

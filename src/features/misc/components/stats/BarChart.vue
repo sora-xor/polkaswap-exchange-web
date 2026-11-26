@@ -15,11 +15,14 @@
       :is-error="isFetchingError"
       @retry="updateData"
     >
-      <formatted-amount class="chart-price" :value="amount.amount">
+      <formatted-amount v-if="amount" class="chart-price" :value="amount.amount">
         <template #prefix>{{ symbol }}</template>
         {{ amount.suffix }}
       </formatted-amount>
-      <PriceChange :value="priceChange"></PriceChange>
+      <span v-else class="chart-price" data-testid="network-flow-unavailable">{{
+        t('footer.statistics.title.unavailable')
+      }}</span>
+      <PriceChange v-if="priceChange !== null" :value="priceChange"></PriceChange>
       <v-chart ref="chart" class="chart" :key="chartKey" :option="chartSpec" autoresize></v-chart>
     </chart-skeleton>
   </base-widget>
@@ -28,7 +31,6 @@
 <script setup lang="ts">
 import { FPNumber } from '@sora-substrate/math';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import last from 'lodash/fp/last';
 import { computed, getCurrentScope, onMounted, onScopeDispose, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 
@@ -40,7 +42,7 @@ import { SECONDS_IN_TYPE, NETWORK_STATS_FILTERS } from '@/consts/snapshots';
 import { useChartSpec } from '@/composables/useChartSpec';
 import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
-import { fetchData } from '@/indexer/queries/network/volume';
+import { fetchData, type FlowPoint } from '@/indexer/queries/network/volume';
 import VChart from '@/lib/echarts/component';
 import FormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 import { useSettingsStore } from '@/stores/settings';
@@ -50,46 +52,15 @@ import type { AmountWithSuffix } from '@/types/formats';
 import type { Nullable } from '@/types/common';
 import { calcPriceChange, formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
 
-type ChartData = {
-  timestamp: number;
-  value: FPNumber;
-};
-
-const getTotalValue = (data: readonly ChartData[]): FPNumber =>
-  data.reduce((acc, item) => acc.add(item.value), FPNumber.ZERO);
-
-const iterate = (prevTimestamp: number, currentTimestamp: number, difference: number): ChartData[] => {
-  const buffer: ChartData[] = [];
-
-  while ((currentTimestamp += difference) < prevTimestamp) {
-    buffer.push({
-      timestamp: currentTimestamp,
-      value: FPNumber.ZERO,
-    });
+/** A missing observation makes the selected period's total and percentage change unknown. */
+const getTotalValue = (points: readonly FlowPoint[]): FPNumber | null => {
+  if (!points.length) return null;
+  let total = FPNumber.ZERO;
+  for (const point of points) {
+    if (point.value === null) return null;
+    total = total.add(point.value);
   }
-
-  return buffer.reverse();
-};
-
-const normalizeTo = (sample: ChartData[], difference: number, from: number, to: number): void => {
-  const prevTimestamp = last(sample)?.timestamp ?? from;
-  const buffer = iterate(prevTimestamp, to, difference);
-
-  sample.push(...buffer);
-};
-
-const normalizeData = (collection: ChartData[], difference: number, from: number, to: number): ChartData[] => {
-  const sample: ChartData[] = [];
-  const sortedCollection = collection.slice().sort((a, b) => b.timestamp - a.timestamp);
-
-  for (const item of sortedCollection) {
-    normalizeTo(sample, difference, from, item.timestamp);
-    sample.push(item);
-  }
-
-  normalizeTo(sample, difference, from, to);
-
-  return sample.sort((a, b) => a.timestamp - b.timestamp);
+  return total;
 };
 
 const props = withDefaults(
@@ -119,15 +90,15 @@ const indexerEndpoint = computed(() => {
 const hasResolvedData = ref(false);
 
 const parentLoading = computed(() => props.parentLoading);
-const { loading, withLoading, withParentLoading } = useLoading({ parentLoading });
+const { withParentLoading } = useLoading({ parentLoading });
 const { t } = useTranslation();
 const { gridSpec, xAxisSpec, yAxisSpec, tooltipSpec, barSeriesSpec } = useChartSpec();
-const loadingState = computed(() => parentLoading.value || loading.value || !hasResolvedData.value);
+const loadingState = computed(() => parentLoading.value || !hasResolvedData.value);
 
-const data = ref<readonly ChartData[]>([]);
-const prevData = ref<readonly ChartData[]>([]);
+const data = ref<readonly FlowPoint[]>([]);
+const prevData = ref<readonly FlowPoint[]>([]);
 const isFetchingError = ref(false);
-let updateRequestId = 0;
+let requestController: AbortController | undefined;
 
 const chartKey = computed(() =>
   props.fees ? undefined : `bar-chart-${currencySymbol.value}-rate-${exchangeRate.value}`
@@ -139,15 +110,19 @@ const tooltip = computed(() => t(props.fees ? 'tooltips.fees' : 'tooltips.volume
 
 const total = computed(() => getTotalValue(data.value));
 
-const amount = computed<AmountWithSuffix>(() =>
-  props.fees ? formatAmountWithSuffix(total.value) : formatAmountWithSuffix(total.value.mul(exchangeRate.value))
-);
+const amount = computed<AmountWithSuffix | null>(() => {
+  if (total.value === null) return null;
+  return formatAmountWithSuffix(props.fees ? total.value : total.value.mul(exchangeRate.value));
+});
 
-const priceChange = computed(() => calcPriceChange(total.value, getTotalValue(prevData.value)));
+const priceChange = computed(() => {
+  const previous = getTotalValue(prevData.value);
+  return total.value !== null && previous !== null ? calcPriceChange(total.value, previous) : null;
+});
 
 const chartSpec = computed(() => ({
   dataset: {
-    source: data.value.map((item) => [item.timestamp, item.value.toNumber()]),
+    source: data.value.map((item) => [item.timestamp, item.value?.toNumber() ?? null]),
     dimensions: ['timestamp', 'value'],
   },
   grid: gridSpec({
@@ -158,16 +133,16 @@ const chartSpec = computed(() => ({
   yAxis: yAxisSpec({
     axisLabel: {
       formatter: (value: number) => {
-        const val = new FPNumber(value).mul(exchangeRate.value);
-        const formatted = formatAmountWithSuffix(val);
+        const raw = new FPNumber(value);
+        const formatted = formatAmountWithSuffix(props.fees ? raw : raw.mul(exchangeRate.value));
         return `${formatted.amount} ${formatted.suffix}`;
       },
     },
   }),
   tooltip: tooltipSpec({
-    formatter: (params: Array<{ data: [number, number] }>) => {
-      const { data: datum } = params[0];
-      const [, value] = datum;
+    formatter: (params: Array<{ data: [number, number | null] }>) => {
+      const value = params[0]?.data[1];
+      if (value == null) return t('footer.statistics.title.unavailable');
 
       if (props.fees) {
         return `${formatDecimalPlaces(value)} ${XOR.symbol}`;
@@ -192,45 +167,46 @@ const changeFilter = (next: SnapshotFilter) => {
 };
 
 const updateData = async () => {
-  const requestId = ++updateRequestId;
+  requestController?.abort();
+  requestController = new AbortController();
+  const { signal } = requestController;
+  const active = () => !signal.aborted;
+  hasResolvedData.value = false;
+  isFetchingError.value = false;
+  data.value = [];
+  prevData.value = [];
 
-  await withLoading(async () => {
-    await withParentLoading(async () => {
-      try {
-        const { type, count } = filter.value;
-        const seconds = SECONDS_IN_TYPE[type];
-        const { from, to, previousFrom, previousTo } = createStatsRange(Date.now(), seconds, count);
+  await withParentLoading(async () => {
+    if (!active()) return;
+    const { type, count } = filter.value;
+    const { from, to, previousFrom, previousTo } = createStatsRange(Date.now(), SECONDS_IN_TYPE[type], count);
+    const showCurrent = (points: FlowPoint[]) => {
+      if (!active()) return;
+      data.value = Object.freeze(points);
+      hasResolvedData.value = true;
+    };
+    const current = fetchData(props.fees, from, to, type, showCurrent, signal);
+    // The comparison is optional and must never hold the current period's chart behind a spinner.
+    void fetchData(props.fees, previousFrom, previousTo, type, undefined, signal)
+      .then((points) => {
+        if (active()) prevData.value = Object.freeze(points);
+      })
+      .catch(() => {
+        /* No percentage is shown when the comparison is unavailable. */
+      });
 
-        const [curr, prev] = await Promise.all([
-          fetchData(props.fees, from, to, type),
-          fetchData(props.fees, previousFrom, previousTo, type),
-        ]);
-
-        if (requestId !== updateRequestId) return;
-
-        data.value = Object.freeze(normalizeData(curr, seconds * 1000, from * 1000, to * 1000));
-        prevData.value = Object.freeze(prev);
-
-        isFetchingError.value = false;
-        hasResolvedData.value = curr.length > 0 || prev.length > 0 || nodeIsConnected.value;
-      } catch (error) {
-        if (requestId !== updateRequestId) return;
-
-        console.error(error);
-        isFetchingError.value = true;
-        hasResolvedData.value = nodeIsConnected.value;
-      }
-    });
+    try {
+      showCurrent(await current);
+    } catch {
+      if (!active()) return;
+      isFetchingError.value = true;
+      hasResolvedData.value = true;
+    }
   });
 };
 
 watch(nodeIsConnected, (connected) => {
-  if (!connected) {
-    hasResolvedData.value = false;
-    return;
-  }
-
-  if (!hasResolvedData.value) {
+  if (connected && (!hasResolvedData.value || isFetchingError.value)) {
     void updateData();
   }
 });
@@ -247,7 +223,7 @@ onMounted(() => {
 
 if (getCurrentScope()) {
   onScopeDispose(() => {
-    updateRequestId += 1;
+    requestController?.abort();
     chart.value = null;
     hasResolvedData.value = false;
   });

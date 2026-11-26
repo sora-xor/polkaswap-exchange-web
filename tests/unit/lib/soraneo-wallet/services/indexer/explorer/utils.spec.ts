@@ -1,19 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const excludePoolXYKAssetsMock = vi.hoisted(() => vi.fn((assets) => assets.slice(0, 1)));
-const formatStringNumberMock = vi.hoisted(() =>
-  vi.fn((value: Nullable<string>) => ({
-    isFinity: () => value !== 'Infinity',
-    toCodecString: () => `codec:${value}`,
-  }))
-);
-
 vi.mock('@sora-substrate/sdk/build/assets', () => ({
   excludePoolXYKAssets: excludePoolXYKAssetsMock,
-}));
-
-vi.mock('@/lib/soraneo-wallet/src/util', () => ({
-  formatStringNumber: formatStringNumberMock,
 }));
 
 import {
@@ -28,12 +17,24 @@ describe('indexer explorer utils', () => {
   });
 
   it('parses finite asset fiat prices into codec values', () => {
-    expect(parseAssetFiatPrice({ id: 'xor', priceUSD: '1.23' } as never)).toEqual({ xor: 'codec:1.23' });
-    expect(formatStringNumberMock).toHaveBeenCalledWith('1.23');
+    expect(parseAssetFiatPrice({ id: 'xor', priceUSD: '1.23' } as never)).toEqual({ xor: '1230000000000000000' });
   });
 
   it('omits non-finite asset fiat prices', () => {
     expect(parseAssetFiatPrice({ id: 'xor', priceUSD: 'Infinity' } as never)).toEqual({});
+  });
+
+  it('reads the full exact map including small and zero quotes and never falls back on a missing mark', () => {
+    const map = { tiny: '0.000000000340941693', zero: '0', bad: '-1' };
+    for (const pricesExact of [map, JSON.stringify(map)]) {
+      expect(parsePriceStreamUpdate({ pricesExact, data: '{"stale":"42"}' } as never)).toEqual({
+        tiny: '340941693',
+        zero: '0',
+      });
+    }
+    expect(parsePriceStreamUpdate({ pricesExact: null, data: '{"stale":"42"}' } as never)).toBeNull();
+    expect(parsePriceStreamUpdate({ pricesExact: {}, data: '{"stale":"42"}' } as never)).toEqual({});
+    expect(parsePriceStreamUpdate({ pricesExact: 'broken', data: '{"stale":"42"}' } as never)).toBeNull();
   });
 
   it('returns null when a price stream update has no payload', () => {
@@ -45,8 +46,7 @@ describe('indexer explorer utils', () => {
     const payload = { data: JSON.stringify({ xor: '1.23', val: 'Infinity', dai: '0' }) };
 
     expect(parsePriceStreamUpdate(payload as never)).toEqual({
-      xor: 'codec:1.23',
-      dai: 'codec:0',
+      xor: '1230000000000000000',
     });
   });
 
@@ -54,7 +54,6 @@ describe('indexer explorer utils', () => {
     'treats malformed or wrong-shape price stream payload %j as an empty update',
     (data) => {
       expect(parsePriceStreamUpdate({ data } as never)).toEqual({});
-      expect(formatStringNumberMock).not.toHaveBeenCalled();
     }
   );
 

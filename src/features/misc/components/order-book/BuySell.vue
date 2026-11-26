@@ -22,13 +22,15 @@
             <div class="order-book-pair-data-item">
               <span>{{ t('priceText') }}</span>
               <span class="order-book-pair-data-item__value order-book-fiat">
-                <formatted-amount :value="orderBookPrice" />
+                <formatted-amount v-if="orderBookPrice != null" :value="orderBookPrice" />
+                <market-unavailable v-else />
               </span>
             </div>
             <div class="order-book-pair-data-item">
               <span>{{ t('orderBook.change') }}</span>
               <span class="order-book-pair-data-item__value">
-                <price-change :value="orderBookPriceChange" />
+                <price-change v-if="orderBookPriceChange != null" :value="orderBookPriceChange" />
+                <market-unavailable v-else />
               </span>
             </div>
             <div class="order-book-pair-data-item">
@@ -186,6 +188,7 @@
 </template>
 
 <script setup lang="ts">
+import MarketUnavailable from '@/shared/ui/MarketUnavailable.vue';
 import { PriceVariant, OrderBookStatus } from '@sora-substrate/liquidity-proxy';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { FPNumber, Operation } from '@sora-substrate/sdk';
@@ -423,12 +426,11 @@ const isZeroPrice = computed(() => asZeroValue(quoteValue.value));
 const hasZeroAmount = computed(() => isZeroAmount.value || isZeroPrice.value);
 
 const orderBookPrice = computed(() => {
-  const price = orderBookStats.value?.price ?? FPNumber.ZERO;
-  const decimals = getBookDecimals(currentOrderBook.value);
-  return price.dp(decimals).toLocaleString();
+  const price = orderBookStats.value?.price;
+  return price?.toLocaleString(getBookDecimals(currentOrderBook.value)) ?? null;
 });
 
-const orderBookPriceChange = computed(() => orderBookStats.value?.priceChange ?? FPNumber.ZERO);
+const orderBookPriceChange = computed(() => (orderBookStats.value?.price ? orderBookStats.value.priceChange : null));
 const orderBookVolume = computed(() => (orderBookStats.value?.volume ?? FPNumber.ZERO).toLocaleString());
 const marketOptionDisabled = computed(() => orderBookStatus.value === OrderBookStatus.PlaceAndCancel);
 

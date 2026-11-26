@@ -203,6 +203,7 @@ const mountComponent = (props: Record<string, unknown> = {}) =>
   });
 
 beforeEach(async () => {
+  capabilityFixture.allowed = true;
   vi.clearAllMocks();
   storeMocks.networkFees = { [Operation.Burn]: '0', [Operation.BurnWithRemark]: '0' };
   storeMocks.accountXor = { balance: { transferable: '0' } };
@@ -232,6 +233,7 @@ describe('BurnDialog (pages)', () => {
 
   it('keeps the SORA v3 XOR and reserved token inputs synchronized with the fixed rate', async () => {
     const wrapper = mountComponent({ rate: '0.02' });
+    await flushPromises();
     const [burnedInput, receivedInput] = wrapper.findAllComponents({ name: 'TokenInputStub' });
 
     expect(burnedInput.props('title')).toBe('burnPage.soraV3XorAmountTitle');
@@ -444,4 +446,30 @@ describe('BurnDialog (pages)', () => {
     expect(walletMocks.burn).not.toHaveBeenCalled();
     expect(walletMocks.burnWithRemark).not.toHaveBeenCalled();
   });
+});
+
+const capabilityFixture = vi.hoisted(() => ({ allowed: true }));
+vi.mock('@/indexer/queries/capabilities', async () => {
+  const { allowedLegacyCapabilities } = await import('@tests/fixtures/entitlementCapabilities');
+  return {
+    requireEntitlements: async () => {
+      if (!capabilityFixture.allowed) throw Error('uncertified');
+      return { indexer: {}, capabilities: allowedLegacyCapabilities };
+    },
+  };
+});
+
+it('withholds reservation estimates when denied but still submits the exact ordinary burn', async () => {
+  capabilityFixture.allowed = false;
+  storeMocks.accountXor = { balance: { transferable: '1000' } };
+  const wrapper = mountComponent({ rate: '0.02' });
+  await flushPromises();
+  expect(wrapper.find('.burn-dialog__amount-input--received').exists()).toBe(false);
+  expect(wrapper.find('[data-testid="burn-estimate-unavailable"]').exists()).toBe(true);
+  const input = wrapper.findComponent({ name: 'TokenInputStub' });
+  await input.vm.$emit('update:modelValue', '2');
+  await wrapper.vm.$nextTick();
+  await wrapper.find('.confirm-button').trigger('click');
+  await flushPromises();
+  expect(walletMocks.burn).toHaveBeenCalledWith(expect.objectContaining({ address: '0xburned' }), '2');
 });

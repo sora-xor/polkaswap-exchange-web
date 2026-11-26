@@ -55,7 +55,8 @@ describe('order books query', () => {
           },
         },
       },
-      expect.any(Function)
+      expect.any(Function),
+      { requestPolicy: 'network-only', retryPendingCore: true }
     );
     expect(result).toHaveLength(1);
     expect(result?.[0]).toMatchObject({
@@ -75,6 +76,19 @@ describe('order books query', () => {
     expect(result?.[0]?.stats.volume.toString()).toBe('123.45');
   });
 
+  it('preserves an absent last deal, an observed zero and a positive micro-price separately', async () => {
+    indexerMocks.currentIndexer = createIndexer('polkaswap');
+    indexerMocks.currentIndexer.services.explorer.supportsExactPrices.mockResolvedValue(true);
+    indexerMocks.fetchAllEntities.mockImplementation(async (query, _variables, parse) => {
+      expect(JSON.stringify(query.definitions)).toContain('priceExact');
+      return [null, '0', '0.0000000000340941693'].map((priceExact) =>
+        parse({ ...createPolkaswapOrderBook(), price: '0', priceExact })
+      );
+    });
+    const books = await fetchOrderBooks();
+    expect(books?.map((book) => book.stats.price?.toString() ?? null)).toEqual([null, '0', '0.0000000000340941693']);
+  });
+
   it('fetches Polkaswap order books without a filter when assets are omitted', async () => {
     indexerMocks.fetchAllEntities.mockResolvedValue([]);
     indexerMocks.currentIndexer = createIndexer('polkaswap');
@@ -86,18 +100,17 @@ describe('order books query', () => {
       {
         filter: undefined,
       },
-      expect.any(Function)
+      expect.any(Function),
+      { requestPolicy: 'network-only', retryPendingCore: true }
     );
   });
-
-
-
-  });
+});
 
 const createIndexer = (type: unknown) => ({
   type,
   services: {
     explorer: {
+      supportsExactPrices: vi.fn().mockResolvedValue(false),
       fetchAllEntities: indexerMocks.fetchAllEntities,
     },
   },

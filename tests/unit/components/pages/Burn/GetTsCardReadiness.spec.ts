@@ -114,8 +114,12 @@ describe('wallet-bound card cost review UI', () => {
     expect(wrapper.get('.card-readiness__costs').text()).toContain('getTs.cardReview.costsReserved');
     const details = wrapper.get('details');
     expect(details.attributes('open')).toBeUndefined();
-    for (const key of ['delivery', 'reserved', 'provider', 'conversionGas', 'bridgeGas', 'nativeSwapFee', 'existing'])
+    // Buy XOR sends the ETH itself to SORA: one bridge transfer, no conversion rows.
+    for (const key of ['delivery', 'reserved', 'provider', 'bridgeEth', 'bridgeEthGas', 'nativeSwapFee', 'existing'])
       expect(details.text()).toContain(`getTs.cardReview.${key}`);
+    for (const key of ['convert', 'conversionGas', 'conversionFee', 'bridgeFee', 'bridgeExplanation'])
+      expect(details.text()).not.toContain(`getTs.cardReview.${key}`);
+    expect(details.text()).toContain('getTs.cardReview.bridgeEthExplanation');
     expect(details.text()).toContain('getTs.cardReview.limits');
     expect(exposed(wrapper).canContinue()).toBe(true);
     wrapper.unmount();
@@ -134,6 +138,10 @@ describe('wallet-bound card cost review UI', () => {
     expect(wrapper.get('details').text()).toContain('159.99 TS');
     expect(wrapper.text()).toContain('getTs.cardReview.nativeTsFees');
     expect(wrapper.text()).not.toContain('getTs.cardReview.netXor');
+    // Get TS still converts the card's ETH to DAI before the bridge.
+    for (const key of ['convert', 'conversionGas', 'bridgeGas', 'bridgeExplanation'])
+      expect(wrapper.get('details').text()).toContain(`getTs.cardReview.${key}`);
+    expect(wrapper.get('details').text()).not.toContain('getTs.cardReview.bridgeEth');
     expect(last(wrapper)).toMatchObject({ burnableXor: '3.18', estimatedTs: '159.999' });
     wrapper.unmount();
   });

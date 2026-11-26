@@ -55,3 +55,6 @@ export const ReferralsConfirmInviteUser = createAsyncComponent(
 export const SelectSoraAccountDialog = createAsyncComponent(
   () => import('@/components/shared/Dialog/SelectSoraAccount.vue')
 );
+export const TemporaryWalletRequestDialog = createAsyncComponent(
+  () => import('@/features/misc/components/buy-xor/TemporaryWalletRequestDialog.vue')
+);

@@ -1,5 +1,10 @@
 # Dedicated Polkaswap IPFS origin
 
+> Current operator target: the approved OVH host `141.94.30.127` replaced the
+> macOS host on 6 November 2026. Use [the current OVH runbook](ipfs-origin-ovh.md)
+> for service paths and replication; the former service instructions below are
+> retained migration history. Public origin URLs and release checks are unchanged.
+
 The approved static backing host is the MOF macOS machine `207.254.29.218`. Bunny's
 production Origin URL is `https://pi.soramitsu.io/ipfs/<production-cidv1>` and
 its Host header is `pi.soramitsu.io`. Keep origin TLS verification enabled.
@@ -18,35 +23,19 @@ Buy XOR and Get TS with zero failed requests and zero console errors.
 The September 28 recovery on the disconnected `208.83.1.62` is historical;
 do not use that host or its old service paths for new publications.
 
-The October 22 remove-liquidity layout release uses production root
-`bafybeicjwe24zlmugkwtmtue6ynybsyqfcnzfjyeipdbonsinv7gt2ig7i` and paired testnet root
-`bafybeice6og6ia5vtmx7bj4vnqjo6kotrqlplr6sse4pomwzwnqip2mumy`.
-Its build inputs preserve the October 10 deployed release except for the
-percentage input and slider layout fix. Both DAGs were imported separately,
-all 11 retained pins passed full integrity, and 410 public complete-body checks
-passed after the saved Bunny origin update and full cache purge. All five
-required candidate and public WebKit routes passed with zero failed requests
-and zero console errors. See the [release report](reports/deployment-2026-10-22.md).
+The subsequent October 9 code release uses production root
+`bafybeib5oztka2usnzaupedcsywwgrlo7onjrib5hsm62uur5b2gifbuiy` and paired testnet root
+`bafybeibabo7o2wqp7t7t3hcpywui75ynhurqyqobx3n2x4mbh6pg7vacbm`.
+See the [release report](reports/deployment-2026-10-09.md) for source provenance,
+separate retained CARs, and delivery verification.
 
-The October 24 dependency/security release uses production root
-`bafybeicqvi4opmxmxoqem73mtybdh4ka2ltx3wo7nlvr5k46tqypd3bxea` and paired testnet root
-`bafybeihezo3i5u3ohglt47rrjddcdy3ecacvooys3kze6mext5cwlyxshi`.
-Both DAGs were imported separately; all 13 retained pins passed full integrity.
-The isolated release preserves the shipped October 22 features and applies the
-security fixes. Bunny was updated and purged, 409 complete public body checks
-passed, and all five candidate/live WebKit routes reported zero failed requests
-and zero raw console errors. See the [release report](reports/deployment-2026-10-24.md).
-
-The October 25 password-policy release uses production root
-`bafybeictpwld4czgcwbzwxaegopxsgzeaax52mykee2scwa7wonhz7ja7u` and paired testnet root
-`bafybeielqxowawakjsw24xku3bivyj25wgqfra435zngplbqosqkqlrxma`.
-Both DAGs were imported separately, and all 15 retained pins passed full
-integrity. The release preserves the October 24 shipped assembly while enforcing
-the new-wallet password minimum and retaining existing-wallet recovery behavior.
-Bunny was updated and purged, 419 complete public body checks passed, and all
-five candidate/live WebKit routes passed with zero failed requests and zero raw
-console errors. See the [release report](reports/deployment-2026-10-25.md) for
-source provenance and encrypted-wallet compatibility checks.
+The October 10 code release uses production root
+`bafybeiadarzvjgpyrs2dl5irgaevsogf5gszbaiwvaz7mgriap3bhx4l3i` and paired testnet root
+`bafybeihrbwmcavfmrqwi2q3ceidypfzhkjl4b3qvliflrwgr46i45i7nxe`.
+Both DAGs were separately imported and passed full pin integrity. Bunny's
+production origin was saved and purged; all five public WebKit routes passed.
+See the [release report](reports/deployment-2026-10-10.md) for complete evidence
+and the unit-validation status.
 
 ## Service
 
@@ -136,6 +125,12 @@ fails; preserve prior release pins during deployment.
 
 ## Replicate future production and testnet releases
 
+Root `env.json` is the production configuration source: `ipfs:publish` copies
+it over `dist/env.json` after building. Keep `public/env.json` aligned with it;
+changing only the public copy does not update a published release. Both
+production configs use `https://pi.soramitsu.io/graphql` for recent transactions
+and retain `wss://ws.mof.sora.org` as the production chain RPC.
+
 The publisher still has its previous gateway default. Always supply the Pi
 override and record the production and testnet roots separately:
 
@@ -185,6 +180,10 @@ verify the origin's recursive root pin, and repeat the CAR import if needed.
 Then warm the raw CID, the path under the production root, and the corresponding
 `https://polkaswap.io/assets/<chunk>` sequentially. Identify the failed asset
 before warming the entire build or rebuilding.
+
+For Bunny UI operations, use the existing authenticated Safari session when an
+API key is unavailable. A logged-out Chrome tab does not establish that Bunny
+access is unavailable.
 
 After validated origin settings are saved, perform the already authorized Bunny
 zone `5860217` purge, complete public asset transfers, and the WebKit checks in

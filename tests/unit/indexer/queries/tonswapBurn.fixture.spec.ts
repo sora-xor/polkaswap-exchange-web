@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import fixture from '../../../fixtures/tonswap/confirmed-burn-snapshot-20260921.json';
+import { FPNumber } from '@sora-substrate/sdk';
 import { allocateTonswapBurns } from '@/features/misc/lib/tonswapBurn';
 import { fetchTonswapBurnSnapshot } from '@/indexer/queries/tonswapBurn';
 
@@ -41,19 +42,22 @@ describe('confirmed mainnet TONSWAP burn evidence', () => {
       })
     );
 
-    const snapshot = await fetchTonswapBurnSnapshot();
-    expect(snapshot.indexedThroughBlock).toBe(27_721_150);
-    expect(snapshot.burns).toHaveLength(1);
-    expect(snapshot.burns[0]).toMatchObject({
-      address: 'cnTdP4jfCs6tEHoFTVvCUZtQqxjKXzQwYCNucDCkDsFrc9w6F',
-      txHash: '0x0e302df6e88e4c0a6f208df146a3bab41f1d3d39de0198f6653f2b8dc0749896',
-      blockHeight: 27_721_093,
-      extrinsicIndex: 1,
-    });
-    const allocations = allocateTonswapBurns(snapshot.burns);
+    await expect(fetchTonswapBurnSnapshot()).rejects.toThrow('approved recovery');
+    const allocations = allocateTonswapBurns(
+      fixture.payload.data.tonswapBurnSnapshot.nodes.map((row) => ({
+        ...row,
+        amount: new FPNumber(row.amount),
+      }))
+    );
     expect(allocations.totalBurned.toString()).toBe('2');
     expect(allocations.totalEligible.toString()).toBe('2');
     expect(allocations.totalReward.toString()).toBe('99.999948669894379752');
     expect(allocations.remaining.toString()).toBe('1753355');
   });
+});
+
+// Snapshot arithmetic fixtures explicitly supply affirmative capability; negative real-gate tests are separate.
+vi.mock('@/indexer/queries/capabilities', async (importOriginal) => {
+  const { allowedFullCapabilities } = await import('@tests/fixtures/entitlementCapabilities');
+  return { ...(await importOriginal()), requireEndpointEntitlements: vi.fn(async () => allowedFullCapabilities) };
 });

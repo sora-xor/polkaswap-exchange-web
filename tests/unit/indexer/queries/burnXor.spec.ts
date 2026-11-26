@@ -10,6 +10,7 @@ const validSoraNexusAccount = 'sorauﾛ1NﾗhBUd2BﾂｦﾄiﾔﾆﾂﾇKSﾃa�
 
 const indexerMocks = vi.hoisted(() => ({
   currentIndexer: undefined as any,
+  recovery: false,
   fetchAllEntities: vi.fn(),
   getBlockHash: vi.fn(),
   getBlock: vi.fn(),
@@ -43,9 +44,23 @@ vi.mock('@/lib/soraneo-wallet/src/api', () => ({
   },
 }));
 
+// Existing math scenarios explicitly assume an admitted non-recovery test chain.
+vi.mock('@/indexer/queries/capabilities', async () => {
+  const { allowedLegacyCapabilities, allowedFullCapabilities } =
+    await import('@tests/fixtures/entitlementCapabilities');
+  return {
+    requireEntitlements: vi.fn(async (indexer) => ({
+      indexer: indexer ?? indexerMocks.currentIndexer,
+      capabilities: indexerMocks.recovery ? allowedFullCapabilities : allowedLegacyCapabilities,
+    })),
+    EntitlementsUnavailableError: class extends Error {},
+  };
+});
+
 describe('xor burn query', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    indexerMocks.recovery = false;
     clearBurnXorQueryCaches();
     indexerMocks.currentIndexer = undefined;
     indexerMocks.getBlockHash.mockImplementation(async (blockHeight: number) => `hash-${blockHeight}`);
@@ -63,6 +78,42 @@ describe('xor burn query', () => {
   afterEach(() => {
     vi.useRealTimers();
     vi.unstubAllGlobals();
+  });
+
+  it('requires canonical recovery receipts and exposes them to the replacement owner', async () => {
+    indexerMocks.recovery = true;
+    const blockHash = `0x${'13'.repeat(32)}`;
+    const policyHash = '0x1f4e11427a9c0a61a4868af40c9e0bdf263bb44a9ee59886a537c52164f3cdbb';
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
+    indexerMocks.fetchAllEntities.mockImplementation(async (_query, _variables, parse) => [
+      parse({
+        ...createCompactXorBurn('old-account', '1', 27_800_000),
+        receiptId: `${blockHash}:2`,
+        blockHash,
+        eventIndex: 2,
+        claimOwner: 'replacement-account',
+        recoveryPolicyHash: policyHash,
+        claimStatus: 'recipient-confirmation-required',
+      }),
+    ]);
+    const rows = await fetchData(25_043_003, 28_191_820, 'replacement-account');
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toMatchObject({
+      address: 'old-account',
+      claimOwner: 'replacement-account',
+      receiptId: `${blockHash}:2`,
+    });
+    expect(await fetchData(25_043_003, 28_191_820, 'old-account')).toEqual([]);
+    expect(indexerMocks.getEventsAt).not.toHaveBeenCalled();
+  });
+
+  it('does not fall back to call history or RPC when recovery evidence is unavailable', async () => {
+    indexerMocks.recovery = true;
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
+    indexerMocks.fetchAllEntities.mockRejectedValue(new Error('Unknown recovery schema'));
+    await expect(fetchData(25_043_003, 28_191_820)).rejects.toThrow('Canonical recovery burn snapshot');
+    expect(indexerMocks.fetchAllEntities).toHaveBeenCalledTimes(1);
+    expect(indexerMocks.getEventsAt).not.toHaveBeenCalled();
   });
 
   it('only excludes the configured ineligible burn address', () => {
@@ -448,4 +499,14 @@ const createAssetBurnEventWithAssetFirst = (assetId: string, address: string, am
     method: 'Burn',
     data: [{ toString: () => assetId }, { toString: () => address }, { toString: () => amount }],
   },
+});
+
+it('never uses legacy raw history for a pre-fork range on a recovered chain', async () => {
+  vi.clearAllMocks();
+  indexerMocks.recovery = true;
+  indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
+  indexerMocks.fetchAllEntities.mockResolvedValue([]);
+  await expect(fetchData(1, 100)).rejects.toThrow('policy');
+  expect(indexerMocks.fetchAllEntities).toHaveBeenCalledOnce();
+  expect(indexerMocks.getEventsAt).not.toHaveBeenCalled();
 });

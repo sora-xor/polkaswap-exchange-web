@@ -103,6 +103,22 @@ describe('Tonswap liquidity check UI', () => {
     expect(wrapper.emitted('checked')?.at(-1)?.[0]).toMatchObject({ allowed: false, reason: 'fees-unavailable' });
     wrapper.unmount();
   });
+  it('names Buy XOR’s own 15% limit when the impact is too high', async () => {
+    // 20% impact: blocked for Buy XOR too.
+    state.chain.rpc.liquidityProxy.quote.mockResolvedValue({
+      unwrap: () => ({
+        amount: { toString: () => '800000000000000000' },
+        amountWithoutImpact: { toString: () => '1000000000000000000' },
+      }),
+    });
+    const wrapper = mount(TonswapLiquidityCheck, { props: { purpose: 'xor' } });
+    await vi.advanceTimersByTimeAsync(650);
+    await flushPromises();
+    expect(wrapper.emitted('checked')?.at(-1)?.[0]).toMatchObject({ allowed: false, reason: 'price-impact' });
+    expect(wrapper.text()).toContain('buyXor.liquidity.blocked');
+    expect(wrapper.text()).not.toContain('getTs.liquidity.blocked');
+    wrapper.unmount();
+  });
   it('rejects late purpose-specific evidence after changing the purchase purpose', async () => {
     let finish!: (value: typeof output) => void;
     state.chain.rpc.liquidityProxy.quote.mockImplementation(

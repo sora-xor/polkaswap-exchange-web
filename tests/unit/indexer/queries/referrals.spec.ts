@@ -16,6 +16,18 @@ vi.mock('@/lib/soraneo-wallet/src/services/indexer', () => ({
   PolkaswapIndexer: class PolkaswapIndexer {},
 }));
 
+// Existing math scenarios explicitly assume an admitted non-recovery test chain.
+vi.mock('@/indexer/queries/capabilities', async () => {
+  const { allowedLegacyCapabilities } = await import('@tests/fixtures/entitlementCapabilities');
+  return {
+    requireEntitlements: vi.fn(async (indexer) => ({
+      indexer: indexer ?? indexerMocks.currentIndexer,
+      capabilities: allowedLegacyCapabilities,
+    })),
+    EntitlementsUnavailableError: class extends Error {},
+  };
+});
+
 describe('referral reward queries', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -46,7 +58,6 @@ describe('referral reward queries', () => {
     expect(result?.invitedUserRewards.alice.toString()).toBe('1.5');
     expect(result?.invitedUserRewards.bob.toString()).toBe('2.5');
   });
-
 
   it('omits the referrer filter when no referrer is supplied and returns zero totals for empty results', async () => {
     indexerMocks.fetchAllEntities.mockResolvedValue([]);
@@ -83,9 +94,7 @@ describe('referral reward queries', () => {
     expect(Object.keys(result?.invitedUserRewards ?? {})).toEqual(['alice']);
     expect(result?.invitedUserRewards.alice.toString()).toBe('0');
   });
-
-
-  });
+});
 
 const createRewardEntity = (referral: string, naturalAmount: number) => ({
   referral,

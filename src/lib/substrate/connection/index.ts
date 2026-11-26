@@ -71,14 +71,12 @@ class Connection {
     const providerAutoConnectMs = once ? false : autoConnectMs;
     const apiConnectionPromise = once ? 'isReadyOrError' : 'isReady';
 
-    const provider = new this.WsProvider(endpoint, providerAutoConnectMs);
     // https://github.com/polkadot-js/api/issues/5798
-    // Seems that the issue isn't related to the cache itself
-
-    // const originalSend = provider.send;
-    // provider.send = function <T>(method: string, params: unknown[], isCacheable?: boolean, subscription?: SubscriptionHandler): ReturnType<typeof originalSend<T>> {
-    //   return originalSend.call(provider, method, params, false, subscription) as ReturnType<typeof originalSend<T>>;
-    // };
+    // Batched storage subscriptions receive only the keys that changed; rpc-core fills the
+    // other keys from its storage cache, which inherits the provider TTL (30 s by default).
+    // Once an idle key expires, the next change decodes it as empty (no LP tokens, zero
+    // balance) and pools vanish until reload. `null` disables expiry; capacity still bounds it.
+    const provider = new this.WsProvider(endpoint, providerAutoConnectMs, {}, undefined, undefined, null);
 
     this.api = new this.ApiPromise({ ...this.apiOptions, provider, noInitWarn: true });
     this.endpoint = endpoint;

@@ -1,3 +1,4 @@
+import { Contract, JsonRpcProvider, JsonRpcSigner } from 'ethers';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 const { walletOverrides } = vi.hoisted(() => ({
@@ -100,7 +101,6 @@ const testProvider = {
 beforeEach(() => {
   vi.clearAllMocks();
   testProvider.send.mockReset();
-  (ethersUtil as any).__clearTokenContractCache?.();
   (ethersUtil as any).__clearTokenDecimalsCache?.();
   (ethersUtil as any).__setTestEthersProvider(testProvider, testProvider);
   (ethersUtil as any).__setContractFactory?.((address: string) => ({ __address: address }) as any);
@@ -154,24 +154,60 @@ describe('ethers-util memoization and TTL', () => {
     expect(typeof gp3).toBe('bigint');
   });
 
-  it('getTokenContract is memoized per token address', async () => {
-    const firstContract = { __address: '0xABCdef' } as any;
-    const factoryMock = vi.fn(() => firstContract);
-    (ethersUtil as any).__setContractFactory(factoryMock);
+  it('binds ERC20 approval to the selected account after an account switch', async () => {
+    const firstAddress = '0x00000000000000000000000000000000000000a1';
+    const selectedAddress = '0x00000000000000000000000000000000000000b2';
+    const token = '0x00000000000000000000000000000000000000c3';
+    const spender = '0x00000000000000000000000000000000000000d4';
+    const firstSigner = new JsonRpcSigner(testProvider, firstAddress);
+    const selectedSigner = new JsonRpcSigner(testProvider, selectedAddress);
+    const abi = ['function approve(address spender,uint256 amount) returns (bool)'];
+    ethersUtil.__setContractFactory((address, _, signer) => new Contract(address, abi, signer));
+    testProvider.getSigner.mockResolvedValue(firstSigner);
+    const first = await ethersUtil.getTokenContract(token);
+    testProvider.getSigner.mockResolvedValue(selectedSigner);
+    const selected = await ethersUtil.getTokenContract(token);
+    expect(selected).not.toBe(first);
+    expect(selected.runner).toBe(selectedSigner);
+    // Retain ethers' real from-address validation while keeping all RPCs mocked.
+    testProvider.estimateGas = vi.fn(async () => 100000n);
+    testProvider.getRpcTransaction = JsonRpcProvider.prototype.getRpcTransaction;
+    testProvider.send.mockResolvedValueOnce(`0x${'ab'.repeat(32)}`);
+    const prepared = await selected.approve.populateTransaction(spender, 100n, { from: selectedAddress, chainId: 1 });
+    await expect(selectedSigner.sendUncheckedTransaction(prepared)).resolves.toBe(`0x${'ab'.repeat(32)}`);
+    expect(testProvider.send).toHaveBeenLastCalledWith('eth_sendTransaction', [
+      expect.objectContaining({
+        from: selectedAddress,
+        to: token,
+        chainId: '0x1',
+      }),
+    ]);
+  });
 
-    const a1 = await (ethersUtil as any).getTokenContract('0xABCdef');
-    expect(a1).toBe(firstContract);
+  it('binds fresh ERC20 contracts to a replacement provider', async () => {
+    const firstSigner = { getAddress: vi.fn(async () => 'first') };
+    const replacementSigner = { getAddress: vi.fn(async () => 'replacement') };
+    testProvider.getSigner.mockResolvedValue(firstSigner);
+    const factory = vi.fn((address, _abi, signer) => ({ address, runner: signer }));
+    ethersUtil.__setContractFactory(factory as never);
+    const first = await ethersUtil.getTokenContract('0xToken');
+    ethersUtil.__setTestEthersProvider({ getSigner: async () => replacementSigner } as never);
+    const replacement = await ethersUtil.getTokenContract('0xToken');
+    expect(replacement).not.toBe(first);
+    expect(replacement.runner).toBe(replacementSigner);
+    expect(factory).toHaveBeenCalledTimes(2);
+  });
 
-    const throwingFactory = vi.fn(() => {
-      throw new Error('factory should not be used for cached contract');
-    });
-    (ethersUtil as any).__setContractFactory(throwingFactory);
-
-    const a2 = await (ethersUtil as any).getTokenContract('0xabcdef');
-
-    expect(factoryMock).toHaveBeenCalledTimes(1);
-    expect(throwingFactory).not.toHaveBeenCalled();
-    expect(a2).toBe(a1);
+  it('keeps ordinary same-account ERC20 requests available without retaining signer state', async () => {
+    const signer = { getAddress: vi.fn(async () => 'account') };
+    testProvider.getSigner.mockResolvedValue(signer);
+    const factory = vi.fn((address, _abi, currentSigner) => ({ address, runner: currentSigner }));
+    ethersUtil.__setContractFactory(factory as never);
+    const first = await ethersUtil.getTokenContract('0xToken');
+    const second = await ethersUtil.getTokenContract('0xToken');
+    expect(first.runner).toBe(signer);
+    expect(second.runner).toBe(signer);
+    expect(factory).toHaveBeenCalledTimes(2);
   });
 
   it('falls back safely when the selected network cache is corrupt', () => {

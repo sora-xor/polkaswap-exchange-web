@@ -90,7 +90,7 @@ const resultMessage = computed(() => {
   if (result.value?.allowed) return `${prefix}.liquidity.allowed`;
   if (result.value?.reason === 'fees-unavailable') return `${prefix}.liquidity.feesUnavailable`;
   if (result.value?.reason === 'fees-insufficient') return `${prefix}.liquidity.feesInsufficient`;
-  return 'getTs.liquidity.blocked';
+  return `${prefix}.liquidity.blocked`;
 });
 let generation = 0;
 let expiryTimer: ReturnType<typeof setTimeout> | undefined;

@@ -78,6 +78,8 @@ export type PolkaswapAccountLiquiditySnapshotEntity = PolkaswapAccountLiquidityS
 };
 // with connection
 export type PolkaswapPoolXYKEntity = PolkaswapPoolXYKBaseEntity & {
+  priceUSDExact?: string | null;
+  liquidityUSDExact?: string | null;
   baseAsset: AssetBaseEntity;
   targetAsset: AssetBaseEntity;
   data: ConnectionQueryResponseData<PoolSnapshotBaseEntity>;
@@ -97,6 +99,7 @@ export type PolkaswapOrderBookOrderEntity = PolkaswapOrderBookOrderBaseEntity & 
 };
 // with connection
 export type PolkaswapOrderBookEntity = PolkaswapOrderBookBaseEntity & {
+  priceExact?: string | null;
   baseAsset: AssetBaseEntity;
   quoteAsset: AssetBaseEntity;
   data: ConnectionQueryResponseData<PolkaswapOrderBookSnapshotBaseEntity>;
@@ -115,6 +118,7 @@ export type PolkaswapVaultEventEntity = PolkaswapVaultEventBaseEntity & {
 };
 // with connection
 export type PolkaswapAssetEntity = AssetBaseEntity & {
+  priceUSDExact?: string | null;
   data: ConnectionQueryResponseData<AssetSnapshotBaseEntity>;
   poolXYK: ConnectionQueryResponseData<PolkaswapPoolXYKBaseEntity>;
 };

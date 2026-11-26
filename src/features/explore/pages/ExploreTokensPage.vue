@@ -65,12 +65,14 @@
         </template>
         <template v-slot="{ row }">
           <formatted-amount
+            v-if="row.priceFormatted != null"
             is-fiat-value
             fiat-default-rounding
             :font-weight-rate="FontWeightRate.MEDIUM"
             :value="row.priceFormatted"
             class="explore-table-item-price"
           ></formatted-amount>
+          <market-unavailable v-else />
         </template>
       </s-table-column>
 
@@ -82,7 +84,8 @@
           </sort-button>
         </template>
         <template v-slot="{ row }">
-          <price-change :value="row.priceChangeDayFP"></price-change>
+          <price-change v-if="row.priceChangeDayFP != null" :value="row.priceChangeDayFP"></price-change>
+          <market-unavailable v-else />
         </template>
       </s-table-column>
       <!-- 7D Price Change -->
@@ -93,7 +96,8 @@
           </sort-button>
         </template>
         <template v-slot="{ row }">
-          <price-change :value="row.priceChangeWeekFP"></price-change>
+          <price-change v-if="row.priceChangeWeekFP != null" :value="row.priceChangeWeekFP"></price-change>
+          <market-unavailable v-else />
         </template>
       </s-table-column>
       <!-- 1D Volume -->
@@ -107,6 +111,7 @@
           <formatted-amount
             is-fiat-value
             :font-weight-rate="FontWeightRate.MEDIUM"
+            fiat-default-rounding
             :value="row.volumeDayFormatted.amount"
             class="explore-table-item-price explore-table-item-amount"
           >
@@ -126,13 +131,16 @@
         </template>
         <template v-slot="{ row }">
           <formatted-amount
+            v-if="row.tvlFormatted != null"
             is-fiat-value
             :font-weight-rate="FontWeightRate.MEDIUM"
+            fiat-default-rounding
             :value="row.tvlFormatted.amount"
             class="explore-table-item-price explore-table-item-amount"
           >
             {{ row.tvlFormatted.suffix }}
           </formatted-amount>
+          <market-unavailable v-else />
         </template>
       </s-table-column>
       <!-- Velocity -->
@@ -152,11 +160,13 @@
         </template>
         <template v-slot="{ row }">
           <formatted-amount
+            v-if="row.velocityFormatted != null"
             :font-weight-rate="FontWeightRate.MEDIUM"
             :value="row.velocityFormatted"
             :integer-only="!row.velocityFormatted.includes(FPNumber.DELIMITERS_CONFIG.decimal)"
             class="explore-table-item-price explore-table-item-amount"
           ></formatted-amount>
+          <market-unavailable v-else />
         </template>
       </s-table-column>
     </s-table>
@@ -174,17 +184,16 @@
 </template>
 
 <script setup lang="ts">
+import MarketUnavailable from '@/shared/ui/MarketUnavailable.vue';
 import { FPNumber } from '@sora-substrate/sdk';
 import { KnownAssets } from '@sora-substrate/sdk/build/assets/consts';
 import { SortDirection } from '@soramitsu-ui/ui/types';
 import { computed, ref, toRef, watch } from 'vue';
 
 import { useExploreTable } from '@/composables/useExploreTable';
-import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useLoading } from '@/composables/useLoading';
 import { createCoalescedAsyncTask } from '@/utils/asyncTask';
 import { useTranslation } from '@/composables/useTranslation';
-import { ZeroStringValue } from '@/consts';
 import { FontWeightRate } from '@/lib/soraneo-wallet/src/consts';
 import { getAssetsSubset } from '@/lib/soraneo-wallet/src/util';
 import { fetchTokensData } from '@/indexer/queries/asset/assets';
@@ -205,8 +214,8 @@ import PriceChange from '@/components/shared/PriceChange.vue';
 import SortButton from '@/components/shared/Button/SortButton.vue';
 
 type TableItem = {
-  price: number;
-  priceFormatted: string;
+  price: number | null;
+  priceFormatted: string | null;
   priceChangeDay?: number;
   priceChangeDayFP?: FPNumber;
   priceChangeWeek?: number;
@@ -248,7 +257,6 @@ defineOptions({
 });
 
 const { t, TranslationConsts } = useTranslation();
-const { getAssetFiatPrice } = useFormattedAmount();
 const parentLoading = toRef(props, 'parentLoading');
 const { loading, withLoading, withParentLoading } = useLoading({ parentLoading });
 const assetsStore = useAssetsStore();
@@ -277,47 +285,24 @@ const whitelistSignature = computed(() => whitelistAssets.value.map((asset) => a
 const currentAssetsFilter = computed(() => settingsStore.assetsFilter as FilterOptions);
 
 const items = computed<TableItem[]>(() => {
-  if (!Object.keys(tokensData.value).length) {
-    return allowedAssets.value.map((asset) => {
-      const price = FPNumber.fromCodecValue(getAssetFiatPrice(asset) ?? ZeroStringValue);
-      const zero = FPNumber.ZERO;
-
-      return {
-        ...asset,
-        price: price.toNumber(),
-        priceFormatted: price.toLocaleString(7),
-        priceChangeDay: zero.toNumber(),
-        priceChangeDayFP: zero,
-        priceChangeWeek: zero.toNumber(),
-        priceChangeWeekFP: zero,
-        volumeDay: zero.toNumber(),
-        volumeDayFormatted: formatAmountWithSuffix(zero),
-        tvl: zero.toNumber(),
-        tvlFormatted: formatAmountWithSuffix(zero),
-        velocity: zero.toNumber(),
-        velocityFormatted: formatVelocity(zero),
-      };
-    });
-  }
-
   return Object.entries(tokensData.value).reduce<TableItem[]>((buffer, [address, tokenData]) => {
     const asset = getAsset(address);
     if (!asset) return buffer;
 
     buffer.push({
       ...asset,
-      price: tokenData.priceUSD.toNumber(),
-      priceFormatted: tokenData.priceUSD.toLocaleString(7),
-      priceChangeDay: tokenData.priceChangeDay.toNumber(),
-      priceChangeDayFP: tokenData.priceChangeDay,
-      priceChangeWeek: tokenData.priceChangeWeek.toNumber(),
-      priceChangeWeekFP: tokenData.priceChangeWeek,
+      price: tokenData.priceUSD?.toNumber(FPNumber.DEFAULT_PRECISION) ?? null,
+      priceFormatted: tokenData.priceUSD?.toLocaleString(FPNumber.DEFAULT_PRECISION) ?? null,
+      priceChangeDay: tokenData.priceUSD ? tokenData.priceChangeDay.toNumber() : undefined,
+      priceChangeDayFP: tokenData.priceUSD ? tokenData.priceChangeDay : undefined,
+      priceChangeWeek: tokenData.priceUSD ? tokenData.priceChangeWeek.toNumber() : undefined,
+      priceChangeWeekFP: tokenData.priceUSD ? tokenData.priceChangeWeek : undefined,
       volumeDay: tokenData.volumeDayUSD.toNumber(),
       volumeDayFormatted: formatAmountWithSuffix(tokenData.volumeDayUSD),
-      tvl: tokenData.tvlUSD.toNumber(),
-      tvlFormatted: formatAmountWithSuffix(tokenData.tvlUSD),
-      velocity: tokenData.velocity.toNumber(),
-      velocityFormatted: formatVelocity(tokenData.velocity),
+      tvl: tokenData.tvlUSD?.toNumber(tokenData.tvlUSD.precision),
+      tvlFormatted: tokenData.tvlUSD ? formatAmountWithSuffix(tokenData.tvlUSD) : undefined,
+      velocity: tokenData.priceUSD ? tokenData.velocity.toNumber() : undefined,
+      velocityFormatted: tokenData.priceUSD ? formatVelocity(tokenData.velocity) : undefined,
     });
 
     return buffer;

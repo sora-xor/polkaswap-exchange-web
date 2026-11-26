@@ -27,7 +27,7 @@ export type OrderBookDealData = {
 export type OrderBookStats = {
   baseAssetReserves?: CodecString;
   quoteAssetReserves?: CodecString;
-  price: FPNumber;
+  price: FPNumber | null;
   priceChange: FPNumber;
   volume: FPNumber;
   status: string;

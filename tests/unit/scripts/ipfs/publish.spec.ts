@@ -188,6 +188,23 @@ describe('isNoSpaceLeftError', () => {
 });
 
 describe('publishDirectoryToIpfs', () => {
+  it.each([
+    ['https://pi.soramitsu.io/ipfs', false],
+    ['https://another.example/ipfs', true],
+  ] as const)('verifies the local pin before selecting gateway discovery for %s', (publicGatewayBaseUrl, announce) => {
+    const calls: string[] = [];
+    publishDirectoryToIpfs('/dist', {
+      publicGatewayBaseUrl,
+      resolveRepoPath: () => '/tmp/ipfs',
+      verifyFeatures: () => calls.push('feature parity'),
+      runCommand: (_command, args) => {
+        calls.push(args.slice(0, 2).join(' '));
+        return { stdout: 'QmPublishedCid\n', stderr: '' };
+      },
+    });
+    expect(calls).toEqual(['feature parity', 'add -Qr', 'pin add', 'pin ls', ...(announce ? ['routing provide'] : [])]);
+  });
+
   it('rejects a feature-incomplete build before any IPFS command or repo lookup', () => {
     const directory = mkdtempSync(join(tmpdir(), 'polkaswap-publish-guard-'));
     const runCommand = vi.fn(() => ({ stdout: '', stderr: '' }));

@@ -36,34 +36,55 @@
               <dt>{{ t('getTs.cardReview.reserved') }}</dt>
               <dd>{{ display(result.ethereumGasReserve) }} ETH</dd>
             </div>
-            <div>
-              <dt>{{ t('getTs.cardReview.convert') }}</dt>
-              <dd>{{ display(result.conversionEth) }} ETH</dd>
-            </div>
-            <div>
-              <dt>{{ t('getTs.cardReview.bridge') }}</dt>
-              <dd>{{ display(result.daiAmount) }} DAI</dd>
-            </div>
-            <div>
-              <dt>{{ t('getTs.cardReview.provider') }}</dt>
-              <dd>{{ display(result.providerFeeUsd, 2) }} USD</dd>
-            </div>
-            <div>
-              <dt>{{ t('getTs.cardReview.conversionGas') }}</dt>
-              <dd>{{ display(result.conversionGasReserve) }} ETH</dd>
-            </div>
-            <div>
-              <dt>{{ t('getTs.cardReview.bridgeGas') }}</dt>
-              <dd>{{ display(result.bridgeGasReserve) }} ETH</dd>
-            </div>
-            <div>
-              <dt>{{ t('getTs.cardReview.conversionFee') }}</dt>
-              <dd>{{ display(result.conversionProviderFee) }} ETH</dd>
-            </div>
-            <div>
-              <dt>{{ t('getTs.cardReview.bridgeFee') }}</dt>
-              <dd>{{ display(result.bridgeDaiFee) }} DAI</dd>
-            </div>
+            <!-- Buy XOR sends the ETH itself to SORA; Get TS converts it to DAI first. -->
+            <template v-if="ethRoute">
+              <div>
+                <dt>{{ t('getTs.cardReview.bridgeEth') }}</dt>
+                <dd>{{ display(result.swapAmount) }} ETH</dd>
+              </div>
+              <div>
+                <dt>{{ t('getTs.cardReview.provider') }}</dt>
+                <dd>{{ display(result.providerFeeUsd, 2) }} USD</dd>
+              </div>
+              <div>
+                <dt>{{ t('getTs.cardReview.bridgeEthGas') }}</dt>
+                <dd>{{ display(result.bridgeGasReserve) }} ETH</dd>
+              </div>
+              <div v-if="result.priceImpact">
+                <dt>{{ t('getTs.cardReview.priceImpact') }}</dt>
+                <dd>{{ display(result.priceImpact, 2) }}%</dd>
+              </div>
+            </template>
+            <template v-else>
+              <div>
+                <dt>{{ t('getTs.cardReview.convert') }}</dt>
+                <dd>{{ display(result.conversionEth) }} ETH</dd>
+              </div>
+              <div>
+                <dt>{{ t('getTs.cardReview.bridge') }}</dt>
+                <dd>{{ display(result.daiAmount) }} DAI</dd>
+              </div>
+              <div>
+                <dt>{{ t('getTs.cardReview.provider') }}</dt>
+                <dd>{{ display(result.providerFeeUsd, 2) }} USD</dd>
+              </div>
+              <div>
+                <dt>{{ t('getTs.cardReview.conversionGas') }}</dt>
+                <dd>{{ display(result.conversionGasReserve) }} ETH</dd>
+              </div>
+              <div>
+                <dt>{{ t('getTs.cardReview.bridgeGas') }}</dt>
+                <dd>{{ display(result.bridgeGasReserve) }} ETH</dd>
+              </div>
+              <div>
+                <dt>{{ t('getTs.cardReview.conversionFee') }}</dt>
+                <dd>{{ display(result.conversionProviderFee) }} ETH</dd>
+              </div>
+              <div>
+                <dt>{{ t('getTs.cardReview.bridgeFee') }}</dt>
+                <dd>{{ display(result.bridgeDaiFee) }} DAI</dd>
+              </div>
+            </template>
             <div>
               <dt>{{ t(`getTs.cardReview.${purpose === 'xor' ? 'nativeSwapFee' : 'nativeTsFees'}`) }}</dt>
               <dd>{{ display(result.nativeFeeReserve) }} XOR</dd>
@@ -74,12 +95,12 @@
             </div>
           </dl>
           <p>{{ t('getTs.cardReview.reserveExplanation') }}</p>
-          <p>{{ t('getTs.cardReview.bridgeExplanation') }}</p>
+          <p>{{ t(ethRoute ? 'getTs.cardReview.bridgeEthExplanation' : 'getTs.cardReview.bridgeExplanation') }}</p>
           <p>{{ t('getTs.cardReview.limits') }}</p>
         </details>
       </template>
       <p v-else-if="result?.reason" class="card-readiness__blocked">
-        {{ t(`getTs.cardReview.errors.${result.reason}`) }}
+        {{ t(`getTs.cardReview.errors.${errorKey(result.reason)}`) }}
       </p>
     </div>
     <button v-if="!busy" class="card-readiness__refresh" type="button" :disabled="paused" @click="check">
@@ -91,7 +112,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, useId, watch } from 'vue';
 import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { DAI } from '@sora-substrate/sdk/build/assets/consts';
+import { DAI, ETH } from '@sora-substrate/sdk/build/assets/consts';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import { useSettingsStore } from '@/stores/settings';
 import { useWalletStore } from '@/stores/wallet';
@@ -105,12 +126,19 @@ import {
   GET_TS_HASHI_DAI_BRIDGE,
   requestGetTsCardReadiness,
   type GetTsCardReadiness,
+  type GetTsCardReadinessReason,
 } from '@/features/misc/lib/getTsCardReadiness';
 
-/** Wallet-bound read-only pre-payment review. Its ephemeral permission expires; it never opens a provider order. */
+/**
+ * Wallet-bound read-only pre-payment review. Its ephemeral permission expires; it never opens a provider order.
+ * Buy XOR's route sends the delivered ETH to SORA; Get TS converts it to DAI first.
+ */
 const props = withDefaults(defineProps<{ amount: string; purpose?: GetTsPurpose; paused?: boolean }>(), {
   purpose: 'ts',
 });
+/** Native ETH on the Hashi bridge has no token contract. */
+const NATIVE_ETH = '0x0000000000000000000000000000000000000000';
+const ethRoute = computed(() => props.purpose === 'xor');
 const emit = defineEmits<{ checked: [result: GetTsCardReadiness] }>();
 const { t } = useTranslation();
 const settings = useSettingsStore();
@@ -148,6 +176,10 @@ let autoTimer: ReturnType<typeof setTimeout> | undefined;
 let disposed = false;
 let checkedContext: (() => boolean) | undefined;
 
+/** The ETH route has no conversion, and its bridge and liquidity checks are about ETH. */
+function errorKey(reason: GetTsCardReadinessReason): string {
+  return ethRoute.value && ['budget', 'bridge', 'liquidity'].includes(reason) ? `${reason}Eth` : reason;
+}
 /** Rounds only presentation. Small nonzero costs remain visible rather than appearing free. */
 function display(value = '0', decimals = 6): string {
   const exact = new FPNumber(value);
@@ -204,12 +236,12 @@ async function check(): Promise<void> {
         chain!.query.ethBridge.bridgeContractAddress(0),
         provider.getCode(GET_TS_HASHI_DAI_BRIDGE),
       ]);
-      const dai = registered[DAI.address];
+      const asset = registered[ethRoute.value ? ETH.address : DAI.address];
       return (
         current() &&
-        dai?.address?.toLowerCase() === GET_TS_CARD_DAI &&
-        dai.decimals === 18 &&
-        dai.assetKind === 'Sidechain' &&
+        asset?.address?.toLowerCase() === (ethRoute.value ? NATIVE_ETH : GET_TS_CARD_DAI) &&
+        asset.decimals === 18 &&
+        asset.assetKind === 'Sidechain' &&
         status.toString() === 'Initialized' &&
         contract.toString().toLowerCase() === GET_TS_HASHI_DAI_BRIDGE &&
         /^0x[0-9a-f]{20,}$/i.test(code)

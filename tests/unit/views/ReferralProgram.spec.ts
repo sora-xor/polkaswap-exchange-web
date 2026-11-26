@@ -438,3 +438,38 @@ describe('ReferralProgram.vue', () => {
     wrapper.unmount();
   });
 });
+
+it('shows unavailable rewards and no per-user fabricated zero when the query is denied', async () => {
+  loginState.value = true;
+  referralsStoreMock.referralRewards = null as any;
+  const wrapper = buildWrapper();
+  await flushPromises();
+  expect(wrapper.text()).toContain('footer.statistics.title.unavailable');
+  expect(wrapper.find('.rewards-value').exists()).toBe(false);
+  expect(wrapper.find('.invited-users-container').exists()).toBe(false);
+  wrapper.unmount();
+});
+
+const capabilityFixture = vi.hoisted(() => ({ allowed: true }));
+vi.mock('@/indexer/queries/capabilities', async () => {
+  const { allowedLegacyCapabilities } = await import('@tests/fixtures/entitlementCapabilities');
+  return {
+    requireEntitlements: async (indexer = {}) => {
+      if (!capabilityFixture.allowed) throw Error('uncertified');
+      return { indexer, capabilities: allowedLegacyCapabilities };
+    },
+  };
+});
+it('hides cached referral rewards before admission and never queries them when denied', async () => {
+  capabilityFixture.allowed = false;
+  loginState.value = true;
+  getAccountReferralRewards.mockClear();
+  referralsStoreMock.referralRewards = { rewards: new FPNumber(777), invitedUserRewards: {} };
+  const wrapper = buildWrapper();
+  expect(wrapper.find('.rewards-value').exists()).toBe(false);
+  await flushPromises();
+  expect(getAccountReferralRewards).not.toHaveBeenCalled();
+  expect(wrapper.text()).toContain('footer.statistics.title.unavailable');
+  wrapper.unmount();
+  capabilityFixture.allowed = true;
+});

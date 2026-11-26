@@ -58,19 +58,23 @@
         </template>
         <template v-slot="{ row }">
           <formatted-amount
+            v-if="row.priceFormatted != null"
             fiat-default-rounding
             :font-weight-rate="FontWeightRate.MEDIUM"
             :integer-only="isAmountValueIntegerOnly(row.priceFormatted)"
             :value="row.priceFormatted"
             class="explore-table-item-price"
           ></formatted-amount>
+          <market-unavailable v-else />
           <formatted-amount
+            v-if="row.priceUSDFormatted != null"
             is-fiat-value
             fiat-default-rounding
             :font-weight-rate="FontWeightRate.MEDIUM"
             :value="row.priceUSDFormatted"
             class="explore-table-item-price"
           ></formatted-amount>
+          <market-unavailable v-else />
         </template>
       </s-table-column>
       <!-- 1D Price Change -->
@@ -81,7 +85,8 @@
           </sort-button>
         </template>
         <template v-slot="{ row }">
-          <price-change :value="row.priceChangeDayFP"></price-change>
+          <price-change v-if="row.priceChangeDayFP != null" :value="row.priceChangeDayFP"></price-change>
+          <market-unavailable v-else />
         </template>
       </s-table-column>
       <!-- 1D Volume -->
@@ -95,6 +100,7 @@
           <formatted-amount
             is-fiat-value
             :font-weight-rate="FontWeightRate.MEDIUM"
+            fiat-default-rounding
             :value="row.volumeDayFormatted.amount"
             class="explore-table-item-price explore-table-item-amount"
           >
@@ -114,13 +120,16 @@
         </template>
         <template v-slot="{ row }">
           <formatted-amount
+            v-if="row.tvlFormatted != null"
             is-fiat-value
             :font-weight-rate="FontWeightRate.MEDIUM"
+            fiat-default-rounding
             :value="row.tvlFormatted.amount"
             class="explore-table-item-price explore-table-item-amount"
           >
             {{ row.tvlFormatted.suffix }}
           </formatted-amount>
+          <market-unavailable v-else />
         </template>
       </s-table-column>
     </s-table>
@@ -138,6 +147,8 @@
 </template>
 
 <script setup lang="ts">
+import MarketUnavailable from '@/shared/ui/MarketUnavailable.vue';
+import { valueAtMarketPrice } from '@/lib/soraneo-wallet/src/services/indexer/marketPrice';
 import { FPNumber } from '@sora-substrate/sdk';
 import { KnownAssets } from '@sora-substrate/sdk/build/assets/consts';
 import { SortDirection } from '@soramitsu-ui/ui/types';
@@ -154,7 +165,7 @@ import { useAssetsStore } from '@/stores/assets';
 import { useSettingsStore } from '@/stores/settings';
 import type { AmountWithSuffix } from '@/types/formats';
 import type { OrderBookWithStats } from '@/types/orderBook';
-import { formatAmountWithSuffix, isAmountValueIntegerOnly, sortPools, showMostFittingValue } from '@/utils';
+import { formatAmountWithSuffix, isAmountValueIntegerOnly, sortPools } from '@/utils';
 
 import type { Asset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import WalletComponentTokenAddress from '@/lib/soraneo-wallet/src/components/TokenAddress.vue';
@@ -168,15 +179,15 @@ type TableItem = {
   name: string;
   baseAsset: Asset;
   targetAsset: Asset;
-  price: number;
-  priceFormatted: string;
-  priceUSDFormatted: string;
-  priceChangeDay: number;
-  priceChangeDayFP: FPNumber;
+  price: number | null;
+  priceFormatted: string | null;
+  priceUSDFormatted: string | null;
+  priceChangeDay: number | null;
+  priceChangeDayFP: FPNumber | null;
   volumeDay: number;
   volumeDayFormatted: AmountWithSuffix;
-  tvl: number;
-  tvlFormatted: AmountWithSuffix;
+  tvl: number | null;
+  tvlFormatted: AmountWithSuffix | null;
 };
 
 const props = withDefaults(
@@ -239,26 +250,33 @@ const prefilteredItems = computed<TableItem[]>(() => {
     if (!(baseAsset && targetAsset)) return buffer;
 
     const name = `${baseAsset.symbol}-${targetAsset.symbol}`;
-    const fpBaseAssetPrice = FPNumber.fromCodecValue(getAssetFiatPrice(baseAsset) ?? 0);
-    const fpQuoteAssetPrice = FPNumber.fromCodecValue(getAssetFiatPrice(targetAsset) ?? 0);
+    const baseQuote = getAssetFiatPrice(baseAsset);
+    const targetQuote = getAssetFiatPrice(targetAsset);
+    const fpBaseAssetPrice = baseQuote == null ? null : FPNumber.fromCodecValue(baseQuote);
+    const fpQuoteAssetPrice = targetQuote == null ? null : FPNumber.fromCodecValue(targetQuote);
     const fpBaseAssetReserves = FPNumber.fromCodecValue(baseAssetReserves ?? 0, baseAsset.decimals);
     const fpQuoteAssetReserves = FPNumber.fromCodecValue(quoteAssetReserves ?? 0, targetAsset.decimals);
-    const fpTvl = fpBaseAssetPrice.mul(fpBaseAssetReserves).add(fpQuoteAssetPrice.mul(fpQuoteAssetReserves));
-    const fpPriceUSD = price.mul(fpQuoteAssetPrice);
+    const baseValue = valueAtMarketPrice(fpBaseAssetReserves, fpBaseAssetPrice);
+    const quoteValue = valueAtMarketPrice(fpQuoteAssetReserves, fpQuoteAssetPrice);
+    const fpTvl =
+      baseValue && quoteValue
+        ? new FPNumber(baseValue.toString(), Math.max(baseValue.precision, quoteValue.precision)).add(quoteValue)
+        : null;
+    const fpPriceUSD = price && valueAtMarketPrice(price, fpQuoteAssetPrice);
 
     buffer.push({
       name,
       baseAsset,
       targetAsset,
-      price: price.toNumber(),
-      priceFormatted: showMostFittingValue(price),
-      priceUSDFormatted: fpPriceUSD.toLocaleString(),
-      priceChangeDay: priceChange.toNumber(),
-      priceChangeDayFP: priceChange,
+      price: price?.toNumber(price.precision) ?? null,
+      priceFormatted: price?.toLocaleString(price.precision) ?? null,
+      priceUSDFormatted: fpPriceUSD?.toLocaleString(fpPriceUSD.precision) ?? null,
+      priceChangeDay: price ? priceChange.toNumber() : null,
+      priceChangeDayFP: price ? priceChange : null,
       volumeDay: volume.toNumber(),
       volumeDayFormatted: formatAmountWithSuffix(volume),
-      tvl: fpTvl.toNumber(),
-      tvlFormatted: formatAmountWithSuffix(fpTvl),
+      tvl: fpTvl?.toNumber(fpTvl.precision) ?? null,
+      tvlFormatted: fpTvl ? formatAmountWithSuffix(fpTvl) : null,
     });
 
     return buffer;
