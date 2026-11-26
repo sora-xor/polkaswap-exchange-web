@@ -3,6 +3,7 @@ import { FPNumber } from '@sora-substrate/sdk';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import TonswapBurnStatus from '@/features/misc/components/burn/TonswapBurnStatus.vue';
+import { figureEm } from '@/features/misc/lib/burnFigureFit';
 import statusSource from '@/features/misc/components/burn/TonswapBurnStatus.vue?raw';
 
 vi.mock('@/composables/useTranslation', () => ({
@@ -99,6 +100,22 @@ describe('TonswapBurnStatus', () => {
 
     await status.get('.burn-status__dismiss').trigger('click');
     expect(status.emitted('dismiss')).toHaveLength(1);
+  });
+
+  it('passes the headline width to the layout, so a seven-digit reservation can shrink to fit beside its unit', () => {
+    const reserved = mountStatus({ phase: 'updated', reward: new FPNumber('1234567.891234') });
+    expect(reserved.get('.burn-status__value').text()).toBe('+1,234,567.8912');
+    const reservedStyle = reserved.get('.burn-status__figure').attributes('style');
+    expect(reservedStyle).toContain(`--fit-em: ${figureEm('+1,234,567.8912')}`);
+    expect(reservedStyle).not.toContain('--fit-unit');
+    reserved.unmount();
+
+    // The burned amount is shown exactly as sent, beside the wider "XOR".
+    const pending = mountStatus({ phase: 'included', amount: '123456.75', reward: new FPNumber('10') });
+    expect(pending.get('.burn-status__value').text()).toBe('123456.75');
+    const pendingStyle = pending.get('.burn-status__figure').attributes('style');
+    expect(pendingStyle).toContain(`--fit-em: ${figureEm('123456.75')}`);
+    expect(pendingStyle).toContain('--fit-unit: 44px');
   });
 
   it('plays one burst of sparks when the reservation arrives and removes it afterwards', async () => {

@@ -160,6 +160,108 @@ describe('finalized public burn activity', () => {
     wrapper.unmount();
   });
 
+  describe('keyboard access to totals wider than the card', () => {
+    let wide = true;
+    /** Every observer the component created, with the elements it watches. */
+    let observers: { callback: () => void; targets: Element[] }[] = [];
+    let restore: (() => void)[] = [];
+
+    beforeEach(() => {
+      wide = true;
+      observers = [];
+      vi.stubGlobal(
+        'ResizeObserver',
+        class {
+          entry: { callback: () => void; targets: Element[] };
+          constructor(callback: () => void) {
+            this.entry = { callback, targets: [] };
+            observers.push(this.entry);
+          }
+          observe(target: Element) {
+            this.entry.targets.push(target);
+          }
+          unobserve() {}
+          disconnect() {}
+        }
+      );
+      const scrollWidth = vi.spyOn(Element.prototype, 'scrollWidth', 'get').mockImplementation(function (
+        this: Element
+      ) {
+        return wide && this.classList.contains('public-burn__scroll') ? 420 : 300;
+      });
+      const clientWidth = vi.spyOn(Element.prototype, 'clientWidth', 'get').mockReturnValue(300);
+      restore = [() => scrollWidth.mockRestore(), () => clientWidth.mockRestore()];
+    });
+    afterEach(() => restore.forEach((undo) => undo()));
+
+    /** Resizes as each watched box would report it. */
+    function resizeAll(): void {
+      observers.forEach((observer) => observer.callback());
+    }
+
+    it('names the scrolling area as a group and makes it a stop only while the totals overflow', async () => {
+      request.mockResolvedValue(response(base));
+      const wrapper = mount(PublicBurnActivity, { attachTo: document.body });
+      await flushPromises();
+      await flushPromises();
+      const area = wrapper.get('[data-testid="public-burn-scroll"]');
+      const table = area.get('table');
+      // Both the area (the card narrows) and the table (the numbers or the font widen) are watched.
+      const watched = observers.flatMap((observer) => observer.targets);
+      expect(watched).toContain(area.element);
+      expect(watched).toContain(table.element);
+      expect(area.attributes()).toMatchObject({
+        tabindex: '0',
+        role: 'group',
+        'aria-labelledby': 'public-burn-title',
+      });
+      // The section around it stays the one region with this name.
+      expect(wrapper.get('section').attributes('aria-labelledby')).toBe('public-burn-title');
+
+      // The card widens (or the numbers shrink): the area no longer scrolls and leaves the tab order.
+      wide = false;
+      for (const observer of observers) {
+        observer.callback();
+        await flushPromises();
+        expect(area.attributes('tabindex')).toBeUndefined();
+        wide = true;
+        resizeAll();
+        await flushPromises();
+        expect(area.attributes('tabindex')).toBe('0');
+        wide = false;
+      }
+      resizeAll();
+      await flushPromises();
+      expect(area.attributes('tabindex')).toBeUndefined();
+      expect(area.attributes('role')).toBeUndefined();
+      expect(area.attributes('aria-labelledby')).toBeUndefined();
+      wrapper.unmount();
+    });
+
+    it('keeps the stop, its name and its focus while focused, and drops it once focus leaves', async () => {
+      request.mockResolvedValue(response(base));
+      const wrapper = mount(PublicBurnActivity, { attachTo: document.body });
+      await flushPromises();
+      await flushPromises();
+      const area = wrapper.get<HTMLElement>('[data-testid="public-burn-scroll"]');
+      area.element.focus();
+      await area.trigger('focus');
+      expect(document.activeElement).toBe(area.element);
+
+      wide = false;
+      resizeAll();
+      await flushPromises();
+      expect(area.attributes()).toMatchObject({ tabindex: '0', role: 'group', 'aria-labelledby': 'public-burn-title' });
+      expect(document.activeElement).toBe(area.element);
+
+      area.element.blur();
+      await area.trigger('blur');
+      expect(area.attributes('tabindex')).toBeUndefined();
+      expect(area.attributes('role')).toBeUndefined();
+      wrapper.unmount();
+    });
+  });
+
   it('ignores a previous endpoint that finishes after the current endpoint', async () => {
     let completeFirst!: (result: ReturnType<typeof response>) => void;
     request.mockImplementationOnce(

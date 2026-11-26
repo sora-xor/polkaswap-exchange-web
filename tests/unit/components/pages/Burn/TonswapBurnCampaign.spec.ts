@@ -6,6 +6,7 @@ import SForm from '@/lib/soramitsu-ui/components/Form/SForm.vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import tonswapMarkUrl from '@/assets/img/tonswap-mark.svg?url';
+import { figureEm } from '@/features/misc/lib/burnFigureFit';
 import { createTonswapXorBurnRemark, TONSWAP_START_BLOCK } from '@/features/misc/lib/tonswapBurn';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { TransactionStatus, type HistoryItem } from '@sora-substrate/sdk/build/types';
@@ -788,6 +789,25 @@ describe('Tonswap burn campaign', () => {
     await nextTick();
     expect(wrapper.findComponent({ name: 'DialogBase' }).get('input').element.value).toBe('2');
     expect(mocks.burn).not.toHaveBeenCalled();
+  });
+
+  it('passes each estimate width to the layout, so a seven-digit estimate can shrink to fit beside its unit', async () => {
+    const wrapper = await setup();
+    await wrapper.get('#tonswap-preview-amount').setValue('25000');
+    const out = wrapper.get('.tonswap-burn__out');
+    const shown = out.get('strong').text();
+    // ≈ and at least seven whole digits plus four decimals: a reward of a million TS or more.
+    expect(shown.startsWith('≈ ')).toBe(true);
+    expect(shown.replace(/\D/g, '').length).toBeGreaterThanOrEqual(11);
+    expect(out.attributes('style')).toContain(`--fit-em: ${figureEm(shown)}`);
+
+    wrapper.vm.openDialog();
+    wrapper.vm.setAmount('25000');
+    await nextTick();
+    const row = wrapper.get('.tonswap-dialog__estimate > div');
+    const reviewed = row.get('strong').text();
+    expect(reviewed.replace(/\D/g, '').length).toBeGreaterThanOrEqual(13);
+    expect(row.attributes('style')).toContain(`--fit-em: ${figureEm(reviewed)}`);
   });
 
   it('restores a valid saved amount after funding and still allows burning when estimates are unavailable', async () => {
@@ -1812,6 +1832,39 @@ describe('Tonswap burn form, status banner and folded reading', () => {
       // The value handed to the amount field stays a plain decimal string.
       await chips[2].trigger('click');
       expect(wrapper.get<HTMLInputElement>('#tonswap-preview-amount').element.value).toBe('1000');
+    } finally {
+      Object.assign(FPNumber.DELIMITERS_CONFIG, delimiters);
+      settings.language = 'en';
+      settings.percentFormat = null;
+    }
+  });
+
+  it('rewrites the card and review estimates in a language applied while the quote stays the same', async () => {
+    const delimiters = { ...FPNumber.DELIMITERS_CONFIG };
+    try {
+      const wrapper = await setup();
+      await wrapper.get('#tonswap-preview-amount').setValue('25000');
+      wrapper.vm.openDialog();
+      wrapper.vm.setAmount('25000');
+      await nextTick();
+      const card = () => wrapper.get('.tonswap-burn__out strong').text();
+      const review = () => wrapper.get('.tonswap-dialog__estimate strong').text();
+      const english = { card: card(), review: review() };
+      expect(english.card).toMatch(/^≈ \d{1,3}(,\d{3})+(\.\d+)?$/);
+      expect(english.review).toMatch(/^\d{1,3}(,\d{3})+(\.\d+)?$/);
+
+      FPNumber.DELIMITERS_CONFIG.thousand = '.';
+      FPNumber.DELIMITERS_CONFIG.decimal = ',';
+      settings.language = 'de';
+      settings.percentFormat = new Intl.NumberFormat('de', { style: 'percent' });
+      await nextTick();
+
+      expect(card()).toMatch(/^≈ \d{1,3}(\.\d{3})+(,\d+)?$/);
+      expect(review()).toMatch(/^\d{1,3}(\.\d{3})+(,\d+)?$/);
+      // Same digits, new marks: only the presentation changed.
+      expect(card().replace(/\D/g, '')).toBe(english.card.replace(/\D/g, ''));
+      expect(review().replace(/\D/g, '')).toBe(english.review.replace(/\D/g, ''));
+      expect(wrapper.get('.tonswap-burn__out').attributes('style')).toContain(`--fit-em: ${figureEm(card())}`);
     } finally {
       Object.assign(FPNumber.DELIMITERS_CONFIG, delimiters);
       settings.language = 'en';

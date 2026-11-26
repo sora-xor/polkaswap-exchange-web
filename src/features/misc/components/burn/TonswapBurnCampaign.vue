@@ -78,6 +78,7 @@
             <p
               class="tonswap-burn__out"
               :class="{ 'tonswap-burn__out--empty': !previewQuote }"
+              :style="{ '--fit-em': figureEm(previewOutput) }"
               :title="previewQuote ? `${format(previewQuote.reward, 6)} TS` : undefined"
             >
               <strong :key="previewOutput">{{ previewOutput }}</strong>
@@ -366,9 +367,9 @@
         />
         <div class="tonswap-dialog__estimate" aria-live="polite">
           <span>{{ t('burnPage.tonswap.estimatedReward') }}</span>
-          <div>
+          <div :style="{ '--fit-em': figureEm(dialogEstimate) }">
             <burn-logo-fire class="tonswap-dialog__fire" variant="tonswap" :animate="false" /><strong>{{
-              quote ? format(quote.reward, 6) : '—'
+              dialogEstimate
             }}</strong
             ><span>TS</span>
           </div>
@@ -427,6 +428,7 @@ import { useTranslation } from '@/composables/useTranslation';
 import { SoraNetwork } from '@/consts';
 import { formatBurnAmount, isSameSoraAddress } from '@/features/misc/lib/burnCampaigns';
 import { isExcludedXorBurnAddress } from '@/features/misc/lib/burnEligibility';
+import { figureEm } from '@/features/misc/lib/burnFigureFit';
 import { readTonswapIntent } from '@/features/misc/lib/tonswapOnboarding';
 import { createTonswapReceipt, parseTonswapPreviewAmount } from '@/features/misc/lib/tonswapReceipt';
 import { trackTonswapStep } from '@/features/misc/lib/tonswapTelemetry';
@@ -654,20 +656,30 @@ const statusReward = computed(() => {
   return loadFailed.value ? null : parseReceiptAmount(receipt.estimate);
 });
 /**
- * Quick-amount labels in the app's number format. The formatter takes its delimiters from the app language, which
- * is applied after this card first renders, so the labels follow the store's locale state instead of being
- * computed once ("1,000" stayed on screen in German).
+ * Makes a formatting computed depend on the applied language. The formatter takes its delimiters from the app
+ * language, which is not reactive and is applied after this card first renders, so a computed that formats numbers
+ * must also read the store's locale state or it keeps the old delimiters ("1,000" stayed on screen in German).
  */
-const quickAmounts = computed(() => {
+function trackNumberFormat(): void {
   // Both are written each time a language is applied, after the delimiters are set.
   void settings.language;
   void settings.percentFormat;
+}
+/** Quick-amount labels in the app's number format. */
+const quickAmounts = computed(() => {
+  trackNumberFormat();
   return QUICK_AMOUNTS.map((value) => ({ value, label: format(new FPNumber(value), 0) }));
 });
 /** The estimate beside the amount: a dash while there is an amount but no verified campaign data. */
 const previewOutput = computed(() => {
+  trackNumberFormat();
   if (previewQuote.value) return `≈ ${format(previewQuote.value.reward, 4)}`;
   return parsedPreviewAmount.value ? '—' : '0';
+});
+/** The estimate in the review dialog, with the extra precision the user reviews before signing. */
+const dialogEstimate = computed(() => {
+  trackNumberFormat();
+  return quote.value ? format(quote.value.reward, 6) : '—';
 });
 
 /** Formats exact token values only for display. */
@@ -1608,9 +1620,13 @@ defineExpose({
       color: #ffffff;
     }
   }
+  // The estimate and its unit share one line. The line measures its own width and the template passes the
+  // estimate's width in em as --fit-em (see burnFigureFit.ts), so a long estimate, up to the campaign's 8-digit
+  // maximum, gets a smaller font instead of breaking mid-number or pushing the unit onto a line of its own.
   &__out {
+    --fit-max: 30px;
+    container-type: inline-size;
     display: flex;
-    flex-wrap: wrap;
     align-items: baseline;
     gap: 0 8px;
     min-height: 44px;
@@ -1620,12 +1636,16 @@ defineExpose({
       display: inline-block;
       min-width: 0;
       color: var(--s-color-base-content-primary);
-      font-size: 30px;
+      // The width left beside the gap and the 15px "TS" (27px), divided by the estimate's width in em.
+      font-size: clamp(14px, calc((100cqi - 32px) / var(--fit-em, 1)), var(--fit-max));
       font-weight: 600;
       line-height: 44px;
-      overflow-wrap: anywhere;
+      white-space: nowrap;
       direction: ltr;
       unicode-bidi: isolate;
+    }
+    .tonswap-burn__unit {
+      flex: none;
     }
     &--empty strong {
       color: var(--s-color-base-content-tertiary);
@@ -1968,13 +1988,15 @@ defineExpose({
     font-size: 12px;
     line-height: 1.5;
   }
+  // The two amounts sit side by side while both fit whole with their units; on a narrow record the second one moves
+  // below the first instead of its unit wrapping away from the number.
   dl.tonswap-burn__record-amounts {
-    display: grid;
-    // Keep native CSS minmax separate from the shared Sass breakpoint helper.
-    grid-template-columns: #{'repeat(2, minmax(0, 1fr))'};
+    display: flex;
+    flex-wrap: wrap;
     gap: 12px;
     margin: 0;
     > div {
+      flex: 1 1 auto;
       min-width: 0;
     }
     dt {
@@ -1991,7 +2013,6 @@ defineExpose({
     }
     dd {
       display: flex;
-      flex-wrap: wrap;
       align-items: baseline;
       column-gap: 4px;
       margin: 2px 0 0;
@@ -2284,9 +2305,11 @@ defineExpose({
     grid-column: 1 / -1;
     margin-top: 0;
   }
-  .tonswap-burn__field input,
-  .tonswap-burn__out strong {
+  .tonswap-burn__field input {
     font-size: 26px;
+  }
+  .tonswap-burn__out {
+    --fit-max: 26px;
   }
   .tonswap-stat--rate .tonswap-stat__value {
     font-size: 34px;
@@ -2364,7 +2387,10 @@ defineExpose({
       font-size: 12px;
       color: var(--s-color-base-content-secondary);
     }
+    // Like the card's estimate, the row measures its own width and the template passes the estimate's width in em
+    // as --fit-em: a long estimate gets a smaller font beside the mark and its unit instead of breaking mid-number.
     > div {
+      container: tonswap-estimate / inline-size;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -2372,21 +2398,35 @@ defineExpose({
       min-width: 0;
     }
     .tonswap-dialog__fire {
-      flex: 0 0 96px;
-      width: 96px;
-      height: 96px;
+      --fit-mark: 96px;
+      flex: 0 0 var(--fit-mark);
+      width: var(--fit-mark);
+      height: var(--fit-mark);
     }
     strong {
+      --fit-mark: 96px;
       min-width: 0;
-      font-size: clamp(24px, 6vw, 32px);
+      // The row less the mark, both gaps and the 17px "TS" (42px), divided by the estimate's width in em. The upper
+      // bound is the dialog's original responsive size, so a short estimate looks as it did before.
+      font-size: clamp(14px, calc((100cqi - var(--fit-mark) - 46px) / var(--fit-em, 1)), clamp(24px, 6vw, 32px));
       font-weight: 600;
+      // The width in em is measured for tabular figures; proportional ones are wider.
+      font-variant-numeric: tabular-nums;
       letter-spacing: -0.6px;
       line-height: 1.2;
-      overflow-wrap: anywhere;
+      white-space: nowrap;
     }
     div > span {
+      flex: none;
       font-size: 17px;
       font-weight: 500;
+    }
+  }
+  // A phone-width dialog keeps the mark but makes it smaller, so an 8-digit estimate still fits on one line.
+  @container tonswap-estimate (max-width: 359px) {
+    .tonswap-dialog__estimate .tonswap-dialog__fire,
+    .tonswap-dialog__estimate strong {
+      --fit-mark: 48px;
     }
   }
   .tonswap-dialog__fee {

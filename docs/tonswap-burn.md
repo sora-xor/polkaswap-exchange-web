@@ -13,7 +13,7 @@ A qualifying transaction is a successful, finalized, atomic
 these two calls in this order. Its public marker is:
 
 ```json
-{"app":"polkaswap","kind":"tonswap-xor-burn","version":1}
+{ "app": "polkaswap", "kind": "tonswap-xor-burn", "version": 1 }
 ```
 
 The marker has exactly these fields and values. A standalone remark, non-atomic
@@ -187,7 +187,21 @@ same rules serve a phone, the Burn page and the 464px card inside Get TS:
   default. From 760px of card width they sit under the form, beside the numbers.
 - **Your burn history.** One compact record per burn. The receipt notice is
   shown once for the list, and the hash is one line (the copy button gives all
-  of it).
+  of it). A record's two amounts sit side by side while both fit whole with
+  their units; on a narrow record the second moves below the first.
+
+**Long numbers.** A number never breaks mid-digit and its unit stays on its line.
+The card estimate, the review dialog estimate and the banner headline measure
+their own line (`container-type: inline-size`) and receive the figure's width in
+em as `--fit-em` from `figureEm` (`src/features/misc/lib/burnFigureFit.ts`, Sora
+widths measured in Chromium and WebKit). The CSS divides the room beside the
+unit by it, between 14px and the usual size, so the campaign's largest values
+(48,217,317.5 TS, 8 digits) still fit a 320px phone. On a dialog narrower than
+360px the decorative mark shrinks to 48px. Formatted estimates re-render when the
+language changes (`trackNumberFormat`), because the formatter's delimiters are
+not reactive. Only an exact burned XOR amount with
+many decimals, as MAX can produce, may still wrap in the banner on the narrowest
+phones, rather than being cut.
 
 ### Burn status banner
 
@@ -230,7 +244,12 @@ layout rules are pinned in `tests/unit/features/misc/burnLayout.source.spec.ts`.
 `PublicBurnActivity.vue` keeps the recent interval and the campaign history as
 two separate tables. Amounts and block numbers are grouped for reading with
 `groupExactDecimal`, which works on the decimal string, so no digit is rounded;
-the untouched amount is in the cell's `title`.
+the untouched amount is in the cell's `title`. A table wider than its card
+scrolls inside its own area. While it overflows, that area is a keyboard stop
+(`tabindex="0"`, `role="group"` named by the table heading, since the section
+around it is already the region with that name) with the app's focus ring, so
+arrow keys scroll it. When it fits again it leaves the tab order, but not while
+it has focus.
 
 The SOLSWAP card shows a thin moving line while its totals load (`aria-busy`
 on the form) instead of a mask. The sentence about unavailable reward totals is

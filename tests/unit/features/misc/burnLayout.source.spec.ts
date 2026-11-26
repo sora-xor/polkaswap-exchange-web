@@ -15,6 +15,21 @@ function sassBlocks(source: string): string[] {
     .map(([, , css]) => css);
 }
 
+/** The first rule that opens with `head {`, up to its matching closing brace (nested rules included). */
+function ruleBody(source: string, head: string): string {
+  const start = source.indexOf(`${head} {`);
+  if (start < 0) return '';
+  let depth = 0;
+  for (let i = source.indexOf('{', start); i < source.length; i += 1) {
+    if (source[i] === '{') depth += 1;
+    else if (source[i] === '}' && --depth === 0) return source.slice(start, i + 1);
+  }
+  return '';
+}
+
+/** A figure sized by its own line: the line width less the unit's room, divided by the figure's width in em. */
+const FIT_FONT = /font-size: clamp\(14px, calc\(\(100cqi - [^/]+\) \/ var\(--fit-em, 1\)\), [^;]+\);/;
+
 /** What the Sass compiler sees as a function call: comments and escaped `#{'…'}` strings are not calls. */
 function sassCalls(css: string): string {
   return css
@@ -54,7 +69,10 @@ describe('burn page layout sources', () => {
   });
 
   it('measures the campaign card by its own width and keeps the dialog outside the measured box', () => {
-    expect((campaignSource.match(/container-type: inline-size;/g) ?? []).length).toBe(1);
+    // The content is the one named card container; the estimate line also measures itself to fit its number.
+    expect((campaignSource.match(/container-name: tonswap;/g) ?? []).length).toBe(1);
+    expect((campaignSource.match(/container-type: inline-size;/g) ?? []).length).toBe(2);
+    expect(ruleBody(campaignSource, '&__out')).toContain('container-type: inline-size;');
     expect(campaignSource).toMatch(/&__content \{[\s\S]*?container-name: tonswap;[\s\S]*?container-type: inline-size;/);
     expect(campaignSource).toMatch(/@container tonswap \(min-width: 620px\)/);
     expect(campaignSource).toMatch(/@container tonswap \(min-width: 760px\)/);
@@ -125,15 +143,82 @@ describe('burn page layout sources', () => {
     expect(statusSource.match(wrapped)?.length).toBe(1);
   });
 
-  it('shrinks the reserved-TS headline on the narrowest card and gives the banner buttons a white focus ring', () => {
-    expect(statusSource).toMatch(
-      /@container tonswap \(max-width: 279px\) \{[\s\S]*?\.burn-status__value \{\s*font-size: 20px;/
+  it('fits the card estimate, up to the 8-digit campaign maximum, on one line beside its unit', () => {
+    expect(campaignSource).toContain(`:style="{ '--fit-em': figureEm(previewOutput) }"`);
+    const line = ruleBody(campaignSource, '&__out');
+    expect(line).toContain('--fit-max: 30px;');
+    expect(line).not.toContain('flex-wrap');
+    const value = ruleBody(line, 'strong');
+    expect(value).toMatch(FIT_FONT);
+    expect(value).toContain('white-space: nowrap;');
+    expect(value).not.toContain('overflow-wrap');
+    expect(ruleBody(line, '.tonswap-burn__unit')).toContain('flex: none;');
+    // A phone card caps the estimate at 26px through the same formula instead of a fixed size.
+    const phone = ruleBody(campaignSource, '@container tonswap (max-width: 479px)');
+    expect(phone).toMatch(/\.tonswap-burn__out \{\s*--fit-max: 26px;/);
+    expect(phone).not.toMatch(/\.tonswap-burn__out strong/);
+  });
+
+  it('fits the review dialog estimate beside a smaller mark on a phone-width dialog', () => {
+    expect(campaignSource).toContain(`<div :style="{ '--fit-em': figureEm(dialogEstimate) }">`);
+    const estimate = ruleBody(campaignSource, '.tonswap-dialog__estimate');
+    expect(estimate).toContain('container: tonswap-estimate / inline-size;');
+    const value = ruleBody(estimate, 'strong');
+    // A short estimate keeps the dialog's original responsive size as the upper bound.
+    expect(value).toMatch(
+      /font-size: clamp\(14px, calc\(\(100cqi - var\(--fit-mark\) - 46px\) \/ var\(--fit-em, 1\)\), clamp\(24px, 6vw, 32px\)\);/
     );
+    // The width in em is measured for tabular figures, so the dialog must use them too.
+    expect(value).toContain('font-variant-numeric: tabular-nums;');
+    expect(value).toContain('white-space: nowrap;');
+    expect(campaignSource).toMatch(
+      /@container tonswap-estimate \(max-width: 359px\) \{\s*\.tonswap-dialog__estimate \.tonswap-dialog__fire,\s*\.tonswap-dialog__estimate strong \{\s*--fit-mark: 48px;/
+    );
+  });
+
+  it('keeps each history amount whole beside its unit and stacks the two amounts on a narrow record', () => {
+    const amounts = ruleBody(campaignSource, 'dl.tonswap-burn__record-amounts');
+    expect(amounts).toMatch(/display: flex;\s*flex-wrap: wrap;/);
+    expect(amounts).toMatch(/> div \{\s*flex: 1 1 auto;\s*min-width: 0;/);
+    const value = ruleBody(amounts, 'dd');
+    expect(value).toContain('display: flex;');
+    expect(value).not.toContain('flex-wrap');
+    expect(amounts).toMatch(/\.tonswap-burn__record-number \{\s*white-space: nowrap;/);
+  });
+
+  it('fits the banner headline beside its unit at every card width and gives the banner buttons a white focus ring', () => {
+    expect(statusSource).toContain(':style="rewardFit"');
+    expect(statusSource).toContain(':style="amountFit"');
+    // "XOR" needs more room beside the burned amount than "TS" beside a reservation (the 30px default).
+    expect(statusSource).toContain("'--fit-unit': '44px'");
+    expect(ruleBody(statusSource, '&__text')).toContain('container-type: inline-size;');
+    const figure = ruleBody(statusSource, '&__figure');
+    expect(figure).toContain('--fit-max: 30px;');
+    expect(figure).not.toContain('flex-wrap');
+    expect(ruleBody(statusSource, '&__value')).toMatch(FIT_FONT);
+    expect(ruleBody(statusSource, '&__unit')).toContain('flex: none;');
+    expect(ruleBody(statusSource, '@container tonswap (max-width: 479px)')).toMatch(
+      /\.burn-status__figure \{\s*--fit-max: 26px;/
+    );
+    expect(ruleBody(statusSource, '@container tonswap (max-width: 279px)')).toMatch(
+      /\.burn-status__figure \{\s*--fit-max: 20px;/
+    );
+    // No container query sets a fixed headline size that would override the fit.
+    expect(statusSource).not.toMatch(/\.burn-status__value \{\s*font-size: \d+px;/);
     expect(statusSource).toMatch(/&:focus-visible \{\s*outline-color: #ffffff !important;/);
   });
 
-  it('scrolls a long exact total inside the public activity card instead of widening the page', () => {
-    expect(activitySource).toMatch(/\.public-burn \{[\s\S]*?min-width: 0;[\s\S]*?overflow-x: auto;/);
+  it('scrolls a long exact total inside its own area, which is a named keyboard stop while it scrolls', () => {
+    // The card itself does not scroll, so its heading and coverage line stay put.
+    const card = ruleBody(activitySource, '.public-burn');
+    expect(card.slice(0, card.indexOf('&__head'))).not.toContain('overflow-x');
+    expect(ruleBody(activitySource, '&__scroll')).toContain('overflow-x: auto;');
+    expect(activitySource).toContain(':tabindex="keyboardStop ? 0 : undefined"');
+    // A group, not a second region: the section is already the region named by the same heading.
+    expect(activitySource).toContain(`:role="keyboardStop ? 'group' : undefined"`);
+    expect(activitySource).not.toContain(`'region'`);
+    expect(activitySource).toContain(':aria-labelledby="keyboardStop ? `${prefix}-title` : undefined"');
+    expect(activitySource).toContain('const keyboardStop = computed(() => scrollable.value || focused.value);');
     // Table cells still never break a number to make room for a label.
     expect(activitySource).not.toMatch(/overflow-wrap: anywhere/);
   });

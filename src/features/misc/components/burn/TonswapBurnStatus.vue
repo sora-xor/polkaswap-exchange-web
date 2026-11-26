@@ -18,11 +18,11 @@
       </span>
       <div class="burn-status__text">
         <p class="burn-status__message" role="status">{{ message }}</p>
-        <p v-if="showsReward" class="burn-status__figure" :title="`${reward} TS`">
+        <p v-if="showsReward" class="burn-status__figure" :style="rewardFit" :title="`${reward} TS`">
           <span class="burn-status__value">+{{ finalReward }}</span>
           <span class="burn-status__unit">TS</span>
         </p>
-        <p v-else class="burn-status__figure">
+        <p v-else class="burn-status__figure" :style="amountFit">
           <span class="burn-status__value">{{ amount }}</span>
           <span class="burn-status__unit">XOR</span>
         </p>
@@ -80,6 +80,7 @@ import { computed, onBeforeUnmount, ref, watch } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { formatBurnAmount } from '@/features/misc/lib/burnCampaigns';
+import { figureEm } from '@/features/misc/lib/burnFigureFit';
 import {
   createBurnEmbers,
   getTonswapBurnSteps,
@@ -134,6 +135,9 @@ const settled = computed(() => isTonswapBurnSettled(props.phase, props.excluded)
 const showsReward = computed(() => props.phase === 'updated' && !props.excluded && !!props.reward);
 const finalReward = computed(() => (props.reward ? formatBurnAmount(props.reward, 4) : ''));
 const estimate = computed(() => (props.reward && !showsReward.value ? formatBurnAmount(props.reward, 4) : ''));
+/** The headline's width in em and the room its unit needs, so the layout fits it beside the unit. */
+const rewardFit = computed(() => ({ '--fit-em': figureEm(`+${finalReward.value}`) }));
+const amountFit = computed(() => ({ '--fit-em': figureEm(props.amount), '--fit-unit': '44px' }));
 
 /** Positions one spark with custom properties, so the keyframes stay shared. */
 function emberStyle(ember: BurnEmber): Record<string, string> {
@@ -230,7 +234,9 @@ onBeforeUnmount(() => clearTimeout(burstTimer));
   &[data-phase='failed'] &__flame {
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
   }
+  // The headline is sized by the width beside the mark (see &__value).
   &__text {
+    container-type: inline-size;
     flex: 1;
     min-width: 0;
   }
@@ -240,9 +246,13 @@ onBeforeUnmount(() => clearTimeout(burstTimer));
     line-height: 1.45;
     font-weight: 500;
   }
+  // The headline and its unit share one line: the template passes the value's width in em as --fit-em (see
+  // burnFigureFit.ts) and the room its unit needs as --fit-unit (30px for "TS", 44px for "XOR"), so a seven- or
+  // eight-digit reservation gets a smaller font instead of breaking mid-number. Only an exact burned amount longer
+  // than the narrowest banner can hold at the smallest size still breaks, rather than being cut.
   &__figure {
+    --fit-max: 30px;
     display: flex;
-    flex-wrap: wrap;
     align-items: baseline;
     gap: 0 8px;
     margin-top: 2px;
@@ -251,7 +261,8 @@ onBeforeUnmount(() => clearTimeout(burstTimer));
   &__value {
     display: inline-block;
     min-width: 0;
-    font-size: 30px;
+    // The width left beside the gap and the unit, divided by the value's width in em.
+    font-size: clamp(14px, calc((100cqi - var(--fit-unit, 30px)) / var(--fit-em, 1)), var(--fit-max));
     font-weight: 700;
     line-height: 1.2;
     letter-spacing: -0.01em;
@@ -260,6 +271,7 @@ onBeforeUnmount(() => clearTimeout(burstTimer));
     unicode-bidi: isolate;
   }
   &__unit {
+    flex: none;
     font-size: 15px;
     font-weight: 600;
     color: var(--burn-status-soft);
@@ -441,14 +453,14 @@ onBeforeUnmount(() => clearTimeout(burstTimer));
     width: 44px;
     height: 44px;
   }
-  .burn-status__value {
-    font-size: 26px;
+  .burn-status__figure {
+    --fit-max: 26px;
   }
   .burn-status__step {
     font-size: 11px;
   }
 }
-// The narrowest phones: a five-digit reservation stays on one line beside a smaller mark.
+// The narrowest phones: a smaller mark leaves the reservation more room, and a five-digit one stays at 20px.
 @container tonswap (max-width: 279px) {
   .burn-status__main {
     gap: 10px;
@@ -458,8 +470,8 @@ onBeforeUnmount(() => clearTimeout(burstTimer));
     width: 36px;
     height: 36px;
   }
-  .burn-status__value {
-    font-size: 20px;
+  .burn-status__figure {
+    --fit-max: 20px;
   }
 }
 
