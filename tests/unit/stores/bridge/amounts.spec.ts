@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { describe, expect, it, vi } from 'vitest';
 
 import {
@@ -9,7 +9,7 @@ import {
   isPositiveFiniteBridgeAmount,
 } from '@/stores/bridge/amounts';
 
-import type { SwapQuote } from '@sora-substrate/liquidity-proxy/build/types';
+import type { SwapQuote } from '@/lib/substrate/liquidity-proxy/types';
 
 describe('bridge amount helpers', () => {
   it('accepts only finite positive bridge amounts', () => {

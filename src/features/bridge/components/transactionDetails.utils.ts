@@ -1,7 +1,7 @@
 import { TranslationConsts, ZeroStringValue } from '@/consts';
 
-import type { CodecString } from '@sora-substrate/sdk';
-import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { CodecString } from '@/lib/substrate/sdk';
+import type { RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 export type TranslateFn = (key: string, values?: Record<string, unknown>) => string;
 

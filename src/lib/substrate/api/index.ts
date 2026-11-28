@@ -5,7 +5,7 @@ import {
   types as soraTypes,
   typesAlias as soraTypesAlias,
   typesBundle as soraTypesBundle,
-} from '@sora-substrate/types';
+} from '@/lib/substrate/types';
 import type { ApiOptions } from '@polkadot/api/types';
 
 export const defaultOptions: ApiOptions = {

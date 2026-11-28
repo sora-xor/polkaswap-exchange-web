@@ -62,7 +62,7 @@
   </base-widget>
 </template>
 <script setup lang="ts">
-import { OrderBookStatus } from '@sora-substrate/liquidity-proxy';
+import { OrderBookStatus } from '@/lib/substrate/liquidity-proxy';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
 import CancelConfirm from '@/features/misc/components/order-book/Dialogs/CancelOrders.vue';
@@ -80,8 +80,8 @@ import { useOrderBookUserOrders } from '@/composables/useOrderBookUserOrders';
 import { useOrderBookStore } from '@/stores/orderBook';
 import { Filter, Cancel } from '@/types/orderBook';
 
-import type { OrderBook } from '@sora-substrate/liquidity-proxy';
-import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
+import type { OrderBook } from '@/lib/substrate/liquidity-proxy';
+import type { LimitOrder } from '@/lib/substrate/sdk/orderBook/types';
 
 const FilterEnum = Filter;
 const CancelEnum = Cancel;

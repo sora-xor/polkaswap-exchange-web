@@ -1,5 +1,5 @@
-import { Operation } from '@sora-substrate/sdk';
-import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { Operation } from '@/lib/substrate/sdk';
+import { BridgeTxStatus } from '@/lib/substrate/sdk/bridgeProxy/consts';
 import { Observable, of } from 'rxjs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 

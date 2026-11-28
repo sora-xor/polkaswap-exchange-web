@@ -6,7 +6,7 @@ import SoraNexusAccountGenerator from '@/features/misc/components/burn/SoraNexus
 
 const phrase =
   'absurd amount doctor acoustic avoid letter advice cage absurd amount doctor acoustic avoid letter advice cage absurd amount doctor acoustic avoid letter advice comic';
-const address = 'sorauﾛ1PaQｽGh1ｴ6pAﾜnqｸfJuｿMﾑVqﾏvQﾐﾚｼｾﾋaﾈｳﾊc1ｺﾊ1GGM2D';
+const address = 'sorauﾛ1Pﾍmobrﾗﾚuヱ5wvp43L2rﾆzXJK3Z4gFCｶﾋuｶｵ2ヰヰ3XAAHM1';
 const generateMock = vi.hoisted(() => vi.fn());
 const registerRouteGuard = vi.hoisted(() => vi.fn());
 
@@ -16,7 +16,8 @@ vi.mock('@/features/misc/lib/nexusAccountGenerator', () => ({
 }));
 vi.mock('@/composables/useTranslation', () => ({
   useTranslation: () => ({
-    t: (key: string, params?: { number?: number }) => `${key}${params?.number ? ` ${params.number}` : ''}`,
+    t: (key: string, params?: { number?: number; wallet?: string }) =>
+      `${key}${params?.number ? ` ${params.number}` : params?.wallet ? ` ${params.wallet}` : ''}`,
   }),
 }));
 vi.mock('@/lib/soraneo-wallet/src/components/DialogBase.vue', () => ({
@@ -44,7 +45,8 @@ function mountGenerator(burnAvailable = true) {
   });
 }
 
-async function startBackup(wrapper: ReturnType<typeof mountGenerator>) {
+async function startBackup(wrapper: ReturnType<typeof mountGenerator>, targetWallet = 'sora-wallet') {
+  await wrapper.get('[data-testid="nexus-target-wallet"]').setValue(targetWallet);
   await wrapper.find('.nexus-generator__generate').trigger('click');
   await nextTick();
 }
@@ -93,8 +95,78 @@ async function finishAddressBackup(wrapper: ReturnType<typeof mountGenerator>) {
 describe('SoraNexusAccountGenerator', () => {
   beforeEach(() => {
     generateMock.mockReset();
-    generateMock.mockReturnValue({ phrase, address });
+    generateMock.mockImplementation((targetWallet: string) => ({
+      phrase,
+      address,
+      targetWallet,
+      recoveryFormat: 'bip39-slip10',
+    }));
     registerRouteGuard.mockReset();
+  });
+
+  it('requires the user to choose a target wallet before generating words', async () => {
+    const wrapper = mountGenerator();
+    expect((wrapper.get('[data-testid="nexus-target-wallet"]').element as HTMLSelectElement).value).toBe('');
+    expect(wrapper.get('.nexus-generator__generate').attributes('disabled')).toBeDefined();
+    await wrapper.get('.nexus-generator__generate').trigger('click');
+    expect(generateMock).not.toHaveBeenCalled();
+  });
+
+  it('offers only the two wallets with a checked derivation and states the limits next to the choice', () => {
+    const wrapper = mountGenerator();
+    const options = wrapper.findAll('[data-testid="nexus-target-wallet"] option');
+    expect(options.map((option) => option.attributes('value'))).toEqual(['', 'sora-wallet', 'fearless-wallet']);
+    expect(options[0]!.attributes('disabled')).toBeDefined();
+    expect(wrapper.get('[data-testid="nexus-target-wallet-help"]').text()).toBe(
+      'burnPage.nexusGenerator.targetWalletHelp'
+    );
+    // The deployed warning that the account may stay inaccessible is kept above the choice.
+    expect(wrapper.get('.nexus-generator__warning').text()).toContain('burnPage.nexusGenerator.formatWarning');
+  });
+
+  it('hides the wallet choice and never generates once the campaign has ended', async () => {
+    const wrapper = mountGenerator(false);
+    expect(wrapper.find('[data-testid="nexus-target-wallet"]').exists()).toBe(false);
+    expect(wrapper.find('.nexus-generator__generate').exists()).toBe(false);
+    expect(generateMock).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ['sora-wallet', 'soraWallet'],
+    ['fearless-wallet', 'fearlessWallet'],
+  ])('captures the %s target in the backup and locks selection during backup', async (wallet, key) => {
+    const wrapper = mountGenerator();
+    await startBackup(wrapper, wallet);
+    expect(generateMock).toHaveBeenCalledWith(wallet);
+    expect(wrapper.get('[data-testid="nexus-target-wallet"]').attributes('disabled')).toBeDefined();
+    expect(wrapper.get('[data-testid="nexus-pending-wallet"]').text()).toContain(`burnPage.nexusGenerator.${key}`);
+    await wrapper.get('.nexus-generator__generate').trigger('click');
+    expect(generateMock).toHaveBeenCalledTimes(1);
+    await showAddressStep(wrapper);
+    await finishAddressBackup(wrapper);
+    expect(wrapper.get('[data-testid="nexus-confirmed-wallet"]').text()).toContain(`burnPage.nexusGenerator.${key}`);
+  });
+
+  it('does not reinterpret a saved account when the next target wallet changes', async () => {
+    const wrapper = mountGenerator();
+    await startBackup(wrapper, 'sora-wallet');
+    await showAddressStep(wrapper);
+    await finishAddressBackup(wrapper);
+    await wrapper.get('[data-testid="nexus-target-wallet"]').setValue('fearless-wallet');
+    expect(generateMock).toHaveBeenCalledTimes(1);
+    expect(wrapper.get('[data-testid="nexus-confirmed-address"]').text()).toBe(address);
+    expect(wrapper.get('[data-testid="nexus-confirmed-wallet"]').text()).toContain(
+      'burnPage.nexusGenerator.soraWallet'
+    );
+
+    await wrapper.get('.nexus-generator__generate').trigger('click');
+    expect(generateMock).toHaveBeenLastCalledWith('fearless-wallet');
+    await clickDialogButton(wrapper, 'cancelText');
+    await clickDialogButton(wrapper, 'burnPage.nexusGenerator.confirmDiscard');
+    expect(wrapper.get('[data-testid="nexus-confirmed-wallet"]').text()).toContain(
+      'burnPage.nexusGenerator.soraWallet'
+    );
+    expect(wrapper.get('[data-testid="nexus-confirmed-address"]').text()).toBe(address);
   });
 
   it('reveals the address only after the word spot-check and enables use only after its backup is acknowledged', async () => {

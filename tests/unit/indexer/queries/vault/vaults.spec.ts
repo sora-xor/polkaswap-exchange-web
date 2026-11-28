@@ -1,4 +1,4 @@
-import { VaultTypes } from '@sora-substrate/sdk/build/kensetsu/consts';
+import { VaultTypes } from '@/lib/substrate/sdk/kensetsu/consts';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { IndexerType } from '@/indexer/queries/indexerConsts';

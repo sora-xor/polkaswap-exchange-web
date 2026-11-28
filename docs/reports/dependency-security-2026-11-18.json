@@ -1,0 +1,1805 @@
+{
+  "date": "2026-11-18",
+  "scope": "Local checkout dependency maintenance; no deployment; compatible release lines rather than unvalidated major migrations",
+  "directChanges": [
+    {
+      "name": "@babel/runtime",
+      "before": "^7.29.10",
+      "after": "^7.29.14",
+      "section": "dependencies"
+    },
+    {
+      "name": "@polkadot/api",
+      "before": "16.5.4",
+      "after": "16.5.6",
+      "section": "dependencies"
+    },
+    {
+      "name": "@polkadot/rpc-provider",
+      "before": "patch:@polkadot/rpc-provider@npm:16.5.4#./.yarn/patches/@polkadot-rpc-provider-npm-16.5.4-e11da04616.patch",
+      "after": "patch:@polkadot/rpc-provider@npm:16.5.6#./.yarn/patches/@polkadot-rpc-provider-npm-16.5.6-subscription-bounds.patch",
+      "section": "dependencies"
+    },
+    {
+      "name": "axios",
+      "before": "^1.20.0",
+      "after": "^1.21.1",
+      "section": "dependencies"
+    },
+    {
+      "name": "graphql",
+      "before": "^16.14.2",
+      "after": "^16.15.0",
+      "section": "dependencies"
+    },
+    {
+      "name": "graphql-ws",
+      "before": "6.4.1",
+      "after": "6.4.3",
+      "section": "dependencies"
+    },
+    {
+      "name": "vue",
+      "before": "3.5.44",
+      "after": "3.5.45",
+      "section": "dependencies"
+    },
+    {
+      "name": "vue-i18n",
+      "before": "^11.4.16",
+      "after": "^11.4.22",
+      "section": "dependencies"
+    },
+    {
+      "name": "vue-router",
+      "before": "^4.6.4",
+      "after": "^4.6.5",
+      "section": "dependencies"
+    },
+    {
+      "name": "@playwright/test",
+      "before": "^1.64.1",
+      "after": "^1.65.1",
+      "section": "devDependencies"
+    },
+    {
+      "name": "@types/node",
+      "before": "26.6.5",
+      "after": "26.6.6",
+      "section": "devDependencies"
+    },
+    {
+      "name": "@vitejs/plugin-vue",
+      "before": "^6.0.10",
+      "after": "^6.0.11",
+      "section": "devDependencies"
+    },
+    {
+      "name": "@vue/compiler-dom",
+      "before": "3.5.44",
+      "after": "3.5.45",
+      "section": "devDependencies"
+    },
+    {
+      "name": "@vue/compiler-sfc",
+      "before": "3.5.44",
+      "after": "3.5.45",
+      "section": "devDependencies"
+    },
+    {
+      "name": "@vue/test-utils",
+      "before": "^2.5.1",
+      "after": "^2.6.0",
+      "section": "devDependencies"
+    },
+    {
+      "name": "baseline-browser-mapping",
+      "before": "^2.11.32",
+      "after": "^2.11.38",
+      "section": "devDependencies"
+    },
+    {
+      "name": "electron",
+      "before": "43.8.3",
+      "after": "43.8.10",
+      "section": "devDependencies"
+    },
+    {
+      "name": "eslint-plugin-vue",
+      "before": "10.11.1",
+      "after": "10.12.1",
+      "section": "devDependencies"
+    },
+    {
+      "name": "playwright",
+      "before": "^1.64.1",
+      "after": "^1.65.1",
+      "section": "devDependencies"
+    },
+    {
+      "name": "postcss",
+      "before": "^8.5.31",
+      "after": "^8.5.33",
+      "section": "devDependencies"
+    },
+    {
+      "name": "prettier",
+      "before": "^3.9.10",
+      "after": "^3.10.1",
+      "section": "devDependencies"
+    },
+    {
+      "name": "sass",
+      "before": "1.106.1",
+      "after": "1.108.2",
+      "section": "devDependencies"
+    },
+    {
+      "name": "typescript-eslint",
+      "before": "8.72.0",
+      "after": "8.73.0",
+      "section": "devDependencies"
+    },
+    {
+      "name": "vite",
+      "before": "7.3.7",
+      "after": "7.3.8",
+      "section": "devDependencies"
+    },
+    {
+      "name": "vue-eslint-parser",
+      "before": "^10.4.1",
+      "after": "^10.4.2",
+      "section": "devDependencies"
+    }
+  ],
+  "registryFreshness": {
+    "date": "2026-11-18",
+    "registry": "https://registry.npmjs.org",
+    "notes": [
+      "Read-only official registry inspection; latest tags do not imply compatibility.",
+      "Root manifest was observed during collaborative dependency work; recorded specs are snapshot values, not the immutable task baseline.",
+      "Prereleases excluded from sameMajor candidates. Caret compatibility used for 0.x versions.",
+      "@sora/sora-pay is a local retained archive, not a public npm package.",
+      "vue-observe-visibility and vuedraggable latest tags target Vue 2; preserve compatible existing alpha/4.x.",
+      "Many copied vendor modules are aliased independently and do not change with root package upgrades."
+    ],
+    "inventory": [
+      {
+        "name": "@babel/runtime",
+        "spec": "^7.29.10",
+        "installed": "7.29.10",
+        "latest": "8.1.2",
+        "sameMajor": "7.29.14",
+        "source": "https://registry.npmjs.org/%40babel%2Fruntime",
+        "candidateSpec": "^7.29.14"
+      },
+      {
+        "name": "@cedelabs/widgets-universal",
+        "spec": "patch:@cedelabs/widgets-universal@npm:1.6.0#./.yarn/patches/@cedelabs-widgets-universal-npm-1.6.0-kmaxlength.patch",
+        "installed": "1.6.0",
+        "latest": "1.6.0",
+        "sameMajor": null,
+        "source": "https://registry.npmjs.org/%40cedelabs%2Fwidgets-universal",
+        "candidateSpec": "patch:@cedelabs/widgets-universal@npm:1.6.0#./.yarn/patches/@cedelabs-widgets-universal-npm-1.6.0-kmaxlength.patch"
+      },
+      {
+        "name": "@electron-toolkit/utils",
+        "spec": "^4.0.0",
+        "installed": "4.0.0",
+        "latest": "4.0.0",
+        "sameMajor": "4.0.0",
+        "latestPeers": {
+          "electron": ">=13.0.0"
+        },
+        "source": "https://registry.npmjs.org/%40electron-toolkit%2Futils",
+        "candidateSpec": "^4.0.0"
+      },
+      {
+        "name": "@eslint/js",
+        "spec": "9.39.5",
+        "installed": "9.39.5",
+        "latest": "10.0.1",
+        "sameMajor": "9.39.5",
+        "latestEngines": {
+          "node": "^20.19.0 || ^22.13.0 || >=24"
+        },
+        "latestPeers": {
+          "eslint": "^10.0.0"
+        },
+        "source": "https://registry.npmjs.org/%40eslint%2Fjs",
+        "candidateSpec": "9.39.5"
+      },
+      {
+        "name": "@interactjs/actions",
+        "spec": "1.10.28",
+        "installed": "1.10.28",
+        "latest": "1.10.28",
+        "sameMajor": "1.10.28",
+        "latestPeers": {
+          "@interactjs/core": "1.10.28",
+          "@interactjs/utils": "1.10.28"
+        },
+        "source": "https://registry.npmjs.org/%40interactjs%2Factions",
+        "candidateSpec": "1.10.28"
+      },
+      {
+        "name": "@interactjs/auto-scroll",
+        "spec": "1.10.28",
+        "installed": "1.10.28",
+        "latest": "1.10.28",
+        "sameMajor": "1.10.28",
+        "latestPeers": {
+          "@interactjs/utils": "1.10.28"
+        },
+        "source": "https://registry.npmjs.org/%40interactjs%2Fauto-scroll",
+        "candidateSpec": "1.10.28"
+      },
+      {
+        "name": "@interactjs/auto-start",
+        "spec": "1.10.28",
+        "installed": "1.10.28",
+        "latest": "1.10.28",
+        "sameMajor": "1.10.28",
+        "latestPeers": {
+          "@interactjs/core": "1.10.28",
+          "@interactjs/utils": "1.10.28"
+        },
+        "source": "https://registry.npmjs.org/%40interactjs%2Fauto-start",
+        "candidateSpec": "1.10.28"
+      },
+      {
+        "name": "@interactjs/core",
+        "spec": "1.10.28",
+        "installed": "1.10.28",
+        "latest": "1.10.28",
+        "sameMajor": "1.10.28",
+        "latestPeers": {
+          "@interactjs/utils": "1.10.28"
+        },
+        "source": "https://registry.npmjs.org/%40interactjs%2Fcore",
+        "candidateSpec": "1.10.28"
+      },
+      {
+        "name": "@interactjs/dev-tools",
+        "spec": "1.10.28",
+        "installed": "1.10.28",
+        "latest": "1.10.28",
+        "sameMajor": "1.10.28",
+        "latestPeers": {
+          "@interactjs/utils": "1.10.28",
+          "@interactjs/modifiers": "1.10.28"
+        },
+        "source": "https://registry.npmjs.org/%40interactjs%2Fdev-tools",
+        "candidateSpec": "1.10.28"
+      },
+      {
+        "name": "@interactjs/interact",
+        "spec": "1.10.28",
+        "installed": "1.10.28",
+        "latest": "1.10.28",
+        "sameMajor": "1.10.28",
+        "source": "https://registry.npmjs.org/%40interactjs%2Finteract",
+        "candidateSpec": "1.10.28"
+      },
+      {
+        "name": "@interactjs/modifiers",
+        "spec": "1.10.28",
+        "installed": "1.10.28",
+        "latest": "1.10.28",
+        "sameMajor": "1.10.28",
+        "latestPeers": {
+          "@interactjs/core": "1.10.28",
+          "@interactjs/utils": "1.10.28"
+        },
+        "source": "https://registry.npmjs.org/%40interactjs%2Fmodifiers",
+        "candidateSpec": "1.10.28"
+      },
+      {
+        "name": "@interactjs/utils",
+        "spec": "1.10.28",
+        "installed": "1.10.28",
+        "latest": "1.10.28",
+        "sameMajor": "1.10.28",
+        "source": "https://registry.npmjs.org/%40interactjs%2Futils",
+        "candidateSpec": "1.10.28"
+      },
+      {
+        "name": "@modelcontextprotocol/server",
+        "spec": "2.4.0",
+        "installed": "2.4.0",
+        "latest": "2.4.0",
+        "sameMajor": "2.4.0",
+        "latestEngines": {
+          "node": ">=20"
+        },
+        "source": "https://registry.npmjs.org/%40modelcontextprotocol%2Fserver",
+        "candidateSpec": "2.4.0"
+      },
+      {
+        "name": "@open-web3/api-mobx",
+        "spec": "patch:@open-web3/api-mobx@npm:0.9.4-26#./.yarn/patches/@open-web3-api-mobx-npm-0.9.4-26-8b418ea100.patch",
+        "installed": "0.9.4-26",
+        "latest": "1.1.4",
+        "sameMajor": null,
+        "latestPeers": {
+          "@polkadot/api": ">6.3.1"
+        },
+        "source": "https://registry.npmjs.org/%40open-web3%2Fapi-mobx",
+        "candidateSpec": "patch:@open-web3/api-mobx@npm:0.9.4-26#./.yarn/patches/@open-web3-api-mobx-npm-0.9.4-26-8b418ea100.patch"
+      },
+      {
+        "name": "@open-web3/orml-api-derive",
+        "spec": "1.1.4",
+        "installed": "1.1.4",
+        "latest": "2.0.1",
+        "sameMajor": "1.1.4",
+        "latestPeers": {
+          "@polkadot/api": "^8.12.2"
+        },
+        "source": "https://registry.npmjs.org/%40open-web3%2Forml-api-derive",
+        "candidateSpec": "1.1.4"
+      },
+      {
+        "name": "@open-web3/orml-type-definitions",
+        "spec": "1.1.4",
+        "installed": "1.1.4",
+        "latest": "2.0.1",
+        "sameMajor": "1.1.4",
+        "source": "https://registry.npmjs.org/%40open-web3%2Forml-type-definitions",
+        "candidateSpec": "1.1.4"
+      },
+      {
+        "name": "@playwright/test",
+        "spec": "^1.64.1",
+        "installed": "1.64.1",
+        "latest": "1.65.1",
+        "sameMajor": "1.65.1",
+        "latestEngines": {
+          "node": ">=20"
+        },
+        "source": "https://registry.npmjs.org/%40playwright%2Ftest",
+        "candidateSpec": "^1.65.1"
+      },
+      {
+        "name": "@polkadot/api",
+        "spec": "16.5.4",
+        "installed": "16.5.4",
+        "latest": "17.0.2",
+        "sameMajor": "16.5.6",
+        "latestEngines": {
+          "node": ">=18"
+        },
+        "source": "https://registry.npmjs.org/%40polkadot%2Fapi",
+        "candidateSpec": "16.5.6"
+      },
+      {
+        "name": "@polkadot/keyring",
+        "spec": "14.0.3",
+        "installed": "14.0.3",
+        "latest": "14.0.3",
+        "sameMajor": "14.0.3",
+        "latestEngines": {
+          "node": ">=18"
+        },
+        "latestPeers": {
+          "@polkadot/util": "14.0.3",
+          "@polkadot/util-crypto": "14.0.3"
+        },
+        "source": "https://registry.npmjs.org/%40polkadot%2Fkeyring",
+        "candidateSpec": "14.0.3"
+      },
+      {
+        "name": "@polkadot/networks",
+        "spec": "14.0.3",
+        "installed": "14.0.3",
+        "latest": "14.0.3",
+        "sameMajor": "14.0.3",
+        "latestEngines": {
+          "node": ">=18"
+        },
+        "source": "https://registry.npmjs.org/%40polkadot%2Fnetworks",
+        "candidateSpec": "14.0.3"
+      },
+      {
+        "name": "@polkadot/rpc-provider",
+        "spec": "patch:@polkadot/rpc-provider@npm:16.5.4#./.yarn/patches/@polkadot-rpc-provider-npm-16.5.4-e11da04616.patch",
+        "installed": "16.5.4",
+        "latest": "17.0.2",
+        "sameMajor": null,
+        "latestEngines": {
+          "node": ">=18"
+        },
+        "source": "https://registry.npmjs.org/%40polkadot%2Frpc-provider",
+        "candidateSpec": "patch:@polkadot/rpc-provider@npm:16.5.6#./.yarn/patches/@polkadot-rpc-provider-npm-16.5.6-subscription-bounds.patch"
+      },
+      {
+        "name": "@polkadot/ui-keyring",
+        "spec": "3.16.7",
+        "installed": "3.16.7",
+        "latest": "3.16.7",
+        "sameMajor": "3.16.7",
+        "latestEngines": {
+          "node": ">=18"
+        },
+        "latestPeers": {
+          "@polkadot/keyring": "*",
+          "@polkadot/ui-settings": "*",
+          "@polkadot/util": "*"
+        },
+        "source": "https://registry.npmjs.org/%40polkadot%2Fui-keyring",
+        "candidateSpec": "3.16.7"
+      },
+      {
+        "name": "@polkadot/ui-settings",
+        "spec": "3.16.7",
+        "installed": "3.16.7",
+        "latest": "3.16.7",
+        "sameMajor": "3.16.7",
+        "latestEngines": {
+          "node": ">=18"
+        },
+        "latestPeers": {
+          "@polkadot/networks": "*",
+          "@polkadot/util": "*"
+        },
+        "source": "https://registry.npmjs.org/%40polkadot%2Fui-settings",
+        "candidateSpec": "3.16.7"
+      },
+      {
+        "name": "@polkadot/ui-shared",
+        "spec": "3.16.7",
+        "installed": "3.16.7",
+        "latest": "3.16.7",
+        "sameMajor": "3.16.7",
+        "latestEngines": {
+          "node": ">=18"
+        },
+        "latestPeers": {
+          "@polkadot/util": "*",
+          "@polkadot/util-crypto": "*"
+        },
+        "source": "https://registry.npmjs.org/%40polkadot%2Fui-shared",
+        "candidateSpec": "3.16.7"
+      },
+      {
+        "name": "@polkadot/util",
+        "spec": "14.0.3",
+        "installed": "14.0.3",
+        "latest": "14.0.3",
+        "sameMajor": "14.0.3",
+        "latestEngines": {
+          "node": ">=18"
+        },
+        "source": "https://registry.npmjs.org/%40polkadot%2Futil",
+        "candidateSpec": "14.0.3"
+      },
+      {
+        "name": "@polkadot/util-crypto",
+        "spec": "14.0.3",
+        "installed": "14.0.3",
+        "latest": "14.0.3",
+        "sameMajor": "14.0.3",
+        "latestEngines": {
+          "node": ">=18"
+        },
+        "latestPeers": {
+          "@polkadot/util": "14.0.3"
+        },
+        "source": "https://registry.npmjs.org/%40polkadot%2Futil-crypto",
+        "candidateSpec": "14.0.3"
+      },
+      {
+        "name": "@rollup/plugin-inject",
+        "spec": "5.0.5",
+        "installed": "5.0.5",
+        "latest": "5.0.5",
+        "sameMajor": "5.0.5",
+        "latestEngines": {
+          "node": ">=14.0.0"
+        },
+        "latestPeers": {
+          "rollup": "^1.20.0||^2.0.0||^3.0.0||^4.0.0"
+        },
+        "source": "https://registry.npmjs.org/%40rollup%2Fplugin-inject",
+        "candidateSpec": "5.0.5"
+      },
+      {
+        "name": "@sora/sora-pay",
+        "spec": "file:./vendor/sora-pay/sora-pay-0.2.2.tgz",
+        "source": "https://registry.npmjs.org/%40sora%2Fsora-pay",
+        "error": "Error: HTTP 404",
+        "candidateSpec": "file:./vendor/sora-pay/sora-pay-0.2.2.tgz"
+      },
+      {
+        "name": "@tonconnect/ui",
+        "spec": "2.4.4",
+        "installed": "2.4.4",
+        "latest": "5.0.3",
+        "sameMajor": "2.4.4",
+        "source": "https://registry.npmjs.org/%40tonconnect%2Fui",
+        "candidateSpec": "2.4.4"
+      },
+      {
+        "name": "@types/jsdom",
+        "spec": "^27.0.0",
+        "installed": "27.0.0",
+        "latest": "30.0.0",
+        "sameMajor": "27.0.0",
+        "source": "https://registry.npmjs.org/%40types%2Fjsdom",
+        "candidateSpec": "^27.0.0"
+      },
+      {
+        "name": "@types/lodash",
+        "spec": "^4.17.27",
+        "installed": "4.17.27",
+        "latest": "4.17.27",
+        "sameMajor": "4.17.27",
+        "source": "https://registry.npmjs.org/%40types%2Flodash",
+        "candidateSpec": "^4.17.27"
+      },
+      {
+        "name": "@types/node",
+        "spec": "26.6.5",
+        "installed": "26.6.5",
+        "latest": "26.6.6",
+        "sameMajor": "26.6.6",
+        "source": "https://registry.npmjs.org/%40types%2Fnode",
+        "candidateSpec": "26.6.6"
+      },
+      {
+        "name": "@types/telegram-web-app",
+        "spec": "^9.6.0",
+        "installed": "9.6.0",
+        "latest": "10.1.0",
+        "sameMajor": "9.6.0",
+        "source": "https://registry.npmjs.org/%40types%2Ftelegram-web-app",
+        "candidateSpec": "^9.6.0"
+      },
+      {
+        "name": "@urql/core",
+        "spec": "6.0.3",
+        "installed": "6.0.3",
+        "latest": "6.0.3",
+        "sameMajor": "6.0.3",
+        "source": "https://registry.npmjs.org/%40urql%2Fcore",
+        "candidateSpec": "6.0.3"
+      },
+      {
+        "name": "@vitejs/plugin-vue",
+        "spec": "^6.0.10",
+        "installed": "6.0.10",
+        "latest": "6.0.11",
+        "sameMajor": "6.0.11",
+        "latestEngines": {
+          "node": "^20.19.0 || >=22.12.0"
+        },
+        "latestPeers": {
+          "vue": "^3.2.25 || ^3.6.0-rc.15",
+          "vite": "^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0"
+        },
+        "source": "https://registry.npmjs.org/%40vitejs%2Fplugin-vue",
+        "candidateSpec": "^6.0.11"
+      },
+      {
+        "name": "@vitest/coverage-v8",
+        "spec": "4.1.12",
+        "installed": "4.1.12",
+        "latest": "5.1.0",
+        "sameMajor": "4.1.12",
+        "latestPeers": {
+          "vitest": "5.1.0",
+          "@vitest/browser": "5.1.0"
+        },
+        "source": "https://registry.npmjs.org/%40vitest%2Fcoverage-v8",
+        "candidateSpec": "4.1.12"
+      },
+      {
+        "name": "@vue/compiler-dom",
+        "spec": "3.5.44",
+        "installed": "3.5.44",
+        "latest": "3.5.45",
+        "sameMajor": "3.5.45",
+        "source": "https://registry.npmjs.org/%40vue%2Fcompiler-dom",
+        "candidateSpec": "3.5.45"
+      },
+      {
+        "name": "@vue/compiler-sfc",
+        "spec": "3.5.44",
+        "installed": "3.5.44",
+        "latest": "3.5.45",
+        "sameMajor": "3.5.45",
+        "source": "https://registry.npmjs.org/%40vue%2Fcompiler-sfc",
+        "candidateSpec": "3.5.45"
+      },
+      {
+        "name": "@vue/test-utils",
+        "spec": "^2.5.1",
+        "installed": "2.5.1",
+        "latest": "2.6.0",
+        "sameMajor": "2.6.0",
+        "latestPeers": {
+          "vue": "3.x",
+          "@vue/compiler-dom": "3.x",
+          "@vue/server-renderer": "3.x"
+        },
+        "source": "https://registry.npmjs.org/%40vue%2Ftest-utils",
+        "candidateSpec": "^2.6.0"
+      },
+      {
+        "name": "@vueuse/core",
+        "spec": "14.4.0",
+        "installed": "14.4.0",
+        "latest": "15.0.0",
+        "sameMajor": "14.4.0",
+        "latestEngines": {
+          "node": ">=22"
+        },
+        "latestPeers": {
+          "vue": "^3.5.0"
+        },
+        "source": "https://registry.npmjs.org/%40vueuse%2Fcore",
+        "candidateSpec": "14.4.0"
+      },
+      {
+        "name": "@walletconnect/ethereum-provider",
+        "spec": "2.26.0",
+        "installed": "2.26.0",
+        "latest": "2.26.0",
+        "sameMajor": "2.26.0",
+        "source": "https://registry.npmjs.org/%40walletconnect%2Fethereum-provider",
+        "candidateSpec": "2.26.0"
+      },
+      {
+        "name": "@walletconnect/modal",
+        "spec": "^2.7.0",
+        "installed": "2.7.0",
+        "latest": "2.7.0",
+        "sameMajor": "2.7.0",
+        "source": "https://registry.npmjs.org/%40walletconnect%2Fmodal",
+        "candidateSpec": "^2.7.0"
+      },
+      {
+        "name": "@zxing/browser",
+        "spec": "^0.1.5",
+        "installed": "0.1.5",
+        "latest": "0.2.1",
+        "sameMajor": "0.1.5",
+        "latestPeers": {
+          "@zxing/library": "^0.23.0"
+        },
+        "source": "https://registry.npmjs.org/%40zxing%2Fbrowser",
+        "candidateSpec": "^0.1.5"
+      },
+      {
+        "name": "@zxing/library",
+        "spec": "^0.21.3",
+        "installed": "0.21.3",
+        "latest": "0.23.0",
+        "sameMajor": "0.21.3",
+        "latestEngines": {
+          "node": ">= 24.0.0"
+        },
+        "source": "https://registry.npmjs.org/%40zxing%2Flibrary",
+        "candidateSpec": "^0.21.3"
+      },
+      {
+        "name": "assert",
+        "spec": "2.1.0",
+        "installed": "2.1.0",
+        "latest": "2.1.0",
+        "sameMajor": "2.1.0",
+        "source": "https://registry.npmjs.org/assert",
+        "candidateSpec": "2.1.0"
+      },
+      {
+        "name": "axios",
+        "spec": "^1.20.0",
+        "installed": "1.20.0",
+        "latest": "1.21.1",
+        "sameMajor": "1.21.1",
+        "source": "https://registry.npmjs.org/axios",
+        "candidateSpec": "^1.21.1"
+      },
+      {
+        "name": "base-64",
+        "spec": "^1.0.0",
+        "installed": "1.0.0",
+        "latest": "1.0.0",
+        "sameMajor": "1.0.0",
+        "source": "https://registry.npmjs.org/base-64",
+        "candidateSpec": "^1.0.0"
+      },
+      {
+        "name": "baseline-browser-mapping",
+        "spec": "^2.11.32",
+        "installed": "2.11.32",
+        "latest": "2.11.38",
+        "sameMajor": "2.11.38",
+        "latestEngines": {
+          "node": ">=6.0.0"
+        },
+        "source": "https://registry.npmjs.org/baseline-browser-mapping",
+        "candidateSpec": "^2.11.38"
+      },
+      {
+        "name": "bignumber.js",
+        "spec": "^9.3.1",
+        "installed": "9.3.1",
+        "latest": "11.1.5",
+        "sameMajor": "9.3.1",
+        "source": "https://registry.npmjs.org/bignumber.js",
+        "candidateSpec": "^9.3.1"
+      },
+      {
+        "name": "buffer",
+        "spec": "6.0.3",
+        "installed": "6.0.3",
+        "latest": "6.0.3",
+        "sameMajor": "6.0.3",
+        "source": "https://registry.npmjs.org/buffer",
+        "candidateSpec": "6.0.3"
+      },
+      {
+        "name": "country-code-emoji",
+        "spec": "^2.3.0",
+        "installed": "2.3.0",
+        "latest": "2.3.0",
+        "sameMajor": "2.3.0",
+        "source": "https://registry.npmjs.org/country-code-emoji",
+        "candidateSpec": "^2.3.0"
+      },
+      {
+        "name": "country-flag-emoji-polyfill",
+        "spec": "^0.1.10",
+        "installed": "0.1.10",
+        "latest": "0.1.10",
+        "sameMajor": "0.1.10",
+        "source": "https://registry.npmjs.org/country-flag-emoji-polyfill",
+        "candidateSpec": "^0.1.10"
+      },
+      {
+        "name": "crypto-js",
+        "spec": "^4.2.0",
+        "installed": "4.2.0",
+        "latest": "4.2.0",
+        "sameMajor": "4.2.0",
+        "source": "https://registry.npmjs.org/crypto-js",
+        "candidateSpec": "^4.2.0"
+      },
+      {
+        "name": "crypto-random-string",
+        "spec": "^5.0.0",
+        "installed": "5.0.0",
+        "latest": "6.0.0",
+        "sameMajor": "5.0.0",
+        "latestEngines": {
+          "node": ">=22"
+        },
+        "source": "https://registry.npmjs.org/crypto-random-string",
+        "candidateSpec": "^5.0.0"
+      },
+      {
+        "name": "cssnano",
+        "spec": "7.1.9",
+        "installed": "7.1.9",
+        "latest": "9.9.0",
+        "sameMajor": "7.1.9",
+        "latestEngines": {
+          "node": "^22.22.3 || ^24.15.0 || >=26.0"
+        },
+        "latestPeers": {
+          "postcss": "^8.5.29"
+        },
+        "source": "https://registry.npmjs.org/cssnano",
+        "candidateSpec": "7.1.9"
+      },
+      {
+        "name": "date-fns",
+        "spec": "4.4.0",
+        "installed": "4.4.0",
+        "latest": "4.4.0",
+        "sameMajor": "4.4.0",
+        "source": "https://registry.npmjs.org/date-fns",
+        "candidateSpec": "4.4.0"
+      },
+      {
+        "name": "echarts",
+        "spec": "^6.1.0",
+        "installed": "6.1.0",
+        "latest": "6.1.0",
+        "sameMajor": "6.1.0",
+        "source": "https://registry.npmjs.org/echarts",
+        "candidateSpec": "^6.1.0"
+      },
+      {
+        "name": "electron",
+        "spec": "43.8.3",
+        "installed": "43.8.3",
+        "latest": "45.3.4",
+        "sameMajor": "43.8.10",
+        "latestEngines": {
+          "node": ">= 22.12.0"
+        },
+        "source": "https://registry.npmjs.org/electron",
+        "candidateSpec": "43.8.10"
+      },
+      {
+        "name": "electron-devtools-installer",
+        "spec": "^4.0.0",
+        "installed": "4.0.0",
+        "latest": "4.0.0",
+        "sameMajor": "4.0.0",
+        "source": "https://registry.npmjs.org/electron-devtools-installer",
+        "candidateSpec": "^4.0.0"
+      },
+      {
+        "name": "electron-vite",
+        "spec": "^4.0.1",
+        "installed": "4.0.1",
+        "latest": "6.0.0",
+        "sameMajor": "4.0.1",
+        "latestEngines": {
+          "node": "^20.19.0 || >=22.12.0"
+        },
+        "latestPeers": {
+          "vite": "^6.0.0 || ^7.0.0 || ^8.0.0",
+          "@swc/core": "^1.0.0"
+        },
+        "source": "https://registry.npmjs.org/electron-vite",
+        "candidateSpec": "^4.0.1"
+      },
+      {
+        "name": "email-validator",
+        "spec": "^2.0.4",
+        "installed": "2.0.4",
+        "latest": "2.0.4",
+        "sameMajor": "2.0.4",
+        "latestEngines": {
+          "node": ">4.0"
+        },
+        "source": "https://registry.npmjs.org/email-validator",
+        "candidateSpec": "^2.0.4"
+      },
+      {
+        "name": "eslint",
+        "spec": "9.39.5",
+        "installed": "9.39.5",
+        "latest": "10.15.0",
+        "sameMajor": "9.39.5",
+        "latestEngines": {
+          "node": "^20.19.0 || ^22.13.0 || >=24"
+        },
+        "latestPeers": {
+          "jiti": "*"
+        },
+        "source": "https://registry.npmjs.org/eslint",
+        "candidateSpec": "9.39.5"
+      },
+      {
+        "name": "eslint-config-prettier",
+        "spec": "^10.1.8",
+        "installed": "10.1.8",
+        "latest": "10.1.8",
+        "sameMajor": "10.1.8",
+        "latestPeers": {
+          "eslint": ">=7.0.0"
+        },
+        "source": "https://registry.npmjs.org/eslint-config-prettier",
+        "candidateSpec": "^10.1.8"
+      },
+      {
+        "name": "eslint-plugin-import",
+        "spec": "^2.32.0",
+        "installed": "2.32.0",
+        "latest": "2.32.0",
+        "sameMajor": "2.32.0",
+        "latestEngines": {
+          "node": ">=4"
+        },
+        "latestPeers": {
+          "eslint": "^2 || ^3 || ^4 || ^5 || ^6 || ^7.2.0 || ^8 || ^9"
+        },
+        "source": "https://registry.npmjs.org/eslint-plugin-import",
+        "candidateSpec": "^2.32.0"
+      },
+      {
+        "name": "eslint-plugin-prettier",
+        "spec": "^5.5.7",
+        "installed": "5.5.7",
+        "latest": "5.5.7",
+        "sameMajor": "5.5.7",
+        "latestEngines": {
+          "node": "^14.18.0 || >=16.0.0"
+        },
+        "latestPeers": {
+          "eslint": ">=8.0.0",
+          "prettier": ">=3.0.0",
+          "@types/eslint": ">=8.0.0",
+          "eslint-config-prettier": ">= 7.0.0 <10.0.0 || >=10.1.0"
+        },
+        "source": "https://registry.npmjs.org/eslint-plugin-prettier",
+        "candidateSpec": "^5.5.7"
+      },
+      {
+        "name": "eslint-plugin-promise",
+        "spec": "^7.3.0",
+        "installed": "7.3.0",
+        "latest": "7.3.0",
+        "sameMajor": "7.3.0",
+        "latestEngines": {
+          "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
+        },
+        "latestPeers": {
+          "eslint": "^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0"
+        },
+        "source": "https://registry.npmjs.org/eslint-plugin-promise",
+        "candidateSpec": "^7.3.0"
+      },
+      {
+        "name": "eslint-plugin-vue",
+        "spec": "10.11.1",
+        "installed": "10.11.1",
+        "latest": "10.12.1",
+        "sameMajor": "10.12.1",
+        "latestEngines": {
+          "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
+        },
+        "latestPeers": {
+          "eslint": "^8.57.0 || ^9.0.0 || ^10.0.0",
+          "vue-eslint-parser": "^10.3.0",
+          "@stylistic/eslint-plugin": "^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0",
+          "@typescript-eslint/parser": "^7.0.0 || ^8.0.0"
+        },
+        "source": "https://registry.npmjs.org/eslint-plugin-vue",
+        "candidateSpec": "10.12.1"
+      },
+      {
+        "name": "ethers",
+        "spec": "6.17.0",
+        "installed": "6.17.0",
+        "latest": "6.17.0",
+        "sameMajor": "6.17.0",
+        "latestEngines": {
+          "node": ">=14.0.0"
+        },
+        "source": "https://registry.npmjs.org/ethers",
+        "candidateSpec": "6.17.0"
+      },
+      {
+        "name": "events",
+        "spec": "3.3.0",
+        "installed": "3.3.0",
+        "latest": "3.3.0",
+        "sameMajor": "3.3.0",
+        "latestEngines": {
+          "node": ">=0.8.x"
+        },
+        "source": "https://registry.npmjs.org/events",
+        "candidateSpec": "3.3.0"
+      },
+      {
+        "name": "file-saver",
+        "spec": "^2.0.5",
+        "installed": "2.0.5",
+        "latest": "2.0.5",
+        "sameMajor": "2.0.5",
+        "source": "https://registry.npmjs.org/file-saver",
+        "candidateSpec": "^2.0.5"
+      },
+      {
+        "name": "graphql",
+        "spec": "^16.14.2",
+        "installed": "16.14.2",
+        "latest": "17.1.0",
+        "sameMajor": "16.15.0",
+        "latestEngines": {
+          "node": "^22.0.0 || ^24.0.0 || >=26.0.0"
+        },
+        "source": "https://registry.npmjs.org/graphql",
+        "candidateSpec": "^16.15.0"
+      },
+      {
+        "name": "graphql-ws",
+        "spec": "6.4.1",
+        "installed": "6.4.1",
+        "latest": "6.4.3",
+        "sameMajor": "6.4.3",
+        "latestEngines": {
+          "node": ">=20"
+        },
+        "latestPeers": {
+          "ws": "^8",
+          "crossws": "~0.3 || ~0.4",
+          "graphql": "^15.10.1 || ^16 || ^17",
+          "@fastify/websocket": "^10 || ^11"
+        },
+        "source": "https://registry.npmjs.org/graphql-ws",
+        "candidateSpec": "6.4.3"
+      },
+      {
+        "name": "husky",
+        "spec": "^9.1.7",
+        "installed": "9.1.7",
+        "latest": "9.1.7",
+        "sameMajor": "9.1.7",
+        "latestEngines": {
+          "node": ">=18"
+        },
+        "source": "https://registry.npmjs.org/husky",
+        "candidateSpec": "^9.1.7"
+      },
+      {
+        "name": "jdenticon",
+        "spec": "^3.3.0",
+        "installed": "3.3.0",
+        "latest": "3.3.0",
+        "sameMajor": "3.3.0",
+        "latestEngines": {
+          "node": ">=6.4.0"
+        },
+        "source": "https://registry.npmjs.org/jdenticon",
+        "candidateSpec": "^3.3.0"
+      },
+      {
+        "name": "jsdom",
+        "spec": "27.4.0",
+        "installed": "27.4.0",
+        "latest": "31.0.1",
+        "sameMajor": "27.4.0",
+        "latestEngines": {
+          "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+        },
+        "latestPeers": {
+          "@napi-rs/canvas": "^1.0.13"
+        },
+        "source": "https://registry.npmjs.org/jsdom",
+        "candidateSpec": "27.4.0"
+      },
+      {
+        "name": "lint-staged",
+        "spec": "^16.4.0",
+        "installed": "16.4.0",
+        "latest": "17.6.1",
+        "sameMajor": "16.4.0",
+        "latestEngines": {
+          "node": ">=22.22.1"
+        },
+        "source": "https://registry.npmjs.org/lint-staged",
+        "candidateSpec": "^16.4.0"
+      },
+      {
+        "name": "lodash",
+        "spec": "^4.18.1",
+        "installed": "4.18.1",
+        "latest": "4.18.1",
+        "sameMajor": "4.18.1",
+        "source": "https://registry.npmjs.org/lodash",
+        "candidateSpec": "^4.18.1"
+      },
+      {
+        "name": "mitt",
+        "spec": "^3.0.1",
+        "installed": "3.0.1",
+        "latest": "3.0.1",
+        "sameMajor": "3.0.1",
+        "source": "https://registry.npmjs.org/mitt",
+        "candidateSpec": "^3.0.1"
+      },
+      {
+        "name": "mobx",
+        "spec": "6.16.1",
+        "installed": "6.16.1",
+        "latest": "7.1.7",
+        "sameMajor": "6.16.1",
+        "source": "https://registry.npmjs.org/mobx",
+        "candidateSpec": "6.16.1"
+      },
+      {
+        "name": "nft.storage",
+        "spec": "^7.2.0",
+        "installed": "7.2.0",
+        "latest": "7.2.0",
+        "sameMajor": "7.2.0",
+        "source": "https://registry.npmjs.org/nft.storage",
+        "candidateSpec": "^7.2.0"
+      },
+      {
+        "name": "pinia",
+        "spec": "3.0.4",
+        "installed": "3.0.4",
+        "latest": "4.1.0",
+        "sameMajor": "3.0.4",
+        "latestPeers": {
+          "vue": "^3.5.11",
+          "typescript": ">=5.6.0",
+          "@vue/devtools-api": "^8.2.1"
+        },
+        "source": "https://registry.npmjs.org/pinia",
+        "candidateSpec": "3.0.4"
+      },
+      {
+        "name": "playwright",
+        "spec": "^1.64.1",
+        "installed": "1.64.1",
+        "latest": "1.65.1",
+        "sameMajor": "1.65.1",
+        "latestEngines": {
+          "node": ">=20"
+        },
+        "source": "https://registry.npmjs.org/playwright",
+        "candidateSpec": "^1.65.1"
+      },
+      {
+        "name": "postcss",
+        "spec": "^8.5.31",
+        "installed": "8.5.31",
+        "latest": "8.5.33",
+        "sameMajor": "8.5.33",
+        "latestEngines": {
+          "node": "^10 || ^12 || >=14"
+        },
+        "source": "https://registry.npmjs.org/postcss",
+        "candidateSpec": "^8.5.33"
+      },
+      {
+        "name": "prettier",
+        "spec": "^3.9.10",
+        "installed": "3.9.10",
+        "latest": "3.10.1",
+        "sameMajor": "3.10.1",
+        "latestEngines": {
+          "node": ">=14"
+        },
+        "source": "https://registry.npmjs.org/prettier",
+        "candidateSpec": "^3.10.1"
+      },
+      {
+        "name": "process",
+        "spec": "0.11.10",
+        "installed": "0.11.10",
+        "latest": "0.11.10",
+        "sameMajor": "0.11.10",
+        "latestEngines": {
+          "node": ">= 0.6.0"
+        },
+        "source": "https://registry.npmjs.org/process",
+        "candidateSpec": "0.11.10"
+      },
+      {
+        "name": "react",
+        "spec": "19.3.1",
+        "installed": "19.3.1",
+        "latest": "19.3.1",
+        "sameMajor": "19.3.1",
+        "latestEngines": {
+          "node": ">=0.10.0"
+        },
+        "source": "https://registry.npmjs.org/react",
+        "candidateSpec": "19.3.1"
+      },
+      {
+        "name": "react-dom",
+        "spec": "19.3.1",
+        "installed": "19.3.1",
+        "latest": "19.3.1",
+        "sameMajor": "19.3.1",
+        "latestPeers": {
+          "react": "^19.3.1"
+        },
+        "source": "https://registry.npmjs.org/react-dom",
+        "candidateSpec": "19.3.1"
+      },
+      {
+        "name": "rxjs",
+        "spec": "^7.8.2",
+        "installed": "7.8.2",
+        "latest": "7.8.2",
+        "sameMajor": "7.8.2",
+        "source": "https://registry.npmjs.org/rxjs",
+        "candidateSpec": "^7.8.2"
+      },
+      {
+        "name": "sass",
+        "spec": "1.106.1",
+        "installed": "1.106.1",
+        "latest": "1.108.2",
+        "sameMajor": "1.108.2",
+        "latestEngines": {
+          "node": ">=20.19.0"
+        },
+        "source": "https://registry.npmjs.org/sass",
+        "candidateSpec": "1.108.2"
+      },
+      {
+        "name": "tsx",
+        "spec": "^4.23.15",
+        "installed": "4.23.15",
+        "latest": "4.23.15",
+        "sameMajor": "4.23.15",
+        "latestEngines": {
+          "node": ">=18.0.0"
+        },
+        "source": "https://registry.npmjs.org/tsx",
+        "candidateSpec": "^4.23.15"
+      },
+      {
+        "name": "typescript",
+        "spec": "~5.9.3",
+        "installed": "5.9.3",
+        "latest": "7.0.2",
+        "sameMajor": "5.9.3",
+        "latestEngines": {
+          "node": ">=16.20.0"
+        },
+        "source": "https://registry.npmjs.org/typescript",
+        "candidateSpec": "~5.9.3"
+      },
+      {
+        "name": "typescript-eslint",
+        "spec": "8.72.0",
+        "installed": "8.72.0",
+        "latest": "8.73.0",
+        "sameMajor": "8.73.0",
+        "latestEngines": {
+          "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
+        },
+        "latestPeers": {
+          "eslint": "^8.57.0 || ^9.0.0 || ^10.0.0",
+          "typescript": ">=4.8.4 <6.1.0"
+        },
+        "source": "https://registry.npmjs.org/typescript-eslint",
+        "candidateSpec": "8.73.0"
+      },
+      {
+        "name": "util",
+        "spec": "0.12.5",
+        "installed": "0.12.5",
+        "latest": "0.12.5",
+        "sameMajor": "0.12.5",
+        "source": "https://registry.npmjs.org/util",
+        "candidateSpec": "0.12.5"
+      },
+      {
+        "name": "vite",
+        "spec": "7.3.7",
+        "installed": "7.3.7",
+        "latest": "8.3.8",
+        "sameMajor": "7.3.8",
+        "latestEngines": {
+          "node": "^20.19.0 || >=22.12.0"
+        },
+        "latestPeers": {
+          "tsx": "^4.8.1",
+          "jiti": ">=1.21.0",
+          "less": "^4.0.0",
+          "sass": "^1.70.0",
+          "yaml": "^2.4.2",
+          "stylus": ">=0.54.8",
+          "terser": "^5.16.0",
+          "esbuild": "^0.27.0 || ^0.28.0",
+          "sugarss": "^5.0.0",
+          "@types/node": "^20.19.0 || >=22.12.0",
+          "sass-embedded": "^1.70.0",
+          "@vitejs/devtools": "^0.7.1 || ^0.8.0"
+        },
+        "source": "https://registry.npmjs.org/vite",
+        "candidateSpec": "7.3.8"
+      },
+      {
+        "name": "vite-plugin-dynamic-import",
+        "spec": "^1.6.0",
+        "installed": "1.6.0",
+        "latest": "1.6.0",
+        "sameMajor": "1.6.0",
+        "source": "https://registry.npmjs.org/vite-plugin-dynamic-import",
+        "candidateSpec": "^1.6.0"
+      },
+      {
+        "name": "vite-svg-loader",
+        "spec": "^5.1.3",
+        "installed": "5.1.3",
+        "latest": "5.1.3",
+        "sameMajor": "5.1.3",
+        "latestPeers": {
+          "vue": ">=3.2.13"
+        },
+        "source": "https://registry.npmjs.org/vite-svg-loader",
+        "candidateSpec": "^5.1.3"
+      },
+      {
+        "name": "vitest",
+        "spec": "4.1.12",
+        "installed": "4.1.12",
+        "latest": "5.1.0",
+        "sameMajor": "4.1.12",
+        "latestEngines": {
+          "node": "^22.12.0 || ^24.0.0 || >=26.0.0"
+        },
+        "latestPeers": {
+          "vite": "^6.4.0 || ^7.0.0 || ^8.0.0",
+          "jsdom": "*",
+          "happy-dom": "*",
+          "@vitest/ui": "5.1.0",
+          "@types/node": "^22.0.0 || >=24.0.0",
+          "@edge-runtime/vm": "*",
+          "@opentelemetry/api": "^1.9.0",
+          "@vitest/coverage-v8": "5.1.0",
+          "@vitest/browser-preview": "5.1.0",
+          "@vitest/coverage-istanbul": "5.1.0",
+          "@vitest/browser-playwright": "5.1.0",
+          "@vitest/browser-webdriverio": "^5.0.0-beta.5 || >=5.0.0"
+        },
+        "source": "https://registry.npmjs.org/vitest",
+        "candidateSpec": "4.1.12"
+      },
+      {
+        "name": "vue",
+        "spec": "3.5.44",
+        "installed": "3.5.44",
+        "latest": "3.5.45",
+        "sameMajor": "3.5.45",
+        "latestPeers": {
+          "typescript": "*"
+        },
+        "source": "https://registry.npmjs.org/vue",
+        "candidateSpec": "3.5.45"
+      },
+      {
+        "name": "vue-echarts",
+        "spec": "^8.3.2",
+        "installed": "8.3.2",
+        "latest": "8.3.2",
+        "sameMajor": "8.3.2",
+        "latestPeers": {
+          "vue": "^3.3.0",
+          "echarts": "^6.0.0"
+        },
+        "source": "https://registry.npmjs.org/vue-echarts",
+        "candidateSpec": "^8.3.2"
+      },
+      {
+        "name": "vue-eslint-parser",
+        "spec": "^10.4.1",
+        "installed": "10.4.1",
+        "latest": "10.4.2",
+        "sameMajor": "10.4.2",
+        "latestEngines": {
+          "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
+        },
+        "latestPeers": {
+          "eslint": "^8.57.0 || ^9.0.0 || ^10.0.0"
+        },
+        "source": "https://registry.npmjs.org/vue-eslint-parser",
+        "candidateSpec": "^10.4.2"
+      },
+      {
+        "name": "vue-i18n",
+        "spec": "^11.4.16",
+        "installed": "11.4.16",
+        "latest": "11.4.22",
+        "sameMajor": "11.4.22",
+        "latestEngines": {
+          "node": ">= 22"
+        },
+        "latestPeers": {
+          "vue": "^3.0.0"
+        },
+        "source": "https://registry.npmjs.org/vue-i18n",
+        "candidateSpec": "^11.4.22"
+      },
+      {
+        "name": "vue-observe-visibility",
+        "spec": "^2.0.0-alpha.1",
+        "installed": "2.0.0-alpha.1",
+        "latest": "1.0.0",
+        "sameMajor": null,
+        "source": "https://registry.npmjs.org/vue-observe-visibility",
+        "candidateSpec": "^2.0.0-alpha.1"
+      },
+      {
+        "name": "vue-plugin-load-script",
+        "spec": "^2.1.1",
+        "installed": "2.1.1",
+        "latest": "2.1.1",
+        "sameMajor": "2.1.1",
+        "source": "https://registry.npmjs.org/vue-plugin-load-script",
+        "candidateSpec": "^2.1.1"
+      },
+      {
+        "name": "vue-router",
+        "spec": "^4.6.4",
+        "installed": "4.6.4",
+        "latest": "5.5.1",
+        "sameMajor": "4.6.5",
+        "latestPeers": {
+          "vue": "^3.5.34 || ^4.0.0",
+          "vite": "^7.3.0 || ^8.0.0",
+          "pinia": "^3.0.4 || ^4.0.2",
+          "@pinia/colada": ">=0.21.2",
+          "@vue/compiler-sfc": "^3.5.34 || ^4.0.0"
+        },
+        "source": "https://registry.npmjs.org/vue-router",
+        "candidateSpec": "^4.6.5"
+      },
+      {
+        "name": "vuedraggable",
+        "spec": "^4.1.0",
+        "installed": "4.1.0",
+        "latest": "2.24.3",
+        "sameMajor": "4.1.0",
+        "source": "https://registry.npmjs.org/vuedraggable",
+        "candidateSpec": "^4.1.0"
+      }
+    ],
+    "majorAndCompatibilityExceptions": {
+      "@babel/runtime": "Latest8.1.2 is a major compiler-runtime migration; current-major maximum7.29.14.",
+      "@eslint/js": "ESLint config paired with retained ESLint9; latest10.0.1.",
+      "eslint": "Latest10.15.0 requires separate plugin/config migration; ESLint9.39.5 remains current9.x.",
+      "@open-web3/api-mobx": "Maintained source patch targets0.9.4-26; latest1.1.4 requires SDK migration.",
+      "@open-web3/orml-api-derive": "Latest2.0.1 is a chain API compatibility migration; retained1.1.4.",
+      "@open-web3/orml-type-definitions": "Latest2.0.1 is a chain type compatibility migration; retained1.1.4.",
+      "@polkadot/api": "Latest17.0.2 requires coordinated wallet/chain migration;16.5.6 patch available.",
+      "@polkadot/rpc-provider": "Retain bounded subscription bookkeeping patch while updating16.5.4->16.5.6; latest17.0.2 separate migration.",
+      "@tonconnect/ui": "Latest5.0.3 spans three majors; retained2.4.4 needs separate wallet integration validation.",
+      "@types/jsdom": "Pair types with retained jsdom27; latest30.0.0 is major.",
+      "@types/telegram-web-app": "Latest10.1.0 major API type migration; retained9.6.0.",
+      "@vitest/coverage-v8": "Pair with Vitest4.1.12; latest5.1.0 requires test runner migration.",
+      "vitest": "Latest5.1.0 requires test runner migration; current4.1.12.",
+      "@vueuse/core": "Latest15.0.0; root14.4.0 is bypassed in production by separately aliased copied VueUse13.9.0 (vite.config.mjs104-117).",
+      "@zxing/browser": "Latest0.2.1 changes pre1.0 minor compatibility line; QR scanner regression needed.",
+      "@zxing/library": "Latest0.23.0 changes pre1.0 minor compatibility line; QR scanner regression needed.",
+      "bignumber.js": "Latest11.1.5 requires explicit financial precision/rounding migration;9.3.1 latest9.x.",
+      "crypto-random-string": "Latest6.0.0 changes major; secure randomness/polyfill validation needed.",
+      "cssnano": "Latest9.9.0 major PostCSS pipeline migration;7.1.9 latest7.x.",
+      "electron": "Latest45.3.4;43.8.10 latest43.x. Optional desktop runtime requires separate major validation.",
+      "electron-vite": "Latest6.0.0 requires Electron/Vite coordinated migration;4.0.1 latest4.x.",
+      "graphql": "Latest17.1.0 is major schema/client compatibility migration;16.15.0 patch line available.",
+      "jsdom": "Latest31.0.1 spans major DOM implementation changes;27.4.0 latest27.x.",
+      "lint-staged": "Latest17.6.1 major; still depends on vulnerable picomatch4.0.7, so major bump does not fix advisory.",
+      "mobx": "Latest7.1.7 major store/reactivity migration;6.16.1 latest6.x.",
+      "pinia": "Latest4.1.0 major store migration;3.0.4 latest3.x.",
+      "typescript": "Latest7.0.2; typescript-eslint8.73.0 peer supports >=4.8.4 <6.1.0, so latest TS incompatible. Retain5.9.3 for patch declaration generation.",
+      "vite": "Latest8.3.8 switches build toolchain;7.3.8 available current-major patch.",
+      "vue-router": "Latest5.5.1 major routing migration;4.6.5 available current-major patch.",
+      "vue-observe-visibility": "latest1.0.0 is Vue2 release; preserve existing2.0.0-alpha.1 compatibility selection.",
+      "vuedraggable": "latest2.24.3 is Vue2 release; preserve Vue3-compatible4.1.0.",
+      "@sora/sora-pay": "Not public registry; retained local0.2.2 archive and its lockfile graph are audited separately."
+    },
+    "additionalSources": [
+      "https://github.com/advisories/GHSA-fc5q-39xc-vjpf",
+      "https://github.com/advisories/GHSA-g3hv-75wg-m249",
+      "https://github.com/advisories/GHSA-3g3m-2fjr-6pw4",
+      "https://github.com/advisories/GHSA-mrwp-f3q8-3g9p",
+      "https://github.com/isaacs/node-glob/blob/v14.0.6/README.md",
+      "https://registry.npmjs.org/@yarnpkg%2Fcli-dist/latest",
+      "https://registry.npmjs.org/node-gyp/latest"
+    ]
+  },
+  "vendorProvenance": [
+    {
+      "name": "tabbable",
+      "version": "6.2.0",
+      "registry": "https://registry.npmjs.org/tabbable/6.2.0",
+      "tarball": "https://registry.npmjs.org/tabbable/-/tabbable-6.2.0.tgz",
+      "integrity": "sha512-Cat63mxsVJlzYvN51JmVXIgNoUokrIaT2zLclCXjRd8boZ0004U4KCs/sToJ75C6sdlByWxpYnb5Boif1VSFew==",
+      "sha256": "5af5cf1fc55ad82bb94edaf6d220b56b05b5566a4a808f29c188678a358db57b",
+      "bytes": 112929,
+      "dependencies": {}
+    },
+    {
+      "name": "maska",
+      "version": "3.2.2",
+      "registry": "https://registry.npmjs.org/maska/3.2.2",
+      "tarball": "https://registry.npmjs.org/maska/-/maska-3.2.2.tgz",
+      "integrity": "sha512-qhhoeKXYLsDOxfB70nybuGJmB+XsNb/xhKBBQGMMnT5Hw4+lhdeQmgwlkHYoMIUcppcnLHW6LppPPpGewrv9WQ==",
+      "sha256": "96f412748be84565b05d865f4544905937ac3ea89b394909ea7e8539de6b71ae",
+      "bytes": 13443,
+      "dependencies": {}
+    },
+    {
+      "name": "maska",
+      "version": "3.2.0",
+      "registry": "https://registry.npmjs.org/maska/3.2.0",
+      "tarball": "https://registry.npmjs.org/maska/-/maska-3.2.0.tgz",
+      "integrity": "sha512-zSmSgs5/q9vMSmrdZT3rKOv9uLznNWR/niuuAdBZDTvB3SMKOX9vhMtDijFyExz+B4UClu2rvksylUh/ea1bLA==",
+      "sha256": "37b67a5bb83995f9cbb8ff79c92b994e43d1183fca71c7c2875fe491ab8fd282",
+      "bytes": 13821,
+      "dependencies": {}
+    },
+    {
+      "name": "tabbable",
+      "version": "6.5.2",
+      "registry": "https://registry.npmjs.org/tabbable/6.5.2",
+      "tarball": "https://registry.npmjs.org/tabbable/-/tabbable-6.5.2.tgz",
+      "integrity": "sha512-XgdnB1nGU6KU4VgMnZPaZCx7M1hBrLyEiZYau2G2gq9UT0d7d4FUBlNX7vvPlm/B1vk1PjrzJBx9Lbv4fsqS9g==",
+      "sha256": "322636454a8c03206126b4d77d9a5adfae52c0d2b7cb27cbba585eb7db4093fb",
+      "bytes": 97960,
+      "dependencies": {}
+    },
+    {
+      "name": "focus-trap",
+      "version": "7.6.5",
+      "registry": "https://registry.npmjs.org/focus-trap/7.6.5",
+      "tarball": "https://registry.npmjs.org/focus-trap/-/focus-trap-7.6.5.tgz",
+      "integrity": "sha512-7Ke1jyybbbPZyZXFxEftUtxFGLMpE2n6A+z//m4CRDlj0hW+o3iYSmh8nFlYMurOiJVDmJRilUQtJr08KfIxlg==",
+      "sha256": "435f16bf46e000cc954b8c784699724e548c47f7509d49b9087707788f66d419",
+      "bytes": 176538,
+      "dependencies": {
+        "tabbable": "^6.2.0"
+      }
+    },
+    {
+      "name": "focus-trap",
+      "version": "7.8.0",
+      "registry": "https://registry.npmjs.org/focus-trap/7.8.0",
+      "tarball": "https://registry.npmjs.org/focus-trap/-/focus-trap-7.8.0.tgz",
+      "integrity": "sha512-/yNdlIkpWbM0ptxno3ONTuf+2g318kh2ez3KSeZN5dZ8YC6AAmgeWz+GasYYiBJPFaYcSAPeu4GfhUaChzIJXA==",
+      "sha256": "ccc543b0ce6836233357ee27515cfb9a8b7f65d0ed54023bd90bf539fa2b353f",
+      "bytes": 206373,
+      "dependencies": {
+        "tabbable": "^6.4.0"
+      }
+    }
+  ],
+  "vendorFileHashes": [
+    {
+      "name": "tabbable",
+      "version": "6.5.2",
+      "files": 19,
+      "changedFiles": [
+        "CHANGELOG.md",
+        "LICENSE",
+        "README.md",
+        "SECURITY.md",
+        "dist/index.esm.js",
+        "dist/index.esm.js.map",
+        "dist/index.esm.min.js",
+        "dist/index.esm.min.js.map",
+        "dist/index.js",
+        "dist/index.js.map",
+        "dist/index.min.js",
+        "dist/index.min.js.map",
+        "dist/index.umd.js",
+        "dist/index.umd.js.map",
+        "dist/index.umd.min.js",
+        "dist/index.umd.min.js.map",
+        "index.d.ts",
+        "package.json",
+        "src/index.js"
+      ],
+      "sha256": {
+        "CHANGELOG.md": "981c327fbead80b84490ed5fd9d7e3305152d04e2ca02707e0843a965b534135",
+        "LICENSE": "8e714750725e75c8b31172ef84c0805f94873f86e3b5cfca8a948553f0778fa1",
+        "README.md": "e6974db24664b580a3c72ac3b7d87748ab6b45dbf27968e0977f5e9ba66d1ca9",
+        "SECURITY.md": "29fa6f7dc6d66201570e1a13434b60b7729c1e4eb93455c54bcbd46bd5c6e0c8",
+        "dist/index.esm.js": "050bf8c3dfe30b159730b83795c6365404a9964ec5bc246271dc963675ec0cfc",
+        "dist/index.esm.js.map": "04ded2b063dc408faaff9b6a8deb89cbaeb0aa217ab00a725d2638366158dbca",
+        "dist/index.esm.min.js": "3c5468606dbe3a616eeb2dacb30ccefb77ee149cd5c604e956a5cf9264391efb",
+        "dist/index.esm.min.js.map": "4e9af5c7ba6fbd9845cb010e9218270ee695ba80a08110ac8727f53139b3320c",
+        "dist/index.js": "ba3662b1ad129f0ac2fec4f06aee6ce4f7e03a5648dafba9566da2017d372582",
+        "dist/index.js.map": "692ec75ca0a1c86432e1fbdd22d5c59658ffd7e87928df7c5206c686185aa2e1",
+        "dist/index.min.js": "733c3d3f81af941d8423af2fdefda4f03121d58c21ff0a710894cb84cf138cc8",
+        "dist/index.min.js.map": "7f989d666aaf75493899770a36f808a8a255935f9d1c9443bbb88a8cfb931031",
+        "dist/index.umd.js": "05680f17f4cab80f13542a171390b7a23cf92cc3fd3cefebb3560dcc884fca99",
+        "dist/index.umd.js.map": "6756f833824362874c7222833a2c36e7cfafbb6438a2fc7282d48b6031e082ec",
+        "dist/index.umd.min.js": "dbba026a08bb99a25c97e91b63117d81ebe2b2f78ee5cac897e1b1ea30260234",
+        "dist/index.umd.min.js.map": "9c5359c356647a88ce380a619bd258ac7611ce8b4faf2f8d138a31a98fc0e57a",
+        "index.d.ts": "8721fcf8d8e4695fdfe973ede87e37c0d08d075eec27904393f6c2f1b3b9dec4",
+        "package.json": "828c1e0e0433d44f85a96fa318f1959408fb250206afcbec2c3fb54db53716d6",
+        "src/index.js": "b57df5f6c2c3d38f216519ea74c23ebf7b6448dbaf1b900128741a92e822e7ec"
+      }
+    },
+    {
+      "name": "maska",
+      "version": "3.2.2",
+      "files": 21,
+      "changedFiles": [
+        "dist/alpine.d.ts",
+        "dist/alpine.js",
+        "dist/alpine.mjs",
+        "dist/cdn/alpine.js",
+        "dist/cdn/maska.d.ts",
+        "dist/cdn/maska.js",
+        "dist/cdn/vue.js",
+        "dist/index-CGa4m0Gj.js",
+        "dist/index-ncVkAPXj.mjs",
+        "dist/maska.d.ts",
+        "dist/maska.js",
+        "dist/maska.mjs",
+        "dist/svelte.d.ts",
+        "dist/svelte.js",
+        "dist/svelte.mjs",
+        "dist/vue.d.ts",
+        "dist/vue.js",
+        "dist/vue.mjs",
+        "package.json"
+      ],
+      "sha256": {
+        "LICENSE.txt": "920f7e0ce18b2816a8dff8bd788a43ef6d0701ed01a6334856c9de4a593ed8b7",
+        "README.md": "bd84fb49aa1f863a362c493c31ab4adc7b4b90726fe46352c31adb64b9caf104",
+        "dist/alpine.d.ts": "19ab8cfb233e5f8315905c3a7bff153c593c5497af0101754fc3fe44f8046d5a",
+        "dist/alpine.js": "7e06657839e79068144719925d1bc2b2c54007299000afab9783c77084a9ad55",
+        "dist/alpine.mjs": "6186eae6ac99c71a65526b925640e9b1708daaf9d1fa8c9129f90115aa61aca5",
+        "dist/cdn/alpine.js": "13f3f60dc8237ea95e9d80e58dce8edcc0ff0d13028e497187af50b082f8186e",
+        "dist/cdn/maska.d.ts": "fd16e47e72ba53498db043953f745f9ba69486535edc62bdb05e195dd03236d2",
+        "dist/cdn/maska.js": "870460093b2b0dcd286dbe50713b38791d45a8dfd01283226e5c118aaf0b2a40",
+        "dist/cdn/vue.js": "a87f72d770882faee9dfccd780724924bdd84fbfb61d0052ed65c70520847dd2",
+        "dist/index-CGa4m0Gj.js": "79a0818b7f45c87c5e147e1c9f30f11fc4d461946f8809e81640cc249b7a5b1a",
+        "dist/index-ncVkAPXj.mjs": "d0a8c69c8080356073c0acd12b09b8078870dd9c6001373cc177af4be9f5b405",
+        "dist/maska.d.ts": "fd16e47e72ba53498db043953f745f9ba69486535edc62bdb05e195dd03236d2",
+        "dist/maska.js": "d842abbd0a2e480b69880a2a1ee214b654019b3308ad423db1b2ee28c029aaf6",
+        "dist/maska.mjs": "7eaf902fe7d00bd209fbbc88980029a8004ac76a8880de767812552836fa381c",
+        "dist/svelte.d.ts": "60aa3f12cb15910b278bcea6a11f8363026a11d35ccf57d1e3f7357257f467bd",
+        "dist/svelte.js": "0accad48c08fea626a609ff49d7d70a8eb7d65db201bddd8185f9a7c4a9ed38d",
+        "dist/svelte.mjs": "f90dfbf2851d46527d915b382a064b0c419d6b2d6c874fa3c855ee5b34d6b957",
+        "dist/vue.d.ts": "131b3409211c442dc92084188e9251ffeccdd1c999627820c044b1353d74e483",
+        "dist/vue.js": "083cbaf7266b478113b25a081aef820b24faed2a710b11dc94253a6f9d46a0f1",
+        "dist/vue.mjs": "4aad77a27bd0bc5338eb24af511629e443d7d64648e96860d52648710b193093",
+        "package.json": "9ec52b12db9b7cd90e48a1b7511b627e4c5cf77427bc1a8b1019a6fb4ec77cdf"
+      }
+    },
+    {
+      "name": "focus-trap",
+      "version": "7.8.0",
+      "files": 19,
+      "changedFiles": [
+        "CHANGELOG.md",
+        "README.md",
+        "SECURITY.md",
+        "dist/focus-trap.esm.js",
+        "dist/focus-trap.esm.js.map",
+        "dist/focus-trap.esm.min.js",
+        "dist/focus-trap.esm.min.js.map",
+        "dist/focus-trap.js",
+        "dist/focus-trap.js.map",
+        "dist/focus-trap.min.js",
+        "dist/focus-trap.min.js.map",
+        "dist/focus-trap.umd.js",
+        "dist/focus-trap.umd.js.map",
+        "dist/focus-trap.umd.min.js",
+        "dist/focus-trap.umd.min.js.map",
+        "index.d.ts",
+        "index.js",
+        "package.json"
+      ],
+      "sha256": {
+        "CHANGELOG.md": "85adc1d9c67755d52ca99f9eab8ccd375df9c659331eab597f53f58bcb58a02a",
+        "LICENSE": "b8d0347312c547c22802b39e495bc8f75d1a27bd69a51950fe5dcf8529b05070",
+        "README.md": "ef23f9fd4e4e5c320fcb4ca6433821d7f634ab0026e6b852b2b39069307c0682",
+        "SECURITY.md": "146669581b3b0ccf0f4cc240e7dd5cfca48956031d9a1b9ba4bb15e209759a8e",
+        "dist/focus-trap.esm.js": "fb89c48f4a26afea36cde4f43189900496d58f3f29b1ad51d3f8f96ac250889e",
+        "dist/focus-trap.esm.js.map": "b51e2712b2d7e695c54c8b97bf6ad0c42d596f3a29ac1ee11ddf1b44bf0228c0",
+        "dist/focus-trap.esm.min.js": "2ba0e7580ea8198ba65d5fa45528637f143c6aa93cef83eeffd16ec3ee23fe77",
+        "dist/focus-trap.esm.min.js.map": "36f83143112f3fda9b215267a36142be6c823001607cdcd19f65b34ff7e3dd8a",
+        "dist/focus-trap.js": "e2a8969234011e1c59b876c18a31bf39acd27353c1094be001c6d97c288c5be7",
+        "dist/focus-trap.js.map": "a6d10602fd17b9f0fb60e19719ef9be36e484b98c87bd5fbb32fc73d5f68147d",
+        "dist/focus-trap.min.js": "ba073c24cd6c8cdba72f15447549e520f2de372cff9be28fac815a70ea417ca9",
+        "dist/focus-trap.min.js.map": "d59b68c232b25cd58f747210b6a5d4ba864519e8c49647f9f2e0d16bcf8dfc00",
+        "dist/focus-trap.umd.js": "170efc97cc06a540ac24fb87159957ac546583f517ba4ed52d01c8de33b11ff2",
+        "dist/focus-trap.umd.js.map": "f040ab3272f8dfb536e379314f21570add7b727f96e203b33d1193a4a23d043f",
+        "dist/focus-trap.umd.min.js": "696eb842db567a8852bfa037f551dd66253360c74c2d2a069006b807df4c9993",
+        "dist/focus-trap.umd.min.js.map": "0f61070bbb952afb55d950bb03cf45c3798c4caa64e91446bf5ff613ff1e894d",
+        "index.d.ts": "63c1da834ae950bae7a3ce8929ff95682b8b9f271c064e32dab47d785e55e089",
+        "index.js": "9379f9dcbc471e734730c5e9120b3a1fb9c22c8f80f50ffdd6dfb45eadea3127",
+        "package.json": "678eed434620cf96002bf7da9bd1b3906adf8ee66e183041c6fe0cb013793536"
+      }
+    }
+  ],
+  "resolvedAdvisories": ["GHSA-mrwp-f3q8-3g9p", "GHSA-3g3m-2fjr-6pw4", "GHSA-g3hv-75wg-m249"],
+  "remainingAdvisories": ["GHSA-fc5q-39xc-vjpf"],
+  "yarn": {
+    "before": "4.10.3",
+    "after": "4.18.1",
+    "cliSha256": "a28ad591febb769f939c11f82f89bacad0b0fac0c884d3b78fa2aaaee970907e"
+  },
+  "productionCsp": [
+    {
+      "entry": "dist/index.html",
+      "connectSrc": "connect-src 'self' https: wss: http://127.0.0.1:39847",
+      "fullPolicy": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval' chrome-extension: moz-extension: https://telegram.org https://apis.google.com https://accounts.google.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data: https:; connect-src 'self' https: wss: http://127.0.0.1:39847; frame-src 'self' https://buy.moonpay.com https://buy-staging.moonpay.com https://secure.walletconnect.org https://secure.walletconnect.com https://verify.walletconnect.org https://verify.walletconnect.com https://accounts.google.com https://content.googleapis.com https://www.google.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'",
+      "assetReferences": [
+        "./favicon.ico",
+        ".well-known/polkaswap-agent.json",
+        "llms.txt",
+        "agents.txt",
+        "./assets/index-robEwopF.js",
+        "./assets/style-JpIS6yTV.css",
+        "./assets/pswap-loader-BlCImLt2.svg"
+      ],
+      "relativeAssetsExist": true
+    },
+    {
+      "entry": "out/renderer/index.html",
+      "connectSrc": "connect-src 'self' https: wss: http://127.0.0.1:39847",
+      "fullPolicy": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval' chrome-extension: moz-extension: https://telegram.org https://apis.google.com https://accounts.google.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data: https:; connect-src 'self' https: wss: http://127.0.0.1:39847; frame-src 'self' https://buy.moonpay.com https://buy-staging.moonpay.com https://secure.walletconnect.org https://secure.walletconnect.com https://verify.walletconnect.org https://verify.walletconnect.com https://accounts.google.com https://content.googleapis.com https://www.google.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'",
+      "assetReferences": ["./assets/index-CnOmRi-j.js", "./assets/index-D4pAQZ5X.css"],
+      "relativeAssetsExist": true
+    }
+  ],
+  "validation": {
+    "immutableInstall": "passed",
+    "translation": {
+      "files": 4,
+      "tests": 13,
+      "result": "passed"
+    },
+    "securityFocused": {
+      "files": 11,
+      "tests": 103,
+      "result": "passed"
+    },
+    "productionCspTests": {
+      "tests": 20,
+      "result": "passed"
+    },
+    "browser": {
+      "tests": 21,
+      "result": "passed",
+      "engine": "Playwright 1.65.1 Chromium",
+      "network": "mocked",
+      "path": "/ipfs/polkaswap-e2e/"
+    },
+    "webBuild": "passed",
+    "electronBuild": "passed",
+    "lintAndFormatting": "passed for changed code",
+    "audit": {
+      "yarn": "failed: unpatched Picomatch only",
+      "vendor": "passed:47 package names,0 advisories",
+      "ucan": "passed:0 vulnerabilities"
+    },
+    "applicationUnit": {
+      "result": "passed",
+      "files": 1107,
+      "tests": 11282,
+      "durationSeconds": 499.37,
+      "command": "node .yarn/releases/yarn-4.18.1.cjs test:unit --project unit"
+    },
+    "initialUpdatedApplicationRun": {
+      "passed": 11281,
+      "failed": 1,
+      "cause": "Local NodeIcon stub selector mismatch exposed by Vue Test Utils2.6.0; test fixed and full application project rerun passed."
+    },
+    "scriptUnit": {
+      "result": "passed",
+      "files": 178,
+      "tests": 3470,
+      "durationSeconds": 811.19,
+      "command": "node .yarn/releases/yarn-4.18.1.cjs test:unit --project unit-scripts"
+    },
+    "totalUnit": {
+      "result": "passed",
+      "files": 1285,
+      "tests": 14752
+    }
+  },
+  "sourceHashes": {
+    "package.json": "5e93c06ca42bde431a617e39941e06590a72b7122a0c8cbb4fa1dd9e1e1fa609",
+    "yarn.lock": "c3923d44aa08e866c33b687a308c56a51342a6b37726be4f6127bdb64b9f4b37",
+    ".yarnrc.yml": "4a573fa6dec7c983e3a6e023278d1266de92c53c80aa05379fcaa375b3b7b324",
+    "scripts/build/dependencySecurityPlugin.mjs": "54cb70d6955264978555f5ba8834215435dc9802cf17ea1750068c4c616e9ff2",
+    "scripts/build/productionCspPlugin.mjs": "2cda161f72a204ec3faa40eecb8aa9624370b6656aca1ce4438a851afb703e86",
+    "scripts/security/audit.mjs": "fcdb385a88db28760e21cef0b5f382c760ae91c397e92ed3ebb7ab7604841111",
+    "tests/unit/scripts/security/glob-consumers.spec.ts": "c18b6c59eb5de36c8af3751bb94513d7e253b5ab8e342b3c9260f82db9d31c62",
+    "tests/unit/scripts/build/productionCspPlugin.spec.ts": "95148870adb02872be2ae84fff95bbac4f305b36d2535edad96eea4c2a7277d7",
+    "tests/unit/utils/vendorInteractions.spec.ts": "90eda7d2b64978090fe971160f92591eb7f5b24215e7613ea6149ffb1ddb08e4",
+    "tests/unit/components/pages/Bridge/NodeIcon.source.spec.ts": "ac6b9224438467e2a501dec17e872e20d891c8a3dc44e3993b1e24bbe260145b"
+  },
+  "logs": {
+    "audit-before.log": "fccbf41e828f7f1759b575fdc30b64b4951582941ec4a9ed3e9d66350d3f60e5",
+    "audit-final.log": "2fa6a44ea204e3b927f341b7883f62e2fcaec9a6123280843c67e2bfb3d72a10",
+    "audit-production.log": "1a81099c80a53a9b172b9a8252fcc6c85a3451dc1056c576b07572e27c872231",
+    "security-focused.log": "43f7e35340ed500abecd29280310b692f675589d3cbc80adce0347ba2aec706d",
+    "glob-before.log": "920716e11928e4c0b4a9e9b7dbb1859eea6d23c743e56dc8712a600c447f6897",
+    "editorconfig-before.log": "30eacb9cc95ca11621810ecf9056950fab7ddc92caada601e32d638c3131f94a",
+    "vendor-tests.log": "60c45f9ad2d78fc9d6e6e160d931b53c77b08bed48c418ebeda59d5c41cb6b5c",
+    "translation.log": "e0c548ad481999e561a18666b4dadaa0b51e80a526bd7135e4dd13c22a3a3f90",
+    "build.log": "85ae5855422d062da2585ecf3595ec04ee022648b063891e6b933ce4d4dbd8ff",
+    "electron-build.log": "7ca04a7b9a30fad83691b4b88bfb87cad61f077b1f4ce786c440d463dc6f0123",
+    "browser.log": "16fa0bdcdb60acc759da62fa49c1f11f1e45f80e84237c1fe31592faca167425",
+    "install.log": "d7f360a6015196b3859eb55bb463de2151fe265679fc5481cd0ff100bfaa3832",
+    "unit-final.log": "1cbd2d6feab494972c34561aefd6987ddf93cdecfddd5c25ac55cc55ae7dada1",
+    "unit-after.log": "3168e9e39ca140fff8134975be421da97d3781a7132092e4dc1247fb6d53e93f",
+    "scripts-after.log": "6c130cb028fe248381f209cd525d71912971c02e2e91b3ddf00bd910297924ba"
+  }
+}

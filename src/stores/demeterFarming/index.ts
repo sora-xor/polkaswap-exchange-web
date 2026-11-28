@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import { defineStore } from 'pinia';
 
 import { api } from '@/lib/soraneo-wallet/src/api';
@@ -7,11 +7,7 @@ import { useWalletStore } from '@/stores/wallet';
 import { waitForAccountPair } from '@/utils';
 import { subscribeAndWaitForFirst } from '@/utils/subscriptions';
 
-import type {
-  DemeterAccountPool,
-  DemeterPool,
-  DemeterRewardToken,
-} from '@sora-substrate/sdk/build/demeterFarming/types';
+import type { DemeterAccountPool, DemeterPool, DemeterRewardToken } from '@/lib/substrate/sdk/demeterFarming/types';
 import type { Subscription } from 'rxjs';
 
 const INITIAL_EMISSION_TIMEOUT_MS = 8_000;

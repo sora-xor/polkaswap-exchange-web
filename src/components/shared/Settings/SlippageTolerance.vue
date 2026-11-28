@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts" setup>
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { computed, ref } from 'vue';
 
 import SettingsTabs from '@/components/shared/Settings/Tabs.vue';

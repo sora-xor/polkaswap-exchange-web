@@ -1,4 +1,4 @@
-import { FPNumber, Operation } from '@sora-substrate/sdk';
+import { FPNumber, Operation } from '@/lib/substrate/sdk';
 import { describe, expect, it, vi } from 'vitest';
 
 import { ZeroStringValue } from '@/consts';
@@ -35,7 +35,7 @@ import {
 } from '@/stores/bridge/stateMutations';
 import { BridgeFocusedField } from '@/stores/bridge/types';
 
-import type { IBridgeTransaction } from '@sora-substrate/sdk';
+import type { IBridgeTransaction } from '@/lib/substrate/sdk';
 import type { Subscription } from 'rxjs';
 
 const createStore = (): BridgeStateStoreLike => buildInitialBridgeState();

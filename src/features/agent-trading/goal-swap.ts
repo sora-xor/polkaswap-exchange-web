@@ -1,5 +1,5 @@
 /** Pure projection of one finalized provider estimate; no RPC, wallet, approval or execution. */
-import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
+import { LiquiditySourceTypes } from '@/lib/substrate/liquidity-proxy/consts';
 import {
   assertHistoricalFeeDetailsMatchesQueryInfo,
   HISTORICAL_EXECUTION_GENESIS as GENESIS,

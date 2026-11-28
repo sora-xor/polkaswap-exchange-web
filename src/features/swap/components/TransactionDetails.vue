@@ -51,8 +51,8 @@
 </template>
 
 <script setup lang="ts">
-import { Operation, type CodecString, type NetworkFeesObject } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { Operation, type CodecString, type NetworkFeesObject } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { computed } from 'vue';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
@@ -63,8 +63,8 @@ import type { SwapReview } from '../types/review';
 import { useAssetsStore } from '@/stores/assets';
 import { useSettingsStore } from '@/stores/settings';
 
-import type { LPRewardsInfo } from '@sora-substrate/liquidity-proxy/build/types';
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { LPRewardsInfo } from '@/lib/substrate/liquidity-proxy/types';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 

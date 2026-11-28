@@ -16,4 +16,9 @@ describe('Explore Tokens source', () => {
     expect(tokensSource).not.toContain('velocityFormatted: String(tokenData.velocity.toNumber(2))');
     expect(tokensSource).not.toContain('velocityFormatted: String(zero.toNumber(2))');
   });
+  it('only displays token statistics when the market query supplies them', () => {
+    expect(tokensSource).toContain('Object.entries(tokensData.value)');
+    expect(tokensSource).not.toContain('getAssetFiatPrice(asset) ?? ZeroStringValue');
+    expect(tokensSource).not.toContain('formatAmountWithSuffix(zero)');
+  });
 });

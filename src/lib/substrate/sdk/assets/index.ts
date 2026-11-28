@@ -1,8 +1,8 @@
 import { assert, stringToU8a, u8aToHex, bnToU8a } from '@polkadot/util';
 import { Subscription, Subject, combineLatest, map } from 'rxjs';
 import { keccak256AsU8a } from '@polkadot/util-crypto';
-import { CodecString, FPNumber, NumberLike } from '@sora-substrate/math';
-import type { BalanceInfo } from '@sora-substrate/types';
+import { CodecString, FPNumber, NumberLike } from '@/lib/substrate/math';
+import type { BalanceInfo } from '@/lib/substrate/types';
 import type { ApiPromise } from '@polkadot/api';
 import type { Observable } from '@polkadot/types/types';
 import type {

@@ -1,7 +1,7 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 
 import type { Struct } from '@polkadot/types-codec';
-import type { AssetId, Balance, Moment } from '@sora-substrate/types/interfaces/runtime';
+import type { AssetId, Balance, Moment } from '@/lib/substrate/types/interfaces/runtime';
 
 /** @name LockInfo */
 export interface LockInfo extends Struct {

@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { LimitOrderType } from '@/consts';
 import { useOrderBookStore } from '@/stores/orderBook';
 
-import type { OrderBook } from '@sora-substrate/liquidity-proxy';
+import type { OrderBook } from '@/lib/substrate/liquidity-proxy';
 
 const shared = vi.hoisted(() => {
   const walletStore = {

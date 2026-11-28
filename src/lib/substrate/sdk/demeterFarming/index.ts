@@ -1,10 +1,10 @@
 import { map, combineLatest, of } from 'rxjs';
 import { assert } from '@polkadot/util';
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import type { Observable } from '@polkadot/types/types';
 import type { StorageKey } from '@polkadot/types';
 import type { CommonPrimitivesAssetId32 } from '@polkadot/types/lookup';
-import type { NumberLike } from '@sora-substrate/math';
+import type { NumberLike } from '@/lib/substrate/math';
 
 import { toAssetId } from '../assets';
 import { Messages } from '../logger';

@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 
 /** Optional purchase-flow protection; an absent limit preserves the ordinary swap policy. */
 export function isSwapPriceImpactAllowed(impact: unknown, limit?: string): boolean {

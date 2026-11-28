@@ -1,4 +1,4 @@
-import { Operation } from '@sora-substrate/sdk';
+import { Operation } from '@/lib/substrate/sdk';
 import { describe, expect, it } from 'vitest';
 
 import {
@@ -8,7 +8,7 @@ import {
   preservePinnedBridgeHistoryTransactions,
 } from '@/stores/bridge/historyRecord';
 
-import type { IBridgeTransaction } from '@sora-substrate/sdk';
+import type { IBridgeTransaction } from '@/lib/substrate/sdk';
 import type { BridgePinnedHistoryState } from '@/stores/bridge/historyRecord';
 
 const tx = (data: Partial<IBridgeTransaction>): IBridgeTransaction =>

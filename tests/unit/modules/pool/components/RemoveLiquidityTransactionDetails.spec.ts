@@ -1,4 +1,4 @@
-import { Operation } from '@sora-substrate/sdk';
+import { Operation } from '@/lib/substrate/sdk';
 import { mount } from '@vue/test-utils';
 import { createPinia } from 'pinia';
 import { beforeEach, describe, expect, it, vi } from 'vitest';

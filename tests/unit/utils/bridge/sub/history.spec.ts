@@ -1,10 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { Operation, TransactionStatus } from '@sora-substrate/sdk';
+import { Operation, TransactionStatus } from '@/lib/substrate/sdk';
 import { hexToU8a, u8aToHex } from '@polkadot/util';
 import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
+import { BridgeNetworkType, BridgeTxStatus } from '@/lib/substrate/sdk/bridgeProxy/consts';
+import { SubNetworkId } from '@/lib/substrate/sdk/bridgeProxy/sub/consts';
 
 const historyElementsFilterMock = vi.hoisted(() => vi.fn((value) => value));
 const getHistoryPagedMock = vi.hoisted(() => vi.fn());

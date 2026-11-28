@@ -2,6 +2,18 @@
   <section class="claim-wallets" :aria-labelledby="titleId">
     <h2 :id="titleId">{{ t('getTs.walletsTitle') }}</h2>
     <p>{{ t('getTs.onboarding.setupIntroduction') }}</p>
+    <p v-if="automaticEthereum" class="claim-wallets__help" data-test-name="automaticEthereumNote">
+      {{ t('buyXor.run.walletNote') }}
+      <button
+        v-if="!evmAddress || temporaryWalletConnected"
+        type="button"
+        class="claim-wallets__secondary"
+        :disabled="isConnecting"
+        @click="connectEthereum"
+      >
+        {{ t('buyXor.run.ownWallet') }}
+      </button>
+    </p>
     <div v-if="current === 'ton'" class="claim-wallets__action">
       <h3 ref="currentStepHeading" tabindex="-1">{{ t('getTs.connectTonFirst') }}</h3>
       <p>{{ t('getTs.onboarding.tonPurpose') }}</p>
@@ -20,7 +32,8 @@
       <s-button type="primary" native-type="button" :loading="isConnecting" @click="connectEthereum">{{
         t('getTs.connectEthereum')
       }}</s-button>
-      <details class="claim-wallets__details">
+      <temporary-wallet-panel v-if="offerTemporaryWallet" />
+      <details v-else class="claim-wallets__details">
         <summary>{{ t('getTs.onboarding.needEthereumWallet') }}</summary>
         <ol class="claim-wallets__instructions">
           <li>{{ t('getTs.onboarding.installEthereum') }}</li>
@@ -89,18 +102,19 @@
         </li>
       </ol>
     </details>
-    <details v-if="isLoggedIn || evmAddress || ton.address.value" class="claim-wallets__details">
+    <details v-if="isLoggedIn || evmAddress || ton.address.value || temporaryWalletOpen" class="claim-wallets__details">
       <summary>{{ t('getTs.walletAddresses') }}</summary>
       <div v-if="source === 'ton' && ton.address.value">
         <strong>{{ t('getTs.tonWallet') }}</strong
         ><code>{{ ton.address.value }}</code
         ><button type="button" @click="connectTon">{{ t('getTs.changeWallet') }}</button>
       </div>
-      <div v-if="requiresEthereum && evmAddress">
-        <strong>{{ t('getTs.ethereumWallet') }}</strong
+      <div v-if="(requiresEthereum || automaticEthereum) && evmAddress">
+        <strong>{{ t(temporaryWalletConnected ? 'temporaryWallet.active' : 'getTs.ethereumWallet') }}</strong
         ><code>{{ evmAddress }}</code
         ><button type="button" @click="connectEthereum">{{ t('getTs.changeWallet') }}</button>
       </div>
+      <temporary-wallet-panel v-if="temporaryWalletOpen && !(offerTemporaryWallet && current === 'ethereum')" />
       <div v-if="isLoggedIn">
         <strong>{{ t('getTs.onboarding.soraWallet') }}</strong
         ><code>{{ soraAddress }}</code
@@ -116,10 +130,16 @@ import { useInternalConnect } from '@/composables/useInternalConnect';
 import { useWeb3Connection } from '@/composables/useWeb3Connection';
 import { useWalletStore } from '@/stores/wallet';
 import { useTonswapTonWallet } from '@/features/misc/composables/useTonswapTonWallet';
+import TemporaryWalletPanel from '@/features/misc/components/buy-xor/TemporaryWalletPanel.vue';
 import type { GetTsSource } from '@/features/misc/lib/getTsFlow';
+import { temporaryWalletSession } from '@/utils/connection/evm/temporaryWalletSession';
 
 /** One explicitly requested wallet connection at a time, starting with the buyer's payment wallet. */
-const props = withDefaults(defineProps<{ source: GetTsSource; purpose?: 'ts' | 'xor' }>(), { purpose: 'ts' });
+/** `automaticEthereum`: the purchase brings its own temporary Ethereum wallet, so only SORA must be connected. */
+const props = withDefaults(
+  defineProps<{ source: GetTsSource; purpose?: 'ts' | 'xor'; automaticEthereum?: boolean }>(),
+  { purpose: 'ts', automaticEthereum: false }
+);
 const { t } = useTranslation();
 const titleId = `claim-wallets-${useId()}`;
 const currentStepHeading = ref<HTMLElement | null>(null);
@@ -130,7 +150,13 @@ const wallet = useWalletStore();
 const ton = useTonswapTonWallet();
 const error = ref(false);
 const connectingTon = ref(false);
-const requiresEthereum = computed(() => !['xor', 'sora'].includes(props.source));
+const requiresEthereum = computed(() => !props.automaticEthereum && !['xor', 'sora'].includes(props.source));
+/** Card buyers can use a temporary wallet made on this page instead of an Ethereum wallet app. */
+const offerTemporaryWallet = computed(() => props.source === 'card');
+const temporaryWalletOpen = computed(() => !!temporaryWalletSession.address);
+const temporaryWalletConnected = computed(
+  () => temporaryWalletOpen.value && evmAddress.value?.toLowerCase() === temporaryWalletSession.address
+);
 const tonReady = computed(() => !!ton.address.value && ton.chain.value === '-239');
 const current = computed(() =>
   props.source === 'ton' && !tonReady.value

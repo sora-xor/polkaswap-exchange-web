@@ -22,7 +22,7 @@ import type { LiquidityParams } from '@/stores/pool/types';
 import { useWalletStore } from '@/stores/wallet';
 
 import type { Nullable } from '@/types/common';
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 import AddLiquidityForm from '@/modules/pool/components/AddLiquidity/Form.vue';
 import GenericPageHeader from '@/components/shared/GenericPageHeader.vue';
 import { PoolPageNames } from '@/features/pool/consts';

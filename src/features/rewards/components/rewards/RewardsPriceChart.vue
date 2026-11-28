@@ -101,7 +101,7 @@
 </template>
 
 <script lang="ts" setup>
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { computed, onBeforeUnmount, onMounted, ref, useId, watch } from 'vue';
 
 import {

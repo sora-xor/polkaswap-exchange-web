@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { CAUSTIC_ROWS, CAUSTIC_TEXELS, createWaterSimulation } from '@/features/bot-trading/quant-water';
+import { CAUSTIC_ROWS, CAUSTIC_TEXELS, WATER_VIEW, createWaterSimulation } from '@/features/bot-trading/quant-water';
 import {
   createWaterRenderer,
   parseWaterColor,
@@ -119,6 +119,19 @@ describe('water fragment shader', () => {
     expect(WATER_FRAGMENT_SHADER).toContain('uniform vec4 u_bead[4];');
     // GLSL ES 1.00 reserves these words; using them breaks compilation on strict drivers.
     expect(WATER_FRAGMENT_SHADER).not.toMatch(/\b(half|fixed|input|output|sampler3D)\b/);
+  });
+
+  it('takes the extent of the backdrop it shows from a uniform, so other scenes can use other shapes', () => {
+    expect(WATER_FRAGMENT_SHADER).toContain('uniform vec2 u_view;');
+    expect(WATER_FRAGMENT_SHADER).toContain('ndc * u_view');
+    expect(WATER_FRAGMENT_SHADER).toContain('2.0 * u_view.y');
+    expect(WATER_FRAGMENT_SHADER).not.toMatch(/\bVIEW\b/);
+  });
+
+  it('never lets a bead behind the camera cover pixels, so unused beads can be parked out of view', () => {
+    // Without this test a parked bead covered whole half-planes of the scene: the closest approach was measured
+    // along the ray backwards and passed for a hit.
+    expect(WATER_FRAGMENT_SHADER).toMatch(/coverage > 0\.0 && -b > 0\.0 && -b < best/);
   });
 });
 
@@ -308,5 +321,33 @@ describe('water WebGL renderer', () => {
     expect(gl.deleteShader.mock.calls.map(([shader]) => shader)).toEqual(shaders);
     expect(loseContext).toHaveBeenCalledTimes(1);
     expect(renderer.draw(createWaterSimulation().frame())).toBe(false);
+  });
+
+  it('shows the Quant Loop backdrop by default and lets a scene with another shape set its own', () => {
+    const { gl, canvas, uploaded } = createGpu();
+    const renderer = createWaterRenderer(canvas)!;
+    expect(uploaded('uniform2f', 'u_view')).toEqual([WATER_VIEW[0], WATER_VIEW[1]]);
+    renderer.setView(4, 1);
+    expect(uploaded('uniform2f', 'u_view')).toEqual([4, 1]);
+    renderer.setView(2.5, 0.8);
+    expect(uploaded('uniform2f', 'u_view')).toEqual([2.5, 0.8]);
+    // Unusable values change nothing; absurdly large ones are capped.
+    const calls = gl.uniform2f.mock.calls.length;
+    for (const [width, height] of [
+      [0, 1],
+      [-4, 1],
+      [4, 0],
+      [Number.NaN, 1],
+      [4, Number.POSITIVE_INFINITY],
+    ]) {
+      renderer.setView(width, height);
+    }
+    expect(gl.uniform2f.mock.calls.length).toBe(calls);
+    renderer.setView(500, 1);
+    expect(uploaded('uniform2f', 'u_view')).toEqual([8, 1]);
+    renderer.dispose();
+    const after = gl.uniform2f.mock.calls.length;
+    renderer.setView(4, 1);
+    expect(gl.uniform2f.mock.calls.length).toBe(after);
   });
 });

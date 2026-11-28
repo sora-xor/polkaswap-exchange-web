@@ -1,7 +1,7 @@
-import { FPNumber } from '@sora-substrate/math';
-import { DAI, KUSD, TBCD, XSTUSD } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber } from '@/lib/substrate/math';
+import { DAI, KUSD, TBCD, XSTUSD } from '@/lib/substrate/sdk/assets/consts';
 
-import type { Asset, AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset, AccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 export type KensetsuFiatResolver = (amount: FPNumber, asset: Nullable<Asset | AccountAsset>) => Nullable<FPNumber>;
 

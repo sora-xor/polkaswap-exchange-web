@@ -32,8 +32,8 @@
 </template>
 
 <script lang="ts" setup>
-import { FPNumber } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { computed, ref } from 'vue';
 
 import { Currency } from '@/types/currency';
@@ -167,7 +167,12 @@ const formatted = computed(() => {
       }
     }
 
-    value = new FPNumber(unformatted.value).mul(coefficient).toLocaleString();
+    const precision = props.fiatDefaultRounding
+      ? Math.max(FPNumber.DEFAULT_PRECISION, Math.min(273, unformatted.value.split('.')[1]?.length ?? 0))
+      : FPNumber.DEFAULT_PRECISION;
+    value = new FPNumber(unformatted.value, precision)
+      .mul(coefficient)
+      .toLocaleString(props.fiatDefaultRounding ? precision : undefined);
   }
 
   let [integer, decimal] = value.split(FPNumber.DELIMITERS_CONFIG.decimal);

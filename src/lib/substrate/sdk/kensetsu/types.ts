@@ -1,5 +1,5 @@
-import type { CodecString, FPNumber } from '@sora-substrate/math';
-import type { PriceVariant } from '@sora-substrate/liquidity-proxy';
+import type { CodecString, FPNumber } from '@/lib/substrate/math';
+import type { PriceVariant } from '@/lib/substrate/liquidity-proxy';
 
 import type { History } from '../types';
 import type { VaultTypes } from './consts';

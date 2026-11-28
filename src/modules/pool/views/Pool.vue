@@ -117,8 +117,8 @@ import { usePoolStore } from '@/stores/pool';
 import type { LiquidityParams } from '@/stores/pool/types';
 import { sortPools } from '@/utils';
 
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { AccountLiquidity } from '@/lib/substrate/sdk/poolXyk/types';
 
 type LiquidityItem = AccountLiquidity & {
   firstAsset: AccountAsset;

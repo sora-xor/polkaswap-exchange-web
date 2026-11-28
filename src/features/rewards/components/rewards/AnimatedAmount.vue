@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts" setup>
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { computed } from 'vue';
 
 import { useCountUp } from '@/features/rewards/composables/useCountUp';

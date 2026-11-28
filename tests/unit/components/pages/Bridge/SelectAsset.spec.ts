@@ -2,7 +2,7 @@ import { nextTick } from 'vue';
 import { mount } from '@vue/test-utils';
 import { describe, expect, beforeEach, it, vi } from 'vitest';
 
-import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
 import type { BridgeRegisteredAsset } from '@/stores/assets/types';
 
 const stubAssets: RegisteredAccountAsset[] = [];

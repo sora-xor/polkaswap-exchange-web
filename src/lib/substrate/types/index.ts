@@ -3,7 +3,7 @@ import {
   types as soraTypes,
   typesAlias as soraTypeAlias,
   rpc as soraRpc,
-} from '@sora-substrate/type-definitions';
+} from '@/lib/substrate/type-definitions';
 import {
   OverrideBundleType,
   OverrideModuleType,

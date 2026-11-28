@@ -1,5 +1,5 @@
-import { FPNumber, type HistoryItem, Operation } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber, type HistoryItem, Operation } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 
 import { parseSoraNexusXorBurnRemark } from '@/utils/soraNexusAccount';
 import { parseTonswapXorBurnRemark } from '@/features/misc/lib/tonswapBurn';

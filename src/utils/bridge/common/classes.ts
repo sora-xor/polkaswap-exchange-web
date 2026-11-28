@@ -21,7 +21,7 @@ import type {
 } from '@/utils/bridge/common/types';
 import { isUnsignedTx } from '@/utils/bridge/common/utils';
 
-import type { IBridgeTransaction } from '@sora-substrate/sdk';
+import type { IBridgeTransaction } from '@/lib/substrate/sdk';
 
 /** Converts an unknown reducer failure into durable transaction-history text. */
 const getBridgeFailureMessage = (error: unknown): string => {

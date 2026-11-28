@@ -71,8 +71,8 @@
 </template>
 
 <script setup lang="ts">
-import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import { FPNumber } from '@sora-substrate/sdk';
+import { LiquiditySourceTypes } from '@/lib/substrate/liquidity-proxy/consts';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { computed } from 'vue';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
@@ -83,8 +83,8 @@ import { createAsyncComponent } from '@/shared/ui/async';
 import { useAssetsStore } from '@/stores/assets';
 import { calcFiatDifference } from '@/utils/swap';
 
-import type { Distribution } from '@sora-substrate/liquidity-proxy/build/types';
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { Distribution } from '@/lib/substrate/liquidity-proxy/types';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
 import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 

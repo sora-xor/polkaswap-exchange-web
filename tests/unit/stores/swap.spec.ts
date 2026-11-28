@@ -1,6 +1,6 @@
-import { FPNumber } from '@sora-substrate/math';
-import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber } from '@/lib/substrate/math';
+import { LiquiditySourceTypes } from '@/lib/substrate/liquidity-proxy/consts';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { createPinia, setActivePinia } from 'pinia';
 import { Subject } from 'rxjs';
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -11,14 +11,14 @@ import { useSwapStore } from '@/stores/swap';
 import { useWalletStore } from '@/stores/wallet';
 import { hasInsufficientBalance } from '@/utils';
 import { settingsStorage } from '@/utils/storage';
-import type { AccountBalance } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountBalance } from '@/lib/substrate/sdk/assets/types';
 
 type SwapMathDeps = {
   store: ReturnType<typeof useSwapStore>;
   settingsStore: ReturnType<typeof useSettingsStore>;
 };
 
-vi.mock('@sora-substrate/sdk/build/dex/consts', () => ({
+vi.mock('@/lib/substrate/sdk/dex/consts', () => ({
   DexId: { XOR: 0 },
 }));
 

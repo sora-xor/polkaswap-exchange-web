@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { KnownSymbols } from '@sora-substrate/sdk/build/assets/consts';
+import { KnownSymbols } from '@/lib/substrate/sdk/assets/consts';
 
 import { useTranslation } from '@/composables/useTranslation';
 import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';

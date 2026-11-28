@@ -1,6 +1,6 @@
 import { assert } from '@polkadot/util';
 import { map, combineLatest } from 'rxjs';
-import { FPNumber, CodecString } from '@sora-substrate/math';
+import { FPNumber, CodecString } from '@/lib/substrate/math';
 import type { Observable, Codec, AnyFunction } from '@polkadot/types/types';
 import type { Vec, u128 } from '@polkadot/types-codec';
 import type { ITuple } from '@polkadot/types-codec/types';

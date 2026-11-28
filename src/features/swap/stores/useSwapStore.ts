@@ -1,6 +1,6 @@
-import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { DexId } from '@sora-substrate/sdk/build/dex/consts';
+import { LiquiditySourceTypes } from '@/lib/substrate/liquidity-proxy/consts';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
+import { DexId } from '@/lib/substrate/sdk/dex/consts';
 import { defineStore } from 'pinia';
 import { computed, nextTick, ref } from 'vue';
 
@@ -18,9 +18,9 @@ import type { SwapState } from '@/stores/types/swap';
 import { settingsStorage } from '@/utils/storage';
 import { parseStoredBoolean } from '@/utils/storageParsing';
 
-import type { Distribution, SwapQuote } from '@sora-substrate/liquidity-proxy/build/types';
-import type { CodecString } from '@sora-substrate/sdk';
-import type { AccountBalance, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { Distribution, SwapQuote } from '@/lib/substrate/liquidity-proxy/types';
+import type { CodecString } from '@/lib/substrate/sdk';
+import type { AccountBalance, RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 const preservedResetKeys = new Set<keyof SwapState>(['tokenFromAddress', 'tokenToAddress']);
 

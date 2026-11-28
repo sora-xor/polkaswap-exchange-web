@@ -1,11 +1,11 @@
-import { Operation, TransactionStatus } from '@sora-substrate/sdk';
-import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { Operation, TransactionStatus } from '@/lib/substrate/sdk';
+import { BridgeNetworkType, BridgeTxStatus } from '@/lib/substrate/sdk/bridgeProxy/consts';
 
 import { getCurrentIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 
 import type { HistoryElement } from '@/lib/soraneo-wallet/src/services/indexer/types';
-import type { EvmHistory, EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
+import type { EvmHistory, EvmNetwork } from '@/lib/substrate/sdk/bridgeProxy/evm/types';
 
 type BridgeActionContext<TRootState = any> = {
   rootState: TRootState;

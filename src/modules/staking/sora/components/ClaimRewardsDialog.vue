@@ -77,7 +77,7 @@ import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenL
 import WalletComponentFormattedAmountWithFiatValue from '@/lib/soraneo-wallet/src/components/FormattedAmountWithFiatValue.vue';
 import { hasInsufficientXorForFee } from '@/utils';
 
-import type { CodecString } from '@sora-substrate/sdk';
+import type { CodecString } from '@/lib/substrate/sdk';
 
 const props = defineProps<{
   parentLoading?: boolean;

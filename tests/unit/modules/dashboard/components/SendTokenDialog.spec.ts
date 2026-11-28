@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import SendTokenDialog from '@/modules/dashboard/components/SendTokenDialog.vue';
-import { Operation } from '@sora-substrate/sdk';
+import { Operation } from '@/lib/substrate/sdk';
 
 const walletMocks = vi.hoisted(() => ({
   transferMock: vi.fn(),

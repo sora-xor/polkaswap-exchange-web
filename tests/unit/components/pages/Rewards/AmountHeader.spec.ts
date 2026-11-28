@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, h } from 'vue';
@@ -49,7 +49,7 @@ vi.mock('@/lib/soraneo-wallet/src/components/TokenLogo.vue', () => ({
 }));
 
 vi.mock('@/composables/useFormattedAmount', async () => {
-  const { FPNumber } = await import('@sora-substrate/sdk');
+  const { FPNumber } = await import('@/lib/substrate/sdk');
 
   return {
     useFormattedAmount: () => ({

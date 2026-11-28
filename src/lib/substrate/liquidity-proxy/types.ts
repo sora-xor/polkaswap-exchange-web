@@ -1,4 +1,4 @@
-import type { FPNumber, CodecString, NumberLike } from '@sora-substrate/math';
+import type { FPNumber, CodecString, NumberLike } from '@/lib/substrate/math';
 import type { LiquiditySourceTypes, RewardReason, PriceVariant } from './consts';
 import type { OrderBookAggregated } from './pallets/orderBook/types';
 

@@ -1,5 +1,5 @@
-import { FPNumber } from '@sora-substrate/math';
-import type { CodecString } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/math';
+import type { CodecString } from '@/lib/substrate/sdk';
 
 /** Amounts remain codec strings until a UI formatter applies the chain's XOR precision. */
 export type SwapFeeAssessment =

@@ -1,5 +1,5 @@
-import { FPNumber } from '@sora-substrate/sdk';
-import { BalanceType, XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber } from '@/lib/substrate/sdk';
+import { BalanceType, XOR } from '@/lib/substrate/sdk/assets/consts';
 import { describe, expect, it, vi } from 'vitest';
 
 const walletStoreMock = vi.hoisted(() => ({

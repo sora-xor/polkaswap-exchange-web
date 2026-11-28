@@ -2,7 +2,7 @@
 
 import type { Enum, Struct, U256, Vec } from '@polkadot/types-codec';
 import type { ITuple } from '@polkadot/types-codec/types';
-import type { H256 } from '@sora-substrate/types/interfaces/runtime';
+import type { H256 } from '@/lib/substrate/types/interfaces/runtime';
 
 /** @name AuxiliaryDigest */
 export interface AuxiliaryDigest extends Struct {

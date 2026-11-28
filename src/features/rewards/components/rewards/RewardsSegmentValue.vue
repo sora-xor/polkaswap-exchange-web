@@ -25,7 +25,7 @@ import { computed } from 'vue';
 
 import type { RewardAmount } from '@/features/rewards/utils/analytics';
 
-import type { FPNumber } from '@sora-substrate/sdk';
+import type { FPNumber } from '@/lib/substrate/sdk';
 import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 
 /**

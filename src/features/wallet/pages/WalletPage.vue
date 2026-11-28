@@ -15,8 +15,8 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router';
 
-import { FPNumber } from '@sora-substrate/math';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber } from '@/lib/substrate/math';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { api } from '@/lib/soraneo-wallet/src/api';
 
 import { PageNames, RouteNames } from '@/consts';
@@ -25,7 +25,7 @@ import { usePoolStore } from '@/stores/pool';
 import { useSwapStore } from '@/stores/swap';
 import { useWalletStore } from '@/stores/wallet';
 
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 const poolStore = usePoolStore();
 const swapStore = useSwapStore();

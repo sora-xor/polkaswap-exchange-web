@@ -1,4 +1,4 @@
-import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { BridgeNetworkType } from '@/lib/substrate/sdk/bridgeProxy/consts';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import {

@@ -1,7 +1,7 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 
-import type { CodecString } from '@sora-substrate/sdk';
-import type { SwapQuote } from '@sora-substrate/liquidity-proxy/build/types';
+import type { CodecString } from '@/lib/substrate/sdk';
+import type { SwapQuote } from '@/lib/substrate/liquidity-proxy/types';
 import type { Nullable } from '@/types/common';
 
 export type BridgeCounterAmountParams = {

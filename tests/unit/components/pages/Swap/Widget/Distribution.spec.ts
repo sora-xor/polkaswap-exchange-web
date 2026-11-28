@@ -2,11 +2,11 @@ import { flushPromises, mount } from '@vue/test-utils';
 import { computed, defineComponent, h, ref } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
+import { LiquiditySourceTypes } from '@/lib/substrate/liquidity-proxy/consts';
 
 import distributionSource from '@/features/swap/components/widgets/Distribution.vue?raw';
 
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 type DistributionEntry = {
   input: string;

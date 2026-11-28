@@ -33,6 +33,12 @@ export interface WaterRenderer {
   setCoins(atlas: CoinAtlas | null): void;
   /** CSS size and device-pixel ratio; the pixel ratio is clamped to a bounded budget. */
   resize(width: number, height: number, ratio: number): void;
+  /**
+   * Half extents of the backdrop plane the canvas shows. The default is `WATER_VIEW`, the 520:380 art of the Quant Loop;
+   * a wider or narrower canvas passes its own aspect (`halfWidth` = aspect × `halfHeight`) so bubbles stay round.
+   * Values that are not positive finite numbers are ignored.
+   */
+  setView(halfWidth: number, halfHeight: number): void;
   draw(frame: WaterFrame): boolean;
   dispose(): void;
 }
@@ -148,8 +154,8 @@ uniform mat3 u_spin[${WATER_BUBBLE_COUNT}];
 uniform vec3 u_tint[${WATER_BUBBLE_COUNT}];
 uniform float u_ink;
 uniform sampler2D u_coins;
+uniform vec2 u_view;
 
-const vec2 VIEW = vec2(${glsl(WATER_VIEW[0])}, ${glsl(WATER_VIEW[1])});
 const float CAMERA = ${glsl(WATER_CAMERA_DISTANCE)};
 const float IOR = ${glsl(WATER_IOR[1])};
 const vec3 ABSORPTION = vec3(0.16, 0.035, 0.025);
@@ -436,10 +442,10 @@ vec4 catcher(vec3 linear, float headroom) {
 
 void main() {
   vec2 ndc = gl_FragCoord.xy / u_resolution * 2.0 - 1.0;
-  vec3 target = vec3(ndc * VIEW, 0.0);
+  vec3 target = vec3(ndc * u_view, 0.0);
   vec3 ro = vec3(0.0, 0.0, CAMERA);
   vec3 rd = normalize(target - ro);
-  float pixel = 2.0 * VIEW.y / (u_resolution.y * CAMERA);
+  float pixel = 2.0 * u_view.y / (u_resolution.y * CAMERA);
 
   float best = 1e9;
   float cover = 0.0;
@@ -478,7 +484,8 @@ void main() {
     float b = dot(oc, rd);
     float distance = sqrt(max(dot(oc, oc) - b * b, 0.0));
     float coverage = clamp(0.5 - (distance - s.w) / (pixel * -b), 0.0, 1.0);
-    if (coverage > 0.0 && -b < best) {
+    // A bead behind the camera (-b < 0) covers nothing: scenes may park unused beads far out of view.
+    if (coverage > 0.0 && -b > 0.0 && -b < best) {
       best = -b;
       cover = coverage;
       self = ${WATER_BUBBLE_COUNT} + j;
@@ -510,6 +517,8 @@ void main() {
 /** Rendering budget: at most two device pixels per CSS pixel and about 0.6 megapixels. */
 const MAX_RATIO = 2;
 const MAX_PIXELS = 600_000;
+/** Largest half extent `setView` accepts, in scene units; the Quant Loop view is 1.37 × 1. */
+const MAX_VIEW = 8;
 /** Opacity of the printed coins, and how strongly light through them takes their colour. */
 const INK = 0.8;
 const INK_TINT = 0.55;
@@ -642,10 +651,12 @@ export function createWaterRenderer(canvas: HTMLCanvasElement, onUnavailable?: (
       tints: uniform('u_tint'),
       ink: uniform('u_ink'),
       coins: uniform('u_coins'),
+      view: uniform('u_view'),
     };
     gl.uniform1i(locations.caustics, 0);
     gl.uniform1i(locations.coins, 1);
     gl.uniform1f(locations.ink, 0);
+    gl.uniform2f(locations.view, WATER_VIEW[0], WATER_VIEW[1]);
     gl.uniform3fv(locations.tints, new Float32Array(WATER_BUBBLE_COUNT * 3).fill(1));
     gl.disable(gl.BLEND);
     gl.clearColor(0, 0, 0, 0);
@@ -730,6 +741,11 @@ export function createWaterRenderer(canvas: HTMLCanvasElement, onUnavailable?: (
         if (canvas.height !== pixelsHigh) canvas.height = pixelsHigh;
         gl.viewport(0, 0, pixelsWide, pixelsHigh);
         gl.uniform2f(locations.resolution, pixelsWide, pixelsHigh);
+      },
+      setView(halfWidth, halfHeight) {
+        if (disposed || !gl) return;
+        if (!(halfWidth > 0 && halfHeight > 0) || !Number.isFinite(halfWidth + halfHeight)) return;
+        gl.uniform2f(locations.view, Math.min(halfWidth, MAX_VIEW), Math.min(halfHeight, MAX_VIEW));
       },
       draw(frame) {
         if (disposed || !gl) return false;

@@ -1,7 +1,7 @@
 import { createPinia, setActivePinia } from 'pinia';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { nextTick } from 'vue';
-import { Storage } from '@sora-substrate/sdk';
+import { Storage } from '@/lib/substrate/sdk';
 
 const walletApiMock = {
   divideAssets: vi.fn(() => '0'),
@@ -34,7 +34,7 @@ const assetDataByAddress = vi.hoisted(() =>
   }))
 );
 
-vi.mock('@sora-substrate/sdk/build/dex/consts', () => ({
+vi.mock('@/lib/substrate/sdk/dex/consts', () => ({
   DexId: { XOR: 0 },
 }));
 

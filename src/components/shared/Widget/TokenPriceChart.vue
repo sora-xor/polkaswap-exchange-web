@@ -25,7 +25,7 @@ import { useWidgetTokenSelect } from '@/composables/useWidgetTokenSelect';
 import TokenSelectButton from '@/components/shared/Input/TokenSelectButton.vue';
 import PriceChartWidget from '@/components/shared/Widget/PriceChart.vue';
 
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 import type { Nullable } from '@/types/common';
 
 const props = withDefaults(

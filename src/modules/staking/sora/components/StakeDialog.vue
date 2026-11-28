@@ -74,7 +74,7 @@
 </template>
 
 <script setup lang="ts">
-import { FPNumber, Operation } from '@sora-substrate/sdk';
+import { FPNumber, Operation } from '@/lib/substrate/sdk';
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 
@@ -84,7 +84,7 @@ import { useTransaction } from '@/composables/useTransaction';
 import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
 import { StakeDialogMode } from '@/modules/staking/sora/consts';
 import { useSettingsStore } from '@/stores/settings';
-import type { NetworkFeesObject, CodecString } from '@sora-substrate/sdk';
+import type { NetworkFeesObject, CodecString } from '@/lib/substrate/sdk';
 import { hasInsufficientXorForFee } from '@/utils';
 import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';

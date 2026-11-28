@@ -84,8 +84,8 @@
 </template>
 
 <script setup lang="ts">
-import { Operation, FPNumber } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { Operation, FPNumber } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import { computed } from 'vue';
 
@@ -100,9 +100,9 @@ import { useWalletStore } from '@/stores/wallet';
 import { getAssetBalance } from '@/utils';
 import { normalizeHashHref } from '@/utils/hashHref';
 
-import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
-import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { Vault } from '@sora-substrate/sdk/build/kensetsu/types';
+import type { CodecString, NetworkFeesObject } from '@/lib/substrate/sdk';
+import type { AccountAsset, RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { Vault } from '@/lib/substrate/sdk/kensetsu/types';
 import type { Nullable } from '@/types/common';
 import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';

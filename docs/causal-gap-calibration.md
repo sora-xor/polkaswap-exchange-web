@@ -44,6 +44,10 @@ tests, protocol, configuration, Node executable, calibration hash and the exact
 prior-evidence manifest. Original prior files are copied unchanged under
 `reuse/prior/` and verified again before registration is written. Keep all bound
 files unchanged. The runner rechecks them before acquisition and after completion.
+Any later source change, including import-only rewrites such as the
+`@/lib/substrate` migration, stops an earlier registration with `changed-source`.
+Run or continue it only on a tree whose bound files are byte-identical to the
+registration; otherwise prepare a new one.
 
 The start marker is exclusive and forbids restart. All three candidates must
 complete episode zero before the remaining 27 episodes are collected unchanged.

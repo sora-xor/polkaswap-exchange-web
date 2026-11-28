@@ -1,8 +1,8 @@
-import { FPNumber, type CodecString } from '@sora-substrate/math';
+import { FPNumber, type CodecString } from '@/lib/substrate/math';
 
 import type { Nullable } from '@/types/common';
 
-import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset, AccountAsset, RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
 import type { AmountWithSuffix } from '@/types/formats';
 
 type AssetWithBalance = AccountAsset | RegisteredAccountAsset;
@@ -120,6 +120,9 @@ export const formatAssetBalance = (
 };
 
 export const formatAmountWithSuffix = (value: FPNumber, precision = 2): AmountWithSuffix => {
+  if (value.isGtZero() && value.dp(precision).isZero()) {
+    return { amount: value.toLocaleString(value.precision), suffix: '' };
+  }
   const val = value.toNumber();
   const entries: Array<[number, string]> = [
     [3, 'K'],

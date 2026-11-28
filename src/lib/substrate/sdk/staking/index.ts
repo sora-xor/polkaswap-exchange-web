@@ -1,5 +1,5 @@
 import { assert } from '@polkadot/util';
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import { map, of } from 'rxjs';
 
 import { Messages } from '../logger';
@@ -18,7 +18,7 @@ import { StakingRewardsDestination } from './types';
 import type { u32 } from '@polkadot/types-codec';
 import type { Observable } from '@polkadot/types/types';
 import type { KeyringPair } from '@polkadot/keyring/types';
-import type { CodecString, NumberLike } from '@sora-substrate/math';
+import type { CodecString, NumberLike } from '@/lib/substrate/math';
 import type { Api } from '../api';
 import type {
   ValidatorInfo,

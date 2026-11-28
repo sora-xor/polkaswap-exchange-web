@@ -1,5 +1,5 @@
-import { FPNumber, Operation, type NetworkFeesObject } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber, Operation, type NetworkFeesObject } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { computed } from 'vue';
 
 import { useWalletStore } from '@/stores/wallet';

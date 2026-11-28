@@ -1,4 +1,4 @@
-import { XOR, XSTUSD } from '@sora-substrate/sdk/build/assets/consts';
+import { XOR, XSTUSD } from '@/lib/substrate/sdk/assets/consts';
 
 import { api } from '@/lib/soraneo-wallet/src/api';
 

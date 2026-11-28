@@ -211,8 +211,8 @@ import { useWalletStore } from '@/stores/wallet';
 import { isAmountValueIntegerOnly } from '@/utils';
 import { getKensetsuAmountSortValue, getKensetsuFiatAmount } from '@/modules/vault/utils/fiat';
 
-import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { Collateral } from '@sora-substrate/sdk/build/kensetsu/types';
+import type { RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { Collateral } from '@/lib/substrate/sdk/kensetsu/types';
 import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
 import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 import WalletComponentHistoryPagination from '@/lib/soraneo-wallet/src/components/HistoryPagination.vue';

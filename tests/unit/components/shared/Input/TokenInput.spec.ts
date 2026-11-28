@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, h, nextTick, ref } from 'vue';
@@ -145,8 +145,8 @@ import TokenInput from '@/components/shared/Input/TokenInput.vue';
 import { useWalletStore } from '@/stores/wallet';
 import SFloatInput from '@/lib/soramitsu-ui/components/Input/SFloatInput.vue';
 import { getMaxValue } from '@/utils';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 const createWrapper = (props?: Record<string, unknown>) =>
   mount(TokenInput, {

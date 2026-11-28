@@ -42,7 +42,7 @@ import { useWeb3Store } from '@/stores/web3';
 import type { BridgeRegisteredAsset } from '@/stores/assets/types';
 import type { NetworkData } from '@/types/bridge';
 import type { Nullable } from '@/types/common';
-import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset, RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
 import DialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 import SearchInput from '@/lib/soraneo-wallet/src/components/Input/SearchInput.vue';
 

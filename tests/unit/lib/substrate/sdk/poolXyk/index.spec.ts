@@ -1,7 +1,7 @@
 import { BehaviorSubject, Subject, firstValueFrom } from 'rxjs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-vi.mock('@sora-substrate/liquidity-proxy', () => ({
+vi.mock('@/lib/substrate/liquidity-proxy', () => ({
   getChameleonPools: () => ['', []],
 }));
 

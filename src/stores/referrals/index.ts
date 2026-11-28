@@ -1,3 +1,4 @@
+import type { PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { defineStore } from 'pinia';
 
 import { api } from '@/lib/soraneo-wallet/src/api';
@@ -150,7 +151,7 @@ export const useReferralsStore = defineStore('referrals-legacy', {
       }
     },
     /** Loads rewards only while the initiating account and request remain current. */
-    async getAccountReferralRewards(): Promise<void> {
+    async getAccountReferralRewards(indexer?: PolkaswapIndexer): Promise<void> {
       this.referralRewards = null;
       this.invitedUsers = [];
       const generation = nextGeneration(rewardsGenerations, this);
@@ -163,7 +164,7 @@ export const useReferralsStore = defineStore('referrals-legacy', {
 
       const { getReferralRewards } = await loadReferralsQueries();
       if (!isCurrent()) return;
-      const data = await getReferralRewards(address);
+      const data = await getReferralRewards(address, indexer).catch(() => null);
 
       if (data && isCurrent()) {
         this.referralRewards = data;

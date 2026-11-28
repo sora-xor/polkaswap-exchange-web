@@ -32,8 +32,8 @@
 </template>
 
 <script setup lang="ts">
-import { Operation, CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { Operation, CodecString, NetworkFeesObject } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 

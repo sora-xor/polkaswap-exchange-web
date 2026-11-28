@@ -12,9 +12,9 @@ import {
   type PolkaswapVaultEventEntity,
 } from '../polkaswap/types';
 
-import type { PriceVariant, OrderBookStatus } from '@sora-substrate/liquidity-proxy';
-import type { CodecString } from '@sora-substrate/sdk';
-import type { StakingRewardsDestination } from '@sora-substrate/sdk/build/staking/types';
+import type { PriceVariant, OrderBookStatus } from '@/lib/substrate/liquidity-proxy';
+import type { CodecString } from '@/lib/substrate/sdk';
+import type { StakingRewardsDestination } from '@/lib/substrate/sdk/staking/types';
 
 // Indexer Enums
 export enum SnapshotTypes {
@@ -189,7 +189,8 @@ export type NetworkSnapshotEntity = {
   id: string;
   type: SnapshotTypes;
   timestamp: number;
-  accounts: number;
+  accounts: number | null;
+  accountCountAvailable?: boolean;
   transactions: number;
   fees: CodecString;
   liquidityUSD: string;
@@ -593,6 +594,7 @@ export type HistoryElement = HistoryElementBase & {
 };
 
 export type UpdatesStream = {
+  pricesExact?: Record<string, string> | null;
   id: string;
   block: number;
   data: string; // stringified JSON

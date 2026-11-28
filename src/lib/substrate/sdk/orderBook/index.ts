@@ -1,8 +1,8 @@
 import { map } from 'rxjs';
 import { assert } from '@polkadot/util';
-import { FPNumber } from '@sora-substrate/math';
-import { OrderBookStatus, PriceVariant } from '@sora-substrate/liquidity-proxy';
-import type { OrderBook, OrderBookPriceVolume } from '@sora-substrate/liquidity-proxy';
+import { FPNumber } from '@/lib/substrate/math';
+import { OrderBookStatus, PriceVariant } from '@/lib/substrate/liquidity-proxy';
+import type { OrderBook, OrderBookPriceVolume } from '@/lib/substrate/liquidity-proxy';
 import type { Observable } from '@polkadot/types/types';
 import type { Option } from '@polkadot/types-codec';
 import type {

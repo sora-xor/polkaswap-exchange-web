@@ -1,5 +1,5 @@
 import type { WhitelistIdsBySymbol } from '@/lib/soraneo-wallet/src/types/common';
-import type { Whitelist, WhitelistArrayItem } from '@sora-substrate/sdk/build/assets/types';
+import type { Whitelist, WhitelistArrayItem } from '@/lib/substrate/sdk/assets/types';
 
 export type WhitelistAssetsApi = {
   getWhitelist: (whitelist: WhitelistArrayItem[]) => Whitelist;

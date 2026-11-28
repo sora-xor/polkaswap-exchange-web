@@ -1,4 +1,4 @@
-import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset, AccountAsset, RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 export type SearchableAsset = Asset | AccountAsset | RegisteredAccountAsset;
 

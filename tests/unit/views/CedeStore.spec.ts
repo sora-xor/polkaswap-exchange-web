@@ -3,8 +3,8 @@ import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { Theme } from '@/consts/theme';
 
-vi.mock('@sora-substrate/sdk', async () => {
-  const actual = await vi.importActual<typeof import('@sora-substrate/sdk')>('@sora-substrate/sdk');
+vi.mock('@/lib/substrate/sdk', async () => {
+  const actual = await vi.importActual<typeof import('@/lib/substrate/sdk')>('@/lib/substrate/sdk');
   const storageState = new Map<string, Record<string, string>>();
 
   class StorageStub {

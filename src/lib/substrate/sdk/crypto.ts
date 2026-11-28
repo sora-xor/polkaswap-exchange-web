@@ -1,5 +1,5 @@
 import crypto, { AES, HmacSHA256, enc } from 'crypto-js';
-import { Cosigners, EncryptedKeyForCosigner, FinalEncryptedStructure } from '@sora-substrate/sdk';
+import { Cosigners, EncryptedKeyForCosigner, FinalEncryptedStructure } from '@/lib/substrate/sdk';
 import { u8aToHex } from '@polkadot/util';
 import { sr25519Agreement } from '@polkadot/util-crypto';
 

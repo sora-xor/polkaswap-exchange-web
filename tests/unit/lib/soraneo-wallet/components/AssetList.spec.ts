@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import AssetList from '@/lib/soraneo-wallet/src/components/AssetList.vue';
 
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 
 vi.mock('@/composables/useTranslation', () => ({
   useTranslation: () => ({

@@ -16,7 +16,9 @@ declare module 'focus-trap' {
    * `document.querySelector()` to find the DOM node), `false` to explicitly indicate
    * an opt-out, or a function that returns a DOM node or `false`.
    */
-  export type FocusTargetOrFalse = FocusTargetValueOrFalse | (() => FocusTargetValueOrFalse);
+  export type FocusTargetOrFalse =
+    | FocusTargetValueOrFalse
+    | (() => FocusTargetValueOrFalse);
 
   type MouseEventToBoolean = (event: MouseEvent | TouchEvent) => boolean;
   type KeyboardEventToBoolean = (event: KeyboardEvent) => boolean;
@@ -73,7 +75,9 @@ declare module 'focus-trap' {
      * dialogs that fade in and out. When a dialog fades in, there is a brief delay
      * between the activation of the trap and the trap element being focusable.
      */
-    checkCanFocusTrap?: (containers: Array<HTMLElement | SVGElement>) => Promise<void>;
+    checkCanFocusTrap?: (
+      containers: Array<HTMLElement | SVGElement>
+    ) => Promise<void>;
 
     /**
      * A function that will be called **before** sending focus to the
@@ -144,7 +148,9 @@ declare module 'focus-trap' {
      */
     setReturnFocus?:
       | FocusTargetValueOrFalse
-      | ((nodeFocusedBeforeActivation: HTMLElement | SVGElement) => FocusTargetValueOrFalse);
+      | ((
+          nodeFocusedBeforeActivation: HTMLElement | SVGElement
+        ) => FocusTargetValueOrFalse);
     /**
      * Default: `true`. If `false` or returns `false`, the `Escape` key will not trigger
      * deactivation of the focus trap. This can be useful if you want
@@ -183,6 +189,12 @@ declare module 'focus-trap' {
      */
     delayInitialFocus?: boolean;
     /**
+     * Default: `false`. Prevents screen readers from accessing content outside
+     * the focus trap. Values of `true` or `'inert'` use the `inert` attribute,
+     * `aria-hidden` uses the `aria-hidden` attribute.
+     */
+    isolateSubtrees?: boolean | 'inert' | 'aria-hidden';
+    /**
      * Default: `window.document`. Document where the focus trap will be active.
      * This allows to use FocusTrap in an iFrame context.
      */
@@ -201,7 +213,6 @@ declare module 'focus-trap' {
      * being auto-paused. By default, each instance will have its own internal stack,
      * leading to conflicts if they each try to trap the focus at the same time.
      */
-    // eslint-disable-next-line no-use-before-define -- TypeScript handles circular dependencies automatically
     trapStack?: Array<FocusTrap>;
 
     /**
@@ -221,11 +232,17 @@ declare module 'focus-trap' {
     isKeyBackward?: KeyboardEventToBoolean;
   }
 
-  type ActivateOptions = Pick<Options, 'onActivate' | 'onPostActivate' | 'checkCanFocusTrap'>;
+  type ActivateOptions = Pick<
+    Options,
+    'onActivate' | 'onPostActivate' | 'checkCanFocusTrap'
+  >;
   type PauseOptions = Pick<Options, 'onPause' | 'onPostPause'>;
   type UnpauseOptions = Pick<Options, 'onUnpause' | 'onPostUnpause'>;
 
-  interface DeactivateOptions extends Pick<Options, 'onDeactivate' | 'onPostDeactivate' | 'checkCanReturnFocus'> {
+  interface DeactivateOptions extends Pick<
+    Options,
+    'onDeactivate' | 'onPostDeactivate' | 'checkCanReturnFocus'
+  > {
     returnFocus?: boolean;
   }
 
@@ -237,7 +254,11 @@ declare module 'focus-trap' {
     pause(pauseOptions?: PauseOptions): FocusTrap;
     unpause(unpauseOptions?: UnpauseOptions): FocusTrap;
     updateContainerElements(
-      containerElements: HTMLElement | SVGElement | string | Array<HTMLElement | SVGElement | string>
+      containerElements:
+        | HTMLElement
+        | SVGElement
+        | string
+        | Array<HTMLElement | SVGElement | string>
     ): FocusTrap;
   }
 
@@ -249,7 +270,11 @@ declare module 'focus-trap' {
    *  find the element.
    */
   export function createFocusTrap(
-    element: HTMLElement | SVGElement | string | Array<HTMLElement | SVGElement | string>,
+    element:
+      | HTMLElement
+      | SVGElement
+      | string
+      | Array<HTMLElement | SVGElement | string>,
     userOptions?: Options
   ): FocusTrap;
 }

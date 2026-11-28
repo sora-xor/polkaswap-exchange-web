@@ -27,7 +27,7 @@ vi.mock('ethers', () => ({
 }));
 
 // Avoid pulling in the SDK and its polkadot deps in tests
-vi.mock('@sora-substrate/sdk', () => ({
+vi.mock('@/lib/substrate/sdk', () => ({
   isEthOperation: () => false,
   isEvmOperation: () => false,
   isSubstrateOperation: () => false,
@@ -50,7 +50,7 @@ vi.mock('@sora-substrate/sdk', () => ({
     Failed: 'Failed',
   },
 }));
-vi.mock('@sora-substrate/sdk/build/assets/consts', () => ({
+vi.mock('@/lib/substrate/sdk/assets/consts', () => ({
   XOR: { address: 'xor' },
   TBCD: { address: 'tbcd' },
   XSTUSD: { address: 'xstusd' },
@@ -61,12 +61,12 @@ vi.mock('@sora-substrate/sdk/build/assets/consts', () => ({
     Locked: 'Locked',
   },
 }));
-vi.mock('@sora-substrate/sdk/build/bridgeProxy/consts', () => ({
+vi.mock('@/lib/substrate/sdk/bridgeProxy/consts', () => ({
   BridgeNetworkType: { Eth: 'Eth', Evm: 'Evm', Sub: 'Sub' },
   BridgeTxDirection: { Outgoing: 'Outgoing', Incoming: 'Incoming' },
   BridgeTxStatus: { Pending: 'Pending', Ready: 'Ready', Failed: 'Failed' },
 }));
-vi.mock('@sora-substrate/sdk/build/bridgeProxy/eth/consts', () => ({}));
+vi.mock('@/lib/substrate/sdk/bridgeProxy/eth/consts', () => ({}));
 vi.mock('@/consts/evm', () => ({
   KnownEthBridgeAsset: { Other: 'Other', XOR: 'XOR', VAL: 'VAL' },
   SmartContractType: { EthBridge: 'ETH_BRIDGE', ERC20: 'ERC20' },

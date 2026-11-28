@@ -1,4 +1,4 @@
-import { RewardingEvents } from '@sora-substrate/sdk/build/rewards/consts';
+import { RewardingEvents } from '@/lib/substrate/sdk/rewards/consts';
 
 import walletEn from '@/lib/soraneo-wallet/src/lang/en';
 import communityStoreMessages from '@/features/store/messages.en.json';
@@ -7,6 +7,7 @@ import cardReadinessMessages from '@/features/misc/getTsCardReadiness.en.json';
 import purchasePreviewMessages from '@/features/misc/getTsPreview.en.json';
 import purchaseJourneyMessages from '@/features/misc/getTsJourney.en.json';
 import purchaseOnboardingMessages from '@/features/misc/getTsOnboarding.en.json';
+import temporaryWalletMessages from '@/features/misc/temporaryWallet.en.json';
 import { Theme } from '@/consts/theme';
 
 import { MoonpayNotifications } from '@/features/deposit/components/moonpay/consts';
@@ -28,6 +29,7 @@ export default {
     },
   },
   buyXor: buyXorMessages.buyXor,
+  temporaryWallet: temporaryWalletMessages.temporaryWallet,
   communityStore: communityStoreMessages,
   getTs: {
     journey: purchaseJourneyMessages.getTs.journey,
@@ -490,6 +492,28 @@ export default {
       campaignEnded:
         'The SOLSWAP burn campaign has ended. You can still copy this address, but you cannot use it for a burn here.',
       generationFailed: 'Could not generate an address. Please try again.',
+      targetWalletLabel: 'Target wallet',
+      chooseTargetWallet: 'Choose a wallet',
+      soraWallet: 'SORA Wallet',
+      fearlessWallet: 'Fearless Wallet',
+      targetWalletHelp:
+        'Choose the wallet you plan to restore the 24 words in. Polkaswap cannot restore SORA Nexus accounts and has not confirmed that any wallet release can. Before you burn, restore the words in that wallet and check that it shows the exact address you saved. If it does not, do not burn to that address.',
+      targetWalletBackup: 'Target wallet: {wallet}',
+    },
+    nexusRecovery: {
+      title: 'Check a saved burn address',
+      intro:
+        'Enter the 24 words from this burn tool and the exact recipient you saved. This check runs on your device and does not upload or save your words. It checks the address only; balances and claims are separate.',
+      addressLabel: 'Saved SORA Nexus recipient address',
+      phraseLabel: '24 recovery words',
+      check: 'Check address',
+      clear: 'Clear',
+      failed: 'The words and saved address do not match, or the backup is invalid. Check both and try again.',
+      matched: 'Your backup matches this SORA Nexus address.',
+      standard:
+        'This address uses the standard SORA Nexus Minamoto method (BIP39 with SLIP-0010). Polkaswap cannot restore the account and has not confirmed that any wallet release can. Restore the words in your wallet and compare the full address before you rely on it.',
+      legacy:
+        'This address uses the earlier Polkaswap method. Polkaswap cannot restore it, and an ordinary 24-word wallet import gives a different account. Keep the words and this exact address. Do not use this address for new burns until a wallet you have tested can open it.',
     },
     nexusRecipientRecoveryWarning:
       'Burning XOR is irreversible. Confirm this exact SORA Nexus address matches your saved address; the address recorded in the transaction cannot be changed afterward. Easy Wallets cannot restore addresses created here yet.',

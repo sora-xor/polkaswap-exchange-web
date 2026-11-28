@@ -525,14 +525,15 @@ function createNoSpaceRecoveryMessage(directory: string, repoPath: string | null
     .join('\n');
 }
 
-function addPinVerifyAndAnnounceDirectory(directory: string, run: RunCommandLike): string {
+/** Verify every local pin before handing its CID to the configured gateway. */
+function addAndVerifyDirectory(directory: string, run: RunCommandLike, announce: boolean): string {
   const cid = extractCid(
     run('ipfs', ['add', '-Qr', '--hidden', '--pin=false', directory], { capture: true }),
     directory
   );
   pinIpfsCidRecursively(cid, run);
   verifyRecursiveIpfsPin(cid, run);
-  announceIpfsCidRecursively(cid, run);
+  if (announce) announceIpfsCidRecursively(cid, run);
   return cid;
 }
 
@@ -549,14 +550,17 @@ export function publishDirectoryToIpfs(
     runCommand?: RunCommandLike;
     resolveRepoPath?: () => string | null;
     verifyFeatures?: (directory: string) => unknown;
+    /** Normalized gateway selected for this release. Pi serves both DAGs from imported CAR files. */
+    publicGatewayBaseUrl?: string;
   } = {}
 ): string {
   (deps.verifyFeatures ?? assertStaticFeatureParity)(directory);
   const run = deps.runCommand ?? runCommand;
   const repoPath = deps.resolveRepoPath?.() ?? resolveIpfsRepoPath();
+  const announce = deps.publicGatewayBaseUrl !== 'https://pi.soramitsu.io/ipfs';
 
   try {
-    return addPinVerifyAndAnnounceDirectory(directory, run);
+    return addAndVerifyDirectory(directory, run, announce);
   } catch (error) {
     if (!isNoSpaceLeftError(error)) {
       throw error;
@@ -579,7 +583,7 @@ export function publishDirectoryToIpfs(
     }
 
     try {
-      const cid = addPinVerifyAndAnnounceDirectory(directory, run);
+      const cid = addAndVerifyDirectory(directory, run, announce);
       console.warn('IPFS publish recovered after `ipfs repo gc`.');
       return cid;
     } catch (retryError) {
@@ -919,7 +923,7 @@ function main(): void {
   swapEnvConfigForProduction(DIST_DIR);
 
   console.log('Publishing production `dist/` to IPFS...');
-  const productionCid = publishDirectoryToIpfs(DIST_DIR);
+  const productionCid = publishDirectoryToIpfs(DIST_DIR, { publicGatewayBaseUrl });
   logGatewayUrls(productionCid, 'Production', resolveLocalGatewayBaseUrl(), publicGatewayBaseUrl);
   console.log(`\n${formatStaticSiteCacheHeaderRecommendations()}`);
   console.log(`\n${formatBunnyFilebaseCspRecommendation()}`);
@@ -928,7 +932,7 @@ function main(): void {
   const { distPath: testnetDistPath, cleanup } = createTestnetDistClone();
   try {
     console.log('Publishing testnet build to IPFS...');
-    const testnetCid = publishDirectoryToIpfs(testnetDistPath);
+    const testnetCid = publishDirectoryToIpfs(testnetDistPath, { publicGatewayBaseUrl });
     logGatewayUrls(testnetCid, 'Testnet', resolveLocalGatewayBaseUrl(), publicGatewayBaseUrl);
   } finally {
     cleanup();

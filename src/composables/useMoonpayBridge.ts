@@ -1,5 +1,5 @@
-import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { FPNumber, Operation } from '@/lib/substrate/sdk';
+import { BridgeNetworkType } from '@/lib/substrate/sdk/bridgeProxy/consts';
 import { storeToRefs } from 'pinia';
 import { computed, type Ref } from 'vue';
 
@@ -25,11 +25,11 @@ import {
   type MoonpayApi,
 } from '@/utils/moonpay';
 
-import type { CodecString } from '@sora-substrate/sdk';
-import type { RegisteredAccountAsset, AccountBalance } from '@sora-substrate/sdk/build/assets/types';
-import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
-import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
-import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
+import type { CodecString } from '@/lib/substrate/sdk';
+import type { RegisteredAccountAsset, AccountBalance } from '@/lib/substrate/sdk/assets/types';
+import type { EthHistory } from '@/lib/substrate/sdk/bridgeProxy/eth/types';
+import type { EvmNetwork } from '@/lib/substrate/sdk/bridgeProxy/evm/types';
+import type { BridgeNetworkId } from '@/lib/substrate/sdk/bridgeProxy/types';
 import type { SoraNetwork } from '@/lib/soraneo-wallet/src/consts';
 
 type ParentLoadingSource = Ref<boolean> | (() => boolean);

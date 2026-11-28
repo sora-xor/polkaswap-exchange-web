@@ -13,7 +13,7 @@ import type {
   H160,
   H256,
   Index,
-} from '@sora-substrate/types/interfaces/runtime';
+} from '@/lib/substrate/types/interfaces/runtime';
 
 /** @name AssetKind */
 export interface AssetKind extends Enum {

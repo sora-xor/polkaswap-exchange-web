@@ -1,4 +1,4 @@
-import type { CodecString } from '@sora-substrate/math';
+import type { CodecString } from '@/lib/substrate/math';
 
 import type { BridgeTxDirection, BridgeTxStatus, BridgeNetworkType } from './consts';
 

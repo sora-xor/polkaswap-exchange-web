@@ -1,5 +1,5 @@
-import { FPNumber as MathFPNumber } from '@sora-substrate/math';
-import { FPNumber as SDKFPNumber } from '@sora-substrate/sdk';
+import { FPNumber as MathFPNumber } from '@/lib/substrate/math';
+import { FPNumber as SDKFPNumber } from '@/lib/substrate/sdk';
 import { defineStore } from 'pinia';
 import { firstValueFrom } from 'rxjs';
 
@@ -24,10 +24,10 @@ import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import { waitForAccountPair, waitUntil } from '@/utils';
 
 import type { PoolApyObject } from '@/lib/soraneo-wallet/src/services/indexer/types';
-import type { AccountBalance, Asset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { AccountLockedPool } from '@sora-substrate/sdk/build/ceresLiquidityLocker/types';
-import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
-import type { CodecString } from '@sora-substrate/sdk';
+import type { AccountBalance, Asset, RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { AccountLockedPool } from '@/lib/substrate/sdk/ceresLiquidityLocker/types';
+import type { AccountLiquidity } from '@/lib/substrate/sdk/poolXyk/types';
+import type { CodecString } from '@/lib/substrate/sdk';
 import type { Subscription } from 'rxjs';
 
 type PoolStoreState = PoolState & {
@@ -172,6 +172,22 @@ const normalizePoolApy = (value: Nullable<PoolApyObject>): PoolApyObject =>
   value ? Object.freeze({ ...value }) : EMPTY_POOL_APY_OBJECT;
 
 const toSdkFPNumber = (value: MathFPNumber | SDKFPNumber): SDKFPNumber => new SDKFPNumber(value.toString());
+
+/** Calculates the reserve ratio in exact codec units, rounding only the final counter amount down. */
+const calculatePoolCounterAmount = (
+  value: string,
+  inputDecimals: number,
+  outputDecimals: number,
+  inputReserve: CodecString,
+  outputReserve: CodecString
+): string => {
+  if (!/^[1-9]\d*$/.test(inputReserve) || !/^[1-9]\d*$/.test(outputReserve)) return ZeroStringValue;
+  const inputCodec = new SDKFPNumber(value, inputDecimals).toCodecString();
+  if (!/^\d+$/.test(inputCodec)) return ZeroStringValue;
+
+  const outputCodec = (BigInt(inputCodec) * BigInt(outputReserve)) / BigInt(inputReserve);
+  return SDKFPNumber.fromCodecValue(outputCodec.toString(), outputDecimals).toString();
+};
 
 /**
  * Pool discovery depends on DEX metadata because the SDK builds account-pool queries
@@ -480,10 +496,13 @@ export const usePoolStore = defineStore('pool-legacy', {
 
       if (!(firstToken && secondToken)) return;
 
-      this.addLiquidity.firstTokenValue = new SDKFPNumber(value, secondToken.decimals)
-        .mul(SDKFPNumber.fromCodecValue(this.addLiquidityReserveA, firstToken.decimals))
-        .div(SDKFPNumber.fromCodecValue(this.addLiquidityReserveB, secondToken.decimals))
-        .toString();
+      this.addLiquidity.firstTokenValue = calculatePoolCounterAmount(
+        value,
+        secondToken.decimals,
+        firstToken.decimals,
+        this.addLiquidityReserveB,
+        this.addLiquidityReserveA
+      );
     },
     updateAddLiquiditySecondTokenValue(): void {
       const value = this.addLiquidity.firstTokenValue;
@@ -500,10 +519,13 @@ export const usePoolStore = defineStore('pool-legacy', {
 
       if (!(firstToken && secondToken)) return;
 
-      this.addLiquidity.secondTokenValue = new SDKFPNumber(value, firstToken.decimals)
-        .mul(SDKFPNumber.fromCodecValue(this.addLiquidityReserveB, secondToken.decimals))
-        .div(SDKFPNumber.fromCodecValue(this.addLiquidityReserveA, firstToken.decimals))
-        .toString();
+      this.addLiquidity.secondTokenValue = calculatePoolCounterAmount(
+        value,
+        firstToken.decimals,
+        secondToken.decimals,
+        this.addLiquidityReserveA,
+        this.addLiquidityReserveB
+      );
     },
     updateAddLiquidityValues(): void {
       if (this.addLiquidity.focusedField === 'secondTokenValue') {

@@ -1,11 +1,11 @@
 import { computed } from 'vue';
-import { OrderBookStatus } from '@sora-substrate/liquidity-proxy';
+import { OrderBookStatus } from '@/lib/substrate/liquidity-proxy';
 
 import { useOrderBookStore } from '@/stores/orderBook';
 import { useSettingsStore } from '@/stores/settings';
 
-import type { OrderBook } from '@sora-substrate/liquidity-proxy';
-import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
+import type { OrderBook } from '@/lib/substrate/liquidity-proxy';
+import type { LimitOrder } from '@/lib/substrate/sdk/orderBook/types';
 import type { Nullable } from '@/types/common';
 
 /**

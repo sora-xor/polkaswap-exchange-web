@@ -48,3 +48,7 @@ pnpm-debug.log*
 
 # Webpack config inspect
 .webpack-config.js
+
+# Python bytecode (regenerated on import; tracked copies go stale)
+__pycache__/
+*.py[cod]

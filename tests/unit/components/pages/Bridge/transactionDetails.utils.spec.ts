@@ -7,7 +7,7 @@ import {
   resolveNativeTokenSymbol,
 } from '@/features/bridge/components/transactionDetails.utils';
 
-import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');

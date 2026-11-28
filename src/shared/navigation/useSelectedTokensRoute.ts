@@ -1,4 +1,4 @@
-import { DAI, KUSD, XSTUSD, XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { DAI, KUSD, XSTUSD, XOR } from '@/lib/substrate/sdk/assets/consts';
 import { computed, ref } from 'vue';
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router';
 import type { LocationQuery } from 'vue-router';
@@ -9,7 +9,7 @@ import { PageNames } from '@/consts/navigation';
 import { isSupportedPoolBasePair } from '@/modules/pool/utils/basePairs';
 import { useWalletStore } from '@/stores/wallet';
 
-import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset, Asset } from '@/lib/substrate/sdk/assets/types';
 
 const MAX_SYMBOL_LENGTH = 7;
 const CORE_ROUTE_SYMBOLS: Record<string, string> = {

@@ -32,7 +32,7 @@ import WalletSend from './components/WalletSend.vue';
 import WalletTransactionDetails from './components/WalletTransactionDetails.vue';
 import { RouteNames } from './consts';
 import { Operations } from './types/common';
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 defineOptions({
   inheritAttrs: false,

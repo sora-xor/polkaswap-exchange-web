@@ -1,4 +1,4 @@
-import { PriceVariant } from '@sora-substrate/liquidity-proxy';
+import { PriceVariant } from '@/lib/substrate/liquidity-proxy';
 import type { SubmittableExtrinsic } from '@polkadot/api-base/types';
 import { u8aToHex } from '@polkadot/util';
 

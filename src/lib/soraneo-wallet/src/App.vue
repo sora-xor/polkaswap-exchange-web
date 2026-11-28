@@ -28,7 +28,7 @@
 <script setup lang="ts">
 // This file is only for local usage
 
-import { FPNumber, HistoryItem } from '@sora-substrate/sdk';
+import { FPNumber, HistoryItem } from '@/lib/substrate/sdk';
 import { computed, onBeforeUnmount, onMounted, watch } from 'vue';
 
 import { useWalletStore } from '@/stores/wallet';
@@ -46,7 +46,7 @@ import { initWallet } from './bootstrap';
 
 import type { ApiKeysObject } from './types/common';
 import type { Currency, CurrencyFields } from './types/currency';
-import type { WhitelistArrayItem } from '@sora-substrate/sdk/build/assets/types';
+import type { WhitelistArrayItem } from '@/lib/substrate/sdk/assets/types';
 
 const walletStore = useWalletStore();
 const { t, account, handleChangeTransaction } = useTransaction();

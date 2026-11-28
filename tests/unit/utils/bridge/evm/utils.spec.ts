@@ -5,7 +5,7 @@ const evmBridgeApiMock = vi.hoisted(() => ({
   saveHistory: vi.fn(),
 }));
 
-vi.mock('@sora-substrate/sdk', () => ({
+vi.mock('@/lib/substrate/sdk', () => ({
   Operation: {
     EvmOutgoing: 'EvmOutgoing',
     EvmIncoming: 'EvmIncoming',

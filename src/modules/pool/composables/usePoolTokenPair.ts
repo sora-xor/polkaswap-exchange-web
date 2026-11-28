@@ -1,5 +1,5 @@
-import { FPNumber, Operation, type NetworkFeesObject, type CodecString } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber, Operation, type NetworkFeesObject, type CodecString } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { computed } from 'vue';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
@@ -7,7 +7,7 @@ import { ZeroStringValue } from '@/consts';
 import { usePoolStore } from '@/stores/pool';
 import { useSettingsStore } from '@/stores/settings';
 
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 /**
  * Shared pool token state (replacement for `BaseTokenPairMixin`).

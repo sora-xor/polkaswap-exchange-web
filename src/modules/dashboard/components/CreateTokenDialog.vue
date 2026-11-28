@@ -30,8 +30,8 @@
 </template>
 
 <script lang="ts" setup>
-import { Operation } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { Operation } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { computed, nextTick, ref, unref, watch } from 'vue';
 
 import CreateNftToken from '@/modules/dashboard/components/CreateNftToken.vue';
@@ -43,8 +43,8 @@ import { useTranslation } from '@/composables/useTranslation';
 import { useAssetsStore } from '@/stores/assets';
 import { useSettingsStore } from '@/stores/settings';
 
-import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { CodecString, NetworkFeesObject } from '@/lib/substrate/sdk';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 import type { Component, Ref } from 'vue';
 import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';

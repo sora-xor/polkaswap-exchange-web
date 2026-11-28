@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-vi.mock('@sora-substrate/sdk', () => ({
+vi.mock('@/lib/substrate/sdk', () => ({
   Storage: class {
     namespace: string;
     constructor(namespace: string) {

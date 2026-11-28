@@ -1,6 +1,6 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 
-import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 export function resolveTokenDecimals(token: Nullable<RegisteredAccountAsset>, external: boolean): number {
   if (!token) return FPNumber.DEFAULT_PRECISION;

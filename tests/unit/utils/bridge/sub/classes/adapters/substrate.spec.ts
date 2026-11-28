@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { SubAdapter } from '@/utils/bridge/sub/classes/adapters/substrate';
 
-import type { RegisteredAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { RegisteredAsset } from '@/lib/substrate/sdk/assets/types';
 
 type AdapterHarness = SubAdapter & {
   withConnection: <T>(onSuccess: () => T | Promise<T>, fallback: T) => Promise<T>;

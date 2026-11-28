@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 
-import { KnownAssets, KnownSymbols } from '@sora-substrate/sdk/build/assets/consts';
+import { KnownAssets, KnownSymbols } from '@/lib/substrate/sdk/assets/consts';
 import { ethers } from 'ethers';
 
 import type { RewardsAmountHeaderItem, SelectedRewards } from '@/types/rewards';
@@ -14,8 +14,8 @@ import type { ClaimRewardsParams, RewardsState } from '@/stores/rewards/types';
 import ethersUtil from '@/utils/ethers-util';
 import { subscribeAndWaitForFirst } from '@/utils/subscriptions';
 
-import type { CodecString } from '@sora-substrate/sdk';
-import type { RewardInfo, RewardsInfo } from '@sora-substrate/sdk/build/rewards/types';
+import type { CodecString } from '@/lib/substrate/sdk';
+import type { RewardInfo, RewardsInfo } from '@/lib/substrate/sdk/rewards/types';
 import type { Subscription } from 'rxjs';
 
 type RewardsStoreLike = RewardsState & {

@@ -1,7 +1,9 @@
-import { FPNumber } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 
-import type { CodecString } from '@sora-substrate/sdk';
+import { SORA_NATIVE_MAX_FEE_MARGIN_CODEC } from '@/consts/networkFee';
+
+import type { CodecString } from '@/lib/substrate/sdk';
 
 interface WalletSendMaxParams {
   assetAddress: string;
@@ -17,19 +19,25 @@ interface WalletSendMaxAvailabilityParams {
 
 /**
  * Calculates the maximum amount that can safely be entered on the wallet send screen.
+ * XOR reserves the estimated fee plus the shared allowance for the real sender's
+ * encoded nonce. Fees and the allowance are already in current chain units.
  */
 export const getWalletSendMaxAmount = ({ assetAddress, balance, decimals, fee }: WalletSendMaxParams): FPNumber => {
+  if (!/^\d+$/.test(balance)) return FPNumber.ZERO;
+
   const fpBalance = FPNumber.fromCodecValue(balance, decimals);
+  if (!fpBalance.isFinity()) return FPNumber.ZERO;
 
   if (assetAddress !== XOR.address) {
     return fpBalance.max(FPNumber.ZERO);
   }
 
-  if (fee.isZero()) {
+  if (!fee.isFinity() || !FPNumber.gt(fee, FPNumber.ZERO)) {
     return FPNumber.ZERO;
   }
 
-  return fpBalance.sub(fee).max(FPNumber.ZERO);
+  const margin = FPNumber.fromCodecValue(SORA_NATIVE_MAX_FEE_MARGIN_CODEC, decimals);
+  return fpBalance.sub(fee).sub(margin).max(FPNumber.ZERO);
 };
 
 /**

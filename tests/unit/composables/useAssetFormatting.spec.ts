@@ -1,5 +1,5 @@
-import { BalanceType } from '@sora-substrate/sdk/build/assets/consts';
-import { FPNumber } from '@sora-substrate/math';
+import { BalanceType } from '@/lib/substrate/sdk/assets/consts';
+import { FPNumber } from '@/lib/substrate/math';
 import { describe, expect, it, vi } from 'vitest';
 
 vi.mock('@/composables/useFormattedAmount', () => ({

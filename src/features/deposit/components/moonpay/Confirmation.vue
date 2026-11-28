@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ETH } from '@sora-substrate/sdk/build/assets/consts';
+import { ETH } from '@/lib/substrate/sdk/assets/consts';
 import { computed, useAttrs } from 'vue';
 
 import ConfirmBridgeTransactionDialog from '@/components/shared/Dialog/ConfirmBridgeTransaction.vue';
@@ -27,8 +27,8 @@ import { useTranslation } from '@/composables/useTranslation';
 import { useMoonpayStore } from '@/stores/moonpay';
 import { useSettingsStore } from '@/stores/settings';
 
-import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
-import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { EthHistory } from '@/lib/substrate/sdk/bridgeProxy/eth/types';
+import type { RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 defineOptions({
   name: 'MoonpayConfirmation',

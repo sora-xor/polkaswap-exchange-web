@@ -11,7 +11,7 @@ import type { WalletAccount } from '../services/wallet/types';
 import type { KeyringPair$Json, PolkadotJsAccount } from '../types/common';
 import type { Unsubcall } from '@polkadot/extension-inject/types';
 import type { Signer } from '@polkadot/types/types';
-import type { WithKeyring } from '@sora-substrate/sdk';
+import type { WithKeyring } from '@/lib/substrate/sdk';
 
 export { isAppStorageSource } from '../services/wallet';
 

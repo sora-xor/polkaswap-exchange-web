@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 
 import { LiquiditySourceTypes, Consts, Errors, PriceVariant, RewardReason, SwapVariant } from '../consts';
 import { safeDivide, saturatingSub, getMaxPositive, safeQuoteResult, isAssetAddress, toFp } from '../utils';

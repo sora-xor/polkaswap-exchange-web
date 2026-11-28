@@ -1,15 +1,16 @@
-import { FPNumber, type CodecString } from '@sora-substrate/math';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber, type CodecString } from '@/lib/substrate/math';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import debounce from 'lodash/debounce';
 import { watch } from 'vue';
 
-import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
+import type { Asset, AccountAsset, RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { AccountLiquidity } from '@/lib/substrate/sdk/poolXyk/types';
 import type { Currency, CurrencyFields } from '@/lib/soraneo-wallet/src/types/currency';
 
 type AssetWithBalance = AccountAsset | RegisteredAccountAsset;
 
 import { ExplorerType, type ExplorerLink, SoraNetwork } from '@/consts';
+import { SORA_NATIVE_MAX_FEE_MARGIN_CODEC } from '@/consts/networkFee';
 import { getExplorerLinks } from '@/lib/soraneo-wallet/src/util';
 import pinia from '@/plugins/pinia';
 import { useWalletStore } from '@/stores/wallet';
@@ -25,8 +26,6 @@ import {
 } from './asset-formatting';
 import { sortAssets as sortAssetsInternal, sortPools as sortPoolsInternal } from './asset-sort';
 import { toPrecision as toPrecisionInternal } from './fp';
-
-const SORA_NATIVE_MAX_FEE_MARGIN_CODEC = '1000000000000';
 
 export { getMobileCssClasses } from './device';
 export { registerDocumentTitleResolver, updateDocumentTitle } from './documentTitle';

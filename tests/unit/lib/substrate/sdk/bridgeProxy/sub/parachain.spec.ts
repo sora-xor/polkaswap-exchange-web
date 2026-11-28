@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import { describe, expect, it, vi } from 'vitest';
 
 import { SoraParachainApi } from '@/lib/substrate/sdk/bridgeProxy/sub/parachain';

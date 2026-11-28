@@ -1,5 +1,5 @@
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
-import type { RewardInfo, RewardsInfo, RewardTypedEvent } from '@sora-substrate/sdk/build/rewards/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
+import type { RewardInfo, RewardsInfo, RewardTypedEvent } from '@/lib/substrate/sdk/rewards/types';
 
 export interface RewardsAmountHeaderItem {
   asset: Asset;

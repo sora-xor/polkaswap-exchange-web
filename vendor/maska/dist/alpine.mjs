@@ -1,32 +1,26 @@
-import { MaskInput as c } from './maska.mjs';
-const u = /* @__PURE__ */ new WeakMap(),
-  d = (f) => {
-    f.directive('maska', (o, e, t) => {
-      const a = o instanceof HTMLInputElement ? o : o.querySelector('input');
-      if (a == null || (a == null ? void 0 : a.type) === 'file') return;
-      let s = {};
-      const p = e.expression !== '' ? t.evaluateLater(e.expression) : () => {};
-      t.effect(() => {
-        var k;
-        if (
-          (p((n) => {
-            s = typeof n == 'string' ? { mask: n } : { ...n };
-          }),
-          e.value != null)
-        ) {
-          const n = (l) => {
-            const r = e.modifiers.includes('unmasked')
-                ? l.unmasked
-                : e.modifiers.includes('completed')
-                  ? l.completed
-                  : l.masked,
-              m = t.Alpine.$data(a);
-            e.value in m && (m[e.value] = r);
-          };
-          s.onMaska = s.onMaska == null ? n : Array.isArray(s.onMaska) ? [...s.onMaska, n] : [s.onMaska, n];
-        }
-        u.has(a) ? (k = u.get(a)) == null || k.update(s) : u.set(a, new c(a, s));
-      });
-    }).before('model');
-  };
-export { d as xMaska };
+import { s as c, M } from "./index-ncVkAPXj.mjs";
+const p = /* @__PURE__ */ new WeakMap(), y = (m) => {
+  m.directive("maska", (o, s, t) => {
+    const n = o instanceof HTMLInputElement ? o : o.querySelector("input");
+    if (n == null || !c.includes(n.type)) return;
+    let a = {};
+    const r = s.expression !== "" ? t.evaluateLater(s.expression) : () => {
+    };
+    t.effect(() => {
+      var l;
+      if (r((e) => {
+        a = typeof e == "string" ? { mask: e } : { ...e };
+      }), s.value != null) {
+        const e = (u) => {
+          const f = s.modifiers.includes("unmasked") ? u.unmasked : s.modifiers.includes("completed") ? u.completed : u.masked, k = t.Alpine.$data(n);
+          s.value in k && (k[s.value] = f);
+        };
+        a.onMaska = a.onMaska == null ? e : Array.isArray(a.onMaska) ? [...a.onMaska, e] : [a.onMaska, e];
+      }
+      p.has(n) ? (l = p.get(n)) == null || l.update(a) : p.set(n, new M(n, a));
+    });
+  }).before("model");
+};
+export {
+  y as xMaska
+};

@@ -1,5 +1,5 @@
-import type { IBridgeTransaction } from '@sora-substrate/sdk';
-import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { IBridgeTransaction } from '@/lib/substrate/sdk';
+import type { RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
 import type { TransactionResponse } from 'ethers';
 
 export const BridgeTransactionSignDialogMode = {

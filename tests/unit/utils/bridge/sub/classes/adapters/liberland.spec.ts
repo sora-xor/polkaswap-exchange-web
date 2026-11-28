@@ -1,11 +1,11 @@
-import { BridgeAccountType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { LiberlandAssetType, SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
+import { BridgeAccountType } from '@/lib/substrate/sdk/bridgeProxy/consts';
+import { LiberlandAssetType, SubNetworkId } from '@/lib/substrate/sdk/bridgeProxy/sub/consts';
 import { describe, expect, it, vi } from 'vitest';
 
 import { ZeroStringValue } from '@/consts';
 import { LiberlandAdapter } from '@/utils/bridge/sub/classes/adapters/standalone/liberland';
 
-import type { RegisteredAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { RegisteredAsset } from '@/lib/substrate/sdk/assets/types';
 
 type LiberlandAdapterHarness = LiberlandAdapter & {
   withConnection: <T>(onSuccess: () => T | Promise<T>, fallback: T) => Promise<T>;

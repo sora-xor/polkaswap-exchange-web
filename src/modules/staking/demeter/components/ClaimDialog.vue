@@ -51,7 +51,7 @@
 </template>
 
 <script lang="ts" setup>
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { computed, toRefs, type PropType } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
@@ -60,7 +60,7 @@ import { useDemeterPoolCard } from '../composables/useDemeterPoolCard';
 import { useDemeterPoolStatus } from '../composables/useDemeterPoolStatus';
 
 import type { DemeterAsset, DemeterPool, DemeterAccountPool } from '../types';
-import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
+import type { AccountLiquidity } from '@/lib/substrate/sdk/poolXyk/types';
 import type { Nullable } from '@/types/common';
 import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';

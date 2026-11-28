@@ -1,8 +1,8 @@
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 
 import type { Nullable } from '@/types/common';
 
-import type { Collateral, Vault } from '@sora-substrate/sdk/build/kensetsu/types';
+import type { Collateral, Vault } from '@/lib/substrate/sdk/kensetsu/types';
 
 export type VaultMetricsInput = {
   vault: Vault;

@@ -106,7 +106,7 @@ import { useAssetsStore } from '@/stores/assets';
 import { useBridgeStore } from '@/stores/bridge';
 
 import type { BridgeRegisteredAsset } from '@/stores/assets/types';
-import type { IBridgeTransaction } from '@sora-substrate/sdk';
+import type { IBridgeTransaction } from '@/lib/substrate/sdk';
 import WalletComponentSearchInput from '@/lib/soraneo-wallet/src/components/Input/SearchInput.vue';
 import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 import WalletComponentHistoryPagination from '@/lib/soraneo-wallet/src/components/HistoryPagination.vue';

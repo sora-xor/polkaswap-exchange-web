@@ -167,6 +167,7 @@ const result = await agent.executeSwap({
 `prepareSwap` estimates the reviewed unsigned swap with `paymentInfo(publicSignerAddress)` and returns fee source `payment-info`. Its fee ceiling and required XOR balance use that exact estimate. No wallet signature is requested by this query. A missing, invalid or timed-out query disables execution; the generic cached fee is not substituted. Swap revalidation estimates the authenticated envelope's call again and rejects increases above its ceiling. Chain/runtime and signer changes during preparation, market revalidation or the wallet prompt require a fresh intent. Network fees remain estimates until the transaction's finalized fee event.
 
 Fee estimation and bot execution share `src/features/agent-trading/swap-call.ts`, which preserves the quote's codec amounts, side, selected source and slippage bound. SDK quoting and submission use one slippage calculation, including low-decimal tokens. `planSwap` remains wallet-independent and labels its generic estimate `static`.
+
 - `revalidation`: whether the prepared context is still valid and whether reapproval is required.
 - `intentId`: a full SHA-256 identifier over the prepared envelope. It is single-use.
 
@@ -213,6 +214,10 @@ if (!assessment.approved) {
   throw new Error(assessment.reasons.map((reason) => reason.code).join(', '));
 }
 ```
+
+## Transfers
+
+Transfer preparation rejects amounts that cannot be represented exactly by the asset's precision, including positive inputs that would become zero codec units. Trailing decimal zeroes are accepted; excess nonzero fractional digits return `INVALID_AMOUNT`. Submission repeats this check so previously stored intents cannot bypass it.
 
 ## Liquidity
 

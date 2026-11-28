@@ -54,7 +54,7 @@ import PinIcon from './PinIcon.vue';
 import TokenAddress from './TokenAddress.vue';
 import TokenLogo from './TokenLogo.vue';
 
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 
 const props = withDefaults(
   defineProps<{

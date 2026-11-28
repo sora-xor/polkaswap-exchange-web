@@ -1,10 +1,10 @@
-import { FPNumber } from '@sora-substrate/math';
-import { VaultTypes } from '@sora-substrate/sdk/build/kensetsu/consts';
+import { FPNumber } from '@/lib/substrate/math';
+import { VaultTypes } from '@/lib/substrate/sdk/kensetsu/consts';
 import { describe, expect, it } from 'vitest';
 
 import { calculateVaultMetrics } from '@/modules/vault/utils/metrics';
 
-import type { Collateral, Vault } from '@sora-substrate/sdk/build/kensetsu/types';
+import type { Collateral, Vault } from '@/lib/substrate/sdk/kensetsu/types';
 
 const createVault = (overrides: Partial<Vault> = {}): Vault => ({
   id: 1,

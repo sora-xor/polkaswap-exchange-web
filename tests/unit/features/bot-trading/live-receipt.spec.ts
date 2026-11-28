@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { hexToU8a } from '@polkadot/util';
-import { blake2AsHex, encodeAddress } from '@polkadot/util-crypto';
+import { hexToU8a, u8aToHex } from '@polkadot/util';
+import { blake2AsHex, encodeAddress, sha256AsU8a } from '@polkadot/util-crypto';
 import { createBotLiveDependencies, type BotChainEvent } from '@/features/bot-trading/live';
 import type { BotOrder } from '@/features/bot-trading/types';
 import type { BotStorage } from '@/features/bot-trading/storage';
@@ -22,7 +22,7 @@ const network = `0x${'d'.repeat(64)}`;
 const hex = (value: string) => ({ toHex: () => value });
 const blockHash = (height: number) => `0x${height.toString(16).padStart(64, '0')}`;
 const valueHex = (value: string | ReturnType<typeof hex>) => (typeof value === 'string' ? value : value.toHex());
-const envelopeDigest = (bytes: string) => createHash('sha256').update(hexToU8a(bytes)).digest('hex');
+const envelopeDigest = (bytes: string) => u8aToHex(sha256AsU8a(hexToU8a(bytes))).slice(2);
 
 afterEach(() => vi.useRealTimers());
 

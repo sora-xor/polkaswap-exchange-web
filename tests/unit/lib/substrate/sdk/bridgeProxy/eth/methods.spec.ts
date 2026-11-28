@@ -4,8 +4,8 @@ vi.mock('@/lib/substrate/sdk/assets', () => ({
   toAssetId: (asset: { code: { toString(): string } }) => asset.code.toString(),
 }));
 
-import { formatApprovedRequest } from '@sora-substrate/sdk/build/bridgeProxy/eth/methods';
-import { EthCurrencyType } from '@sora-substrate/sdk/build/bridgeProxy/eth/consts';
+import { formatApprovedRequest } from '@/lib/substrate/sdk/bridgeProxy/eth/methods';
+import { EthCurrencyType } from '@/lib/substrate/sdk/bridgeProxy/eth/consts';
 
 /** Supplies a SCALE-like string value without loading a network-backed API. */
 const codec = (value: string) => ({ toString: () => value });

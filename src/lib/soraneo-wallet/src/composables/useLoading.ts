@@ -2,7 +2,7 @@ import { ref, type Ref } from 'vue';
 
 import { delay } from '@/util';
 
-import type { WithConnectionApi } from '@sora-substrate/sdk';
+import type { WithConnectionApi } from '@/lib/substrate/sdk';
 
 type BooleanSource = Ref<boolean> | (() => boolean) | undefined;
 

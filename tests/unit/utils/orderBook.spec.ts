@@ -1,4 +1,4 @@
-import type { OrderBook } from '@sora-substrate/liquidity-proxy';
+import type { OrderBook } from '@/lib/substrate/liquidity-proxy';
 import { describe, expect, it } from 'vitest';
 
 import {

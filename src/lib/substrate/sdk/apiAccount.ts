@@ -13,9 +13,9 @@ import {
   keyExtractSuri,
   mnemonicValidate,
 } from '@polkadot/util-crypto';
-import { FPNumber, CodecString } from '@sora-substrate/math';
+import { FPNumber, CodecString } from '@/lib/substrate/math';
 import type { KeypairType } from '@polkadot/util-crypto/types';
-import type { Connection } from '@sora-substrate/connection';
+import type { Connection } from '@/lib/substrate/connection';
 import type { ApiPromise, ApiRx } from '@polkadot/api';
 import type { CreateResult, KeyringAddress } from '@polkadot/ui-keyring/types';
 import type { KeyringPair, KeyringPair$Json, KeyringPair$Meta } from '@polkadot/keyring/types';
@@ -28,6 +28,7 @@ import { decrypt, deriveAddressNamespaces, encrypt } from './crypto';
 import { Messages } from './logger';
 import { AccountStorage, Storage } from './storage';
 import { Operation, TransactionStatus } from './types';
+import { assertTransactionSigningContext } from './transactionSigningContext';
 
 import type {
   AccountWithOptions,
@@ -731,6 +732,7 @@ export class ApiAccount<T = void> extends WithAccountHistory implements ISubmitE
   ): Promise<T> {
     // Signing the transaction
     const signedTx = await this.signExtrinsic(api, extrinsic, accountPair, signer, unsigned)
+    assertTransactionSigningContext(this);
     // we should lock pair, if it's not locked
     this.shouldPairBeLocked && this.lockPair(accountPair);
     // history initial params
@@ -740,6 +742,7 @@ export class ApiAccount<T = void> extends WithAccountHistory implements ISubmitE
     const type = historyData?.type as Operation;
     const startTime = historyData?.startTime ?? Date.now();
     const submissionStartBlock = await getSubstrateIncomingSubmissionStartBlock(api, type);
+    assertTransactionSigningContext(this);
     // history required params for each update
     const requiredParams: RequiredHistoryParams = { id, from ,type };
 
@@ -783,6 +786,7 @@ export class ApiAccount<T = void> extends WithAccountHistory implements ISubmitE
     signer?: Signer,
     unsigned = false
   ) {
+    assertTransactionSigningContext(this);
     if (unsigned) return extrinsic;
 
     const { account, options } = this.getAccountWithOptions(accountPair, signer);
@@ -790,6 +794,7 @@ export class ApiAccount<T = void> extends WithAccountHistory implements ISubmitE
     assert(account, Messages.connectWallet);
 
     const nonce = await api.rpc.system.accountNextIndex(accountPair.address);
+    assertTransactionSigningContext(this);
 
     const signOptionsComplete = { ...options, nonce };
 

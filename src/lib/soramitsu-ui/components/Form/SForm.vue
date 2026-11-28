@@ -2,6 +2,11 @@
 import { computed, provide, ref } from 'vue';
 import { FORM_CONTEXT_KEY, type FormRule, type FormRules } from './api';
 
+/**
+ * App form wrapper. Its forms are handled in script, so the native submission is always cancelled: a form with
+ * one text field would otherwise be submitted by the Enter key and reload the static app with a `?` query.
+ * A parent `@submit` listener still runs, because it falls through to the same `<form>` element.
+ */
 defineOptions({ name: 'SForm' });
 
 const props = withDefaults(
@@ -186,7 +191,7 @@ defineExpose({
 </script>
 
 <template>
-  <form class="s-form el-form" novalidate>
+  <form class="s-form el-form" novalidate @submit.prevent>
     <slot />
   </form>
 </template>

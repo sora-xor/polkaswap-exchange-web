@@ -1,4 +1,4 @@
 import type { Definitions } from '@polkadot/types/types';
-import pswapDistribution from '../../../../type-definitions/src/pswapDistribution.ts';
+import pswapDistribution from '@/lib/substrate/type-definitions/pswapDistribution';
 
 export default pswapDistribution as Definitions;

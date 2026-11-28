@@ -3,7 +3,7 @@ import { addWalletLocally, checkWallet } from '../../services/wallet';
 
 import { SoraWallet } from './wallet';
 
-import type { WithKeyring } from '@sora-substrate/sdk';
+import type { WithKeyring } from '@/lib/substrate/sdk';
 
 export const addSoraWalletLocally = (api: WithKeyring, dAppName: string): string => {
   try {

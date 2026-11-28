@@ -1,7 +1,7 @@
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 
 import type { ApiPromise } from '@polkadot/api';
-import type { CodecString } from '@sora-substrate/math';
+import type { CodecString } from '@/lib/substrate/math';
 import type { u32, u128 } from '@polkadot/types';
 import type { Option } from '@polkadot/types-codec';
 import type { XcmV3MultiLocation } from '@polkadot/types/lookup';

@@ -1,11 +1,11 @@
-import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { getAssetBalance } from '@sora-substrate/sdk/build/assets';
-import { DAI, XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { BridgeTxDirection, BridgeTxStatus, BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { EthAssetKind } from '@sora-substrate/sdk/build/bridgeProxy/eth/consts';
-import { SubAssetKind, SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
-import { DexId } from '@sora-substrate/sdk/build/dex/consts';
+import { LiquiditySourceTypes } from '@/lib/substrate/liquidity-proxy/consts';
+import { FPNumber, Operation } from '@/lib/substrate/sdk';
+import { getAssetBalance } from '@/lib/substrate/sdk/assets';
+import { DAI, XOR } from '@/lib/substrate/sdk/assets/consts';
+import { BridgeTxDirection, BridgeTxStatus, BridgeNetworkType } from '@/lib/substrate/sdk/bridgeProxy/consts';
+import { EthAssetKind } from '@/lib/substrate/sdk/bridgeProxy/eth/consts';
+import { SubAssetKind, SubNetworkId } from '@/lib/substrate/sdk/bridgeProxy/sub/consts';
+import { DexId } from '@/lib/substrate/sdk/dex/consts';
 import { defineStore } from 'pinia';
 import { combineLatest } from 'rxjs';
 
@@ -112,11 +112,11 @@ import {
   getTonswapBridgeFundingPurpose,
 } from '@/features/misc/lib/tonswapBridgeLiquidity';
 
-import type { IBridgeTransaction, CodecString } from '@sora-substrate/sdk';
-import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
-import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
-import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
+import type { IBridgeTransaction, CodecString } from '@/lib/substrate/sdk';
+import type { RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { EthHistory } from '@/lib/substrate/sdk/bridgeProxy/eth/types';
+import type { SubNetwork } from '@/lib/substrate/sdk/bridgeProxy/sub/types';
+import type { BridgeNetworkId } from '@/lib/substrate/sdk/bridgeProxy/types';
 import type { TransactionRequest, TransactionResponse } from 'ethers';
 import type { Subscription } from 'rxjs';
 
@@ -459,6 +459,7 @@ const normalizeEvmSubmissionValue = (value: TransactionRequest['value']): string
 /**
  * Populates and pins the exact bridge request before broadcast so recovery can
  * find a transaction even when the wallet broadcasts but its RPC reply is lost.
+ * Every caller must validate its captured signing context inside the lock.
  */
 const sendPreparedEvmBridgeTransaction = async (
   contract: unknown,
@@ -467,7 +468,7 @@ const sendPreparedEvmBridgeTransaction = async (
   recordSubmission: RecordEvmSubmission | undefined,
   lockName: string,
   getExistingSubmission: () => ExistingEvmSubmission,
-  submissionGuard?: { chainId: number; validate: (signerAddress: string) => Promise<void> }
+  submissionGuard: { chainId: number; validate: (signerAddress: string) => Promise<void> }
 ): Promise<TransactionResponse> => {
   if (!contract || typeof contract !== 'object') {
     throw new Error('[Bridge]: EVM bridge contract is unavailable');
@@ -517,13 +518,13 @@ const sendPreparedEvmBridgeTransaction = async (
     if (typeof populatedRequest.data !== 'string' || !populatedRequest.data) {
       throw new Error('[Bridge]: EVM bridge transaction data is invalid');
     }
-    await submissionGuard?.validate(from);
+    await submissionGuard.validate(from);
 
     const preparedRequest: TransactionRequest = {
       ...populatedRequest,
       from,
       nonce,
-      ...(submissionGuard ? { chainId: submissionGuard.chainId } : {}),
+      chainId: submissionGuard.chainId,
     };
 
     recordSubmission({
@@ -1537,24 +1538,86 @@ const useBridgeStoreBase = defineStore('bridge', {
         },
       } as never);
     },
+    /** Binds an outgoing claim to its reviewed history, beneficiary, chain and bridge contracts through broadcast. */
     async signEthBridgeOutgoingEvm(id: string, recordSubmission?: RecordEvmSubmission): Promise<unknown> {
       const web3Store = useWeb3Store();
-      const tx = ethBridgeApi.getHistory(id) as Nullable<EthHistory>;
+      const history = ethBridgeApi.getHistory(id) as Nullable<EthHistory>;
 
-      if (!tx) throw new Error('TX cannot be empty!');
+      if (!history) throw new Error('TX cannot be empty!');
+      const tx = { ...history };
       if (!tx.id) throw new Error('TX id cannot be empty!');
       if (!tx.amount) throw new Error('TX amount cannot be empty!');
       if (!tx.assetAddress) throw new Error('TX assetAddress cannot be empty!');
       if (!tx.to) throw new Error('TX to cannot be empty!');
       assertPositiveBridgeTransactionAmount(tx.amount);
 
-      const asset = getRegisteredTransactionAsset(tx.assetAddress);
-
-      if (!web3Store.isValidNetwork) {
+      const asset = { ...getRegisteredTransactionAsset(tx.assetAddress) };
+      const network = tx.externalNetwork;
+      if (typeof network !== 'number' || !Number.isSafeInteger(network) || network <= 0) {
         throw new Error('Change evm network in wallet');
       }
+      const evmAccount = tx.to;
+      const contractAddresses: Record<KnownEthBridgeAsset, string> = {
+        [KnownEthBridgeAsset.XOR]: web3Store.contractAddress(KnownEthBridgeAsset.XOR),
+        [KnownEthBridgeAsset.VAL]: web3Store.contractAddress(KnownEthBridgeAsset.VAL),
+        [KnownEthBridgeAsset.Other]: web3Store.contractAddress(KnownEthBridgeAsset.Other),
+      };
 
-      const request = await waitForApprovedRequest(tx);
+      /** Checks fresh provider state and persisted inputs after every potentially long signing wait. */
+      const assertSigningContext = async (signerAddress = evmAccount): Promise<void> => {
+        const [isConnected, providedNetwork] = await Promise.all([
+          ethersUtil.checkAccountIsConnected(evmAccount),
+          ethersUtil.getEvmNetworkId(),
+        ]);
+        if (!isConnected) throw new Error('Connect account in ethereum wallet');
+        if (
+          !web3Store.isValidNetwork ||
+          providedNetwork !== network ||
+          web3Store.networkType !== BridgeNetworkType.Eth ||
+          web3Store.networkSelected !== network ||
+          web3Store.ethBridgeEvmNetwork !== network
+        )
+          throw new Error('Change evm network in wallet');
+        if (
+          !ethersUtil.addressesAreEqual(web3Store.evmAddress, evmAccount) ||
+          !ethersUtil.addressesAreEqual(signerAddress, evmAccount)
+        )
+          throw new Error('[Bridge]: Ethereum account changed; review the transfer again');
+
+        const current = ethBridgeApi.getHistory(id) as Nullable<EthHistory>;
+        if (
+          !current ||
+          current.id !== tx.id ||
+          current.type !== tx.type ||
+          current.hash !== tx.hash ||
+          current.from !== tx.from ||
+          current.to !== evmAccount ||
+          current.amount !== tx.amount ||
+          current.assetAddress !== tx.assetAddress ||
+          current.externalNetwork !== network
+        )
+          throw new Error('[Bridge]: Ethereum bridge transaction changed; review the transfer again');
+        if (
+          Object.values(KnownEthBridgeAsset).some((kind) => web3Store.contractAddress(kind) !== contractAddresses[kind])
+        )
+          throw new Error('[Bridge]: Ethereum bridge configuration changed; review the transfer again');
+        const currentAsset = getRegisteredTransactionAsset(tx.assetAddress!);
+        if (
+          currentAsset.externalAddress !== asset.externalAddress ||
+          currentAsset.externalDecimals !== asset.externalDecimals ||
+          currentAsset.symbol !== asset.symbol
+        )
+          throw new Error('[Bridge]: Ethereum bridge asset changed; review the transfer again');
+      };
+
+      await assertSigningContext();
+      const approvedRequest = await waitForApprovedRequest(tx);
+      const request = {
+        ...approvedRequest,
+        r: approvedRequest.r?.slice(),
+        s: approvedRequest.s?.slice(),
+        v: approvedRequest.v?.slice(),
+      };
 
       if (tx.hash && request.hash.toLowerCase() !== tx.hash.toLowerCase()) {
         throw new Error('[Bridge]: Approved Ethereum bridge request does not match the transaction');
@@ -1563,6 +1626,7 @@ const useBridgeStoreBase = defineStore('bridge', {
       if (!ethersUtil.addressesAreEqual(web3Store.evmAddress, request.to)) {
         throw new Error(`Change account in ethereum wallet to ${request.to}`);
       }
+      await assertSigningContext();
 
       // Peer signatures cover the destination codec amount, including any
       // chain-side denomination. Repair stale estimates before wallet review.
@@ -1573,11 +1637,12 @@ const useBridgeStoreBase = defineStore('bridge', {
         asset,
         value: amount,
         recipient: tx.to,
-        getContractAddress: web3Store.contractAddress,
+        getContractAddress: (kind) => contractAddresses[kind],
         request,
       });
 
-      const currentTransaction = (ethBridgeApi.getHistory(tx.id) as Nullable<EthHistory>) ?? tx;
+      await assertSigningContext();
+      const currentTransaction = ethBridgeApi.getHistory(tx.id) as EthHistory;
       ethBridgeApi.saveHistory({ ...currentTransaction, amount2: amount });
       await this.updateInternalHistory();
 
@@ -1586,8 +1651,9 @@ const useBridgeStoreBase = defineStore('bridge', {
         method,
         args,
         recordSubmission,
-        getEvmSubmissionLockName(tx.id, tx.externalNetwork),
-        () => getExistingEvmSubmission(tx.id)
+        getEvmSubmissionLockName(tx.id, network),
+        () => getExistingEvmSubmission(tx.id),
+        { chainId: network, validate: assertSigningContext }
       );
     },
     async signEthBridgeIncomingEvm(id: string, recordSubmission?: RecordEvmSubmission): Promise<unknown> {
@@ -1632,12 +1698,12 @@ const useBridgeStoreBase = defineStore('bridge', {
                 genesis: chain?.genesisHash?.toString() ?? '',
                 fees: readFundingFees(),
               }),
-              quote: async (amountCodec) => {
+              quote: async (amountCodec, assetAddress) => {
                 if (!chain?.isConnected) throw new Error('Unavailable network');
                 const result = (
                   await chain.rpc.liquidityProxy.quote(
                     0,
-                    DAI.address,
+                    assetAddress,
                     XOR.address,
                     amountCodec,
                     'WithDesiredInput',
@@ -2044,13 +2110,16 @@ const useBridgeStoreBase = defineStore('bridge', {
       bridgeApi.removeHistory(id);
       await this.updateInternalHistory();
     },
+    /** Uses the wallet dialog for SORA Nexus signing and the bridge dialog for external Substrate accounts. */
     async beforeTransactionSign(signerApi: unknown, dialogMode?: BridgeTransactionSignDialogMode): Promise<void> {
       const walletStore = useWalletStore();
 
-      const visibilityTarget =
-        dialogMode === BridgeTransactionSignDialogMode.Bridge ? createBridgeSignDialogController(this) : undefined;
+      if (dialogMode !== BridgeTransactionSignDialogMode.Bridge) {
+        await walletStore.beforeTransactionSign(signerApi);
+        return;
+      }
 
-      await beforeTransactionSign(null, signerApi as never, visibilityTarget, {
+      await beforeTransactionSign(null, signerApi as never, createBridgeSignDialogController(this), {
         getPassword: walletStore.getPassword,
         isSignTxDialogDisabled: walletStore.isSignTxDialogDisabled,
       });

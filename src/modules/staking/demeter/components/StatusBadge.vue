@@ -17,7 +17,7 @@ import { ZeroStringValue } from '@/consts';
 import { useDemeterPoolStatus } from '../composables/useDemeterPoolStatus';
 
 import type { DemeterAsset, DemeterPool, DemeterAccountPool } from '../types';
-import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
+import type { AccountLiquidity } from '@/lib/substrate/sdk/poolXyk/types';
 import type { Nullable } from '@/types/common';
 
 const props = defineProps({

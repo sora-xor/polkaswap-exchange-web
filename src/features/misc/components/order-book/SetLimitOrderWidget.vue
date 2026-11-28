@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { PriceVariant } from '@sora-substrate/liquidity-proxy';
+import { PriceVariant } from '@/lib/substrate/liquidity-proxy';
 import { computed, ref, watch } from 'vue';
 import BuySell from '@/features/misc/components/order-book/BuySell.vue';
 import BaseWidget from '@/components/shared/Widget/Base.vue';

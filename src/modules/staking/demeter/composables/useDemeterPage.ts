@@ -6,8 +6,8 @@ import type { DemeterLiquidityParams } from '@/stores/demeterFarming/types';
 
 import type { DemeterBasePageComposable } from './useDemeterBasePage';
 import type { DemeterPoolDerivedData } from '../types';
-import type { DemeterAccountPool } from '@sora-substrate/sdk/build/demeterFarming/types';
-import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
+import type { DemeterAccountPool } from '@/lib/substrate/sdk/demeterFarming/types';
+import type { AccountLiquidity } from '@/lib/substrate/sdk/poolXyk/types';
 import type { MaybeRef } from 'vue';
 
 type ParentLoadingSource = MaybeRef<boolean> | (() => boolean);

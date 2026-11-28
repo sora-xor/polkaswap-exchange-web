@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { computed } from 'vue';
 
 import { FontWeightRate } from '@/lib/soraneo-wallet/src/consts';

@@ -1,5 +1,5 @@
-import { Operation } from '@sora-substrate/sdk';
-import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { Operation } from '@/lib/substrate/sdk';
+import { BridgeTxStatus } from '@/lib/substrate/sdk/bridgeProxy/consts';
 
 import pinia from '@/plugins/pinia';
 import { useAssetsStore } from '@/stores/assets';
@@ -12,7 +12,7 @@ import { SubBridgeOutgoingReducer, SubBridgeIncomingReducer } from '@/utils/brid
 import type { SubBridgeReducer } from '@/utils/bridge/sub/classes/reducers';
 import { getTransaction, updateTransaction } from '@/utils/bridge/sub/utils';
 
-import type { SubHistory } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
+import type { SubHistory } from '@/lib/substrate/sdk/bridgeProxy/sub/types';
 
 interface SubBridgeConstructorOptions extends IBridgeConstructorOptions<SubHistory, SubBridgeReducer> {
   getSubBridgeConnector: () => SubNetworksConnector;

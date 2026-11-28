@@ -1,7 +1,7 @@
 import { map, Observable, combineLatest, distinctUntilChanged } from 'rxjs';
 import { assert } from '@polkadot/util';
-import { FPNumber, NumberLike } from '@sora-substrate/math';
-import { PriceVariant, QuotePayload, getAveragePrice } from '@sora-substrate/liquidity-proxy';
+import { FPNumber, NumberLike } from '@/lib/substrate/math';
+import { PriceVariant, QuotePayload, getAveragePrice } from '@/lib/substrate/liquidity-proxy';
 import type { BandBandRate, KensetsuCollateralInfo, KensetsuCollateralizedDebtPosition } from '@polkadot/types/lookup';
 import type { Vec, u128, Option } from '@polkadot/types-codec';
 import type { Percent } from '@polkadot/types/interfaces/runtime';

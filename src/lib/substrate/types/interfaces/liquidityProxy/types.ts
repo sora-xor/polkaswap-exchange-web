@@ -7,7 +7,7 @@ import type {
   DEXId,
   LiquiditySourceType,
   RewardReason,
-} from '@sora-substrate/types/interfaces/runtime';
+} from '@/lib/substrate/types/interfaces/runtime';
 
 /** @name LiquiditySourceIdOf */
 export interface LiquiditySourceIdOf extends Struct {

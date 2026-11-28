@@ -56,7 +56,7 @@ import ValidatorsList from '@/modules/staking/sora/components/ValidatorsList.vue
 import { ValidatorsListMode } from '@/modules/staking/sora/consts';
 import { hasInsufficientXorForFee } from '@/utils';
 
-import type { CodecString } from '@sora-substrate/sdk';
+import type { CodecString } from '@/lib/substrate/sdk';
 import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 

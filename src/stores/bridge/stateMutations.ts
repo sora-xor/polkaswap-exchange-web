@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 
 import { ZeroStringValue } from '@/consts';
 import { preservePinnedBridgeHistoryTransactions } from '@/stores/bridge/historyRecord';
@@ -6,8 +6,8 @@ import { normalizeBridgeHistoryPage } from '@/stores/bridge/state';
 import type { BridgeFocusedField, BridgeState } from '@/stores/bridge/types';
 import type { Nullable } from '@/types/common';
 
-import type { IBridgeTransaction, CodecString } from '@sora-substrate/sdk';
-import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
+import type { IBridgeTransaction, CodecString } from '@/lib/substrate/sdk';
+import type { BridgeNetworkId } from '@/lib/substrate/sdk/bridgeProxy/types';
 import type { Subscription } from 'rxjs';
 
 export type BridgeStateStoreLike = Pick<

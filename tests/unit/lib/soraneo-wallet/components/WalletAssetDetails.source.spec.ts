@@ -22,6 +22,16 @@ describe('WalletAssetDetails source', () => {
     expect(walletAssetDetailsSource).toContain("t('assets.balance.xorFullyRestricted'");
   });
 
+  it('keeps restricted balance text readable in Noir, where the warning fill equals the warning colour', () => {
+    const restrictedChip = walletAssetDetailsSource.match(/&--restricted\s*\{[^}]*\}/)?.[0] ?? '';
+    const restrictionNote = walletAssetDetailsSource.match(/&-restriction-note\s*\{[^}]*/)?.[0] ?? '';
+
+    for (const block of [restrictedChip, restrictionNote]) {
+      expect(block).toContain('color: var(--s-color-status-warning-text);');
+      expect(block).not.toContain('var(--s-color-status-warning-background)');
+    }
+  });
+
   it('uses total ownership for the headline and fiat value without duplicating locked balance', () => {
     expect(walletAssetDetailsSource).toContain(':value="getSafeFiatBalance(BalanceType.Total)"');
     expect(walletAssetDetailsSource).toContain('BalanceType.Total');

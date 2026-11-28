@@ -57,7 +57,7 @@ import { useMoonpayStore } from '@/stores/moonpay';
 import { useSettingsStore } from '@/stores/settings';
 
 import type { Nullable } from '@/types/common';
-import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
+import type { EthHistory } from '@/lib/substrate/sdk/bridgeProxy/eth/types';
 import DepositMoonpay from '@/features/deposit/components/moonpay/Moonpay.vue';
 import DepositMoonpayConfirmation from '@/features/deposit/components/moonpay/Confirmation.vue';
 import DepositMoonpayNotification from '@/features/deposit/components/moonpay/Notification.vue';

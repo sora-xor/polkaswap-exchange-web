@@ -135,6 +135,61 @@ describe('decorative burn logo fire', () => {
     }
   );
 
+  it('keeps explicitly static logos free of GPU resources after late load and visibility events', async () => {
+    wrapper = mount(BurnLogoFire, { props: { variant: 'tonswap', animate: false } });
+    await loadLogo();
+    await setVisibility(false);
+    await setVisibility(true);
+    document.dispatchEvent(new Event('visibilitychange'));
+    motionChange?.();
+    await nextTick();
+    expect(mocks.create).not.toHaveBeenCalled();
+    expect(request).not.toHaveBeenCalled();
+    expect(frames.size).toBe(0);
+    expect(wrapper.attributes('data-renderer')).toBe('static');
+    expect(wrapper.get('img').classes()).not.toContain('is-animated');
+    expect(wrapper.get('canvas').classes()).not.toContain('is-active');
+  });
+
+  it('cancels queued frames when animation is disabled and resumes only after it is enabled', async () => {
+    wrapper = mount(BurnLogoFire, { props: { variant: 'tonswap' } });
+    await loadLogo();
+    await frameAt(40);
+    const [[queuedId, queuedFrame]] = [...frames.entries()];
+    await wrapper.setProps({ animate: false });
+    expect(cancel).toHaveBeenCalledWith(queuedId);
+    expect(renderer.dispose).toHaveBeenCalledTimes(1);
+    expect(frames.size).toBe(0);
+    expect(wrapper.attributes('data-renderer')).toBe('static');
+    queuedFrame(80);
+    await loadLogo();
+    await setVisibility(false);
+    await setVisibility(true);
+    expect(renderer.draw).toHaveBeenCalledTimes(1);
+    expect(mocks.create).toHaveBeenCalledTimes(1);
+    expect(frames.size).toBe(0);
+
+    await wrapper.setProps({ animate: true });
+    expect(mocks.create).toHaveBeenCalledTimes(2);
+    expect(frames.size).toBe(1);
+    await frameAt(120);
+    expect(renderer.draw).toHaveBeenCalledTimes(2);
+    expect(wrapper.attributes('data-renderer')).toBe('webgl');
+  });
+
+  it('does not animate a late image load after the caller disables animation', async () => {
+    wrapper = mount(BurnLogoFire, { props: { variant: 'sora' } });
+    await wrapper.setProps({ animate: false });
+    await loadLogo();
+    await setVisibility(true);
+    expect(mocks.create).not.toHaveBeenCalled();
+    expect(frames.size).toBe(0);
+    await wrapper.setProps({ animate: true });
+    await frameAt(40);
+    expect(mocks.create).toHaveBeenCalledTimes(1);
+    expect(wrapper.attributes('data-renderer')).toBe('webgl');
+  });
+
   it('never creates GPU resources when reduced motion is requested', async () => {
     motion.matches = true;
     wrapper = mount(BurnLogoFire, { props: { variant: 'tonswap' } });

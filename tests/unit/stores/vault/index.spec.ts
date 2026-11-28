@@ -1,5 +1,5 @@
-import { FPNumber } from '@sora-substrate/math';
-import { DAI, XOR, KUSD } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber } from '@/lib/substrate/math';
+import { DAI, XOR, KUSD } from '@/lib/substrate/sdk/assets/consts';
 import { createPinia, setActivePinia } from 'pinia';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 

@@ -71,6 +71,12 @@ describe('assertStaticFeatureParity', () => {
     expect(assertStaticFeatureParity(root).routeFragments).toContain('/new-feature');
   });
 
+  it.each(['/migration', '/migration/claim'])('rejects the retired route %s without reducing active gates', (path) => {
+    const root = fixture();
+    changeRoutes(root, (source) => `${source}export const retired=[{path:${JSON.stringify(path)},redirect:"/swap"}];`);
+    expect(() => assertStaticFeatureParity(root)).toThrow('Static feature parity failed: retired routes');
+  });
+
   it.each(['/buy-xor', '/get-ts', '/store', '/bots/:section(discover|lab|backtesting|my-bots)?', '/deposit/history'])(
     'rejects a lost route %s even if the old page file and a decoy string remain',
     (route) => {

@@ -43,7 +43,7 @@ test.beforeAll(async () => {
     bundle: true,
     write: false,
     platform: 'browser' as const,
-    alias: { '@sora-substrate/math': path.resolve('src/lib/substrate/math/index.ts') },
+    alias: { '@': path.resolve('src') },
     logLevel: 'silent' as const,
   };
   const engine = await build({

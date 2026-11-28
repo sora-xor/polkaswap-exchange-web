@@ -1,9 +1,9 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 
 import { getFiatPriceByAddress, type FiatPriceObjectLike } from '@/utils/fiatPrice';
 
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
-import type { RewardInfo, RewardsInfo } from '@sora-substrate/sdk/build/rewards/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
+import type { RewardInfo, RewardsInfo } from '@/lib/substrate/sdk/rewards/types';
 
 /**
  * Pure helpers behind the rewards dashboard: they turn the rewards store state into the numbers the charts draw.
@@ -146,7 +146,7 @@ export function getAssetPrice(prices: Nullable<FiatPriceObjectLike>, asset: Null
 
   const price = FPNumber.fromCodecValue(raw);
 
-  return price.isGtZero() ? price : null;
+  return price.isFinity() && !price.isLtZero() ? price : null;
 }
 
 /** Converts amounts to fiat. Assets without a price add nothing and mark the result as incomplete. */

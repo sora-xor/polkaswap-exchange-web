@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts" setup>
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import { computed } from 'vue';
 
 import { FontSizeRate, FontWeightRate } from '@/consts';
@@ -48,8 +48,8 @@ import { useWalletStore } from '@/stores/wallet';
 import { formatAmountWithSuffix } from '@/utils';
 import { getKensetsuFiatAmount } from '@/modules/vault/utils/fiat';
 
-import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { Collateral, StablecoinInfo } from '@sora-substrate/sdk/build/kensetsu/types';
+import type { RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { Collateral, StablecoinInfo } from '@/lib/substrate/sdk/kensetsu/types';
 import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 
 const FormattedAmount = WalletComponentFormattedAmount;

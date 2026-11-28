@@ -1,7 +1,7 @@
 import { Operation } from '@/lib/substrate/sdk/types';
-import { XSTUSD, KUSD, KGOLD, KEN, KXOR } from '@sora-substrate/sdk/build/assets/consts';
+import { XSTUSD, KUSD, KGOLD, KEN, KXOR } from '@/lib/substrate/sdk/assets/consts';
 
-import type { FPNumber } from '@sora-substrate/math';
+import type { FPNumber } from '@/lib/substrate/math';
 
 export const accountIdBasedOperations = [
   Operation.SwapAndSend,

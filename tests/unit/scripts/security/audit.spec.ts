@@ -22,7 +22,7 @@ describe('runSecurityAuditCli', () => {
       [
         process.execPath,
         [
-          join(options.root, '.yarn/releases/yarn-4.10.3.cjs'),
+          join(options.root, '.yarn/releases/yarn-4.18.1.cjs'),
           'npm',
           'audit',
           '--all',
@@ -41,17 +41,22 @@ describe('runSecurityAuditCli', () => {
         ['audit', '--package-lock-only', '--prefix', join(options.root, 'scripts/ucan')],
         { cwd: options.root, stdio: 'inherit', timeout: 60_000, shell: false },
       ],
+      [
+        process.execPath,
+        [join(options.root, 'scripts/security/audit-picomatch.mjs')],
+        { cwd: options.root, stdio: 'inherit', timeout: 60_000, shell: false },
+      ],
     ]);
     expect(options.stdout.write).toHaveBeenLastCalledWith('Dependency audit: all checks passed.\n');
   });
 
-  it.each([0, 1, 2])('keeps running all audits when inventory %s reports advisories', (failingIndex) => {
+  it.each([0, 1, 2, 3])('keeps running all audits when inventory %s reports advisories', (failingIndex) => {
     const options = harness();
     options.runCommand.mockImplementation(() => ({
       status: options.runCommand.mock.calls.length - 1 === failingIndex ? 1 : 0,
     }));
     expect(runSecurityAuditCli(options)).toBe(1);
-    expect(options.runCommand).toHaveBeenCalledTimes(3);
+    expect(options.runCommand).toHaveBeenCalledTimes(4);
     expect(options.stdout.write).toHaveBeenLastCalledWith('Dependency audit: findings or incomplete checks remain.\n');
   });
 
@@ -64,7 +69,7 @@ describe('runSecurityAuditCli', () => {
     const options = harness();
     options.runCommand.mockReturnValueOnce(result);
     expect(runSecurityAuditCli(options)).toBe(1);
-    expect(options.runCommand).toHaveBeenCalledTimes(3);
+    expect(options.runCommand).toHaveBeenCalledTimes(4);
     expect(options.stderr.write).toHaveBeenCalledWith('Application Yarn dependencies: failed or incomplete.\n');
     expect(JSON.stringify(options.stderr.write.mock.calls)).not.toContain('private');
   });
@@ -75,7 +80,7 @@ describe('runSecurityAuditCli', () => {
       throw new Error('private process detail');
     });
     expect(runSecurityAuditCli(options)).toBe(1);
-    expect(options.runCommand).toHaveBeenCalledTimes(3);
+    expect(options.runCommand).toHaveBeenCalledTimes(4);
     expect(options.stderr.write).toHaveBeenCalledWith('Application Yarn dependencies: failed to run.\n');
   });
 

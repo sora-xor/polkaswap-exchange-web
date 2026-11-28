@@ -1,6 +1,6 @@
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import { defineStore } from 'pinia';
-import { XOR, DAI, KUSD } from '@sora-substrate/sdk/build/assets/consts';
+import { XOR, DAI, KUSD } from '@/lib/substrate/sdk/assets/consts';
 import { api } from '@/lib/soraneo-wallet/src/api';
 
 import { useAssetsStore } from '@/stores/assets';
@@ -11,13 +11,8 @@ import { delay, areEqual } from '@/utils';
 import { subscribeAndWaitForFirst, TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import type { ClosedVault } from '@/modules/vault/types';
 
-import type {
-  AccountBalance,
-  AccountAsset,
-  Asset,
-  RegisteredAccountAsset,
-} from '@sora-substrate/sdk/build/assets/types';
-import type { BorrowTaxes, Collateral, StablecoinInfo, Vault } from '@sora-substrate/sdk/build/kensetsu/types';
+import type { AccountBalance, AccountAsset, Asset, RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { BorrowTaxes, Collateral, StablecoinInfo, Vault } from '@/lib/substrate/sdk/kensetsu/types';
 import type { Subscription } from 'rxjs';
 
 const DEBT_INTERVAL_MS = 6_000;

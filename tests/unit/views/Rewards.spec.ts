@@ -1,5 +1,5 @@
-import { FPNumber } from '@sora-substrate/sdk';
-import { KnownAssets, KnownSymbols } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber } from '@/lib/substrate/sdk';
+import { KnownAssets, KnownSymbols } from '@/lib/substrate/sdk/assets/consts';
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils';
 import { reactive, ref } from 'vue';
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';

@@ -1,4 +1,4 @@
-import { FPNumber, Operation } from '@sora-substrate/sdk';
+import { FPNumber, Operation } from '@/lib/substrate/sdk';
 import { computed } from 'vue';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
@@ -11,16 +11,16 @@ import { useWalletStore } from '@/stores/wallet';
 import type { Nullable } from '@/types/common';
 import { formatDecimalPlaces, getAssetBalance, hasInsufficientXorForFee } from '@/utils';
 
-import type { NumberLike } from '@sora-substrate/math';
-import type { NetworkFeesObject, CodecString } from '@sora-substrate/sdk';
-import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { NumberLike } from '@/lib/substrate/math';
+import type { NetworkFeesObject, CodecString } from '@/lib/substrate/sdk';
+import type { AccountAsset, RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
 import type {
   AccountStakingLedger,
   MyStakingInfo,
   NominatorReward,
   Payouts,
   ValidatorInfoFull,
-} from '@sora-substrate/sdk/build/staking/types';
+} from '@/lib/substrate/sdk/staking/types';
 import type { ComputedRef } from 'vue';
 
 function asCodec(value?: CodecString | string | null): CodecString {

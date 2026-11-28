@@ -1,6 +1,6 @@
-import type { SwapQuote, LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy';
+import type { SwapQuote, LiquiditySourceTypes } from '@/lib/substrate/liquidity-proxy';
 import type { DexId } from '../dex/consts';
-import { FPNumber, NumberLike } from '@sora-substrate/math';
+import { FPNumber, NumberLike } from '@/lib/substrate/math';
 
 export interface SwapTransferBatchData {
   outcomeAssetId: string;

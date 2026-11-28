@@ -59,7 +59,7 @@ import { delay, getCssVariableValue, getScrollbarWidth } from '@/util';
 import AssetListItem from './AssetListItem.vue';
 import Scrollbar from './ScrollBar.vue';
 
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 import type { RecycleScroller } from 'vue-virtual-scroller';
 
 defineOptions({

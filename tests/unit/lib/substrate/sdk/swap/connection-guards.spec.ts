@@ -1,4 +1,4 @@
-import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy';
+import { LiquiditySourceTypes } from '@/lib/substrate/liquidity-proxy';
 import { describe, expect, it, vi } from 'vitest';
 
 import { SwapModule } from '@/lib/substrate/sdk/swap';

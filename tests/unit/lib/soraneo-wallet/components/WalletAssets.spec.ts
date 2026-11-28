@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
-import { api, FPNumber } from '@sora-substrate/sdk';
-import { BalanceType } from '@sora-substrate/sdk/build/assets/consts';
+import { api, FPNumber } from '@/lib/substrate/sdk';
+import { BalanceType } from '@/lib/substrate/sdk/assets/consts';
 import { ref } from 'vue';
 
 const walletStoreMock = vi.hoisted(() => ({
@@ -342,10 +342,7 @@ describe('Wallet WalletAssets', () => {
         { label: 'assets.balance.total', value: '1,099.6019223 XOR' },
         { label: 'assets.balance.transferable', value: '99.6019223 XOR' },
         { label: 'assets.balance.free', value: '999.6019223 XOR' },
-        {
-          label: 'assets.balance.frozen (pointSystem.governanceLockedXOR.titleProgress / StakingContainer)',
-          value: '900 XOR',
-        },
+        { label: 'assets.balance.frozen', value: '900 XOR' },
         { label: 'assets.balance.reserved', value: '25 XOR' },
         { label: 'assets.balance.bonded', value: '75 XOR' },
       ]);

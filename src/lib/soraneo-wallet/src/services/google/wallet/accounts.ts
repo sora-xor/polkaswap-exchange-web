@@ -150,11 +150,11 @@ export default class Accounts implements InjectedAccounts {
     return this.refresh();
   }
 
-  /** Decrypts a specific backup file and returns a keyring JSON blob. */
+  /** Decrypts a backup only when its recovered key matches the account selected from Drive. */
   public async getAccount(address: string, password: string): Promise<Nullable<KeyringPair$Json>> {
     const id = await this.getAccountIdByAddress(address);
     const encryptedAccount = (await GDriveStorage.get(id)) as EncryptedBackupAccount;
-    const json = BackupAccountMapper.getPairJson(encryptedAccount, password);
+    const json = BackupAccountMapper.getPairJson(encryptedAccount, password, address);
 
     return json;
   }

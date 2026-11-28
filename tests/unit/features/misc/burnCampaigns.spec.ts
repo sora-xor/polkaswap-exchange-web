@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { describe, expect, it } from 'vitest';
 
 import {
@@ -48,6 +48,22 @@ describe('burn campaign helpers', () => {
     expect(formatBurnAmount(new FPNumber('10.000'), 3)).toBe('10');
     expect(formatBurnAmount(new FPNumber('10.120'), 3)).toBe('10.12');
     expect(formatBurnAmount(new FPNumber('10.125'), 3)).toBe('10.125');
+  });
+
+  it('trims with the decimal mark of the language applied after load, keeping grouped thousands whole', () => {
+    const delimiters = { ...FPNumber.DELIMITERS_CONFIG };
+    try {
+      // German: "." groups thousands and "," is the decimal mark.
+      FPNumber.DELIMITERS_CONFIG.thousand = '.';
+      FPNumber.DELIMITERS_CONFIG.decimal = ',';
+      expect(formatBurnAmount(new FPNumber('1000'), 0)).toBe('1.000');
+      expect(formatBurnAmount(new FPNumber('1250000'))).toBe('1.250.000');
+      expect(formatBurnAmount(new FPNumber('11592.40'), 4)).toBe('11.592,4');
+      expect(formatBurnAmount(new FPNumber('10.000'), 3)).toBe('10');
+    } finally {
+      Object.assign(FPNumber.DELIMITERS_CONFIG, delimiters);
+    }
+    expect(formatBurnAmount(new FPNumber('1250000'))).toBe('1,250,000');
   });
 
   it('formats claim rows from qualifying burn reservation amounts', () => {
@@ -215,5 +231,34 @@ describe('burn campaign helpers', () => {
     expect(
       dedupeBurnEntries([burn({ txHash: 'same' }), burn({ txHash: 'same', campaign: 'tonswap' })])[0].campaign
     ).toBe('tonswap');
+  });
+});
+
+describe('recovery burn identity and ownership', () => {
+  it('preserves two canonical events in one extrinsic and replaces optimistic duplicates', () => {
+    const first = burn({ receiptId: '0xblock:0', amount: new FPNumber(1) });
+    const second = burn({ receiptId: '0xblock:1', amount: new FPNumber(2) });
+    expect(dedupeBurnEntries([burn({}), first, second])).toEqual([first, second]);
+  });
+  it('shows mapped entitlements only for the replacement and extinguishes attacker claims', () => {
+    const campaign = createBurnCampaigns().solswap;
+    const rows = [
+      burn({ address: 'old', claimOwner: 'replacement', amount: new FPNumber(1) }),
+      burn({ address: 'attacker', claimStatus: 'extinguished', amount: new FPNumber(5) }),
+    ];
+    const result = calculateBurnCampaignStatistics({
+      campaigns: [campaign],
+      accountAddress: 'replacement',
+      globalBurns: rows,
+      accountBurns: rows,
+    });
+    expect(result.accountReservedTotals.solswap.toString()).toBe('50');
+    expect(result.overallReservedTotals.solswap.toString()).toBe('50');
+    expect(result.accountClaimRows.solswap).toHaveLength(1);
+  });
+  it('rejects contradictory amounts for one canonical event', () => {
+    expect(() =>
+      dedupeBurnEntries([burn({ receiptId: '0xblock:0' }), burn({ receiptId: '0xblock:0', amount: new FPNumber(99) })])
+    ).toThrow('Conflicting');
   });
 });

@@ -1,12 +1,12 @@
-import { FPNumber } from '@sora-substrate/sdk';
-import { formatBalance } from '@sora-substrate/sdk/build/assets';
+import { FPNumber } from '@/lib/substrate/sdk';
+import { formatBalance } from '@/lib/substrate/sdk/assets';
 
 import { ZeroStringValue } from '@/consts';
 
 import { ParachainAdapter, type IParachainAssetMetadata } from '../parachain';
 
-import type { CodecString } from '@sora-substrate/sdk';
-import type { Asset, RegisteredAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { CodecString } from '@/lib/substrate/sdk';
+import type { Asset, RegisteredAsset } from '@/lib/substrate/sdk/assets/types';
 
 export enum CurrencyId {
   Token = 'Token',

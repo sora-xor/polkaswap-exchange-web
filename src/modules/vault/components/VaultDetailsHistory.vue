@@ -37,7 +37,7 @@ import { VaultEventTypes } from '@/modules/vault/consts';
 import type { VaultEvent, VaultEventType } from '@/modules/vault/types';
 import { useWalletStore } from '@/stores/wallet';
 
-import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
 import WalletComponentHistoryPagination from '@/lib/soraneo-wallet/src/components/HistoryPagination.vue';
 
 const HistoryPagination = WalletComponentHistoryPagination;

@@ -58,12 +58,14 @@
         </template>
         <template v-slot="{ row }">
           <formatted-amount
+            v-if="row.priceUSDFormatted != null"
             is-fiat-value
             fiat-default-rounding
             :font-weight-rate="FontWeightRate.MEDIUM"
             :value="row.priceUSDFormatted"
             class="explore-table-item-price"
           ></formatted-amount>
+          <market-unavailable v-else />
         </template>
       </s-table-column>
       <!-- APY -->
@@ -134,13 +136,16 @@
         </template>
         <template v-slot="{ row }">
           <formatted-amount
+            v-if="row.tvlFormatted != null"
             is-fiat-value
             :font-weight-rate="FontWeightRate.MEDIUM"
+            fiat-default-rounding
             :value="row.tvlFormatted.amount"
             class="explore-table-item-price explore-table-item-amount"
           >
             {{ row.tvlFormatted.suffix }}
           </formatted-amount>
+          <market-unavailable v-else />
         </template>
       </s-table-column>
     </s-table>
@@ -158,7 +163,7 @@
 </template>
 
 <script lang="ts" setup>
-import { KnownAssets } from '@sora-substrate/sdk/build/assets/consts';
+import { KnownAssets } from '@/lib/substrate/sdk/assets/consts';
 import { computed, ref, watch } from 'vue';
 
 import { SortDirection } from '@soramitsu-ui/ui/types';
@@ -179,12 +184,13 @@ import { usePoolStore } from '@/stores/pool';
 import { useSettingsStore } from '@/stores/settings';
 import { useWalletStore } from '@/stores/wallet';
 
-import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
+import type { AccountLiquidity } from '@/lib/substrate/sdk/poolXyk/types';
 import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
 import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 import WalletComponentHistoryPagination from '@/lib/soraneo-wallet/src/components/HistoryPagination.vue';
 import PairTokenLogo from '@/components/shared/PairTokenLogo.vue';
 import SortButton from '@/components/shared/Button/SortButton.vue';
+import MarketUnavailable from '@/shared/ui/MarketUnavailable.vue';
 
 defineOptions({
   name: 'ExplorePoolsPage',

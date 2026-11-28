@@ -32,8 +32,8 @@
 </template>
 
 <script setup lang="ts">
-import { Operation, type CodecString, type NetworkFeesObject } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { Operation, type CodecString, type NetworkFeesObject } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import TransactionDetails from '@/components/shared/TransactionDetails.vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -43,7 +43,7 @@ import { usePoolStore } from '@/stores/pool';
 import { useSettingsStore } from '@/stores/settings';
 
 import type { Nullable } from '@/types/common';
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 
 const props = withDefaults(

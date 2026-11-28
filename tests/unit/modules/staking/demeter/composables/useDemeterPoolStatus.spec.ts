@@ -1,4 +1,4 @@
-import { FPNumber, Operation } from '@sora-substrate/sdk';
+import { FPNumber, Operation } from '@/lib/substrate/sdk';
 import { createPinia, setActivePinia } from 'pinia';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -34,7 +34,7 @@ vi.mock('@/stores/assets', () => ({
   useAssetsStore: () => shared.assetsStore,
 }));
 
-vi.mock('@sora-substrate/sdk/build/assets/consts', () => import('@stubs/sdk-assets-consts'));
+vi.mock('@/lib/substrate/sdk/assets/consts', () => import('@stubs/sdk-assets-consts'));
 
 vi.mock('@/utils', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/utils')>();

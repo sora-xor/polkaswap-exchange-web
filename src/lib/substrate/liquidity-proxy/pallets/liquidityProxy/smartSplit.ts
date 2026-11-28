@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import { LiquiditySourceTypes, Consts, Errors, SwapVariant } from '../../consts';
 import { LiquidityAggregator } from './liquidityAggregator/liquidityAggregator';
 import { LiquidityRegistry } from './liquidityRegistry';

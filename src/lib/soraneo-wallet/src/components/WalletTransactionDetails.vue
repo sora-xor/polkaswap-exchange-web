@@ -136,8 +136,8 @@
 </template>
 
 <script lang="ts">
-import { TransactionStatus, Operation, FPNumber } from '@sora-substrate/sdk';
-import { KnownSymbols, XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { TransactionStatus, Operation, FPNumber } from '@/lib/substrate/sdk';
+import { KnownSymbols, XOR } from '@/lib/substrate/sdk/assets/consts';
 import dayjs from 'dayjs';
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
 
@@ -155,7 +155,7 @@ import TransactionHashView from './TransactionHashView.vue';
 import AdarTxDetails from './WalletAdarTxDetails.vue';
 
 import type { PolkadotJsAccount, AssetsTable } from '../types/common';
-import type { HistoryItem } from '@sora-substrate/sdk';
+import type { HistoryItem } from '@/lib/substrate/sdk';
 
 export default {
   components: {

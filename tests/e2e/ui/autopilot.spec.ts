@@ -88,7 +88,6 @@ test.beforeAll(async () => {
     globalName: 'AutopilotFixture',
     alias: {
       '@': path.resolve('src'),
-      '@sora-substrate/math': path.resolve('src/lib/substrate/math/index.ts'),
       vue: path.resolve('node_modules/vue/dist/vue.runtime.esm-bundler.js'),
     },
     define: {

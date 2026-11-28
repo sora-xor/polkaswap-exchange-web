@@ -1,4 +1,4 @@
-import { Operation } from '@sora-substrate/sdk';
+import { Operation } from '@/lib/substrate/sdk';
 import { describe, expect, it, vi } from 'vitest';
 import { ref } from 'vue';
 

@@ -1,7 +1,7 @@
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import { defineStore, type Pinia } from 'pinia';
-import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
+import { BridgeNetworkType } from '@/lib/substrate/sdk/bridgeProxy/consts';
+import { SubNetworkId } from '@/lib/substrate/sdk/bridgeProxy/sub/consts';
 
 import type { AppWallet } from '@/consts';
 import { api as soraApi } from '@/lib/soraneo-wallet/src/api';
@@ -24,9 +24,9 @@ import {
   getProvidersList,
 } from '@/utils/connection/evm/providers';
 
-import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
-import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
-import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
+import type { EvmNetwork } from '@/lib/substrate/sdk/bridgeProxy/evm/types';
+import type { SubNetwork } from '@/lib/substrate/sdk/bridgeProxy/sub/types';
+import type { BridgeNetworkId } from '@/lib/substrate/sdk/bridgeProxy/types';
 
 type ExternalNetworkSelection = {
   id: BridgeNetworkId | SubNetwork;

@@ -45,7 +45,7 @@
 <script setup lang="ts">
 import assert from 'assert';
 
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { computed } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 

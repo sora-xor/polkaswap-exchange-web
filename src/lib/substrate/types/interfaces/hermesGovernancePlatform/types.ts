@@ -1,7 +1,7 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 
 import type { Enum, Struct, Text, bool } from '@polkadot/types-codec';
-import type { AccountId, Balance, Moment } from '@sora-substrate/types/interfaces/runtime';
+import type { AccountId, Balance, Moment } from '@/lib/substrate/types/interfaces/runtime';
 
 /** @name HermesPollInfo */
 export interface HermesPollInfo extends Struct {

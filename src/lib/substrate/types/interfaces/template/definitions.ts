@@ -1,4 +1,4 @@
 import type { Definitions } from '@polkadot/types/types';
-import template from '../../../../type-definitions/src/template.ts';
+import template from '@/lib/substrate/type-definitions/template';
 
 export default template as Definitions;

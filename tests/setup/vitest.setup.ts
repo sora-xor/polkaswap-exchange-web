@@ -543,8 +543,8 @@ vi.mock('@polkadot/util-crypto', async (importOriginal) => {
     keccakAsHex: actual.keccakAsHex,
   };
 });
-vi.mock('@sora-substrate/sdk', () => import('@stubs/sora-sdk'));
-vi.mock('@sora-substrate/sdk/build/assets/consts', () => import('@stubs/sdk-assets-consts'));
+vi.mock('@/lib/substrate/sdk', () => import('@stubs/sora-sdk'));
+vi.mock('@/lib/substrate/sdk/assets/consts', () => import('@stubs/sdk-assets-consts'));
 vi.mock('@/stores/assets', () => ({
   useAssetsStore: () => ({
     assetDataByAddress: (...args: unknown[]) => {

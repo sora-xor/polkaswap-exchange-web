@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import { KnownSymbols } from '@sora-substrate/sdk/build/assets/consts';
+import { KnownSymbols } from '@/lib/substrate/sdk/assets/consts';
 import { ref } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';

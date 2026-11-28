@@ -2,7 +2,7 @@ import { computed } from 'vue';
 
 import { useOrderBookStore } from '@/stores/orderBook';
 
-import type { OrderBook, OrderBookId } from '@sora-substrate/liquidity-proxy';
+import type { OrderBook, OrderBookId } from '@/lib/substrate/liquidity-proxy';
 
 /**
  * Order book management powered by the transitional Pinia store.

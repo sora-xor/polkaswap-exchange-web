@@ -1,8 +1,8 @@
-import { PriceVariant, OrderBookStatus } from '@sora-substrate/liquidity-proxy';
-import { FPNumber, Operation } from '@sora-substrate/sdk';
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
-import type { OrderBook, OrderBookPriceVolume } from '@sora-substrate/liquidity-proxy';
+import { PriceVariant, OrderBookStatus } from '@/lib/substrate/liquidity-proxy';
+import { FPNumber, Operation } from '@/lib/substrate/sdk';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { LimitOrder } from '@/lib/substrate/sdk/orderBook/types';
+import type { OrderBook, OrderBookPriceVolume } from '@/lib/substrate/liquidity-proxy';
 import type { OrderBookStats } from '@/types/orderBook';
 import { flushPromises, mount } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';

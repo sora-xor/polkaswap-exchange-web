@@ -148,7 +148,7 @@ describe('validateRuntimeEnvConfig', () => {
 });
 
 describe('env.taira.json', () => {
-  it('preserves explicit Taira defaults while production has only its live primary', () => {
+  it('preserves explicit Taira defaults while production includes both approved nodes', () => {
     const prodConfig = JSON.parse(readFileSync(join(process.cwd(), 'public/env.json'), 'utf8')) as {
       DEFAULT_NETWORKS: unknown;
       NETWORK_TYPE: unknown;
@@ -165,7 +165,10 @@ describe('env.taira.json', () => {
       name: 'SORA Parliament Ministry of Finance #1',
       address: 'wss://ws.mof.sora.org',
     };
-    expect(prodConfig.DEFAULT_NETWORKS).toEqual([primaryNode]);
+    expect(prodConfig.DEFAULT_NETWORKS).toEqual([
+      primaryNode,
+      { chain: 'SORA', name: 'SORA Parliament Ministry of Finance #2', address: 'wss://mof2.sora.org' },
+    ]);
     expect(tairaConfig.DEFAULT_NETWORKS).toEqual([
       primaryNode,
       {

@@ -1,7 +1,7 @@
-import { FPNumber } from '@sora-substrate/math';
-import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { EvmNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/evm/consts';
-import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
+import { FPNumber } from '@/lib/substrate/math';
+import { BridgeNetworkType } from '@/lib/substrate/sdk/bridgeProxy/consts';
+import { EvmNetworkId } from '@/lib/substrate/sdk/bridgeProxy/evm/consts';
+import { SubNetworkId } from '@/lib/substrate/sdk/bridgeProxy/sub/consts';
 import { createPinia, setActivePinia } from 'pinia';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 

@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { api } from '@/lib/soraneo-wallet/src/api';
 
 import { SoraNetwork } from '@/consts';

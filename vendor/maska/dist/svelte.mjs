@@ -1,22 +1,19 @@
-import { MaskInput as i } from './maska.mjs';
-const s = /* @__PURE__ */ new WeakMap(),
-  p = (r, f = {}) => {
-    const t = r instanceof HTMLInputElement ? r : r.querySelector('input');
-    if (t == null || (t == null ? void 0 : t.type) === 'file') return;
-    let n = f;
-    return (
-      typeof n == 'string' && (n = { mask: n }),
-      s.set(t, new i(t, n)),
-      {
-        update(e) {
-          var a;
-          (typeof e == 'string' && (e = { mask: e }), (a = s.get(t)) == null || a.update(e));
-        },
-        destroy() {
-          var e;
-          (e = s.get(t)) == null || e.destroy();
-        },
-      }
-    );
+import { s as u, M as i } from "./index-ncVkAPXj.mjs";
+const r = /* @__PURE__ */ new WeakMap(), f = (n, p = {}) => {
+  const e = n instanceof HTMLInputElement ? n : n.querySelector("input");
+  if (e == null || !u.includes(e.type)) return;
+  let s = p;
+  return typeof s == "string" && (s = { mask: s }), r.set(e, new i(e, s)), {
+    update(t) {
+      var a;
+      typeof t == "string" && (t = { mask: t }), (a = r.get(e)) == null || a.update(t);
+    },
+    destroy() {
+      var t;
+      (t = r.get(e)) == null || t.destroy();
+    }
   };
-export { p as maska };
+};
+export {
+  f as maska
+};

@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import BurnDialog from '@/modules/dashboard/components/BurnDialog.vue';
-import { Operation } from '@sora-substrate/sdk';
+import { Operation } from '@/lib/substrate/sdk';
 
 const walletMocks = vi.hoisted(() => ({
   burnMock: vi.fn(),

@@ -52,8 +52,9 @@ describe('Bridge NodeIcon source', () => {
       },
     });
 
-    expect(wrapper.get('i').classes()).toContain('status--error');
-    expect(wrapper.get('i').attributes('name')).toBe('globe-16');
+    // Assert against this suite's icon stub, independent of the shared stub's HTML tag.
+    expect(wrapper.getComponent(SIconStub).classes()).toContain('status--error');
+    expect(wrapper.getComponent(SIconStub).props('name')).toBe('globe-16');
 
     statusState.value = {
       nodeAddressConnecting: 'wss://liberland',
@@ -61,8 +62,8 @@ describe('Bridge NodeIcon source', () => {
     };
     await nextTick();
 
-    expect(wrapper.get('i').classes()).toContain('status--info');
-    expect(wrapper.get('i').attributes('name')).toBe('el-icon-loading');
+    expect(wrapper.getComponent(SIconStub).classes()).toContain('status--info');
+    expect(wrapper.getComponent(SIconStub).props('name')).toBe('el-icon-loading');
 
     statusState.value = {
       nodeAddressConnecting: '',
@@ -70,7 +71,7 @@ describe('Bridge NodeIcon source', () => {
     };
     await nextTick();
 
-    expect(wrapper.get('i').classes()).toContain('status--success');
-    expect(wrapper.get('i').attributes('name')).toBe('globe-16');
+    expect(wrapper.getComponent(SIconStub).classes()).toContain('status--success');
+    expect(wrapper.getComponent(SIconStub).props('name')).toBe('globe-16');
   });
 });

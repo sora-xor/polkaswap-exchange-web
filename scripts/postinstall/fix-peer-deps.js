@@ -60,7 +60,6 @@
   const patched = [];
 
   patched.push(relaxOpenWeb3Peer(nodeModules));
-  patched.push(relaxOpenWeb3Peer(path.join(nodeModules, '@sora-substrate', 'types', 'node_modules')));
   patched.push(relaxViteSvgLoaderPeer(nodeModules));
   patched.push(markWorkspacePackagesPrivate(nodeModules, 'es-toolkit'));
   patched.push(markWorkspacePackagesPrivate(nodeModules, 'unfetch'));

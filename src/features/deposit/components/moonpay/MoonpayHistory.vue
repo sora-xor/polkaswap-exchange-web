@@ -84,7 +84,7 @@ import { getCssVariableValue } from '@/utils';
 import { MoonpayTransactionStatus, MOONPAY_WIDGET_ORIGINS, buildMoonpayTransactionDetailsUrl } from '@/utils/moonpay';
 
 import type { MoonpayTransaction, MoonpayCurrency, MoonpayCurrenciesById } from '@/utils/moonpay';
-import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
+import type { EthHistory } from '@/lib/substrate/sdk/bridgeProxy/eth/types';
 import type { Nullable } from '@/types/common';
 import FormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 import HistoryPagination from '@/lib/soraneo-wallet/src/components/HistoryPagination.vue';

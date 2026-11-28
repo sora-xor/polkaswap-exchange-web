@@ -43,6 +43,15 @@ afterAll(() => {
 });
 
 describe('check-browser helpers', () => {
+  it('does not treat the retired Migration route as an active feature gate', () => {
+    expect(checkBrowser.routeReadiness('https://polkaswap.io/#/migration')).toEqual({
+      name: 'app',
+      path: '/migration',
+      title: null,
+      selector: null,
+    });
+  });
+
   it('parses CLI arguments with key/value and flags', () => {
     const result = checkBrowser.parseArgs([
       '--cid',
@@ -1344,19 +1353,35 @@ describe('check-browser approved live RPC contract', () => {
     'https://polkaswap.io/#/bots',
     'https://polkaswap.io:443/?ipfs-sw-unregister=true#/swap',
   ])('automatically enforces approved live RPC for %s', (url) => {
-    expect(checkBrowser.resolveLiveRpcExpectation(url)).toBe('wss://ws.mof.sora.org/');
+    expect(checkBrowser.resolveLiveRpcExpectation(url)).toEqual(['wss://ws.mof.sora.org/', 'wss://mof2.sora.org/']);
   });
 
-  it.each([false, true, '', 'false', 'none', 'wss://mof2.sora.org', 'wss://ws.mof.sora.org?disable=1'])(
-    'cannot disable or override the production gate with %s',
-    (value) => {
-      expect(() => checkBrowser.resolveLiveRpcExpectation('https://polkaswap.io/', value)).toThrow(/only be/);
-    }
-  );
+  it.each([
+    false,
+    true,
+    '',
+    'false',
+    'none',
+    'wss://unknown.example',
+    'wss://ws.mof.sora.org?disable=1',
+    'wss://mof2.sora.org/archive',
+    'wss://user@mof2.sora.org',
+  ])('cannot disable the production gate or admit an unapproved endpoint with %s', (value) => {
+    expect(() => checkBrowser.resolveLiveRpcExpectation('https://polkaswap.io/', value)).toThrow(/only be/);
+  });
 
-  it('accepts only the same approved explicit gate for a local candidate and marks other checks untargeted', () => {
+  it('accepts either approved explicit gate for a local candidate and marks other checks untargeted', () => {
     expect(checkBrowser.resolveLiveRpcExpectation('http://127.0.0.1:41829/#/bots')).toBeNull();
     expect(checkBrowser.resolveLiveRpcExpectation('http://127.0.0.1:41829/#/bots', 'wss://ws.mof.sora.org')).toBe(
+      'wss://ws.mof.sora.org/'
+    );
+    expect(checkBrowser.resolveLiveRpcExpectation('http://127.0.0.1:41829/#/bots', 'wss://mof2.sora.org')).toBe(
+      'wss://mof2.sora.org/'
+    );
+    expect(checkBrowser.resolveLiveRpcExpectation('https://polkaswap.io/#/bots', 'wss://mof2.sora.org/')).toBe(
+      'wss://mof2.sora.org/'
+    );
+    expect(checkBrowser.resolveLiveRpcExpectation('https://polkaswap.io/#/bots', 'wss://ws.mof.sora.org/')).toBe(
       'wss://ws.mof.sora.org/'
     );
     expect(checkBrowser.resolveLiveRpcExpectation('https://polkaswap.io.example/#/bots')).toBeNull();
@@ -1372,6 +1397,61 @@ describe('check-browser approved live RPC contract', () => {
   ])('does not treat %s as an approved root endpoint', (url) => {
     expect(checkBrowser.normalizeLiveRpcEndpoint(url)).toBeNull();
   });
+
+  it.each(['wss://ws.mof.sora.org/', 'wss://mof2.sora.org/'])(
+    'binds footer authority to the newest proven socket for %s',
+    (selectedEndpoint) => {
+      const allowed = checkBrowser.resolveLiveRpcExpectation('https://polkaswap.io/#/wallet');
+      const otherEndpoint = allowed.find((endpoint: string) => endpoint !== selectedEndpoint);
+      const footer = { connected: true, address: selectedEndpoint, binding: 'fresh-node-popover' };
+      const socket = (endpoint: string, overrides = {}) => ({
+        endpoint,
+        closed: false,
+        sentGenesisReads: 1,
+        successfulGenesisReads: 1,
+        ...overrides,
+      });
+      expect(checkBrowser.liveRpcIssue(allowed, footer, { sockets: [socket(selectedEndpoint)] }, [])).toBeNull();
+      expect(checkBrowser.liveRpcIssue(allowed, footer, { sockets: [socket(otherEndpoint)] }, [])).toMatch(
+        /active selected/
+      );
+      expect(
+        checkBrowser.liveRpcIssue(allowed, footer, { sockets: [socket(selectedEndpoint), socket(otherEndpoint)] }, [])
+      ).toBeNull();
+      expect(
+        checkBrowser.liveRpcIssue(
+          allowed,
+          footer,
+          { sockets: [socket(selectedEndpoint, { closed: true }), socket(otherEndpoint)] },
+          []
+        )
+      ).toMatch(/active selected/);
+      expect(
+        checkBrowser.liveRpcIssue(
+          allowed,
+          footer,
+          { sockets: [socket(selectedEndpoint), socket(selectedEndpoint, { successfulGenesisReads: 0 })] },
+          []
+        )
+      ).toMatch(/active selected/);
+      expect(
+        checkBrowser.liveRpcIssue(
+          selectedEndpoint,
+          footer,
+          { sockets: [socket(selectedEndpoint), socket(otherEndpoint)] },
+          []
+        )
+      ).toMatch(/unexpected/);
+      expect(
+        checkBrowser.liveRpcIssue(
+          allowed,
+          footer,
+          { sockets: [socket(selectedEndpoint), socket('wss://unknown.example/')] },
+          []
+        )
+      ).toMatch(/unexpected/);
+    }
+  );
 
   it('keeps popup presentation within the remaining separate action budget after the click', async () => {
     const locator = createLiveRpcLocator('GO Bots', {
@@ -1432,6 +1512,11 @@ describe('check-browser approved live RPC contract', () => {
 describe('check-browser final live RPC result', () => {
   it.each([
     { scenario: 'success', pass: true },
+    { scenario: 'mof2-success', pass: true },
+    { scenario: 'approved-footer-socket-mismatch', pass: false },
+    { scenario: 'mof2-explicit-success', pass: true },
+    { scenario: 'mof2-explicit-mismatch', pass: false },
+    { scenario: 'primary-explicit-mismatch', pass: false },
     { scenario: 'http-probe-only', pass: false },
     { scenario: 'disable-flag', pass: false },
     { scenario: 'wrong-endpoint', pass: false },
@@ -1471,6 +1556,7 @@ describe('check-browser final live RPC result', () => {
     { scenario: 'untargeted', pass: true },
     { scenario: 'checkout-buy-xor', pass: true },
     { scenario: 'checkout-get-ts', pass: true },
+    { scenario: 'checkout-mof2', pass: true },
     { scenario: 'checkout-missing-layout', pass: false },
     { scenario: 'checkout-hidden-layout', pass: false },
     { scenario: 'checkout-missing-feature', pass: false },
@@ -1487,6 +1573,13 @@ describe('check-browser final live RPC result', () => {
     const handlers: Record<string, (...args: any[]) => void> = {};
     let socket!: ReturnType<typeof createLiveRpcSocket>;
     const checkoutScenario = scenario.startsWith('checkout-');
+    const mof2Selected = [
+      'mof2-success',
+      'mof2-explicit-success',
+      'primary-explicit-mismatch',
+      'approved-footer-socket-mismatch',
+      'checkout-mof2',
+    ].includes(scenario);
     const target = checkoutScenario
       ? `https://polkaswap.io/#/${scenario === 'checkout-get-ts' ? 'get-ts' : 'buy-xor'}`
       : scenario === 'local-explicit' || scenario === 'untargeted'
@@ -1522,8 +1615,10 @@ describe('check-browser final live RPC result', () => {
         scenario === 'footer-no-address'
           ? null
           : scenario === 'footer-custom'
-            ? 'wss://mof2.sora.org'
-            : 'wss://ws.mof.sora.org',
+            ? 'wss://unknown.example'
+            : mof2Selected
+              ? 'wss://mof2.sora.org'
+              : 'wss://ws.mof.sora.org',
       preexistingTooltip: scenario === 'footer-preexisting-tooltip',
       popupCount: scenario === 'footer-ambiguous-popup' ? 2 : 1,
       get connected() {
@@ -1548,7 +1643,11 @@ describe('check-browser final live RPC result', () => {
       goto: vi.fn(async () => {
         if (!['http-probe-only', 'disable-flag', 'untargeted'].includes(scenario)) {
           socket = createLiveRpcSocket(
-            ['wrong-endpoint', 'checkout-wrong-endpoint'].includes(scenario) ? 'wss://mof2.sora.org' : undefined
+            ['wrong-endpoint', 'checkout-wrong-endpoint'].includes(scenario)
+              ? 'wss://unknown.example'
+              : mof2Selected && scenario !== 'approved-footer-socket-mismatch'
+                ? 'wss://mof2.sora.org'
+                : undefined
           );
           handlers.websocket(socket);
           if (['wrong-id', 'rpc-error', 'non-mainnet', 'cleanup-late-response'].includes(scenario)) {
@@ -1632,7 +1731,10 @@ describe('check-browser final live RPC result', () => {
       '--settle-ms=0',
       '--screenshot-base64',
     ];
-    if (scenario === 'local-explicit') process.argv.push('--expected-live-rpc=wss://ws.mof.sora.org');
+    if (scenario === 'local-explicit' || scenario === 'primary-explicit-mismatch')
+      process.argv.push('--expected-live-rpc=wss://ws.mof.sora.org');
+    if (scenario === 'mof2-explicit-success' || scenario === 'mof2-explicit-mismatch')
+      process.argv.push('--expected-live-rpc=wss://mof2.sora.org');
     if (scenario === 'disable-flag') process.argv.push('--no-expected-live-rpc');
     process.exitCode = 0;
     try {

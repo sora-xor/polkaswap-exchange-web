@@ -1,5 +1,5 @@
-import { FPNumber } from '@sora-substrate/math';
-import { KnownAssets, NativeAssets } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber } from '@/lib/substrate/math';
+import { KnownAssets, NativeAssets } from '@/lib/substrate/sdk/assets/consts';
 
 import { resolveGlobalPinia } from '@/plugins/pinia';
 import { useWalletStore } from '@/stores/wallet';
@@ -15,13 +15,16 @@ import {
 } from '../consts';
 import { Currencies } from '../consts/currencies';
 import { FilterOptions } from '../types/common';
+import { beginTransactionSignRequest } from './transactionSignRequest';
+
+export { confirmTransactionSign, getTransactionSignRequest } from './transactionSignRequest';
 
 import type { AccountIdentity } from '../types/common';
 import type { Currency } from '../types/currency';
 import type { RewardsAmountHeaderItem } from '../types/rewards';
 import type { WithKeyring, WithConnectionApi } from '@/lib/substrate/sdk/apiAccount';
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
-import type { RewardInfo, RewardsInfo } from '@sora-substrate/sdk/build/rewards/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
+import type { RewardInfo, RewardsInfo } from '@/lib/substrate/sdk/rewards/types';
 
 /**
  * Custom error type that serializes metadata into the message payload so Vuex
@@ -384,6 +387,7 @@ const resolveTransactionSignWalletState = (): TransactionSignWalletState | null 
   }
 };
 
+/** Waits for explicit confirmation of the captured local signing request. */
 export async function beforeTransactionSign(
   store: TransactionSignStore,
   signerApi: WithKeyring,
@@ -408,19 +412,25 @@ export async function beforeTransactionSign(
       ? visibilityTarget
       : createMutationVisibilityController(store, visibilityTarget);
 
-    controller.setVisibility(true);
-
-    await new Promise<void>((resolve) => {
-      const unsubscribe = controller.subscribe((visible) => {
-        if (!visible) {
-          unsubscribe();
-          resolve();
-        }
+    const request = beginTransactionSignRequest(signerApi);
+    let accepted = false;
+    let unsubscribe: VoidFunction = () => undefined;
+    try {
+      await new Promise<void>((resolve) => {
+        unsubscribe = controller.subscribe((visible) => {
+          if (!visible) resolve();
+        });
+        controller.setVisibility(true);
       });
-    });
+      request.assertConfirmed();
+      accepted = true;
+    } finally {
+      unsubscribe();
+      request.finish(accepted);
+    }
   }
 
-  if (signerApi.accountPair?.isLocked) {
+  if (!signerApi.accountPair || signerApi.accountPair.isLocked) {
     throw new Error('Cancelled');
   }
 }

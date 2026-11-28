@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { describe, expect, it } from 'vitest';
 
 import { allocateTonswapBurns, TONSWAP_START_BLOCK, TONSWAP_XOR_CAP } from '@/features/misc/lib/tonswapBurn';

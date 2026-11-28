@@ -1,4 +1,4 @@
 import type { Definitions } from '@polkadot/types/types';
-import ceresLiquidityLocker from '../../../../type-definitions/src/ceresLiquidityLocker.ts';
+import ceresLiquidityLocker from '@/lib/substrate/type-definitions/ceresLiquidityLocker';
 
 export default ceresLiquidityLocker as Definitions;

@@ -1,0 +1,236 @@
+{
+  "schema": "pi-account-creation-backend-qualification-v1",
+  "sourceCommit": "c8dd14e700fae995e80c2e928d61b6ce461ed331",
+  "sourceBase": "5f79c39816427732dbadeed45675772d29b8daf9",
+  "runtimeSha256": "4cbca62e49f111e9ff0113e1ff7640f0d5dc3845658db30d460d9439ff26403b",
+  "runtimeFiles": 303,
+  "overlayFiles": 7,
+  "privateAcceptanceSha256": "faf8a550c48fa8a6061da31892042a0b90f0a7ae9656f7b832a11695c67f08c1",
+  "privatePrefixSha256": "dc7b8cc9bbd2dc7c2d9412b7a9718dbe8edf5de9bd699a5a358505ff3160f515",
+  "privateCountChecks": {
+    "throughBlock": 28321385,
+    "coveredBlocks": 15386,
+    "creationCount": 1,
+    "affectedBlock": 28315078,
+    "affectedBlockCount": 1,
+    "affectedHourCount": 1,
+    "legacyAccountsUnavailable": true,
+    "liveContinuationVerified": true,
+    "entitlementsUnavailable": true
+  },
+  "inheritedArchiveCases": 245,
+  "inheritedIncomingCases": 370,
+  "validation": {
+    "closedBoundaryFocusedTests": 109,
+    "focusedTests": 106,
+    "fullInitial": {
+      "failed": 2,
+      "failureReason": "Two existing large tests exceeded their default five-second timeout.",
+      "passed": 4053,
+      "skipped": 99,
+      "sourceCommit": "5592d544487b00cfa3c5cafc847d48a12c297344"
+    },
+    "initialRuntimeSha256": "05e1575dc574256262faec947aaf795810b229e6b05560147f457ce58852ab3a",
+    "initialSourceCommit": "5592d544487b00cfa3c5cafc847d48a12c297344",
+    "logs": {
+      "/private/tmp/pi-account-creations-112-ops-20261111/boundary-build-v2.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "/private/tmp/pi-account-creations-112-ops-20261111/boundary-tests-v3.log": {
+        "bytes": 236,
+        "sha256": "c20ffea5f70118ec83631bc6405788c6c3c49d13cb3f8a3a27bea635c2151f14"
+      },
+      "/private/tmp/pi-account-creations-112-ops-20261111/ops-all-tests.log": {
+        "bytes": 5463,
+        "sha256": "e49db7cd38edab0d0c99dde89dc18a8d5949e9773a5da7516c984a6d3f28e4c2"
+      },
+      "/private/tmp/pi-account-creations-112-ops-20261111/ops-final-tests.log": {
+        "bytes": 5463,
+        "sha256": "b6e83e871c8d233a32ccff9a88c00662cbdfc3898360166c94192e8669774633"
+      },
+      "/private/tmp/pi-account-creations-112-ops-20261111/ops-tests.log": {
+        "bytes": 1734,
+        "sha256": "46d302696cd61926bb4517e7cd5af894470f76bfa2541f0d0947c972016bf64c"
+      },
+      "/private/tmp/pi-new-accounts-112-20261111/build.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "/private/tmp/pi-new-accounts-112-20261111/focused-tests.log": {
+        "bytes": 237,
+        "sha256": "73d47394d237391ab54b3cf32435dd14584b744992632346e762306d383c75fe"
+      },
+      "/private/tmp/pi-new-accounts-112-20261111/full-tests.log": {
+        "bytes": 2685,
+        "sha256": "775836d868517b358e5aeb6cc001db40f3ba44c54a82ae1cb4e1dca5034e90bb"
+      },
+      "/private/tmp/pi-new-accounts-112-20261111/timing-repeat.log": {
+        "bytes": 236,
+        "sha256": "4012853335546190385c7270c8177e23bdff9045fd6ee5bf46c72945678843ec"
+      }
+    },
+    "operationsTests": 31,
+    "runtimeSha256": "4cbca62e49f111e9ff0113e1ff7640f0d5dc3845658db30d460d9439ff26403b",
+    "sourceCommit": "c8dd14e700fae995e80c2e928d61b6ce461ed331",
+    "unchangedTimingRepeat": {
+      "includesBothInitialFailures": true,
+      "passed": 193,
+      "testTimeoutMilliseconds": 30000
+    }
+  },
+  "publicHandoffStatus": "Permanent #112 handoff complete; independent identity, public creation counts, unchanged protected scopes and natural timer passed",
+  "priorPrivateGenerationRetained": "/srv/services/pi-stats-recovery-20261107/account-creations-20261111/retained-generation-v1",
+  "performanceScope": "No new performance claim. Existing full Stats benchmark covers #108a/#110/#111 worker; #112 adds atomic creation markers and coverage.",
+  "firstHandoffFailure": {
+    "stage": "controller service-user ExecStartPre",
+    "cause": "Five operation receipts retained root:root 0640, unreadable by pi-indexer",
+    "serviceReadability": {
+      "checked": 30,
+      "passed": 25,
+      "failures": [
+        {
+          "path": "/srv/services/pi-stats-recovery-20261107/account-creations-20261111/ops/private-acceptance.json",
+          "ok": false,
+          "error": "[Errno 13] Permission denied: '/srv/services/pi-stats-recovery-20261107/account-creations-20261111/ops/private-acceptance.json'"
+        },
+        {
+          "path": "/srv/services/pi-stats-recovery-20261107/account-creations-20261111/ops/cutover/frozen-cursor.json",
+          "ok": false,
+          "error": "[Errno 13] Permission denied: '/srv/services/pi-stats-recovery-20261107/account-creations-20261111/ops/cutover/frozen-cursor.json'"
+        },
+        {
+          "path": "/srv/services/pi-stats-recovery-20261107/account-creations-20261111/ops/private-source-admission.json",
+          "ok": false,
+          "error": "[Errno 13] Permission denied: '/srv/services/pi-stats-recovery-20261107/account-creations-20261111/ops/private-source-admission.json'"
+        },
+        {
+          "path": "/srv/services/pi-stats-recovery-20261107/account-creations-20261111/ops/refreshed-private-cursor.json",
+          "ok": false,
+          "error": "[Errno 13] Permission denied: '/srv/services/pi-stats-recovery-20261107/account-creations-20261111/ops/refreshed-private-cursor.json'"
+        },
+        {
+          "path": "/srv/services/pi-stats-recovery-20261107/account-creations-20261111/ops/readside-v2-transition.json",
+          "ok": false,
+          "error": "[Errno 13] Permission denied: '/srv/services/pi-stats-recovery-20261107/account-creations-20261111/ops/readside-v2-transition.json'"
+        }
+      ]
+    },
+    "serviceReadabilitySha256": "0ce2604e98b90da3bd14cf6fd8149a21b8078c1d19945957216c958d9f1c609c",
+    "preflightJournalSha256": "b2feec956a5b49aa425ebdbc7b4926a55fd06e8b607f0167909fa2495096b4cb",
+    "candidateApplicationStarted": false,
+    "retryNeedsNewFrozenPrefix": true,
+    "rollbackCompletedEpoch": 1794362681
+  },
+  "retryQualification": {
+    "operationTestsPassed": 48,
+    "newPermissionAndRetryTestsPassed": 17,
+    "frozenCursorReceipt": "cutover-2/frozen-cursor.json",
+    "noApplicationRuntimeChange": true,
+    "artifacts": {
+      "admit-final-source-v2.py": {
+        "bytes": 5282,
+        "sha256": "0e7d5db2af104666d672edde046772c3ba9ce16bb99465cadc26095e766cd105"
+      },
+      "stage-final-source-v2.py": {
+        "bytes": 2941,
+        "sha256": "13d3c73b30bfaf8545227a14a633d53f2cc906fb8b5b6358fe6254efafc431bd"
+      },
+      "receipt_access_v2.py": {
+        "bytes": 4124,
+        "sha256": "323b3a75120d9c6c0356b53128c9286dbf49dac8df26878cd50bfaf2e9f3dcfd"
+      },
+      "test_final_source_v2.py": {
+        "bytes": 14156,
+        "sha256": "c26e3c9b6d0e625853da881fa5b0d5e69db825f1d0153858032a867d2472f277"
+      },
+      "ops-retry-v2-tests.log": {
+        "bytes": 147,
+        "sha256": "e93ed05282b4a181997ba3a057afc18c8cf59d39bdec50e52116bc89b869acbe"
+      }
+    },
+    "coldSource": {
+      "blocks": 15971,
+      "creations": 1,
+      "eventsReDecoded": true,
+      "independentLiveFinalityVerified": true,
+      "manifestSha256": "4ac3db4a95f428dd02340e920ef076f86094774d099c39558d2318e296090f8c",
+      "nativeAllRowsReopened": true,
+      "networkUsed": false,
+      "pages": 32,
+      "schema": "pi-account-creation-cold-readback-v1",
+      "seconds": 125.834,
+      "sourceSha256": "c3cb5acadd9b8191d66d12cd102679bed4fba0a3582c9740b2c105bd73b59dfc",
+      "through": 28321970,
+      "verifierSha256": "3025bde9a918e371d98b62819396c65f65f81817004cf0b9a23af9e033d88691"
+    }
+  },
+  "firstAttemptFinalPrefix": {
+    "manifestSha256": "8b5fee71a0a0e8a2a51be08370985352f16ab9c4292ac7654104e34a1a9aec48",
+    "sourceSha256": "a170a92a508a82e1afaea2396917d27afa583a2e3ae350dd319bd1470828e850",
+    "coldSha256": "39cf418923c64b4d67b6b46bd3aae92f026d4f78cbf932376e5cf0b2a5406e67",
+    "throughBlock": 28321803,
+    "coveredBlocks": 15804,
+    "creations": 1,
+    "frozenCursorSha256": "6d1b2b4ffb4046b91a208d72f5498dd68a31ddcd5d7e9436af24c84940f0f257"
+  },
+  "firstAttemptProfileSha256": "a6fcd99cde292d634bcf13e34247e7ecfdd2f235075f51e8a41dd02d7e785686",
+  "firstAttemptProductionConfSha256": "79a524843d9581e18ccf12941f64894726bca957c7922df3e20cfd184af1ed48",
+  "finalPrefix": {
+    "manifestSha256": "4ac3db4a95f428dd02340e920ef076f86094774d099c39558d2318e296090f8c",
+    "sourceSha256": "c3cb5acadd9b8191d66d12cd102679bed4fba0a3582c9740b2c105bd73b59dfc",
+    "coldSha256": "d16ea384d4e83ccc11c06a0e7a90a2dfb4534880adc285f071a987c94d37cab1",
+    "throughBlock": 28321970,
+    "coveredBlocks": 15971,
+    "creations": 1,
+    "frozenCursorSha256": "83e132f5fd1a9e5a0277acd254c1dd72ba32700f0f5ef7674f00fc3a9288419e"
+  },
+  "finalProfileSha256": "21736d579b96b47d6504a0647f6a78ff8f1737cdabb43387441a92a6d80d3aa8",
+  "productionConfSha256": "25a47c9380bfe4fcb24adbde571f3f27ad25996c7befd2eb2918874214527a0f",
+  "serviceAccess": {
+    "receiptSha256": "93d9ab4589d142c1904eb587154e1c39438f9754ed8e4ac7129a315a433be4b7",
+    "receipts": 30,
+    "proofArchives": 3,
+    "serviceUid": 995,
+    "serviceGid": 987,
+    "allPassed": true,
+    "authenticatedBytesUnchanged": true
+  },
+  "controller": {
+    "commit": "8142d192fb078106aebeab824d7cc73f40b61859",
+    "inventorySha256": "4e9bbc7e6b86daafab71ef811927861036de3434c45aa0741592d6affe093c24",
+    "testsPassed": 53
+  },
+  "production": {
+    "completedEpoch": 1794363968,
+    "completeReceiptSha256": "6b24c682226e66f80ed6666c2e75607f833507b291777a639d680647bfc12c6e",
+    "pid": 1786386,
+    "databaseInode": 69732827,
+    "databaseId": "928d76efeca14250869ae22c31854c11",
+    "databaseHandles": 31,
+    "nativeSha256": "d0693e3136d627f9286e8312dc14cfad6fb6ab56c055150682f8a538c86cd36f",
+    "creationPrefixSha256": "4ac3db4a95f428dd02340e920ef076f86094774d099c39558d2318e296090f8c",
+    "protectedInputsUnchanged": true,
+    "independentReadbackEpoch": 1794364021,
+    "independentReadbackSha256": "67d65a63c6281ae3875d1322c1932e3c390e9a2ac2217078f72ece05bde9da0a",
+    "indexedBlock": 28322149,
+    "workerLag": 0,
+    "workerReady": true,
+    "affectedBlockCount": 1,
+    "affectedHourCount": 1,
+    "latestObservedCount": 0,
+    "entitlementsReady": false,
+    "legacyAffectedAccountsUnavailable": true,
+    "shadowStopped": true,
+    "pendingCampaignJournalAbsent": true
+  },
+  "naturalTimer": {
+    "lastTrigger": "2026-11-11 02:26:08 UTC",
+    "active": true,
+    "serviceExitStatus": 0,
+    "selectedThroughBlock": 28191816,
+    "unchanged": true,
+    "journalSha256": "a108374cb631720bc977fd509fb68d6647ebab33ecf28e6743bae6e73c9aad57"
+  },
+  "frontendStatus": "Owned and independently verified by the parent publication task; this backend receipt does not claim a frontend release."
+}

@@ -8,7 +8,7 @@ import * as WALLET_CONSTS from './consts';
 import { initializeWallets } from './services/wallet';
 import { delay } from './util';
 
-import type { WithKeyring } from '@sora-substrate/sdk';
+import type { WithKeyring } from '@/lib/substrate/sdk';
 
 type GoogleWalletModule = typeof import('./services/google/wallet');
 type WalletConnectServicesModule = typeof import('./services/walletconnect');

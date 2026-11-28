@@ -1,10 +1,10 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { u8aToHex } from '@polkadot/util';
 import { decodeAddress } from '@polkadot/util-crypto';
 
 import solswapMarkUrl from '@/assets/img/solswap-mark.svg?url';
 
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 import type { Nullable } from '@/types/common';
 import type { XorBurn } from '@/indexer/queries/burnXor';
 
@@ -84,11 +84,27 @@ export const SOLSWAP_CURRENT_SS_PER_XOR = '50';
 export const SOLSWAP_LEGACY_SS_PER_XOR = '100';
 
 const MIN_NORMALIZABLE_ADDRESS_LENGTH = 32;
-const decimalDelimiter = FPNumber.DELIMITERS_CONFIG.decimal;
-const escapedDecimalDelimiter = decimalDelimiter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-const decimalOnlyZerosRegExp = new RegExp(`${escapedDecimalDelimiter}0+$`);
-const trailingZerosRegExp = new RegExp(`(${escapedDecimalDelimiter}\\d*?[1-9])0+$`);
-const danglingDecimalRegExp = new RegExp(`${escapedDecimalDelimiter}$`);
+type TrailingZeroPatterns = { decimalOnlyZeros: RegExp; trailingZeros: RegExp; danglingDecimal: RegExp };
+const trailingZeroPatterns = new Map<string, TrailingZeroPatterns>();
+
+/**
+ * Trailing-zero patterns for one decimal mark. The mark follows the app language, which is applied after this
+ * module loads, so it is read on every call: with the English mark kept from load time, German "1.000" lost its
+ * thousands group and read as 1.
+ */
+function getTrailingZeroPatterns(decimalDelimiter: string): TrailingZeroPatterns {
+  let patterns = trailingZeroPatterns.get(decimalDelimiter);
+  if (!patterns) {
+    const escaped = decimalDelimiter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    patterns = {
+      decimalOnlyZeros: new RegExp(`${escaped}0+$`),
+      trailingZeros: new RegExp(`(${escaped}\\d*?[1-9])0+$`),
+      danglingDecimal: new RegExp(`${escaped}$`),
+    };
+    trailingZeroPatterns.set(decimalDelimiter, patterns);
+  }
+  return patterns;
+}
 
 /**
  * Creates the supported burn campaign definitions in display order.
@@ -168,10 +184,10 @@ export const calculateBurnCountdowns = (
  * Removes trailing decimal zeroes from locale-formatted FPNumber output.
  */
 export const trimBurnTrailingZeros = (value: string): string => {
-  return value
-    .replace(decimalOnlyZerosRegExp, '')
-    .replace(trailingZerosRegExp, '$1')
-    .replace(danglingDecimalRegExp, '');
+  const { decimalOnlyZeros, trailingZeros, danglingDecimal } = getTrailingZeroPatterns(
+    FPNumber.DELIMITERS_CONFIG.decimal
+  );
+  return value.replace(decimalOnlyZeros, '').replace(trailingZeros, '$1').replace(danglingDecimal, '');
 };
 
 /**
@@ -228,12 +244,26 @@ export const isSameSoraAddress = (left: string, right: string): boolean => {
 export const dedupeBurnEntries = (items: BurnForStats[]): BurnForStats[] => {
   const seen = new Map<string, BurnForStats>();
   const result: BurnForStats[] = [];
+  const canonicalTransactions = new Set(items.filter((item) => item.receiptId).map((item) => item.txHash));
 
   for (const item of items) {
-    const key = item.txHash ? `tx:${item.txHash}` : `${item.address}:${item.blockHeight}:${item.amount.toString()}`;
+    if (!item.receiptId && item.txHash && canonicalTransactions.has(item.txHash)) continue;
+    const key =
+      item.receiptId ??
+      (item.txHash ? `tx:${item.txHash}` : `${item.address}:${item.blockHeight}:${item.amount.toString()}`);
     const existing = seen.get(key);
 
     if (existing) {
+      if (
+        item.receiptId &&
+        (existing.address !== item.address ||
+          existing.blockHeight !== item.blockHeight ||
+          !existing.amount.eq(item.amount) ||
+          existing.claimOwner !== item.claimOwner ||
+          existing.claimStatus !== item.claimStatus)
+      ) {
+        throw new Error('Conflicting canonical burn receipt');
+      }
       existing.nexusRecipient ??= item.nexusRecipient;
       existing.campaign ??= item.campaign;
       existing.extrinsicIndex ??= item.extrinsicIndex;
@@ -306,7 +336,7 @@ export const getReservationAmountsForBurn = (
   const { amount, blockHeight } = burn;
 
   // TS burns belong solely to TONSWAP and must not reserve SS or Nexus XOR.
-  if (burn.campaign === 'tonswap') return null;
+  if (burn.campaign === 'tonswap' || burn.claimStatus === 'extinguished') return null;
   if (!amount.gte(getMinimumBurnedForBlock(campaign, blockHeight))) return null;
 
   return {
@@ -320,7 +350,8 @@ export const getReservationAmountsForBurn = (
  */
 export const aggregateBurnStatsByAddress = (campaign: Campaign, burns: BurnForStats[]): BurnStatsByAddress => {
   return burns.reduce<BurnStatsByAddress>((acc, burn) => {
-    const { address: burnAddress, amount } = burn;
+    const { amount } = burn;
+    const burnAddress = burn.claimOwner ?? burn.address;
     const reservationAmounts = getReservationAmountsForBurn(campaign, burn);
 
     if (!reservationAmounts) return acc;
@@ -391,21 +422,22 @@ export const calculateBurnCampaignStatistics = ({
     if (!accountAddress) continue;
 
     campaignAccountBurns.forEach((burn) => {
-      const { address: burnAddress, amount, blockHeight, txHash } = burn;
+      const { amount, blockHeight, txHash } = burn;
+      const burnAddress = burn.claimOwner ?? burn.address;
       const reservationAmounts = getReservationAmountsForBurn(campaign, burn);
 
       if (!txHash || !reservationAmounts || !isSameSoraAddress(burnAddress, accountAddress)) return;
 
-      accountClaimRows[campaign.id].push(
-        createClaimRow(
-          blockHeight,
-          amount,
-          reservationAmounts.reserved,
-          reservationAmounts.nexus,
-          txHash,
-          'displayBlockHeight' in burn ? burn.displayBlockHeight : blockHeight
-        )
+      const row = createClaimRow(
+        blockHeight,
+        amount,
+        reservationAmounts.reserved,
+        reservationAmounts.nexus,
+        txHash,
+        'displayBlockHeight' in burn ? burn.displayBlockHeight : blockHeight
       );
+      row.id = burn.receiptId ?? row.id;
+      accountClaimRows[campaign.id].push(row);
     });
 
     accountClaimRows[campaign.id].sort(

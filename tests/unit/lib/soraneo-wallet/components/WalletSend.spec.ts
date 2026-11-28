@@ -1,8 +1,8 @@
-import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber, Operation } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { defineComponent, ref } from 'vue';
+import { defineComponent, reactive, ref } from 'vue';
 
 import { mountSetup } from '@stubs/mountSetup';
 import SFloatInput from '@/lib/soramitsu-ui/components/Input/SFloatInput.vue';
@@ -10,6 +10,7 @@ import SFloatInput from '@/lib/soramitsu-ui/components/Input/SFloatInput.vue';
 const isXorSufficientForNextTx = vi.hoisted(() => vi.fn(() => false));
 const navigate = vi.hoisted(() => vi.fn());
 const currentRouteParams = vi.hoisted(() => ({ value: {} as Record<string, unknown> }));
+const networkFees = ref({ Transfer: '0' });
 const walletStoreMock = vi.hoisted(() => ({
   accountAssets: [] as Array<Record<string, unknown>>,
   isConfirmTxDialogDisabled: false,
@@ -72,7 +73,7 @@ vi.mock('@/lib/soraneo-wallet/src/composables/useCopyAddress', () => ({
 vi.mock('@/lib/soraneo-wallet/src/composables/useNetworkFeeWarning', () => ({
   useNetworkFeeWarning: () => ({
     allowFeePopup: ref(true),
-    networkFees: ref({ Transfer: '0' }),
+    networkFees,
     isXorSufficientForNextTx,
   }),
 }));
@@ -129,6 +130,7 @@ describe('Wallet WalletSend', () => {
 
     currentRouteParams.value = { asset: xorAsset };
     walletStoreMock.accountAssets = [xorAsset];
+    networkFees.value = { Transfer: '0' };
     walletStoreMock.isConfirmTxDialogDisabled = false;
     walletStoreMock.transfer.mockClear();
     walletStoreMock.vestedTransfer.mockClear();
@@ -184,6 +186,107 @@ describe('Wallet WalletSend', () => {
     state.amount.value = '-0.5';
 
     expect(state.sendButtonDisabled.value).toBe(true);
+  });
+
+  it('sends XOR MAX with enough remaining balance for the real sender nonce length fee', async () => {
+    networkFees.value.Transfer = '100018412589707326';
+    const actualFee = FPNumber.fromCodecValue('100018812589707326');
+    walletStoreMock.transfer.mockImplementationOnce(async ({ amount }: { amount: string }) => {
+      if (FPNumber.gt(new FPNumber(amount).add(actualFee), FPNumber.ONE)) {
+        throw new Error('Insufficient balance for the signed transfer');
+      }
+    });
+    const { state } = mountSetup(WalletSend as any, {}, { emit: vi.fn() });
+    state.address.value = 'cnRXua6zs8TaE87BQFL6uWVbT2g6GXsUjwk6PTvL6UHcHDCvo';
+
+    await state.handleMaxClick();
+    expect(state.amount.value).toBe('0.899980587410292674');
+    await state.handleConfirm();
+
+    expect(walletStoreMock.transfer).toHaveBeenCalledWith({
+      to: state.address.value,
+      amount: '0.899980587410292674',
+    });
+  });
+
+  it('enables XOR MAX when a transfer fee arrives after mount', async () => {
+    const { state } = mountSetup(WalletSend as any, {}, { emit: vi.fn() });
+    expect(state.isMaxButtonAvailable.value).toBe(false);
+
+    networkFees.value.Transfer = '100000000000000000';
+
+    expect(state.fee.value.toString()).toBe('0.1');
+    expect(state.isMaxButtonAvailable.value).toBe(true);
+    await state.handleMaxClick();
+    expect(state.amount.value).toBe('0.899999');
+  });
+
+  it('updates a selected XOR MAX when the cached transfer fee changes', async () => {
+    networkFees.value.Transfer = '100000000000000000';
+    const { state } = mountSetup(WalletSend as any, {}, { emit: vi.fn() });
+    await state.handleMaxClick();
+
+    networkFees.value = { Transfer: '200000000000000000' };
+
+    expect(state.fee.value.toString()).toBe('0.2');
+    expect(state.amount.value).toBe('0.799999');
+  });
+
+  it('follows transferable balance changes only while editing a selected MAX', async () => {
+    networkFees.value.Transfer = '100000000000000000';
+    const xorAsset = reactive(createAsset(XOR.address, 'XOR'));
+    currentRouteParams.value = { asset: xorAsset };
+    walletStoreMock.accountAssets = [xorAsset];
+    const { state } = mountSetup(WalletSend as any, {}, { emit: vi.fn() });
+    await state.handleMaxClick();
+
+    xorAsset.balance.transferable = '2000000000000000000';
+    expect(state.amount.value).toBe('1.899999');
+
+    state.step.value = 3;
+    xorAsset.balance.transferable = '3000000000000000000';
+    expect(state.amount.value).toBe('1.899999');
+  });
+
+  it('preserves manual edits after MAX when the cached transfer fee changes', async () => {
+    networkFees.value.Transfer = '100000000000000000';
+    const { state } = mountSetup(WalletSend as any, {}, { emit: vi.fn() });
+    await state.handleMaxClick();
+    state.amount.value = '0.5';
+    state.handleAmountInput();
+
+    networkFees.value.Transfer = '200000000000000000';
+
+    expect(state.fee.value.toString()).toBe('0.2');
+    expect(state.amount.value).toBe('0.5');
+  });
+
+  it('preserves the reviewed MAX amount until returning to the edit step', async () => {
+    networkFees.value.Transfer = '100000000000000000';
+    const { state } = mountSetup(WalletSend as any, {}, { emit: vi.fn() });
+    await state.handleMaxClick();
+    state.step.value = 3;
+
+    networkFees.value.Transfer = '200000000000000000';
+
+    expect(state.amount.value).toBe('0.899999');
+    state.handleBack();
+    expect(state.amount.value).toBe('0.799999');
+  });
+
+  it('does not overwrite a vested-transfer fee when the ordinary transfer fee changes', () => {
+    const daiAsset = createAsset('0xdai', 'DAI');
+    currentRouteParams.value = { asset: daiAsset };
+    walletStoreMock.accountAssets = [daiAsset];
+    const { state } = mountSetup(WalletSend as any, {}, { emit: vi.fn() });
+    state.withVesting.value = true;
+    state.fee.value = new FPNumber('0.3');
+
+    networkFees.value.Transfer = '200000000000000000';
+
+    expect(state.fee.value.toString()).toBe('0.3');
+    state.withVesting.value = false;
+    expect(state.fee.value.toString()).toBe('0.2');
   });
 
   it.each(['-1', '101', 'NaN', 'Infinity'])(

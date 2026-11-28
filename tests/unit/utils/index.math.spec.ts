@@ -13,7 +13,7 @@ const { getExplorerLinksMock } = vi.hoisted(() => ({
   getExplorerLinksMock: vi.fn(),
 }));
 
-vi.mock('@sora-substrate/sdk', () => {
+vi.mock('@/lib/substrate/sdk', () => {
   class MockFPNumber {
     static DEFAULT_PRECISION = 18;
     static ZERO = new MockFPNumber(0);
@@ -112,13 +112,13 @@ vi.mock('@sora-substrate/sdk', () => {
     },
   };
 });
-vi.mock('@sora-substrate/math', async () => {
-  const { FPNumber } = await import('@sora-substrate/sdk');
+vi.mock('@/lib/substrate/math', async () => {
+  const { FPNumber } = await import('@/lib/substrate/sdk');
 
   return { FPNumber };
 });
-vi.mock('@sora-substrate/sdk/build/assets', () => ({ isNativeAsset: () => false }));
-vi.mock('@sora-substrate/sdk/build/assets/consts', () => ({
+vi.mock('@/lib/substrate/sdk/assets', () => ({ isNativeAsset: () => false }));
+vi.mock('@/lib/substrate/sdk/assets/consts', () => ({
   XOR: { address: 'xor' },
   XSTUSD: { address: 'xstusd' },
   KUSD: { address: 'kusd' },
@@ -271,7 +271,7 @@ let FPNumber: any;
 
 beforeAll(async () => {
   const utils = await import('@/utils');
-  FPNumber = (await import('@sora-substrate/math')).FPNumber;
+  FPNumber = (await import('@/lib/substrate/math')).FPNumber;
   getMaxBalance = utils.getMaxBalance;
   getMaxValue = utils.getMaxValue;
   isMaxButtonAvailable = utils.isMaxButtonAvailable;

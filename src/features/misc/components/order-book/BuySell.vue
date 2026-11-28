@@ -22,13 +22,15 @@
             <div class="order-book-pair-data-item">
               <span>{{ t('priceText') }}</span>
               <span class="order-book-pair-data-item__value order-book-fiat">
-                <formatted-amount :value="orderBookPrice" />
+                <formatted-amount v-if="orderBookPrice != null" :value="orderBookPrice" />
+                <market-unavailable v-else />
               </span>
             </div>
             <div class="order-book-pair-data-item">
               <span>{{ t('orderBook.change') }}</span>
               <span class="order-book-pair-data-item__value">
-                <price-change :value="orderBookPriceChange" />
+                <price-change v-if="orderBookPriceChange != null" :value="orderBookPriceChange" />
+                <market-unavailable v-else />
               </span>
             </div>
             <div class="order-book-pair-data-item">
@@ -186,10 +188,11 @@
 </template>
 
 <script setup lang="ts">
-import { PriceVariant, OrderBookStatus } from '@sora-substrate/liquidity-proxy';
-import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { DexId } from '@sora-substrate/sdk/build/dex/consts';
+import MarketUnavailable from '@/shared/ui/MarketUnavailable.vue';
+import { PriceVariant, OrderBookStatus } from '@/lib/substrate/liquidity-proxy';
+import { LiquiditySourceTypes } from '@/lib/substrate/liquidity-proxy/consts';
+import { FPNumber, Operation } from '@/lib/substrate/sdk';
+import { DexId } from '@/lib/substrate/sdk/dex/consts';
 import PlaceConfirm from '@/features/misc/components/order-book/Dialogs/PlaceOrder.vue';
 import PairListPopover from '@/features/misc/components/order-book/Popovers/PairListPopover.vue';
 import PlaceTransactionDetails from '@/features/misc/components/order-book/TransactionDetails.vue';
@@ -236,10 +239,10 @@ import {
 } from '@/utils';
 import { getBookDecimals, MAX_ORDERS_PER_SIDE, MAX_ORDERS_PER_USER } from '@/utils/orderBook';
 
-import type { OrderBook, OrderBookPriceVolume } from '@sora-substrate/liquidity-proxy';
-import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
+import type { OrderBook, OrderBookPriceVolume } from '@/lib/substrate/liquidity-proxy';
+import type { CodecString, NetworkFeesObject } from '@/lib/substrate/sdk';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { LimitOrder } from '@/lib/substrate/sdk/orderBook/types';
 import type { Subscription } from 'rxjs';
 
 const {
@@ -423,12 +426,11 @@ const isZeroPrice = computed(() => asZeroValue(quoteValue.value));
 const hasZeroAmount = computed(() => isZeroAmount.value || isZeroPrice.value);
 
 const orderBookPrice = computed(() => {
-  const price = orderBookStats.value?.price ?? FPNumber.ZERO;
-  const decimals = getBookDecimals(currentOrderBook.value);
-  return price.dp(decimals).toLocaleString();
+  const price = orderBookStats.value?.price;
+  return price?.toLocaleString(getBookDecimals(currentOrderBook.value)) ?? null;
 });
 
-const orderBookPriceChange = computed(() => orderBookStats.value?.priceChange ?? FPNumber.ZERO);
+const orderBookPriceChange = computed(() => (orderBookStats.value?.price ? orderBookStats.value.priceChange : null));
 const orderBookVolume = computed(() => (orderBookStats.value?.volume ?? FPNumber.ZERO).toLocaleString());
 const marketOptionDisabled = computed(() => orderBookStatus.value === OrderBookStatus.PlaceAndCancel);
 

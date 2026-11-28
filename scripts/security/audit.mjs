@@ -10,7 +10,7 @@ const REPOSITORY_ROOT = fileURLToPath(new URL('../../', import.meta.url));
  * Commands use argument arrays and the checked-in Yarn release. Any finding,
  * timeout, or process error makes the aggregate result nonzero.
  * @param {{ argv?: string[], root?: string, runCommand?: typeof spawnSync, stdout?: Pick<NodeJS.WriteStream, 'write'>, stderr?: Pick<NodeJS.WriteStream, 'write'> }} options
- * @returns {number} Zero only when all three audit commands succeed.
+ * @returns {number} Zero only when every audit command succeeds.
  */
 export function runSecurityAuditCli({
   argv = process.argv.slice(2),
@@ -20,7 +20,9 @@ export function runSecurityAuditCli({
   stderr = process.stderr,
 } = {}) {
   if (argv.length === 1 && argv[0] === '--help') {
-    stdout.write('Usage: yarn security:audit\nRuns the Yarn, copied vendor, and standalone UCAN audits.\n');
+    stdout.write(
+      'Usage: yarn security:audit\nRuns the Yarn, copied vendor, standalone UCAN, and Picomatch upstream audits.\n'
+    );
     return 0;
   }
   if (argv.length) {
@@ -31,7 +33,7 @@ export function runSecurityAuditCli({
     {
       name: 'Application Yarn dependencies',
       command: process.execPath,
-      args: [join(root, '.yarn/releases/yarn-4.10.3.cjs'), 'npm', 'audit', '--all', '--recursive', '--no-deprecations'],
+      args: [join(root, '.yarn/releases/yarn-4.18.1.cjs'), 'npm', 'audit', '--all', '--recursive', '--no-deprecations'],
     },
     {
       name: 'Copied vendor packages',
@@ -42,6 +44,11 @@ export function runSecurityAuditCli({
       name: 'Standalone UCAN dependencies',
       command: 'npm',
       args: ['audit', '--package-lock-only', '--prefix', join(root, 'scripts/ucan')],
+    },
+    {
+      name: 'Upstream Picomatch advisories for the installed fork',
+      command: process.execPath,
+      args: [join(root, 'scripts/security/audit-picomatch.mjs')],
     },
   ];
   let failed = false;

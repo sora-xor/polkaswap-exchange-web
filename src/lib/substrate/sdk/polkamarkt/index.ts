@@ -1,5 +1,5 @@
 import { assert, stringToU8a } from '@polkadot/util';
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 
 import { KUSD } from '../assets/consts';
 import { Messages } from '../logger';
@@ -7,7 +7,7 @@ import { Operation, TransactionStatus } from '../types';
 
 import type { Api } from '../api';
 import type { HistoryItem } from '../types';
-import type { CodecString } from '@sora-substrate/math';
+import type { CodecString } from '@/lib/substrate/math';
 import type { SubmittableExtrinsic } from '@polkadot/api-base/types';
 import type {
   BuyQuote,

@@ -1,24 +1,17 @@
 /*!
- * focus-trap 7.6.5
- * @license MIT, https://github.com/focus-trap/focus-trap/blob/master/LICENSE
- */
+* focus-trap 7.8.0
+* @license MIT, https://github.com/focus-trap/focus-trap/blob/master/LICENSE
+*/
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined'
-    ? factory(exports, require('tabbable'))
-    : typeof define === 'function' && define.amd
-      ? define(['exports', 'tabbable'], factory)
-      : ((global = typeof globalThis !== 'undefined' ? globalThis : global || self),
-        (function () {
-          var current = global.focusTrap;
-          var exports = (global.focusTrap = {});
-          factory(exports, global.tabbable);
-          exports.noConflict = function () {
-            global.focusTrap = current;
-            return exports;
-          };
-        })());
-})(this, function (exports, tabbable) {
-  'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('tabbable')) :
+  typeof define === 'function' && define.amd ? define(['exports', 'tabbable'], factory) :
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, (function () {
+    var current = global.focusTrap;
+    var exports = global.focusTrap = {};
+    factory(exports, global.tabbable);
+    exports.noConflict = function () { global.focusTrap = current; return exports; };
+  })());
+})(this, (function (exports, tabbable) { 'use strict';
 
   function _arrayLikeToArray(r, a) {
     (null == a || a > r.length) && (a = r.length);
@@ -28,51 +21,86 @@
   function _arrayWithoutHoles(r) {
     if (Array.isArray(r)) return _arrayLikeToArray(r);
   }
+  function _createForOfIteratorHelper(r, e) {
+    var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
+    if (!t) {
+      if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e) {
+        t && (r = t);
+        var n = 0,
+          F = function () {};
+        return {
+          s: F,
+          n: function () {
+            return n >= r.length ? {
+              done: true
+            } : {
+              done: false,
+              value: r[n++]
+            };
+          },
+          e: function (r) {
+            throw r;
+          },
+          f: F
+        };
+      }
+      throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+    }
+    var o,
+      a = true,
+      u = false;
+    return {
+      s: function () {
+        t = t.call(r);
+      },
+      n: function () {
+        var r = t.next();
+        return a = r.done, r;
+      },
+      e: function (r) {
+        u = true, o = r;
+      },
+      f: function () {
+        try {
+          a || null == t.return || t.return();
+        } finally {
+          if (u) throw o;
+        }
+      }
+    };
+  }
   function _defineProperty(e, r, t) {
-    return (
-      (r = _toPropertyKey(r)) in e
-        ? Object.defineProperty(e, r, {
-            value: t,
-            enumerable: true,
-            configurable: true,
-            writable: true,
-          })
-        : (e[r] = t),
-      e
-    );
+    return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, {
+      value: t,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    }) : e[r] = t, e;
   }
   function _iterableToArray(r) {
-    if (('undefined' != typeof Symbol && null != r[Symbol.iterator]) || null != r['@@iterator']) return Array.from(r);
+    if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r);
   }
   function _nonIterableSpread() {
-    throw new TypeError(
-      'Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.'
-    );
+    throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
   }
   function ownKeys(e, r) {
     var t = Object.keys(e);
     if (Object.getOwnPropertySymbols) {
       var o = Object.getOwnPropertySymbols(e);
-      (r &&
-        (o = o.filter(function (r) {
-          return Object.getOwnPropertyDescriptor(e, r).enumerable;
-        })),
-        t.push.apply(t, o));
+      r && (o = o.filter(function (r) {
+        return Object.getOwnPropertyDescriptor(e, r).enumerable;
+      })), t.push.apply(t, o);
     }
     return t;
   }
   function _objectSpread2(e) {
     for (var r = 1; r < arguments.length; r++) {
       var t = null != arguments[r] ? arguments[r] : {};
-      r % 2
-        ? ownKeys(Object(t), true).forEach(function (r) {
-            _defineProperty(e, r, t[r]);
-          })
-        : Object.getOwnPropertyDescriptors
-          ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t))
-          : ownKeys(Object(t)).forEach(function (r) {
-              Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
-            });
+      r % 2 ? ownKeys(Object(t), true).forEach(function (r) {
+        _defineProperty(e, r, t[r]);
+      }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) {
+        Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
+      });
     }
     return e;
   }
@@ -80,41 +108,40 @@
     return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread();
   }
   function _toPrimitive(t, r) {
-    if ('object' != typeof t || !t) return t;
+    if ("object" != typeof t || !t) return t;
     var e = t[Symbol.toPrimitive];
     if (void 0 !== e) {
       var i = e.call(t, r);
-      if ('object' != typeof i) return i;
-      throw new TypeError('@@toPrimitive must return a primitive value.');
+      if ("object" != typeof i) return i;
+      throw new TypeError("@@toPrimitive must return a primitive value.");
     }
-    return ('string' === r ? String : Number)(t);
+    return ("string" === r ? String : Number)(t);
   }
   function _toPropertyKey(t) {
-    var i = _toPrimitive(t, 'string');
-    return 'symbol' == typeof i ? i : i + '';
+    var i = _toPrimitive(t, "string");
+    return "symbol" == typeof i ? i : i + "";
   }
   function _unsupportedIterableToArray(r, a) {
     if (r) {
-      if ('string' == typeof r) return _arrayLikeToArray(r, a);
+      if ("string" == typeof r) return _arrayLikeToArray(r, a);
       var t = {}.toString.call(r).slice(8, -1);
-      return (
-        'Object' === t && r.constructor && (t = r.constructor.name),
-        'Map' === t || 'Set' === t
-          ? Array.from(r)
-          : 'Arguments' === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t)
-            ? _arrayLikeToArray(r, a)
-            : void 0
-      );
+      return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0;
     }
   }
 
   var activeFocusTraps = {
+    // Returns the trap from the top of the stack.
+    getActiveTrap: function getActiveTrap(trapStack) {
+      if ((trapStack === null || trapStack === void 0 ? void 0 : trapStack.length) > 0) {
+        return trapStack[trapStack.length - 1];
+      }
+      return null;
+    },
+    // Pauses the currently active trap, then adds a new trap to the stack.
     activateTrap: function activateTrap(trapStack, trap) {
-      if (trapStack.length > 0) {
-        var activeTrap = trapStack[trapStack.length - 1];
-        if (activeTrap !== trap) {
-          activeTrap._setPausedState(true);
-        }
+      var activeTrap = activeFocusTraps.getActiveTrap(trapStack);
+      if (trap !== activeTrap) {
+        activeFocusTraps.pauseTrap(trapStack);
       }
       var trapIndex = trapStack.indexOf(trap);
       if (trapIndex === -1) {
@@ -125,30 +152,35 @@
         trapStack.push(trap);
       }
     },
+    // Removes the trap from the top of the stack, then unpauses the next trap down.
     deactivateTrap: function deactivateTrap(trapStack, trap) {
       var trapIndex = trapStack.indexOf(trap);
       if (trapIndex !== -1) {
         trapStack.splice(trapIndex, 1);
       }
-      if (trapStack.length > 0 && !trapStack[trapStack.length - 1]._isManuallyPaused()) {
-        trapStack[trapStack.length - 1]._setPausedState(false);
-      }
+      activeFocusTraps.unpauseTrap(trapStack);
     },
+    // Pauses the trap at the top of the stack.
+    pauseTrap: function pauseTrap(trapStack) {
+      var activeTrap = activeFocusTraps.getActiveTrap(trapStack);
+      activeTrap === null || activeTrap === void 0 || activeTrap._setPausedState(true);
+    },
+    // Unpauses the trap at the top of the stack.
+    unpauseTrap: function unpauseTrap(trapStack) {
+      var activeTrap = activeFocusTraps.getActiveTrap(trapStack);
+      if (activeTrap && !activeTrap._isManuallyPaused()) {
+        activeTrap._setPausedState(false);
+      }
+    }
   };
   var isSelectableInput = function isSelectableInput(node) {
     return node.tagName && node.tagName.toLowerCase() === 'input' && typeof node.select === 'function';
   };
   var isEscapeEvent = function isEscapeEvent(e) {
-    return (
-      (e === null || e === void 0 ? void 0 : e.key) === 'Escape' ||
-      (e === null || e === void 0 ? void 0 : e.key) === 'Esc' ||
-      (e === null || e === void 0 ? void 0 : e.keyCode) === 27
-    );
+    return (e === null || e === void 0 ? void 0 : e.key) === 'Escape' || (e === null || e === void 0 ? void 0 : e.key) === 'Esc' || (e === null || e === void 0 ? void 0 : e.keyCode) === 27;
   };
   var isTabEvent = function isTabEvent(e) {
-    return (
-      (e === null || e === void 0 ? void 0 : e.key) === 'Tab' || (e === null || e === void 0 ? void 0 : e.keyCode) === 9
-    );
+    return (e === null || e === void 0 ? void 0 : e.key) === 'Tab' || (e === null || e === void 0 ? void 0 : e.keyCode) === 9;
   };
 
   // checks for TAB by default
@@ -195,38 +227,36 @@
     // SSR: a live trap shouldn't be created in this type of environment so this
     //  should be safe code to execute if the `document` option isn't specified
     var doc = (userOptions === null || userOptions === void 0 ? void 0 : userOptions.document) || document;
-    var trapStack =
-      (userOptions === null || userOptions === void 0 ? void 0 : userOptions.trapStack) || internalTrapStack;
-    var config = _objectSpread2(
-      {
-        returnFocusOnDeactivate: true,
-        escapeDeactivates: true,
-        delayInitialFocus: true,
-        isKeyForward: isKeyForward,
-        isKeyBackward: isKeyBackward,
-      },
-      userOptions
-    );
+    var trapStack = (userOptions === null || userOptions === void 0 ? void 0 : userOptions.trapStack) || internalTrapStack;
+    var config = _objectSpread2({
+      returnFocusOnDeactivate: true,
+      escapeDeactivates: true,
+      delayInitialFocus: true,
+      isolateSubtrees: false,
+      isKeyForward: isKeyForward,
+      isKeyBackward: isKeyBackward
+    }, userOptions);
     var state = {
       // containers given to createFocusTrap()
-      // @type {Array<HTMLElement>}
+      /** @type {Array<HTMLElement>} */
       containers: [],
       // list of objects identifying tabbable nodes in `containers` in the trap
       // NOTE: it's possible that a group has no tabbable nodes if nodes get removed while the trap
       //  is active, but the trap should never get to a state where there isn't at least one group
       //  with at least one tabbable node in it (that would lead to an error condition that would
       //  result in an error being thrown)
-      // @type {Array<{
-      //   container: HTMLElement,
-      //   tabbableNodes: Array<HTMLElement>, // empty if none
-      //   focusableNodes: Array<HTMLElement>, // empty if none
-      //   posTabIndexesFound: boolean,
-      //   firstTabbableNode: HTMLElement|undefined,
-      //   lastTabbableNode: HTMLElement|undefined,
-      //   firstDomTabbableNode: HTMLElement|undefined,
-      //   lastDomTabbableNode: HTMLElement|undefined,
-      //   nextTabbableNode: (node: HTMLElement, forward: boolean) => HTMLElement|undefined
-      // }>}
+      /** @type {Array<{
+       *    container: HTMLElement,
+       *    tabbableNodes: Array<HTMLElement>, // empty if none
+       *    focusableNodes: Array<HTMLElement>, // empty if none
+       *    posTabIndexesFound: boolean,
+       *    firstTabbableNode: HTMLElement|undefined,
+       *    lastTabbableNode: HTMLElement|undefined,
+       *    firstDomTabbableNode: HTMLElement|undefined,
+       *    lastDomTabbableNode: HTMLElement|undefined,
+       *    nextTabbableNode: (node: HTMLElement, forward: boolean) => HTMLElement|undefined
+       *  }>}
+       */
       containerGroups: [],
       // same order/length as `containers` list
 
@@ -235,6 +265,12 @@
       // NOTE: same order as `containers` and `containerGroups`, but __not necessarily__
       //  the same length
       tabbableGroups: [],
+      // references to nodes that are siblings to the ancestors of this trap's containers.
+      /** @type {Set<HTMLElement>} */
+      adjacentElements: new Set(),
+      // references to nodes that were inert or aria-hidden before the trap was activated.
+      /** @type {Set<HTMLElement>} */
+      alreadySilent: new Set(),
       nodeFocusedBeforeActivation: null,
       mostRecentlyFocusedNode: null,
       active: false,
@@ -244,7 +280,7 @@
       //  has been delayed during activation
       delayInitialFocusTimer: undefined,
       // the most recent KeyboardEvent for the configured nav key (typically [SHIFT+]TAB), if any
-      recentNavEvent: undefined,
+      recentNavEvent: undefined
     };
     var trap; // eslint-disable-line prefer-const -- some private functions reference it, and its methods reference private functions, so we must declare here and define later
 
@@ -257,9 +293,7 @@
      *  IIF `configOverrideOptions` is not defined. Otherwise, `optionName` is used.
      */
     var getOption = function getOption(configOverrideOptions, optionName, configOptionName) {
-      return configOverrideOptions && configOverrideOptions[optionName] !== undefined
-        ? configOverrideOptions[optionName]
-        : config[configOptionName || optionName];
+      return configOverrideOptions && configOverrideOptions[optionName] !== undefined ? configOverrideOptions[optionName] : config[configOptionName || optionName];
     };
 
     /**
@@ -273,26 +307,20 @@
      *  if the element isn't found.
      */
     var findContainerIndex = function findContainerIndex(element, event) {
-      var composedPath =
-        typeof (event === null || event === void 0 ? void 0 : event.composedPath) === 'function'
-          ? event.composedPath()
-          : undefined;
+      var composedPath = typeof (event === null || event === void 0 ? void 0 : event.composedPath) === 'function' ? event.composedPath() : undefined;
       // NOTE: search `containerGroups` because it's possible a group contains no tabbable
       //  nodes, but still contains focusable nodes (e.g. if they all have `tabindex=-1`)
       //  and we still need to find the element in there
       return state.containerGroups.findIndex(function (_ref) {
         var container = _ref.container,
           tabbableNodes = _ref.tabbableNodes;
-        return (
-          container.contains(element) || // fall back to explicit tabbable search which will take into consideration any
-          //  web components if the `tabbableOptions.getShadowRoot` option was used for
-          //  the trap, enabling shadow DOM support in tabbable (`Node.contains()` doesn't
-          //  look inside web components even if open)
-          (composedPath === null || composedPath === void 0 ? void 0 : composedPath.includes(container)) ||
-          tabbableNodes.find(function (node) {
-            return node === element;
-          })
-        );
+        return container.contains(element) || (// fall back to explicit tabbable search which will take into consideration any
+        //  web components if the `tabbableOptions.getShadowRoot` option was used for
+        //  the trap, enabling shadow DOM support in tabbable (`Node.contains()` doesn't
+        //  look inside web components even if open)
+        composedPath === null || composedPath === void 0 ? void 0 : composedPath.includes(container)) || tabbableNodes.find(function (node) {
+          return node === element;
+        });
       });
     };
 
@@ -333,7 +361,7 @@
         }
         // else, empty string (invalid), null (invalid), 0 (invalid)
 
-        throw new Error('`'.concat(optionName, '` was specified but was not a node, or did not return a node'));
+        throw new Error("`".concat(optionName, "` was specified but was not a node, or did not return a node"));
       }
       var node = optionValue; // could be HTMLElement, SVGElement, or non-empty string at this point
 
@@ -341,13 +369,11 @@
         try {
           node = doc.querySelector(optionValue); // resolve to node, or null if fails
         } catch (err) {
-          throw new Error(
-            '`'.concat(optionName, '` appears to be an invalid selector; error="').concat(err.message, '"')
-          );
+          throw new Error("`".concat(optionName, "` appears to be an invalid selector; error=\"").concat(err.message, "\""));
         }
         if (!node) {
           if (!hasFallback) {
-            throw new Error('`'.concat(optionName, '` as selector refers to no known node'));
+            throw new Error("`".concat(optionName, "` as selector refers to no known node"));
           }
           // else, `node` MUST be `null` because that's what `Document.querySelector()` returns
           //  if the selector is valid but doesn't match anything
@@ -357,14 +383,14 @@
     };
     var getInitialFocusNode = function getInitialFocusNode() {
       var node = getNodeForOption('initialFocus', {
-        hasFallback: true,
+        hasFallback: true
       });
 
       // false explicitly indicates we want no initialFocus at all
       if (node === false) {
         return false;
       }
-      if (node === undefined || (node && !tabbable.isFocusable(node, config.tabbableOptions))) {
+      if (node === undefined || node && !tabbable.isFocusable(node, config.tabbableOptions)) {
         // option not specified nor focusable: use fallback options
         if (findContainerIndex(doc.activeElement) >= 0) {
           node = doc.activeElement;
@@ -398,12 +424,9 @@
         var firstDomTabbableNode = focusableNodes.find(function (node) {
           return tabbable.isTabbable(node);
         });
-        var lastDomTabbableNode = focusableNodes
-          .slice()
-          .reverse()
-          .find(function (node) {
-            return tabbable.isTabbable(node);
-          });
+        var lastDomTabbableNode = focusableNodes.slice().reverse().find(function (node) {
+          return tabbable.isTabbable(node);
+        });
         var posTabIndexesFound = !!tabbableNodes.find(function (node) {
           return tabbable.getTabIndex(node) > 0;
         });
@@ -451,15 +474,12 @@
                   return tabbable.isTabbable(el);
                 });
               }
-              return focusableNodes
-                .slice(0, focusableNodes.indexOf(node))
-                .reverse()
-                .find(function (el) {
-                  return tabbable.isTabbable(el);
-                });
+              return focusableNodes.slice(0, focusableNodes.indexOf(node)).reverse().find(function (el) {
+                return tabbable.isTabbable(el);
+              });
             }
             return tabbableNodes[nodeIdx + (forward ? 1 : -1)];
-          },
+          }
         };
       });
       state.tabbableGroups = state.containerGroups.filter(function (group) {
@@ -467,13 +487,9 @@
       });
 
       // throw if no groups have tabbable nodes and we don't have a fallback focus node either
-      if (
-        state.tabbableGroups.length <= 0 &&
-        !getNodeForOption('fallbackFocus') // returning false not supported for this option
+      if (state.tabbableGroups.length <= 0 && !getNodeForOption('fallbackFocus') // returning false not supported for this option
       ) {
-        throw new Error(
-          'Your focus-trap must have at least one container with at least one tabbable node in it at all times'
-        );
+        throw new Error('Your focus-trap must have at least one container with at least one tabbable node in it at all times');
       }
 
       // NOTE: Positive tabindexes are only properly supported in single-container traps because
@@ -483,15 +499,10 @@
       //  to look at those containers in document position order rather than user-provided
       //  order (as they are treated in Focus-trap, for legacy reasons). See discussion on
       //  https://github.com/focus-trap/focus-trap/issues/375 for more details.
-      if (
-        state.containerGroups.find(function (g) {
-          return g.posTabIndexesFound;
-        }) &&
-        state.containerGroups.length > 1
-      ) {
-        throw new Error(
-          "At least one node with a positive tabindex was found in one of your focus-trap's multiple containers. Positive tabindexes are only supported in single-container focus-traps."
-        );
+      if (state.containerGroups.find(function (g) {
+        return g.posTabIndexesFound;
+      }) && state.containerGroups.length > 1) {
+        throw new Error("At least one node with a positive tabindex was found in one of your focus-trap's multiple containers. Positive tabindexes are only supported in single-container focus-traps.");
       }
     };
 
@@ -525,7 +536,7 @@
         return;
       }
       node.focus({
-        preventScroll: !!config.preventScroll,
+        preventScroll: !!config.preventScroll
       });
       // NOTE: focus() API does not trigger focusIn event so set MRU node manually
       state.mostRecentlyFocusedNode = node;
@@ -535,7 +546,7 @@
     };
     var getReturnFocusNode = function getReturnFocusNode(previousActiveElement) {
       var node = getNodeForOption('setReturnFocus', {
-        params: [previousActiveElement],
+        params: [previousActiveElement]
       });
       return node ? node : node === false ? false : previousActiveElement;
     };
@@ -583,13 +594,7 @@
             var firstTabbableNode = _ref4.firstTabbableNode;
             return target === firstTabbableNode;
           });
-          if (
-            startOfGroupIndex < 0 &&
-            (containerGroup.container === target ||
-              (tabbable.isFocusable(target, config.tabbableOptions) &&
-                !tabbable.isTabbable(target, config.tabbableOptions) &&
-                !containerGroup.nextTabbableNode(target, false)))
-          ) {
+          if (startOfGroupIndex < 0 && (containerGroup.container === target || tabbable.isFocusable(target, config.tabbableOptions) && !tabbable.isTabbable(target, config.tabbableOptions) && !containerGroup.nextTabbableNode(target, false))) {
             // an exception case where the target is either the container itself, or
             //  a non-tabbable node that was given focus (i.e. tabindex is negative
             //  and user clicked on it or node was programmatically given focus)
@@ -602,13 +607,9 @@
             // YES: then shift+tab should go to the last tabbable node in the
             //  previous group (and wrap around to the last tabbable node of
             //  the LAST group if it's the first tabbable node of the FIRST group)
-            var destinationGroupIndex =
-              startOfGroupIndex === 0 ? state.tabbableGroups.length - 1 : startOfGroupIndex - 1;
+            var destinationGroupIndex = startOfGroupIndex === 0 ? state.tabbableGroups.length - 1 : startOfGroupIndex - 1;
             var destinationGroup = state.tabbableGroups[destinationGroupIndex];
-            destinationNode =
-              tabbable.getTabIndex(target) >= 0
-                ? destinationGroup.lastTabbableNode
-                : destinationGroup.lastDomTabbableNode;
+            destinationNode = tabbable.getTabIndex(target) >= 0 ? destinationGroup.lastTabbableNode : destinationGroup.lastDomTabbableNode;
           } else if (!isTabEvent(event)) {
             // user must have customized the nav keys so we have to move focus manually _within_
             //  the active group: do this based on the order determined by tabbable()
@@ -622,13 +623,7 @@
             var lastTabbableNode = _ref5.lastTabbableNode;
             return target === lastTabbableNode;
           });
-          if (
-            lastOfGroupIndex < 0 &&
-            (containerGroup.container === target ||
-              (tabbable.isFocusable(target, config.tabbableOptions) &&
-                !tabbable.isTabbable(target, config.tabbableOptions) &&
-                !containerGroup.nextTabbableNode(target)))
-          ) {
+          if (lastOfGroupIndex < 0 && (containerGroup.container === target || tabbable.isFocusable(target, config.tabbableOptions) && !tabbable.isTabbable(target, config.tabbableOptions) && !containerGroup.nextTabbableNode(target))) {
             // an exception case where the target is the container itself, or
             //  a non-tabbable node that was given focus (i.e. tabindex is negative
             //  and user clicked on it or node was programmatically given focus)
@@ -641,13 +636,9 @@
             // YES: then tab should go to the first tabbable node in the next
             //  group (and wrap around to the first tabbable node of the FIRST
             //  group if it's the last tabbable node of the LAST group)
-            var _destinationGroupIndex =
-              lastOfGroupIndex === state.tabbableGroups.length - 1 ? 0 : lastOfGroupIndex + 1;
+            var _destinationGroupIndex = lastOfGroupIndex === state.tabbableGroups.length - 1 ? 0 : lastOfGroupIndex + 1;
             var _destinationGroup = state.tabbableGroups[_destinationGroupIndex];
-            destinationNode =
-              tabbable.getTabIndex(target) >= 0
-                ? _destinationGroup.firstTabbableNode
-                : _destinationGroup.firstDomTabbableNode;
+            destinationNode = tabbable.getTabIndex(target) >= 0 ? _destinationGroup.firstTabbableNode : _destinationGroup.firstDomTabbableNode;
           } else if (!isTabEvent(event)) {
             // user must have customized the nav keys so we have to move focus manually _within_
             //  the active group: do this based on the order determined by tabbable()
@@ -679,7 +670,7 @@
           //  `returnFocus: true`, we'll attempt to re-focus the node originally-focused
           //  on activation (or the configured `setReturnFocus` node), whether the
           //  outside click was on a focusable node or not
-          returnFocus: config.returnFocusOnDeactivate,
+          returnFocus: config.returnFocusOnDeactivate
         });
         return;
       }
@@ -760,13 +751,11 @@
             //  the trap because focus seems to escape when navigating backward from a tabbable node
             //  with tabindex=0 when this is the case (instead of wrapping to the tabbable node with
             //  the greatest positive tab index like it should)
-            if (
-              !state.containerGroups.some(function (g) {
-                return g.tabbableNodes.some(function (n) {
-                  return tabbable.getTabIndex(n) > 0;
-                });
-              })
-            ) {
+            if (!state.containerGroups.some(function (g) {
+              return g.tabbableNodes.some(function (n) {
+                return tabbable.getTabIndex(n) > 0;
+              });
+            })) {
               // no containers with tabbable nodes with positive tab indexes which means the focus
               //  escaped for some other reason and we should just execute the fallback to the
               //  MRU node or initial focus node, if any
@@ -785,7 +774,7 @@
             // move FROM the MRU node, not event-related node (which will be the node that is
             //  outside the trap causing the focus escape we're trying to fix)
             target: state.mostRecentlyFocusedNode,
-            isBackward: config.isKeyBackward(state.recentNavEvent),
+            isBackward: config.isKeyBackward(state.recentNavEvent)
           });
         }
         if (nextNode) {
@@ -806,7 +795,7 @@
       state.recentNavEvent = event;
       var destinationNode = findNextNavNode({
         event: event,
-        isBackward: isBackward,
+        isBackward: isBackward
       });
       if (destinationNode) {
         if (isTabEvent(event)) {
@@ -862,30 +851,96 @@
 
       // Delay ensures that the focused element doesn't capture the event
       // that caused the focus trap activation.
-      state.delayInitialFocusTimer = config.delayInitialFocus
-        ? delay(function () {
-            _tryFocus(getInitialFocusNode());
-          })
-        : _tryFocus(getInitialFocusNode());
+      state.delayInitialFocusTimer = config.delayInitialFocus ? delay(function () {
+        _tryFocus(getInitialFocusNode());
+      }) : _tryFocus(getInitialFocusNode());
       doc.addEventListener('focusin', checkFocusIn, true);
       doc.addEventListener('mousedown', checkPointerDown, {
         capture: true,
-        passive: false,
+        passive: false
       });
       doc.addEventListener('touchstart', checkPointerDown, {
         capture: true,
-        passive: false,
+        passive: false
       });
       doc.addEventListener('click', checkClick, {
         capture: true,
-        passive: false,
+        passive: false
       });
       doc.addEventListener('keydown', checkTabKey, {
         capture: true,
-        passive: false,
+        passive: false
       });
       doc.addEventListener('keydown', checkEscapeKey);
       return trap;
+    };
+
+    /**
+     * Traverses up the DOM from each of `containers`, collecting references to
+     * the elements that are siblings to `container` or an ancestor of `container`.
+     * @param {Array<HTMLElement>} containers
+     */
+    var collectAdjacentElements = function collectAdjacentElements(containers) {
+      // Re-activate all adjacent elements & clear previous collection.
+      if (state.active && !state.paused) {
+        trap._setSubtreeIsolation(false);
+      }
+      state.adjacentElements.clear();
+      state.alreadySilent.clear();
+
+      // Collect all ancestors of all containers to avoid redundant processing.
+      var containerAncestors = new Set();
+      var adjacentElements = new Set();
+
+      // Compile all elements adjacent to the focus trap containers & lineage.
+      var _iterator = _createForOfIteratorHelper(containers),
+        _step;
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var container = _step.value;
+          containerAncestors.add(container);
+          var insideShadowRoot = typeof ShadowRoot !== 'undefined' && container.getRootNode() instanceof ShadowRoot;
+          var current = container;
+          while (current) {
+            containerAncestors.add(current);
+            var parent = current.parentElement;
+            var siblings = [];
+            if (parent) {
+              siblings = parent.children;
+            } else if (!parent && insideShadowRoot) {
+              siblings = current.getRootNode().children;
+              parent = current.getRootNode().host;
+              insideShadowRoot = typeof ShadowRoot !== 'undefined' && parent.getRootNode() instanceof ShadowRoot;
+            }
+
+            // Add all the children, we'll remove container lineage later.
+            var _iterator2 = _createForOfIteratorHelper(siblings),
+              _step2;
+            try {
+              for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+                var child = _step2.value;
+                adjacentElements.add(child);
+              }
+            } catch (err) {
+              _iterator2.e(err);
+            } finally {
+              _iterator2.f();
+            }
+            current = parent;
+          }
+        }
+
+        // Multi-container traps may overlap.
+        // Remove elements within container lineages.
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+      containerAncestors.forEach(function (el) {
+        adjacentElements["delete"](el);
+      });
+      state.adjacentElements = adjacentElements;
     };
     var removeListeners = function removeListeners() {
       if (!state.active) {
@@ -921,8 +976,7 @@
 
     // Use MutationObserver - if supported - to detect if focused node is removed
     // from the DOM.
-    var mutationObserver =
-      typeof window !== 'undefined' && 'MutationObserver' in window ? new MutationObserver(checkDomRemoval) : undefined;
+    var mutationObserver = typeof window !== 'undefined' && 'MutationObserver' in window ? new MutationObserver(checkDomRemoval) : undefined;
     var updateObservedNodes = function updateObservedNodes() {
       if (!mutationObserver) {
         return;
@@ -932,7 +986,7 @@
         state.containers.map(function (container) {
           mutationObserver.observe(container, {
             subtree: true,
-            childList: true,
+            childList: true
           });
         });
       }
@@ -956,42 +1010,77 @@
         var onActivate = getOption(activateOptions, 'onActivate');
         var onPostActivate = getOption(activateOptions, 'onPostActivate');
         var checkCanFocusTrap = getOption(activateOptions, 'checkCanFocusTrap');
-        if (!checkCanFocusTrap) {
-          updateTabbableNodes();
+
+        // If a currently-active trap is isolating its subtree, we need to remove
+        // that isolation to allow the new trap to find tabbable nodes.
+        var preexistingTrap = activeFocusTraps.getActiveTrap(trapStack);
+        var revertState = false;
+        if (preexistingTrap && !preexistingTrap.paused) {
+          var _preexistingTrap$_set;
+          // [#1729] method MAY not exist if using `trapStack` option to share stack with older
+          //  versions of Focus-trap in the same DOM so use optional chaining here just in case
+          //  since this is a trap we may not have created from this instance of the library
+          (_preexistingTrap$_set = preexistingTrap._setSubtreeIsolation) === null || _preexistingTrap$_set === void 0 || _preexistingTrap$_set.call(preexistingTrap, false);
+          revertState = true;
         }
-        state.active = true;
-        state.paused = false;
-        state.nodeFocusedBeforeActivation = _getActiveElement(doc);
-        onActivate === null || onActivate === void 0 || onActivate();
-        var finishActivation = function finishActivation() {
-          if (checkCanFocusTrap) {
+        try {
+          if (!checkCanFocusTrap) {
             updateTabbableNodes();
           }
-          addListeners();
-          updateObservedNodes();
-          onPostActivate === null || onPostActivate === void 0 || onPostActivate();
-        };
-        if (checkCanFocusTrap) {
-          checkCanFocusTrap(state.containers.concat()).then(finishActivation, finishActivation);
-          return this;
+          state.active = true;
+          state.paused = false;
+          state.nodeFocusedBeforeActivation = _getActiveElement(doc);
+          onActivate === null || onActivate === void 0 || onActivate();
+          var finishActivation = function finishActivation() {
+            if (checkCanFocusTrap) {
+              updateTabbableNodes();
+            }
+            addListeners();
+            updateObservedNodes();
+            if (config.isolateSubtrees) {
+              trap._setSubtreeIsolation(true);
+            }
+            onPostActivate === null || onPostActivate === void 0 || onPostActivate();
+          };
+          if (checkCanFocusTrap) {
+            checkCanFocusTrap(state.containers.concat()).then(finishActivation, finishActivation);
+            return this;
+          }
+          finishActivation();
+        } catch (error) {
+          // If our activation throws an exception and the stack hasn't changed,
+          // we need to re-enable the prior trap's subtree isolation.
+          if (preexistingTrap === activeFocusTraps.getActiveTrap(trapStack) && revertState) {
+            var _preexistingTrap$_set2;
+            // [#1729] method MAY not exist if using `trapStack` option to share stack with older
+            //  versions of Focus-trap in the same DOM so use optional chaining here just in case
+            //  since this is a trap we may not have created from this instance of the library
+            (_preexistingTrap$_set2 = preexistingTrap._setSubtreeIsolation) === null || _preexistingTrap$_set2 === void 0 || _preexistingTrap$_set2.call(preexistingTrap, true);
+          }
+          throw error;
         }
-        finishActivation();
         return this;
       },
       deactivate: function deactivate(deactivateOptions) {
         if (!state.active) {
           return this;
         }
-        var options = _objectSpread2(
-          {
-            onDeactivate: config.onDeactivate,
-            onPostDeactivate: config.onPostDeactivate,
-            checkCanReturnFocus: config.checkCanReturnFocus,
-          },
-          deactivateOptions
-        );
+        var options = _objectSpread2({
+          onDeactivate: config.onDeactivate,
+          onPostDeactivate: config.onPostDeactivate,
+          checkCanReturnFocus: config.checkCanReturnFocus
+        }, deactivateOptions);
         clearTimeout(state.delayInitialFocusTimer); // noop if undefined
         state.delayInitialFocusTimer = undefined;
+
+        // Prior to removing this trap from the trapStack, we need to remove any applications of `inert`.
+        // This allows the next trap down to update its tabbable nodes properly.
+        //
+        // If this trap is not top of the stack, don't change any current isolation.
+        if (!state.paused) {
+          trap._setSubtreeIsolation(false);
+        }
+        state.alreadySilent.clear();
         removeListeners();
         state.active = false;
         state.paused = false;
@@ -1011,10 +1100,7 @@
           });
         };
         if (returnFocus && checkCanReturnFocus) {
-          checkCanReturnFocus(getReturnFocusNode(state.nodeFocusedBeforeActivation)).then(
-            finishDeactivation,
-            finishDeactivation
-          );
+          checkCanReturnFocus(getReturnFocusNode(state.nodeFocusedBeforeActivation)).then(finishDeactivation, finishDeactivation);
           return this;
         }
         finishDeactivation();
@@ -1042,18 +1128,24 @@
         state.containers = elementsAsArray.map(function (element) {
           return typeof element === 'string' ? doc.querySelector(element) : element;
         });
+        if (config.isolateSubtrees) {
+          collectAdjacentElements(state.containers);
+        }
         if (state.active) {
           updateTabbableNodes();
+          if (config.isolateSubtrees && !state.paused) {
+            trap._setSubtreeIsolation(true);
+          }
         }
         updateObservedNodes();
         return this;
-      },
+      }
     };
     Object.defineProperties(trap, {
       _isManuallyPaused: {
         value: function value() {
           return state.manuallyPaused;
-        },
+        }
       },
       _setPausedState: {
         value: function value(paused, options) {
@@ -1067,19 +1159,61 @@
             onPause === null || onPause === void 0 || onPause();
             removeListeners();
             updateObservedNodes();
+            trap._setSubtreeIsolation(false);
             onPostPause === null || onPostPause === void 0 || onPostPause();
           } else {
             var onUnpause = getOption(options, 'onUnpause');
             var onPostUnpause = getOption(options, 'onPostUnpause');
             onUnpause === null || onUnpause === void 0 || onUnpause();
+            trap._setSubtreeIsolation(true);
             updateTabbableNodes();
             addListeners();
             updateObservedNodes();
             onPostUnpause === null || onPostUnpause === void 0 || onPostUnpause();
           }
           return this;
-        },
+        }
       },
+      _setSubtreeIsolation: {
+        value: function value(isEnabled) {
+          if (config.isolateSubtrees) {
+            state.adjacentElements.forEach(function (el) {
+              var _el$getAttribute;
+              if (isEnabled) {
+                switch (config.isolateSubtrees) {
+                  case 'aria-hidden':
+                    // check both attribute and property to ensure initial state is captured
+                    // correctly across different browsers and test environments (like JSDOM)
+                    if (el.ariaHidden === 'true' || ((_el$getAttribute = el.getAttribute('aria-hidden')) === null || _el$getAttribute === void 0 ? void 0 : _el$getAttribute.toLowerCase()) === 'true') {
+                      state.alreadySilent.add(el);
+                    }
+                    el.setAttribute('aria-hidden', 'true');
+                    break;
+                  default:
+                    // check both attribute and property to ensure initial state is captured
+                    // correctly across different browsers and test environments (like JSDOM)
+                    if (el.inert || el.hasAttribute('inert')) {
+                      state.alreadySilent.add(el);
+                    }
+                    el.setAttribute('inert', true);
+                    break;
+                }
+              } else {
+                if (state.alreadySilent.has(el)) ; else {
+                  switch (config.isolateSubtrees) {
+                    case 'aria-hidden':
+                      el.removeAttribute('aria-hidden');
+                      break;
+                    default:
+                      el.removeAttribute('inert');
+                      break;
+                  }
+                }
+              }
+            });
+          }
+        }
+      }
     });
 
     // initialize container elements
@@ -1088,5 +1222,6 @@
   };
 
   exports.createFocusTrap = createFocusTrap;
-});
+
+}));
 //# sourceMappingURL=focus-trap.umd.js.map

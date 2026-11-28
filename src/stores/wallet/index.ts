@@ -1,13 +1,13 @@
 import { computed, ref, watch } from 'vue';
 import { defineStore } from 'pinia';
 import debounce from 'lodash/fp/debounce';
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import { Operation, type HistoryItem, type NetworkFeesObject } from '@/lib/substrate/sdk/types';
 
 import { DefaultPassphraseTimeout } from '@/consts';
 import type { EditableAlertObject, WalletAssetFilters } from '@/consts';
 import type { Theme } from '@/consts/theme';
-import { excludePoolXYKAssets } from '@sora-substrate/sdk/build/assets';
+import { excludePoolXYKAssets } from '@/lib/substrate/sdk/assets';
 import { api as walletApi } from '@/lib/soraneo-wallet/src/api';
 import {
   accountIdBasedOperations,
@@ -75,6 +75,7 @@ import { isAppStorageSource, loginApi, logoutApi, updateApiSigner } from '@/lib/
 import { sanitizeNftBlacklistPayload, sanitizeWhitelistPayload } from '@/lib/soraneo-wallet/src/util/security';
 import type { ExternalHistoryParams } from '@/lib/soraneo-wallet/src/types/history';
 import { resolvePreferredIndexer } from '@/stores/wallet/utils/indexers';
+import { StatsCoreNotReadyError } from '@/lib/soraneo-wallet/src/services/indexer/coreRefresh';
 import type { Book, Nullable } from '@/types/common';
 import type { AppWallet } from '@/lib/soraneo-wallet/src/consts';
 import type { TransactionSignVisibilityController } from '@/lib/soraneo-wallet/src/util';
@@ -96,7 +97,7 @@ import type {
   RegisteredAccountAsset,
   Whitelist,
   WhitelistArrayItem,
-} from '@sora-substrate/sdk/build/assets/types';
+} from '@/lib/substrate/sdk/assets/types';
 
 type AssetsTable = Record<string, Asset | RegisteredAccountAsset>;
 type AccountAssetsTable = Record<string, AccountAsset>;
@@ -801,6 +802,10 @@ export const useWalletStore = defineStore('wallet', () => {
       const indexer = await getCurrentIndexerService();
       data = await indexer.services.explorer.price.getFiatPriceObject();
     } catch (error) {
+      if (error instanceof StatsCoreNotReadyError) {
+        clearFiatPriceObject();
+        return;
+      }
       console.warn('[wallet] Polkaswap indexer fiat prices are unavailable.', error);
     }
 
@@ -820,11 +825,21 @@ export const useWalletStore = defineStore('wallet', () => {
     }
   };
 
+  /** The exact stream supplies the full priced set, including removals since the last block. */
+  const replaceIndexerPrices = (prices: Nullable<FiatPriceObject>): void => {
+    setFiatPriceObject(prices ?? {});
+    accountState.value.alertSubject?.next(accountState.value.fiatPriceObject);
+  };
+
   const getFiatPriceUpdatesUsingIndexer = async (): Promise<void> => {
     const indexer = await getCurrentIndexerService();
-    const data = await indexer.services.explorer.price.getFiatPriceUpdates();
+    let complete = false;
+    const data = await indexer.services.explorer.price.getFiatPriceUpdates(false, (prices) => {
+      complete = true;
+      replaceIndexerPrices(prices);
+    });
 
-    if (data) {
+    if (!complete && data) {
       updateFiatPriceObject(data);
     }
   };
@@ -834,8 +849,10 @@ export const useWalletStore = defineStore('wallet', () => {
 
     const indexer = await getCurrentIndexerService();
     const subscription = indexer.services.explorer.price.createFiatPriceSubscription(
-      (priceObject) => {
-        if (priceObject) {
+      (priceObject, complete) => {
+        if (complete) {
+          replaceIndexerPrices(priceObject);
+        } else if (priceObject) {
           updateFiatPriceObject(priceObject);
         } else {
           void getFiatPriceUpdatesUsingIndexer();

@@ -115,9 +115,7 @@ process.stdout.write(JSON.stringify(parsed));
 PREPARE_JS = r'''
 import { build } from 'esbuild';
 const input=JSON.parse(await new Promise(resolve=>{let s='';process.stdin.setEncoding('utf8');process.stdin.on('data',x=>s+=x);process.stdin.on('end',()=>resolve(s));}));
-const packages=['math','sdk','liquidity-proxy','api','connection','types','type-definitions'];
-const alias=Object.fromEntries(packages.map(n=>['@sora-substrate/'+n,input.root+'/src/lib/substrate/'+n]));
-alias['@']=input.root+'/src';
+const alias={'@':input.root+'/src'};
 const result=await build({absWorkingDir:input.root,stdin:{contents:input.entry,resolveDir:input.root,sourcefile:'tc1-history-offline-parser.ts',loader:'ts'},
  bundle:true,platform:'node',format:'esm',target:'node26',write:false,metafile:true,alias,logLevel:'silent'});
 process.stdout.write(JSON.stringify({code:result.outputFiles[0].text,inputs:Object.keys(result.metafile.inputs).filter(p=>p!=='tc1-history-offline-parser.ts')}));

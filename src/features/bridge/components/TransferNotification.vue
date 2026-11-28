@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { BridgeNetworkType } from '@/lib/substrate/sdk/bridgeProxy/consts';
 import { computed } from 'vue';
 
 import type { ExplorerLink } from '@/consts';
@@ -32,10 +32,10 @@ import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import ethersUtil from '@/utils/ethers-util';
 import { toSafeExternalLink } from '@/utils/externalLinks';
 
-import type { IBridgeTransaction } from '@sora-substrate/sdk';
-import type { RegisteredAccountAsset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
-import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
-import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
+import type { IBridgeTransaction } from '@/lib/substrate/sdk';
+import type { RegisteredAccountAsset, Whitelist } from '@/lib/substrate/sdk/assets/types';
+import type { SubNetwork } from '@/lib/substrate/sdk/bridgeProxy/sub/types';
+import type { BridgeNetworkId } from '@/lib/substrate/sdk/bridgeProxy/types';
 import WalletComponentSimpleNotification from '@/lib/soraneo-wallet/src/components/SimpleNotification.vue';
 import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
