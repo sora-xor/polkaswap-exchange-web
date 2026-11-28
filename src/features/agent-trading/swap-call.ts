@@ -1,4 +1,4 @@
-import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
+import { LiquiditySourceTypes } from '@/lib/substrate/liquidity-proxy/consts';
 
 import { agentError } from './errors';
 import type { AgentAsset, AgentAssetAmount, AgentSwapQuote } from './types';

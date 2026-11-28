@@ -1,10 +1,10 @@
 import { map, combineLatest } from 'rxjs';
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 
 import type { Observable, Signer } from '@polkadot/types/types';
 import type { CreateResult } from '@polkadot/ui-keyring/types';
-import type { Connection } from '@sora-substrate/connection';
-import type { CodecString } from '@sora-substrate/math';
+import type { Connection } from '@/lib/substrate/connection';
+import type { CodecString } from '@/lib/substrate/math';
 
 import { EthBridgeApi } from './eth';
 import { EvmBridgeApi } from './evm';

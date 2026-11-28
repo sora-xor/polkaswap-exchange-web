@@ -1,6 +1,6 @@
-import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { EvmNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/evm/consts';
-import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
+import { BridgeNetworkType, BridgeTxStatus } from '@/lib/substrate/sdk/bridgeProxy/consts';
+import { EvmNetworkId } from '@/lib/substrate/sdk/bridgeProxy/evm/consts';
+import { SubNetworkId } from '@/lib/substrate/sdk/bridgeProxy/sub/consts';
 
 import { computed } from 'vue';
 
@@ -18,8 +18,8 @@ import { isOutgoingTransaction, isWaitingForAction } from '@/utils/bridge/common
 import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/constants';
 import { toSafeExternalLink } from '@/utils/externalLinks';
 
-import type { IBridgeTransaction, NetworkFeesObject } from '@sora-substrate/sdk';
-import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
+import type { IBridgeTransaction, NetworkFeesObject } from '@/lib/substrate/sdk';
+import type { BridgeNetworkId } from '@/lib/substrate/sdk/bridgeProxy/types';
 
 type ExplorerLinksParams = {
   networkType: BridgeNetworkType;

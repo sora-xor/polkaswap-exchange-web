@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { flushPromises, mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { h } from 'vue';

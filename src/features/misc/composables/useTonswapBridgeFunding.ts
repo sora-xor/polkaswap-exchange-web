@@ -1,5 +1,5 @@
 import { computed, ref } from 'vue';
-import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { BridgeNetworkType } from '@/lib/substrate/sdk/bridgeProxy/consts';
 
 import { api } from '@/lib/soraneo-wallet/src/api';
 import { useAssetsStore } from '@/stores/assets';

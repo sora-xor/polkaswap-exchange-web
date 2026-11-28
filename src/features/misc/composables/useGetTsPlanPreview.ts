@@ -1,6 +1,6 @@
 import { computed, onBeforeUnmount, ref, toValue, watch, type MaybeRefOrGetter } from 'vue';
-import { FPNumber } from '@sora-substrate/sdk';
-import { Operation } from '@sora-substrate/sdk/build/types';
+import { FPNumber } from '@/lib/substrate/sdk';
+import { Operation } from '@/lib/substrate/sdk/types';
 import { useSettingsStore } from '@/stores/settings';
 import type { GetTsPurpose, GetTsSource } from '@/features/misc/lib/getTsFlow';
 import { findGetTsAmountSuggestion, type GetTsAmountSuggestion } from '@/features/misc/lib/getTsAmountSuggestion';

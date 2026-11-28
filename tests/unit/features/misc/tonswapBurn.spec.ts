@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
 import { describe, expect, it, vi } from 'vitest';
 

@@ -1,6 +1,6 @@
 import { decodeAddress } from '@polkadot/util-crypto';
-import { FPNumber } from '@sora-substrate/sdk';
-import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { FPNumber } from '@/lib/substrate/sdk';
+import { BridgeNetworkType } from '@/lib/substrate/sdk/bridgeProxy/consts';
 import { ethers } from 'ethers';
 
 import { ZeroStringValue } from '@/consts';
@@ -11,8 +11,8 @@ import { PredefinedProvider } from '@/utils/connection/evm/providers';
 import { settingsStorage } from '@/utils/storage';
 import { parseStoredJson } from '@/utils/storageParsing';
 
-import type { CodecString } from '@sora-substrate/sdk';
-import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
+import type { CodecString } from '@/lib/substrate/sdk';
+import type { BridgeNetworkId } from '@/lib/substrate/sdk/bridgeProxy/types';
 import type { ChainsProps } from '@walletconnect/ethereum-provider/dist/types/EthereumProvider';
 
 type ethersProvider = ethers.BrowserProvider;

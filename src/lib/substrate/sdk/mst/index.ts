@@ -1,5 +1,5 @@
 import { BN, hexToU8a, u8aToHex } from '@polkadot/util';
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import type { SubmittableExtrinsic } from '@polkadot/api/promise/types';
 import type { KeyringPair } from '@polkadot/keyring/types';
 
@@ -8,7 +8,7 @@ import { api, type Api } from '../api';
 import { KeyringAddress } from '@polkadot/ui-keyring/types';
 import { blake2AsHex } from '@polkadot/util-crypto';
 import { Subject, Subscription } from 'rxjs';
-import { SwapAmount } from '@sora-substrate/types';
+import { SwapAmount } from '@/lib/substrate/types';
 import { XOR } from '../assets/consts';
 import type { Bytes } from '@polkadot/types-codec';
 

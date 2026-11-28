@@ -61,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { computed, reactive, ref, useId, watch } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';

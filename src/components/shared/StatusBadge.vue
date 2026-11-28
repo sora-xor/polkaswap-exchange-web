@@ -17,7 +17,7 @@ import { computed } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
 
 defineOptions({

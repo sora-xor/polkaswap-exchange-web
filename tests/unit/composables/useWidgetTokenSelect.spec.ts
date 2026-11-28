@@ -1,10 +1,10 @@
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { describe, expect, it } from 'vitest';
 import { ref } from 'vue';
 
 import { useWidgetTokenSelect } from '@/composables/useWidgetTokenSelect';
 
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 
 const mockAsset = {
   address: 'mock-address',

@@ -26,7 +26,7 @@ test.beforeAll(async () => {
     format: 'iife',
     globalName: 'ExactGoalStorageTest',
     platform: 'browser',
-    alias: { '@sora-substrate/math': path.resolve('src/lib/substrate/math/index.ts') },
+    alias: { '@': path.resolve('src') },
     logLevel: 'silent',
   });
   bundle = built.outputFiles[0].text;

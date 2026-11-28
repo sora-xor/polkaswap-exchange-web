@@ -1,5 +1,5 @@
-import { Operation, TransactionStatus } from '@sora-substrate/sdk';
-import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { Operation, TransactionStatus } from '@/lib/substrate/sdk';
+import { BridgeTxStatus } from '@/lib/substrate/sdk/bridgeProxy/consts';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/constants';

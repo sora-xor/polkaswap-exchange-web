@@ -75,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import type { FPNumber } from '@sora-substrate/sdk';
+import type { FPNumber } from '@/lib/substrate/sdk';
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';

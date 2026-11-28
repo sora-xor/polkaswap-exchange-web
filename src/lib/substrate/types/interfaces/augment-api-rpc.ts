@@ -99,9 +99,9 @@ import type {
   SyncState,
 } from '@polkadot/types/interfaces/system';
 import type { IExtrinsic, Observable } from '@polkadot/types/types';
-import type { AssetInfo, BalanceInfo } from '@sora-substrate/types/interfaces/assets';
-import type { BasicChannelMessage } from '@sora-substrate/types/interfaces/basicChannel';
-import type { BridgeAppInfo, BridgeAssetInfo, GenericNetworkId } from '@sora-substrate/types/interfaces/bridgeProxy';
+import type { AssetInfo, BalanceInfo } from '@/lib/substrate/types/interfaces/assets';
+import type { BasicChannelMessage } from '@/lib/substrate/types/interfaces/basicChannel';
+import type { BridgeAppInfo, BridgeAssetInfo, GenericNetworkId } from '@/lib/substrate/types/interfaces/bridgeProxy';
 import type {
   AssetKind,
   BridgeNetworkId,
@@ -109,10 +109,10 @@ import type {
   OutgoingRequestEncoded,
   RequestStatus,
   SignatureParams,
-} from '@sora-substrate/types/interfaces/ethBridge';
-import type { IntentivizedChannelMessage } from '@sora-substrate/types/interfaces/intentivizedChannel';
-import type { AuxiliaryDigest } from '@sora-substrate/types/interfaces/leafProvider';
-import type { LPSwapOutcomeInfo } from '@sora-substrate/types/interfaces/liquidityProxy';
+} from '@/lib/substrate/types/interfaces/ethBridge';
+import type { IntentivizedChannelMessage } from '@/lib/substrate/types/interfaces/intentivizedChannel';
+import type { AuxiliaryDigest } from '@/lib/substrate/types/interfaces/leafProvider';
+import type { LPSwapOutcomeInfo } from '@/lib/substrate/types/interfaces/liquidityProxy';
 import type {
   BalancePrecision,
   DEXId,
@@ -122,9 +122,9 @@ import type {
   SwapOutcomeInfo,
   SwapVariant,
   TradingPair,
-} from '@sora-substrate/types/interfaces/runtime';
-import type { CustomInfo } from '@sora-substrate/types/interfaces/template';
-import type { CrowdloanLease } from '@sora-substrate/types/interfaces/vestedRewards';
+} from '@/lib/substrate/types/interfaces/runtime';
+import type { CustomInfo } from '@/lib/substrate/types/interfaces/template';
+import type { CrowdloanLease } from '@/lib/substrate/types/interfaces/vestedRewards';
 
 export type __AugmentedRpc = AugmentedRpc<() => unknown>;
 

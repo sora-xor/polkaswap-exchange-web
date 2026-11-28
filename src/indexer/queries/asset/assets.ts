@@ -1,11 +1,11 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { retryOnEmptyResult } from '@/indexer/queries/retry';
 import { gql } from '@urql/core';
 import { readMarketPrice, valueAtMarketPrice } from '@/lib/soraneo-wallet/src/services/indexer/marketPrice';
 import { fetchByAssetIds, marketRequestOptions } from '@/indexer/queries/asset/batches';
 
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 import type { AssetEntity, ConnectionQueryResponse } from '@/lib/soraneo-wallet/src/services/indexer/types';
 
 export type TokenData = {

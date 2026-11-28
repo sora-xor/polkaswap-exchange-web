@@ -1,4 +1,4 @@
-import { Operation } from '@sora-substrate/sdk';
+import { Operation } from '@/lib/substrate/sdk';
 import { gql } from '@urql/core';
 
 import { PageInfoFragment } from '../../fragments/pageInfo';

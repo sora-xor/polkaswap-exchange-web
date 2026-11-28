@@ -1,7 +1,7 @@
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { computed, ref, unref } from 'vue';
 
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 import type { MaybeRef, Ref } from 'vue';
 
 type BooleanSource = Ref<boolean | undefined> | (() => boolean | undefined) | undefined;

@@ -1,9 +1,9 @@
 import type { Node } from '@/types/nodes';
 
-import type { CodecString } from '@sora-substrate/sdk';
-import type { BridgeTxDirection } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
-import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
+import type { CodecString } from '@/lib/substrate/sdk';
+import type { BridgeTxDirection } from '@/lib/substrate/sdk/bridgeProxy/consts';
+import type { SubNetwork } from '@/lib/substrate/sdk/bridgeProxy/sub/types';
+import type { BridgeNetworkId } from '@/lib/substrate/sdk/bridgeProxy/types';
 
 export interface NetworkData {
   id: BridgeNetworkId;

@@ -64,20 +64,7 @@ function loadReuse() {
   return (reuseModule ??= (async () => {
     const hook = registerHooks({
       resolve(specifier, context, next) {
-        const match =
-          /^@sora-substrate\/(math|sdk|liquidity-proxy|api|connection|types|type-definitions)(?:\/(.*))?$/.exec(
-            specifier
-          );
-        const mapped = specifier.startsWith('@/')
-          ? join(ROOT, 'src', specifier.slice(2))
-          : match
-            ? join(
-                ROOT,
-                'src/lib/substrate',
-                match[1],
-                !match[2] || match[2] === 'build' ? 'index.ts' : match[2].replace(/^build\//, '')
-              )
-            : undefined;
+        const mapped = specifier.startsWith('@/') ? join(ROOT, 'src', specifier.slice(2)) : undefined;
         return next(mapped ? pathToFileURL(mapped).href : specifier, context);
       },
     });

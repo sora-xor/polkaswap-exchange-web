@@ -1,6 +1,6 @@
 import { assert } from '@polkadot/util';
 import { combineLatest, map, distinctUntilChanged, Observable, startWith, catchError, of, filter } from 'rxjs';
-import { NumberLike, FPNumber, CodecString } from '@sora-substrate/math';
+import { NumberLike, FPNumber, CodecString } from '@/lib/substrate/math';
 import {
   quote,
   LiquiditySourceTypes,
@@ -8,7 +8,7 @@ import {
   newTrivial,
   getAssetsLiquiditySources,
   getChameleonPools,
-} from '@sora-substrate/liquidity-proxy';
+} from '@/lib/substrate/liquidity-proxy';
 import type {
   PrimaryMarketsEnabledAssets,
   QuotePayload,
@@ -18,8 +18,8 @@ import type {
   OrderBookAggregated,
   LPRewardsInfo,
   LiquidityProviderFee,
-} from '@sora-substrate/liquidity-proxy';
-import type { Balance, LPSwapOutcomeInfo, LiquiditySourceType } from '@sora-substrate/types';
+} from '@/lib/substrate/liquidity-proxy';
+import type { Balance, LPSwapOutcomeInfo, LiquiditySourceType } from '@/lib/substrate/types';
 import { Codec } from '@polkadot/types/types';
 import type {
   CommonPrimitivesAssetId32,

@@ -48,9 +48,9 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, useId, watch } from 'vue';
-import { FPNumber } from '@sora-substrate/sdk';
-import { DAI, XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { Operation } from '@sora-substrate/sdk/build/types';
+import { FPNumber } from '@/lib/substrate/sdk';
+import { DAI, XOR } from '@/lib/substrate/sdk/assets/consts';
+import { Operation } from '@/lib/substrate/sdk/types';
 import { useTranslation } from '@/composables/useTranslation';
 import { useSettingsStore } from '@/stores/settings';
 import { api } from '@/lib/soraneo-wallet/src/api';

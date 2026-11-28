@@ -60,8 +60,8 @@
 </template>
 
 <script lang="ts" setup>
-import { FPNumber, Operation, type CodecString } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber, Operation, type CodecString } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { computed, ref, toRefs, watch, type PropType } from 'vue';
 
 import TokenInput from '@/components/shared/Input/TokenInput.vue';
@@ -76,8 +76,8 @@ import { useDemeterPoolStatus } from '../composables/useDemeterPoolStatus';
 import { useDemeterPoolCard } from '../composables/useDemeterPoolCard';
 
 import type { DemeterAsset, DemeterPool, DemeterAccountPool } from '../types';
-import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountLiquidity } from '@/lib/substrate/sdk/poolXyk/types';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 import type { Nullable } from '@/types/common';
 import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';

@@ -46,7 +46,7 @@ import { usePoolStore } from '@/stores/pool';
 import { useSettingsStore } from '@/stores/settings';
 
 import type { Nullable } from '@/types/common';
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
 import WalletComponentAccountConfirmationOption from '@/lib/soraneo-wallet/src/components/Account/Settings/ConfirmationOption.vue';

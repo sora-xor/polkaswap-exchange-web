@@ -23,7 +23,7 @@ import { toRefs } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 import { FontSizeRate } from '@/lib/soraneo-wallet/src/consts';
 
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 
 defineOptions({

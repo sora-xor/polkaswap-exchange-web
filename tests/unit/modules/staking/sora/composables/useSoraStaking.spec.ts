@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { createPinia, setActivePinia } from 'pinia';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 

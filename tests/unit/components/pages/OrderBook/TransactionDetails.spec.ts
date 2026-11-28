@@ -1,5 +1,5 @@
-import { PriceVariant } from '@sora-substrate/liquidity-proxy';
-import { Operation } from '@sora-substrate/sdk';
+import { PriceVariant } from '@/lib/substrate/liquidity-proxy';
+import { Operation } from '@/lib/substrate/sdk';
 import { mount } from '@vue/test-utils';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -13,7 +13,7 @@ vi.mock('@/stores/wallet', () => ({
 }));
 
 vi.mock('@/composables/useFormattedAmount', async () => {
-  const { FPNumber } = await vi.importActual<typeof import('@sora-substrate/sdk')>('@sora-substrate/sdk');
+  const { FPNumber } = await vi.importActual<typeof import('@/lib/substrate/sdk')>('@/lib/substrate/sdk');
 
   return {
     useFormattedAmount: () => ({

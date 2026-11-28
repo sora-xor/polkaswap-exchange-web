@@ -19,7 +19,7 @@ test.beforeAll(async () => {
     format: 'iife',
     globalName: 'BotGoalStorageTest',
     platform: 'browser',
-    alias: { '@sora-substrate/math': path.resolve('src/lib/substrate/math/index.ts') },
+    alias: { '@': path.resolve('src') },
     logLevel: 'silent',
   });
   bundle = result.outputFiles[0].text;

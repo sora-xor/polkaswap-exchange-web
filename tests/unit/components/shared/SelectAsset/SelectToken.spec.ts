@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick, ref } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { AccountAsset, Asset, RegisteredAccountAsset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset, Asset, RegisteredAccountAsset, Whitelist } from '@/lib/substrate/sdk/assets/types';
 import selectTokenSource from '@/components/shared/SelectAsset/SelectToken.vue?raw';
 
 const searchFocusSpy = vi.hoisted(() => vi.fn());

@@ -115,8 +115,8 @@
 </template>
 
 <script lang="ts" setup>
-import { Operation } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { Operation } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import { requireEntitlements } from '@/indexer/queries/capabilities';
 import { computed, getCurrentInstance, nextTick, ref, toRefs, watch } from 'vue';
@@ -132,8 +132,8 @@ import { useWalletStore } from '@/stores/wallet';
 import { asZeroValue } from '@/utils';
 import { createSoraNexusXorBurnRemark, normalizeSoraNexusAccountId } from '@/utils/soraNexusAccount';
 
-import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
-import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { CodecString, NetworkFeesObject } from '@/lib/substrate/sdk';
+import type { AccountAsset, Asset } from '@/lib/substrate/sdk/assets/types';
 import DialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 import InfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 

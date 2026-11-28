@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import ChartSkeleton from '@/components/shared/Chart/ChartSkeleton.vue';
 import TokenSelectButton from '@/components/shared/Input/TokenSelectButton.vue';
 import PriceChange from '@/components/shared/PriceChange.vue';
@@ -69,7 +69,7 @@ import type { AmountWithSuffix } from '@/types/formats';
 import type { Nullable } from '@/types/common';
 import { calcPriceChange, formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
 
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 
 type ChartData = {
   timestamp: number;

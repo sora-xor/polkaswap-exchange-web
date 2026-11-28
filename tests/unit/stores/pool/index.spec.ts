@@ -1,5 +1,5 @@
-import { FPNumber as MathFPNumber } from '@sora-substrate/math';
-import { FPNumber as SDKFPNumber } from '@sora-substrate/sdk';
+import { FPNumber as MathFPNumber } from '@/lib/substrate/math';
+import { FPNumber as SDKFPNumber } from '@/lib/substrate/sdk';
 import { createPinia, setActivePinia } from 'pinia';
 import { ReplaySubject } from 'rxjs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';

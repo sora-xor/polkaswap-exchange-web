@@ -1,13 +1,13 @@
 import { computed, ref, watch } from 'vue';
 import { defineStore } from 'pinia';
 import debounce from 'lodash/fp/debounce';
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import { Operation, type HistoryItem, type NetworkFeesObject } from '@/lib/substrate/sdk/types';
 
 import { DefaultPassphraseTimeout } from '@/consts';
 import type { EditableAlertObject, WalletAssetFilters } from '@/consts';
 import type { Theme } from '@/consts/theme';
-import { excludePoolXYKAssets } from '@sora-substrate/sdk/build/assets';
+import { excludePoolXYKAssets } from '@/lib/substrate/sdk/assets';
 import { api as walletApi } from '@/lib/soraneo-wallet/src/api';
 import {
   accountIdBasedOperations,
@@ -97,7 +97,7 @@ import type {
   RegisteredAccountAsset,
   Whitelist,
   WhitelistArrayItem,
-} from '@sora-substrate/sdk/build/assets/types';
+} from '@/lib/substrate/sdk/assets/types';
 
 type AssetsTable = Record<string, Asset | RegisteredAccountAsset>;
 type AccountAssetsTable = Record<string, AccountAsset>;

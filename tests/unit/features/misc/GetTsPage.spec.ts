@@ -1,7 +1,7 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { reactive, ref } from 'vue';
-import { DAI, ETH, XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { DAI, ETH, XOR } from '@/lib/substrate/sdk/assets/consts';
 import GetTsPage from '@/features/misc/pages/GetTsPage.vue';
 import { SoraNetwork } from '@/consts';
 import { emptyGetTsPlan, parseGetTsPlan, patchGetTsPlan } from '@/features/misc/lib/getTsPlan';

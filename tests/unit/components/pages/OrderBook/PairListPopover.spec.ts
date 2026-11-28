@@ -1,13 +1,13 @@
-import { OrderBookStatus } from '@sora-substrate/liquidity-proxy';
-import { FPNumber } from '@sora-substrate/sdk';
+import { OrderBookStatus } from '@/lib/substrate/liquidity-proxy';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { mount } from '@vue/test-utils';
 import { computed } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import pairListPopoverSource from '@/features/misc/components/order-book/Popovers/PairListPopover.vue?raw';
 
-import type { OrderBook, OrderBookId } from '@sora-substrate/liquidity-proxy';
+import type { OrderBook, OrderBookId } from '@/lib/substrate/liquidity-proxy';
 import type { OrderBookStats } from '@/types/orderBook';
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 const pairListMocks = vi.hoisted(() => ({
   orderBooks: {} as Record<string, OrderBook>,

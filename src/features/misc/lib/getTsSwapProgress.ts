@@ -1,5 +1,5 @@
-import { FPNumber, Operation, type HistoryItem } from '@sora-substrate/sdk';
-import { DAI, ETH, XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber, Operation, type HistoryItem } from '@/lib/substrate/sdk';
+import { DAI, ETH, XOR } from '@/lib/substrate/sdk/assets/consts';
 import { areBridgeExternalAccountsEqual } from '@/utils/bridge/common/account';
 import { isGetTsTransactionReference } from './getTsPlan';
 import { isPrunedGetTsSwapStateError } from './getTsSwapArchive';

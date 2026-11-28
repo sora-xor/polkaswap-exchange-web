@@ -1,7 +1,7 @@
-import { FPNumber } from '@sora-substrate/sdk';
-import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { EvmNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/evm/consts';
-import { EthAssetKind } from '@sora-substrate/sdk/build/bridgeProxy/eth/consts';
+import { FPNumber } from '@/lib/substrate/sdk';
+import { BridgeNetworkType } from '@/lib/substrate/sdk/bridgeProxy/consts';
+import { EvmNetworkId } from '@/lib/substrate/sdk/bridgeProxy/evm/consts';
+import { EthAssetKind } from '@/lib/substrate/sdk/bridgeProxy/eth/consts';
 import { nextTick, reactive } from 'vue';
 import { createPinia, setActivePinia } from 'pinia';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';

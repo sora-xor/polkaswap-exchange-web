@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts" setup>
-import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { BridgeNetworkType } from '@/lib/substrate/sdk/bridgeProxy/consts';
 import { computed } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
@@ -39,8 +39,8 @@ import { useWeb3Store } from '@/stores/web3';
 import { useNetworkFormatter } from '@/composables/useNetworkFormatter';
 
 import type { AvailableNetwork } from '@/stores/web3';
-import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
-import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
+import type { SubNetwork } from '@/lib/substrate/sdk/bridgeProxy/sub/types';
+import type { BridgeNetworkId } from '@/lib/substrate/sdk/bridgeProxy/types';
 import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 import WalletComponentExternalLink from '@/lib/soraneo-wallet/src/components/shared/ExternalLink.vue';
 import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';

@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 import NftTokenLogo from '@/lib/soraneo-wallet/src/components/NftTokenLogo.vue';
 import { IPFS_GATEWAY_BASE_URL } from '@/utils/ipfs';
 
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 
 describe('NftTokenLogo', () => {
   it.each(['../api/v0/version', 'QmToken/%2e%2e/api/v0/version', 'https://example.com/logo.png'])(

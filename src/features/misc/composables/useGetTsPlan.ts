@@ -1,7 +1,7 @@
 import { computed, readonly, shallowRef, toValue, type MaybeRefOrGetter } from 'vue';
 import type { GetTsPurpose } from '@/features/misc/lib/getTsFlow';
-import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
-import type { HistoryItem } from '@sora-substrate/sdk';
+import type { EthHistory } from '@/lib/substrate/sdk/bridgeProxy/eth/types';
+import type { HistoryItem } from '@/lib/substrate/sdk';
 import { createGetTsSwapDraft, matchGetTsSwapDraft } from '@/features/misc/lib/getTsSwapDraft';
 import {
   createGetTsBridgeDraft,

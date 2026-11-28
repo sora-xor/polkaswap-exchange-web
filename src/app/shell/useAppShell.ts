@@ -45,9 +45,9 @@ import { resolveRealtimeConnectionCap } from '@/utils/realtimeConnectionCap';
 import type { FeatureFlags } from '@/stores/settings/types';
 import type { EthBridgeSettings, SubNetworkApps } from '@/stores/web3/types';
 import type { Nullable } from '@/types/common';
-import type { HistoryItem } from '@sora-substrate/sdk';
-import type { WhitelistArrayItem } from '@sora-substrate/sdk/build/assets/types';
-import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
+import type { HistoryItem } from '@/lib/substrate/sdk';
+import type { WhitelistArrayItem } from '@/lib/substrate/sdk/assets/types';
+import type { EvmNetwork } from '@/lib/substrate/sdk/bridgeProxy/evm/types';
 
 type ApiModule = typeof import('@/api');
 type AlertsServiceModule = typeof import('@/lib/soraneo-wallet/src/services/alerts');

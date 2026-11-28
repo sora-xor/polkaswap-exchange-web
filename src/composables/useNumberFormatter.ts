@@ -1,7 +1,7 @@
-import { FPNumber } from '@sora-substrate/sdk';
-import { MaxTotalSupply } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber } from '@/lib/substrate/sdk';
+import { MaxTotalSupply } from '@/lib/substrate/sdk/assets/consts';
 
-import type { CodecString } from '@sora-substrate/sdk';
+import type { CodecString } from '@/lib/substrate/sdk';
 
 /**
  * Numeric helpers extracted from the wallet's `NumberFormatterMixin`.

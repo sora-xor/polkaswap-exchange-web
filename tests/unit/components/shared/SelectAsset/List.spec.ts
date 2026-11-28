@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import { defineComponent, h } from 'vue';
 import { describe, expect, it, beforeEach, vi } from 'vitest';
 
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 const formattingMocks = vi.hoisted(() => ({
   formatAssetBalance: vi.fn(() => '123.45'),

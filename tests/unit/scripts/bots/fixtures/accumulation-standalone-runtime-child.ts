@@ -1,9 +1,10 @@
 /** Actual Node/tsx import smoke. All evidence below is invented; no model, wallet or transport is invoked. */
 import assert from 'node:assert/strict';
-import { FPNumber } from '@sora-substrate/math';
-import { FPNumber as SubpathFPNumber } from '@sora-substrate/math/index';
-import { FPNumber as SourceFPNumber } from '@/lib/substrate/math';
-import { Consts } from '@sora-substrate/liquidity-proxy';
+import { FPNumber } from '@/lib/substrate/math';
+import { FPNumber as SubpathFPNumber } from '@/lib/substrate/math/index';
+// Reached by file path, not through the alias: equality below proves `@/*` resolves to this in-tree module.
+import { FPNumber as SourceFPNumber } from '../../../../../src/lib/substrate/math';
+import { Consts } from '@/lib/substrate/liquidity-proxy';
 import { createAccumulationNativeMarkFixture } from './accumulation-native-mark-fixture';
 import { createAccumulationAdmissionResultFixture } from './accumulation-admission-result-fixture';
 import {
@@ -63,7 +64,7 @@ for (const result of [fresh, expired, actual]) {
 process.stdout.write(
   JSON.stringify({
     kind: 'accumulation-standalone-runtime-smoke-v1',
-    aliases: ['@/*', '@sora-substrate/math', '@sora-substrate/math/*', '@sora-substrate/liquidity-proxy'],
+    aliases: ['@/*'],
     amountCodec: '1250000000000000000',
     nativeMarkOwned: true,
     admissionOwned: true,

@@ -1,6 +1,6 @@
 import { flushPromises, mount } from '@vue/test-utils';
-import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
+import { BridgeNetworkType } from '@/lib/substrate/sdk/bridgeProxy/consts';
+import { SubNetworkId } from '@/lib/substrate/sdk/bridgeProxy/sub/consts';
 import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, h, nextTick, onBeforeUpdate, reactive, ref, type Ref } from 'vue';
 import { createPinia, setActivePinia } from 'pinia';

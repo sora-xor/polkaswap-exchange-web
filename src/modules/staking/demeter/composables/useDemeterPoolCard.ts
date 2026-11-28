@@ -1,4 +1,4 @@
-import { FPNumber, Operation } from '@sora-substrate/sdk';
+import { FPNumber, Operation } from '@/lib/substrate/sdk';
 import { computed } from 'vue';
 
 import { ZeroStringValue } from '@/consts';
@@ -8,8 +8,8 @@ import type { Nullable } from '@/types/common';
 import { hasInsufficientXorForFee } from '@/utils';
 
 import type { DemeterPoolStatusComposable } from './useDemeterPoolStatus';
-import type { NetworkFeesObject, CodecString } from '@sora-substrate/sdk';
-import type { Asset, AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { NetworkFeesObject, CodecString } from '@/lib/substrate/sdk';
+import type { Asset, AccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 /**
  * Extends `useDemeterPoolStatus` with card-specific projections that replaced `PoolCardMixin`.

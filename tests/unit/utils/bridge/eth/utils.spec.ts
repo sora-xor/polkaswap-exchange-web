@@ -23,7 +23,7 @@ const ethersUtilMock = vi.hoisted(() => ({
   isNativeEvmTokenAddress: vi.fn(),
 }));
 
-vi.mock('@sora-substrate/sdk', async () => ({
+vi.mock('@/lib/substrate/sdk', async () => ({
   Operation: {
     EthBridgeIncoming: 'EthBridgeIncoming',
     EthBridgeOutgoing: 'EthBridgeOutgoing',
@@ -31,7 +31,7 @@ vi.mock('@sora-substrate/sdk', async () => ({
   FPNumber: (await import('@/lib/substrate/math')).FPNumber,
 }));
 
-vi.mock('@sora-substrate/sdk/build/bridgeProxy/consts', () => ({
+vi.mock('@/lib/substrate/sdk/bridgeProxy/consts', () => ({
   BridgeTxStatus: {
     Broken: 'Broken',
     Done: 'Done',
@@ -41,7 +41,7 @@ vi.mock('@sora-substrate/sdk/build/bridgeProxy/consts', () => ({
   },
 }));
 
-vi.mock('@sora-substrate/sdk/build/bridgeProxy/eth/consts', () => ({
+vi.mock('@/lib/substrate/sdk/bridgeProxy/eth/consts', () => ({
   EthAssetKind: {
     Sidechain: 'Sidechain',
     SidechainOwned: 'SidechainOwned',
@@ -84,8 +84,8 @@ vi.mock('@/utils/ethers-util', () => ({
 }));
 
 import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/constants';
-import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { EthCurrencyType } from '@sora-substrate/sdk/build/bridgeProxy/eth/consts';
+import { BridgeTxStatus } from '@/lib/substrate/sdk/bridgeProxy/consts';
+import { EthCurrencyType } from '@/lib/substrate/sdk/bridgeProxy/eth/consts';
 import {
   findTransaction,
   getIncomingEvmTransactionData,

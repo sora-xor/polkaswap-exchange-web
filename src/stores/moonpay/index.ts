@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { watch } from 'vue';
 
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { ethers } from 'ethers';
 
 import { EthAddress } from '@/consts';
@@ -18,7 +18,7 @@ import ethersUtil from '@/utils/ethers-util';
 import type { MoonpayNotifications } from '@/features/deposit/components/moonpay/consts';
 import type { Nullable, FnWithoutArgs } from '@/types/common';
 
-import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
+import type { EthHistory } from '@/lib/substrate/sdk/bridgeProxy/eth/types';
 
 const POLLING_INTERVAL = 15_000;
 // Request ownership stays in memory and is never part of persisted provider state.

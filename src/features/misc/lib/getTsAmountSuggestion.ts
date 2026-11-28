@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { isGetTsPlanAmount, type GetTsPlanPreviewResult, type GetTsPlanRequest } from './getTsPlanQuote';
 
 export type GetTsAmountSuggestion =

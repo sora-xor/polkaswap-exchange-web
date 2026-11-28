@@ -104,7 +104,7 @@
 </template>
 
 <script setup lang="ts">
-import { api } from '@sora-substrate/sdk';
+import { api } from '@/lib/substrate/sdk';
 import { computed, onMounted, ref, type Component } from 'vue';
 
 import { getWalletCurrentParams } from '@/platform/wallet/navigation';
@@ -132,7 +132,7 @@ import WalletHistory from './WalletHistory.vue';
 import WalletTransactionDetails from './WalletTransactionDetails.vue';
 
 import type { WalletPermissions } from '../consts';
-import type { HistoryItem } from '@sora-substrate/sdk';
+import type { HistoryItem } from '@/lib/substrate/sdk';
 
 const emit = defineEmits<{
   swap: [asset: unknown];

@@ -105,7 +105,7 @@
 </template>
 
 <script lang="ts" setup>
-import { BalanceType, XOR, KUSD, VXOR } from '@sora-substrate/sdk/build/assets/consts';
+import { BalanceType, XOR, KUSD, VXOR } from '@/lib/substrate/sdk/assets/consts';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { categoriesPointSystem, pointSystemCategory } from '@/consts/pointSystem';
@@ -126,8 +126,8 @@ import { useInternalConnect } from '@/composables/useInternalConnect';
 import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
 
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { AccountLiquidity } from '@/lib/substrate/sdk/poolXyk/types';
 import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
 import FirstTxCard from '@/features/rewards/components/point-system/FirstTxCard.vue';

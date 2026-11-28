@@ -1,5 +1,5 @@
-import { Operation } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { Operation } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { describe, expect, it, vi } from 'vitest';
 
 import {

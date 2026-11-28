@@ -1,5 +1,5 @@
-import { FPNumber } from '@sora-substrate/math';
-import { DAI, KUSD, XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber } from '@/lib/substrate/math';
+import { DAI, KUSD, XOR } from '@/lib/substrate/sdk/assets/consts';
 import { describe, expect, it, vi } from 'vitest';
 
 import { getKensetsuAmountSortValue, getKensetsuFiatAmount } from '@/modules/vault/utils/fiat';

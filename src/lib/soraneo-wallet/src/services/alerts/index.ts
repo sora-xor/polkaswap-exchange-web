@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { Subject } from 'rxjs';
 
 import { resolveGlobalPinia } from '@/plugins/pinia';
@@ -8,7 +8,7 @@ import { getBase64Icon } from '../../util/image';
 
 import type { Alert } from '../../types/common';
 import type { FiatPriceObject } from '../indexer/types';
-import type { WhitelistArrayItem } from '@sora-substrate/sdk/build/assets/types';
+import type { WhitelistArrayItem } from '@/lib/substrate/sdk/assets/types';
 
 const resolveWalletStore = () => {
   try {

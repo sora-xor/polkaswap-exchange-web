@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { Interface } from 'ethers';
 
 import { GET_TS_CARD_DAI, GET_TS_HASHI_DAI_BRIDGE } from './getTsCardReadiness';

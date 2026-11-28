@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { readMarketPrice, valueAtMarketPrice } from '@/lib/soraneo-wallet/src/services/indexer/marketPrice';
 
 describe('market quote availability', () => {

@@ -1,4 +1,4 @@
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 
 type RouteTokenPair = {
   firstAddress: string;

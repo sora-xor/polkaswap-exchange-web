@@ -3,7 +3,7 @@ import { AssetRegistrationStreamSubscription } from '../../subscriptions/stream'
 
 import { PolkaswapBaseModule } from './_base';
 
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 
 export class PolkaswapAssetModule extends PolkaswapBaseModule {
   public createNewAssetsSubscription(

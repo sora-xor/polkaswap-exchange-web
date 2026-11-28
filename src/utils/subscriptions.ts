@@ -1,6 +1,6 @@
 import { api } from '@/lib/soraneo-wallet/src/api';
 
-import type { AccountBalance, AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountBalance, AccountAsset } from '@/lib/substrate/sdk/assets/types';
 import type { Observable, Subscription } from 'rxjs';
 
 export const FIRST_EMISSION_TIMEOUT_MS = 4_000;

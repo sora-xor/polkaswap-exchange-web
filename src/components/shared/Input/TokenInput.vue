@@ -134,7 +134,7 @@
 </template>
 
 <script lang="ts" setup>
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { useResizeObserver } from '@vueuse/core';
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, useId, useSlots, watch } from 'vue';
 
@@ -145,8 +145,8 @@ import { ZeroStringValue } from '@/consts';
 import { useWalletStore } from '@/stores/wallet';
 import { formatDecimalDisplay } from '@/lib/soramitsu-ui/components/Input/amountDisplay';
 
-import type { CodecString } from '@sora-substrate/sdk';
-import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { CodecString } from '@/lib/substrate/sdk';
+import type { RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
 import type { Nullable } from '@/types/common';
 import type SFloatInput from '@/lib/soramitsu-ui/components/Input/SFloatInput.vue';
 import WalletFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';

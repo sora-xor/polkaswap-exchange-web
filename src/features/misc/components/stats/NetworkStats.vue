@@ -89,7 +89,7 @@
 </template>
 
 <script setup lang="ts">
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import { computed, getCurrentScope, onMounted, onScopeDispose, ref, watch } from 'vue';
 
 import PriceChange from '@/components/shared/PriceChange.vue';

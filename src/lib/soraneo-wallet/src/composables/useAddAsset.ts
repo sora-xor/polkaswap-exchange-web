@@ -8,7 +8,7 @@ import { useLoading } from './useLoading';
 import { useNotification } from './useNotification';
 
 import type { WalletNavigationTarget } from '@/platform/wallet/navigation';
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 
 export function useAddAsset() {
   const walletStore = useWalletStore();

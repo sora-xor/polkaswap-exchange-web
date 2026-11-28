@@ -1,4 +1,4 @@
-import type { OrderBook } from '@sora-substrate/liquidity-proxy';
+import type { OrderBook } from '@/lib/substrate/liquidity-proxy';
 
 export const MAX_ORDERS_PER_SIDE = 1024;
 export const MAX_ORDERS_PER_USER = 1024;

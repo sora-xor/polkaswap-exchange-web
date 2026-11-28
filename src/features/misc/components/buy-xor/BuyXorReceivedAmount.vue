@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { computed, nextTick, onMounted, ref } from 'vue';
 
 import { BUY_XOR_JOURNEY_LOGOS, journeyLogoUrl } from '@/features/misc/lib/buyXorJourneyCoins';

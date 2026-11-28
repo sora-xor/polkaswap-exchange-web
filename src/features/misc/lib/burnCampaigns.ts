@@ -1,10 +1,10 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { u8aToHex } from '@polkadot/util';
 import { decodeAddress } from '@polkadot/util-crypto';
 
 import solswapMarkUrl from '@/assets/img/solswap-mark.svg?url';
 
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 import type { Nullable } from '@/types/common';
 import type { XorBurn } from '@/indexer/queries/burnXor';
 

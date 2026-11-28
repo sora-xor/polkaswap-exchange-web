@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 
 /**
  * An exact zero is an observed quote. Older market rows also used zero for unsourced or

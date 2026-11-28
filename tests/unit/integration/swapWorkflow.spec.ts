@@ -31,7 +31,7 @@ const assetDataByAddress = vi.hoisted(() =>
   }))
 );
 
-vi.mock('@sora-substrate/sdk/build/dex/consts', () => ({
+vi.mock('@/lib/substrate/sdk/dex/consts', () => ({
   DexId: { XOR: 0 },
 }));
 

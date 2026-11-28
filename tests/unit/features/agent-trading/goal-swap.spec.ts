@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { beforeAll, describe, expect, it, vi } from 'vitest';
-import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
+import { LiquiditySourceTypes } from '@/lib/substrate/liquidity-proxy/consts';
 import {
   GOAL_SWAP_EXECUTION_PROTOCOL,
   projectGoalSwapEstimate,

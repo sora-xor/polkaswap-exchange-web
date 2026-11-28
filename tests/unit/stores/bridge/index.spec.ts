@@ -1,9 +1,9 @@
-import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { DAI, ETH, XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { EvmNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/evm/consts';
-import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
-import { EthAssetKind, EthCurrencyType } from '@sora-substrate/sdk/build/bridgeProxy/eth/consts';
+import { FPNumber, Operation } from '@/lib/substrate/sdk';
+import { DAI, ETH, XOR } from '@/lib/substrate/sdk/assets/consts';
+import { BridgeNetworkType, BridgeTxStatus } from '@/lib/substrate/sdk/bridgeProxy/consts';
+import { EvmNetworkId } from '@/lib/substrate/sdk/bridgeProxy/evm/consts';
+import { SubNetworkId } from '@/lib/substrate/sdk/bridgeProxy/sub/consts';
+import { EthAssetKind, EthCurrencyType } from '@/lib/substrate/sdk/bridgeProxy/eth/consts';
 import { createPinia, setActivePinia } from 'pinia';
 import { of } from 'rxjs';
 import { computed, markRaw, shallowRef } from 'vue';
@@ -355,10 +355,8 @@ vi.mock('@/utils/bridge/common/utils', async () => {
   };
 });
 
-vi.mock('@sora-substrate/sdk/build/assets', async () => {
-  const actual = await vi.importActual<typeof import('@sora-substrate/sdk/build/assets')>(
-    '@sora-substrate/sdk/build/assets'
-  );
+vi.mock('@/lib/substrate/sdk/assets', async () => {
+  const actual = await vi.importActual<typeof import('@/lib/substrate/sdk/assets')>('@/lib/substrate/sdk/assets');
 
   return {
     ...actual,

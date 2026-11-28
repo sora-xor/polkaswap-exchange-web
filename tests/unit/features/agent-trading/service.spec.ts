@@ -1,5 +1,5 @@
-import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import { FPNumber } from '@sora-substrate/sdk';
+import { LiquiditySourceTypes } from '@/lib/substrate/liquidity-proxy/consts';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { of } from 'rxjs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -7,7 +7,7 @@ import { createPolkaswapAgentApi, type AgentTradingDependencies } from '@/featur
 import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { Operation } from '@/lib/substrate/sdk/types';
 
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 import type { HistoryItem } from '@/lib/substrate/sdk/types';
 
 const createAsset = (address: string, symbol: string): Asset => ({

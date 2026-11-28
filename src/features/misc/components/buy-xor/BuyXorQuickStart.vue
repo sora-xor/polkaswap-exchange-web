@@ -161,8 +161,8 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, useId, watch } from 'vue';
-import { FPNumber } from '@sora-substrate/sdk';
-import { Operation } from '@sora-substrate/sdk/build/types';
+import { FPNumber } from '@/lib/substrate/sdk';
+import { Operation } from '@/lib/substrate/sdk/types';
 import { useTranslation } from '@/composables/useTranslation';
 import { displayGetTsAmount, useGetTsPlanPreview } from '@/features/misc/composables/useGetTsPlanPreview';
 import { findBuyXorMaxDai, roundBuyXorPayment, scaleBuyXorMaxPayment } from '@/features/misc/lib/buyXorMaxAmount';

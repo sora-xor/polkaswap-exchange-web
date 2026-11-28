@@ -1,10 +1,6 @@
-import type { FPNumber } from '@sora-substrate/math';
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type {
-  DemeterPool,
-  DemeterAccountPool,
-  DemeterRewardToken,
-} from '@sora-substrate/sdk/build/demeterFarming/types';
+import type { FPNumber } from '@/lib/substrate/math';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { DemeterPool, DemeterAccountPool, DemeterRewardToken } from '@/lib/substrate/sdk/demeterFarming/types';
 
 export type DemeterAsset = AccountAsset & {
   price: FPNumber;

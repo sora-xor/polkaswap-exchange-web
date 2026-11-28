@@ -10,7 +10,7 @@ import { useNotification } from './useNotification';
 
 import type { WalletNavigationTarget } from '@/platform/wallet/navigation';
 import type { AssetsTable } from '../types/common';
-import type { Asset, AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset, AccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 const reject = (message: string) => {
   throw new Error(`[QR Code]: ${message}`);

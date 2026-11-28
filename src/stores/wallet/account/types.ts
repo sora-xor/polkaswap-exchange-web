@@ -8,7 +8,7 @@ import type {
   Blacklist,
   UnlockPeriodDays,
   WhitelistArrayItem,
-} from '@sora-substrate/sdk/build/assets/types';
+} from '@/lib/substrate/sdk/assets/types';
 import type { Subscription, Subject } from 'rxjs';
 
 export type CreateAccountArgs = {

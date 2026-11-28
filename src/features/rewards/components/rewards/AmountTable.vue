@@ -110,8 +110,8 @@ import { asZeroValue } from '@/utils';
 
 import RewardsItemTooltip from './ItemTooltip.vue';
 
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
-import type { RewardInfo, RewardTypedEvent } from '@sora-substrate/sdk/build/rewards/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
+import type { RewardInfo, RewardTypedEvent } from '@/lib/substrate/sdk/rewards/types';
 import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 import WalletComponentFormattedAmountWithFiatValue from '@/lib/soraneo-wallet/src/components/FormattedAmountWithFiatValue.vue';
 

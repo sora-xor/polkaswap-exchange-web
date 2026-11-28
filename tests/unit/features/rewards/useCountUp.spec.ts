@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { computed, effectScope, nextTick, ref } from 'vue';
 

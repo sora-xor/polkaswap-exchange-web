@@ -1,7 +1,7 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { reactive } from 'vue';
-import { Operation } from '@sora-substrate/sdk/build/types';
+import { Operation } from '@/lib/substrate/sdk/types';
 import TonswapLiquidityCheck from '@/features/misc/components/burn/TonswapLiquidityCheck.vue';
 
 const state = vi.hoisted(() => ({

@@ -12,8 +12,8 @@ import type {
 } from '@polkadot/types/lookup';
 import type { Option } from '@polkadot/types-codec';
 import type { ApiPromise, ApiRx } from '@polkadot/api';
-import type { CodecString } from '@sora-substrate/math';
-import type { GenericNetworkId } from '@sora-substrate/types';
+import type { CodecString } from '@/lib/substrate/math';
+import type { GenericNetworkId } from '@/lib/substrate/types';
 
 import { toAssetId } from '../assets';
 

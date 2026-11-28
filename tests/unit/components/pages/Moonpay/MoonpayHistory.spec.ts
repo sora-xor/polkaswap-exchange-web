@@ -6,7 +6,7 @@ import { MoonpayTransactionStatus } from '@/utils/moonpay';
 
 import type { Nullable } from '@/types/common';
 import type { MoonpayTransaction } from '@/utils/moonpay';
-import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
+import type { EthHistory } from '@/lib/substrate/sdk/bridgeProxy/eth/types';
 
 const shared = vi.hoisted(() => ({
   ctx: null as Nullable<Awaited<ReturnType<typeof createContext>>>,

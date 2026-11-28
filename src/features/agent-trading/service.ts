@@ -1,5 +1,5 @@
-import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import { FPNumber } from '@sora-substrate/sdk';
+import { LiquiditySourceTypes } from '@/lib/substrate/liquidity-proxy/consts';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { filter, firstValueFrom, map, timeout } from 'rxjs';
 
 import { DefaultSlippageTolerance } from '@/consts';
@@ -122,8 +122,8 @@ import {
   type PolkaswapAgentApi,
 } from './types';
 
-import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountLiquidity } from '@/lib/substrate/sdk/poolXyk/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 import type { SwapQuoteData } from '@/lib/substrate/sdk/swap/types';
 import type { HistoryItem } from '@/lib/substrate/sdk/types';
 import type { getCurrentIndexer as getCurrentIndexerType } from '@/lib/soraneo-wallet/src/services/indexer';

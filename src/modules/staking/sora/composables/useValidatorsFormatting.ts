@@ -1,11 +1,11 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { hexToString, isHex } from '@polkadot/util';
 import { computed } from 'vue';
 
 import { useStakingStore } from '@/stores/staking';
 import type { Nullable } from '@/types/common';
 
-import type { ValidatorInfoFull } from '@sora-substrate/sdk/build/staking/types';
+import type { ValidatorInfoFull } from '@/lib/substrate/sdk/staking/types';
 
 export function useValidatorsFormatting() {
   const stakingStore = useStakingStore();

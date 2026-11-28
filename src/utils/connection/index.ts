@@ -1,4 +1,4 @@
-import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
+import { SubNetworkId } from '@/lib/substrate/sdk/bridgeProxy/sub/consts';
 import { shallowRef, toRaw, type ShallowRef } from 'vue';
 
 import type { Node, ConnectToNodeOptions } from '@/types/nodes';
@@ -6,8 +6,8 @@ import { AppHandledError } from '@/utils/error';
 import { fetchRpc, getRpcEndpoint } from '@/utils/rpc';
 import { parseStoredJson } from '@/utils/storageParsing';
 
-import type { Connection } from '@sora-substrate/connection';
-import type { Storage } from '@sora-substrate/sdk';
+import type { Connection } from '@/lib/substrate/connection';
+import type { Storage } from '@/lib/substrate/sdk';
 
 const NODE_TIMEOUT = 30_000;
 const LOCK_TIMEOUT = 6_000;

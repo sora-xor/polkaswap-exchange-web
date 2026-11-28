@@ -4,7 +4,7 @@ import { delay } from '@/lib/soraneo-wallet/src/util';
 import pinia from '@/plugins/pinia';
 import { useSettingsStore } from '@/stores/settings';
 
-import type { WithConnectionApi } from '@sora-substrate/sdk';
+import type { WithConnectionApi } from '@/lib/substrate/sdk';
 import type { Ref } from 'vue';
 
 type LoadingOptions = {

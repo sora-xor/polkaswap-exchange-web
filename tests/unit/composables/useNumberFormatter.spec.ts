@@ -1,5 +1,5 @@
-import { FPNumber } from '@sora-substrate/sdk';
-import { MaxTotalSupply } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber } from '@/lib/substrate/sdk';
+import { MaxTotalSupply } from '@/lib/substrate/sdk/assets/consts';
 import { describe, expect, it } from 'vitest';
 
 import { useNumberFormatter } from '@/composables/useNumberFormatter';

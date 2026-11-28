@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 
 /**
  * Adds thousands separators to an exact, non-negative decimal string for reading.

@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { OrderBookStatus } from '@sora-substrate/liquidity-proxy';
+import { OrderBookStatus } from '@/lib/substrate/liquidity-proxy';
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
 
 import { useLoading } from '@/composables/useLoading';
@@ -24,8 +24,8 @@ import { delay, waitUntil } from '@/utils';
 
 import OrderTable from './OrderTable.vue';
 
-import type { OrderBook } from '@sora-substrate/liquidity-proxy';
-import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
+import type { OrderBook } from '@/lib/substrate/liquidity-proxy';
+import type { LimitOrder } from '@/lib/substrate/sdk/orderBook/types';
 import WalletComponentHistoryPagination from '@/lib/soraneo-wallet/src/components/HistoryPagination.vue';
 
 defineOptions({

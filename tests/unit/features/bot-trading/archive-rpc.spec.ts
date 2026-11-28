@@ -6,7 +6,7 @@ import { fetchMissingArchivedBotHistory } from '@/features/bot-trading/archive-r
 import { botFixture } from './fixtures';
 
 vi.unmock('@/lib/substrate/sdk/assets/consts');
-vi.unmock('@sora-substrate/sdk/build/assets/consts');
+vi.unmock('@/lib/substrate/sdk/assets/consts');
 vi.unmock('@polkadot/util-crypto');
 
 const HOUR = 3_600_000;

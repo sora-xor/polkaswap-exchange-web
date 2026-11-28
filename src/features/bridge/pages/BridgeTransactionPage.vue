@@ -225,9 +225,9 @@
 </template>
 
 <script lang="ts" setup>
-import { Operation } from '@sora-substrate/sdk';
-import { KnownSymbols as KnownSymbolsEnum } from '@sora-substrate/sdk/build/assets/consts';
-import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { Operation } from '@/lib/substrate/sdk';
+import { KnownSymbols as KnownSymbolsEnum } from '@/lib/substrate/sdk/assets/consts';
+import { BridgeNetworkType, BridgeTxStatus } from '@/lib/substrate/sdk/bridgeProxy/consts';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
@@ -272,10 +272,10 @@ import {
 } from '@/utils/bridge/sub/reconciliation';
 import { hasSubBridgeIncomingSubmissionEvidence, hasSubBridgeIncomingTrackingEvidence } from '@/utils/bridge/sub/utils';
 
-import type { CodecString, IBridgeTransaction } from '@sora-substrate/sdk';
-import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { SubHistory, SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
-import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
+import type { CodecString, IBridgeTransaction } from '@/lib/substrate/sdk';
+import type { RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { SubHistory, SubNetwork } from '@/lib/substrate/sdk/bridgeProxy/sub/types';
+import type { BridgeNetworkId } from '@/lib/substrate/sdk/bridgeProxy/types';
 import type { Nullable } from '@/types/common';
 import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';

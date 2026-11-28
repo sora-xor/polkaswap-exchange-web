@@ -1,5 +1,5 @@
-import { FPNumber } from '@sora-substrate/sdk';
-import { DAI, ETH } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber } from '@/lib/substrate/sdk';
+import { DAI, ETH } from '@/lib/substrate/sdk/assets/consts';
 import type { GetTsPurpose, GetTsSource, GetTsStep } from './getTsFlow';
 
 /** A draft and submitted transaction references, never a quote or evidence of completion. */

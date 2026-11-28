@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 
 import { Consts, PriceVariant } from '../consts';
 import { safeDivide } from '../utils';

@@ -1,9 +1,9 @@
-import { Operation } from '@sora-substrate/sdk';
+import { Operation } from '@/lib/substrate/sdk';
 
 import { ETH_BRIDGE_STATES } from '../consts';
 
-import type { HistoryItem } from '@sora-substrate/sdk';
-import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
+import type { HistoryItem } from '@/lib/substrate/sdk';
+import type { EthHistory } from '@/lib/substrate/sdk/bridgeProxy/eth/types';
 
 export function useEthBridgeTransaction() {
   const isEthBridgeTx = (transaction: HistoryItem): boolean => {

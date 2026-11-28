@@ -1,11 +1,11 @@
-import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { getAssetBalance } from '@sora-substrate/sdk/build/assets';
-import { DAI, XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { BridgeTxDirection, BridgeTxStatus, BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { EthAssetKind } from '@sora-substrate/sdk/build/bridgeProxy/eth/consts';
-import { SubAssetKind, SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
-import { DexId } from '@sora-substrate/sdk/build/dex/consts';
+import { LiquiditySourceTypes } from '@/lib/substrate/liquidity-proxy/consts';
+import { FPNumber, Operation } from '@/lib/substrate/sdk';
+import { getAssetBalance } from '@/lib/substrate/sdk/assets';
+import { DAI, XOR } from '@/lib/substrate/sdk/assets/consts';
+import { BridgeTxDirection, BridgeTxStatus, BridgeNetworkType } from '@/lib/substrate/sdk/bridgeProxy/consts';
+import { EthAssetKind } from '@/lib/substrate/sdk/bridgeProxy/eth/consts';
+import { SubAssetKind, SubNetworkId } from '@/lib/substrate/sdk/bridgeProxy/sub/consts';
+import { DexId } from '@/lib/substrate/sdk/dex/consts';
 import { defineStore } from 'pinia';
 import { combineLatest } from 'rxjs';
 
@@ -112,11 +112,11 @@ import {
   getTonswapBridgeFundingPurpose,
 } from '@/features/misc/lib/tonswapBridgeLiquidity';
 
-import type { IBridgeTransaction, CodecString } from '@sora-substrate/sdk';
-import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
-import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
-import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
+import type { IBridgeTransaction, CodecString } from '@/lib/substrate/sdk';
+import type { RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { EthHistory } from '@/lib/substrate/sdk/bridgeProxy/eth/types';
+import type { SubNetwork } from '@/lib/substrate/sdk/bridgeProxy/sub/types';
+import type { BridgeNetworkId } from '@/lib/substrate/sdk/bridgeProxy/types';
 import type { TransactionRequest, TransactionResponse } from 'ethers';
 import type { Subscription } from 'rxjs';
 

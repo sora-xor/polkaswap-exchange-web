@@ -1,5 +1,5 @@
-import { FPNumber } from '@sora-substrate/sdk';
-import type { PriceVariant, OrderBookPriceVolume } from '@sora-substrate/liquidity-proxy';
+import { FPNumber } from '@/lib/substrate/sdk';
+import type { PriceVariant, OrderBookPriceVolume } from '@/lib/substrate/liquidity-proxy';
 
 import type { AsyncFnWithoutArgs } from '@/types/common';
 import { LimitOrderType } from '@/consts';

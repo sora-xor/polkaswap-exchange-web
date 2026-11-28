@@ -1,4 +1,4 @@
-import { PriceVariant } from '@sora-substrate/liquidity-proxy';
+import { PriceVariant } from '@/lib/substrate/liquidity-proxy';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { subscribeOnOrderBookUpdates } from '@/indexer/queries/orderBook/orderBook';

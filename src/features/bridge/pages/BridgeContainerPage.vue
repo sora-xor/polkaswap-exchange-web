@@ -17,7 +17,7 @@
 
 <script lang="ts" setup>
 import isEqual from 'lodash/fp/isEqual';
-import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { BridgeNetworkType } from '@/lib/substrate/sdk/bridgeProxy/consts';
 import { computed, onBeforeUnmount, useAttrs, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';

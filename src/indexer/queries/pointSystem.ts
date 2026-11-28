@@ -1,5 +1,5 @@
 import { requireEntitlements, EntitlementsUnavailableError } from './capabilities';
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { gql } from '@urql/core';
 
 import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';

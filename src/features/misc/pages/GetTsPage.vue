@@ -540,10 +540,10 @@
 </template>
 
 <script setup lang="ts">
-import { FPNumber } from '@sora-substrate/sdk';
-import { DAI, ETH, XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import { Operation } from '@sora-substrate/sdk/build/types';
+import { FPNumber } from '@/lib/substrate/sdk';
+import { DAI, ETH, XOR } from '@/lib/substrate/sdk/assets/consts';
+import { LiquiditySourceTypes } from '@/lib/substrate/liquidity-proxy/consts';
+import { Operation } from '@/lib/substrate/sdk/types';
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
 import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
 import SelectProviderDialog from '@/components/shared/Dialog/SelectProvider.vue';

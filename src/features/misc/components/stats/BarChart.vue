@@ -29,8 +29,8 @@
 </template>
 
 <script setup lang="ts">
-import { FPNumber } from '@sora-substrate/math';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber } from '@/lib/substrate/math';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { computed, getCurrentScope, onMounted, onScopeDispose, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 

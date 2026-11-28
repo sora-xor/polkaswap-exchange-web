@@ -1,12 +1,12 @@
-import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
+import { SubNetworkId } from '@/lib/substrate/sdk/bridgeProxy/sub/consts';
 
 import { ZeroStringValue } from '@/consts';
 import { areEqual } from '@/utils';
 
 import { SubAdapter } from '../substrate';
 
-import type { CodecString } from '@sora-substrate/sdk';
-import type { Asset, RegisteredAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { CodecString } from '@/lib/substrate/sdk';
+import type { Asset, RegisteredAsset } from '@/lib/substrate/sdk/assets/types';
 
 export type IParachainAssetMetadata<AssetId = any> = {
   id: AssetId;

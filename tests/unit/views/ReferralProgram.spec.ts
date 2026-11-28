@@ -1,6 +1,6 @@
 import { flushPromises, mount } from '@vue/test-utils';
-import { FPNumber } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { computed, reactive, ref } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { PageNames } from '@/consts';

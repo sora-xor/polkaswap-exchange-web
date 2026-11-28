@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 
 import { getTonswapCurrentRate, TONSWAP_XOR_CAP, type TonswapBurnAllocations } from './tonswapBurn';
 

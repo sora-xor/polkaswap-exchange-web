@@ -1,11 +1,11 @@
-import { EvmNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/evm/consts';
+import { EvmNetworkId } from '@/lib/substrate/sdk/bridgeProxy/evm/consts';
 
 import INTERNAL_ABI from '@/abi/ethereum/internal/MASTER.json';
 import BRIDGE_ABI from '@/abi/ethereum/other/BRIDGE.json';
 import ERC20_ABI from '@/abi/ethereum/other/ERC20.json';
 import type { NetworkData } from '@/types/bridge';
 
-import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
+import type { EvmNetwork } from '@/lib/substrate/sdk/bridgeProxy/evm/types';
 
 // Temporary extension until SDK exposes Arbitrum Sepolia id
 // TODO: Replace with SDK-provided enum when available

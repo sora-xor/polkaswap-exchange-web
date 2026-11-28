@@ -1,6 +1,6 @@
 import { assert } from '@polkadot/util';
 import { EMPTY, map, Subject } from 'rxjs';
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import type { Observable } from '@polkadot/types/types';
 import type { GenericExtrinsic } from '@polkadot/types';
 import type { u32, Vec, u128 } from '@polkadot/types-codec';

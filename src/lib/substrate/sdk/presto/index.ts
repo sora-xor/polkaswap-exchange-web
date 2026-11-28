@@ -2,7 +2,7 @@ import { assert } from '@polkadot/util';
 import { Messages } from '../logger';
 import type { Api } from '../api';
 import { Country } from './types';
-import { NumberLike } from '@sora-substrate/math';
+import { NumberLike } from '@/lib/substrate/math';
 import { PrestoAssets, PrestoSymbols, Role } from './consts';
 
 export class PrestoModule<T> {

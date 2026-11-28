@@ -14,7 +14,7 @@ import { computed, ref } from 'vue';
 
 import { IpfsStorage } from '../util/ipfsStorage';
 
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 
 const props = defineProps<{
   asset: Asset;

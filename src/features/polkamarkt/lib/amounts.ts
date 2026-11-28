@@ -1,8 +1,8 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 
 import { POLKAMARKT_COLLATERAL_ASSET } from '../consts';
 
-import type { CodecString } from '@sora-substrate/sdk';
+import type { CodecString } from '@/lib/substrate/sdk';
 
 const PERCENT_BASIS_POINTS = 10_000n;
 const ZERO_CODEC = '0';

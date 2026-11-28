@@ -1,6 +1,6 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
-import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset, RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 const registeredAssetsMock: Record<string, RegisteredAccountAsset> = {
   keep: {

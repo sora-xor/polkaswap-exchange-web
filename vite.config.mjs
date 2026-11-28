@@ -63,13 +63,6 @@ const soramitsuUiStylesEntry = isTest
   ? fileURLToPath(new URL('./tests/stubs/empty.css', import.meta.url))
   : soramitsuUiStylesPath;
 const soramitsuIconsRootPath = fileURLToPath(new URL('./src/lib/soramitsu-ui/icons', import.meta.url));
-const soraSdkSrcPath = fileURLToPath(new URL('./src/lib/substrate/sdk', import.meta.url));
-const soraMathSrcPath = fileURLToPath(new URL('./src/lib/substrate/math', import.meta.url));
-const soraLiquidityProxySrcPath = fileURLToPath(new URL('./src/lib/substrate/liquidity-proxy', import.meta.url));
-const soraApiSrcPath = fileURLToPath(new URL('./src/lib/substrate/api', import.meta.url));
-const soraConnectionSrcPath = fileURLToPath(new URL('./src/lib/substrate/connection', import.meta.url));
-const soraTypesSrcPath = fileURLToPath(new URL('./src/lib/substrate/types', import.meta.url));
-const soraTypeDefsSrcPath = fileURLToPath(new URL('./src/lib/substrate/type-definitions', import.meta.url));
 const soraneoWalletSrcPath = fileURLToPath(new URL('./src/lib/soraneo-wallet/src', import.meta.url));
 const soraneoWalletCssPath = fileURLToPath(
   new URL('./src/lib/soraneo-wallet/lib/soraneo-wallet-web.css', import.meta.url)
@@ -104,22 +97,6 @@ const alias = [
   { find: 'node:stream/web', replacement: 'web-streams-polyfill/dist/ponyfill.es2018.js' },
   { find: /^buffer$/, replacement: bufferShimPath },
   { find: /^node:buffer$/, replacement: bufferShimPath },
-  { find: '@sora-substrate/sdk/build/index.js', replacement: `${soraSdkSrcPath}/index.ts` },
-  { find: '@sora-substrate/sdk/build/index', replacement: `${soraSdkSrcPath}/index.ts` },
-  { find: '@sora-substrate/sdk/build', replacement: soraSdkSrcPath },
-  { find: '@sora-substrate/sdk', replacement: `${soraSdkSrcPath}/index.ts` },
-  { find: '@sora-substrate/math/', replacement: `${soraMathSrcPath}/` },
-  { find: '@sora-substrate/math', replacement: `${soraMathSrcPath}/index.ts` },
-  { find: '@sora-substrate/liquidity-proxy/build', replacement: soraLiquidityProxySrcPath },
-  { find: '@sora-substrate/liquidity-proxy', replacement: `${soraLiquidityProxySrcPath}/index.ts` },
-  { find: '@sora-substrate/api', replacement: `${soraApiSrcPath}/index.ts` },
-  { find: '@sora-substrate/api/', replacement: `${soraApiSrcPath}/` },
-  { find: '@sora-substrate/connection', replacement: `${soraConnectionSrcPath}/index.ts` },
-  { find: '@sora-substrate/connection/', replacement: `${soraConnectionSrcPath}/` },
-  { find: '@sora-substrate/types/build', replacement: soraTypesSrcPath },
-  { find: '@sora-substrate/types', replacement: `${soraTypesSrcPath}/index.ts` },
-  { find: '@sora-substrate/type-definitions/build', replacement: soraTypeDefsSrcPath },
-  { find: '@sora-substrate/type-definitions', replacement: `${soraTypeDefsSrcPath}/index.ts` },
   { find: '@/lib/soraneo-wallet/lib/soraneo-wallet-web.css', replacement: soraneoWalletCssEntry },
   { find: '@/lib/soraneo-wallet/src/core', replacement: `${soraneoWalletSrcPath}/core.ts` },
   { find: /^safe-buffer(?:\/index(?:\.js)?)?$/, replacement: safeBufferShimPath },

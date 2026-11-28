@@ -1,6 +1,6 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import BuyXorQuickStart from '@/features/misc/components/buy-xor/BuyXorQuickStart.vue';
 
 const mocked = vi.hoisted(() => ({ request: vi.fn(), maxDai: vi.fn() }));

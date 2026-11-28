@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { computed, ref } from 'vue';
 
 import { useNumberFormatter } from '@/composables/useNumberFormatter';

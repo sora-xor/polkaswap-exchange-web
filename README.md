@@ -54,6 +54,11 @@ Run `yarn test:e2e:agent:smoke` to verify the browser-native agent API against t
 
 ## Installation
 
+The chain SDK, fixed-point math, liquidity quoting, API connection, and runtime
+types are maintained directly in [`src/lib/substrate`](src/lib/substrate/README.md).
+Imports use `@/lib/substrate/**`; installing and building Polkaswap requires no
+separate SDK repository or published `@sora-substrate/*` packages.
+
 ```sh
 nvm use
 corepack enable

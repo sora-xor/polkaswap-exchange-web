@@ -44,7 +44,7 @@ describe('fetchAssetSupplyData', () => {
 
   it('uses the Pinia settings store before falling back to env resolution', async () => {
     const { fetchAssetSupplyData } = await import('@/indexer/queries/asset/supply');
-    const { VAL } = await import('@sora-substrate/sdk/build/assets/consts');
+    const { VAL } = await import('@/lib/substrate/sdk/assets/consts');
 
     const data = await fetchAssetSupplyData(VAL.address, Date.now(), Date.now() - 1_000, 'daily' as any);
 
@@ -66,7 +66,7 @@ describe('fetchAssetSupplyData', () => {
     waitForSoraNetworkFromEnvMock.mockResolvedValue('Prod');
 
     const { fetchAssetSupplyData } = await import('@/indexer/queries/asset/supply');
-    const { VAL } = await import('@sora-substrate/sdk/build/assets/consts');
+    const { VAL } = await import('@/lib/substrate/sdk/assets/consts');
 
     const data = await fetchAssetSupplyData(VAL.address, Date.now(), Date.now() - 1_000, 'daily' as any);
 
@@ -91,7 +91,7 @@ describe('fetchAssetSupplyData', () => {
     ]);
 
     const { fetchAssetSupplyData } = await import('@/indexer/queries/asset/supply');
-    const { XOR } = await import('@sora-substrate/sdk/build/assets/consts');
+    const { XOR } = await import('@/lib/substrate/sdk/assets/consts');
 
     const data = await fetchAssetSupplyData(XOR.address, Date.now(), Date.now() - 1_000, 'daily' as any);
 
@@ -122,7 +122,7 @@ describe('fetchAssetSupplyData', () => {
     ]);
 
     const { fetchAssetSupplyData } = await import('@/indexer/queries/asset/supply');
-    const { XOR } = await import('@sora-substrate/sdk/build/assets/consts');
+    const { XOR } = await import('@/lib/substrate/sdk/assets/consts');
 
     const data = await fetchAssetSupplyData(XOR.address, Date.now(), Date.now() - 1_000, 'daily' as any);
 
@@ -147,7 +147,7 @@ describe('fetchAssetSupplyData', () => {
     ]);
 
     const { fetchAssetSupplyData } = await import('@/indexer/queries/asset/supply');
-    const { XOR } = await import('@sora-substrate/sdk/build/assets/consts');
+    const { XOR } = await import('@/lib/substrate/sdk/assets/consts');
 
     const data = await fetchAssetSupplyData(XOR.address, Date.now(), Date.now() - 1_000, 'daily' as any);
 
@@ -175,7 +175,7 @@ describe('fetchAssetSupplyData', () => {
     ]);
 
     const { fetchAssetSupplyData } = await import('@/indexer/queries/asset/supply');
-    const { XOR } = await import('@sora-substrate/sdk/build/assets/consts');
+    const { XOR } = await import('@/lib/substrate/sdk/assets/consts');
 
     const data = await fetchAssetSupplyData(XOR.address, Date.now(), Date.now() - 1_000, 'daily' as any);
 
@@ -208,7 +208,7 @@ describe('fetchAssetSupplyData', () => {
     ]);
 
     const { fetchAssetSupplyData } = await import('@/indexer/queries/asset/supply');
-    const { XOR } = await import('@sora-substrate/sdk/build/assets/consts');
+    const { XOR } = await import('@/lib/substrate/sdk/assets/consts');
 
     const data = await fetchAssetSupplyData(XOR.address, Date.now(), Date.now() - 1_000, 'daily' as any);
 
@@ -228,7 +228,7 @@ describe('fetchAssetSupplyData', () => {
       parse({ timestamp: '1700000000', supply: '0', mint: '0', burn: '0' }),
     ]);
     const { fetchAssetSupplyData } = await import('@/indexer/queries/asset/supply');
-    const { XOR } = await import('@sora-substrate/sdk/build/assets/consts');
+    const { XOR } = await import('@/lib/substrate/sdk/assets/consts');
     await expect(fetchAssetSupplyData(XOR.address, 1700000000, 1699996400, 'HOUR' as any)).resolves.toEqual([
       { timestamp: 1700000000000, value: 0, mint: 0, burn: 0 },
     ]);
@@ -249,7 +249,7 @@ describe('fetchAssetSupplyData', () => {
       if (fault === 'timestamp') raw.timestamp = 'Infinity';
       fetchAllEntitiesMock.mockImplementationOnce(async (_query, _variables, parse) => [parse(raw)]);
       const { fetchAssetSupplyData } = await import('@/indexer/queries/asset/supply');
-      const { XOR } = await import('@sora-substrate/sdk/build/assets/consts');
+      const { XOR } = await import('@/lib/substrate/sdk/assets/consts');
       await expect(fetchAssetSupplyData(XOR.address, 1700000000, 1699996400, 'HOUR' as any)).resolves.toEqual([]);
     }
   );
@@ -258,7 +258,7 @@ describe('fetchAssetSupplyData', () => {
     fetchAllEntitiesMock.mockResolvedValue([]);
 
     const { fetchAssetSupplyData } = await import('@/indexer/queries/asset/supply');
-    const { XOR } = await import('@sora-substrate/sdk/build/assets/consts');
+    const { XOR } = await import('@/lib/substrate/sdk/assets/consts');
 
     const data = await fetchAssetSupplyData(XOR.address, 1_700_000_000, 1_699_996_400, 'daily' as any);
 

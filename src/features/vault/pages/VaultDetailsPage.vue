@@ -307,9 +307,9 @@
 </template>
 
 <script setup lang="ts">
-import { FPNumber } from '@sora-substrate/math';
-import { XOR, KUSD } from '@sora-substrate/sdk/build/assets/consts';
-import { VaultTypes } from '@sora-substrate/sdk/build/kensetsu/consts';
+import { FPNumber } from '@/lib/substrate/math';
+import { XOR, KUSD } from '@/lib/substrate/sdk/assets/consts';
+import { VaultTypes } from '@/lib/substrate/sdk/kensetsu/consts';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -324,8 +324,8 @@ import { useVaultStore } from '@/stores/vault';
 import { useWalletStore } from '@/stores/wallet';
 import { asZeroValue, getAssetBalance, isAmountValueIntegerOnly } from '@/utils';
 
-import type { RegisteredAccountAsset, Asset, AccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { Collateral, Vault } from '@sora-substrate/sdk/build/kensetsu/types';
+import type { RegisteredAccountAsset, Asset, AccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { Collateral, Vault } from '@/lib/substrate/sdk/kensetsu/types';
 import type { Nullable } from '@/types/common';
 import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 import AddCollateralDialog from '@/modules/vault/components/AddCollateralDialog.vue';

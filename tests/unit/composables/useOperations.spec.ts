@@ -45,10 +45,10 @@ const operationsMocks = vi.hoisted(() => ({
   groupRewardsByAssetsList: vi.fn(() => []),
 }));
 
-vi.mock('@sora-substrate/sdk', () => sdkMocks);
+vi.mock('@/lib/substrate/sdk', () => sdkMocks);
 vi.mock('@/lib/substrate/sdk/types', () => sdkMocks);
 
-import { Operation, TransactionStatus } from '@sora-substrate/sdk';
+import { Operation, TransactionStatus } from '@/lib/substrate/sdk';
 
 vi.mock('@/lib/soraneo-wallet/src/consts', () => ({
   HiddenValue: '***',

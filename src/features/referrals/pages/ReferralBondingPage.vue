@@ -52,8 +52,8 @@
 </template>
 
 <script setup lang="ts">
-import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber, Operation } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import { computed, onBeforeUnmount, ref, toRef } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -67,8 +67,8 @@ import { useReferralsStore } from '@/stores/referrals';
 import { useSettingsStore } from '@/stores/settings';
 import { getMaxValue, hasInsufficientBalance, asZeroValue, getAssetBalance } from '@/utils';
 
-import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
-import type { AccountAsset, AccountBalance } from '@sora-substrate/sdk/build/assets/types';
+import type { CodecString, NetworkFeesObject } from '@/lib/substrate/sdk';
+import type { AccountAsset, AccountBalance } from '@/lib/substrate/sdk/assets/types';
 import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 import GenericPageHeader from '@/components/shared/GenericPageHeader.vue';
 import ReferralsConfirmBonding from '@/features/referrals/components/ConfirmBonding.vue';

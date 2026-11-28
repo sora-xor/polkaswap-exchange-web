@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import TransactionDetails from '@/components/shared/TransactionDetails.vue';
 import { computed, toRef } from 'vue';
 
@@ -53,8 +53,8 @@ import { usePoolTokenPair } from '@/modules/pool/composables/usePoolTokenPair';
 import { usePoolApy } from '@/modules/pool/composables/usePoolApy';
 import { usePoolStore } from '@/stores/pool';
 
-import type { CodecString } from '@sora-substrate/sdk';
-import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
+import type { CodecString } from '@/lib/substrate/sdk';
+import type { AccountLiquidity } from '@/lib/substrate/sdk/poolXyk/types';
 import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 
 type Props = {

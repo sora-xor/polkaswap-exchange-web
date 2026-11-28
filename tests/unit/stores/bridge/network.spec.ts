@@ -1,5 +1,5 @@
-import { Operation } from '@sora-substrate/sdk';
-import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { Operation } from '@/lib/substrate/sdk';
+import { BridgeNetworkType } from '@/lib/substrate/sdk/bridgeProxy/consts';
 import { describe, expect, it } from 'vitest';
 
 import { resolveBridgeExternalNetworkType, resolveBridgeOperation } from '@/stores/bridge/network';

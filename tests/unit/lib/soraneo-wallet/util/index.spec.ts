@@ -48,7 +48,7 @@ import {
 } from '@/lib/soraneo-wallet/src/util';
 import { CeresAddresses, ExplorerType, SoraNetwork } from '@/lib/soraneo-wallet/src/consts';
 import { FilterOptions } from '@/lib/soraneo-wallet/src/types/common';
-import { KUSD, NativeAssets, XSTUSD } from '@sora-substrate/sdk/build/assets/consts';
+import { KUSD, NativeAssets, XSTUSD } from '@/lib/substrate/sdk/assets/consts';
 
 describe('wallet util helpers', () => {
   beforeEach(() => {

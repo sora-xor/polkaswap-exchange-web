@@ -1,5 +1,5 @@
 import { flushPromises, mount } from '@vue/test-utils';
-import { FPNumber, Operation } from '@sora-substrate/sdk';
+import { FPNumber, Operation } from '@/lib/substrate/sdk';
 import { computed, defineComponent, h, ref } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 

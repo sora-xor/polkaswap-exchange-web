@@ -1,4 +1,4 @@
-import type { WithKeyring } from '@sora-substrate/sdk';
+import type { WithKeyring } from '@/lib/substrate/sdk';
 import type { KeyringPair } from '@polkadot/keyring/types';
 import { toRaw } from 'vue';
 

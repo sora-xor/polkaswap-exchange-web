@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { Operation } from '@sora-substrate/sdk';
+import { Operation } from '@/lib/substrate/sdk';
 
 import { ETH_BRIDGE_STATES } from '@/lib/soraneo-wallet/src/consts';
 import { useEthBridgeTransaction } from '@/lib/soraneo-wallet/src/composables/useEthBridgeTransaction';

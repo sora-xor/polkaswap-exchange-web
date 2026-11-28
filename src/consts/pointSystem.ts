@@ -1,5 +1,5 @@
-import { KUSD, XOR, VXOR } from '@sora-substrate/sdk/build/assets/consts';
-import { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import { KUSD, XOR, VXOR } from '@/lib/substrate/sdk/assets/consts';
+import { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 import messages from '@/lang/messages';
 import pinia from '@/plugins/pinia';

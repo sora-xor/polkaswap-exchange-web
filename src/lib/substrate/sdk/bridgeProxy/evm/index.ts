@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import { assert, numberToHex } from '@polkadot/util';
 
 import { ApiAccount, isEvmOperation } from '../../apiAccount';
@@ -7,7 +7,7 @@ import { Messages } from '../../logger';
 import { BridgeTxStatus, BridgeNetworkType, BridgeAccountType } from '../consts';
 import { getTransactionDetails, getUserTransactions, subscribeOnTransactionDetails, getLockedAssets } from '../methods';
 
-import type { CodecString } from '@sora-substrate/math';
+import type { CodecString } from '@/lib/substrate/math';
 import type { BridgeTypesGenericNetworkId } from '@polkadot/types/lookup';
 import type { Asset } from '../../assets/types';
 import type { EvmHistory, EvmNetwork, EvmAsset } from './types';

@@ -76,7 +76,7 @@
 </template>
 
 <script lang="ts" setup>
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { computed, ref, useId, toRef } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
@@ -94,7 +94,7 @@ import { LogoSize } from '@/lib/soraneo-wallet/src/consts';
 import { useSettingsStore } from '@/stores/settings';
 import { useWalletStore } from '@/stores/wallet';
 
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 import RewardsPriceChart from './RewardsPriceChart.vue';
 import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
 

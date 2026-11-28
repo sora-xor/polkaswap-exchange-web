@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import { defineStore } from 'pinia';
 
 import { api } from '@/lib/soraneo-wallet/src/api';

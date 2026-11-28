@@ -111,8 +111,8 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, useId, watch } from 'vue';
-import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { DAI, ETH } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber, Operation } from '@/lib/substrate/sdk';
+import { DAI, ETH } from '@/lib/substrate/sdk/assets/consts';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import { useSettingsStore } from '@/stores/settings';
 import { useWalletStore } from '@/stores/wallet';

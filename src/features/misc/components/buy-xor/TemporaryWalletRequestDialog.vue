@@ -85,7 +85,7 @@
 <script setup lang="ts">
 import { u8aToHex } from '@polkadot/util';
 import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { getAddress } from 'ethers';
 import { computed } from 'vue';
 

@@ -1,15 +1,15 @@
 import { ValidatorsListMode } from '@/modules/staking/sora/consts';
 import { ValidatorsFilter } from '@/modules/staking/sora/types';
 
-import type { FPNumber } from '@sora-substrate/math';
-import type { CodecString } from '@sora-substrate/sdk';
+import type { FPNumber } from '@/lib/substrate/math';
+import type { CodecString } from '@/lib/substrate/sdk';
 import type {
   ValidatorInfo,
   StashNominatorsInfo,
   AccountStakingLedger,
   MyStakingInfo,
   NominatorReward,
-} from '@sora-substrate/sdk/build/staking/types';
+} from '@/lib/substrate/sdk/staking/types';
 import type { Subscription } from 'rxjs';
 
 export declare type StakingRewardToken = {

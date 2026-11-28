@@ -144,6 +144,7 @@
             :burn-available="false"
             @use-address="handleUseGeneratedNexusAddress"
           />
+          <sora-nexus-account-recovery v-if="id === 'solswap'" />
           <s-button v-if="!isLoggedIn" type="primary" class="action-button" @click="connectSoraWallet">
             {{ t('connectWalletText') }}
           </s-button>
@@ -184,8 +185,8 @@
 </template>
 
 <script lang="ts" setup>
-import type { FPNumber } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import type { FPNumber } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import dayjs from 'dayjs/esm';
 import durationPlugin from 'dayjs/plugin/duration';
 import { computed, onBeforeUnmount, onMounted, reactive, ref, toRef, watch } from 'vue';
@@ -193,6 +194,7 @@ import { computed, onBeforeUnmount, onMounted, reactive, ref, toRef, watch } fro
 import { requireEntitlements } from '@/indexer/queries/capabilities';
 import BurnLogoFire from '@/features/misc/components/burn/BurnLogoFire.vue';
 import SoraNexusAccountGenerator from '@/features/misc/components/burn/SoraNexusAccountGenerator.vue';
+import SoraNexusAccountRecovery from '@/features/misc/components/burn/SoraNexusAccountRecovery.vue';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useInternalConnect } from '@/composables/useInternalConnect';
 import { useLoading } from '@/composables/useLoading';
@@ -226,7 +228,7 @@ import {
   type LocalBurnHistoryItem,
 } from '@/features/misc/lib/burnLocalHistory';
 
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 import WalletComponentExternalLink from '@/lib/soraneo-wallet/src/components/shared/ExternalLink.vue';
 import BurnDialog from '@/features/misc/components/burn/BurnDialog.vue';

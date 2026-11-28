@@ -1,6 +1,6 @@
 import { map } from 'rxjs';
 import { assert } from '@polkadot/util';
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import type { Observable } from '@polkadot/types/types';
 
 import { toAssetId } from '../assets';

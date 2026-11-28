@@ -209,9 +209,9 @@
 </template>
 
 <script lang="ts" setup>
-import { CodecString, FPNumber } from '@sora-substrate/sdk';
-import { KnownAssets, KnownSymbols } from '@sora-substrate/sdk/build/assets/consts';
-import { RewardType } from '@sora-substrate/sdk/build/rewards/consts';
+import { CodecString, FPNumber } from '@/lib/substrate/sdk';
+import { KnownAssets, KnownSymbols } from '@/lib/substrate/sdk/assets/consts';
+import { RewardType } from '@/lib/substrate/sdk/rewards/consts';
 import { computed, onBeforeUnmount, onMounted, onUnmounted, toRef, watch } from 'vue';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
@@ -236,8 +236,8 @@ import { getMissingRewardFiatPriceAssets } from '@/features/rewards/utils/fiat';
 import { hasInsufficientXorForFee } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
 
-import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
-import type { RewardInfo, RewardsInfo } from '@sora-substrate/sdk/build/rewards/types';
+import type { AccountAsset, Asset } from '@/lib/substrate/sdk/assets/types';
+import type { RewardInfo, RewardsInfo } from '@/lib/substrate/sdk/rewards/types';
 import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 import WalletComponentFormattedAddress from '@/lib/soraneo-wallet/src/components/shared/FormattedAddress.vue';
 import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';

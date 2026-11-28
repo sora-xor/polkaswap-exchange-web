@@ -1,8 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { effectScope, nextTick, reactive, ref } from 'vue';
-import { Operation } from '@sora-substrate/sdk';
-import { DAI, ETH } from '@sora-substrate/sdk/build/assets/consts';
-import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
+import { Operation } from '@/lib/substrate/sdk';
+import { DAI, ETH } from '@/lib/substrate/sdk/assets/consts';
+import type { EthHistory } from '@/lib/substrate/sdk/bridgeProxy/eth/types';
 import { evaluateGetTsBridgeProgress, matchGetTsBridgeHistory } from '@/features/misc/lib/getTsBridgeProgress';
 import { useGetTsPlan } from '@/features/misc/composables/useGetTsPlan';
 import { useGetTsBridgeProgress } from '@/features/misc/composables/useGetTsBridgeProgress';

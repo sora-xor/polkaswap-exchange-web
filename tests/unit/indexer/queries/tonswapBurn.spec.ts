@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 
 import { fetchTonswapBurnSnapshot, TONSWAP_MAINNET_GENESIS } from '@/indexer/queries/tonswapBurn';
 import { APPROVED_RECOVERY_POLICY } from '@/indexer/queries/capabilities';

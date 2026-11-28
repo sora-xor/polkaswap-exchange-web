@@ -19,9 +19,9 @@ import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/constants';
 import type { EthBridgeHistory } from '@/utils/bridge/eth/classes/history';
 import { waitForApprovedRequest, waitForIncomingRequest } from '@/utils/bridge/eth/utils';
 
-import { TransactionStatus, type IBridgeTransaction } from '@sora-substrate/sdk';
-import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
+import { TransactionStatus, type IBridgeTransaction } from '@/lib/substrate/sdk';
+import type { RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { EthHistory } from '@/lib/substrate/sdk/bridgeProxy/eth/types';
 import type { TransactionResponse } from 'ethers';
 
 const SORA_TRANSACTION_DISCOVERY_POLL_INTERVAL_MS = 2_000;

@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import { describe, expect, it } from 'vitest';
 
 import { AssetType, Consts, LiquiditySourceTypes } from '@/lib/substrate/liquidity-proxy/consts';

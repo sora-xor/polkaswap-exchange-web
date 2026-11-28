@@ -49,7 +49,7 @@ import { getCssVariableValue } from '../../util';
 import AssetListItem from '../AssetListItem.vue';
 
 import type { WhitelistIdsBySymbol } from '../../types/common';
-import type { Asset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset, Whitelist } from '@/lib/substrate/sdk/assets/types';
 
 const props = defineProps<{
   selectAssets: Asset[];

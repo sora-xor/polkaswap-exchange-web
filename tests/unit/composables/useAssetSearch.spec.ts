@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { filterAssetsByQuery } from '@/composables/useAssetSearch';
 
-import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset, RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 describe('useAssetSearch', () => {
   const assets: AccountAsset[] = [

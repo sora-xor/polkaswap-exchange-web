@@ -135,7 +135,7 @@ import {
   validateMarketMetadata,
 } from '../lib/markets';
 
-import type { CodecString } from '@sora-substrate/sdk';
+import type { CodecString } from '@/lib/substrate/sdk';
 import type { SelectOption } from '@/lib/soramitsu-ui/components/Select/types';
 
 const props = withDefaults(

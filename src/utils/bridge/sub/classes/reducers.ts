@@ -1,5 +1,5 @@
-import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { FPNumber, Operation } from '@/lib/substrate/sdk';
+import { BridgeTxStatus } from '@/lib/substrate/sdk/bridgeProxy/consts';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import { combineLatest, firstValueFrom, from, timeout, TimeoutError } from 'rxjs';
 
@@ -41,9 +41,9 @@ import {
 } from '@/utils/bridge/sub/utils';
 
 import type { ApiPromise, ApiRx } from '@polkadot/api';
-import type { IBridgeTransaction } from '@sora-substrate/sdk';
-import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { SubNetwork, SubHistory } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
+import type { IBridgeTransaction } from '@/lib/substrate/sdk';
+import type { RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { SubNetwork, SubHistory } from '@/lib/substrate/sdk/bridgeProxy/sub/types';
 import type { Subscription } from 'rxjs';
 import type { Nullable } from '@/types/common';
 

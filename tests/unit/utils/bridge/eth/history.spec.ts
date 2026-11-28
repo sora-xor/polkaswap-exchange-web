@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { Operation } from '@sora-substrate/sdk';
-import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { Operation } from '@/lib/substrate/sdk';
+import { BridgeNetworkType } from '@/lib/substrate/sdk/bridgeProxy/consts';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { Interface } from 'ethers';
 
 const historyElementsFilterMock = vi.hoisted(() => vi.fn((value) => value));

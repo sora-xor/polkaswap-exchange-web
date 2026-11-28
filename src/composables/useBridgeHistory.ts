@@ -11,8 +11,8 @@ import { useBridgeStore } from '@/stores/bridge';
 import type { Nullable } from '@/types/common';
 import { isOutgoingTransaction } from '@/utils/bridge/common/utils';
 
-import type { NetworkFeesObject, IBridgeTransaction } from '@sora-substrate/sdk';
-import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
+import type { NetworkFeesObject, IBridgeTransaction } from '@/lib/substrate/sdk';
+import type { BridgeNetworkId } from '@/lib/substrate/sdk/bridgeProxy/types';
 import type { Ref } from 'vue';
 
 type ParentLoadingSource = Ref<boolean> | (() => boolean);

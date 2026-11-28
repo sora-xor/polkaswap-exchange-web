@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { resolveWhitelist, resolveWhitelistIdsBySymbol, type WhitelistAssetsApi } from '@/stores/wallet/whitelist';
 
-import type { Whitelist, WhitelistArrayItem } from '@sora-substrate/sdk/build/assets/types';
+import type { Whitelist, WhitelistArrayItem } from '@/lib/substrate/sdk/assets/types';
 
 const xorAsset = {
   address: 'xor-address',

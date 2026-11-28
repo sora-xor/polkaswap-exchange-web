@@ -2,7 +2,7 @@ import { useWalletStore } from '@/stores/wallet';
 import type { Nullable } from '@/types/common';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 
-import type { AccountBalance, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountBalance, RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 type Direction = 'from' | 'to';
 

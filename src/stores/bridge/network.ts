@@ -1,5 +1,5 @@
-import { Operation } from '@sora-substrate/sdk';
-import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { Operation } from '@/lib/substrate/sdk';
+import { BridgeNetworkType } from '@/lib/substrate/sdk/bridgeProxy/consts';
 
 /**
  * Resolves the SDK operation type for the selected bridge network and direction.

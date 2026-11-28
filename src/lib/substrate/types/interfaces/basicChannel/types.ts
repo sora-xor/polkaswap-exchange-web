@@ -1,8 +1,8 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 
 import type { Bytes, Struct, u64 } from '@polkadot/types-codec';
-import type { EthNetworkId } from '@sora-substrate/types/interfaces/leafProvider';
-import type { H160 } from '@sora-substrate/types/interfaces/runtime';
+import type { EthNetworkId } from '@/lib/substrate/types/interfaces/leafProvider';
+import type { H160 } from '@/lib/substrate/types/interfaces/runtime';
 
 /** @name BasicChannelMessage */
 export interface BasicChannelMessage extends Struct {

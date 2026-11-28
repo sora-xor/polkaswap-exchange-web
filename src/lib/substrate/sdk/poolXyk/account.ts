@@ -1,10 +1,10 @@
 import { xxhashAsU8a } from '@polkadot/util-crypto/xxhash';
 import type { ApiPromise } from '@polkadot/api';
 
-import { types } from '@sora-substrate/type-definitions';
-import type { SoraDefinitions } from '@sora-substrate/type-definitions';
+import { types } from '@/lib/substrate/type-definitions';
+import type { SoraDefinitions } from '@/lib/substrate/type-definitions';
 import type { Api } from '../api';
-import type { AssetId, AccountId, TechAssetId, TechAccountId } from '@sora-substrate/types';
+import type { AssetId, AccountId, TechAssetId, TechAccountId } from '@/lib/substrate/types';
 
 const predefinedAssets = (types as unknown as SoraDefinitions).PredefinedAssetId._enum;
 

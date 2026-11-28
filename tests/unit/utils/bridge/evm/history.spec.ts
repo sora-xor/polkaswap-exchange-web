@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { Operation, TransactionStatus } from '@sora-substrate/sdk';
-import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { Operation, TransactionStatus } from '@/lib/substrate/sdk';
+import { BridgeNetworkType, BridgeTxStatus } from '@/lib/substrate/sdk/bridgeProxy/consts';
 
 const historyElementsFilterMock = vi.hoisted(() => vi.fn((value) => value));
 const getHistoryPagedMock = vi.hoisted(() => vi.fn());

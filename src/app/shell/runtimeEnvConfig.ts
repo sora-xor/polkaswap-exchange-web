@@ -2,7 +2,7 @@ import { appendStaticAssetVersion, resolveVersionedStaticAssetUrl } from '@/util
 
 import type { FeatureFlags } from '@/stores/settings/types';
 import type { EthBridgeSettings, SubNetworkApps } from '@/stores/web3/types';
-import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
+import type { EvmNetwork } from '@/lib/substrate/sdk/bridgeProxy/evm/types';
 
 export type RuntimeEnvConfig = Partial<{
   NETWORK_TYPE: string;

@@ -107,8 +107,8 @@
 </template>
 
 <script setup lang="ts">
-import { Operation } from '@sora-substrate/sdk';
-import { XOR, XSTUSD } from '@sora-substrate/sdk/build/assets/consts';
+import { Operation } from '@/lib/substrate/sdk';
+import { XOR, XSTUSD } from '@/lib/substrate/sdk/assets/consts';
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
 
 import NetworkFeeWarningDialog from '@/components/shared/Dialog/NetworkFeeWarning.vue';
@@ -133,9 +133,9 @@ import { useWalletStore } from '@/stores/wallet';
 import { getMaxValue, isMaxButtonAvailable, hasInsufficientBalance, getAssetBalance } from '@/utils';
 import { sanitizeHtml } from '@/utils/sanitize';
 
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { CodecString } from '@sora-substrate/sdk';
-import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { CodecString } from '@/lib/substrate/sdk';
+import type { AccountLiquidity } from '@/lib/substrate/sdk/poolXyk/types';
 import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 
 const emit = defineEmits<{ (event: 'back'): void }>();

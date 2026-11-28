@@ -1,7 +1,7 @@
 import { ApiPromise, WsProvider } from '@polkadot/api';
-import { Connection } from '@sora-substrate/connection';
-import { WithConnectionApi, FPNumber, Storage } from '@sora-substrate/sdk';
-import { formatBalance } from '@sora-substrate/sdk/build/assets';
+import { Connection } from '@/lib/substrate/connection';
+import { WithConnectionApi, FPNumber, Storage } from '@/lib/substrate/sdk';
+import { formatBalance } from '@/lib/substrate/sdk/assets';
 
 import { ZeroStringValue } from '@/consts';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
@@ -9,9 +9,9 @@ import { NodesConnection } from '@/utils/connection';
 
 import type { SubmittableExtrinsic } from '@polkadot/api-base/types';
 import type { ISubmittableResult } from '@polkadot/types/types';
-import type { CodecString } from '@sora-substrate/sdk';
-import type { RegisteredAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
+import type { CodecString } from '@/lib/substrate/sdk';
+import type { RegisteredAsset } from '@/lib/substrate/sdk/assets/types';
+import type { SubNetwork } from '@/lib/substrate/sdk/bridgeProxy/sub/types';
 
 /**
  * Accepts only decimal codec strings from Substrate balance providers.

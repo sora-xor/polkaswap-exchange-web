@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { markRaw } from 'vue';
 
 import { ZeroStringValue } from '@/consts';

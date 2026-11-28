@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ref } from 'vue';
-import { Operation } from '@sora-substrate/sdk';
-import { DAI, ETH } from '@sora-substrate/sdk/build/assets/consts';
-import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
+import { Operation } from '@/lib/substrate/sdk';
+import { DAI, ETH } from '@/lib/substrate/sdk/assets/consts';
+import type { EthHistory } from '@/lib/substrate/sdk/bridgeProxy/eth/types';
 import type { GetTsPurpose } from '@/features/misc/lib/getTsFlow';
 import {
   emptyGetTsPlan,

@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import { gql } from '@urql/core';
 import { APPROVED_RECOVERY_POLICY, RECOVERY_MAINNET_GENESIS } from '../capabilities';
 import type { NetworkCounts } from './volume';

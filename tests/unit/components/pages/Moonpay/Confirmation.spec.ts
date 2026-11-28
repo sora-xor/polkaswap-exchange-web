@@ -3,8 +3,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import MoonpayConfirmation from '@/features/deposit/components/moonpay/Confirmation.vue';
 
-import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
-import { ETH } from '@sora-substrate/sdk/build/assets/consts';
+import type { EthHistory } from '@/lib/substrate/sdk/bridgeProxy/eth/types';
+import { ETH } from '@/lib/substrate/sdk/assets/consts';
 
 const hoisted = vi.hoisted(() => {
   const moonpayStore = {

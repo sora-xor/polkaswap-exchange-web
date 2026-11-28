@@ -166,7 +166,7 @@ vi.mock('@tests/stubs/walletRuntime', async () => {
   return createWalletMock();
 });
 
-vi.mock('@sora-substrate/sdk', async () => {
+vi.mock('@/lib/substrate/sdk', async () => {
   const sdk = await vi.importActual<typeof import('@stubs/sora-sdk')>('@stubs/sora-sdk');
 
   return {
@@ -178,7 +178,7 @@ vi.mock('@sora-substrate/sdk', async () => {
   };
 });
 
-vi.mock('@sora-substrate/sdk/build/bridgeProxy/consts', () => ({
+vi.mock('@/lib/substrate/sdk/bridgeProxy/consts', () => ({
   BridgeNetworkType: {
     Eth: 'Eth',
     Evm: 'Evm',

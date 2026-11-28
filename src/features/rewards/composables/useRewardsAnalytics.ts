@@ -1,4 +1,4 @@
-import { KnownAssets, KnownSymbols } from '@sora-substrate/sdk/build/assets/consts';
+import { KnownAssets, KnownSymbols } from '@/lib/substrate/sdk/assets/consts';
 import { computed, type Ref } from 'vue';
 
 import {

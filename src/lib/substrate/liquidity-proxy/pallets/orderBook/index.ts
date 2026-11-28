@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 
 import { isAssetAddress, safeQuoteResult, safeDivide } from '../../utils';
 import { LiquiditySourceTypes, Errors, PriceVariant, SwapVariant, DexIdByBaseAsset } from '../../consts';

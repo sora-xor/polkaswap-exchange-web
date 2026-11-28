@@ -66,7 +66,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import { computed, onMounted, reactive, ref, watch } from 'vue';
 
 import { useNotification } from '@/composables/useNotification';
@@ -79,7 +79,7 @@ import type { EditableAlertObject, NumberedAlert } from '@/consts';
 import { AlertFrequencyTabs, AlertTypeTabs } from '@/types/tabs';
 import { calcPriceChange, showMostFittingValue } from '@/utils';
 
-import type { AccountAsset, WhitelistIdsBySymbol } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset, WhitelistIdsBySymbol } from '@/lib/substrate/sdk/assets/types';
 import type { Alert } from '@/lib/soraneo-wallet/src/types/common';
 import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
 import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';

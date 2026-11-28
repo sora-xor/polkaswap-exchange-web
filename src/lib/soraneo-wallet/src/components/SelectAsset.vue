@@ -29,7 +29,7 @@ import type { Nullable } from '@/types/common';
 import AssetList from './AssetList.vue';
 import WalletBase from './WalletBase.vue';
 
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 const { t } = useTranslation();
 

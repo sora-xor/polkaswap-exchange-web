@@ -77,7 +77,7 @@ vi.mock('@tests/stubs/walletRuntime', async () => {
 });
 
 // Avoid pulling in the SDK and its polkadot deps in tests
-vi.mock('@sora-substrate/sdk', () => ({
+vi.mock('@/lib/substrate/sdk', () => ({
   isEthOperation: isEthOperationMock,
   isEvmOperation: isEvmOperationMock,
   isSubstrateOperation: isSubstrateOperationMock,
@@ -100,20 +100,20 @@ vi.mock('@sora-substrate/sdk', () => ({
     Failed: 'Failed',
   },
 }));
-vi.mock('@sora-substrate/sdk/build/bridgeProxy/consts', () => ({
+vi.mock('@/lib/substrate/sdk/bridgeProxy/consts', () => ({
   BridgeNetworkType: { Eth: 'Eth', Evm: 'Evm', Sub: 'Sub' },
   BridgeTxDirection: { Outgoing: 'Outgoing', Incoming: 'Incoming' },
   BridgeTxStatus: { Pending: 'Pending', Ready: 'Ready', Failed: 'Failed' },
 }));
-vi.mock('@sora-substrate/sdk/build/bridgeProxy/evm/consts', () => ({ EvmNetworkId: { EthereumMainnet: 1 } }));
+vi.mock('@/lib/substrate/sdk/bridgeProxy/evm/consts', () => ({ EvmNetworkId: { EthereumMainnet: 1 } }));
 vi.mock('@/consts/evm', () => ({
   KnownEthBridgeAsset: { Other: 'Other', XOR: 'XOR', VAL: 'VAL' },
   SmartContractType: { EthBridge: 'ETH_BRIDGE', ERC20: 'ERC20' },
   SmartContracts: { ETH_BRIDGE: {}, ERC20: {} },
 }));
 vi.mock('@/utils', () => ({}));
-vi.mock('@sora-substrate/sdk/build/bridgeProxy/eth/consts', () => ({}));
-vi.mock('@sora-substrate/sdk/build/assets/consts', () => ({
+vi.mock('@/lib/substrate/sdk/bridgeProxy/eth/consts', () => ({}));
+vi.mock('@/lib/substrate/sdk/assets/consts', () => ({
   XOR: { address: XOR_ADDRESS },
   TBCD: { address: TBCD_ADDRESS },
   XSTUSD: { address: 'xstusd' },

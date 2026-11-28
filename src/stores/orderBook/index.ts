@@ -1,6 +1,6 @@
-import { PriceVariant } from '@sora-substrate/liquidity-proxy';
-import { FPNumber } from '@sora-substrate/math';
-import { DexId } from '@sora-substrate/sdk/build/dex/consts';
+import { PriceVariant } from '@/lib/substrate/liquidity-proxy';
+import { FPNumber } from '@/lib/substrate/math';
+import { DexId } from '@/lib/substrate/sdk/dex/consts';
 import { defineStore } from 'pinia';
 import { combineLatest } from 'rxjs';
 
@@ -17,9 +17,9 @@ import type { Nullable } from '@/types/common';
 import { getBookDecimals } from '@/utils/orderBook';
 import { subscribeAndWaitForFirst, TokenBalanceSubscriptions } from '@/utils/subscriptions';
 
-import type { OrderBook, OrderBookId, OrderBookPriceVolume } from '@sora-substrate/liquidity-proxy';
-import type { AccountBalance, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
+import type { OrderBook, OrderBookId, OrderBookPriceVolume } from '@/lib/substrate/liquidity-proxy';
+import type { AccountBalance, RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { LimitOrder } from '@/lib/substrate/sdk/orderBook/types';
 import type { Subscription } from 'rxjs';
 
 const ORDER_BOOK_BASE_BALANCE_SUBSCRIPTION_KEY = 'order-book-base-balance';

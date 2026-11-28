@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { describe, expect, it, vi } from 'vitest';
 
 const formatDecimalPlacesMock = vi.hoisted(() =>
@@ -35,8 +35,8 @@ vi.mock('@/utils', () => ({
   sortPools: sortPoolsMock,
 }));
 import type { PoolData } from '@/indexer/queries/pool/pools';
-import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
+import type { RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { AccountLiquidity } from '@/lib/substrate/sdk/poolXyk/types';
 import {
   buildPoolTableItems,
   filterPoolTableItems,

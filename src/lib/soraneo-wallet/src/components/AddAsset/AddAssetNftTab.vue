@@ -44,7 +44,7 @@ import SearchInput from '../Input/SearchInput.vue';
 
 import AddAssetDetailsCard from './AddAssetDetailsCard.vue';
 
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 
 withDefaults(
   defineProps<{

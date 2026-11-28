@@ -155,7 +155,7 @@
 </template>
 
 <script lang="ts">
-import { XOR, BalanceType } from '@sora-substrate/sdk/build/assets/consts';
+import { XOR, BalanceType } from '@/lib/substrate/sdk/assets/consts';
 import { computed, onMounted, ref } from 'vue';
 
 import { getWalletCurrentParams, type WalletNavigationTarget } from '@/platform/wallet/navigation';
@@ -183,8 +183,8 @@ import WalletHistory from './WalletHistory.vue';
 import WalletTransactionDetails from './WalletTransactionDetails.vue';
 
 import type { WalletPermissions } from '../consts';
-import type { CodecString, AccountHistory, HistoryItem } from '@sora-substrate/sdk';
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { CodecString, AccountHistory, HistoryItem } from '@/lib/substrate/sdk';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 interface Operation {
   type: Operations;

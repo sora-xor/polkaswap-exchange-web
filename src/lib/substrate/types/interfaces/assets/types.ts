@@ -1,7 +1,7 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 
 import type { Null, Struct, Text, bool, u8 } from '@polkadot/types-codec';
-import type { AssetId, Balance } from '@sora-substrate/types/interfaces/runtime';
+import type { AssetId, Balance } from '@/lib/substrate/types/interfaces/runtime';
 
 /** @name AssetInfo */
 export interface AssetInfo extends Struct {

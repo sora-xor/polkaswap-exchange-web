@@ -1,5 +1,5 @@
-import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { FPNumber, Operation } from '@/lib/substrate/sdk';
+import { BridgeNetworkType, BridgeTxStatus } from '@/lib/substrate/sdk/bridgeProxy/consts';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import { ethers, EtherscanProvider } from 'ethers';
 
@@ -14,9 +14,9 @@ import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/constants';
 import { getOutgoingClaimStatus, type OutgoingClaimStatus } from '@/utils/bridge/eth/claimStatus';
 import ethersUtil from '@/utils/ethers-util';
 
-import type { NetworkFeesObject } from '@sora-substrate/sdk';
-import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
+import type { NetworkFeesObject } from '@/lib/substrate/sdk';
+import type { RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { EthHistory } from '@/lib/substrate/sdk/bridgeProxy/eth/types';
 import type { BlockTag } from 'ethers';
 
 type BridgeActionContext<TRootState = any, TRootGetters = any> = {

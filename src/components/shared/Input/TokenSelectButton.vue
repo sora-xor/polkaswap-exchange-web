@@ -23,7 +23,7 @@ import { useTranslation } from '@/composables/useTranslation';
 import { ObjectInit } from '@/consts';
 import PairTokenLogo from '@/components/shared/PairTokenLogo.vue';
 
-import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset, Asset } from '@/lib/substrate/sdk/assets/types';
 import WalletTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
 
 /**

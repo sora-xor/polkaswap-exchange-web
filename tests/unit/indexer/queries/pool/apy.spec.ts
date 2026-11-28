@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { IndexerType } from '@/indexer/queries/indexerConsts';

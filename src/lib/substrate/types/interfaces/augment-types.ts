@@ -1237,8 +1237,8 @@ import type {
   AssetRecord,
   AssetSymbolStr,
   BalanceInfo,
-} from '@sora-substrate/types/interfaces/assets';
-import type { BasicChannelMessage } from '@sora-substrate/types/interfaces/basicChannel';
+} from '@/lib/substrate/types/interfaces/assets';
+import type { BasicChannelMessage } from '@/lib/substrate/types/interfaces/basicChannel';
 import type {
   BridgeAppInfo,
   BridgeAssetInfo,
@@ -1252,18 +1252,18 @@ import type {
   SubAssetInfo,
   SubAssetKind,
   SubNetworkId,
-} from '@sora-substrate/types/interfaces/bridgeProxy';
-import type { PollInfo, VotingInfo } from '@sora-substrate/types/interfaces/ceresGovernancePlatform';
+} from '@/lib/substrate/types/interfaces/bridgeProxy';
+import type { PollInfo, VotingInfo } from '@/lib/substrate/types/interfaces/ceresGovernancePlatform';
 import type {
   ContributionInfo,
   ContributorsVesting,
   ILOInfo,
   TeamVesting,
-} from '@sora-substrate/types/interfaces/ceresLaunchpad';
-import type { LockInfo } from '@sora-substrate/types/interfaces/ceresLiquidityLocker';
-import type { StakingInfo } from '@sora-substrate/types/interfaces/ceresStaking';
-import type { TokenLockInfo } from '@sora-substrate/types/interfaces/ceresTokenLocker';
-import type { PoolData, TokenInfo, UserInfo } from '@sora-substrate/types/interfaces/demeterFarmingPlatform';
+} from '@/lib/substrate/types/interfaces/ceresLaunchpad';
+import type { LockInfo } from '@/lib/substrate/types/interfaces/ceresLiquidityLocker';
+import type { StakingInfo } from '@/lib/substrate/types/interfaces/ceresStaking';
+import type { TokenLockInfo } from '@/lib/substrate/types/interfaces/ceresTokenLocker';
+import type { PoolData, TokenInfo, UserInfo } from '@/lib/substrate/types/interfaces/demeterFarmingPlatform';
 import type {
   AssetKind,
   BridgeNetworkId,
@@ -1312,27 +1312,27 @@ import type {
   OutgoingTransferEncoded,
   RequestStatus,
   SignatureParams,
-} from '@sora-substrate/types/interfaces/ethBridge';
-import type { PoolFarmer } from '@sora-substrate/types/interfaces/farming';
+} from '@/lib/substrate/types/interfaces/ethBridge';
+import type { PoolFarmer } from '@/lib/substrate/types/interfaces/farming';
 import type {
   HermesPollInfo,
   HermesVotingInfo,
   VotingOption,
-} from '@sora-substrate/types/interfaces/hermesGovernancePlatform';
-import type { IntentivizedChannelMessage } from '@sora-substrate/types/interfaces/intentivizedChannel';
-import type { PendingMultisigAccount } from '@sora-substrate/types/interfaces/irohaMigration';
+} from '@/lib/substrate/types/interfaces/hermesGovernancePlatform';
+import type { IntentivizedChannelMessage } from '@/lib/substrate/types/interfaces/intentivizedChannel';
+import type { PendingMultisigAccount } from '@/lib/substrate/types/interfaces/irohaMigration';
 import type {
   AuxiliaryDigest,
   AuxiliaryDigestItem,
   ChannelId,
   EthNetworkId,
-} from '@sora-substrate/types/interfaces/leafProvider';
+} from '@/lib/substrate/types/interfaces/leafProvider';
 import type {
   LPRewardsInfo,
   LPSwapOutcomeInfo,
   LiquiditySourceIdOf,
   OutcomeFee,
-} from '@sora-substrate/types/interfaces/liquidityProxy';
+} from '@/lib/substrate/types/interfaces/liquidityProxy';
 import type {
   AccountId,
   AccountId20,
@@ -1496,10 +1496,10 @@ import type {
   WeightV0,
   WeightV1,
   WeightV2,
-} from '@sora-substrate/types/interfaces/runtime';
-import type { CustomInfo } from '@sora-substrate/types/interfaces/template';
-import type { TP } from '@sora-substrate/types/interfaces/tradingPair';
-import type { CrowdloanLease } from '@sora-substrate/types/interfaces/vestedRewards';
+} from '@/lib/substrate/types/interfaces/runtime';
+import type { CustomInfo } from '@/lib/substrate/types/interfaces/template';
+import type { TP } from '@/lib/substrate/types/interfaces/tradingPair';
+import type { CrowdloanLease } from '@/lib/substrate/types/interfaces/vestedRewards';
 
 declare module '@polkadot/types/types/registry' {
   interface InterfaceTypes {

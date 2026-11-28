@@ -1,7 +1,7 @@
-import type { CodecString } from '@sora-substrate/sdk';
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import type { LPRewardsInfo } from '@sora-substrate/liquidity-proxy/build/types';
+import type { CodecString } from '@/lib/substrate/sdk';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { LiquiditySourceTypes } from '@/lib/substrate/liquidity-proxy/consts';
+import type { LPRewardsInfo } from '@/lib/substrate/liquidity-proxy/types';
 
 /** Exact reviewed terms are retained through asynchronous wallet preparation. */
 export interface SwapReview {

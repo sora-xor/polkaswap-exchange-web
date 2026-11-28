@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { DAI, XOR, XSTUSD } from '@sora-substrate/sdk/build/assets/consts';
+import { DAI, XOR, XSTUSD } from '@/lib/substrate/sdk/assets/consts';
 
 import { PageNames } from '@/consts';
 import { useSelectedTokensRoute } from '@/shared/navigation/useSelectedTokensRoute';

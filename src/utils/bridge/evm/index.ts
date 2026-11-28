@@ -1,5 +1,5 @@
-import { Operation } from '@sora-substrate/sdk';
-import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { Operation } from '@/lib/substrate/sdk';
+import { BridgeTxStatus } from '@/lib/substrate/sdk/bridgeProxy/consts';
 
 import pinia from '@/plugins/pinia';
 import { useAssetsStore } from '@/stores/assets';
@@ -12,7 +12,7 @@ import { EvmBridgeOutgoingReducer, EvmBridgeIncomingReducer } from '@/utils/brid
 import type { EvmBridgeReducer } from '@/utils/bridge/evm/classes/reducers';
 import { updateTransaction } from '@/utils/bridge/evm/utils';
 
-import type { EvmHistory } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
+import type { EvmHistory } from '@/lib/substrate/sdk/bridgeProxy/evm/types';
 
 interface EvmBridgeConstructorOptions extends IBridgeConstructorOptions<EvmHistory, EvmBridgeReducer> {
   removeTransactionByHash: RemoveTransactionByHash<EvmHistory>;

@@ -2,7 +2,7 @@ import { flushPromises, mount } from '@vue/test-utils';
 import { computed, defineComponent, h, ref } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { ValidatorInfoFull } from '@sora-substrate/sdk/build/staking/types';
+import type { ValidatorInfoFull } from '@/lib/substrate/sdk/staking/types';
 
 const makeValidator = (address: string): ValidatorInfoFull =>
   ({

@@ -1,11 +1,11 @@
-import { excludePoolXYKAssets } from '@sora-substrate/sdk/build/assets';
+import { excludePoolXYKAssets } from '@/lib/substrate/sdk/assets';
 
 import { isJsonRecord, parseIndexerJson } from '@/utils/indexerParsing';
 
 import { readMarketPrice } from '../marketPrice';
 
 import type { AssetEntity, FiatPriceObject, UpdatesStream } from '../types';
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 
 export function parseAssetFiatPrice(entity: AssetEntity): FiatPriceObject {
   const price = readMarketPrice(entity.priceUSDExact, entity.priceUSD);

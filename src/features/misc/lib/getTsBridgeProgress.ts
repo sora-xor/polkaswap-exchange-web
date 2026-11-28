@@ -1,6 +1,6 @@
-import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
+import { FPNumber, Operation } from '@/lib/substrate/sdk';
+import { BridgeTxStatus } from '@/lib/substrate/sdk/bridgeProxy/consts';
+import type { EthHistory } from '@/lib/substrate/sdk/bridgeProxy/eth/types';
 import { areBridgeExternalAccountsEqual } from '@/utils/bridge/common/account';
 import type { GetTsPurpose } from './getTsFlow';
 import { getTonswapBridgeFundingPurpose } from './tonswapBridgeLiquidity';

@@ -1,6 +1,6 @@
-import { WithKeyring, Operation } from '@sora-substrate/sdk';
-import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
+import { WithKeyring, Operation } from '@/lib/substrate/sdk';
+import { BridgeNetworkType } from '@/lib/substrate/sdk/bridgeProxy/consts';
+import { SubNetworkId } from '@/lib/substrate/sdk/bridgeProxy/sub/consts';
 import { shallowRef } from 'vue';
 
 import type { Node } from '@/types/nodes';
@@ -20,8 +20,8 @@ import { RelaychainAdapter } from './adapters/relaychain/relaychain';
 import { LiberlandAdapter } from './adapters/standalone/liberland';
 import { SubAdapter } from './adapters/substrate';
 
-import type { RegisteredAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
+import type { RegisteredAsset } from '@/lib/substrate/sdk/assets/types';
+import type { SubNetwork } from '@/lib/substrate/sdk/bridgeProxy/sub/types';
 
 type PathNetworks = {
   soraParachain?: SubNetwork;

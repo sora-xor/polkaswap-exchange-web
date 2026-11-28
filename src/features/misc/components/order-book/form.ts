@@ -1,7 +1,7 @@
-import { PriceVariant } from '@sora-substrate/liquidity-proxy';
-import { FPNumber } from '@sora-substrate/sdk';
+import { PriceVariant } from '@/lib/substrate/liquidity-proxy';
+import { FPNumber } from '@/lib/substrate/sdk';
 
-import type { OrderBook, OrderBookPriceVolume } from '@sora-substrate/liquidity-proxy';
+import type { OrderBook, OrderBookPriceVolume } from '@/lib/substrate/liquidity-proxy';
 
 /**
  * Trims user input to the precision allowed by the selected order book.

@@ -9,8 +9,8 @@ import { NFTStorage } from 'nft.storage';
 import { AppWallet, SoraNetwork } from '@/lib/soraneo-wallet/src/consts';
 import { NFT_BLACK_LIST_URL, WHITE_LIST_URL } from '@/lib/soraneo-wallet/src/util';
 import { StatsCoreNotReadyError } from '@/lib/soraneo-wallet/src/services/indexer/coreRefresh';
-import { Operation, TransactionStatus } from '@sora-substrate/sdk';
-import { FPNumber } from '@sora-substrate/math';
+import { Operation, TransactionStatus } from '@/lib/substrate/sdk';
+import { FPNumber } from '@/lib/substrate/math';
 import type { WALLET_TYPES } from '@tests/stubs/walletRuntime';
 
 const loginAccountMock = vi.hoisted(() => vi.fn());

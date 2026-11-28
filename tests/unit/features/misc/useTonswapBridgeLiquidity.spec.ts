@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { effectScope, reactive } from 'vue';
-import { DAI } from '@sora-substrate/sdk/build/assets/consts';
+import { DAI } from '@/lib/substrate/sdk/assets/consts';
 import {
   useTonswapBridgeLiquidity,
   type TonswapBridgeLiquidityContext,

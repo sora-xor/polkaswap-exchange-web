@@ -2,7 +2,7 @@ import { encodeAddress } from '@polkadot/util-crypto';
 import { describe, expect, it, vi } from 'vitest';
 
 vi.mock('@polkadot/util-crypto', async (original) => original());
-vi.mock('@sora-substrate/liquidity-proxy', () => ({ getChameleonPools: () => ['', []] }));
+vi.mock('@/lib/substrate/liquidity-proxy', () => ({ getChameleonPools: () => ['', []] }));
 
 import { ApiAccount, SoraPrefix } from '@/lib/substrate/sdk/apiAccount';
 import { PoolXykModule } from '@/lib/substrate/sdk/poolXyk';

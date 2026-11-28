@@ -1,7 +1,7 @@
 import { decodeAddress } from '@polkadot/util-crypto';
 import { u8aToHex } from '@polkadot/util';
-import { Operation, type HistoryItem } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { Operation, type HistoryItem } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { getTsContextHash } from './getTsContextHash';
 import type { GetTsPurpose } from './getTsFlow';
 import { getTsSwapAssetOf, normalizeGetTsAmount, parseGetTsSwapDraft, type GetTsSwapDraft } from './getTsPlan';

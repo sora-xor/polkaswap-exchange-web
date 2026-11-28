@@ -1,11 +1,11 @@
-import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { BridgeNetworkType } from '@/lib/substrate/sdk/bridgeProxy/consts';
 
 import type { AppEIPProvider } from '@/types/evm/provider';
 
 import type { Web3State, EthBridgeSettings, SubNetworkApps } from './types';
-import type { FPNumber } from '@sora-substrate/math';
-import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
-import type { SupportedApps, BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
+import type { FPNumber } from '@/lib/substrate/math';
+import type { EvmNetwork } from '@/lib/substrate/sdk/bridgeProxy/evm/types';
+import type { SupportedApps, BridgeNetworkId } from '@/lib/substrate/sdk/bridgeProxy/types';
 
 const mutations = {
   setEvmAddress(state, address: string): void {

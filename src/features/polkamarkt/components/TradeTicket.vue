@@ -264,7 +264,7 @@ import {
 import { isDpmMarket } from '../lib/pricingCurve';
 import PricingCurvePositionChart from './PricingCurvePositionChart.vue';
 
-import type { CodecString } from '@sora-substrate/sdk';
+import type { CodecString } from '@/lib/substrate/sdk';
 import type { AccountPosition, PolkamarktMarket, TicketOutcome, TradeMode } from '../types';
 import type { BuyQuote, ClaimableInfo, PolkamarktOutcome, SellQuote } from '@/lib/substrate/sdk/polkamarkt';
 import type { HistoryItem } from '@/lib/substrate/sdk/types';

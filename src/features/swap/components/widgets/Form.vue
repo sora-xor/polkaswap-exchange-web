@@ -169,8 +169,8 @@
 </template>
 
 <script setup lang="ts">
-import { FPNumber, Operation, type CodecString, type NetworkFeesObject } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber, Operation, type CodecString, type NetworkFeesObject } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
@@ -207,10 +207,10 @@ import { isSelectableAsset } from '@/components/shared/SelectAsset/utils';
 import { asZeroValue, debouncedInputHandler, getMaxValue, hasInsufficientBalance, isMaxButtonAvailable } from '@/utils';
 import { DifferenceStatus, getDifferenceStatus, getVisibleSwapTokenBalance } from '@/utils/swap';
 
-import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import type { Distribution } from '@sora-substrate/liquidity-proxy/build/types';
-import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
-import type { SwapQuoteData } from '@sora-substrate/sdk/build/swap/types';
+import type { LiquiditySourceTypes } from '@/lib/substrate/liquidity-proxy/consts';
+import type { Distribution } from '@/lib/substrate/liquidity-proxy/types';
+import type { AccountAsset, Asset } from '@/lib/substrate/sdk/assets/types';
+import type { SwapQuoteData } from '@/lib/substrate/sdk/swap/types';
 import type { Subscription } from 'rxjs';
 import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';

@@ -100,7 +100,7 @@ import { computed, ref } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 import { sortAssets } from '@/utils';
 
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
 import GenericPageHeader from '@/components/shared/GenericPageHeader.vue';
 import PoolBase from '@/modules/pool/views/Pool.vue';

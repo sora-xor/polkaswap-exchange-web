@@ -33,7 +33,7 @@ import AccountCard from './AccountCard.vue';
 import Identity from './Identity.vue';
 import WalletAvatar from './WalletAvatar.vue';
 
-import type { WithConnectionApi } from '@sora-substrate/sdk';
+import type { WithConnectionApi } from '@/lib/substrate/sdk';
 
 const DEFAULT_NAME = '<unknown>';
 

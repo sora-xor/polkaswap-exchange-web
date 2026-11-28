@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
+import { BridgeNetworkType } from '@/lib/substrate/sdk/bridgeProxy/consts';
+import { SubNetworkId } from '@/lib/substrate/sdk/bridgeProxy/sub/consts';
 
 const subBridgeApiMock = vi.hoisted(() => ({
   getHistory: vi.fn(),
@@ -12,7 +12,7 @@ const subBridgeApiMock = vi.hoisted(() => ({
   saveHistory: vi.fn(),
 }));
 
-vi.mock('@sora-substrate/sdk', () => ({
+vi.mock('@/lib/substrate/sdk', () => ({
   Operation: {
     SubstrateIncoming: 'SubstrateIncoming',
     SubstrateOutgoing: 'SubstrateOutgoing',

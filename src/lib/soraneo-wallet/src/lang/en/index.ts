@@ -1,5 +1,5 @@
-import { Operation, TransactionStatus } from '@sora-substrate/sdk';
-import { BalanceType } from '@sora-substrate/sdk/build/assets/consts';
+import { Operation, TransactionStatus } from '@/lib/substrate/sdk';
+import { BalanceType } from '@/lib/substrate/sdk/assets/consts';
 
 const BalanceKeys = BalanceType ?? {
   Free: 'Free',

@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { collectAssets, resolveAssetRef, type AgentAssetContext } from '@/features/agent-trading/assets';
 
-import type { AccountBalance, Asset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountBalance, Asset, RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 const balance: AccountBalance = {
   free: '10',

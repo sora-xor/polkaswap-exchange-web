@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import fixture from '../../../fixtures/tonswap/confirmed-burn-snapshot-20260921.json';
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { allocateTonswapBurns } from '@/features/misc/lib/tonswapBurn';
 import { fetchTonswapBurnSnapshot } from '@/indexer/queries/tonswapBurn';
 
@@ -10,7 +10,7 @@ vi.hoisted(() => {
   vi.stubGlobal('Uint8Array', new TextEncoder().encode('').constructor);
 });
 vi.unmock('@polkadot/util-crypto');
-vi.unmock('@sora-substrate/sdk/build/assets/consts');
+vi.unmock('@/lib/substrate/sdk/assets/consts');
 
 // Supply only transport configuration; captured burns, address hashing and reward math stay real.
 vi.mock('@/plugins/pinia', () => ({ resolveGlobalPinia: () => undefined }));

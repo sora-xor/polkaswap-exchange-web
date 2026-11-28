@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts" setup>
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { computed } from 'vue';
 
 import TransactionDetails from '@/components/shared/TransactionDetails.vue';
@@ -46,8 +46,8 @@ import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTranslation } from '@/composables/useTranslation';
 import { ZeroStringValue } from '@/consts';
 
-import type { CodecString } from '@sora-substrate/sdk';
-import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { CodecString } from '@/lib/substrate/sdk';
+import type { RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
 import InfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 
 defineOptions({

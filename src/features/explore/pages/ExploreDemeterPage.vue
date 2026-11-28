@@ -178,7 +178,7 @@
 </template>
 
 <script lang="ts" setup>
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import { computed, onMounted, ref, watch } from 'vue';
 
@@ -193,9 +193,9 @@ import { useWalletStore } from '@/stores/wallet';
 import type { AmountWithSuffix } from '@/types/formats';
 import { formatAmountWithSuffix, formatDecimalPlaces, sortPools } from '@/utils';
 
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
-import type { DemeterPool } from '@sora-substrate/sdk/build/demeterFarming/types';
-import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
+import type { DemeterPool } from '@/lib/substrate/sdk/demeterFarming/types';
+import type { AccountLiquidity } from '@/lib/substrate/sdk/poolXyk/types';
 import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
 import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 import WalletComponentHistoryPagination from '@/lib/soraneo-wallet/src/components/HistoryPagination.vue';

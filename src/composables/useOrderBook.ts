@@ -1,5 +1,5 @@
-import { PriceVariant } from '@sora-substrate/liquidity-proxy';
-import { FPNumber } from '@sora-substrate/sdk';
+import { PriceVariant } from '@/lib/substrate/liquidity-proxy';
+import { FPNumber } from '@/lib/substrate/sdk';
 import dayjs from 'dayjs/esm';
 import { computed, nextTick, ref, watch } from 'vue';
 
@@ -15,8 +15,8 @@ import {
 import { useOrderBookStore } from '@/stores/orderBook';
 import { useSettingsStore } from '@/stores/settings';
 
-import type { OrderBook } from '@sora-substrate/liquidity-proxy';
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { OrderBook } from '@/lib/substrate/liquidity-proxy';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 import type { OrderBookDealData, OrderBookStats } from '@/types/orderBook';
 import type { AsyncFnWithoutArgs, Nullable } from '@/types/common';
 

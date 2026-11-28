@@ -90,7 +90,7 @@ import ConnectionItems from '../List/ConnectionItems.vue';
 import { formatConnectedAddress } from '../utils';
 
 import type { PolkadotJsAccount } from '../../../types/common';
-import type { WithKeyring } from '@sora-substrate/sdk';
+import type { WithKeyring } from '@/lib/substrate/sdk';
 
 const accountActions = [AccountActionTypes.Rename, AccountActionTypes.Export, AccountActionTypes.Delete];
 
