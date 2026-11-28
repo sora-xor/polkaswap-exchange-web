@@ -1,0 +1,144 @@
+diff --git a/dist/es/shared/node-entry.js b/dist/es/shared/node-entry.js
+--- a/dist/es/shared/node-entry.js
++++ b/dist/es/shared/node-entry.js
+@@ -10861,6 +10861,21 @@
+ 	  };
+ 
+ 	  const extglobOpen = (type, value) => {
++	    // GHSA-fc5q-39xc-vjpf: allow only unambiguous literal repetition.
++	    if (type === "plus" || type === "star") {
++	      const start = state.index + 2;
++	      const end = input.indexOf(")", start);
++	      const body = input.slice(start, end);
++	      if (end < 0 || /[^a-zA-Z0-9_.| /-]/.test(body)) {
++	        throw new SyntaxError("Repeated glob alternatives must be prefix-free ASCII literals");
++	      }
++	      const branches = body.toLowerCase().split("|").sort();
++	      if (branches.some((branch, index) =>
++	        !branch || (index > 0 && branch.startsWith(branches[index - 1]))
++	      )) {
++	        throw new SyntaxError("Repeated glob alternatives must be prefix-free ASCII literals");
++	      }
++	    }
+ 	    const token = { ...EXTGLOB_CHARS[value], conditions: 1, inner: '' };
+ 
+ 	    token.prev = prev;
+diff --git a/dist/es/shared/watch.js b/dist/es/shared/watch.js
+--- a/dist/es/shared/watch.js
++++ b/dist/es/shared/watch.js
+@@ -1182,6 +1182,21 @@
+ 	  };
+ 
+ 	  const extglobOpen = (type, value) => {
++	    // GHSA-fc5q-39xc-vjpf: allow only unambiguous literal repetition.
++	    if (type === "plus" || type === "star") {
++	      const start = state.index + 2;
++	      const end = input.indexOf(")", start);
++	      const body = input.slice(start, end);
++	      if (end < 0 || /[^a-zA-Z0-9_.| /-]/.test(body)) {
++	        throw new SyntaxError("Repeated glob alternatives must be prefix-free ASCII literals");
++	      }
++	      const branches = body.toLowerCase().split("|").sort();
++	      if (branches.some((branch, index) =>
++	        !branch || (index > 0 && branch.startsWith(branches[index - 1]))
++	      )) {
++	        throw new SyntaxError("Repeated glob alternatives must be prefix-free ASCII literals");
++	      }
++	    }
+ 	    const token = { ...EXTGLOB_CHARS[value], conditions: 1, inner: '' };
+ 
+ 	    token.prev = prev;
+@@ -3899,6 +3914,21 @@
+ 	  };
+ 
+ 	  const extglobOpen = (type, value) => {
++	    // GHSA-fc5q-39xc-vjpf: allow only unambiguous literal repetition.
++	    if (type === "plus" || type === "star") {
++	      const start = state.index + 2;
++	      const end = input.indexOf(")", start);
++	      const body = input.slice(start, end);
++	      if (end < 0 || /[^a-zA-Z0-9_.| /-]/.test(body)) {
++	        throw new SyntaxError("Repeated glob alternatives must be prefix-free ASCII literals");
++	      }
++	      const branches = body.toLowerCase().split("|").sort();
++	      if (branches.some((branch, index) =>
++	        !branch || (index > 0 && branch.startsWith(branches[index - 1]))
++	      )) {
++	        throw new SyntaxError("Repeated glob alternatives must be prefix-free ASCII literals");
++	      }
++	    }
+ 	    const token = { ...EXTGLOB_CHARS[value], conditions: 1, inner: '' };
+ 
+ 	    token.prev = prev;
+diff --git a/dist/shared/rollup.js b/dist/shared/rollup.js
+--- a/dist/shared/rollup.js
++++ b/dist/shared/rollup.js
+@@ -2184,6 +2184,21 @@
+ 	  };
+ 
+ 	  const extglobOpen = (type, value) => {
++	    // GHSA-fc5q-39xc-vjpf: allow only unambiguous literal repetition.
++	    if (type === "plus" || type === "star") {
++	      const start = state.index + 2;
++	      const end = input.indexOf(")", start);
++	      const body = input.slice(start, end);
++	      if (end < 0 || /[^a-zA-Z0-9_.| /-]/.test(body)) {
++	        throw new SyntaxError("Repeated glob alternatives must be prefix-free ASCII literals");
++	      }
++	      const branches = body.toLowerCase().split("|").sort();
++	      if (branches.some((branch, index) =>
++	        !branch || (index > 0 && branch.startsWith(branches[index - 1]))
++	      )) {
++	        throw new SyntaxError("Repeated glob alternatives must be prefix-free ASCII literals");
++	      }
++	    }
+ 	    const token = { ...EXTGLOB_CHARS[value], conditions: 1, inner: '' };
+ 
+ 	    token.prev = prev;
+diff --git a/dist/shared/index.js b/dist/shared/index.js
+--- a/dist/shared/index.js
++++ b/dist/shared/index.js
+@@ -1178,6 +1178,21 @@
+ 	  };
+ 
+ 	  const extglobOpen = (type, value) => {
++	    // GHSA-fc5q-39xc-vjpf: allow only unambiguous literal repetition.
++	    if (type === "plus" || type === "star") {
++	      const start = state.index + 2;
++	      const end = input.indexOf(")", start);
++	      const body = input.slice(start, end);
++	      if (end < 0 || /[^a-zA-Z0-9_.| /-]/.test(body)) {
++	        throw new SyntaxError("Repeated glob alternatives must be prefix-free ASCII literals");
++	      }
++	      const branches = body.toLowerCase().split("|").sort();
++	      if (branches.some((branch, index) =>
++	        !branch || (index > 0 && branch.startsWith(branches[index - 1]))
++	      )) {
++	        throw new SyntaxError("Repeated glob alternatives must be prefix-free ASCII literals");
++	      }
++	    }
+ 	    const token = { ...EXTGLOB_CHARS[value], conditions: 1, inner: '' };
+ 
+ 	    token.prev = prev;
+@@ -3895,6 +3910,21 @@
+ 	  };
+ 
+ 	  const extglobOpen = (type, value) => {
++	    // GHSA-fc5q-39xc-vjpf: allow only unambiguous literal repetition.
++	    if (type === "plus" || type === "star") {
++	      const start = state.index + 2;
++	      const end = input.indexOf(")", start);
++	      const body = input.slice(start, end);
++	      if (end < 0 || /[^a-zA-Z0-9_.| /-]/.test(body)) {
++	        throw new SyntaxError("Repeated glob alternatives must be prefix-free ASCII literals");
++	      }
++	      const branches = body.toLowerCase().split("|").sort();
++	      if (branches.some((branch, index) =>
++	        !branch || (index > 0 && branch.startsWith(branches[index - 1]))
++	      )) {
++	        throw new SyntaxError("Repeated glob alternatives must be prefix-free ASCII literals");
++	      }
++	    }
+ 	    const token = { ...EXTGLOB_CHARS[value], conditions: 1, inner: '' };
+ 
+ 	    token.prev = prev;

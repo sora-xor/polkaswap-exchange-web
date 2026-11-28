@@ -1,0 +1,158 @@
+diff --git a/cjs/ws/index.js b/cjs/ws/index.js
+index 791c4f561d36bb9a801937ca305043cfbc24fa81..551db5d63b23ca6cf36d689cc68775f0eef0d56c 100644
+--- a/cjs/ws/index.js
++++ b/cjs/ws/index.js
+@@ -18,6 +18,11 @@ const ALIASES = {
+ const RETRY_DELAY = 2_500;
+ const DEFAULT_TIMEOUT_MS = 60 * 1000;
+ const TIMEOUT_INTERVAL = 5_000;
++// Polkaswap patch: keep per-connection subscription bookkeeping bounded in long-lived tabs.
++// Notifications that arrive after this client closed a subscription are dropped, not kept forever.
++const CLOSED_SUBSCRIPTION_TTL_MS = 5 * 60 * 1000;
++const MAX_CLOSED_SUBSCRIPTIONS = 4096;
++const MAX_WAITING_FOR_ID = 256;
+ const l = (0, util_1.logger)('api-ws');
+ /** @internal Clears a Record<*> of all keys, optionally with all callback on clear */
+ function eraseRecord(record, cb) {
+@@ -62,6 +67,7 @@ class WsProvider {
+     #isReadyPromise;
+     #stats;
+     #waitingForId = {};
++    #closedSubscriptions = new Map();
+     #cacheCapacity;
+     #ttl;
+     #autoConnectMs;
+@@ -359,6 +365,8 @@ class WsProvider {
+             return false;
+         }
+         delete this.#subscriptions[subscription];
++        delete this.#waitingForId[subscription];
++        this.#rememberClosedSubscription(subscription);
+         try {
+             return this.isConnected && !(0, util_1.isNull)(this.#websocket)
+                 ? this.send(method, [id])
+@@ -399,6 +407,7 @@ class WsProvider {
+             }
+         });
+         eraseRecord(this.#waitingForId);
++        this.#closedSubscriptions.clear();
+         // Reset stats for active endpoint
+         this.#endpointStats = defaultEndpointStats();
+         this.#emit('disconnected');
+@@ -453,6 +462,23 @@ class WsProvider {
+         }
+         delete this.#handlers[response.id];
+     };
++    #rememberClosedSubscription = (subscription) => {
++        const now = Date.now();
++        this.#closedSubscriptions.delete(subscription);
++        this.#closedSubscriptions.set(subscription, now);
++        for (const [key, closedAt] of this.#closedSubscriptions) {
++            if (this.#closedSubscriptions.size <= MAX_CLOSED_SUBSCRIPTIONS && now - closedAt < CLOSED_SUBSCRIPTION_TTL_MS) {
++                break;
++            }
++            this.#closedSubscriptions.delete(key);
++        }
++    };
++    #trimWaitingForId = () => {
++        const keys = Object.keys(this.#waitingForId);
++        for (let i = 0; i < keys.length - MAX_WAITING_FOR_ID; i++) {
++            delete this.#waitingForId[keys[i]];
++        }
++    };
+     #onSocketMessageSubscribe = (response) => {
+         if (!response.method) {
+             throw new Error('No method found in JSONRPC response');
+@@ -461,8 +487,13 @@ class WsProvider {
+         const subId = `${method}::${response.params.subscription}`;
+         const handler = this.#subscriptions[subId];
+         if (!handler) {
++            if (this.#closedSubscriptions.has(subId)) {
++                // a late notification for a subscription this client already closed
++                return;
++            }
+             // store the JSON, we could have out-of-order subid coming in
+             this.#waitingForId[subId] = response;
++            this.#trimWaitingForId();
+             l.debug(() => `Unable to find handler for subscription=${subId}`);
+             return;
+         }
+diff --git a/ws/index.js b/ws/index.js
+index beafe96669c7e27914658ca0e78f3e827e586944..0a4f167887bcb97361546433ad756d85880d8c89 100644
+--- a/ws/index.js
++++ b/ws/index.js
+@@ -14,6 +14,11 @@ const ALIASES = {
+ const RETRY_DELAY = 2_500;
+ const DEFAULT_TIMEOUT_MS = 60 * 1000;
+ const TIMEOUT_INTERVAL = 5_000;
++// Polkaswap patch: keep per-connection subscription bookkeeping bounded in long-lived tabs.
++// Notifications that arrive after this client closed a subscription are dropped, not kept forever.
++const CLOSED_SUBSCRIPTION_TTL_MS = 5 * 60 * 1000;
++const MAX_CLOSED_SUBSCRIPTIONS = 4096;
++const MAX_WAITING_FOR_ID = 256;
+ const l = logger('api-ws');
+ /** @internal Clears a Record<*> of all keys, optionally with all callback on clear */
+ function eraseRecord(record, cb) {
+@@ -58,6 +63,7 @@ export class WsProvider {
+     #isReadyPromise;
+     #stats;
+     #waitingForId = {};
++    #closedSubscriptions = new Map();
+     #cacheCapacity;
+     #ttl;
+     #autoConnectMs;
+@@ -355,6 +361,8 @@ export class WsProvider {
+             return false;
+         }
+         delete this.#subscriptions[subscription];
++        delete this.#waitingForId[subscription];
++        this.#rememberClosedSubscription(subscription);
+         try {
+             return this.isConnected && !isNull(this.#websocket)
+                 ? this.send(method, [id])
+@@ -395,6 +403,7 @@ export class WsProvider {
+             }
+         });
+         eraseRecord(this.#waitingForId);
++        this.#closedSubscriptions.clear();
+         // Reset stats for active endpoint
+         this.#endpointStats = defaultEndpointStats();
+         this.#emit('disconnected');
+@@ -449,6 +458,23 @@ export class WsProvider {
+         }
+         delete this.#handlers[response.id];
+     };
++    #rememberClosedSubscription = (subscription) => {
++        const now = Date.now();
++        this.#closedSubscriptions.delete(subscription);
++        this.#closedSubscriptions.set(subscription, now);
++        for (const [key, closedAt] of this.#closedSubscriptions) {
++            if (this.#closedSubscriptions.size <= MAX_CLOSED_SUBSCRIPTIONS && now - closedAt < CLOSED_SUBSCRIPTION_TTL_MS) {
++                break;
++            }
++            this.#closedSubscriptions.delete(key);
++        }
++    };
++    #trimWaitingForId = () => {
++        const keys = Object.keys(this.#waitingForId);
++        for (let i = 0; i < keys.length - MAX_WAITING_FOR_ID; i++) {
++            delete this.#waitingForId[keys[i]];
++        }
++    };
+     #onSocketMessageSubscribe = (response) => {
+         if (!response.method) {
+             throw new Error('No method found in JSONRPC response');
+@@ -457,8 +483,13 @@ export class WsProvider {
+         const subId = `${method}::${response.params.subscription}`;
+         const handler = this.#subscriptions[subId];
+         if (!handler) {
++            if (this.#closedSubscriptions.has(subId)) {
++                // a late notification for a subscription this client already closed
++                return;
++            }
+             // store the JSON, we could have out-of-order subid coming in
+             this.#waitingForId[subId] = response;
++            this.#trimWaitingForId();
+             l.debug(() => `Unable to find handler for subscription=${subId}`);
+             return;
+         }

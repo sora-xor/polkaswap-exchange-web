@@ -3,22 +3,41 @@
 Run these checks from the repository root using Node 26 and the pinned Yarn release:
 
 ```sh
-node .yarn/releases/yarn-4.10.3.cjs security:audit
+node .yarn/releases/yarn-4.18.1.cjs security:audit
 ```
 
-The aggregate runner executes all three inventories even if an earlier audit fails. It fails if any command reports advisories, cannot run, or exceeds its 60-second deadline. To run the checks individually:
+The aggregate runner executes all four checks even if an earlier check fails. Each has a 60-second deadline. The individual commands are
 
 ```sh
-node .yarn/releases/yarn-4.10.3.cjs npm audit --all --recursive --no-deprecations
+node .yarn/releases/yarn-4.18.1.cjs npm audit --all --recursive --no-deprecations
 node scripts/security/audit-vendor.mjs
 npm audit --package-lock-only --prefix scripts/ucan
+node scripts/security/audit-picomatch.mjs
 ```
 
-Each command exits nonzero when advisories are found. Run all three even when an earlier check fails, so the result covers each inventory. Registry failures are incomplete checks, not a clean result. These commands contact npm's public registry and submit package names and versions; they do not need credentials. Unit tests for the vendor checker inject an offline transport.
+Open findings, unexpected parser bytes and incomplete registry checks return a nonzero exit code. The commands submit package names and versions to npm's public registry without credentials. Unit tests for the advisory checks use an offline transport.
 
-The October 24, 2026 follow-up audit passes all three inventories with zero known advisories. Elliptic was removed with the blanket Node polyfill dependency; AppKit and CDP were migrated to patched Zod 4.6.7 using tested source patches. See the [dated security report](reports/dependency-security-2026-10-24.md), [Zod migration maintenance notes](zod-migration.md), and [browser compatibility notes](../scripts/build/README.md). No advisory is suppressed.
+The November 18, 2026 review updated compatible direct dependencies and copied input/focus packages and fixed the follow-redirects, Glob and Minimatch advisories. The subsequent Picomatch remediation is described below. The [initial review](reports/dependency-security-2026-11-18.md) records the other dependency changes and compatibility constraints.
 
-The production build also rejects emitted Elliptic, crypto-browserify, and legacy Zod modules, including the `/v3` entrypoint still published inside Zod 4. This checks the implementation actually bundled in web and Electron renderers, beyond the registry package-version audit. Keep this check enabled for lazy chunks as well as the entry bundle.
+The [October 24 review](reports/dependency-security-2026-10-24.md) records the earlier removal of Elliptic with the blanket Node polyfill dependency and the AppKit/CDP migration to patched Zod 4.6.7. Those protections remain; see [Zod migration maintenance notes](zod-migration.md) and [browser compatibility notes](../scripts/build/README.md).
+
+The production build rejects the original and replacement Picomatch, Elliptic, crypto-browserify, and legacy Zod modules, including the `/v3` entrypoint still published inside Zod 4. This checks the implementation actually bundled in web and Electron renderers, including lazy chunks.
+
+The shared build-only `productionCspPlugin.mjs` also removes development loopback wildcards from the web and Electron HTML policies. Production keeps the approved companion origin `http://127.0.0.1:39847`; an already stricter input policy remains stricter. Development templates keep local node/indexer and HMR support. Missing or ambiguous CSP directives fail the build. This protects static HTML independently of the production CDN header.
+
+The scoped `js-beautify/glob` and `editorconfig/minimatch` resolutions cross their consumers' declared major versions because the older versions remain vulnerable. `tests/unit/scripts/security/glob-consumers.spec.ts` exercises native consumer resolution, real CLI file selection, EditorConfig precedence and cancellation during filesystem traversal. Keep these regressions when changing or removing the overrides. The Polkadot RPC-provider update retains the bounded-subscription patch and its wallet connection tests.
+
+Yarn 4.18.1 is pinned in both the manifest and `.yarnrc.yml`. The former checked-in CLI remains for historical commands; it follows the current `yarnPath`. Lifecycle scripts and package-age selection retain their previous behavior. Git dependency sources have an empty allowlist; the current lockfile needs none.
+
+## Picomatch remediation
+
+On 18 November 2026 the original package still had no release fixing GHSA-fc5q-39xc-vjpf. Yarn now resolves both previously installed versions (2.3.2 and 4.0.7) to the exact fork `@ryotsu/picomatch@4.0.7-a`. The reviewed npm archive corresponds to commit `3ab5a7627d480259e3d9ca67fbc14c125d374f0e`. [Upstream advisory](https://github.com/advisories/GHSA-fc5q-39xc-vjpf) · [Fork source](https://github.com/ryotsu-kankichi/secured-picomatch/tree/3ab5a7627d480259e3d9ca67fbc14c125d374f0e)
+
+The fork and local patch allow unbounded extglob repetition only for nonempty ASCII literals where no alternative is a prefix of another, ignoring case. A simple filename pattern containing one wildcard, such as `+(logo-*.svg)`, compiles without an outer repetition. Other repeated forms raise a syntax error before the matcher is built. The guard applies even when a caller disables the recursion limit.
+
+Rollup, Prettier, Playwright, tsx and the two checked-in Yarn executables also embed copies of the parser. Their patches restrict repeated extglobs to unambiguous literal alternatives. For example, `+(lib|src)` remains valid. Rejected patterns raise a syntax error before regex compilation. Ordinary glob patterns continue through the existing parser. When updating these tools, review each embedded copy and run the consumer regression tests. [CLI patch maintenance](../scripts/security/README.md)
+
+The supplemental audit verifies the installed fork name, version and SHA-256 of the patched parser. It queries advisories for both the fork and its original upstream version. It reports this upstream advisory as addressed only for the reviewed parser, and fails on other upstream findings, any fork finding or changed parser bytes. The ordinary recursive Yarn audit runs independently. Both the full and production-only dependency audits passed after installation.
 
 ## Coverage
 

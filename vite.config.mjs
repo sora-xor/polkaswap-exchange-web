@@ -11,6 +11,7 @@ import { browserCryptoFallbackPlugin } from './scripts/build/browserCryptoFallba
 import { browserNodePolyfillsPlugin } from './scripts/build/browserNodePolyfillsPlugin.mjs';
 import { compatAutoImportPlugin } from './scripts/build/compatAutoImportPlugin.mjs';
 import { dependencySecurityPlugin } from './scripts/build/dependencySecurityPlugin.mjs';
+import { productionCspPlugin } from './scripts/build/productionCspPlugin.mjs';
 import { storeRehearsalPlugin } from './scripts/build/storeRehearsalPlugin.mjs';
 
 const isTest = !!process.env.VITEST;
@@ -190,6 +191,7 @@ export default defineConfig({
   plugins: [
     storeRehearsalPlugin(),
     dependencySecurityPlugin(),
+    productionCspPlugin(),
     vue(),
     dynamicImport(),
     svgLoader(),

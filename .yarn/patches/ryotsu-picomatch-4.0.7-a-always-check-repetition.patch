@@ -1,0 +1,40 @@
+diff --git a/lib/parse.js b/lib/parse.js
+--- a/lib/parse.js
++++ b/lib/parse.js
+@@ -353,9 +353,7 @@
+ };
+ 
+ const analyzeRepeatedExtglob = (body, options) => {
+-  if (options.maxExtglobRecursion === false) {
+-    return { risky: false };
+-  }
++  // Apply the repeated-extglob safety check even when callers disable the depth limit.
+ 
+   const max =
+     typeof options.maxExtglobRecursion === 'number'
+@@ -597,6 +595,25 @@
+ 
+   const extglobOpen = (type, value) => {
+     const token = { ...EXTGLOB_CHARS[value], conditions: 1, inner: '' };
++    if (type === 'plus' || type === 'star') {
++      const start = state.index + 2;
++      const end = input.indexOf(')', start);
++      const body = end < 0 ? '' : input.slice(start, end);
++      const star = body.indexOf('*');
++      if (star !== -1 && star === body.lastIndexOf('*') && !/[^a-zA-Z0-9_.*-]/.test(body)) {
++        // One filename wildcard absorbs any further copies of its literal prefix and suffix.
++        token.close = type === 'plus' ? ')' : ')?';
++      } else {
++        if (!body || /[^a-zA-Z0-9_. /|-]/.test(body)) {
++          throw new SyntaxError('Repeated extglobs require unambiguous literal alternatives or a single filename wildcard');
++        }
++        // A prefix-free set admits only one division into repetitions, including with nocase.
++        const alternatives = body.toLowerCase().split('|').sort();
++        if (!alternatives[0] || alternatives.some((word, i) => i > 0 && word.startsWith(alternatives[i - 1]))) {
++          throw new SyntaxError('Repeated extglob alternatives must be nonempty and prefix-free');
++        }
++      }
++    }
+ 
+     token.prev = prev;
+     token.parens = state.parens;

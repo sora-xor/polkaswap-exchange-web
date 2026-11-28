@@ -1,5 +1,41 @@
 # Changelog
 
+## 6.5.2
+
+### Patch Changes
+
+- 7b065ab: Use `Node.isConnected` to determine whether a node is attached to the document, replacing the manual shadow host walk. Behavior is unchanged, bundle is ~400 bytes smaller (minified).
+
+## 6.5.1
+
+### Patch Changes
+
+- ab07c2b: Recognize plaintext-only and case-insensitive contenteditable values in natural tab order.
+
+## 6.5.0
+
+### Minor Changes
+
+- 8e6c074: Add support for `<area>` elements with an `href` attribute (image map hotspots),
+
+### Patch Changes
+
+- f656723: Treat elements with `visibility: collapse` as hidden, the same way `visibility: hidden` is already handled, so they are no longer considered tabbable or focusable. This matches browser behavior, where `collapse` hides an element (outside of table rows/columns) just like `hidden`.
+
+## 6.4.0
+
+### Minor Changes
+
+- 26a1d80: Enable CSS selector matching for whether an element is in an inert subtree (`[inert] *`).
+
+  This was previously disabled due to JSDOM's CSS selector engine being incompatible with this selector, and throwing all the results off. Instead, tabbable would perform manual checks for an element being in an inert subtree. The CSS selector issue appears to have been fixed in recent JSDOM versions (at least 26), so this version reintroduces the selector fast path.
+
+## 6.3.0
+
+### Minor Changes
+
+- fae1e50: feat: add 'full-native' `displayCheck` option, utilising Element#checkVisibility
+
 ## 6.2.0
 
 ### Minor Changes

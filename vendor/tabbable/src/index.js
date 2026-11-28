@@ -1,20 +1,18 @@
 // NOTE: separate `:not()` selectors has broader browser support than the newer
 //  `:not([inert], [inert] *)` (Feb 2023)
-// CAREFUL: JSDom does not support `:not([inert] *)` as a selector; using it causes
-//  the entire query to fail, resulting in no nodes found, which will break a lot
-//  of things... so we have to rely on JS to identify nodes inside an inert container
 const candidateSelectors = [
-  'input:not([inert])',
-  'select:not([inert])',
-  'textarea:not([inert])',
-  'a[href]:not([inert])',
-  'button:not([inert])',
-  '[tabindex]:not(slot):not([inert])',
-  'audio[controls]:not([inert])',
-  'video[controls]:not([inert])',
-  '[contenteditable]:not([contenteditable="false"]):not([inert])',
-  'details>summary:first-of-type:not([inert])',
-  'details:not([inert])',
+  'input:not([inert]):not([inert] *)',
+  'select:not([inert]):not([inert] *)',
+  'textarea:not([inert]):not([inert] *)',
+  'a[href]:not([inert]):not([inert] *)',
+  'area[href]:not([inert]):not([inert] *)',
+  'button:not([inert]):not([inert] *)',
+  '[tabindex]:not(slot):not([inert]):not([inert] *)',
+  'audio[controls]:not([inert]):not([inert] *)',
+  'video[controls]:not([inert]):not([inert] *)',
+  '[contenteditable]:not([contenteditable="false"]):not([inert]):not([inert] *)',
+  'details>summary:first-of-type:not([inert]):not([inert] *)',
+  'details:not([inert]):not([inert] *)',
 ];
 const candidateSelector = /* #__PURE__ */ candidateSelectors.join(',');
 
@@ -22,7 +20,9 @@ const NoElement = typeof Element === 'undefined';
 
 const matches = NoElement
   ? function () {}
-  : Element.prototype.matches || Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
+  : Element.prototype.matches ||
+    Element.prototype.msMatchesSelector ||
+    Element.prototype.webkitMatchesSelector;
 
 const getRootNode =
   !NoElement && Element.prototype.getRootNode
@@ -31,7 +31,7 @@ const getRootNode =
 
 /**
  * Determines if a node is inert or in an inert ancestor.
- * @param {Element} [node]
+ * @param {Node} [node]
  * @param {boolean} [lookUp] If true and `node` is not inert, looks up at ancestors to
  *  see if any of them are inert. If false, only `node` itself is considered.
  * @returns {boolean} True if inert itself or by way of being in an inert ancestor.
@@ -47,9 +47,15 @@ const isInert = function (node, lookUp = true) {
   // NOTE: this could also be handled with `node.matches('[inert], :is([inert] *)')`
   //  if it weren't for `matches()` not being a function on shadow roots; the following
   //  code works for any kind of node
-  // CAREFUL: JSDom does not appear to support certain selectors like `:not([inert] *)`
-  //  so it likely would not support `:is([inert] *)` either...
-  const result = inert || (lookUp && node && isInert(node.parentNode)); // recursive
+  const result =
+    inert ||
+    (lookUp &&
+      node &&
+      // closest does not exist on shadow roots, so we fall back to a manual
+      // lookup upward, in case it is not defined.
+      (typeof node.closest === 'function'
+        ? node.closest('[inert]')
+        : isInert(node.parentNode)));
 
   return result;
 };
@@ -61,10 +67,12 @@ const isInert = function (node, lookUp = true) {
  */
 const isContentEditable = function (node) {
   // CAREFUL: JSDom does not support the `HTMLElement.isContentEditable` API so we have
-  //  to use the attribute directly to check for this, which can either be empty or 'true';
-  //  if it's `null` (not specified) or 'false', it's a non-editable element
-  const attValue = node?.getAttribute?.('contenteditable');
-  return attValue === '' || attValue === 'true';
+  //  to use the case-insensitive attribute directly: empty, 'true', and 'plaintext-only'
+  //  are editable states; `null` (not specified) and 'false' are not.
+  const attValue = node?.getAttribute?.('contenteditable')?.toLowerCase();
+  return (
+    attValue === '' || attValue === 'true' || attValue === 'plaintext-only'
+  );
 };
 
 /**
@@ -75,12 +83,14 @@ const isContentEditable = function (node) {
  */
 const getCandidates = function (el, includeContainer, filter) {
   // even if `includeContainer=false`, we still have to check it for inertness because
-  //  if it's inert, all its children are inert
+  //  if it's inert (either by itself or via its parent), then all its children are inert
   if (isInert(el)) {
     return [];
   }
 
-  let candidates = Array.prototype.slice.apply(el.querySelectorAll(candidateSelector));
+  let candidates = Array.prototype.slice.apply(
+    el.querySelectorAll(candidateSelector)
+  );
   if (includeContainer && matches.call(el, candidateSelector)) {
     candidates.unshift(el);
   }
@@ -122,7 +132,11 @@ const getCandidates = function (el, includeContainer, filter) {
  * @param {IterativeOptions} options
  * @returns {Array.<Element|CandidateScope>}
  */
-const getCandidatesIteratively = function (elements, includeContainer, options) {
+const getCandidatesIteratively = function (
+  elements,
+  includeContainer,
+  options
+) {
   const candidates = [];
   const elementsToCheck = Array.from(elements);
   while (elementsToCheck.length) {
@@ -149,7 +163,11 @@ const getCandidatesIteratively = function (elements, includeContainer, options) 
     } else {
       // check candidate element
       const validCandidate = matches.call(element, candidateSelector);
-      if (validCandidate && options.filter(element) && (includeContainer || !elements.includes(element))) {
+      if (
+        validCandidate &&
+        options.filter(element) &&
+        (includeContainer || !elements.includes(element))
+      ) {
         candidates.push(element);
       }
 
@@ -157,13 +175,15 @@ const getCandidatesIteratively = function (elements, includeContainer, options) 
       const shadowRoot =
         element.shadowRoot ||
         // check for an undisclosed shadow
-        (typeof options.getShadowRoot === 'function' && options.getShadowRoot(element));
+        (typeof options.getShadowRoot === 'function' &&
+          options.getShadowRoot(element));
 
       // no inert look up because we're already drilling down and checking for inertness
       //  on the way down, so all containers to this root node should have already been
       //  vetted as non-inert
       const validShadowRoot =
-        !isInert(shadowRoot, false) && (!options.shadowRootFilter || options.shadowRootFilter(element));
+        !isInert(shadowRoot, false) &&
+        (!options.shadowRootFilter || options.shadowRootFilter(element));
 
       if (shadowRoot && validShadowRoot) {
         // add shadow dom scope IIF a shadow root node was given; otherwise, an undisclosed
@@ -225,7 +245,11 @@ const getTabIndex = function (node) {
     // order, consider their tab index to be 0.
     // Also browsers do not return `tabIndex` correctly for contentEditable nodes;
     // so if they don't have a tabindex attribute specifically set, assume it's 0.
-    if ((/^(AUDIO|VIDEO|DETAILS)$/.test(node.tagName) || isContentEditable(node)) && !hasTabIndex(node)) {
+    if (
+      (/^(AUDIO|VIDEO|DETAILS)$/.test(node.tagName) ||
+        isContentEditable(node)) &&
+      !hasTabIndex(node)
+    ) {
       return 0;
     }
   }
@@ -252,7 +276,9 @@ const getSortOrderTabIndex = function (node, isScope) {
 };
 
 const sortOrderedTabbables = function (a, b) {
-  return a.tabIndex === b.tabIndex ? a.documentOrder - b.documentOrder : a.tabIndex - b.tabIndex;
+  return a.tabIndex === b.tabIndex
+    ? a.documentOrder - b.documentOrder
+    : a.tabIndex - b.tabIndex;
 };
 
 const isInput = function (node) {
@@ -266,7 +292,9 @@ const isHiddenInput = function (node) {
 const isDetailsWithSummary = function (node) {
   const r =
     node.tagName === 'DETAILS' &&
-    Array.prototype.slice.apply(node.children).some((child) => child.tagName === 'SUMMARY');
+    Array.prototype.slice
+      .apply(node.children)
+      .some((child) => child.tagName === 'SUMMARY');
   return r;
 };
 
@@ -284,11 +312,17 @@ const isTabbableRadio = function (node) {
   }
   const radioScope = node.form || getRootNode(node);
   const queryRadios = function (name) {
-    return radioScope.querySelectorAll('input[type="radio"][name="' + name + '"]');
+    return radioScope.querySelectorAll(
+      'input[type="radio"][name="' + name + '"]'
+    );
   };
 
   let radioSet;
-  if (typeof window !== 'undefined' && typeof window.CSS !== 'undefined' && typeof window.CSS.escape === 'function') {
+  if (
+    typeof window !== 'undefined' &&
+    typeof window.CSS !== 'undefined' &&
+    typeof window.CSS.escape === 'function'
+  ) {
     radioSet = queryRadios(window.CSS.escape(node.name));
   } else {
     try {
@@ -315,64 +349,41 @@ const isNonTabbableRadio = function (node) {
   return isRadio(node) && !isTabbableRadio(node);
 };
 
-// determines if a node is ultimately attached to the window's document
-const isNodeAttached = function (node) {
-  // The root node is the shadow root if the node is in a shadow DOM; some document otherwise
-  //  (but NOT _the_ document; see second 'If' comment below for more).
-  // If rootNode is shadow root, it'll have a host, which is the element to which the shadow
-  //  is attached, and the one we need to check if it's in the document or not (because the
-  //  shadow, and all nodes it contains, is never considered in the document since shadows
-  //  behave like self-contained DOMs; but if the shadow's HOST, which is part of the document,
-  //  is hidden, or is not in the document itself but is detached, it will affect the shadow's
-  //  visibility, including all the nodes it contains). The host could be any normal node,
-  //  or a custom element (i.e. web component). Either way, that's the one that is considered
-  //  part of the document, not the shadow root, nor any of its children (i.e. the node being
-  //  tested).
-  // To further complicate things, we have to look all the way up until we find a shadow HOST
-  //  that is attached (or find none) because the node might be in nested shadows...
-  // If rootNode is not a shadow root, it won't have a host, and so rootNode should be the
-  //  document (per the docs) and while it's a Document-type object, that document does not
-  //  appear to be the same as the node's `ownerDocument` for some reason, so it's safer
-  //  to ignore the rootNode at this point, and use `node.ownerDocument`. Otherwise,
-  //  using `rootNode.contains(node)` will _always_ be true we'll get false-positives when
-  //  node is actually detached.
-  // NOTE: If `nodeRootHost` or `node` happens to be the `document` itself (which is possible
-  //  if a tabbable/focusable node was quickly added to the DOM, focused, and then removed
-  //  from the DOM as in https://github.com/focus-trap/focus-trap-react/issues/905), then
-  //  `ownerDocument` will be `null`, hence the optional chaining on it.
-  let nodeRoot = node && getRootNode(node);
-  let nodeRootHost = nodeRoot?.host;
-
-  // in some cases, a detached node will return itself as the root instead of a document or
-  //  shadow root object, in which case, we shouldn't try to look further up the host chain
-  let attached = false;
-  if (nodeRoot && nodeRoot !== node) {
-    attached = !!(nodeRootHost?.ownerDocument?.contains(nodeRootHost) || node?.ownerDocument?.contains(node));
-
-    while (!attached && nodeRootHost) {
-      // since it's not attached and we have a root host, the node MUST be in a nested shadow DOM,
-      //  which means we need to get the host's host and check if that parent host is contained
-      //  in (i.e. attached to) the document
-      nodeRoot = getRootNode(nodeRootHost);
-      nodeRootHost = nodeRoot?.host;
-      attached = !!nodeRootHost?.ownerDocument?.contains(nodeRootHost);
-    }
-  }
-
-  return attached;
-};
-
 const isZeroArea = function (node) {
   const { width, height } = node.getBoundingClientRect();
   return width === 0 && height === 0;
 };
 const isHidden = function (node, { displayCheck, getShadowRoot }) {
+  if (displayCheck === 'full-native') {
+    if ('checkVisibility' in node) {
+      // Chrome >= 105, Edge >= 105, Firefox >= 106, Safari >= 17.4
+      // @see https://developer.mozilla.org/en-US/docs/Web/API/Element/checkVisibility#browser_compatibility
+      const visible = node.checkVisibility({
+        // Checking opacity might be desirable for some use cases, but natively,
+        // opacity zero elements _are_ focusable and tabbable.
+        checkOpacity: false,
+        opacityProperty: false,
+
+        contentVisibilityAuto: true,
+        visibilityProperty: true,
+        // This is an alias for `visibilityProperty`. Contemporary browsers
+        // support both. However, this alias has wider browser support (Chrome
+        // >= 105 and Firefox >= 106, vs. Chrome >= 121 and Firefox >= 122), so
+        // we include it anyway.
+        checkVisibilityCSS: true,
+      });
+      return !visible;
+    }
+    // Fall through to manual visibility checks
+  }
+
   // NOTE: visibility will be `undefined` if node is detached from the document
   //  (see notes about this further down), which means we will consider it visible
   //  (this is legacy behavior from a very long way back)
   // NOTE: we check this regardless of `displayCheck="none"` because this is a
   //  _visibility_ check, not a _display_ check
-  if (getComputedStyle(node).visibility === 'hidden') {
+  const { visibility } = getComputedStyle(node);
+  if (visibility === 'hidden' || visibility === 'collapse') {
     return true;
   }
 
@@ -382,7 +393,14 @@ const isHidden = function (node, { displayCheck, getShadowRoot }) {
     return true;
   }
 
-  if (!displayCheck || displayCheck === 'full' || displayCheck === 'legacy-full') {
+  if (
+    !displayCheck ||
+    displayCheck === 'full' ||
+    // full-native can run this branch when it falls through in case
+    // Element#checkVisibility is unsupported
+    displayCheck === 'full-native' ||
+    displayCheck === 'legacy-full'
+  ) {
     if (typeof getShadowRoot === 'function') {
       // figure out if we should consider the node to be in an undisclosed shadow and use the
       //  'non-zero-area' fallback
@@ -422,7 +440,7 @@ const isHidden = function (node, { displayCheck, getShadowRoot }) {
     // NOTE: We must consider case where node is inside a shadow DOM and given directly to
     //  `isTabbable()` or `isFocusable()` -- regardless of `getShadowRoot` option setting.
 
-    if (isNodeAttached(node)) {
+    if (node.isConnected) {
       // this works wherever the node is: if there's at least one client rect, it's
       //  somehow displayed; it also covers the CSS 'display: contents' case where the
       //  node itself is hidden in place of its contents; and there's no need to search
@@ -480,7 +498,9 @@ const isDisabledFromFieldset = function (node) {
           if (child.tagName === 'LEGEND') {
             // if its parent <fieldset> is not nested in another disabled <fieldset>,
             // return whether `node` is a descendant of its first <legend>
-            return matches.call(parentNode, 'fieldset[disabled] *') ? true : !child.contains(node);
+            return matches.call(parentNode, 'fieldset[disabled] *')
+              ? true
+              : !child.contains(node);
           }
         }
         // the disabled <fieldset> containing `node` has no <legend>
@@ -498,10 +518,6 @@ const isDisabledFromFieldset = function (node) {
 const isNodeMatchingSelectorFocusable = function (options, node) {
   if (
     node.disabled ||
-    // we must do an inert look up to filter out any elements inside an inert ancestor
-    //  because we're limited in the type of selectors we can use in JSDom (see related
-    //  note related to `candidateSelectors`)
-    isInert(node) ||
     isHiddenInput(node) ||
     isHidden(node, options) ||
     // For a details element with a summary, the summary element gets the focus
@@ -514,13 +530,17 @@ const isNodeMatchingSelectorFocusable = function (options, node) {
 };
 
 const isNodeMatchingSelectorTabbable = function (options, node) {
-  if (isNonTabbableRadio(node) || getTabIndex(node) < 0 || !isNodeMatchingSelectorFocusable(options, node)) {
+  if (
+    isNonTabbableRadio(node) ||
+    getTabIndex(node) < 0 ||
+    !isNodeMatchingSelectorFocusable(options, node)
+  ) {
     return false;
   }
   return true;
 };
 
-const isValidShadowRootTabbable = function (shadowHostNode) {
+const isShadowRootTabbable = function (shadowHostNode) {
   const tabIndex = parseInt(shadowHostNode.getAttribute('tabindex'), 10);
   if (isNaN(tabIndex) || tabIndex >= 0) {
     return true;
@@ -543,7 +563,9 @@ const sortByOrder = function (candidates) {
     const candidateTabindex = getSortOrderTabIndex(element, isScope);
     const elements = isScope ? sortByOrder(item.candidates) : element;
     if (candidateTabindex === 0) {
-      isScope ? regularTabbables.push(...elements) : regularTabbables.push(element);
+      isScope
+        ? regularTabbables.push(...elements)
+        : regularTabbables.push(element);
     } else {
       orderedTabbables.push({
         documentOrder: i,
@@ -558,7 +580,9 @@ const sortByOrder = function (candidates) {
   return orderedTabbables
     .sort(sortOrderedTabbables)
     .reduce((acc, sortable) => {
-      sortable.isScope ? acc.push(...sortable.content) : acc.push(sortable.content);
+      sortable.isScope
+        ? acc.push(...sortable.content)
+        : acc.push(sortable.content);
       return acc;
     }, [])
     .concat(regularTabbables);
@@ -569,14 +593,22 @@ const tabbable = function (container, options) {
 
   let candidates;
   if (options.getShadowRoot) {
-    candidates = getCandidatesIteratively([container], options.includeContainer, {
-      filter: isNodeMatchingSelectorTabbable.bind(null, options),
-      flatten: false,
-      getShadowRoot: options.getShadowRoot,
-      shadowRootFilter: isValidShadowRootTabbable,
-    });
+    candidates = getCandidatesIteratively(
+      [container],
+      options.includeContainer,
+      {
+        filter: isNodeMatchingSelectorTabbable.bind(null, options),
+        flatten: false,
+        getShadowRoot: options.getShadowRoot,
+        shadowRootFilter: isShadowRootTabbable,
+      }
+    );
   } else {
-    candidates = getCandidates(container, options.includeContainer, isNodeMatchingSelectorTabbable.bind(null, options));
+    candidates = getCandidates(
+      container,
+      options.includeContainer,
+      isNodeMatchingSelectorTabbable.bind(null, options)
+    );
   }
   return sortByOrder(candidates);
 };
@@ -586,11 +618,15 @@ const focusable = function (container, options) {
 
   let candidates;
   if (options.getShadowRoot) {
-    candidates = getCandidatesIteratively([container], options.includeContainer, {
-      filter: isNodeMatchingSelectorFocusable.bind(null, options),
-      flatten: true,
-      getShadowRoot: options.getShadowRoot,
-    });
+    candidates = getCandidatesIteratively(
+      [container],
+      options.includeContainer,
+      {
+        filter: isNodeMatchingSelectorFocusable.bind(null, options),
+        flatten: true,
+        getShadowRoot: options.getShadowRoot,
+      }
+    );
   } else {
     candidates = getCandidates(
       container,
@@ -613,7 +649,9 @@ const isTabbable = function (node, options) {
   return isNodeMatchingSelectorTabbable(options, node);
 };
 
-const focusableCandidateSelector = /* #__PURE__ */ candidateSelectors.concat('iframe').join(',');
+const focusableCandidateSelector = /* #__PURE__ */ candidateSelectors
+  .concat('iframe:not([inert]):not([inert] *)')
+  .join(',');
 
 const isFocusable = function (node, options) {
   options = options || {};

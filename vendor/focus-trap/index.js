@@ -1,12 +1,26 @@
-import { tabbable, focusable, isFocusable, isTabbable, getTabIndex } from 'tabbable';
+import {
+  tabbable,
+  focusable,
+  isFocusable,
+  isTabbable,
+  getTabIndex,
+} from 'tabbable';
 
 const activeFocusTraps = {
+  // Returns the trap from the top of the stack.
+  getActiveTrap(trapStack) {
+    if (trapStack?.length > 0) {
+      return trapStack[trapStack.length - 1];
+    }
+    return null;
+  },
+
+  // Pauses the currently active trap, then adds a new trap to the stack.
   activateTrap(trapStack, trap) {
-    if (trapStack.length > 0) {
-      const activeTrap = trapStack[trapStack.length - 1];
-      if (activeTrap !== trap) {
-        activeTrap._setPausedState(true);
-      }
+    const activeTrap = activeFocusTraps.getActiveTrap(trapStack);
+
+    if (trap !== activeTrap) {
+      activeFocusTraps.pauseTrap(trapStack);
     }
 
     const trapIndex = trapStack.indexOf(trap);
@@ -19,20 +33,38 @@ const activeFocusTraps = {
     }
   },
 
+  // Removes the trap from the top of the stack, then unpauses the next trap down.
   deactivateTrap(trapStack, trap) {
     const trapIndex = trapStack.indexOf(trap);
     if (trapIndex !== -1) {
       trapStack.splice(trapIndex, 1);
     }
 
-    if (trapStack.length > 0 && !trapStack[trapStack.length - 1]._isManuallyPaused()) {
-      trapStack[trapStack.length - 1]._setPausedState(false);
+    activeFocusTraps.unpauseTrap(trapStack);
+  },
+
+  // Pauses the trap at the top of the stack.
+  pauseTrap(trapStack) {
+    const activeTrap = activeFocusTraps.getActiveTrap(trapStack);
+    activeTrap?._setPausedState(true);
+  },
+
+  // Unpauses the trap at the top of the stack.
+  unpauseTrap(trapStack) {
+    const activeTrap = activeFocusTraps.getActiveTrap(trapStack);
+
+    if (activeTrap && !activeTrap._isManuallyPaused()) {
+      activeTrap._setPausedState(false);
     }
   },
 };
 
 const isSelectableInput = function (node) {
-  return node.tagName && node.tagName.toLowerCase() === 'input' && typeof node.select === 'function';
+  return (
+    node.tagName &&
+    node.tagName.toLowerCase() === 'input' &&
+    typeof node.select === 'function'
+  );
 };
 
 const isEscapeEvent = function (e) {
@@ -76,7 +108,9 @@ const getActualTarget = function (event) {
   //  then use its first element; otherwise, fall back to event.target (and
   //  this only works for an _open_ shadow DOM; otherwise,
   //  composedPath()[0] === event.target always).
-  return event.target.shadowRoot && typeof event.composedPath === 'function' ? event.composedPath()[0] : event.target;
+  return event.target.shadowRoot && typeof event.composedPath === 'function'
+    ? event.composedPath()[0]
+    : event.target;
 };
 
 // NOTE: this must be _outside_ `createFocusTrap()` to make sure all traps in this
@@ -94,6 +128,7 @@ const createFocusTrap = function (elements, userOptions) {
     returnFocusOnDeactivate: true,
     escapeDeactivates: true,
     delayInitialFocus: true,
+    isolateSubtrees: false,
     isKeyForward,
     isKeyBackward,
     ...userOptions,
@@ -101,7 +136,7 @@ const createFocusTrap = function (elements, userOptions) {
 
   const state = {
     // containers given to createFocusTrap()
-    // @type {Array<HTMLElement>}
+    /** @type {Array<HTMLElement>} */
     containers: [],
 
     // list of objects identifying tabbable nodes in `containers` in the trap
@@ -109,17 +144,18 @@ const createFocusTrap = function (elements, userOptions) {
     //  is active, but the trap should never get to a state where there isn't at least one group
     //  with at least one tabbable node in it (that would lead to an error condition that would
     //  result in an error being thrown)
-    // @type {Array<{
-    //   container: HTMLElement,
-    //   tabbableNodes: Array<HTMLElement>, // empty if none
-    //   focusableNodes: Array<HTMLElement>, // empty if none
-    //   posTabIndexesFound: boolean,
-    //   firstTabbableNode: HTMLElement|undefined,
-    //   lastTabbableNode: HTMLElement|undefined,
-    //   firstDomTabbableNode: HTMLElement|undefined,
-    //   lastDomTabbableNode: HTMLElement|undefined,
-    //   nextTabbableNode: (node: HTMLElement, forward: boolean) => HTMLElement|undefined
-    // }>}
+    /** @type {Array<{
+     *    container: HTMLElement,
+     *    tabbableNodes: Array<HTMLElement>, // empty if none
+     *    focusableNodes: Array<HTMLElement>, // empty if none
+     *    posTabIndexesFound: boolean,
+     *    firstTabbableNode: HTMLElement|undefined,
+     *    lastTabbableNode: HTMLElement|undefined,
+     *    firstDomTabbableNode: HTMLElement|undefined,
+     *    lastDomTabbableNode: HTMLElement|undefined,
+     *    nextTabbableNode: (node: HTMLElement, forward: boolean) => HTMLElement|undefined
+     *  }>}
+     */
     containerGroups: [], // same order/length as `containers` list
 
     // references to objects in `containerGroups`, but only those that actually have
@@ -128,6 +164,13 @@ const createFocusTrap = function (elements, userOptions) {
     //  the same length
     tabbableGroups: [],
 
+    // references to nodes that are siblings to the ancestors of this trap's containers.
+    /** @type {Set<HTMLElement>} */
+    adjacentElements: new Set(),
+
+    // references to nodes that were inert or aria-hidden before the trap was activated.
+    /** @type {Set<HTMLElement>} */
+    alreadySilent: new Set(),
     nodeFocusedBeforeActivation: null,
     mostRecentlyFocusedNode: null,
     active: false,
@@ -153,7 +196,8 @@ const createFocusTrap = function (elements, userOptions) {
    *  IIF `configOverrideOptions` is not defined. Otherwise, `optionName` is used.
    */
   const getOption = (configOverrideOptions, optionName, configOptionName) => {
-    return configOverrideOptions && configOverrideOptions[optionName] !== undefined
+    return configOverrideOptions &&
+      configOverrideOptions[optionName] !== undefined
       ? configOverrideOptions[optionName]
       : config[configOptionName || optionName];
   };
@@ -169,7 +213,10 @@ const createFocusTrap = function (elements, userOptions) {
    *  if the element isn't found.
    */
   const findContainerIndex = function (element, event) {
-    const composedPath = typeof event?.composedPath === 'function' ? event.composedPath() : undefined;
+    const composedPath =
+      typeof event?.composedPath === 'function'
+        ? event.composedPath()
+        : undefined;
     // NOTE: search `containerGroups` because it's possible a group contains no tabbable
     //  nodes, but still contains focusable nodes (e.g. if they all have `tabindex=-1`)
     //  and we still need to find the element in there
@@ -203,7 +250,10 @@ const createFocusTrap = function (elements, userOptions) {
    * @throws {Error} If the option is set, not `false`, and is not, or does not
    *  resolve to a node, unless the option is a selector string and `options.hasFallback=true`.
    */
-  const getNodeForOption = function (optionName, { hasFallback = false, params = [] } = {}) {
+  const getNodeForOption = function (
+    optionName,
+    { hasFallback = false, params = [] } = {}
+  ) {
     let optionValue = config[optionName];
 
     if (typeof optionValue === 'function') {
@@ -220,7 +270,9 @@ const createFocusTrap = function (elements, userOptions) {
       }
       // else, empty string (invalid), null (invalid), 0 (invalid)
 
-      throw new Error(`\`${optionName}\` was specified but was not a node, or did not return a node`);
+      throw new Error(
+        `\`${optionName}\` was specified but was not a node, or did not return a node`
+      );
     }
 
     let node = optionValue; // could be HTMLElement, SVGElement, or non-empty string at this point
@@ -229,12 +281,16 @@ const createFocusTrap = function (elements, userOptions) {
       try {
         node = doc.querySelector(optionValue); // resolve to node, or null if fails
       } catch (err) {
-        throw new Error(`\`${optionName}\` appears to be an invalid selector; error="${err.message}"`);
+        throw new Error(
+          `\`${optionName}\` appears to be an invalid selector; error="${err.message}"`
+        );
       }
 
       if (!node) {
         if (!hasFallback) {
-          throw new Error(`\`${optionName}\` as selector refers to no known node`);
+          throw new Error(
+            `\`${optionName}\` as selector refers to no known node`
+          );
         }
         // else, `node` MUST be `null` because that's what `Document.querySelector()` returns
         //  if the selector is valid but doesn't match anything
@@ -252,13 +308,17 @@ const createFocusTrap = function (elements, userOptions) {
       return false;
     }
 
-    if (node === undefined || (node && !isFocusable(node, config.tabbableOptions))) {
+    if (
+      node === undefined ||
+      (node && !isFocusable(node, config.tabbableOptions))
+    ) {
       // option not specified nor focusable: use fallback options
       if (findContainerIndex(doc.activeElement) >= 0) {
         node = doc.activeElement;
       } else {
         const firstTabbableGroup = state.tabbableGroups[0];
-        const firstTabbableNode = firstTabbableGroup && firstTabbableGroup.firstTabbableNode;
+        const firstTabbableNode =
+          firstTabbableGroup && firstTabbableGroup.firstTabbableNode;
 
         // NOTE: `fallbackFocus` option function cannot return `false` (not supported)
         node = firstTabbableNode || getNodeForOption('fallbackFocus');
@@ -270,7 +330,9 @@ const createFocusTrap = function (elements, userOptions) {
     }
 
     if (!node) {
-      throw new Error('Your focus-trap needs to have at least one focusable element');
+      throw new Error(
+        'Your focus-trap needs to have at least one focusable element'
+      );
     }
 
     return node;
@@ -285,16 +347,24 @@ const createFocusTrap = function (elements, userOptions) {
       //  are focusable but not tabbable
       const focusableNodes = focusable(container, config.tabbableOptions);
 
-      const firstTabbableNode = tabbableNodes.length > 0 ? tabbableNodes[0] : undefined;
-      const lastTabbableNode = tabbableNodes.length > 0 ? tabbableNodes[tabbableNodes.length - 1] : undefined;
+      const firstTabbableNode =
+        tabbableNodes.length > 0 ? tabbableNodes[0] : undefined;
+      const lastTabbableNode =
+        tabbableNodes.length > 0
+          ? tabbableNodes[tabbableNodes.length - 1]
+          : undefined;
 
-      const firstDomTabbableNode = focusableNodes.find((node) => isTabbable(node));
+      const firstDomTabbableNode = focusableNodes.find((node) =>
+        isTabbable(node)
+      );
       const lastDomTabbableNode = focusableNodes
         .slice()
         .reverse()
         .find((node) => isTabbable(node));
 
-      const posTabIndexesFound = !!tabbableNodes.find((node) => getTabIndex(node) > 0);
+      const posTabIndexesFound = !!tabbableNodes.find(
+        (node) => getTabIndex(node) > 0
+      );
 
       return {
         container,
@@ -339,7 +409,9 @@ const createFocusTrap = function (elements, userOptions) {
             //  above related to `firstDomTabbable` and `lastDomTabbable` properties, we fall back to
             //  basic DOM order
             if (forward) {
-              return focusableNodes.slice(focusableNodes.indexOf(node) + 1).find((el) => isTabbable(el));
+              return focusableNodes
+                .slice(focusableNodes.indexOf(node) + 1)
+                .find((el) => isTabbable(el));
             }
 
             return focusableNodes
@@ -353,7 +425,9 @@ const createFocusTrap = function (elements, userOptions) {
       };
     });
 
-    state.tabbableGroups = state.containerGroups.filter((group) => group.tabbableNodes.length > 0);
+    state.tabbableGroups = state.containerGroups.filter(
+      (group) => group.tabbableNodes.length > 0
+    );
 
     // throw if no groups have tabbable nodes and we don't have a fallback focus node either
     if (
@@ -372,7 +446,10 @@ const createFocusTrap = function (elements, userOptions) {
     //  to look at those containers in document position order rather than user-provided
     //  order (as they are treated in Focus-trap, for legacy reasons). See discussion on
     //  https://github.com/focus-trap/focus-trap/issues/375 for more details.
-    if (state.containerGroups.find((g) => g.posTabIndexesFound) && state.containerGroups.length > 1) {
+    if (
+      state.containerGroups.find((g) => g.posTabIndexesFound) &&
+      state.containerGroups.length > 1
+    ) {
       throw new Error(
         "At least one node with a positive tabindex was found in one of your focus-trap's multiple containers. Positive tabindexes are only supported in single-container focus-traps."
       );
@@ -394,7 +471,10 @@ const createFocusTrap = function (elements, userOptions) {
       return;
     }
 
-    if (activeElement.shadowRoot && activeElement.shadowRoot.activeElement !== null) {
+    if (
+      activeElement.shadowRoot &&
+      activeElement.shadowRoot.activeElement !== null
+    ) {
       return getActiveElement(activeElement.shadowRoot);
     }
 
@@ -453,14 +533,17 @@ const createFocusTrap = function (elements, userOptions) {
       // NOTE: the target may also be the container itself if it's focusable
       //  with tabIndex='-1' and was given initial focus
       const containerIndex = findContainerIndex(target, event);
-      const containerGroup = containerIndex >= 0 ? state.containerGroups[containerIndex] : undefined;
+      const containerGroup =
+        containerIndex >= 0 ? state.containerGroups[containerIndex] : undefined;
 
       if (containerIndex < 0) {
         // target not found in any group: quite possible focus has escaped the trap,
         //  so bring it back into...
         if (isBackward) {
           // ...the last node in the last group
-          destinationNode = state.tabbableGroups[state.tabbableGroups.length - 1].lastTabbableNode;
+          destinationNode =
+            state.tabbableGroups[state.tabbableGroups.length - 1]
+              .lastTabbableNode;
         } else {
           // ...the first node in the first group
           destinationNode = state.tabbableGroups[0].firstTabbableNode;
@@ -469,7 +552,9 @@ const createFocusTrap = function (elements, userOptions) {
         // REVERSE
 
         // is the target the first tabbable node in a group?
-        let startOfGroupIndex = state.tabbableGroups.findIndex(({ firstTabbableNode }) => target === firstTabbableNode);
+        let startOfGroupIndex = state.tabbableGroups.findIndex(
+          ({ firstTabbableNode }) => target === firstTabbableNode
+        );
 
         if (
           startOfGroupIndex < 0 &&
@@ -492,12 +577,16 @@ const createFocusTrap = function (elements, userOptions) {
           //  previous group (and wrap around to the last tabbable node of
           //  the LAST group if it's the first tabbable node of the FIRST group)
           const destinationGroupIndex =
-            startOfGroupIndex === 0 ? state.tabbableGroups.length - 1 : startOfGroupIndex - 1;
+            startOfGroupIndex === 0
+              ? state.tabbableGroups.length - 1
+              : startOfGroupIndex - 1;
 
           const destinationGroup = state.tabbableGroups[destinationGroupIndex];
 
           destinationNode =
-            getTabIndex(target) >= 0 ? destinationGroup.lastTabbableNode : destinationGroup.lastDomTabbableNode;
+            getTabIndex(target) >= 0
+              ? destinationGroup.lastTabbableNode
+              : destinationGroup.lastDomTabbableNode;
         } else if (!isTabEvent(event)) {
           // user must have customized the nav keys so we have to move focus manually _within_
           //  the active group: do this based on the order determined by tabbable()
@@ -507,7 +596,9 @@ const createFocusTrap = function (elements, userOptions) {
         // FORWARD
 
         // is the target the last tabbable node in a group?
-        let lastOfGroupIndex = state.tabbableGroups.findIndex(({ lastTabbableNode }) => target === lastTabbableNode);
+        let lastOfGroupIndex = state.tabbableGroups.findIndex(
+          ({ lastTabbableNode }) => target === lastTabbableNode
+        );
 
         if (
           lastOfGroupIndex < 0 &&
@@ -529,12 +620,17 @@ const createFocusTrap = function (elements, userOptions) {
           // YES: then tab should go to the first tabbable node in the next
           //  group (and wrap around to the first tabbable node of the FIRST
           //  group if it's the last tabbable node of the LAST group)
-          const destinationGroupIndex = lastOfGroupIndex === state.tabbableGroups.length - 1 ? 0 : lastOfGroupIndex + 1;
+          const destinationGroupIndex =
+            lastOfGroupIndex === state.tabbableGroups.length - 1
+              ? 0
+              : lastOfGroupIndex + 1;
 
           const destinationGroup = state.tabbableGroups[destinationGroupIndex];
 
           destinationNode =
-            getTabIndex(target) >= 0 ? destinationGroup.firstTabbableNode : destinationGroup.firstDomTabbableNode;
+            getTabIndex(target) >= 0
+              ? destinationGroup.firstTabbableNode
+              : destinationGroup.firstDomTabbableNode;
         } else if (!isTabEvent(event)) {
           // user must have customized the nav keys so we have to move focus manually _within_
           //  the active group: do this based on the order determined by tabbable()
@@ -611,7 +707,9 @@ const createFocusTrap = function (elements, userOptions) {
       if (state.mostRecentlyFocusedNode) {
         if (getTabIndex(state.mostRecentlyFocusedNode) > 0) {
           // MRU container index must be >=0 otherwise we wouldn't have it as an MRU node...
-          const mruContainerIdx = findContainerIndex(state.mostRecentlyFocusedNode);
+          const mruContainerIdx = findContainerIndex(
+            state.mostRecentlyFocusedNode
+          );
           // there MAY not be any tabbable nodes in the container if there are at least 2 containers
           //  and the MRU node is focusable but not tabbable (focus-trap requires at least 1 container
           //  with at least one tabbable node in order to function, so this could be the other container
@@ -619,7 +717,9 @@ const createFocusTrap = function (elements, userOptions) {
           const { tabbableNodes } = state.containerGroups[mruContainerIdx];
           if (tabbableNodes.length > 0) {
             // MRU tab index MAY not be found if the MRU node is focusable but not tabbable
-            const mruTabIdx = tabbableNodes.findIndex((node) => node === state.mostRecentlyFocusedNode);
+            const mruTabIdx = tabbableNodes.findIndex(
+              (node) => node === state.mostRecentlyFocusedNode
+            );
             if (mruTabIdx >= 0) {
               if (config.isKeyForward(state.recentNavEvent)) {
                 if (mruTabIdx + 1 < tabbableNodes.length) {
@@ -648,7 +748,11 @@ const createFocusTrap = function (elements, userOptions) {
           //  the trap because focus seems to escape when navigating backward from a tabbable node
           //  with tabindex=0 when this is the case (instead of wrapping to the tabbable node with
           //  the greatest positive tab index like it should)
-          if (!state.containerGroups.some((g) => g.tabbableNodes.some((n) => getTabIndex(n) > 0))) {
+          if (
+            !state.containerGroups.some((g) =>
+              g.tabbableNodes.some((n) => getTabIndex(n) > 0)
+            )
+          ) {
             // no containers with tabbable nodes with positive tab indexes which means the focus
             //  escaped for some other reason and we should just execute the fallback to the
             //  MRU node or initial focus node, if any
@@ -711,7 +815,10 @@ const createFocusTrap = function (elements, userOptions) {
 
   // we use a different event phase for the Escape key to allow canceling the event and checking for this in escapeDeactivates
   const checkEscapeKey = function (event) {
-    if (isEscapeEvent(event) && valueOrHandler(config.escapeDeactivates, event) !== false) {
+    if (
+      isEscapeEvent(event) &&
+      valueOrHandler(config.escapeDeactivates, event) !== false
+    ) {
       event.preventDefault();
       trap.deactivate();
     }
@@ -778,6 +885,64 @@ const createFocusTrap = function (elements, userOptions) {
     return trap;
   };
 
+  /**
+   * Traverses up the DOM from each of `containers`, collecting references to
+   * the elements that are siblings to `container` or an ancestor of `container`.
+   * @param {Array<HTMLElement>} containers
+   */
+  const collectAdjacentElements = function (containers) {
+    // Re-activate all adjacent elements & clear previous collection.
+    if (state.active && !state.paused) {
+      trap._setSubtreeIsolation(false);
+    }
+    state.adjacentElements.clear();
+    state.alreadySilent.clear();
+
+    // Collect all ancestors of all containers to avoid redundant processing.
+    const containerAncestors = new Set();
+
+    const adjacentElements = new Set();
+
+    // Compile all elements adjacent to the focus trap containers & lineage.
+    for (const container of containers) {
+      containerAncestors.add(container);
+      let insideShadowRoot =
+        typeof ShadowRoot !== 'undefined' &&
+        container.getRootNode() instanceof ShadowRoot;
+      let current = container;
+      while (current) {
+        containerAncestors.add(current);
+
+        let parent = current.parentElement;
+        let siblings = [];
+        if (parent) {
+          siblings = parent.children;
+        } else if (!parent && insideShadowRoot) {
+          siblings = current.getRootNode().children;
+          parent = current.getRootNode().host;
+          insideShadowRoot =
+            typeof ShadowRoot !== 'undefined' &&
+            parent.getRootNode() instanceof ShadowRoot;
+        }
+
+        // Add all the children, we'll remove container lineage later.
+        for (const child of siblings) {
+          adjacentElements.add(child);
+        }
+
+        current = parent;
+      }
+    }
+
+    // Multi-container traps may overlap.
+    // Remove elements within container lineages.
+    containerAncestors.forEach((el) => {
+      adjacentElements.delete(el);
+    });
+
+    state.adjacentElements = adjacentElements;
+  };
+
   const removeListeners = function () {
     if (!state.active) {
       return;
@@ -815,7 +980,9 @@ const createFocusTrap = function (elements, userOptions) {
   // Use MutationObserver - if supported - to detect if focused node is removed
   // from the DOM.
   const mutationObserver =
-    typeof window !== 'undefined' && 'MutationObserver' in window ? new MutationObserver(checkDomRemoval) : undefined;
+    typeof window !== 'undefined' && 'MutationObserver' in window
+      ? new MutationObserver(checkDomRemoval)
+      : undefined;
 
   const updateObservedNodes = function () {
     if (!mutationObserver) {
@@ -855,31 +1022,64 @@ const createFocusTrap = function (elements, userOptions) {
       const onPostActivate = getOption(activateOptions, 'onPostActivate');
       const checkCanFocusTrap = getOption(activateOptions, 'checkCanFocusTrap');
 
-      if (!checkCanFocusTrap) {
-        updateTabbableNodes();
+      // If a currently-active trap is isolating its subtree, we need to remove
+      // that isolation to allow the new trap to find tabbable nodes.
+      const preexistingTrap = activeFocusTraps.getActiveTrap(trapStack);
+      let revertState = false;
+      if (preexistingTrap && !preexistingTrap.paused) {
+        // [#1729] method MAY not exist if using `trapStack` option to share stack with older
+        //  versions of Focus-trap in the same DOM so use optional chaining here just in case
+        //  since this is a trap we may not have created from this instance of the library
+        preexistingTrap._setSubtreeIsolation?.(false);
+        revertState = true;
       }
 
-      state.active = true;
-      state.paused = false;
-      state.nodeFocusedBeforeActivation = getActiveElement(doc);
-
-      onActivate?.();
-
-      const finishActivation = () => {
-        if (checkCanFocusTrap) {
+      try {
+        if (!checkCanFocusTrap) {
           updateTabbableNodes();
         }
-        addListeners();
-        updateObservedNodes();
-        onPostActivate?.();
-      };
 
-      if (checkCanFocusTrap) {
-        checkCanFocusTrap(state.containers.concat()).then(finishActivation, finishActivation);
-        return this;
+        state.active = true;
+        state.paused = false;
+        state.nodeFocusedBeforeActivation = getActiveElement(doc);
+
+        onActivate?.();
+
+        const finishActivation = () => {
+          if (checkCanFocusTrap) {
+            updateTabbableNodes();
+          }
+          addListeners();
+          updateObservedNodes();
+          if (config.isolateSubtrees) {
+            trap._setSubtreeIsolation(true);
+          }
+          onPostActivate?.();
+        };
+
+        if (checkCanFocusTrap) {
+          checkCanFocusTrap(state.containers.concat()).then(
+            finishActivation,
+            finishActivation
+          );
+          return this;
+        }
+
+        finishActivation();
+      } catch (error) {
+        // If our activation throws an exception and the stack hasn't changed,
+        // we need to re-enable the prior trap's subtree isolation.
+        if (
+          preexistingTrap === activeFocusTraps.getActiveTrap(trapStack) &&
+          revertState
+        ) {
+          // [#1729] method MAY not exist if using `trapStack` option to share stack with older
+          //  versions of Focus-trap in the same DOM so use optional chaining here just in case
+          //  since this is a trap we may not have created from this instance of the library
+          preexistingTrap._setSubtreeIsolation?.(true);
+        }
+        throw error;
       }
-
-      finishActivation();
       return this;
     },
 
@@ -898,6 +1098,14 @@ const createFocusTrap = function (elements, userOptions) {
       clearTimeout(state.delayInitialFocusTimer); // noop if undefined
       state.delayInitialFocusTimer = undefined;
 
+      // Prior to removing this trap from the trapStack, we need to remove any applications of `inert`.
+      // This allows the next trap down to update its tabbable nodes properly.
+      //
+      // If this trap is not top of the stack, don't change any current isolation.
+      if (!state.paused) {
+        trap._setSubtreeIsolation(false);
+      }
+      state.alreadySilent.clear();
       removeListeners();
       state.active = false;
       state.paused = false;
@@ -908,7 +1116,11 @@ const createFocusTrap = function (elements, userOptions) {
       const onDeactivate = getOption(options, 'onDeactivate');
       const onPostDeactivate = getOption(options, 'onPostDeactivate');
       const checkCanReturnFocus = getOption(options, 'checkCanReturnFocus');
-      const returnFocus = getOption(options, 'returnFocus', 'returnFocusOnDeactivate');
+      const returnFocus = getOption(
+        options,
+        'returnFocus',
+        'returnFocusOnDeactivate'
+      );
 
       onDeactivate?.();
 
@@ -922,10 +1134,9 @@ const createFocusTrap = function (elements, userOptions) {
       };
 
       if (returnFocus && checkCanReturnFocus) {
-        checkCanReturnFocus(getReturnFocusNode(state.nodeFocusedBeforeActivation)).then(
-          finishDeactivation,
-          finishDeactivation
-        );
+        checkCanReturnFocus(
+          getReturnFocusNode(state.nodeFocusedBeforeActivation)
+        ).then(finishDeactivation, finishDeactivation);
         return this;
       }
 
@@ -964,8 +1175,16 @@ const createFocusTrap = function (elements, userOptions) {
         typeof element === 'string' ? doc.querySelector(element) : element
       );
 
+      if (config.isolateSubtrees) {
+        collectAdjacentElements(state.containers);
+      }
+
       if (state.active) {
         updateTabbableNodes();
+
+        if (config.isolateSubtrees && !state.paused) {
+          trap._setSubtreeIsolation(true);
+        }
       }
 
       updateObservedNodes();
@@ -987,6 +1206,7 @@ const createFocusTrap = function (elements, userOptions) {
         }
 
         state.paused = paused;
+
         if (paused) {
           const onPause = getOption(options, 'onPause');
           const onPostPause = getOption(options, 'onPostPause');
@@ -994,6 +1214,7 @@ const createFocusTrap = function (elements, userOptions) {
 
           removeListeners();
           updateObservedNodes();
+          trap._setSubtreeIsolation(false);
 
           onPostPause?.();
         } else {
@@ -1002,6 +1223,7 @@ const createFocusTrap = function (elements, userOptions) {
 
           onUnpause?.();
 
+          trap._setSubtreeIsolation(true);
           updateTabbableNodes();
           addListeners();
           updateObservedNodes();
@@ -1010,6 +1232,53 @@ const createFocusTrap = function (elements, userOptions) {
         }
 
         return this;
+      },
+    },
+    _setSubtreeIsolation: {
+      value(isEnabled) {
+        if (config.isolateSubtrees) {
+          state.adjacentElements.forEach((el) => {
+            if (isEnabled) {
+              switch (config.isolateSubtrees) {
+                case 'aria-hidden':
+                  // check both attribute and property to ensure initial state is captured
+                  // correctly across different browsers and test environments (like JSDOM)
+                  if (
+                    el.ariaHidden === 'true' ||
+                    el.getAttribute('aria-hidden')?.toLowerCase() === 'true'
+                  ) {
+                    state.alreadySilent.add(el);
+                  }
+
+                  el.setAttribute('aria-hidden', 'true');
+                  break;
+
+                default:
+                  // check both attribute and property to ensure initial state is captured
+                  // correctly across different browsers and test environments (like JSDOM)
+                  if (el.inert || el.hasAttribute('inert')) {
+                    state.alreadySilent.add(el);
+                  }
+                  el.setAttribute('inert', true);
+                  break;
+              }
+            } else {
+              if (state.alreadySilent.has(el)) {
+                // do nothing
+              } else {
+                switch (config.isolateSubtrees) {
+                  case 'aria-hidden':
+                    el.removeAttribute('aria-hidden');
+                    break;
+
+                  default:
+                    el.removeAttribute('inert');
+                    break;
+                }
+              }
+            }
+          });
+        }
       },
     },
   });

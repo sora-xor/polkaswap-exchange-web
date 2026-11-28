@@ -5,7 +5,7 @@ Polkaswap Exchange Web is the Vue 3 + TypeScript client for the SORA network. It
 ## Requirements
 
 - Node 26.x (see `.nvmrc` and the `package.json` engine field). Use `nvm`, `fnm`, or another version manager to match the toolchain before installing dependencies.
-- Yarn 4.x (Berry). The repo pins the exact release via `.yarn/releases` and `.yarnrc.yml` (`yarnPath`). If no `yarn` command is installed, invoke the checked-in CLI with `node .yarn/releases/yarn-4.10.3.cjs`.
+- Yarn 4.x (Berry). The repo pins the exact release via `.yarn/releases` and `.yarnrc.yml` (`yarnPath`). If no `yarn` command is installed, invoke the checked-in CLI with `node .yarn/releases/yarn-4.18.1.cjs`.
 - `npm install` is not supported (the repo uses Yarn's `patch:` protocol for dependencies).
 - Modern browsers with WebAssembly enabled for runtime usage.
 
@@ -74,7 +74,7 @@ yarn install
 
 ### Dependency security
 
-Run `yarn security:audit` to check the complete Yarn dependency graph, copied vendor packages, and the separate `scripts/ucan` lockfile. Findings and registry failures return a nonzero exit code; advisories are not suppressed. See [dependency maintenance](docs/security-dependencies.md) and the [October 24 security review](docs/reports/dependency-security-2026-10-24.md) for remaining upstream issues, compatibility pins, and validation evidence. The optional [Electron shell](electron/README.md) uses a sandboxed renderer without a Node/IPC preload bridge.
+Run `yarn security:audit` to check the Yarn graph, copied vendor packages, the separate `scripts/ucan` lockfile and the installed Picomatch fix. Open findings and registry failures return a nonzero exit code. See [dependency maintenance and Picomatch remediation](docs/security-dependencies.md) and the [November 18 security review](docs/reports/dependency-security-2026-11-18.md) for compatibility pins and validation evidence. The optional [Electron shell](electron/README.md) uses a sandboxed renderer without a Node/IPC preload bridge.
 
 ## Scripts
 
