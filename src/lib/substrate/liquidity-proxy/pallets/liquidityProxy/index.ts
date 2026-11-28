@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import { LiquiditySourceTypes, Consts, Errors, AssetType } from '../../consts';
 import { LiquidityRegistry } from './liquidityRegistry';
 import { smartSplit, newSmartSplit } from './smartSplit';

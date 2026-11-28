@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import { useOrderBookStore } from '@/stores/orderBook';
 import type { OrderBookStats } from '@/types/orderBook';
 
-import type { OrderBook, OrderBookId } from '@sora-substrate/liquidity-proxy';
+import type { OrderBook, OrderBookId } from '@/lib/substrate/liquidity-proxy';
 
 /**
  * Exposes reactive order-book metadata used across the pair list popover.

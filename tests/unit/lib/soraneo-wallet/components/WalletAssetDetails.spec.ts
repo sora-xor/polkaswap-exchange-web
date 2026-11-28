@@ -32,7 +32,7 @@ const { formatCodecNumber, getFiatAmountByCodecString, isCodecZero, navigate, xo
 
 // This suite exercises the production balance field names and native XOR id.
 // The shared lightweight SDK stub intentionally uses simplified placeholders.
-vi.mock('@sora-substrate/sdk/build/assets/consts', () => import('@/lib/substrate/sdk/assets/consts'));
+vi.mock('@/lib/substrate/sdk/assets/consts', () => import('@/lib/substrate/sdk/assets/consts'));
 
 vi.mock('@/platform/wallet/navigation', () => ({
   getWalletCurrentParams: () => ({
@@ -86,7 +86,7 @@ vi.mock('@/lib/soraneo-wallet/src/api', () => ({
 import WalletAssetDetails from '@/lib/soraneo-wallet/src/components/WalletAssetDetails.vue';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import { Operations } from '@/lib/soraneo-wallet/src/types/common';
-import { BalanceType } from '@sora-substrate/sdk/build/assets/consts';
+import { BalanceType } from '@/lib/substrate/sdk/assets/consts';
 
 describe('Wallet WalletAssetDetails', () => {
   beforeEach(() => {

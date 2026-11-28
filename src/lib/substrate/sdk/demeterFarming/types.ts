@@ -1,4 +1,4 @@
-import type { FPNumber } from '@sora-substrate/math';
+import type { FPNumber } from '@/lib/substrate/math';
 
 export type DemeterPool = {
   baseAsset: string;

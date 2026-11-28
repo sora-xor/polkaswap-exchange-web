@@ -45,5 +45,5 @@ export type {
   CosignerKeyPair,
 } from './types';
 
-export { FPNumber } from '@sora-substrate/math';
-export type { CodecString } from '@sora-substrate/math';
+export { FPNumber } from '@/lib/substrate/math';
+export type { CodecString } from '@/lib/substrate/math';

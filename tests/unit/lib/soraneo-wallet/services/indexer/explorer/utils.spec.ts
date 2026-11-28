@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const excludePoolXYKAssetsMock = vi.hoisted(() => vi.fn((assets) => assets.slice(0, 1)));
-vi.mock('@sora-substrate/sdk/build/assets', () => ({
+vi.mock('@/lib/substrate/sdk/assets', () => ({
   excludePoolXYKAssets: excludePoolXYKAssetsMock,
 }));
 

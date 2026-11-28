@@ -1,10 +1,10 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { Operation } from '@sora-substrate/sdk';
+import { Operation } from '@/lib/substrate/sdk';
 import { XOR } from '@/lib/substrate/sdk/assets/consts';
 
-vi.mock('@sora-substrate/sdk', async () => ({
+vi.mock('@/lib/substrate/sdk', async () => ({
   ...(await import('@tests/stubs/sora-sdk')),
   Operation: (await import('@/lib/substrate/sdk/types')).Operation,
 }));

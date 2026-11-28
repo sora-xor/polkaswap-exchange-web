@@ -1,5 +1,5 @@
-import { Operation } from '@sora-substrate/sdk';
-import { DAI, ETH as ETH_ASSET } from '@sora-substrate/sdk/build/assets/consts';
+import { Operation } from '@/lib/substrate/sdk';
+import { DAI, ETH as ETH_ASSET } from '@/lib/substrate/sdk/assets/consts';
 import { flushPromises } from '@vue/test-utils';
 import { Interface } from 'ethers';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';

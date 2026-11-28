@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
 
-import type { AccountHistory, HistoryItem } from '@sora-substrate/sdk';
+import type { AccountHistory, HistoryItem } from '@/lib/substrate/sdk';
 
 export type TimerId = number | NodeJS.Timeout;
 

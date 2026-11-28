@@ -59,7 +59,7 @@ import { useAssetFormatting } from '@/composables/useAssetFormatting';
 import { FontSizeRate, FontWeightRate } from '@/lib/soraneo-wallet/src/consts';
 import { useWalletStore } from '@/stores/wallet';
 
-import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset, Asset } from '@/lib/substrate/sdk/assets/types';
 import type { Nullable } from '@/types/common';
 import WalletComponentAssetList from '@/lib/soraneo-wallet/src/components/AssetList.vue';
 import WalletComponentPinIcon from '@/lib/soraneo-wallet/src/components/PinIcon.vue';

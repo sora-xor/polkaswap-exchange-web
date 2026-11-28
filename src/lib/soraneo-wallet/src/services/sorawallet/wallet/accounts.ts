@@ -1,6 +1,6 @@
 import type { InjectedAccount, InjectedAccounts, Unsubcall } from '@polkadot/extension-inject/types';
 import type { KeyringAddress } from '@polkadot/ui-keyring/types';
-import type { WithKeyring } from '@sora-substrate/sdk';
+import type { WithKeyring } from '@/lib/substrate/sdk';
 
 const formatAccounts = (accounts: KeyringAddress[]): InjectedAccount[] => {
   return accounts.map((account) => ({

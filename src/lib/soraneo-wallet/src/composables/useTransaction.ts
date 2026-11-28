@@ -1,4 +1,4 @@
-import { TransactionStatus, Operation, type HistoryItem } from '@sora-substrate/sdk';
+import { TransactionStatus, Operation, type HistoryItem } from '@/lib/substrate/sdk';
 import { computed } from 'vue';
 
 import { useWalletStore } from '@/stores/wallet';

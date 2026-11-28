@@ -1,6 +1,6 @@
 import { toIpfsGatewayUrl } from '@/utils/ipfs';
 
-import type { ValidatorInfoFull } from '@sora-substrate/sdk/build/staking/types';
+import type { ValidatorInfoFull } from '@/lib/substrate/sdk/staking/types';
 
 /** Resolves validator identity images through the configured IPFS gateway when needed. */
 export function resolveValidatorAvatarUrl(validator: ValidatorInfoFull): string | null {

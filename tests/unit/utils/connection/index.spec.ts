@@ -3,14 +3,14 @@ import { computed, markRaw, reactive } from 'vue';
 
 import productionEnv from '../../../../public/env.json';
 
-vi.mock('@sora-substrate/sdk/build/bridgeProxy/sub/consts', () => ({ SubNetworkId: { Mainnet: 'Mainnet' } }));
+vi.mock('@/lib/substrate/sdk/bridgeProxy/sub/consts', () => ({ SubNetworkId: { Mainnet: 'Mainnet' } }));
 vi.mock('@/utils/rpc', () => ({
   fetchRpc: vi.fn(),
   getRpcEndpoint: (url: string) => url,
 }));
 
-import type { Connection } from '@sora-substrate/connection';
-import type { Storage } from '@sora-substrate/sdk';
+import type { Connection } from '@/lib/substrate/connection';
+import type { Storage } from '@/lib/substrate/sdk';
 import type { ConnectToNodeOptions, Node } from '@/types/nodes';
 import { NodesConnection } from '@/utils/connection';
 import { AppHandledError } from '@/utils/error';

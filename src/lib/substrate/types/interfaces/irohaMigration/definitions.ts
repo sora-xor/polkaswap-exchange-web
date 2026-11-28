@@ -1,4 +1,4 @@
 import type { Definitions } from '@polkadot/types/types';
-import irohaMigration from '../../../../type-definitions/src/irohaMigration.ts';
+import irohaMigration from '@/lib/substrate/type-definitions/irohaMigration';
 
 export default irohaMigration as Definitions;

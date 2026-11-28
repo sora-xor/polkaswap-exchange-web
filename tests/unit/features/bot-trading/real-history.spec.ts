@@ -14,7 +14,7 @@ import observedFees from '../../../fixtures/bot-trading/mainnetFees20260914.json
 
 // The shared unit setup substitutes fake asset identifiers; integration requires canonical chain metadata.
 vi.unmock('@/lib/substrate/sdk/assets/consts');
-vi.unmock('@sora-substrate/sdk/build/assets/consts');
+vi.unmock('@/lib/substrate/sdk/assets/consts');
 
 interface CapturedArchive {
   startAt: number;

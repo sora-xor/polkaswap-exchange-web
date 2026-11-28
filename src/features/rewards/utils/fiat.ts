@@ -1,7 +1,7 @@
 import { getFiatPriceByAddress, type FiatPriceObjectLike } from '@/utils/fiatPrice';
 
 import type { RewardsAmountHeaderItem } from '@/types/rewards';
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 
 /**
  * Returns unique reward assets with non-empty reward amounts that still need

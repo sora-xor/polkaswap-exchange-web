@@ -1,5 +1,5 @@
-import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { DAI, ETH } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber, Operation } from '@/lib/substrate/sdk';
+import { DAI, ETH } from '@/lib/substrate/sdk/assets/consts';
 import type { GetTsPurpose } from './getTsFlow';
 import type { GetTsSwapAsset } from './getTsPlan';
 import {

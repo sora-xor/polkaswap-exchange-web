@@ -283,9 +283,9 @@ import { isAmountValueIntegerOnly } from '@/utils';
 
 import type { Nullable } from '@/types/common';
 import type { ResponsiveTab } from '@/types/tabs';
-import type { FPNumber } from '@sora-substrate/math';
-import type { RegisteredAccountAsset, Asset, AccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { Collateral, Vault } from '@sora-substrate/sdk/build/kensetsu/types';
+import type { FPNumber } from '@/lib/substrate/math';
+import type { RegisteredAccountAsset, Asset, AccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { Collateral, Vault } from '@/lib/substrate/sdk/kensetsu/types';
 import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
 import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 import WalletComponentExternalLink from '@/lib/soraneo-wallet/src/components/shared/ExternalLink.vue';

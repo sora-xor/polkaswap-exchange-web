@@ -128,7 +128,7 @@
 
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, ref, useId, watch } from 'vue';
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { useTranslation } from '@/composables/useTranslation';
 import { useWeb3Store } from '@/stores/web3';
 import { useWeb3Connection } from '@/composables/useWeb3Connection';

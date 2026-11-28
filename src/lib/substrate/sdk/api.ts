@@ -1,7 +1,7 @@
 import { ApiPromise, WsProvider } from '@polkadot/api';
-import { options } from '@sora-substrate/api';
-import { FPNumber, type CodecString, type NumberLike } from '@sora-substrate/math';
-import { Connection } from '@sora-substrate/connection';
+import { options } from '@/lib/substrate/api';
+import { FPNumber, type CodecString, type NumberLike } from '@/lib/substrate/math';
+import { Connection } from '@/lib/substrate/connection';
 import type { CreateResult } from '@polkadot/ui-keyring/types';
 import type { Signer } from '@polkadot/types/types';
 

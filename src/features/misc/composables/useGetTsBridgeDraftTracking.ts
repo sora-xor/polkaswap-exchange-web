@@ -1,5 +1,5 @@
 import { computed, watch, toValue, type MaybeRefOrGetter } from 'vue';
-import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
+import type { EthHistory } from '@/lib/substrate/sdk/bridgeProxy/eth/types';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import { useBridgeStore } from '@/stores/bridge';
 import { useWalletStore } from '@/stores/wallet';

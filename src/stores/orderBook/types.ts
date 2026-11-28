@@ -1,10 +1,10 @@
 import type { LimitOrderType } from '@/consts';
 import type { OrderBookStats, OrderBookDealData } from '@/types/orderBook';
 
-import type { PriceVariant, OrderBookPriceVolume, OrderBook } from '@sora-substrate/liquidity-proxy';
-import type { AccountBalance } from '@sora-substrate/sdk/build/assets/types';
-import type { DexId } from '@sora-substrate/sdk/build/dex/consts';
-import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
+import type { PriceVariant, OrderBookPriceVolume, OrderBook } from '@/lib/substrate/liquidity-proxy';
+import type { AccountBalance } from '@/lib/substrate/sdk/assets/types';
+import type { DexId } from '@/lib/substrate/sdk/dex/consts';
+import type { LimitOrder } from '@/lib/substrate/sdk/orderBook/types';
 import type { Subscription } from 'rxjs';
 
 export type OrderBookState = {

@@ -1,9 +1,9 @@
-import { KnownAssets } from '@sora-substrate/sdk/build/assets/consts';
+import { KnownAssets } from '@/lib/substrate/sdk/assets/consts';
 
 import { agentError } from './errors';
 import type { AgentAsset, AgentAssetRef, AgentAssetsRequest } from './types';
 
-import type { AccountAsset, Asset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset, Asset, RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 type WalletAssetState = {
   assets?: Asset[];

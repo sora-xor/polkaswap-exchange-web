@@ -199,7 +199,7 @@
 import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, toRef, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import StatsSupplyChart from '@/components/shared/Widget/SupplyChart.vue';
 import { createAsyncComponent } from '@/shared/ui/async';
@@ -219,7 +219,7 @@ import { useTranslation } from '@/composables/useTranslation';
 import { useSettingsStore } from '@/stores/settings';
 import { waitUntil } from '@/utils';
 
-import type { CodecString } from '@sora-substrate/sdk';
+import type { CodecString } from '@/lib/substrate/sdk';
 import type { Subscription } from 'rxjs';
 import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
 import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';

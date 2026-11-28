@@ -1,4 +1,4 @@
 import type { Definitions } from '@polkadot/types/types';
-import bridgeProxy from '../../../../type-definitions/src/bridgeProxy.ts';
+import bridgeProxy from '@/lib/substrate/type-definitions/bridgeProxy';
 
 export default bridgeProxy as Definitions;

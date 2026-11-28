@@ -4,7 +4,7 @@ import { defineComponent, h, nextTick } from 'vue';
 
 import AnimatedAmount from '@/features/rewards/components/rewards/AnimatedAmount.vue';
 import RewardsSegmentValue from '@/features/rewards/components/rewards/RewardsSegmentValue.vue';
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 
 vi.mock('@/lib/soraneo-wallet/src/components/FormattedAmount.vue', () => ({
   __esModule: true,

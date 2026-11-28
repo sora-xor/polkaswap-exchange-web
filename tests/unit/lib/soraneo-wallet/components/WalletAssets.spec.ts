@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
-import { api, FPNumber } from '@sora-substrate/sdk';
-import { BalanceType } from '@sora-substrate/sdk/build/assets/consts';
+import { api, FPNumber } from '@/lib/substrate/sdk';
+import { BalanceType } from '@/lib/substrate/sdk/assets/consts';
 import { ref } from 'vue';
 
 const walletStoreMock = vi.hoisted(() => ({

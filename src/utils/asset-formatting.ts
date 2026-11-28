@@ -1,8 +1,8 @@
-import { FPNumber, type CodecString } from '@sora-substrate/math';
+import { FPNumber, type CodecString } from '@/lib/substrate/math';
 
 import type { Nullable } from '@/types/common';
 
-import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset, AccountAsset, RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
 import type { AmountWithSuffix } from '@/types/formats';
 
 type AssetWithBalance = AccountAsset | RegisteredAccountAsset;

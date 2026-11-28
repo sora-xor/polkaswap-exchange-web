@@ -60,20 +60,9 @@ const RPC_METHODS = new Set([
 ]);
 const BUILTINS = new Set(builtinModules.map((name) => name.replace(/^node:/, '')));
 const requireHere = createRequire(import.meta.url);
-const LOCAL_PACKAGE_PATHS: Record<string, string> = Object.fromEntries(
-  ['math', 'sdk', 'liquidity-proxy', 'api', 'connection', 'types', 'type-definitions'].map((name) => [
-    `@sora-substrate/${name}`,
-    `src/lib/substrate/${name}`,
-  ])
-);
-/** Match the existing source aliases before loading research modules outside Vite. */
+/** Resolve application-owned source before loading research modules outside Vite. */
 function localModule(specifier: string, root: string): string | undefined {
   if (specifier.startsWith('@/')) return resolve(root, 'src', specifier.slice(2));
-  for (const [prefix, directory] of Object.entries(LOCAL_PACKAGE_PATHS)) {
-    if (specifier === prefix || specifier === `${prefix}/build`) return resolve(root, directory, 'index.ts');
-    if (specifier.startsWith(`${prefix}/`))
-      return resolve(root, directory, specifier.slice(prefix.length + 1).replace(/^build\//, ''));
-  }
 }
 let dependencies:
   | Promise<{

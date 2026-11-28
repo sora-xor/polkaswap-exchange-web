@@ -51,7 +51,7 @@ import AssetsFilter from '../shared/AssetsFilter.vue';
 
 import AddAssetDetailsCard from './AddAssetDetailsCard.vue';
 
-import type { Asset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset, Whitelist } from '@/lib/substrate/sdk/assets/types';
 
 withDefaults(
   defineProps<{

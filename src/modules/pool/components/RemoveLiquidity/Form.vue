@@ -117,8 +117,8 @@
 </template>
 
 <script setup lang="ts">
-import { FPNumber, type CodecString, Operation } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber, type CodecString, Operation } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import NetworkFeeWarningDialog from '@/components/shared/Dialog/NetworkFeeWarning.vue';
@@ -138,8 +138,8 @@ import { RemoveLiquidityFocusedField as FocusedField } from '@/stores/pool/types
 import { useWalletStore } from '@/stores/wallet';
 import { hasInsufficientXorForFee, formatDecimalPlaces } from '@/utils';
 
-import type { Asset, AccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
+import type { Asset, AccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { AccountLiquidity } from '@/lib/substrate/sdk/poolXyk/types';
 import type { Nullable } from '@/types/common';
 
 const props = withDefaults(

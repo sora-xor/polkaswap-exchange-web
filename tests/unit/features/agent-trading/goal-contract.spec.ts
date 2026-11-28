@@ -7,7 +7,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { createExecutionStateProvider } from '@/features/bot-trading/execution-state';
 import { projectGoalSwapEstimate } from '@/features/agent-trading/goal-swap';
 import { createAgentDigest } from '@/features/agent-trading/intent';
-import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
+import { LiquiditySourceTypes } from '@/lib/substrate/liquidity-proxy/consts';
 import {
   HISTORICAL_EXECUTION_GENESIS as GENESIS,
   HISTORICAL_EXECUTION_KUSD as KUSD,

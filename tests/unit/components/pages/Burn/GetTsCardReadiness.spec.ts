@@ -1,7 +1,7 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { reactive } from 'vue';
-import { Operation } from '@sora-substrate/sdk';
+import { Operation } from '@/lib/substrate/sdk';
 import GetTsCardReadiness from '@/features/misc/components/burn/GetTsCardReadiness.vue';
 import type { GetTsCardReadiness as Result } from '@/features/misc/lib/getTsCardReadiness';
 

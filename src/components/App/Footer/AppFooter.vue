@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts" setup>
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import { computed, markRaw, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { Status } from '@soramitsu-ui/ui/types';

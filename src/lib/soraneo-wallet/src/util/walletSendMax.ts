@@ -1,9 +1,9 @@
-import { FPNumber } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 
 import { SORA_NATIVE_MAX_FEE_MARGIN_CODEC } from '@/consts/networkFee';
 
-import type { CodecString } from '@sora-substrate/sdk';
+import type { CodecString } from '@/lib/substrate/sdk';
 
 interface WalletSendMaxParams {
   assetAddress: string;

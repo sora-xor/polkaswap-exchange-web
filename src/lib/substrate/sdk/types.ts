@@ -1,5 +1,5 @@
 import type { Observable } from 'rxjs';
-import type { CodecString } from '@sora-substrate/math';
+import type { CodecString } from '@/lib/substrate/math';
 import type { KeyringPair } from '@polkadot/keyring/types';
 import type { AnyNumber, AnyU8a } from '@polkadot/types/types';
 import type { SubmittableExtrinsic } from '@polkadot/api-base/types';

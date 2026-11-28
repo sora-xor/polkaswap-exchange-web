@@ -33,7 +33,7 @@
 <script setup lang="ts">
 import isEmpty from 'lodash/fp/isEmpty';
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import { DAI, KUSD } from '@sora-substrate/sdk/build/assets/consts';
+import { DAI, KUSD } from '@/lib/substrate/sdk/assets/consts';
 import { useRouter } from 'vue-router';
 
 import { useLoading } from '@/composables/useLoading';
@@ -47,8 +47,8 @@ import { useSettingsStore } from '@/stores/settings';
 import { useOrderBookStore } from '@/stores/orderBook';
 import { useWalletStore } from '@/stores/wallet';
 
-import type { OrderBook, OrderBookId } from '@sora-substrate/liquidity-proxy';
-import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { OrderBook, OrderBookId } from '@/lib/substrate/liquidity-proxy';
+import type { AccountAsset, RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
 import type { Nullable } from '@/types/common';
 import BookChartsWidget from '@/features/misc/components/order-book/BookChartsWidget.vue';
 import BookWidget from '@/features/misc/components/order-book/BookWidget.vue';

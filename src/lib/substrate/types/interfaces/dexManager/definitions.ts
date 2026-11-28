@@ -1,4 +1,4 @@
 import type { Definitions } from '@polkadot/types/types';
-import dexManager from '../../../../type-definitions/src/dexManager.ts';
+import dexManager from '@/lib/substrate/type-definitions/dexManager';
 
 export default dexManager as Definitions;

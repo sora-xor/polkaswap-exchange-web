@@ -1,6 +1,6 @@
 import { computed, onScopeDispose, ref, shallowRef, watch } from 'vue';
 import type { GetTsPurpose } from '@/features/misc/lib/getTsFlow';
-import { DAI } from '@sora-substrate/sdk/build/assets/consts';
+import { DAI } from '@/lib/substrate/sdk/assets/consts';
 import { isTonswapFundingAmount, type TonswapLiquidityCheck } from '@/features/misc/lib/tonswapLiquidity';
 
 export interface TonswapBridgeLiquidityContext {

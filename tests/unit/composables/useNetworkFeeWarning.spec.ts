@@ -1,8 +1,8 @@
-import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber, Operation } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-vi.mock('@sora-substrate/sdk', () => {
+vi.mock('@/lib/substrate/sdk', () => {
   class MockFPNumber {
     value: number;
 
@@ -64,7 +64,7 @@ vi.mock('@sora-substrate/sdk', () => {
   };
 });
 
-vi.mock('@sora-substrate/sdk/build/assets/consts', () => ({
+vi.mock('@/lib/substrate/sdk/assets/consts', () => ({
   XOR: {
     address: 'xor-address',
     symbol: 'XOR',

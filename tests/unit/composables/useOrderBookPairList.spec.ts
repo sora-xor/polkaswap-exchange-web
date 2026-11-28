@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { OrderBook, OrderBookId } from '@sora-substrate/liquidity-proxy';
+import type { OrderBook, OrderBookId } from '@/lib/substrate/liquidity-proxy';
 import type { OrderBookStats } from '@/types/orderBook';
 
 const storeMocks = vi.hoisted(() => ({

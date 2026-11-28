@@ -1,7 +1,7 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { createPinia } from 'pinia';
 import { computed, defineComponent, h, ref } from 'vue';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const loginState = ref(false);

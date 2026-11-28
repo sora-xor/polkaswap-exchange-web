@@ -9,8 +9,8 @@ import type { StakingState } from '@/stores/staking/types';
 import { useWalletStore } from '@/stores/wallet';
 
 import type { Nullable } from '@/types/common';
-import type { NumberLike } from '@sora-substrate/math';
-import type { CodecString } from '@sora-substrate/sdk';
+import type { NumberLike } from '@/lib/substrate/math';
+import type { CodecString } from '@/lib/substrate/sdk';
 import type {
   AccountStakingLedger,
   ActiveEra,
@@ -20,7 +20,7 @@ import type {
   StashNominatorsInfo,
   ValidatorInfo,
   ValidatorInfoFull,
-} from '@sora-substrate/sdk/build/staking/types';
+} from '@/lib/substrate/sdk/staking/types';
 import type { Subscription } from 'rxjs';
 
 const buildInitialState = (): StakingState => ({

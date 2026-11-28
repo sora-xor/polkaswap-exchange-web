@@ -1,5 +1,5 @@
 import type { AppWallet, Theme } from '../consts';
-import type { Asset, AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset, AccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 /** Utility type that allows values to be `null` or `undefined`. */
 export type Nullable<T> = T | null | undefined;

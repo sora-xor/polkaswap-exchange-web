@@ -70,7 +70,7 @@
 </template>
 
 <script lang="ts">
-import { api, type WithKeyring } from '@sora-substrate/sdk';
+import { api, type WithKeyring } from '@/lib/substrate/sdk';
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch, type PropType } from 'vue';
 
 import { useLoading } from '../../composables/useLoading';

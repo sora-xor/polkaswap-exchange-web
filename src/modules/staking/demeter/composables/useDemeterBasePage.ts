@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import { computed, ref, toValue } from 'vue';
 
 import { useAssetsStore } from '@/stores/assets';
@@ -10,13 +10,9 @@ import { formatDecimalPlaces } from '@/utils';
 import { useDemeterApr } from './useDemeterApr';
 
 import type { DemeterAsset, DemeterPoolDerived, DemeterPoolDerivedData } from '../types';
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type {
-  DemeterPool,
-  DemeterAccountPool,
-  DemeterRewardToken,
-} from '@sora-substrate/sdk/build/demeterFarming/types';
-import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { DemeterPool, DemeterAccountPool, DemeterRewardToken } from '@/lib/substrate/sdk/demeterFarming/types';
+import type { AccountLiquidity } from '@/lib/substrate/sdk/poolXyk/types';
 import type { MaybeRef } from 'vue';
 
 const createPoolsDoubleMap = <T extends DemeterPool | DemeterAccountPool>(

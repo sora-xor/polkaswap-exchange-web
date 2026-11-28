@@ -1,8 +1,8 @@
 import { computed, onScopeDispose, ref, watch } from 'vue';
 import { toValue, type MaybeRefOrGetter } from 'vue';
 import type { GetTsPurpose } from '@/features/misc/lib/getTsFlow';
-import { toAssetId } from '@sora-substrate/sdk/build/assets';
-import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
+import { toAssetId } from '@/lib/substrate/sdk/assets';
+import type { EthHistory } from '@/lib/substrate/sdk/bridgeProxy/eth/types';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import { useBridgeStore } from '@/stores/bridge';
 import { useWalletStore } from '@/stores/wallet';

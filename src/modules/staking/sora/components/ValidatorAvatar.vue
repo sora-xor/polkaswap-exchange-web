@@ -13,7 +13,7 @@ import { computed } from 'vue';
 
 import { resolveValidatorAvatarUrl } from '@/modules/staking/sora/utils/validatorAvatar';
 
-import type { ValidatorInfoFull } from '@sora-substrate/sdk/build/staking/types';
+import type { ValidatorInfoFull } from '@/lib/substrate/sdk/staking/types';
 import WalletComponentWalletAvatar from '@/lib/soraneo-wallet/src/components/Account/WalletAvatar.vue';
 
 const props = defineProps<{

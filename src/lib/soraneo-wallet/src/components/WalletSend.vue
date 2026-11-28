@@ -189,8 +189,8 @@
 </template>
 
 <script lang="ts">
-import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber, Operation } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import dayjs from 'dayjs';
 import debounce from 'lodash/fp/debounce';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
@@ -224,8 +224,8 @@ import WalletBase from './WalletBase.vue';
 import WalletFee from './WalletFee.vue';
 
 import type { VestedTransferFeeParams, VestedTransferParams } from '@/stores/wallet/account/types';
-import type { CodecString } from '@sora-substrate/sdk';
-import type { AccountAsset, AccountBalance, UnlockPeriodDays } from '@sora-substrate/sdk/build/assets/types';
+import type { CodecString } from '@/lib/substrate/sdk';
+import type { AccountAsset, AccountBalance, UnlockPeriodDays } from '@/lib/substrate/sdk/assets/types';
 import type { Subscription } from 'rxjs';
 
 const MS_IN_DAY = 24 * 60 * 60_000;

@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { mount, flushPromises } from '@vue/test-utils';
 import { describe, expect, it, vi } from 'vitest';
 import { defineComponent, h } from 'vue';
@@ -8,7 +8,7 @@ import durationPlugin from 'dayjs/esm/plugin/duration';
 dayjs.extend(durationPlugin);
 
 import type { OrderData } from '@/types/orderBook';
-import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
+import type { LimitOrder } from '@/lib/substrate/sdk/orderBook/types';
 
 const walletConstants = vi.hoisted(() => ({
   PaginationButton: {

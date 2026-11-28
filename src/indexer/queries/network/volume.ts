@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import { gql, type TypedDocumentNode } from '@urql/core';
 import { Kind, print, visit } from 'graphql';
 

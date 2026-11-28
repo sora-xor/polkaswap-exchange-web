@@ -4,7 +4,7 @@ const allowanceMock = vi.fn();
 const gasPriceMock = vi.fn();
 const isNativeTokenMock = vi.fn();
 
-vi.mock('@sora-substrate/sdk', () => {
+vi.mock('@/lib/substrate/sdk', () => {
   class MockFPNumber {
     static DEFAULT_PRECISION = 18;
 
@@ -74,16 +74,16 @@ vi.mock('@sora-substrate/sdk', () => {
     },
   };
 });
-vi.mock('@sora-substrate/sdk/build/bridgeProxy/consts', () => ({
+vi.mock('@/lib/substrate/sdk/bridgeProxy/consts', () => ({
   BridgeTxStatus: { Ready: 'Ready', Pending: 'Pending', Failed: 'Failed' },
   BridgeNetworkType: { Eth: 'Eth', Evm: 'Evm', Sub: 'Sub' },
   BridgeTxDirection: { Outgoing: 'Outgoing', Incoming: 'Incoming' },
   EthCurrencyType: { TokenAddress: 'tokenAddress' },
 }));
-vi.mock('@sora-substrate/sdk/build/bridgeProxy/eth/consts', () => ({
+vi.mock('@/lib/substrate/sdk/bridgeProxy/eth/consts', () => ({
   EthAssetKind: { SidechainOwned: 'SidechainOwned', Thischain: 'Thischain', Sidechain: 'Sidechain' },
 }));
-vi.mock('@sora-substrate/sdk/build/bridgeProxy/evm/consts', () => ({ EvmNetworkId: { EthereumMainnet: 1 } }));
+vi.mock('@/lib/substrate/sdk/bridgeProxy/evm/consts', () => ({ EvmNetworkId: { EthereumMainnet: 1 } }));
 vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock, withWalletMock } = await import('@tests/stubs/createWalletMock');
   const wallet = createWalletMock();
@@ -110,11 +110,11 @@ vi.mock('@/utils/ethers-util', () => ({
 }));
 
 let ethUtils: typeof import('@/utils/bridge/eth/utils');
-let EthAssetKind: typeof import('@sora-substrate/sdk/build/bridgeProxy/eth/consts').EthAssetKind;
+let EthAssetKind: typeof import('@/lib/substrate/sdk/bridgeProxy/eth/consts').EthAssetKind;
 
 beforeAll(async () => {
   ethUtils = await import('@/utils/bridge/eth/utils');
-  ({ EthAssetKind } = await import('@sora-substrate/sdk/build/bridgeProxy/eth/consts'));
+  ({ EthAssetKind } = await import('@/lib/substrate/sdk/bridgeProxy/eth/consts'));
 });
 
 afterEach(() => {

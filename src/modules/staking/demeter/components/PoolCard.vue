@@ -110,7 +110,7 @@ import { useDemeterPoolCard } from '../composables/useDemeterPoolCard';
 
 import type { DemeterPoolStatusComposable } from '../composables/useDemeterPoolStatus';
 import type { DemeterAsset, DemeterPool, DemeterAccountPool } from '../types';
-import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
+import type { AccountLiquidity } from '@/lib/substrate/sdk/poolXyk/types';
 import type { Nullable } from '@/types/common';
 import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 

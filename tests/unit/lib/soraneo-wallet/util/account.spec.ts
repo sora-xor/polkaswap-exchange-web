@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { KeyringPair$Json } from '@/lib/soraneo-wallet/src/types/common';
-import type { WithKeyring } from '@sora-substrate/sdk';
+import type { WithKeyring } from '@/lib/substrate/sdk';
 
 const accountUtilMocks = vi.hoisted(() => ({
   saveAsMock: vi.fn(),

@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 
 import { RECOVERY_MAINNET_GENESIS } from './capabilities';
 

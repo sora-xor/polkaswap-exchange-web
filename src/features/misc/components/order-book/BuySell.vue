@@ -189,10 +189,10 @@
 
 <script setup lang="ts">
 import MarketUnavailable from '@/shared/ui/MarketUnavailable.vue';
-import { PriceVariant, OrderBookStatus } from '@sora-substrate/liquidity-proxy';
-import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { DexId } from '@sora-substrate/sdk/build/dex/consts';
+import { PriceVariant, OrderBookStatus } from '@/lib/substrate/liquidity-proxy';
+import { LiquiditySourceTypes } from '@/lib/substrate/liquidity-proxy/consts';
+import { FPNumber, Operation } from '@/lib/substrate/sdk';
+import { DexId } from '@/lib/substrate/sdk/dex/consts';
 import PlaceConfirm from '@/features/misc/components/order-book/Dialogs/PlaceOrder.vue';
 import PairListPopover from '@/features/misc/components/order-book/Popovers/PairListPopover.vue';
 import PlaceTransactionDetails from '@/features/misc/components/order-book/TransactionDetails.vue';
@@ -239,10 +239,10 @@ import {
 } from '@/utils';
 import { getBookDecimals, MAX_ORDERS_PER_SIDE, MAX_ORDERS_PER_USER } from '@/utils/orderBook';
 
-import type { OrderBook, OrderBookPriceVolume } from '@sora-substrate/liquidity-proxy';
-import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
+import type { OrderBook, OrderBookPriceVolume } from '@/lib/substrate/liquidity-proxy';
+import type { CodecString, NetworkFeesObject } from '@/lib/substrate/sdk';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { LimitOrder } from '@/lib/substrate/sdk/orderBook/types';
 import type { Subscription } from 'rxjs';
 
 const {

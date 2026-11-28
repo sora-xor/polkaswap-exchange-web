@@ -1,5 +1,5 @@
-import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import { FPNumber } from '@sora-substrate/sdk';
+import { LiquiditySourceTypes } from '@/lib/substrate/liquidity-proxy/consts';
+import { FPNumber } from '@/lib/substrate/sdk';
 
 import { agentError } from './errors';
 import type { AgentDexId, AgentSwapSide } from './types';

@@ -1,4 +1,4 @@
-import { BalanceType } from '@sora-substrate/sdk/build/assets/consts';
+import { BalanceType } from '@/lib/substrate/sdk/assets/consts';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useNumberFormatter } from '@/composables/useNumberFormatter';
@@ -9,8 +9,8 @@ import {
   formatAssetBalance as baseFormatAssetBalance,
 } from '@/utils/asset-formatting';
 
-import type { CodecString, FPNumber } from '@sora-substrate/sdk';
-import type { AccountAsset, Asset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { CodecString, FPNumber } from '@/lib/substrate/sdk';
+import type { AccountAsset, Asset, RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 type AssetWithBalance = AccountAsset | RegisteredAccountAsset;
 

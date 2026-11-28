@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { Operation, XOR } from '@sora-substrate/sdk';
+import { Operation, XOR } from '@/lib/substrate/sdk';
 
 const formatStringValue = vi.hoisted(() => vi.fn(() => 'formatted-amount'));
 const formatCodecNumber = vi.hoisted(() => vi.fn(() => 'formatted-fee'));
@@ -33,7 +33,7 @@ vi.mock('@/composables/useTranslation', () => ({
 }));
 
 vi.mock('@/stores/referrals', async () => {
-  const { Operation } = await import('@sora-substrate/sdk');
+  const { Operation } = await import('@/lib/substrate/sdk');
   referralsStoreMock = {
     amount: '1000000000000',
   };

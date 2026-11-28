@@ -4,7 +4,7 @@ import { computed, defineComponent } from 'vue';
 
 import { Filter, OrderStatus } from '@/types/orderBook';
 
-import type { OrderBook } from '@sora-substrate/liquidity-proxy';
+import type { OrderBook } from '@/lib/substrate/liquidity-proxy';
 import type { OrderData } from '@/types/orderBook';
 
 const fetchOrdersMock = vi.fn();

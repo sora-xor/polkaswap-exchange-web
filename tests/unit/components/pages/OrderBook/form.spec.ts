@@ -1,5 +1,5 @@
-import { PriceVariant } from '@sora-substrate/liquidity-proxy';
-import { FPNumber } from '@sora-substrate/sdk';
+import { PriceVariant } from '@/lib/substrate/liquidity-proxy';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { describe, expect, it } from 'vitest';
 
 import {
@@ -11,7 +11,7 @@ import {
   isOrderBookPriceUnique,
 } from '@/features/misc/components/order-book/form';
 
-import type { OrderBook, OrderBookPriceVolume } from '@sora-substrate/liquidity-proxy';
+import type { OrderBook, OrderBookPriceVolume } from '@/lib/substrate/liquidity-proxy';
 
 const priceVolume = (price: string): OrderBookPriceVolume =>
   [new FPNumber(price), FPNumber.ONE] as OrderBookPriceVolume;

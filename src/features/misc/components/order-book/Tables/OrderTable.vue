@@ -112,8 +112,8 @@
 </template>
 
 <script setup lang="ts">
-import { PriceVariant as LiquidityPriceVariant } from '@sora-substrate/liquidity-proxy';
-import { FPNumber } from '@sora-substrate/sdk';
+import { PriceVariant as LiquidityPriceVariant } from '@/lib/substrate/liquidity-proxy';
+import { FPNumber } from '@/lib/substrate/sdk';
 import dayjs from 'dayjs/esm';
 import debounce from 'lodash/debounce';
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
@@ -129,7 +129,7 @@ import { OrderStatus } from '@/types/orderBook';
 import { resolveOrderTableScrollElements, type OrderTableComponentRef } from '../table';
 
 import type { OrderData } from '@/types/orderBook';
-import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
+import type { LimitOrder } from '@/lib/substrate/sdk/orderBook/types';
 import type { OrderStatus as OrderStatusType } from '@/lib/soraneo-wallet/src/services/indexer/types';
 import WalletComponentHistoryPagination from '@/lib/soraneo-wallet/src/components/HistoryPagination.vue';
 

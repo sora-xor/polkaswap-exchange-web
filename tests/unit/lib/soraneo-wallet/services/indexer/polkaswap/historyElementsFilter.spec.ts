@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { Operation } from '@sora-substrate/sdk';
+import { Operation } from '@/lib/substrate/sdk';
 
 import { historyElementsFilter } from '@/lib/soraneo-wallet/src/services/indexer/polkaswap/queries/historyElements';
 import { ModuleMethods, ModuleNames } from '@/lib/soraneo-wallet/src/services/indexer/polkaswap/types';

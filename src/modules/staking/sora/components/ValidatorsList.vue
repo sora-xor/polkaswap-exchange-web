@@ -147,7 +147,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 
 import ValidatorAvatar from '@/modules/staking/sora/components/ValidatorAvatar.vue';
 import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
@@ -155,7 +155,7 @@ import { useValidatorsFormatting } from '@/modules/staking/sora/composables/useV
 import { emptyValidatorsFilter, recommendedValidatorsFilter, ValidatorsListMode } from '@/modules/staking/sora/consts';
 
 import type { ValidatorsFilter } from '@/modules/staking/sora/types';
-import type { ValidatorInfoFull } from '@sora-substrate/sdk/build/staking/types';
+import type { ValidatorInfoFull } from '@/lib/substrate/sdk/staking/types';
 import SearchInput from '@/lib/soraneo-wallet/src/components/Input/SearchInput.vue';
 import WalletComponentFormattedAddress from '@/lib/soraneo-wallet/src/components/shared/FormattedAddress.vue';
 

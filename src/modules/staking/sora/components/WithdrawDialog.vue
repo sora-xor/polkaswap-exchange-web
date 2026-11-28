@@ -53,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-import { Operation } from '@sora-substrate/sdk';
+import { Operation } from '@/lib/substrate/sdk';
 import { computed } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 
@@ -63,7 +63,7 @@ import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStakin
 import { useSettingsStore } from '@/stores/settings';
 import { hasInsufficientXorForFee } from '@/utils';
 
-import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
+import type { CodecString, NetworkFeesObject } from '@/lib/substrate/sdk';
 import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';

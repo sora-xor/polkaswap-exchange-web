@@ -121,8 +121,8 @@
 </template>
 
 <script lang="ts">
-import { api, FPNumber } from '@sora-substrate/sdk';
-import { BalanceType } from '@sora-substrate/sdk/build/assets/consts';
+import { api, FPNumber } from '@/lib/substrate/sdk';
+import { BalanceType } from '@/lib/substrate/sdk/assets/consts';
 import isEmpty from 'lodash/fp/isEmpty';
 import { computed } from 'vue';
 import draggable from 'vuedraggable';
@@ -142,7 +142,7 @@ import FormattedAmountWithFiatValue from './FormattedAmountWithFiatValue.vue';
 import WalletAssetsHeadline from './WalletAssetsHeadline.vue';
 
 import type { WalletAssetFilters, WalletPermissions } from '../consts';
-import type { AccountAsset, AccountBalance, Whitelist } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset, AccountBalance, Whitelist } from '@/lib/substrate/sdk/assets/types';
 
 type AccountBalanceKey = keyof Pick<
   AccountBalance,

@@ -1,5 +1,5 @@
-import { FPNumber as MathFPNumber } from '@sora-substrate/math';
-import { FPNumber as SDKFPNumber } from '@sora-substrate/sdk';
+import { FPNumber as MathFPNumber } from '@/lib/substrate/math';
+import { FPNumber as SDKFPNumber } from '@/lib/substrate/sdk';
 import { defineStore } from 'pinia';
 import { firstValueFrom } from 'rxjs';
 
@@ -24,10 +24,10 @@ import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import { waitForAccountPair, waitUntil } from '@/utils';
 
 import type { PoolApyObject } from '@/lib/soraneo-wallet/src/services/indexer/types';
-import type { AccountBalance, Asset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { AccountLockedPool } from '@sora-substrate/sdk/build/ceresLiquidityLocker/types';
-import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
-import type { CodecString } from '@sora-substrate/sdk';
+import type { AccountBalance, Asset, RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { AccountLockedPool } from '@/lib/substrate/sdk/ceresLiquidityLocker/types';
+import type { AccountLiquidity } from '@/lib/substrate/sdk/poolXyk/types';
+import type { CodecString } from '@/lib/substrate/sdk';
 import type { Subscription } from 'rxjs';
 
 type PoolStoreState = PoolState & {

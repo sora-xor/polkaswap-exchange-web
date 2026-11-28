@@ -11,7 +11,7 @@ import { computed } from 'vue';
 import { LogoSize, ObjectInit } from '@/consts';
 import { createAsyncComponent } from '@/shared/ui/async';
 
-import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset, Asset } from '@/lib/substrate/sdk/assets/types';
 
 const TokenLogo = createAsyncComponent(() => import('@/lib/soraneo-wallet/src/components/TokenLogo.vue'));
 

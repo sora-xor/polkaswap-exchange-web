@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
+import { SubNetworkId } from '@/lib/substrate/sdk/bridgeProxy/sub/consts';
 
 import { SUB_NETWORKS } from '@/consts/sub';
 

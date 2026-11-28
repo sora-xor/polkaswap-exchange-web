@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 
 import type { FiatPriceObject } from '@/lib/soraneo-wallet/src/services/indexer/types';
 

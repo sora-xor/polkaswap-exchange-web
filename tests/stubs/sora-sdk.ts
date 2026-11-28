@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import { vi } from 'vitest';
 export { WithConnectionApi, WithKeyring } from '@/lib/substrate/sdk/apiAccount';
 

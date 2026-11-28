@@ -6,7 +6,7 @@ import { filterAssetsByQuery, type AssetSearchOptions } from '@/composables/useA
 import type { Nullable } from '@/types/common';
 import { sortAssets } from '@/utils/asset-sort';
 
-import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset, RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 type AssetBalanceCandidate = AccountAsset | RegisteredAccountAsset;
 

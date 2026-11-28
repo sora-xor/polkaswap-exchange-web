@@ -133,7 +133,7 @@
 </template>
 
 <script setup lang="ts">
-import { FPNumber, Operation } from '@sora-substrate/sdk';
+import { FPNumber, Operation } from '@/lib/substrate/sdk';
 import dayjs from 'dayjs/esm';
 import { computed, watch, type Ref } from 'vue';
 
@@ -150,8 +150,8 @@ import { useWalletStore } from '@/stores/wallet';
 import { type FetchVariables } from '@/types/indexers';
 import { soraExplorerLinks, showMostFittingValue } from '@/utils';
 
-import type { HistoryItem } from '@sora-substrate/sdk';
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { HistoryItem } from '@/lib/substrate/sdk';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
 import WalletComponentFormattedAmountWithFiatValue from '@/lib/soraneo-wallet/src/components/FormattedAmountWithFiatValue.vue';
 import WalletComponentFormattedAddress from '@/lib/soraneo-wallet/src/components/shared/FormattedAddress.vue';

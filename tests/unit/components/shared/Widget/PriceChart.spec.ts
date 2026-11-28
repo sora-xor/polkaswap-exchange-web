@@ -3,7 +3,7 @@ import { nextTick, reactive } from 'vue';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 
 import type { VueWrapper } from '@vue/test-utils';
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 import type { SnapshotItem } from '@/types/chart';
 
 const chartHarness = vi.hoisted(() => ({

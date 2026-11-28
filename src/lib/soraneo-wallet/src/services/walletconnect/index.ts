@@ -13,7 +13,7 @@ import { WcSubProvider } from './provider/substrate';
 import { WcWallet } from './wallet';
 
 import type { Wallet } from '../wallet/types';
-import type { WithKeyring } from '@sora-substrate/sdk';
+import type { WithKeyring } from '@/lib/substrate/sdk';
 
 export { WcProvider };
 

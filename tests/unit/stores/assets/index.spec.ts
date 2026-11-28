@@ -1,8 +1,8 @@
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
-import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { EvmNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/evm/consts';
-import { LiberlandAssetType, SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { BridgeNetworkType } from '@/lib/substrate/sdk/bridgeProxy/consts';
+import { EvmNetworkId } from '@/lib/substrate/sdk/bridgeProxy/evm/consts';
+import { LiberlandAssetType, SubNetworkId } from '@/lib/substrate/sdk/bridgeProxy/sub/consts';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 
 import { ZeroStringValue } from '@/consts';
 import type { BridgeRegisteredAsset } from '@/stores/assets/types';

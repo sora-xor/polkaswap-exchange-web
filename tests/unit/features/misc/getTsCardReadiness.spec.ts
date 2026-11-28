@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { encodeAddress } from '@polkadot/util-crypto';
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import {
   requestGetTsCardReadiness,
   estimateGetTsCardConversionGas,

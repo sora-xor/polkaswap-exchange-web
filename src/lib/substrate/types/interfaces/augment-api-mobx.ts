@@ -64,13 +64,13 @@ import type {
 } from '@polkadot/types/interfaces/system';
 import type { Multiplier } from '@polkadot/types/interfaces/txpayment';
 import type { Multisig } from '@polkadot/types/interfaces/utility';
-import type { AssetRecord } from '@sora-substrate/types/interfaces/assets';
-import type { PollInfo, VotingInfo } from '@sora-substrate/types/interfaces/ceresGovernancePlatform';
-import type { ContributionInfo, ILOInfo } from '@sora-substrate/types/interfaces/ceresLaunchpad';
-import type { LockInfo } from '@sora-substrate/types/interfaces/ceresLiquidityLocker';
-import type { StakingInfo } from '@sora-substrate/types/interfaces/ceresStaking';
-import type { TokenLockInfo } from '@sora-substrate/types/interfaces/ceresTokenLocker';
-import type { PoolData, TokenInfo, UserInfo } from '@sora-substrate/types/interfaces/demeterFarmingPlatform';
+import type { AssetRecord } from '@/lib/substrate/types/interfaces/assets';
+import type { PollInfo, VotingInfo } from '@/lib/substrate/types/interfaces/ceresGovernancePlatform';
+import type { ContributionInfo, ILOInfo } from '@/lib/substrate/types/interfaces/ceresLaunchpad';
+import type { LockInfo } from '@/lib/substrate/types/interfaces/ceresLiquidityLocker';
+import type { StakingInfo } from '@/lib/substrate/types/interfaces/ceresStaking';
+import type { TokenLockInfo } from '@/lib/substrate/types/interfaces/ceresTokenLocker';
+import type { PoolData, TokenInfo, UserInfo } from '@/lib/substrate/types/interfaces/demeterFarmingPlatform';
 import type {
   AssetKind,
   BridgeNetworkId,
@@ -82,9 +82,9 @@ import type {
   OffchainRequest,
   RequestStatus,
   SignatureParams,
-} from '@sora-substrate/types/interfaces/ethBridge';
-import type { PoolFarmer } from '@sora-substrate/types/interfaces/farming';
-import type { PendingMultisigAccount } from '@sora-substrate/types/interfaces/irohaMigration';
+} from '@/lib/substrate/types/interfaces/ethBridge';
+import type { PoolFarmer } from '@/lib/substrate/types/interfaces/farming';
+import type { PendingMultisigAccount } from '@/lib/substrate/types/interfaces/irohaMigration';
 import type {
   AccountId,
   AccountIdOf,
@@ -128,7 +128,7 @@ import type {
   TechAccountId,
   TradingPair,
   ValidatorId,
-} from '@sora-substrate/types/interfaces/runtime';
+} from '@/lib/substrate/types/interfaces/runtime';
 import type { BaseStorageType, StorageDoubleMap, StorageMap } from '@open-web3/api-mobx';
 
 export interface StorageType extends BaseStorageType {

@@ -5,7 +5,7 @@ import { asZeroValue } from '@/utils';
 
 import { useSwapStore } from '../stores/useSwapStore';
 
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 import type { Nullable } from '@/types/common';
 
 /**

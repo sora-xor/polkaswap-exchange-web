@@ -47,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-import { CodecString } from '@sora-substrate/sdk';
+import { CodecString } from '@/lib/substrate/sdk';
 import { computed } from 'vue';
 
 import BridgeTransactionDetails from '@/features/bridge/components/TransactionDetails.vue';
@@ -57,9 +57,9 @@ import { useTranslation } from '@/composables/useTranslation';
 import { useNetworkFormatter } from '@/composables/useNetworkFormatter';
 import { ZeroStringValue } from '@/consts';
 
-import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
+import type { RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { BridgeNetworkType } from '@/lib/substrate/sdk/bridgeProxy/consts';
+import type { BridgeNetworkId } from '@/lib/substrate/sdk/bridgeProxy/types';
 import AccountConfirmationOption from '@/lib/soraneo-wallet/src/components/Account/Settings/ConfirmationOption.vue';
 import DialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 

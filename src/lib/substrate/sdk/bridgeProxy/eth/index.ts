@@ -1,7 +1,7 @@
 import first from 'lodash/fp/first';
 import { assert } from '@polkadot/util';
 import { map, combineLatest } from 'rxjs';
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import type { Observable } from '@polkadot/types/types';
 import type { BridgeTypesGenericNetworkId, EthBridgeRequestsOffchainRequest } from '@polkadot/types/lookup';
 

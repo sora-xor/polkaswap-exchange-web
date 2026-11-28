@@ -1,6 +1,6 @@
-import { isNativeAsset } from '@sora-substrate/sdk/build/assets';
+import { isNativeAsset } from '@/lib/substrate/sdk/assets';
 
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 
 type PoolAssets<T extends Asset> = { baseAsset: T; poolAsset: T };
 

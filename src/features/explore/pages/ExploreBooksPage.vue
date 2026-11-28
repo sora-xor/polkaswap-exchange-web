@@ -149,8 +149,8 @@
 <script setup lang="ts">
 import MarketUnavailable from '@/shared/ui/MarketUnavailable.vue';
 import { valueAtMarketPrice } from '@/lib/soraneo-wallet/src/services/indexer/marketPrice';
-import { FPNumber } from '@sora-substrate/sdk';
-import { KnownAssets } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber } from '@/lib/substrate/sdk';
+import { KnownAssets } from '@/lib/substrate/sdk/assets/consts';
 import { SortDirection } from '@soramitsu-ui/ui/types';
 import { computed, ref, toRef, watch } from 'vue';
 
@@ -167,7 +167,7 @@ import type { AmountWithSuffix } from '@/types/formats';
 import type { OrderBookWithStats } from '@/types/orderBook';
 import { formatAmountWithSuffix, isAmountValueIntegerOnly, sortPools } from '@/utils';
 
-import type { Asset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset, RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
 import WalletComponentTokenAddress from '@/lib/soraneo-wallet/src/components/TokenAddress.vue';
 import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 import WalletComponentHistoryPagination from '@/lib/soraneo-wallet/src/components/HistoryPagination.vue';

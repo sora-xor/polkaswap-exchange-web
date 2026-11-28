@@ -32,7 +32,7 @@ import StakingHeader from '@/modules/staking/sora/components/StakingHeader.vue';
 import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
 import ValidatorsList from '@/modules/staking/sora/components/ValidatorsList.vue';
 
-import type { ValidatorInfoFull } from '@sora-substrate/sdk/build/staking/types';
+import type { ValidatorInfoFull } from '@/lib/substrate/sdk/staking/types';
 
 defineOptions({
   name: 'SoraSelectValidatorsPage',

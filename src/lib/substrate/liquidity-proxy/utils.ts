@@ -1,4 +1,4 @@
-import { FPNumber, CodecString } from '@sora-substrate/math';
+import { FPNumber, CodecString } from '@/lib/substrate/math';
 
 import { LiquiditySourceTypes, AssetType, Consts } from './consts';
 

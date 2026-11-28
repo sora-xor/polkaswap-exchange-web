@@ -1,11 +1,11 @@
-import { RewardReason } from '@sora-substrate/liquidity-proxy/build/consts';
-import { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
-import { KnownSymbols } from '@sora-substrate/sdk/build/assets/consts';
+import { RewardReason } from '@/lib/substrate/liquidity-proxy/consts';
+import { CodecString, NetworkFeesObject } from '@/lib/substrate/sdk';
+import { KnownSymbols } from '@/lib/substrate/sdk/assets/consts';
 
 import { MOCK_ACCOUNT_ASSETS } from '../tokens';
 
-import type { LPRewardsInfo } from '@sora-substrate/liquidity-proxy/build/types';
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { LPRewardsInfo } from '@/lib/substrate/liquidity-proxy/types';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 const NETWORK_FEES = {
   Swap: '700000000000000',

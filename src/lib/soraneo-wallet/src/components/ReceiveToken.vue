@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { computed, ref } from 'vue';
 
 import { getWalletCurrentParams, getWalletPreviousParams, getWalletPreviousRoute } from '@/platform/wallet/navigation';
@@ -43,7 +43,7 @@ import WalletBase from './WalletBase.vue';
 
 import type { RouteNames } from '../consts';
 import type { PolkadotJsAccount } from '../types/common';
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 const { t, withAppNotification } = useNotification();
 const walletStore = useWalletStore();

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { XOR, XSTUSD } from '@sora-substrate/sdk/build/assets/consts';
+import { XOR, XSTUSD } from '@/lib/substrate/sdk/assets/consts';
 
 import {
   getSupportedPoolBaseAssetIds,

@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 
 import { AssetTypes, type AccountBalance, type Asset, type KnownSymbol, type NativeSymbol } from './types';
 

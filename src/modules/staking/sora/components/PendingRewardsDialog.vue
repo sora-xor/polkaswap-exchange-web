@@ -95,7 +95,7 @@
 </template>
 
 <script setup lang="ts">
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { computed, ref, watch } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 
@@ -107,8 +107,8 @@ import { useValidatorsFormatting } from '@/modules/staking/sora/composables/useV
 import { ERA_HOURS } from '@/modules/staking/sora/consts';
 import { formatDecimalPlaces, hasInsufficientXorForFee } from '@/utils';
 
-import type { CodecString } from '@sora-substrate/sdk';
-import type { ValidatorInfoFull } from '@sora-substrate/sdk/build/staking/types';
+import type { CodecString } from '@/lib/substrate/sdk';
+import type { ValidatorInfoFull } from '@/lib/substrate/sdk/staking/types';
 import type { Nullable } from '@/types/common';
 import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';

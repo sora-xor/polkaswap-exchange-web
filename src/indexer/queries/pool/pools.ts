@@ -1,11 +1,11 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { gql } from '@urql/core';
 import { readMarketPrice } from '@/lib/soraneo-wallet/src/services/indexer/marketPrice';
 import { fetchByAssetIds, marketRequestOptions } from '@/indexer/queries/asset/batches';
 
-import type { CodecString } from '@sora-substrate/sdk';
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { CodecString } from '@/lib/substrate/sdk';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 import type { PolkaswapPoolXYKEntity } from '@/lib/soraneo-wallet/src/services/indexer/polkaswap/types';
 import type { ConnectionQueryResponse, PoolXYKEntity } from '@/lib/soraneo-wallet/src/services/indexer/types';
 

@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { print } from 'graphql';
 
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { IndexerType } from '@/indexer/queries/indexerConsts';
 import { clearBurnXorQueryCaches, fetchData, isExcludedXorBurnAddress } from '@/indexer/queries/burnXor';
 import { createSoraNexusXorBurnRemark } from '@/utils/soraNexusAccount';

@@ -4,7 +4,7 @@ const { isNativeAssetMock } = vi.hoisted(() => ({
   isNativeAssetMock: vi.fn(),
 }));
 
-vi.mock('@sora-substrate/sdk/build/assets', () => ({
+vi.mock('@/lib/substrate/sdk/assets', () => ({
   isNativeAsset: isNativeAssetMock,
 }));
 

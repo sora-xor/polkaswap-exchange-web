@@ -1,7 +1,7 @@
 import { assert } from '@polkadot/util';
 import { ReplaySubject, Subject, Subscription, combineLatest, map, throwIfEmpty } from 'rxjs';
-import { FPNumber, NumberLike, CodecString } from '@sora-substrate/math';
-import { getChameleonPools } from '@sora-substrate/liquidity-proxy';
+import { FPNumber, NumberLike, CodecString } from '@/lib/substrate/math';
+import { getChameleonPools } from '@/lib/substrate/liquidity-proxy';
 import type { Observable } from '@polkadot/types/types';
 import type { ITuple } from '@polkadot/types-codec/types';
 import type { u128 } from '@polkadot/types-codec';

@@ -3,7 +3,7 @@ import { computed, defineComponent, h, ref } from 'vue';
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { ValidatorsListMode } from '@/modules/staking/sora/consts';
-import type { ValidatorInfoFull } from '@sora-substrate/sdk/build/staking/types';
+import type { ValidatorInfoFull } from '@/lib/substrate/sdk/staking/types';
 
 type Validator = {
   address: string;

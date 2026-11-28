@@ -1,11 +1,11 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTranslation } from '@/composables/useTranslation';
 import { formatDecimalPlaces } from '@/utils';
 
-import type { DemeterPool, DemeterRewardToken } from '@sora-substrate/sdk/build/demeterFarming/types';
-import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
+import type { DemeterPool, DemeterRewardToken } from '@/lib/substrate/sdk/demeterFarming/types';
+import type { AccountLiquidity } from '@/lib/substrate/sdk/poolXyk/types';
 
 const BLOCKS_PER_YEAR = new FPNumber(5_256_000);
 

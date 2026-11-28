@@ -1,12 +1,12 @@
-import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { BridgeNetworkType } from '@/lib/substrate/sdk/bridgeProxy/consts';
 import { computed, type ComputedRef } from 'vue';
 
 import { soraExplorerLinks } from '@/utils';
 import { useNetworkFormatter } from '@/composables/useNetworkFormatter';
 import { EvmLinkType } from '@/consts/evm';
 
-import type { IBridgeTransaction } from '@sora-substrate/sdk';
-import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
+import type { IBridgeTransaction } from '@/lib/substrate/sdk';
+import type { BridgeNetworkId } from '@/lib/substrate/sdk/bridgeProxy/types';
 import type { Nullable } from '@/types/common';
 
 type NetworkTextOptions = {

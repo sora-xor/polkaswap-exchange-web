@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { Operation, type HistoryItem } from '@sora-substrate/sdk';
-import { DAI, ETH, XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { Operation, type HistoryItem } from '@/lib/substrate/sdk';
+import { DAI, ETH, XOR } from '@/lib/substrate/sdk/assets/consts';
 import {
   createGetTsSwapDraft,
   matchGetTsSwapDraft,

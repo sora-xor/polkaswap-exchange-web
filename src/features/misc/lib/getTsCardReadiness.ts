@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { decodeAddress } from '@polkadot/util-crypto';
 import { getAddress, Interface, type BrowserProvider } from 'ethers';
 import type { GetTsPurpose } from './getTsFlow';

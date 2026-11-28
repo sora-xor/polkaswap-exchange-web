@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import { flushPromises, mount } from '@vue/test-utils';
 import { BreakpointClass } from '@/consts/layout';
 import { computed, defineComponent, h, ref } from 'vue';

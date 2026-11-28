@@ -1,12 +1,12 @@
-import { OrderBookStatus } from '@sora-substrate/liquidity-proxy';
+import { OrderBookStatus } from '@/lib/substrate/liquidity-proxy';
 import { flushPromises, mount } from '@vue/test-utils';
 import { computed, ref } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { Cancel } from '@/types/orderBook';
 
-import type { OrderBook } from '@sora-substrate/liquidity-proxy';
-import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
+import type { OrderBook } from '@/lib/substrate/liquidity-proxy';
+import type { LimitOrder } from '@/lib/substrate/sdk/orderBook/types';
 
 const walletApiMocks = vi.hoisted(() => ({
   cancelLimitOrder: vi.fn(),

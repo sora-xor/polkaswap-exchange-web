@@ -1,5 +1,5 @@
-import { FPNumber } from '@sora-substrate/sdk';
-import { VaultTypes } from '@sora-substrate/sdk/build/kensetsu/consts';
+import { FPNumber } from '@/lib/substrate/sdk';
+import { VaultTypes } from '@/lib/substrate/sdk/kensetsu/consts';
 import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { gql } from '@urql/core';
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { BUY_XOR_DEFAULT_CARD_USD, buyXorNextSteps } from '@/features/misc/lib/buyXorStart';
 import { isGetTsPlanAmount } from '@/features/misc/lib/getTsPlanQuote';
 

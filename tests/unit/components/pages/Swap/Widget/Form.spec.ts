@@ -1,10 +1,10 @@
 import { flushPromises, mount } from '@vue/test-utils';
-import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy';
+import { LiquiditySourceTypes } from '@/lib/substrate/liquidity-proxy';
 import { Subject } from 'rxjs';
 import { computed, defineComponent, h, nextTick, reactive, ref } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 import { DexId } from '@/lib/substrate/sdk/dex/consts';
 import { SwapModule } from '@/lib/substrate/sdk/swap';
 import type { SwapQuoteData } from '@/lib/substrate/sdk/swap/types';

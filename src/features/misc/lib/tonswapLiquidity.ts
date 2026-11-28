@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import type { GetTsPurpose } from './getTsFlow';
 
 /** Native SORA2 funding is always bound to this production chain, independently of any campaign. */

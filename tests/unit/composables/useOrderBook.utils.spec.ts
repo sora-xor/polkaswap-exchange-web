@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { FPNumber } from '@sora-substrate/sdk';
-import { PriceVariant } from '@sora-substrate/liquidity-proxy';
+import { FPNumber } from '@/lib/substrate/sdk';
+import { PriceVariant } from '@/lib/substrate/liquidity-proxy';
 
 import { LimitOrderType } from '@/consts';
 import {

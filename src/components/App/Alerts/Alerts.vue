@@ -33,7 +33,7 @@ import type { NumberedAlert } from '@/consts';
 import { createAsyncComponent } from '@/shared/ui/async';
 import { useSettingsStore } from '@/stores/settings';
 
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 enum AlertPages {
   AlertList,

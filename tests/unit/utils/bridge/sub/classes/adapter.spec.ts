@@ -1,4 +1,4 @@
-import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
+import { SubNetworkId } from '@/lib/substrate/sdk/bridgeProxy/sub/consts';
 import { computed, markRaw, shallowRef } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 

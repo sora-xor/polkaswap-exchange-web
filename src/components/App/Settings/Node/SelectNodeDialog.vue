@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
+import { SubNetworkId } from '@/lib/substrate/sdk/bridgeProxy/sub/consts';
 import pick from 'lodash/fp/pick';
 import { computed, ref } from 'vue';
 

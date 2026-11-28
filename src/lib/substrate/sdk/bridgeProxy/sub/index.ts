@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import { assert } from '@polkadot/util';
 
 import { toAssetId } from '../../assets';
@@ -26,7 +26,7 @@ import {
 } from './consts';
 import { SoraParachainApi } from './parachain';
 
-import type { CodecString } from '@sora-substrate/math';
+import type { CodecString } from '@/lib/substrate/math';
 import type { Asset } from '../../assets/types';
 import type {
   SubHistory,

@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { evaluateTonswapLiquidity, type TonswapFeeEvidence } from './tonswapLiquidity';
 import type { GetTsPaymentAsset } from './getTsPlanQuote';
 

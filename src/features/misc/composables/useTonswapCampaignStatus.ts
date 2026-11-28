@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { computed, getCurrentScope, onScopeDispose, shallowRef, watch } from 'vue';
 
 import { SoraNetwork } from '@/consts';

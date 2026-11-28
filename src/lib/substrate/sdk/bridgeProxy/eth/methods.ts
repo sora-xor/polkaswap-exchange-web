@@ -1,7 +1,7 @@
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 
 import type { Vec, Result } from '@polkadot/types';
-import type { OutgoingRequestEncoded, SignatureParams } from '@sora-substrate/types';
+import type { OutgoingRequestEncoded, SignatureParams } from '@/lib/substrate/types';
 import type { EthBridgeRequestsOffchainRequest } from '@polkadot/types/lookup';
 
 import { toAssetId } from '../../assets';

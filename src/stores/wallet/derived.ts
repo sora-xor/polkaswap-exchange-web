@@ -1,5 +1,5 @@
-import { FPNumber } from '@sora-substrate/math';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber } from '@/lib/substrate/math';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 
 import { TransactionStatus } from '@/lib/substrate/sdk/types';
 

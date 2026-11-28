@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { Operation, TransactionStatus } from '@sora-substrate/sdk';
-import { KUSD, XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { Operation, TransactionStatus } from '@/lib/substrate/sdk';
+import { KUSD, XOR } from '@/lib/substrate/sdk/assets/consts';
 
 vi.mock('@/plugins/pinia', () => ({
   resolveGlobalPinia: () => ({}),

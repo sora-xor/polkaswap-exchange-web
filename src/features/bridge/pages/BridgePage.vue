@@ -256,9 +256,9 @@
 </template>
 
 <script setup lang="ts">
-import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { KnownSymbols as KnownSymbolsEnum } from '@sora-substrate/sdk/build/assets/consts';
-import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { FPNumber, Operation } from '@/lib/substrate/sdk';
+import { KnownSymbols as KnownSymbolsEnum } from '@/lib/substrate/sdk/assets/consts';
+import { BridgeNetworkType } from '@/lib/substrate/sdk/bridgeProxy/consts';
 import { computed, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -283,7 +283,7 @@ import { useSettingsStore } from '@/stores/settings';
 import { parseTonswapBridgeFundingQuery } from '@/features/misc/composables/useTonswapBridgeFunding';
 import { useTonswapBridgeLiquidity } from '@/features/misc/composables/useTonswapBridgeLiquidity';
 import TonswapLiquidityCheck from '@/features/misc/components/burn/TonswapLiquidityCheck.vue';
-import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
+import type { EthHistory } from '@/lib/substrate/sdk/bridgeProxy/eth/types';
 import { getTonswapBridgeFundingPayload } from '@/features/misc/lib/tonswapBridgeLiquidity';
 import { getTsFundingQuery, parseGetTsFundingPurpose } from '@/features/misc/lib/getTsFlow';
 import { useGetTsPlan } from '@/features/misc/composables/useGetTsPlan';
@@ -298,7 +298,7 @@ import {
   isXorAccountAsset,
 } from '@/utils';
 import { isDenominatedAsset as isDenominatedAssetUtil } from '@/utils/bridge/common/utils';
-import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
 import type { NodesConnection } from '@/utils/connection';
 import type { Nullable } from '@/types/common';
 import AppBrowserMstBridgeWarning from '@/components/App/BrowserNotification/MstBridgeWarning.vue';

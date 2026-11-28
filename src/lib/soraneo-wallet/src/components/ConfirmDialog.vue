@@ -23,7 +23,7 @@ import { confirmTransactionSign, getTransactionSignRequest } from '../util/trans
 import AccountConfirmDialog from './Account/ConfirmDialog.vue';
 
 import type { PolkadotJsAccount } from '../types/common';
-import type { WithKeyring } from '@sora-substrate/sdk';
+import type { WithKeyring } from '@/lib/substrate/sdk';
 
 const props = defineProps<{
   account: Nullable<PolkadotJsAccount>;

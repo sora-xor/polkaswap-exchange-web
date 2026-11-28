@@ -1,14 +1,14 @@
-import { FPNumber } from '@sora-substrate/sdk';
-import { BridgeAccountType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { SubNetworkId, LiberlandAssetType } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
+import { FPNumber } from '@/lib/substrate/sdk';
+import { BridgeAccountType } from '@/lib/substrate/sdk/bridgeProxy/consts';
+import { SubNetworkId, LiberlandAssetType } from '@/lib/substrate/sdk/bridgeProxy/sub/consts';
 
 import { ZeroStringValue } from '@/consts';
 
 import { SubAdapter } from '../substrate';
 
-import type { CodecString } from '@sora-substrate/sdk';
-import type { RegisteredAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { LiberlandAssetId } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
+import type { CodecString } from '@/lib/substrate/sdk';
+import type { RegisteredAsset } from '@/lib/substrate/sdk/assets/types';
+import type { LiberlandAssetId } from '@/lib/substrate/sdk/bridgeProxy/sub/types';
 
 const INTEGER_PATTERN = /^(0|[1-9]\d*)$/;
 const MAX_LIBERLAND_ASSET_ID = 4_294_967_295;

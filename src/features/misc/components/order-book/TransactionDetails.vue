@@ -46,9 +46,9 @@
 </template>
 
 <script setup lang="ts">
-import { PriceVariant } from '@sora-substrate/liquidity-proxy';
-import { Operation, type CodecString, type FPNumber, type NetworkFeesObject } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { PriceVariant } from '@/lib/substrate/liquidity-proxy';
+import { Operation, type CodecString, type FPNumber, type NetworkFeesObject } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import TransactionDetails from '@/components/shared/TransactionDetails.vue';
 import dayjs from 'dayjs/esm';
 import { computed } from 'vue';
@@ -60,7 +60,7 @@ import { useTranslation } from '@/composables/useTranslation';
 import { ZeroStringValue } from '@/consts';
 import { useWalletStore } from '@/stores/wallet';
 
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 
 const InfoLine = WalletComponentInfoLine;

@@ -1,4 +1,4 @@
-import type { Blacklist, WhitelistArrayItem } from '@sora-substrate/sdk/build/assets/types';
+import type { Blacklist, WhitelistArrayItem } from '@/lib/substrate/sdk/assets/types';
 
 const MAX_SYMBOL_LENGTH = 32;
 const MAX_NAME_LENGTH = 128;

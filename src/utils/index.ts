@@ -1,10 +1,10 @@
-import { FPNumber, type CodecString } from '@sora-substrate/math';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber, type CodecString } from '@/lib/substrate/math';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import debounce from 'lodash/debounce';
 import { watch } from 'vue';
 
-import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
+import type { Asset, AccountAsset, RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { AccountLiquidity } from '@/lib/substrate/sdk/poolXyk/types';
 import type { Currency, CurrencyFields } from '@/lib/soraneo-wallet/src/types/currency';
 
 type AssetWithBalance = AccountAsset | RegisteredAccountAsset;

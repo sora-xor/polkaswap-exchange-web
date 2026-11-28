@@ -1,7 +1,7 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 
 import type { Struct, bool, u32 } from '@polkadot/types-codec';
-import type { AccountId, AssetId, Balance, Moment } from '@sora-substrate/types/interfaces/runtime';
+import type { AccountId, AssetId, Balance, Moment } from '@/lib/substrate/types/interfaces/runtime';
 
 /** @name ContributionInfo */
 export interface ContributionInfo extends Struct {

@@ -1,6 +1,6 @@
 import { requireEntitlements } from '@/indexer/queries/capabilities';
-import { FPNumber } from '@sora-substrate/sdk';
-import { DAI, ETH, XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber } from '@/lib/substrate/sdk';
+import { DAI, ETH, XOR } from '@/lib/substrate/sdk/assets/consts';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import type { TonswapBurnSnapshot } from '@/indexer/queries/tonswapBurn';
 import { evaluateTonswapLiquidity, SORA_FUNDING_MAINNET_GENESIS, type TonswapFeeEvidence } from './tonswapLiquidity';

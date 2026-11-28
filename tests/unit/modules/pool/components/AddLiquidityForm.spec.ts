@@ -1,4 +1,4 @@
-import { Operation } from '@sora-substrate/sdk';
+import { Operation } from '@/lib/substrate/sdk';
 import { computed, defineComponent, reactive, ref, type Ref } from 'vue';
 import { flushPromises, mount } from '@vue/test-utils';
 import { createPinia } from 'pinia';

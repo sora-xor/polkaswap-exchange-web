@@ -1,9 +1,9 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { getAssetBalance } from '@/utils/asset-formatting';
 
 import type { Nullable } from '@/types/common';
-import type { CodecString } from '@sora-substrate/sdk';
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { CodecString } from '@/lib/substrate/sdk';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 export enum DifferenceStatus {
   Success = 'success',

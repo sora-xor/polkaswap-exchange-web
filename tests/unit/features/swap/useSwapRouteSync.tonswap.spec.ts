@@ -1,10 +1,10 @@
-import { XOR, DAI } from '@sora-substrate/sdk/build/assets/consts';
+import { XOR, DAI } from '@/lib/substrate/sdk/assets/consts';
 import { computed, effectScope, ref } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { useSwapRouteSync } from '@/features/swap/composables/useSwapRouteSync';
 
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 const mocks = vi.hoisted(() => ({
   query: {} as Record<string, string>,

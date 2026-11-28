@@ -1,4 +1,4 @@
-import type { Operation } from '@sora-substrate/sdk';
+import type { Operation } from '@/lib/substrate/sdk';
 
 export type HistoryQuery = {
   operationNames?: Operation[];

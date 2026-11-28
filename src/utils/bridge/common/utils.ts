@@ -1,5 +1,5 @@
-import { isEthOperation, isEvmOperation, isSubstrateOperation } from '@sora-substrate/sdk';
-import { XOR, TBCD } from '@sora-substrate/sdk/build/assets/consts';
+import { isEthOperation, isEvmOperation, isSubstrateOperation } from '@/lib/substrate/sdk';
+import { XOR, TBCD } from '@/lib/substrate/sdk/assets/consts';
 import { api as soraApi } from '@/lib/soraneo-wallet/src/api';
 import { ethers } from 'ethers';
 
@@ -14,10 +14,10 @@ import { isUnsignedTx as isUnsignedSubTx, isOutgoingTx as isOutgoingSubTx } from
 import ethersUtil from '@/utils/ethers-util';
 
 import type { ApiPromise } from '@polkadot/api';
-import type { IBridgeTransaction } from '@sora-substrate/sdk';
-import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
-import type { EvmHistory } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
-import type { SubHistory } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
+import type { IBridgeTransaction } from '@/lib/substrate/sdk';
+import type { EthHistory } from '@/lib/substrate/sdk/bridgeProxy/eth/types';
+import type { EvmHistory } from '@/lib/substrate/sdk/bridgeProxy/evm/types';
+import type { SubHistory } from '@/lib/substrate/sdk/bridgeProxy/sub/types';
 import type { TransactionReplacedError, TransactionResponse } from 'ethers';
 
 const DenominatedAssets = [XOR.address, TBCD.address];

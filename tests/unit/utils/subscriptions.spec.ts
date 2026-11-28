@@ -1,7 +1,7 @@
 import { config, EMPTY, Observable, of, Subject, throwError } from 'rxjs';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { AccountBalance } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountBalance } from '@/lib/substrate/sdk/assets/types';
 
 const { apiMock, getAssetBalanceObservableMock } = vi.hoisted(() => {
   const api = {

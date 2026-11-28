@@ -1,6 +1,6 @@
-import { KnownAssets, XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { LiberlandAssetType, SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
+import { KnownAssets, XOR } from '@/lib/substrate/sdk/assets/consts';
+import { BridgeNetworkType } from '@/lib/substrate/sdk/bridgeProxy/consts';
+import { LiberlandAssetType, SubNetworkId } from '@/lib/substrate/sdk/bridgeProxy/sub/consts';
 import { defineStore } from 'pinia';
 
 import { ZeroStringValue } from '@/consts';
@@ -8,9 +8,9 @@ import type { AssetsState, BridgeRegisteredAsset } from '@/stores/assets/types';
 import { useWalletStore } from '@/stores/wallet';
 import { useWeb3Store } from '@/stores/web3';
 
-import type { Asset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
-import type { SubNetwork, SubAssetId } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
+import type { Asset, RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { EvmNetwork } from '@/lib/substrate/sdk/bridgeProxy/evm/types';
+import type { SubNetwork, SubAssetId } from '@/lib/substrate/sdk/bridgeProxy/sub/types';
 
 type BridgeStoreModule = typeof import('@/stores/bridge');
 type EthBridgeApiModule = typeof import('@/utils/bridge/eth/api');

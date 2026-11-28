@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { retryOnEmptyResult } from '@/indexer/queries/retry';
 import { gql } from '@urql/core';
@@ -7,7 +7,7 @@ import { fetchByAssetIds, marketRequestOptions } from '@/indexer/queries/asset/b
 
 import type { OrderBookWithStats } from '@/types/orderBook';
 
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 import type { OrderBookEntity, ConnectionQueryResponse } from '@/lib/soraneo-wallet/src/services/indexer/types';
 
 const makePolkaswapOrderBooksQuery = (exact: boolean) => gql<ConnectionQueryResponse<OrderBookEntity>>`

@@ -80,7 +80,7 @@ import { BreakpointClass } from '@/consts/layout';
 import { botRunsHint } from '@/features/bot-trading';
 import { Theme } from '@/consts/theme';
 import { useSettingsStore } from '@/stores/settings';
-import { ETH, XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { ETH, XOR } from '@/lib/substrate/sdk/assets/consts';
 
 import AppAccountButton from './AppAccountButton.vue';
 import AppHeaderMenu from './AppHeaderMenu.vue';

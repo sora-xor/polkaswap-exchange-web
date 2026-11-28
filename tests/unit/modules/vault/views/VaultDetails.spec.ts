@@ -1,9 +1,9 @@
-import { FPNumber } from '@sora-substrate/math';
+import { FPNumber } from '@/lib/substrate/math';
 import { flushPromises, mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick, ref } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { VaultTypes } from '@sora-substrate/sdk/build/kensetsu/consts';
+import { VaultTypes } from '@/lib/substrate/sdk/kensetsu/consts';
 
 const routerPushSpy = vi.fn();
 const routerBackSpy = vi.fn();

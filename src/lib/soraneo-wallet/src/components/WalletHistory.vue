@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts">
-import { TransactionStatus } from '@sora-substrate/sdk';
+import { TransactionStatus } from '@/lib/substrate/sdk';
 import debounce from 'lodash/fp/debounce';
 import isEmpty from 'lodash/fp/isEmpty';
 import { computed, onBeforeUnmount, onMounted, watch, type PropType } from 'vue';
@@ -60,8 +60,8 @@ import HistoryPagination from './HistoryPagination.vue';
 import SearchInput from './Input/SearchInput.vue';
 
 import type { ExternalHistoryParams, HistoryQuery } from '../types/history';
-import type { History, AccountHistory, HistoryItem } from '@sora-substrate/sdk';
-import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { History, AccountHistory, HistoryItem } from '@/lib/substrate/sdk';
+import type { AccountAsset, Asset } from '@/lib/substrate/sdk/assets/types';
 
 const isAssetSymbol = (value: string) => value.length > 1 && value.length < 8;
 const isAccountAddress = (value: string) => value.startsWith('cn') && value.length === 49;

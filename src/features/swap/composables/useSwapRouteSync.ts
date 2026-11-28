@@ -8,7 +8,7 @@ import { isSwapBackNavigationFromOrderBook, resolveHistoryBackLocation } from '.
 import { normalizeSwapRouteTokens } from '../services/normalizeSwapRouteTokens';
 import { getTonswapAcquisitionPair } from '../services/tonswapFunding';
 
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 type WithApi = (callback: () => Promise<void> | void) => Promise<void>;
 

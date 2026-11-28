@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { Operation } from '@sora-substrate/sdk';
+import { Operation } from '@/lib/substrate/sdk';
 import { computed } from 'vue';
 
 import { useNumberFormatter } from '../composables/useNumberFormatter';
@@ -49,7 +49,7 @@ import InfoLine from './InfoLine.vue';
 import TransactionHashView from './TransactionHashView.vue';
 
 import type { PolkadotJsAccount } from '../types/common';
-import type { HistoryItem } from '@sora-substrate/sdk';
+import type { HistoryItem } from '@/lib/substrate/sdk';
 
 const props = defineProps<{
   transaction: HistoryItem;

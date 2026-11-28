@@ -1,5 +1,5 @@
-import type { FPNumber, IBridgeTransaction, CodecString } from '@sora-substrate/sdk';
-import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
+import type { FPNumber, IBridgeTransaction, CodecString } from '@/lib/substrate/sdk';
+import type { BridgeNetworkId } from '@/lib/substrate/sdk/bridgeProxy/types';
 import type { Subscription } from 'rxjs';
 
 import type { Nullable } from '@/types/common';

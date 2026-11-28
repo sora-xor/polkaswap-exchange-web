@@ -1,11 +1,11 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 
 import { ZeroStringValue } from '@/consts';
 
 import { ParachainAdapter } from './parachain';
 
-import type { CodecString } from '@sora-substrate/sdk';
-import type { Asset, RegisteredAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { CodecString } from '@/lib/substrate/sdk';
+import type { Asset, RegisteredAsset } from '@/lib/substrate/sdk/assets/types';
 
 export class AstarParachainAdapter extends ParachainAdapter<string> {
   // overrides "SubAdapter"

@@ -74,8 +74,8 @@
 
 <script setup lang="ts">
 import MarketUnavailable from '@/shared/ui/MarketUnavailable.vue';
-import { OrderBookStatus } from '@sora-substrate/liquidity-proxy';
-import { FPNumber } from '@sora-substrate/sdk';
+import { OrderBookStatus } from '@/lib/substrate/liquidity-proxy';
+import { FPNumber } from '@/lib/substrate/sdk';
 import PairTokenLogo from '@/components/shared/PairTokenLogo.vue';
 import PriceChange from '@/components/shared/PriceChange.vue';
 import { computed } from 'vue';
@@ -87,8 +87,8 @@ import FormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount
 import { useAssetsStore } from '@/stores/assets';
 import { getBookDecimals } from '@/utils/orderBook';
 
-import type { OrderBookId } from '@sora-substrate/liquidity-proxy';
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { OrderBookId } from '@/lib/substrate/liquidity-proxy';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 import type { Nullable } from '@/types/common';
 
 interface BookFields {

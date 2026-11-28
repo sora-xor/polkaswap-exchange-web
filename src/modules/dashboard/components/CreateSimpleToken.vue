@@ -37,8 +37,8 @@
 </template>
 
 <script setup lang="ts">
-import { FPNumber } from '@sora-substrate/sdk';
-import { MaxTotalSupply } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber } from '@/lib/substrate/sdk';
+import { MaxTotalSupply } from '@/lib/substrate/sdk/assets/consts';
 import { computed, ref } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';

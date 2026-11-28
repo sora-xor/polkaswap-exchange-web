@@ -42,7 +42,7 @@ describe('standalone accumulation research runtime', () => {
     expect(result.stdout).toBe(JSON.stringify(receipt) + '\n');
     expect(receipt).toEqual({
       kind: 'accumulation-standalone-runtime-smoke-v1',
-      aliases: ['@/*', '@sora-substrate/math', '@sora-substrate/math/*', '@sora-substrate/liquidity-proxy'],
+      aliases: ['@/*'],
       amountCodec: '1250000000000000000',
       nativeMarkOwned: true,
       admissionOwned: true,

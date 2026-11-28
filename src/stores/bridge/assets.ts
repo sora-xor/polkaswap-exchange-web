@@ -4,7 +4,7 @@ import { useAssetsStore } from '@/stores/assets';
 import type { AssetsState, BridgeRegisteredAsset } from '@/stores/assets/types';
 import type { Nullable } from '@/types/common';
 
-import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
 
 type AssetLookup = (address?: Nullable<string>) => Nullable<RegisteredAccountAsset>;
 type LegacyAssetRootGetters = {

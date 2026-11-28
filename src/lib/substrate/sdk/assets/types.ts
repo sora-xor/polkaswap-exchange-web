@@ -1,4 +1,4 @@
-import type { CodecString, NumberLike } from '@sora-substrate/math';
+import type { CodecString, NumberLike } from '@/lib/substrate/math';
 
 import type { History } from '../types';
 import type { KnownSymbols } from './consts';

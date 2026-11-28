@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-import type { KnownSymbols } from '@sora-substrate/sdk/build/assets/consts';
+import type { KnownSymbols } from '@/lib/substrate/sdk/assets/consts';
 
 /**
  * Gradient container that adapts the background based on the reward token symbol.

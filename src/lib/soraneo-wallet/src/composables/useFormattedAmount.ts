@@ -1,5 +1,5 @@
-import { FPNumber, type CodecString } from '@sora-substrate/sdk';
-import { BalanceType, XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber, type CodecString } from '@/lib/substrate/sdk';
+import { BalanceType, XOR } from '@/lib/substrate/sdk/assets/consts';
 import { computed } from 'vue';
 
 import { useWalletStore } from '@/stores/wallet';
@@ -9,7 +9,7 @@ import { FontSizeRate, FontWeightRate } from '../consts';
 
 import { useNumberFormatter } from './useNumberFormatter';
 
-import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset, Asset } from '@/lib/substrate/sdk/assets/types';
 
 export function useFormattedAmount() {
   const walletStore = useWalletStore();

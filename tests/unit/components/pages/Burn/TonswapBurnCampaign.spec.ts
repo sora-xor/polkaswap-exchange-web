@@ -1,5 +1,5 @@
 import { flushPromises, mount } from '@vue/test-utils';
-import { FPNumber, Operation } from '@sora-substrate/sdk';
+import { FPNumber, Operation } from '@/lib/substrate/sdk';
 import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
 import { nextTick, reactive, ref } from 'vue';
 import SForm from '@/lib/soramitsu-ui/components/Form/SForm.vue';
@@ -7,8 +7,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import tonswapMarkUrl from '@/assets/img/tonswap-mark.svg?url';
 import { createTonswapXorBurnRemark, TONSWAP_START_BLOCK } from '@/features/misc/lib/tonswapBurn';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { TransactionStatus, type HistoryItem } from '@sora-substrate/sdk/build/types';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
+import { TransactionStatus, type HistoryItem } from '@/lib/substrate/sdk/types';
 import { createTonswapIntent, writeTonswapIntent, clearTonswapIntent } from '@/features/misc/lib/tonswapOnboarding';
 
 // TextEncoder returns Node-realm arrays; SS58 hashing must use the same constructor in jsdom.

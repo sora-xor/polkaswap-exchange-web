@@ -1,9 +1,9 @@
 import { BN, hexToString, isHex } from '@polkadot/util';
-import { FPNumber, Operation, TransactionStatus } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
-import { RewardType, RewardingEvents } from '@sora-substrate/sdk/build/rewards/consts';
+import { FPNumber, Operation, TransactionStatus } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
+import { BridgeNetworkType, BridgeTxStatus } from '@/lib/substrate/sdk/bridgeProxy/consts';
+import { SubNetworkId } from '@/lib/substrate/sdk/bridgeProxy/sub/consts';
+import { RewardType, RewardingEvents } from '@/lib/substrate/sdk/rewards/consts';
 import getOr from 'lodash/fp/getOr';
 
 import { resolveGlobalPinia } from '@/plugins/pinia';
@@ -52,20 +52,20 @@ import type {
   ClaimedRewardItem,
   CallArgs,
 } from './polkaswap/types';
-import type { HistoryItem } from '@sora-substrate/sdk';
+import type { HistoryItem } from '@/lib/substrate/sdk';
 import type {
   Asset,
   WhitelistItem,
   HistoryElementTransfer as HistoryXorlessTransfer,
   VestedTransferHistory,
-} from '@sora-substrate/sdk/build/assets/types';
-import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
-import type { EvmHistory } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
-import type { SubHistory, SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
-import type { VaultHistory } from '@sora-substrate/sdk/build/kensetsu/types';
-import type { LimitOrderHistory } from '@sora-substrate/sdk/build/orderBook/types';
-import type { RewardClaimHistory, RewardInfo } from '@sora-substrate/sdk/build/rewards/types';
-import type { StakingHistory } from '@sora-substrate/sdk/build/staking/types';
+} from '@/lib/substrate/sdk/assets/types';
+import type { EthHistory } from '@/lib/substrate/sdk/bridgeProxy/eth/types';
+import type { EvmHistory } from '@/lib/substrate/sdk/bridgeProxy/evm/types';
+import type { SubHistory, SubNetwork } from '@/lib/substrate/sdk/bridgeProxy/sub/types';
+import type { VaultHistory } from '@/lib/substrate/sdk/kensetsu/types';
+import type { LimitOrderHistory } from '@/lib/substrate/sdk/orderBook/types';
+import type { RewardClaimHistory, RewardInfo } from '@/lib/substrate/sdk/rewards/types';
+import type { StakingHistory } from '@/lib/substrate/sdk/staking/types';
 
 const resolveWalletStore = () => {
   try {

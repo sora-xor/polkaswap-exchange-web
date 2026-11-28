@@ -1,5 +1,5 @@
 import definitions from '@polkadot/types/interfaces/runtime/definitions';
-import runtime from '../../../../type-definitions/src/runtime.ts';
+import runtime from '@/lib/substrate/type-definitions/runtime';
 import type { Definitions } from '@polkadot/types/types';
 
 export default {

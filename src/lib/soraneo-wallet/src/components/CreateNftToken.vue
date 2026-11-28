@@ -145,8 +145,8 @@
 </template>
 
 <script lang="ts">
-import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { MaxTotalSupply, XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber, Operation } from '@/lib/substrate/sdk';
+import { MaxTotalSupply, XOR } from '@/lib/substrate/sdk/assets/consts';
 import { computed, ref, type PropType } from 'vue';
 
 import type { WalletNavigationTarget } from '@/platform/wallet/navigation';

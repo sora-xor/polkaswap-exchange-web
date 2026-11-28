@@ -1,6 +1,6 @@
-import { Operation, FPNumber } from '@sora-substrate/sdk';
-import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { EthCurrencyType, EthAssetKind } from '@sora-substrate/sdk/build/bridgeProxy/eth/consts';
+import { Operation, FPNumber } from '@/lib/substrate/sdk';
+import { BridgeTxStatus } from '@/lib/substrate/sdk/bridgeProxy/consts';
+import { EthCurrencyType, EthAssetKind } from '@/lib/substrate/sdk/bridgeProxy/eth/consts';
 import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/constants';
 
 import { SmartContractType, KnownEthBridgeAsset, SmartContracts } from '@/consts/evm';
@@ -8,8 +8,8 @@ import { asZeroValue } from '@/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import ethersUtil from '@/utils/ethers-util';
 
-import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { EthHistory, EthApprovedRequest } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
+import type { RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { EthHistory, EthApprovedRequest } from '@/lib/substrate/sdk/bridgeProxy/eth/types';
 import type { Subscription } from 'rxjs';
 
 type EthTxParams = {

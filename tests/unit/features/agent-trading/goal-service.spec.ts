@@ -15,7 +15,7 @@ import { createExecutionStateFixture } from '../bot-trading/execution-state-fixt
 import { feeBytes, hex } from '../../scripts/bots/fixtures/historical-goal-bound-fee-fixture';
 
 vi.unmock('@polkadot/util-crypto');
-vi.unmock('@sora-substrate/sdk/build/assets/consts');
+vi.unmock('@/lib/substrate/sdk/assets/consts');
 vi.hoisted(() => {
   Object.assign(window.location, {
     host: 'localhost',

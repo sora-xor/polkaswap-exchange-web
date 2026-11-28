@@ -51,6 +51,6 @@ export {
   addWcSubWalletLocally,
 };
 
-export type { WithKeyring } from '@sora-substrate/sdk';
+export type { WithKeyring } from '@/lib/substrate/sdk';
 export type { TransactionSignVisibilityController, TransactionSignVisibilityTarget } from './util';
 export { confirmTransactionSign, getTransactionSignRequest } from './util/transactionSignRequest';

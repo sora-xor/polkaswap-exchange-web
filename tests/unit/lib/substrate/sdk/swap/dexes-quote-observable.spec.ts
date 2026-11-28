@@ -1,4 +1,4 @@
-import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy';
+import { LiquiditySourceTypes } from '@/lib/substrate/liquidity-proxy';
 import { Subject } from 'rxjs';
 import { describe, expect, it, vi } from 'vitest';
 

@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { Interface } from 'ethers';
 import { computed, onScopeDispose, ref, toValue, watch, type ComputedRef, type MaybeRefOrGetter } from 'vue';
 
@@ -36,7 +36,7 @@ import ethersUtil from '@/utils/ethers-util';
 import { useGetTsPlan } from './useGetTsPlan';
 import { useTonswapBridgeFunding } from './useTonswapBridgeFunding';
 
-import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
+import type { EthHistory } from '@/lib/substrate/sdk/bridgeProxy/eth/types';
 
 /** Why the current step stopped; each has a plain message and "Try again". */
 export type BuyXorRunFailure = 'wallet' | 'vault' | 'liquidity' | 'bridge';

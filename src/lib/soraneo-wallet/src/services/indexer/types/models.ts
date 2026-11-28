@@ -12,9 +12,9 @@ import {
   type PolkaswapVaultEventEntity,
 } from '../polkaswap/types';
 
-import type { PriceVariant, OrderBookStatus } from '@sora-substrate/liquidity-proxy';
-import type { CodecString } from '@sora-substrate/sdk';
-import type { StakingRewardsDestination } from '@sora-substrate/sdk/build/staking/types';
+import type { PriceVariant, OrderBookStatus } from '@/lib/substrate/liquidity-proxy';
+import type { CodecString } from '@/lib/substrate/sdk';
+import type { StakingRewardsDestination } from '@/lib/substrate/sdk/staking/types';
 
 // Indexer Enums
 export enum SnapshotTypes {

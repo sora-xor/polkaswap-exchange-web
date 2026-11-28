@@ -1,4 +1,4 @@
-import { Operation } from '@sora-substrate/sdk';
+import { Operation } from '@/lib/substrate/sdk';
 
 import pinia from '@/plugins/pinia';
 import { useAssetsStore } from '@/stores/assets';
@@ -13,7 +13,7 @@ import type { EthBridgeReducer } from '@/utils/bridge/eth/classes/reducers';
 import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/constants';
 import { getTransaction as getEthBridgeTransaction, updateTransaction } from '@/utils/bridge/eth/utils';
 
-import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
+import type { EthHistory } from '@/lib/substrate/sdk/bridgeProxy/eth/types';
 
 interface EthBridgeConstructorOptions extends IBridgeConstructorOptions<EthHistory, EthBridgeReducer> {
   getBridgeHistoryInstance: GetBridgeHistoryInstance<EthBridgeHistory>;

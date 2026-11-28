@@ -2,7 +2,7 @@
 
 import type { Enum, Option, Struct, u32, u8 } from '@polkadot/types-codec';
 import type { ITuple } from '@polkadot/types-codec/types';
-import type { H160, H256 } from '@sora-substrate/types/interfaces/runtime';
+import type { H160, H256 } from '@/lib/substrate/types/interfaces/runtime';
 
 /** @name BridgeAppInfo */
 export interface BridgeAppInfo extends Enum {

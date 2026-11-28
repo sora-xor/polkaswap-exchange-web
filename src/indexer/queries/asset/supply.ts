@@ -1,5 +1,5 @@
-import { FPNumber } from '@sora-substrate/math';
-import { VAL, PSWAP } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber } from '@/lib/substrate/math';
+import { VAL, PSWAP } from '@/lib/substrate/sdk/assets/consts';
 import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { gql } from '@urql/core';
 

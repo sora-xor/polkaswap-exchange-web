@@ -1,4 +1,4 @@
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 
 /** Explicit XOR acquisition clears the spend asset without requiring a campaign or guessing the user's funds. */
 export function getTonswapAcquisitionPair(

@@ -1,6 +1,6 @@
-import { FPNumber } from '@sora-substrate/math';
-import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { EvmNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/evm/consts';
+import { FPNumber } from '@/lib/substrate/math';
+import { BridgeNetworkType } from '@/lib/substrate/sdk/bridgeProxy/consts';
+import { EvmNetworkId } from '@/lib/substrate/sdk/bridgeProxy/evm/consts';
 
 import type { Web3State } from './types';
 

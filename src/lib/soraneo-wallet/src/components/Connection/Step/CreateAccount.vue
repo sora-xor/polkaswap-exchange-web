@@ -126,7 +126,7 @@ import { isValidNewAccountPassword, NEW_ACCOUNT_PASSWORD_MIN_LENGTH } from '../.
 import PasswordInput from '../../Input/Password.vue';
 
 import type { CreateAccountArgs } from '@/stores/wallet/account/types';
-import type { WithKeyring } from '@sora-substrate/sdk';
+import type { WithKeyring } from '@/lib/substrate/sdk';
 
 const props = withDefaults(
   defineProps<{

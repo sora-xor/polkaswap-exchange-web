@@ -5,8 +5,8 @@ import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 import BurnPage from '@/features/misc/pages/BurnPage.vue';
 import { Language } from '@/consts/language';
 import { setI18nLocale } from '@/lang';
-import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber, Operation } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { createSoraNexusXorBurnRemark } from '@/utils/soraNexusAccount';
 import type { BurnForStats } from '@/features/misc/lib/burnCampaigns';
 

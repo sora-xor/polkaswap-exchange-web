@@ -1,5 +1,5 @@
-import { FPNumber, type CodecString } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber, type CodecString } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { getTsFundingQuery, parseGetTsFundingPurpose } from '@/features/misc/lib/getTsFlow';
@@ -8,7 +8,7 @@ import { PageNames } from '@/consts';
 import { useAssetsStore } from '@/stores/assets';
 import { useBridgeStore } from '@/stores/bridge';
 
-import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
 import type { Nullable } from '@/types/common';
 
 /**

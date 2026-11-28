@@ -59,7 +59,7 @@ import { useReducedMotion } from '@/features/rewards/composables/useReducedMotio
 import { toWholePercent } from '@/features/rewards/utils/analytics';
 import { LogoSize } from '@/lib/soraneo-wallet/src/consts';
 
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
 
 /**

@@ -13,9 +13,9 @@ import {
   keyExtractSuri,
   mnemonicValidate,
 } from '@polkadot/util-crypto';
-import { FPNumber, CodecString } from '@sora-substrate/math';
+import { FPNumber, CodecString } from '@/lib/substrate/math';
 import type { KeypairType } from '@polkadot/util-crypto/types';
-import type { Connection } from '@sora-substrate/connection';
+import type { Connection } from '@/lib/substrate/connection';
 import type { ApiPromise, ApiRx } from '@polkadot/api';
 import type { CreateResult, KeyringAddress } from '@polkadot/ui-keyring/types';
 import type { KeyringPair, KeyringPair$Json, KeyringPair$Meta } from '@polkadot/keyring/types';

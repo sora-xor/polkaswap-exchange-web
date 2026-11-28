@@ -64,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
 
@@ -85,7 +85,7 @@ import { createAsyncComponent } from '@/shared/ui/async';
 import { sortAssets } from '@/utils';
 
 import type { Nullable } from '@/types/common';
-import type { Asset, AccountAsset, RegisteredAccountAsset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset, AccountAsset, RegisteredAccountAsset, Whitelist } from '@/lib/substrate/sdk/assets/types';
 import WalletAssetsFilter from '@/lib/soraneo-wallet/src/components/shared/AssetsFilter.vue';
 import WalletDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 import WalletSearchInput from '@/lib/soraneo-wallet/src/components/Input/SearchInput.vue';

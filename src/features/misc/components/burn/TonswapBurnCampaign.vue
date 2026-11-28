@@ -410,8 +410,8 @@
 </template>
 
 <script lang="ts" setup>
-import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber, Operation } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, shallowRef, watch } from 'vue';
 
 import GenericPageHeader from '@/components/shared/GenericPageHeader.vue';
@@ -445,7 +445,7 @@ import { publishTonswapCampaignSummary } from '@/features/misc/composables/useTo
 import { IndexerType } from '@/indexer/queries/indexerConsts';
 import { fetchTonswapBurnSnapshot, TONSWAP_MAINNET_GENESIS } from '@/indexer/queries/tonswapBurn';
 import { api } from '@/lib/soraneo-wallet/src/api';
-import { TransactionStatus, type HistoryItem } from '@sora-substrate/sdk/build/types';
+import { TransactionStatus, type HistoryItem } from '@/lib/substrate/sdk/types';
 import DialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 import InfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 import ExternalLink from '@/lib/soraneo-wallet/src/components/shared/ExternalLink.vue';

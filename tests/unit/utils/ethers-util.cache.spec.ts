@@ -29,7 +29,7 @@ vi.mock('@polkadot/util-crypto', () => ({
   decodeAddress: (_: string) => new Uint8Array(0),
 }));
 
-vi.mock('@sora-substrate/sdk', () => ({
+vi.mock('@/lib/substrate/sdk', () => ({
   FPNumber: { DEFAULT_PRECISION: 18, fromCodecValue: (v: string, _d: number) => ({ toString: () => v }) },
   Storage: class Storage {
     namespace?: string;
@@ -61,7 +61,7 @@ vi.mock('@sora-substrate/sdk', () => ({
     Failed: 'Failed',
   },
 }));
-vi.mock('@sora-substrate/sdk/build/bridgeProxy/consts', () => ({
+vi.mock('@/lib/substrate/sdk/bridgeProxy/consts', () => ({
   BridgeNetworkType: { Eth: 'Eth', Evm: 'Evm', Sub: 'Sub' },
   BridgeTxDirection: { Outgoing: 'Outgoing', Incoming: 'Incoming' },
   BridgeTxStatus: { Pending: 'Pending', Ready: 'Ready', Failed: 'Failed' },

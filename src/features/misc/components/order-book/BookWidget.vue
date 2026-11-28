@@ -65,7 +65,7 @@
 
 <script setup lang="ts">
 import { onBeforeUnmount } from 'vue';
-import { PriceVariant as LiquidityPriceVariant } from '@sora-substrate/liquidity-proxy';
+import { PriceVariant as LiquidityPriceVariant } from '@/lib/substrate/liquidity-proxy';
 import BaseWidget from '@/components/shared/Widget/Base.vue';
 
 import { useOrderBook } from '@/composables/useOrderBook';

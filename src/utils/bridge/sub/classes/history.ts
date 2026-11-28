@@ -1,6 +1,6 @@
-import { FPNumber, Operation, TransactionStatus } from '@sora-substrate/sdk';
-import { BridgeTxStatus, BridgeTxDirection, BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
+import { FPNumber, Operation, TransactionStatus } from '@/lib/substrate/sdk';
+import { BridgeTxStatus, BridgeTxDirection, BridgeNetworkType } from '@/lib/substrate/sdk/bridgeProxy/consts';
+import { SubNetworkId } from '@/lib/substrate/sdk/bridgeProxy/sub/consts';
 import { decodeAddress } from '@polkadot/util-crypto';
 import { hexToU8a } from '@polkadot/util';
 import { api } from '@/lib/soraneo-wallet/src/api';
@@ -37,9 +37,9 @@ import {
 
 import type { ApiPromise } from '@polkadot/api';
 import type { HistoryElement } from '@/lib/soraneo-wallet/src/services/indexer/types';
-import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { SubNetwork, SubHistory } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
-import type { BridgeTransactionData } from '@sora-substrate/sdk/build/bridgeProxy/types';
+import type { RegisteredAccountAsset } from '@/lib/substrate/sdk/assets/types';
+import type { SubNetwork, SubHistory } from '@/lib/substrate/sdk/bridgeProxy/sub/types';
+import type { BridgeTransactionData } from '@/lib/substrate/sdk/bridgeProxy/types';
 
 type BridgeActionContext<TRootState = any, TRootGetters = any> = {
   rootState: TRootState;

@@ -3,7 +3,7 @@ import { gql } from '@urql/core';
 import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 
 import type { QueryData, UpdatesStream } from '@/lib/soraneo-wallet/src/services/indexer/types';
-import type { ValidatorInfoFull } from '@sora-substrate/sdk/build/staking/types';
+import type { ValidatorInfoFull } from '@/lib/substrate/sdk/staking/types';
 
 type IndexedValidator = Record<string, unknown>;
 

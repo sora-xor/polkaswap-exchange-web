@@ -1,4 +1,4 @@
-import type { IBridgeTransaction } from '@sora-substrate/sdk';
+import type { IBridgeTransaction } from '@/lib/substrate/sdk';
 
 import type { BridgeHistoryState } from '@/stores/bridge/types';
 import type { Nullable } from '@/types/common';

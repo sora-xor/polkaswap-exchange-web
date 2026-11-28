@@ -1,10 +1,10 @@
-import { FPNumber } from '@sora-substrate/sdk';
-import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
+import { FPNumber } from '@/lib/substrate/sdk';
+import { SubNetworkId } from '@/lib/substrate/sdk/bridgeProxy/sub/consts';
 
 import { SubAdapter } from '../substrate';
 
-import type { CodecString } from '@sora-substrate/sdk';
-import type { RegisteredAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { CodecString } from '@/lib/substrate/sdk';
+import type { RegisteredAsset } from '@/lib/substrate/sdk/assets/types';
 
 export class RelaychainAdapter extends SubAdapter {
   // overrides SubAdapter; asset is always native relaychain token

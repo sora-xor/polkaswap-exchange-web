@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { DAI, XOR, XSTUSD } from '@sora-substrate/sdk/build/assets/consts';
+import { DAI, XOR, XSTUSD } from '@/lib/substrate/sdk/assets/consts';
 
 import {
   buildRouteTokens,

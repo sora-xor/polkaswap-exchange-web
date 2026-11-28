@@ -1,4 +1,4 @@
-import { RewardingEvents } from '@sora-substrate/sdk/build/rewards/consts';
+import { RewardingEvents } from '@/lib/substrate/sdk/rewards/consts';
 
 import walletEn from '@/lib/soraneo-wallet/src/lang/en';
 import communityStoreMessages from '@/features/store/messages.en.json';

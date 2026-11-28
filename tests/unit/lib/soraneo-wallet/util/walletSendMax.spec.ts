@@ -1,5 +1,5 @@
-import { FPNumber } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { FPNumber } from '@/lib/substrate/sdk';
+import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { describe, expect, it } from 'vitest';
 
 import { getWalletSendMaxAmount, isWalletSendMaxAvailable } from '@/lib/soraneo-wallet/src/util/walletSendMax';

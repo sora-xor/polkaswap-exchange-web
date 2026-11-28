@@ -6,7 +6,7 @@ import { SnapshotTypes } from '@/lib/soraneo-wallet/src/services/indexer/types';
 
 import { toPricePoints, type PricePoint } from '../utils/market';
 
-import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
 
 /** Days of daily candles shown in the price chart (the same window as the app's "1M" price chart). */
 export const MARKET_HISTORY_DAYS = 30;

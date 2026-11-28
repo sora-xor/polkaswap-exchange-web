@@ -16,7 +16,7 @@ import { buildCssUrl, sanitizeIconSource } from '@/util/image';
 import { api } from '../api';
 import NftTokenLogo from './NftTokenLogo.vue';
 
-import type { AccountAsset, Asset, Whitelist, WhitelistItem } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset, Asset, Whitelist, WhitelistItem } from '@/lib/substrate/sdk/assets/types';
 
 /** Locally-defined assets can provide a bundled icon before they exist in the runtime whitelist. */
 type AssetWithOptionalIcon = (AccountAsset | Asset) & { icon?: string };

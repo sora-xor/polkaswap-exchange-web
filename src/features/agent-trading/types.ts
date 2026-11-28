@@ -1,5 +1,5 @@
-import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import type { AccountBalance, Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { LiquiditySourceTypes } from '@/lib/substrate/liquidity-proxy/consts';
+import type { AccountBalance, Asset } from '@/lib/substrate/sdk/assets/types';
 import type { HistoryItem } from '@/lib/substrate/sdk/types';
 import type { GoalSwapExecutionRequest, GoalSwapExecutionEvidence } from './goal-swap';
 

@@ -1,4 +1,4 @@
-import type { CodecString } from '@sora-substrate/sdk';
+import type { CodecString } from '@/lib/substrate/sdk';
 
 export type FiatPriceObject = Record<string, CodecString>;
 

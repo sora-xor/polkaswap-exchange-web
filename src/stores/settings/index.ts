@@ -32,8 +32,8 @@ import storage, { settingsStorage } from '@/utils/storage';
 import { parseStoredBoolean } from '@/utils/storageParsing';
 
 import type { Ad, FeatureFlags, SettingsState } from './types';
-import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import type { NetworkFeesObject } from '@sora-substrate/sdk';
+import type { LiquiditySourceTypes } from '@/lib/substrate/liquidity-proxy/consts';
+import type { NetworkFeesObject } from '@/lib/substrate/sdk';
 import { FilterOptions, type Alert, type IndexerState } from '@/lib/soraneo-wallet/src/types/common';
 import type { Currency, CurrencyFields, FiatExchangeRateObject } from '@/lib/soraneo-wallet/src/types/currency';
 

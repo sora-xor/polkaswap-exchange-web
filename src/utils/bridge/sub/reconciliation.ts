@@ -1,11 +1,11 @@
-import { Operation } from '@sora-substrate/sdk';
-import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
+import { Operation } from '@/lib/substrate/sdk';
+import { BridgeNetworkType, BridgeTxStatus } from '@/lib/substrate/sdk/bridgeProxy/consts';
+import { SubNetworkId } from '@/lib/substrate/sdk/bridgeProxy/sub/consts';
 
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 
-import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
-import type { BridgeTransactionData } from '@sora-substrate/sdk/build/bridgeProxy/types';
+import type { SubNetwork } from '@/lib/substrate/sdk/bridgeProxy/sub/types';
+import type { BridgeTransactionData } from '@/lib/substrate/sdk/bridgeProxy/types';
 import type { Nullable } from '@/types/common';
 
 export const SubBridgeAuthoritativeStatus = {

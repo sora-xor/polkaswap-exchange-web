@@ -74,7 +74,7 @@
 </template>
 
 <script setup lang="ts">
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@/lib/substrate/sdk';
 import { graphic } from 'echarts';
 import isEqual from 'lodash/fp/isEqual';
 import pick from 'lodash/fp/pick';
@@ -109,7 +109,7 @@ import {
 } from '@/utils';
 import { createCoalescedAsyncTask } from '@/utils/asyncTask';
 
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset } from '@/lib/substrate/sdk/assets/types';
 import type { PageInfo } from '@/lib/soraneo-wallet/src/services/indexer/types';
 import type { Currency, CurrencyFields } from '@/lib/soraneo-wallet/src/types/currency';
 import type { OCLH, RequestMethod, RequestSubscription, SnapshotItem } from '@/types/chart';

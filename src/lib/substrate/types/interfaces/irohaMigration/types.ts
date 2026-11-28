@@ -1,7 +1,7 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 
 import type { Option, Struct, Vec } from '@polkadot/types-codec';
-import type { AccountId, BlockNumber } from '@sora-substrate/types/interfaces/runtime';
+import type { AccountId, BlockNumber } from '@/lib/substrate/types/interfaces/runtime';
 
 /** @name PendingMultisigAccount */
 export interface PendingMultisigAccount extends Struct {
