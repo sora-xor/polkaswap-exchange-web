@@ -1,7 +1,11 @@
 # Polkaswap chain library
 
-This directory contains Polkaswap's maintained, inline SORA Nexus Substrate
-client. The source was originally derived from `sora-xor/sora2-substrate-js-library`
+This directory contains Polkaswap's maintained, inline Substrate client for
+SORA v2, the network Polkaswap trades on. It is not a SORA Nexus client: SORA
+Nexus is a separate platform, for which the Burn page only derives recipient
+addresses (see `docs/sora-nexus-burn-generator.md`).
+
+The source was originally derived from `sora-xor/sora2-substrate-js-library`
 under Apache-2.0 and now lives entirely in this repository. Preserve the existing
 license and attribution when changing it. No checkout, Git submodule, workspace
 link, generated build output, or published package from that repository is needed

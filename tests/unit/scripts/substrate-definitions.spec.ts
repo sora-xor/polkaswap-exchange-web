@@ -1,4 +1,5 @@
 import { TypeRegistry } from '@polkadot/types';
+import type { RegistryTypes } from '@polkadot/types/types';
 import { describe, expect, it } from 'vitest';
 
 import * as definitions from '@/lib/substrate/types/interfaces/definitions';
@@ -10,7 +11,7 @@ describe('inlined substrate definitions', () => {
       expect(module.types).toBeTypeOf('object');
       expect(module.rpc).toBeTypeOf('object');
     }
-    expect(definitions.assets.rpc.freeBalance.type).toBe('Option<BalanceInfo>');
+    expect(definitions.assets.rpc?.freeBalance.type).toBe('Option<BalanceInfo>');
     expect(definitions.runtime.types.SwapWithDesiredInput).toEqual({
       desiredAmountIn: 'Balance',
       minAmountOut: 'Balance',
@@ -19,7 +20,8 @@ describe('inlined substrate definitions', () => {
 
   it('encodes a swap using the local runtime definitions without losing token precision', () => {
     const registry = new TypeRegistry();
-    registry.register(definitions.runtime.types);
+    // Definition modules declare their codecs as DefinitionsTypes; the SDK casts the same shape in types/index.ts.
+    registry.register(definitions.runtime.types as RegistryTypes);
 
     const amount = registry.createType('SwapAmount', {
       WithDesiredInput: {

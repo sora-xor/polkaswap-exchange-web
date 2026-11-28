@@ -48,7 +48,9 @@ executable. Imported package manifests and resolved entry bytes supplement the
 lockfile; this is not authentication of every installed third-party byte.
 
 Review registration before `run`. Keep all bound source, configuration, protocol,
-and dependencies unchanged. The runner verifies the bindings before acquisition
+and dependencies unchanged; an import-only rewrite such as the `@/lib/substrate`
+migration also changes bound bytes and stops the run with `changed-source`.
+The runner verifies the bindings before acquisition
 and after the full replay. It executes all three candidates for episode zero and
 publishes its completion marker before collecting episode one; the remaining
 27 episodes then proceed unchanged.

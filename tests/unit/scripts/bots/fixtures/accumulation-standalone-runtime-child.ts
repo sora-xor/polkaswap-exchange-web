@@ -2,7 +2,8 @@
 import assert from 'node:assert/strict';
 import { FPNumber } from '@/lib/substrate/math';
 import { FPNumber as SubpathFPNumber } from '@/lib/substrate/math/index';
-import { FPNumber as SourceFPNumber } from '@/lib/substrate/math';
+// Reached by file path, not through the alias: equality below proves `@/*` resolves to this in-tree module.
+import { FPNumber as SourceFPNumber } from '../../../../../src/lib/substrate/math';
 import { Consts } from '@/lib/substrate/liquidity-proxy';
 import { createAccumulationNativeMarkFixture } from './accumulation-native-mark-fixture';
 import { createAccumulationAdmissionResultFixture } from './accumulation-admission-result-fixture';

@@ -33,6 +33,10 @@ of the original evaluation registration; `continuation-registration.json` binds
 the new orchestration source, parent evidence manifest and reserved budget. The
 start, completion and failure receipts reference both registrations. Always
 present the continuation provenance alongside the frozen reporter's output.
+Preparation also checks the original registration's bindings against the live
+tree, so a continuation must run on a tree whose bound files still match the
+original registration byte for byte. Source changes made after that registration,
+including the `@/lib/substrate` import migration, make it impossible to continue.
 
 The run must be launched by an independently verified persistent one-shot process
 (for example a user launchd job with `KeepAlive` disabled), with stdout/stderr and
